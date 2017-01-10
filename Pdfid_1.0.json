@@ -1,9 +1,0 @@
-{
-    "name": "Pdfid",
-    "version": "1.0",
-    "description": "Run PDFid utility on PDF files",
-    "dataTypeList": [
-        "file"
-    ],
-    "command": "Pdfid/pdfid_analyzer.py"
-}
