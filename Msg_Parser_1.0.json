@@ -1,0 +1,9 @@
+{
+    "name": "Msg_Parser",
+    "version": "1.0",
+    "description": "Outlook .msg file parser",
+    "dataTypeList": [
+        "file"
+    ],
+    "command": "MsgParser/parse.py"
+}

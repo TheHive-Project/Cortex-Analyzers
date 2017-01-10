@@ -1,0 +1,12 @@
+{
+    "name": "OTXQuery",
+    "version": "1.0",
+    "description": "Query AlienVault OTX for IPs, Domains, URLs, or File Hashes",
+    "dataTypeList": ["url", "domain", "file", "hash", "ip"],
+    "baseConfig": "OTXQuery",
+    "config": {
+        "service": "query",
+        "max_tlp": 10
+    },
+    "command": "OTXQuery/otxquery.py"
+}

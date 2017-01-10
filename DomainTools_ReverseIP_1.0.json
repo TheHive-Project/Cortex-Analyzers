@@ -1,0 +1,12 @@
+{
+    "name": "DomainTools_ReverseIP",
+    "version": "1.0",
+    "baseConfig": "DomainTools",
+    "config": {
+        "check_tlp": false,
+        "service": "reverse-ip"
+    },
+    "description": "DomainTools Reverse IP: provides a list of domain names that share the same Internet host",
+    "dataTypeList": ["ip"],
+    "command": "DomainTools/domaintools.py"
+}

@@ -1,0 +1,12 @@
+{
+    "name": "VirusTotal_GetReport",
+    "version": "2.0",
+    "description": "VirusTotal get report: provides the last report of a file, hash, domain or ip",
+    "dataTypeList": ["file", "hash", "domain", "ip"],
+    "baseConfig": "VirusTotal",
+    "config": {
+        "service": "get",
+        "max_tlp": 10
+    },
+    "command": "VirusTotal/virustotal.py"
+}

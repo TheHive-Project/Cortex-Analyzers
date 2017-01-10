@@ -1,0 +1,7 @@
+{
+    "name": "MaxMind_GeoIP",
+    "version": "2.0",
+    "description": "MaxMind: Geolocation",
+    "dataTypeList": ["ip"],
+    "command": "MaxMind/geo.py"
+}

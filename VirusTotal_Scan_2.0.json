@@ -1,0 +1,11 @@
+{
+    "name": "VirusTotal_Scan",
+    "version": "2.0",
+    "description": "VirusTotal scan file or url",
+    "dataTypeList": ["file", "url"],
+    "baseConfig": "VirusTotal",
+    "config": {
+        "service": "scan"
+    },
+    "command": "VirusTotal/virustotal.py"
+}

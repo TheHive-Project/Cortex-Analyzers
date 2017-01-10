@@ -1,0 +1,9 @@
+{
+    "name": "File_Info",
+    "version": "1.0",
+    "description": "Technical information about a File.",
+    "dataTypeList": [
+        "file"
+    ],
+    "command": "File_Info/fileinfo_analyzer.py"
+}
