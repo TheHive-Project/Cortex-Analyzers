@@ -58,21 +58,14 @@ class FileAnalyzer(Analyzer):
         result = {}
         detections = {}
         result.update({'detections': detections})
+        result.update({'filetype': report['filetype']})
         return result
 
-    # PDF_Info analyzer
-    def PDF_Info(self, report):
-        result = report
-        f = file(self.filepath)
-        result['PDF']={}
-        result['PDF']['pdfid'] =f.pdfid_cmd()
-        result['PDF']['pdfid'][0]['pdfid']['filename'] = self.filename
-        return result
-
-    def PDF_Summary(self,report):
-        result = {}
-        detections = {}
+    # PDFiD results analysis -- input for full report and summary
+    def Pdfid_analysis(self, report):
         # Parse detections
+        detections = {}
+        filetype = report.filetype
         keywords = report['PDF']['pdfid'][0]['pdfid']['keywords']['keyword']
         for obj in keywords:
             if obj['name'].startswith('/'):
@@ -84,13 +77,40 @@ class FileAnalyzer(Analyzer):
         countObjStm = detections['/ObjStm']
         countOpenAction = detections['/OpenAction']
         countLaunch = detections['/Launch']
+        detect = detections
+        detections = {}
+        detections['/JavaScript'] = detect['/JavaScript']
+        detections['/OpenAction'] = detect['/OpenAction']
+        detections['/RichMedia'] = detect['/RichMedia']
+        detections['/ObjStm'] = detect['/ObjStm']
+        detections['/OpenAction'] = detect['/OpenAction']
+        detections['/Launch'] = detect['/Launch']
         score = countJavaScript + countOpenAction + countRichMedia + countObjStm + countOpenAction + countLaunch
-        result.update({'score': score})
         if score > 0:
-            result.update({'suspicious': True})
+            suspicious = True
         else:
-            result.update({'suspicious': False})
-        result.update({'detections': detections})
+            suspicious = False
+        return {'score':score, 'detections':detections, 'suspicious': suspicious, 'filetype': filetype}
+
+    # PDF_Info analyzer
+    def PDF_Info(self, report):
+        result = report
+        f = file(self.filepath)
+        result['PDF']={}
+        result['PDF']['pdfid'] =f.pdfid_cmd()
+        result['PDF']['pdfid'][0]['pdfid']['filename'] = self.filename
+        result['PDF']['pdfid'][0]['detections'] = self.Pdfid_analysis(result)['detections']
+        result['PDF']['pdfid'][0]['score'] = self.Pdfid_analysis(result)['score']
+        result['PDF']['pdfid'][0]['suspicious'] = self.Pdfid_analysis(result)['suspicious']
+        return result
+
+    def PDF_Summary(self,report):
+        result = {}
+        detections = {}
+        result.update({'score': self.Pdfid_analysis(report)['score']})
+        result.update({'suspicious': self.Pdfid_analysis(report)['suspicious']})
+        result.update({'detections': self.Pdfid_analysis(report)['detections']})
+        result.update({'filetype': self.Pdfid_analysis(report)['filetype']})
         return result
 
     # Office_Info
@@ -106,6 +126,7 @@ class FileAnalyzer(Analyzer):
         r = report['MSOffice']['olevba']
         result = {}
         detections = {}
+        result.update({'filetype': report['filetype']})
         detections['vba'] = r['vba']
         detections['Base64 Strings'] = r['Base64 Strings']
         detections['Hex Strings'] = r['Hex Strings']
@@ -141,15 +162,15 @@ class FileAnalyzer(Analyzer):
     def run(self):
         fullReport = {}
         if self.data_type == 'file':
-            # self.FileInfo(fullReport)
-            # self.SpecificInfo(fullReport)
-            # self.report(fullReport)
-            try:
-                self.FileInfo(fullReport)
-                self.SpecificInfo(fullReport)
-                self.report(fullReport)
-            except Exception as e:
-                self.unexpectedError(e)
+            self.FileInfo(fullReport)
+            self.SpecificInfo(fullReport)
+            self.report(fullReport)
+            # try:
+            #     self.FileInfo(fullReport)
+            #     self.SpecificInfo(fullReport)
+            #     self.report(fullReport)
+            # except Exception as e:
+            #     self.unexpectedError(e)
         else:
             self.notSupported()
 
