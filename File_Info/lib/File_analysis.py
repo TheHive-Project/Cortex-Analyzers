@@ -14,7 +14,8 @@ import pehashng
 from lib.pdfid import *
 from StringIO import StringIO
 
-
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 class file:
 
@@ -46,7 +47,9 @@ class file:
     # ExifTool
     def exif(self):
         exifreport=pyexifinfo.get_json(self.path)
+        # result = json.dumps(exifreport).decode('unicode-escape').encode('utf8')
         result=dict((key,value) for key,value in exifreport[0].iteritems() if not (key.startswith("File") or key.startswith("SourceFile")))
+
         return result
 
     # File hash
@@ -239,9 +242,9 @@ class file:
                 vba_scan_results = []
                 for kw_type, keyword, description in scan_results:
                     vba_scan_results.append({
-                        'type': kw_type,
-                        'keyword': keyword,
-                        'description': description
+                        'type': str(kw_type).encode('utf-8'),
+                        'keyword': str(keyword).encode('utf-8'),
+                        'description': str(description).encode('utf-8')
                     })
 
                     if (kw_type == 'Suspicious'):
@@ -254,8 +257,8 @@ class file:
                 streams.append({
                     'Filename': self.filename,
                     'OLE stream': stream_path,
-                    'VBA filename': vba_filename,
-                    'VBA code': vba_code,
+                    'VBA filename': vba_filename.decode('unicode-escape').encode('utf-8'),
+                    'VBA code': vba_code.decode('unicode-escape').encode('utf-8'),
                     'scan_result': vba_scan_results
                 })
             result['streams'] = streams
