@@ -1,0 +1,13 @@
+{
+    "name": "PhishingInitiative_Lookup",
+    "version": "1.0",
+    "description": "Check URL against Phishing Initiative to determine if it's a verified phishing site",
+    "dataTypeList": ["url"],
+    "baseConfig": "PhishingInitiative_Lookup",
+    "config": {
+        "service": "query",
+        "max_tlp": 2,
+	"check_tlp": true
+    },
+    "command": "PhishingInitiative/phishinginitiative_lookup.py"
+}
