@@ -1,0 +1,12 @@
+{
+    "name": "Abuse_Finder",
+    "version": "1.0",
+    "baseConfig": "Abuse_Finder",
+    "config": {
+      "check_tlp": false,
+      "service":""
+    },
+    "description": "DomainTools Reverse IP: provides a list of domain names that share the same Internet host",
+    "dataTypeList": ["ip", "domain", "url","email"],
+    "command": "Abuse_Finder/abusefinder.py"
+}
