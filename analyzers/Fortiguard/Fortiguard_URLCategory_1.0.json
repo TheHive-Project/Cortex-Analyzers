@@ -3,10 +3,10 @@
     "version": "1.0",
     "dataTypeList": ["domain", "url"],
     "description": "URL Category by Fortiguard: checks the category of a specific URL or domain",
-    "baseConfig": "Fortiguard_URLCategory",
+    "baseConfig": "Fortiguard",
     "config": {
         "service": "query",
         "max_tlp": 10
     },
-    "command": "Fortiguard_URLCategory/urlcategory.py"
+    "command": "Fortiguard/urlcategory.py"
 }
