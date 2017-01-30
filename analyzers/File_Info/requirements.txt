@@ -1,0 +1,9 @@
+python-magic
+pefile2
+hashlib
+pydeep
+pyexifinfo
+oletools
+olefile
+git+https://github.com/AnyMaster/pehashng
+cortexutils
