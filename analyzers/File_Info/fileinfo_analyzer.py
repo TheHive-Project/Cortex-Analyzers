@@ -164,15 +164,12 @@ class FileAnalyzer(Analyzer):
     def run(self):
         fullReport = {}
         if self.data_type == 'file':
-            self.FileInfo(fullReport)
-            self.SpecificInfo(fullReport)
-            self.report(fullReport)
-            # try:
-            #     self.FileInfo(fullReport)
-            #     self.SpecificInfo(fullReport)
-            #     self.report(fullReport)
-            # except Exception as e:
-            #     self.unexpectedError(e)
+            try:
+                self.FileInfo(fullReport)
+                self.SpecificInfo(fullReport)
+                self.report(fullReport)
+            except Exception as e:
+                self.unexpectedError(e)
         else:
             self.notSupported()
 
