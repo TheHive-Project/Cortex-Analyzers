@@ -1,0 +1,12 @@
+{
+    "name": "PassiveTotal_Passive_Dns",
+    "version": "1.0",
+    "baseConfig": "PassiveTotal",
+    "config": {
+        "check_tlp": false,
+        "service": "passive_dns"
+    },
+    "description": "PassiveTotal Passive DNS Lookup",
+    "dataTypeList": ["domain", "fqdn", "ip"],
+    "command": "PassiveTotal/passivetotal_analyzer.py"
+}

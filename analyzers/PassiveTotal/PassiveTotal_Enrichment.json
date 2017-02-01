@@ -1,0 +1,12 @@
+{
+    "name": "PassiveTotal_Enrichment",
+    "version": "1.0",
+    "baseConfig": "PassiveTotal",
+    "config": {
+        "check_tlp": false,
+        "service": "enrichment"
+    },
+    "description": "PassiveTotal Enrichment Lookup",
+    "dataTypeList": ["domain", "fqdn", "ip"],
+    "command": "PassiveTotal/passivetotal_analyzer.py"
+}

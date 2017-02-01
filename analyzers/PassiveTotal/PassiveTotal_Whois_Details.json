@@ -1,0 +1,12 @@
+{
+    "name": "PassiveTotal_Whois_Details",
+    "version": "1.0",
+    "baseConfig": "PassiveTotal",
+    "config": {
+        "check_tlp": false,
+        "service": "whois_details"
+    },
+    "description": "PassiveTotal Whois Details Lookup",
+    "dataTypeList": ["domain", "fqdn", "ip"],
+    "command": "PassiveTotal/passivetotal_analyzer.py"
+}
