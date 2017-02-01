@@ -147,6 +147,10 @@ class FileAnalyzer(Analyzer):
                                     'PPT', "PPTM", 'PPTX']):
             return self.MSOffice_Summary(fullReport)
 
+        return {
+            'filetype': fullReport['filetype']
+        }
+
     def SpecificInfo(self,report):
         # run specific program for PE
         if report['Mimetype'] in ['application/x-dosexec']:
