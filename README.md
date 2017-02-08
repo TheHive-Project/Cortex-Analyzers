@@ -18,7 +18,7 @@ Information, news and updates are regularly posted on [TheHive Project Twitter a
 We welcome your contributions for new analyzers that can take away the load off overworked fellow analysts or improvements to existing ones. Please feel free to fork the code, play with it, make some patches and send us pull requests.
 
 # Support
-if you encounter an issue with an analyzer or would like to request a new one or an improvement to an existing analyzer, please open an issue on the [analyzers' dedicated GitHub repository](https://github.com/CERT-BDF/cortex-analyzers/).
+if you encounter an issue with an analyzer or would like to request a new one or an improvement to an existing analyzer, please open an issue on the [analyzers' dedicated GitHub repository](https://github.com/CERT-BDF/Cortex-Analyzers/issues/new).
 
 Alternatively, if you need to contact the project team, send an email to <support@thehive-project.org>.
 
