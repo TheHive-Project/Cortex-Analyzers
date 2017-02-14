@@ -5,7 +5,8 @@
     "dataTypeList": ["file", "url"],
     "baseConfig": "VirusTotal",
     "config": {
-        "service": "scan"
+        "service": "scan",
+        "max_tlp": 1
     },
     "command": "VirusTotal/virustotal.py"
 }
