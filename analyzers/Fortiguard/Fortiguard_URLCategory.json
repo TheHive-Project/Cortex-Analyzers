@@ -5,7 +5,7 @@
     "description": "URL Category by Fortiguard: checks the category of a specific URL or domain",
     "baseConfig": "Fortiguard",
     "config": {
-        check_tlp: true,
+        "check_tlp": true,
         "max_tlp": 1,
         "service": "query"
 
