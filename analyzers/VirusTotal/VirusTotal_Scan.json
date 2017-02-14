@@ -5,6 +5,7 @@
     "dataTypeList": ["file", "url"],
     "baseConfig": "VirusTotal",
     "config": {
+        "check_tlp": true,
         "service": "scan",
         "max_tlp": 1
     },
