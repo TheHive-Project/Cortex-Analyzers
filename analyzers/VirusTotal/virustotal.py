@@ -18,6 +18,7 @@ class VirusTotalAnalyzer(Analyzer):
             'config.service', None, 'Service parameter is missing')
         self.virustotal_key = self.getParam(
             'config.key', None, 'Missing VirusTotal API key')
+        self.check_tlp = True
 
     def wait_file_report(self, id):
         results = self.check_response(self.vt.get_file_report(id))
