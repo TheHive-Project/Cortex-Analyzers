@@ -3,7 +3,8 @@
     "version": "1.0",
     "baseConfig": "DomainTools",
     "config": {
-        "check_tlp": false,
+        "check_tlp": true,
+        "max_tlp": 1,
         "service": "reverse-whois"
     },
     "description": "Domaintools Reverse Whois lookup : provides a list of domain names that share the same Registrant Information.",

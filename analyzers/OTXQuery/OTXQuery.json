@@ -5,8 +5,10 @@
     "dataTypeList": ["url", "domain", "file", "hash", "ip"],
     "baseConfig": "OTXQuery",
     "config": {
+        "check_tlp":true,
+        "max_tlp": 1,
         "service": "query",
-        "max_tlp": 10
+
     },
     "command": "OTXQuery/otxquery.py"
 }

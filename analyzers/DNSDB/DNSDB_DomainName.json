@@ -3,8 +3,10 @@
     "version": "1.1",
     "baseConfig": "DNSDB",
     "config": {
-        "check_tlp": false,
+        "check_tlp": true,
+        "max_tlp": 1,
         "service": "domain_name"
+
     },
     "description": "DNSDB Passive DNS query for Domain Names : Provides history records for a domain",
     "dataTypeList": ["domain"],

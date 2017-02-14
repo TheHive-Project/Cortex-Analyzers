@@ -3,7 +3,8 @@
     "version": "1.0",
     "baseConfig": "DomainTools",
     "config": {
-        "check_tlp": false,
+        "check_tlp": true,
+        "max_tlp": 1,
         "service": "whois/parsed"
     },
     "description": "DomainTools Whois Lookup: provides the ownership record for a domain name with basic registration details",

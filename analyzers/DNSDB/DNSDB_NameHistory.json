@@ -3,7 +3,8 @@
     "version": "1.0",
     "baseConfig": "DNSDB",
     "config": {
-        "check_tlp": false,
+        "check_tlp": true,
+        "max_tlp": 1,
         "service": "name_history"
     },
     "description": "DNSDB Passive DNS query for domain/host name history : Provides history records for an domain/host",

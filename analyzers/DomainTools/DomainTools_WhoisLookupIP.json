@@ -3,7 +3,8 @@
     "version": "1.0",
     "baseConfig": "DomainTools",
     "config": {
-        "check_tlp": false,
+        "check_tlp": true,
+        "max_tlp": 1,
         "service": "whois"
     },
     "description": "DomainTools Whois Lookup IP: provides the ownership record for a IP address with basic registration details",
