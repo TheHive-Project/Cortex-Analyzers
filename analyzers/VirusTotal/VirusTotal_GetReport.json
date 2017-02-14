@@ -5,6 +5,7 @@
     "dataTypeList": ["file", "hash", "domain", "ip"],
     "baseConfig": "VirusTotal",
     "config": {
+        "check_tlp": true,
         "service": "get",
         "max_tlp": 10
     },

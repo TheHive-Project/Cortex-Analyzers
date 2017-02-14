@@ -6,7 +6,7 @@
     "baseConfig": "PhishingInitiative",
     "config": {
         "service": "query",
-        "max_tlp": 2,
+        "max_tlp": 1,
 	"check_tlp": true
     },
     "command": "PhishingInitiative/phishinginitiative_lookup.py"
