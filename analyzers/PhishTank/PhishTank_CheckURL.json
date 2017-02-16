@@ -6,8 +6,8 @@
     "baseConfig": "PhishTank",
     "config": {
         "check_tlp": true,
-        "service": "query",
-        "max_tlp": 10
+        "max_tlp": 1,
+        "service": "query"
     },
     "command": "PhishTank/phishtank_checkurl.py"
 }

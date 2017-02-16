@@ -6,8 +6,8 @@
     "baseConfig": "VirusTotal",
     "config": {
         "check_tlp": true,
-        "service": "get",
-        "max_tlp": 10
+        "max_tlp": 3,
+        "service": "get"
     },
     "command": "VirusTotal/virustotal.py"
 }

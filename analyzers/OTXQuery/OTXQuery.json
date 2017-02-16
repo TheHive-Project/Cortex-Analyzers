@@ -6,8 +6,8 @@
     "baseConfig": "OTXQuery",
     "config": {
         "check_tlp":true,
-        "max_tlp": 1,
-        "service": "query",
+        "max_tlp": 3,
+        "service": "query"
 
     },
     "command": "OTXQuery/otxquery.py"
