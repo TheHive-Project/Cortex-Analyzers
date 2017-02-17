@@ -5,6 +5,7 @@ import os
 import json
 import codecs
 import time
+import hashlib
 
 from virustotal_api import PublicApi as VirusTotalPublicApi
 from cortexutils.analyzer import Analyzer
@@ -117,11 +118,18 @@ class VirusTotalAnalyzer(Analyzer):
                 data = self.getParam('data', None, 'Data is missing')
                 self.report(self.check_response(self.vt.get_ip_report(data)))
             elif self.data_type == 'file':
+
                 hashes = self.getParam('attachment.hashes',
-                                       None, 'Hash is missing')
+                                    None)
+                if hashes is None:
+                    filepath = self.getParam('file', None, 'File is missing')
+                    hash = hashlib.sha256(open(filepath, 'r').read()).hexdigest();
+                else:
                 # find SHA256 hash
-                hash = next(h for h in hashes if len(h) == 64)
+                    hash = next(h for h in hashes if len(h) == 64)
+
                 self.report(self.check_response(self.vt.get_file_report(hash)))
+
             elif self.data_type == 'hash':
                 data = self.getParam('data', None, 'Data is missing')
                 self.report(self.check_response(self.vt.get_file_report(data)))
