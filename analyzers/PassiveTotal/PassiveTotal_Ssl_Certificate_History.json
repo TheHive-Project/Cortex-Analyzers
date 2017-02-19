@@ -3,7 +3,8 @@
     "version": "1.0",
     "baseConfig": "PassiveTotal",
     "config": {
-        "check_tlp": false,
+        "check_tlp": true,
+        "max_tlp":1,
         "service": "ssl_certificate_history"
     },
     "description": "PassiveTotal Ssl Certificate History Lookup",
