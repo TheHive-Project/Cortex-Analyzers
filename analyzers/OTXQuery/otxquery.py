@@ -7,6 +7,7 @@ import codecs
 import time
 import requests
 import urllib
+import hashlib
 from cortexutils.analyzer import Analyzer
 
 
@@ -160,9 +161,13 @@ class OTXQueryAnalyzer(Analyzer):
 
         if self.service == 'query':
             if self.data_type == 'file':
-                hashes = self.getParam('attachment.hashes', None, 'Hash is missing')
-                # find SHA256 hash
-                hash = next(h for h in hashes if len(h) == 64)
+                hashes = self.getParam('attachment.hashes', None)
+                if hashes is None:
+                    filepath = self.getParam('file', None, 'File is missing')
+                    hash = hashlib.sha256(open(filepath, 'r').read()).hexdigest();
+                else:
+                    # find SHA256 hash
+                    hash = next(h for h in hashes if len(h) == 64)
                 self.OTX_Query_File(hash)
             elif self.data_type == 'url':
                 data = self.getParam('data', None, 'Data is missing')
@@ -175,6 +180,7 @@ class OTXQueryAnalyzer(Analyzer):
                 self.OTX_Query_IP(data)
             elif self.data_type == 'hash':
                 data = self.getParam('data', None, 'Data is missing')
+
                 self.OTX_Query_File(data)
             else:
                 self.error('Invalid data type')
