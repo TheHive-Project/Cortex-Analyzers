@@ -45,7 +45,7 @@ class OTXQueryAnalyzer(Analyzer):
             ipGeneral = IP_['general']
             ipGeo = IP_['geo']
             self.report({
-                'pulse_count': ipGeneral.get('pulse_info',{}).get('count',"-"),
+                'pulse_count': ipGeneral.get('pulse_info',{}).get('count',"0"),
                 'pulses': ipGeneral.get('pulse_info',{}).get('pulses',"-"),
                 'whois': ipGeneral.get('whois',"-"),
                 'continent_code': ipGeo.get('continent_code', "-"),
@@ -73,7 +73,7 @@ class OTXQueryAnalyzer(Analyzer):
                 IP_[section] = json.loads(requests.get(queryurl, headers=headers).content)
 
             result = {
-                'pulse_count': IP_.get('general',{}).get('pulse_info',{}).get('count',"-"),
+                'pulse_count': IP_.get('general',{}).get('pulse_info',{}).get('count',"0"),
                 'pulses': IP_.get('general',{}).get('pulse_info',{}).get('pulses',"-"),
                 'whois': IP_.get('general',{}).get('whois',"-"),
                 'malware_samples': IP_.get('malware',{}).get('result',"-"),
@@ -109,7 +109,7 @@ class OTXQueryAnalyzer(Analyzer):
             if IP_['analysis']['analysis']:
                 # file has been analyzed before
                 self.report({
-                    'pulse_count': IP_.get('general',{}).get('pulse_info',{}).get('count',"-"),
+                    'pulse_count': IP_.get('general',{}).get('pulse_info',{}).get('count',"0"),
                     'pulses': IP_.get('general',{}).get('pulse_info',{}).get('pulses',"-"),
                     'malware': IP_.get('analysis',{}).get('malware',"-"),
                     'page_type': IP_.get('analysis',{}).get('page_type',"-"),
@@ -144,7 +144,7 @@ class OTXQueryAnalyzer(Analyzer):
                 IP_[section] = json.loads(requests.get(queryurl, headers=headers).content)
 
             self.report({
-                'pulse_count': IP_.get('general',{}).get('pulse_info',{}).get('count',"-"),
+                'pulse_count': IP_.get('general',{}).get('pulse_info',{}).get('count',"0"),
                 'pulses': IP_.get('general',{}).get('pulse_info',{}).get('pulses',"-"),
                 'alexa': IP_.get('general',{}).get('alexa',"-"),
                 'whois': IP_.get('general',{}).get('whois',"-"),
