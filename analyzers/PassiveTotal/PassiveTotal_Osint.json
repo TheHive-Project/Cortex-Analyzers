@@ -1,0 +1,13 @@
+{
+    "name": "PassiveTotal_Osint",
+    "version": "1.0",
+    "baseConfig": "PassiveTotal",
+    "config": {
+        "check_tlp": true,
+        "max_tlp":1,
+        "service": "osint"
+    },
+    "description": "PassiveTotal Osint Lookup",
+    "dataTypeList": ["domain", "fqdn", "ip"],
+    "command": "PassiveTotal/passivetotal_analyzer.py"
+}

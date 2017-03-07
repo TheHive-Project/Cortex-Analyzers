@@ -1,0 +1,13 @@
+{
+    "name": "PassiveTotal_Ssl_Certificate_History",
+    "version": "1.0",
+    "baseConfig": "PassiveTotal",
+    "config": {
+        "check_tlp": true,
+        "max_tlp":1,
+        "service": "ssl_certificate_history"
+    },
+    "description": "PassiveTotal Ssl Certificate History Lookup",
+    "dataTypeList": ["hash", "ip"],
+    "command": "PassiveTotal/passivetotal_analyzer.py"
+}

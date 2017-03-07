@@ -35,13 +35,13 @@ class Analyzer:
 
     def setEncoding(self):
         if sys.stdout.encoding != 'UTF-8':
-            if sys.version_info.major == 3:
+            if sys.version_info[0] == 3:
                 sys.stdout = codecs.getwriter(
                     'utf-8')(sys.stdout.buffer, 'strict')
             else:
                 sys.stdout = codecs.getwriter('utf-8')(sys.stdout, 'strict')
         if sys.stderr.encoding != 'UTF-8':
-            if sys.version_info.major == 3:
+            if sys.version_info[0] == 3:
                 sys.stderr = codecs.getwriter(
                     'utf-8')(sys.stderr.buffer, 'strict')
             else:

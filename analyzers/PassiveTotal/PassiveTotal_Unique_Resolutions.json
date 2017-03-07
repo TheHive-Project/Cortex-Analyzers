@@ -1,0 +1,13 @@
+{
+    "name": "PassiveTotal_Unique_Resolutions",
+    "version": "1.0",
+    "baseConfig": "PassiveTotal",
+    "config": {
+        "check_tlp": true,
+        "max_tlp":1,
+        "service": "unique_resolutions"
+    },
+    "description": "PassiveTotal Unique Resolutions Lookup",
+    "dataTypeList": ["domain", "fqdn", "ip"],
+    "command": "PassiveTotal/passivetotal_analyzer.py"
+}
