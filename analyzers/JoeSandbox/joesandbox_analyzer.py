@@ -12,8 +12,7 @@ class JoeSandboxAnalyzer(Analyzer):
         Analyzer.__init__(self)
         self.service = self.getParam('config.service', None, 'JoeSandbox service is missing')
         self.url = self.getParam('config.url', None, 'JoeSandbox url is missing')
-        self.username = self.getParam('config.username', None, 'JoeSandbox username is missing')
-        self.password = self.getParam('config.password', None, 'JoeSandbox password is missing')
+        self.apikey = self.getParam('config.apikey', None, 'JoeSandbox apikey is missing')
         self.analysistimeout = self.getParam('config.analysistimeout', 30*60, None)
         self.networktimeout = self.getParam('config.networktimeout', 30, None)
 
@@ -32,8 +31,7 @@ class JoeSandboxAnalyzer(Analyzer):
 
         try:
             data = {
-                'username': self.username,
-                'password': self.password,
+                'apikey': self.apikey,
                 'auto': 1,
                 'comments': 'Submitted by Cortex'
             }
@@ -68,8 +66,7 @@ class JoeSandboxAnalyzer(Analyzer):
 
             # Wait for the analysis to finish
             data = {
-                'username': self.username,
-                'password': self.password,
+                'apikey': self.apikey,
                 'webid': webid
             }
             finished = False
@@ -86,8 +83,7 @@ class JoeSandboxAnalyzer(Analyzer):
 
             # Download the report
             data = {
-                'username': self.username,
-                'password': self.password,
+                'apikey': self.apikey,
                 'webid': webid,
                 'type': 'irjsonfixed',
                 'run': 0
