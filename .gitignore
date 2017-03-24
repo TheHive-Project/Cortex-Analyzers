@@ -1,1 +1,4 @@
 *.py[cod]
+
+thehive-templates/*.zip
+thehive-templates/*.sh
