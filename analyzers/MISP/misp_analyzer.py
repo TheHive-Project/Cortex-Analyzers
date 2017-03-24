@@ -21,10 +21,9 @@ class MISPAnalyzer(Analyzer):
 
         # search service
         if self.service == 'search':
-            if 'response' in raw and raw['response']:
-                result['results'] = len(raw['response'])
-            else:
-                result['results'] = 0
+            result['events'] = len(raw)
+        else:
+            result['events'] = 0
 
         return result
 
@@ -75,6 +74,9 @@ class MISPAnalyzer(Analyzer):
                             # Add url to the MISP event
                             if 'id' in event:
                                 event['url'] = self.url + '/events/view/' + event['id']
+
+                            if 'publish_timestamp' in event:
+                                event['publish_timestamp'] = long(event['publish_timestamp']) * 1000
 
                             events.append(event)
 
