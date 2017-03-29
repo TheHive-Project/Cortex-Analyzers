@@ -1,0 +1,11 @@
+{
+    "name": "Basic_Analyzer",
+    "version": "1.0",
+    "description": "An example of analyzer",
+    "dataTypeList": ["ip", "domain"],
+    "baseConfig": "",
+    "config": {
+        "required_prop": "sample"
+    },
+    "command": "BasicAnalyzer/basic-analyzer.py"
+}
