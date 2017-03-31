@@ -59,8 +59,11 @@
             <div >
                 <h4>Signatures</h4>
                 <br>
-                <dl ng-if="content.signatures" class="dl-horizontal" ng-repeat="l in content.signatures.signare">
+                <dl ng-if="content.signatures.signare && content.signatures.signare.entries" class="dl-horizontal" ng-repeat="l in content.signatures.signare track by $index">
                     <dd>{{l}}<dd>
+                </dl>
+                <dl ng-if="content.signatures.signare && !content.signatures.signare.entries" class="dl-horizontal">
+                    <dd>{{content.signatures.signare}}<dd>
                 </dl>
             </div>
             <div ng-if="!content.signatures">
