@@ -1,0 +1,12 @@
+{
+    "name": "JoeSandbox_File_Analysis_Noinet",
+    "version": "1.0",
+    "baseConfig": "JoeSandbox",
+    "config": {
+        "check_tlp": false,
+        "service": "file_analysis_noinet"
+    },
+    "description": "Joe Sandbox file analysis without Internet access",
+    "dataTypeList": ["file"],
+    "command": "JoeSandbox/joesandbox_analyzer.py"
+}
