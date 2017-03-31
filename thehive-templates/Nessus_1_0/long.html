@@ -1,0 +1,100 @@
+<div class="report-Nessus" ng-if="success">
+    <style>
+        .report-Nessus dl {
+            margin-bottom: 2px;
+        }
+
+    </style>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Nessus Report</strong>
+        </div>
+        <div class="panel-body">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>Scanner Information</strong>
+                </div>
+                <div class="panel-body">
+                    <dl class="dl-horizontal" ng-if="content.info">
+                        <dt>Scanner Name</dt>
+                        <dd>{{content.info.scanner_name}}</dd>
+                        <dt>Policy</dt>
+                        <dd>{{content.info.policy}}</dd>
+                        <dt>Scan</dt>
+                        <dd>{{content.info.name}}</dd>
+                        <dt>Status</dt>
+                        <dd>{{content.info.status}}</dd>
+                    </dl>
+                </div>
+            </div>
+            <br>
+            <div ng-if="content.hosts" ng-repeat="host in content.hosts">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>{{host.hostname}}</strong>
+                    </div>
+                    <div class="panel-body">
+                        <br>
+                        <dl  class="dl-horizontal" nf-if="content.hosts" >
+                            <dt>Checks</dt>
+                            <dd>{{host.scanprogresscurrent}}/{{host.scanprogresstotal}}</dd>
+                            <dt>{{host.severity}} vulnerabilities</dt>
+                            <dd>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-info" ng-style="{width:(host.info *100)/(host.severity)+'%'}">
+                                        <span class="sr-only">{{host.info}}</span>
+                                    </div>
+                                    <div class="progress-bar progress-bar-success" ng-style="{width:(host.low *100)/(host.severity)+'%'}">
+                                        <span class="sr-only">{{host.low}}</span>
+                                    </div>
+                                    <div class="progress-bar progress-bar-warning" ng-style="{width:(host.medium *100)/(host.severity)+'%'}">
+                                        <span class="sr-only">{{host.medium}}</span>
+                                    </div>
+                                    <div class="progress-bar progress-bar-danger" ng-style="{width:(host.high *100)/(host.severity)+'%'}">
+                                        <span class="sr-only">{{host.danger}}</span>
+                                    </div>
+                                </div>
+                            </dd>
+                        </dl>
+                        <br>
+                        <table class="table">
+                            <thead>
+                                <th style="text-align: center">Severity</th>
+                                <th>Plugin Name</th>
+                                <th>Plugin Family</th>
+                                <th>Count</th>
+                            </thead>
+                            <tbody ng-repeat="vuln in content.vulnerabilities | orderBy:'-severity'">
+                                <tr>
+                                    <tdstyle="text-align: center">
+                                        <span ng-switch="vuln.severity">
+                                            <span ng-switch-when="0" class="label label-info">
+                                                INFO
+                                            </span>
+                                            <span ng-switch-when="1" class="label label-success">
+                                                LOW
+                                            </span>
+                                            <span ng-switch-when="2" class="label label-warning">
+                                                MEDIUM
+                                            </span>
+                                            <span ng-switch-when="3" class="label label-danger">
+                                                HIGH
+                                            </span>
+                                        </span>
+                                    </td>
+                                    <td>{{vuln.plugin_name}}</td>
+                                    <td>{{vuln.plugin_family}}</td>
+                                    <td>{{vuln.count}}</td>
+                                </tr>
+                            </tbody>
+                        </table
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
