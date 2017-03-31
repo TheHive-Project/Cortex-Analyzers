@@ -1,0 +1,12 @@
+{
+    "name": "MISP_Search",
+    "version": "1.0",
+    "baseConfig": "MISP",
+    "config": {
+        "check_tlp": false,
+        "service": "search"
+    },
+    "description": "Search MISP event that have the observable provided as an input",
+    "dataTypeList": ["domain", "filename", "fqdn", "hash", "ip", "mail", "mail_subject", "other", "regexp", "registry", "uri_path", "url", "user-agent"],
+    "command": "MISP/misp_analyzer.py"
+}

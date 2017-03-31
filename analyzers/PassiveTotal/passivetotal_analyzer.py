@@ -46,10 +46,12 @@ class PassiveTotalAnalyzer(Analyzer):
             if 'sha1' in raw:
                 result['ssl'] = True
 
+
         # ssl certificate history service
         elif self.service == 'ssl_certificate_history':
             if 'results' in raw and raw['results']:
                 result['ssl'] = True
+                result['total'] = len(raw['results'])
 
         # unique resolutions service
         elif self.service == 'unique_resolutions':
