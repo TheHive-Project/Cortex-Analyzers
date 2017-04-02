@@ -3,7 +3,12 @@
         .report-Nessus dl {
             margin-bottom: 2px;
         }
-
+        .report-Nessus .label-NessusCritical {
+            background-color: #9b59b6;
+        }
+        .report-Nessus .progress-bar-NessusCritical {
+            background-color: #9b59b6;
+        }
     </style>
 
     <div class="panel panel-info">
@@ -11,7 +16,7 @@
             <strong>Nessus Report</strong>
         </div>
         <div class="panel-body">
-            <div class="panel panel-default">
+            <!-- <div class="panel panel-default">
                 <div class="panel-heading">
                     <strong>Scanner Information</strong>
                 </div>
@@ -27,8 +32,21 @@
                         <dd>{{content.info.status}}</dd>
                     </dl>
                 </div>
-            </div>
+            </div> -->
+            <h4>Scanner Information</h4>
+            <dl class="dl-horizontal" ng-if="content.info">
+                <dt>Scanner Name</dt>
+                <dd>{{content.info.scanner_name}}</dd>
+                <dt>Policy</dt>
+                <dd>{{content.info.policy}}</dd>
+                <dt>Scan</dt>
+                <dd>{{content.info.name}}</dd>
+                <dt>Status</dt>
+                <dd>{{content.info.status}}</dd>
+            </dl>
             <br>
+            <hr>
+            <h4>Scan Reports</h4>
             <div ng-if="content.hosts" ng-repeat="host in content.hosts">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -54,6 +72,9 @@
                                     <div class="progress-bar progress-bar-danger" ng-style="{width:(host.high *100)/(host.severity)+'%'}">
                                         <span class="sr-only">{{host.danger}}</span>
                                     </div>
+                                    <div class="progress-bar progress-bar-NessusCritical" ng-style="{width:(host.critical *100)/(host.severity)+'%'}">
+                                        <span class="sr-only">{{host.critical}}</span>
+                                    </div>
                                 </div>
                             </dd>
                         </dl>
@@ -67,7 +88,7 @@
                             </thead>
                             <tbody ng-repeat="vuln in content.vulnerabilities | orderBy:'-severity'">
                                 <tr>
-                                    <tdstyle="text-align: center">
+                                    <td style="text-align: center">
                                         <span ng-switch="vuln.severity">
                                             <span ng-switch-when="0" class="label label-info">
                                                 INFO
@@ -80,6 +101,9 @@
                                             </span>
                                             <span ng-switch-when="3" class="label label-danger">
                                                 HIGH
+                                            </span>
+                                            <span ng-switch-when="4" class="label label-NessusCritical">
+                                                CRITICAL
                                             </span>
                                         </span>
                                     </td>
