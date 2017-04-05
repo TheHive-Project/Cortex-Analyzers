@@ -21,8 +21,6 @@ setup(
         'Topic :: Security',
         'Topic :: Software Development :: Libraries :: Python Modules'],
     py_modules=['cortexutils.analyzer'],
-    install_requires=[
-        'ioc-parser'
-    ],
+    install_requires=[],
     test_suite='tests'
 )
