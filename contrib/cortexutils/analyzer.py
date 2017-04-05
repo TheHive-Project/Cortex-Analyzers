@@ -19,10 +19,9 @@ class Analyzer:
         self.output = sys.stdout
         self.artifact = json.load(sys.stdin)
         self.tlp = self.getParam('tlp', 2)
-        self.data_type = self.getParam(
-            'dataType', None, 'Missing dataType field')
+        self.data_type = self.getParam('dataType', None, 'Missing dataType field')
         self.check_tlp = self.getParam('config.check_tlp', False)
-        self.max_tlp = self.getParam('config.max_tlp', 10)
+        self.max_tlp = self.getParam('config.max_tlp', 2)
         self.http_proxy = self.getParam('config.proxy.http')
         self.https_proxy = self.getParam('config.proxy.https')
         if self.http_proxy is not None:

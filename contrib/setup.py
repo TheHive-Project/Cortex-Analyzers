@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='cortexutils',
-    version='1.0.0',
+    version='1.1.0',
     description='A Python library for including utility classes for Cortex analyzers',
     long_description=open('README').read(),
     author='TheHive-Project',
@@ -23,5 +23,6 @@ setup(
     py_modules=['cortexutils.analyzer'],
     install_requires=[
         'ioc-parser'
-    ]
+    ],
+    test_suite='tests'
 )

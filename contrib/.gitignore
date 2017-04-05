@@ -1,3 +1,7 @@
 dist/
 build/
 *.egg-info
+
+tests/htmlcov
+.coverage
+coverage.xml
