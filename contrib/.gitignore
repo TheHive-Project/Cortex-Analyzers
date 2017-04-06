@@ -5,3 +5,4 @@ build/
 tests/htmlcov
 .coverage
 coverage.xml
+.cache

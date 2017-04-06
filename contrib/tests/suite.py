@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # coding: utf-8
-from __future__ import unicode_literals
 
 import os
 import sys
@@ -13,16 +12,15 @@ from cortexutils.analyzer import Analyzer
 
 def load_test_fixture(fixture_path):
     path = os.path.dirname(os.path.abspath(__file__))
-    fixture_file = open(path + '/' + fixture_path, 'r', encoding="utf-8")
+    fixture_file = open(path + '/' + fixture_path)
     input = fixture_file.read()
     fixture_file.close()
     sys.stdin = StringIO(input)
 
-
 class TestMinimalConfig(unittest.TestCase):
 
     def setUp(self):
-        load_test_fixture('test-minimal-config.json')
+        load_test_fixture('fixtures/test-minimal-config.json')
         self.analyzer = Analyzer()
 
     def test_default_config(self):
@@ -47,7 +45,7 @@ class TestMinimalConfig(unittest.TestCase):
 class TestProxyConfig(unittest.TestCase):
 
     def setUp(self):
-        load_test_fixture('test-proxy-config.json')
+        load_test_fixture('fixtures/test-proxy-config.json')
         self.analyzer = Analyzer()
 
     def test_proxy_config(self):

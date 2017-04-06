@@ -112,7 +112,6 @@ class Analyzer:
         :param default: Default value, if not found. Default: None
         :param message: Error message. If given and name not found, exit with error. Default: None"""
 
-        print('get_param:' + str(name))
         return self.__get_param(self.__input, name, default, message)
 
     def summary(self, raw):
