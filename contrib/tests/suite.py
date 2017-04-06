@@ -3,6 +3,7 @@
 
 import os
 import sys
+import json
 import unittest
 from io import StringIO
 from io import open
@@ -16,6 +17,7 @@ def load_test_fixture(fixture_path):
     input = fixture_file.read()
     fixture_file.close()
     sys.stdin = StringIO(input)
+    sys.stdout = StringIO()
 
 class TestMinimalConfig(unittest.TestCase):
 
@@ -84,6 +86,53 @@ class TestTlpConfig(unittest.TestCase):
         # Using the _Analyzer__check_tlp notation to access managed method
         # __check_tlp
         self.assertEqual(self.analyzer._Analyzer__check_tlp(), True)
+
+class TestErrorResponse(unittest.TestCase):
+
+    def setUp(self):
+        load_test_fixture('fixtures/test-error-response.json')
+        self.analyzer = Analyzer()
+
+    def test_error_response(self):
+        self.assertEqual(self.analyzer.get_param('config.password'), "secret")
+        self.assertEqual(self.analyzer.get_param('config.key'), "secret")
+        self.assertEqual(self.analyzer.get_param('config.apikey'), "secret")
+        self.assertEqual(self.analyzer.get_param('config.api_key'), "secret")
+
+        # Run the error method
+        with self.assertRaises(SystemExit):
+            self.analyzer.error('Error', True)
+
+        # Get the output
+        output = self.analyzer.fpoutput.getvalue().strip()
+        json_output = json.loads(output)
+
+        self.assertEqual(json_output['success'], False)
+        self.assertEqual(json_output['errorMessage'], 'Error')
+        self.assertEqual(json_output['input']['dataType'], 'ip')
+        self.assertEqual(json_output['input']['data'], '1.1.1.1')
+        self.assertEqual(json_output['input']['config']['password'], 'REMOVED')
+        self.assertEqual(json_output['input']['config']['key'], 'REMOVED')
+        self.assertEqual(json_output['input']['config']['apikey'], 'REMOVED')
+        self.assertEqual(json_output['input']['config']['api_key'], 'REMOVED')
+
+class TestReportResponse(unittest.TestCase):
+
+    def setUp(self):
+        load_test_fixture('fixtures/test-report-response.json')
+        self.analyzer = Analyzer()
+
+    def test_error_response(self):
+        # Run the analyzer report method
+        self.analyzer.report({'report_id':'12345'})
+
+        # Get the output
+        output = self.analyzer.fpoutput.getvalue().strip()
+        json_output = json.loads(output)
+
+        self.assertEqual(json_output.get('success'), True)
+        self.assertEqual(json_output.get('errorMessage', None), None)
+        self.assertEqual(json_output['full']['report_id'], '12345')        
 
 if __name__ == '__main__':
     unittest.main()

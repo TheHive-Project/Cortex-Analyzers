@@ -9,7 +9,7 @@ import json
 class Analyzer:
 
     def __init__(self):
-        self.__set_encoding()
+        #self.__set_encoding()
 
         # Prepare in/out/err streams
         self.fperror = sys.stderr
@@ -168,7 +168,7 @@ class Analyzer:
             'artifacts': self.artifacts(full_report),
             'full': full_report
         }
-        json.dump(report, self.fpoutput, ensure_ascii=False)
+        json.dump(report, self.fpoutput, ensure_ascii=ensure_ascii)
 
     def run(self):
         """Overwritten by analyzers"""
