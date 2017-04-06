@@ -36,20 +36,31 @@ class Analyzer:
         if not (self.__check_tlp()):
             self.error('TLP is higher than allowed.')
 
+        # Not breaking compatibility
+        self.artifact = self.__input
+
     # Not breaking compatibility
     def notSupported(self):
         self.error('This datatype is not supported by this analyzer.')
 
+    # Not breaking compatibility
     def unexpectedError(self, e):
         self.error('Unexpected Error: ' + str(e))
 
+    # Not breaking compatibility
     def getData(self):
         """For not breaking compatibility to cortexutils.analyzer, this wraps get_data()"""
         return self.get_data()
 
+    # Not breaking compatibility
     def getParam(self, name, default=None, message=None):
         """For not breaking compatibility to cortexutils.analyzer, this wraps get_param()"""
         return self.get_param(name=name, default=default, message=message)
+
+    # Not breaking compatibility
+    def checkTlp(self, message):
+        if not (self.__check_tlp()):
+            self.error(message)
 
     def __set_proxies(self):
         if self.http_proxy is not None:
