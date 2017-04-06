@@ -26,21 +26,18 @@ class TestMinimalConfig(unittest.TestCase):
     def test_default_config(self):
         self.assertEqual(self.analyzer.data_type, 'ip')
         self.assertEqual(self.analyzer.tlp, 2)
-        self.assertEqual(self.analyzer.check_tlp, False)
+        self.assertEqual(self.analyzer.enable_check_tlp, False)
         self.assertEqual(self.analyzer.max_tlp, 2)
         self.assertEqual(self.analyzer.http_proxy, None)
         self.assertEqual(self.analyzer.https_proxy, None)
 
-        self.assertEqual(self.analyzer.get_param('dataType'), "ip")
-        print('')
-
     def test_artifact_data(self):
-        self.assertEqual(self.analyzer.getData(), "8.8.8.8")
-        self.assertEqual(self.analyzer.get_data(), "8.8.8.8")
+        self.assertEqual(self.analyzer.getData(), "1.1.1.1")
+        self.assertEqual(self.analyzer.get_data(), "1.1.1.1")
 
     def test_params_data(self):
-        self.assertEqual(self.analyzer.getParam('data'), "8.8.8.8")
-        self.assertEqual(self.analyzer.get_param('data'), "8.8.8.8")
+        self.assertEqual(self.analyzer.getParam('data'), "1.1.1.1")
+        self.assertEqual(self.analyzer.get_param('data'), "1.1.1.1")
 
 class TestProxyConfig(unittest.TestCase):
 
@@ -56,6 +53,37 @@ class TestProxyConfig(unittest.TestCase):
 
         self.assertEqual(os.environ['http_proxy'], proxy_url)
         self.assertEqual(os.environ['https_proxy'], proxy_url)
+
+class TestTlpConfig(unittest.TestCase):
+
+    def setUp(self):
+        load_test_fixture('fixtures/test-tlp-config.json')
+        self.analyzer = Analyzer()
+
+    def test_check_tlp_disabled(self):
+        self.analyzer.enable_check_tlp = False
+
+        # Using the _Analyzer__check_tlp notation to access managed method
+        # __check_tlp
+        self.assertEqual(self.analyzer._Analyzer__check_tlp(), True)
+
+    def test_check_tlp_ko(self):
+        self.analyzer.enable_check_tlp = True
+        self.analyzer.max_tlp = 1
+        self.analyzer.tlp = 3
+
+        # Using the _Analyzer__check_tlp notation to access managed method
+        # __check_tlp
+        self.assertEqual(self.analyzer._Analyzer__check_tlp(), False)
+
+    def test_check_tlp_ok(self):
+        self.analyzer.enable_check_tlp = True
+        self.analyzer.max_tlp = 3
+        self.analyzer.tlp = 3
+
+        # Using the _Analyzer__check_tlp notation to access managed method
+        # __check_tlp
+        self.assertEqual(self.analyzer._Analyzer__check_tlp(), True)
 
 if __name__ == '__main__':
     unittest.main()

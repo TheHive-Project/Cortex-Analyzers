@@ -23,7 +23,7 @@ class Analyzer:
         self.data_type = self.get_param('dataType', None, 'Missing dataType field')
         self.tlp = self.get_param('tlp', 2)
 
-        self.check_tlp = self.get_param('config.check_tlp', False)
+        self.enable_check_tlp = self.get_param('config.check_tlp', False)
         self.max_tlp = self.get_param('config.max_tlp', 2)
 
         # Set proxy configuration if available
@@ -33,7 +33,8 @@ class Analyzer:
         self.__set_proxies()
 
         # Finally run check tlp
-        self.__check_tlp()
+        if not (self.__check_tlp()):
+            self.error('TLP is higher than allowed.')
 
     # Not breaking compatibility
     def notSupported(self):
@@ -94,10 +95,9 @@ class Analyzer:
                 return default
 
     def __check_tlp(self):
-        """Check if tlp is okay or not; reports error if too high."""
+        """Check if tlp is okay or not; returns False if too high."""
 
-        if self.check_tlp and self.tlp > self.max_tlp:
-            self.error('TLP is higher than allowed.')
+        return not (self.enable_check_tlp and self.tlp > self.max_tlp)
 
     def get_data(self):
         """Wrapper for getting data from input dict.
