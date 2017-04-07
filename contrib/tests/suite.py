@@ -5,10 +5,16 @@ import os
 import sys
 import json
 import unittest
-from io import StringIO
-from io import open
 
+from io import open
 from cortexutils.analyzer import Analyzer
+
+# Different lib when using python3 or 2
+if sys.version_info > (2, 8):
+    from io import StringIO
+else:
+    from StringIO import StringIO
+
 
 
 def load_test_fixture(fixture_path):
