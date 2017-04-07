@@ -1,0 +1,12 @@
+{
+    "name": "JoeSandbox_Url_Analysis",
+    "version": "1.0",
+    "baseConfig": "JoeSandbox",
+    "config": {
+        "check_tlp": false,
+        "service": "url_analysis"
+    },
+    "description": "Joe Sandbox url analysis",
+    "dataTypeList": ["url"],
+    "command": "JoeSandbox/joesandbox_analyzer.py"
+}
