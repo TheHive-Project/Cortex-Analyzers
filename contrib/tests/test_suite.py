@@ -10,11 +10,10 @@ from io import open
 from cortexutils.analyzer import Analyzer
 
 # Different lib when using python3 or 2
-if sys.version_info > (2, 8):
+if sys.version_info >= (3, 0):
     from io import StringIO
 else:
     from StringIO import StringIO
-
 
 
 def load_test_fixture(fixture_path):
@@ -24,6 +23,7 @@ def load_test_fixture(fixture_path):
     fixture_file.close()
     sys.stdin = StringIO(input)
     sys.stdout = StringIO()
+
 
 class TestMinimalConfig(unittest.TestCase):
 
@@ -47,6 +47,7 @@ class TestMinimalConfig(unittest.TestCase):
         self.assertEqual(self.analyzer.getParam('data'), "1.1.1.1")
         self.assertEqual(self.analyzer.get_param('data'), "1.1.1.1")
 
+
 class TestProxyConfig(unittest.TestCase):
 
     def setUp(self):
@@ -61,6 +62,7 @@ class TestProxyConfig(unittest.TestCase):
 
         self.assertEqual(os.environ['http_proxy'], proxy_url)
         self.assertEqual(os.environ['https_proxy'], proxy_url)
+
 
 class TestTlpConfig(unittest.TestCase):
 
@@ -93,6 +95,7 @@ class TestTlpConfig(unittest.TestCase):
         # __check_tlp
         self.assertEqual(self.analyzer._Analyzer__check_tlp(), True)
 
+
 class TestErrorResponse(unittest.TestCase):
 
     def setUp(self):
@@ -121,6 +124,7 @@ class TestErrorResponse(unittest.TestCase):
         self.assertEqual(json_output['input']['config']['key'], 'REMOVED')
         self.assertEqual(json_output['input']['config']['apikey'], 'REMOVED')
         self.assertEqual(json_output['input']['config']['api_key'], 'REMOVED')
+
 
 class TestReportResponse(unittest.TestCase):
 
