@@ -42,6 +42,8 @@ class VirusTotalAnalyzer(Analyzer):
         if type(response) is not dict:
             self.error('Bad response : ' + str(response))
         status = response.get('response_code', -1)
+        if status == 204:
+            self.error('VirusTotal api rate limit exceeded (Status 204).')
         if status != 200:
             self.error('Bad status : ' + str(status))
         results = response.get('results', {})
