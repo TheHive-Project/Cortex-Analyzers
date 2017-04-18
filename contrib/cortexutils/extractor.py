@@ -116,7 +116,7 @@ class Extractor:
         :rtype: str
         """
 
-        if isinstance(value, str):
+        if isinstance(value, (str, unicode)):
             for r in self.regex:
                 if r.get('regex').match(value):
                     return r.get('type')
@@ -145,7 +145,7 @@ class Extractor:
         """
         results = []
         # Only the string left
-        if isinstance(iterable, str):
+        if isinstance(iterable, (str, unicode)):
             dt = self.__checktype(iterable)
             if len(dt) > 0:
                 results.append({
