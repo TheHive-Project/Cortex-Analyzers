@@ -5,6 +5,7 @@ import os
 import sys
 import codecs
 import json
+from extractor import Extractor
 
 class Analyzer:
 
@@ -38,6 +39,9 @@ class Analyzer:
 
         # Not breaking compatibility
         self.artifact = self.__input
+
+        # Check for auto extraction config
+        self.auto_extract = self.get_param('config.auto_extract', True)
 
     # Not breaking compatibility
     def notSupported(self):
@@ -132,8 +136,12 @@ class Analyzer:
         return {}
 
     def artifacts(self, raw):
-        # TODO implement a default artifact extraction strategy
+        # Use the regex extractor, if auto_extract setting is not False
+        if self.auto_extract:
+            extractor = Extractor()
+            return extractor.check_iterable(raw)
 
+        # Return empty list
         return []
 
     def error(self, message, ensure_ascii=False):
