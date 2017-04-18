@@ -5,7 +5,7 @@ import os
 import sys
 import codecs
 import json
-from extractor import Extractor
+from cortexutils.extractor import Extractor
 
 class Analyzer:
 

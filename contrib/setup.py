@@ -20,7 +20,10 @@ setup(
         'Programming Language :: Python',
         'Topic :: Security',
         'Topic :: Software Development :: Libraries :: Python Modules'],
-    py_modules=['cortexutils.analyzer'],
+    py_modules=[
+        'cortexutils.analyzer',
+        'cortexutils.extractor'
+    ],
     install_requires=[],
     test_suite='tests'
 )
