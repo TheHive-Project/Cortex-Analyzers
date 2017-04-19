@@ -1,0 +1,11 @@
+{
+    "name": "MISP",
+    "author": "Nils Kuhnert, CERT-Bund",
+    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+    "version": "0.1",
+    "baseConfig": "MISP",
+    "config": {},
+    "description": "Check if this IOC has been processed in different MISP instances.",
+    "dataTypeList": ["domain", "ip", "url", "fqdn", "hash", "email", "mail", "other"],
+    "command": "MISP/misp.py"
+}

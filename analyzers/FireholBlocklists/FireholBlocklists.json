@@ -1,0 +1,11 @@
+{
+    "name": "FireholBlocklists",
+    "author": "Nils Kuhnert, CERT-Bund",
+    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+    "version": "0.1",
+    "baseConfig": "FireholBlocklists",
+    "config": {},
+    "description": "Check ips against the firehol blocklists available at https://github.com/firehol/blocklist-ipsets.",
+    "dataTypeList": ["ip"],
+    "command": "FireholBlocklists/firehol_blocklists.py"
+}

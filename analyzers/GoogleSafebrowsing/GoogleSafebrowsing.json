@@ -1,0 +1,11 @@
+{
+    "name": "GoogleSafebrowsing",
+    "author": "Nils Kuhnert, CERT-Bund",
+    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+    "version": "0.1",
+    "baseConfig": "GoogleSafebrowsing",
+    "config": {},
+    "description": "Check url against Google Safebrowsing lists.",
+    "dataTypeList": ["url", "domain"],
+    "command": "GoogleSafebrowsing/safebrowsing_analyzer.py"
+}

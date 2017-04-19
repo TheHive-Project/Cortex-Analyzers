@@ -1,0 +1,11 @@
+{
+    "name": "CERTatPassiveDNS",
+    "author": "Nils Kuhnert, CERT-Bund",
+    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+    "version": "0.1",
+    "baseConfig": "CERTatPassiveDNS",
+    "config": {},
+    "description": "Checks CERT.at Passive DNS for a given domain, API Key via cert.at.",
+    "dataTypeList": ["domain", "url"],
+    "command": "CERTatPassiveDNS/certat_passivedns.py"
+}
