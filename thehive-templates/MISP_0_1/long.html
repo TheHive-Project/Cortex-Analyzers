@@ -9,6 +9,12 @@
 				<dd>{{error}}</dd>
 			</dl>
 		</div>
+		<div ng-if="res.result.response.length < 1">
+			<dl class="dl-horizontal">
+				<dt><i class="fa fa-warning"></i> No results</dt>
+				<dd>No results from {{res.name}}</dd>
+			</dl>
+		</div>
 		<div ng-repeat="event in res.result.response">
 			<dl class="dl-horizontal">
 				<dt>EventID:</dt>
