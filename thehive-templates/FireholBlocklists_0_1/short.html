@@ -1,0 +1,5 @@
+<span ng-if="content.count == 0" class="label label-success">Firehol: No matches</span>&nbsp;
+<span ng-if="content.count > 0" class="label label-danger">Firehol: {{content.count}} matches</span>&nbsp;
+<div style="display:inline-block;" ng-repeat="h in content.hits">
+	<a href="http://iplists.firehol.org/?ipset={{h}}"><span class="label label-danger">Firehol: {{h}}</span></a>&nbsp;
+</div>

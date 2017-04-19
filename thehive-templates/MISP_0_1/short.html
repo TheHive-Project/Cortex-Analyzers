@@ -1,0 +1,26 @@
+<div ng-repeat="res in content.results">
+	<div ng-repeat="event in res.result.response">
+		<a target="_blank" href="{{res.url}}/events/view/{{event.Event.id}}">
+			<span class="label label-primary">
+				{{res.name}}: {{event.Event.id}}
+			</span>
+		</a>
+		&nbsp;
+		<span class="label label-primary">
+			Name: {{event.Event.info}}
+		</span>
+		&nbsp;
+		<span class="label label-primary">
+			Attribute Count: {{event.Event.Attribute.length}}
+		</span>
+		&nbsp;
+		<div ng-repeat="cluster in event.Event.Galaxy" style="display:inline-block;">
+			<div ng-repeat="clusterentry in cluster.GalaxyCluster" style="display:inline-block;">
+				<span class="label label-danger">
+					{{cluster.name}}: {{clusterentry.value}}
+				</span>
+				&nbsp;
+			</div>
+		</div>
+	</div>
+</div>

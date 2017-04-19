@@ -1,0 +1,96 @@
+<div class="panel panel-info" ng-if="success && content.scanreport.data.length > 0">
+	<div class="panel-heading">
+		VMRay Report
+	</div>
+	<div class="panel-body" ng-repeat="sample in content.scanreport.data">
+		<dl class="dl-horizontal">
+			<dt>Score</dt>
+			<dd><a href="{{sample.sample_webif_url}}">{{sample.sample_score}}</a></dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Type</dt>
+			<dd>{{sample.sample_type}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Created</dt>
+			<dd>{{sample.sample_created}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Filename</dt>
+			<dd>{{sample.sample_filename}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>MD5</dt>
+			<dd>{{sample.sample_md5hash}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>SHA1</dt>
+			<dd>{{sample.sample_sha1hash}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>SHA256</dt>
+			<dd>{{sample.sample_sha256hash}}</dd>
+		</dl>
+	</div>
+</div>
+<div class="panel panel-success" ng-if="success && content.scanreport.data.length == 0">
+	<div class="panel-heading">
+		VMRay Report
+	</div>
+	<div class="panel-body">
+		<b>No matches.</b>
+	</div>
+</div>
+<div class="panel panel-success" ng-if="success && content.data.submissions.length > 0">
+	<div class="panel-heading">
+		VMRay Upload Report
+	</div>
+	<div class="panel-body" ng-repeat="s in content.data.submissions">
+		<dl class="dl-horizontal">
+			<dt>ID</dt>
+			<dd><a href="{{s.submission_webif_url}}">{{s.submission_id}}/{{s.submission_sample_id}}</a></dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Filename</dt>
+			<dd>{{s.submission_filename}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Tags</dt>
+			<dd ng-repeat="tag in s.submission_tags"><span class="label label-success">{{tag}}</span>&nbsp;</dd>
+		</dl>
+	</div>
+	<div class="panel-body">
+		<dl class="dl-horizontal">
+			<dt>Jobs</dt>
+			<dd ng-repeat="j in content.data.jobs">
+			ID: {{j.job_id}}<br />VM: <a href="https://vmray.analyse.certbund/user/job/view?id={{j.job_id}}">
+				{{j.job_vm_name}}&nbsp;({{j.job_status}})
+			</a>
+			</dd>
+		</dl>
+	</div>
+</div>
+<div class="panel panel-danger" ng-if="!success">
+	<div class="panel-heading">
+		VMRay Report returned with an error
+	</div>
+	<div class="panel-body">
+		<dl class="dl-horizontal">
+			<dt>Error:</dt>
+			<dd>{{content.error}}</dd>
+		</dl>
+	</div>
+</div>
+<div class="panel panel-danger" ng-if="success && content.data.errors.length > 0">
+	<div class="panel-heading">
+		VMRay Upload returned with an error (reanalyzation deactivated?)
+	</div>
+	<div class="panel-body" ng-repeat="e in content.data.errors">
+		<dl class="dl-horizontal">
+			<dt><i class="fa fa-warning"></i> Error:</dt>
+			<dd>{{e.error_msg}}</dd>
+			<dt>Filename:</dt>
+			<dd><a href="https://vmray.analyse.certbund/user/sample/list?quick_search_value={{e.submission_filename}}">{{e.submission_filename}} (search)</a></dd>
+		</dl>
+	</div>
+</div>

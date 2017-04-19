@@ -28,7 +28,7 @@ class CIRCLPassiveSSLAnalyzer(Analyzer):
             self.error('Exception during processing with passiveSSL. '
                        'Please check the format of ip.')
 
-        # Check for empty result, on empty resultset return with an error.
+        # Check for empty result
         # result is always assigned, self.error exits the function.
         if not result.get(ip, None):
             certificates = []
@@ -62,11 +62,6 @@ class CIRCLPassiveSSLAnalyzer(Analyzer):
             cfetch = self.pssl.fetch_cert(cert_hash, make_datetime=False)
         except:
             cfetch = {}
-
-        # Check for empty result, on empty resultset return with an error
-        # cquery and cfetch are always assigned, because self.error exits the function
-        if cquery.get('hits') == 0:
-            self.error('No data available for {0} in passiveSSL'.format(cert_hash))
 
         return {'query': cquery,
                 'cert': cfetch}

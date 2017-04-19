@@ -1,0 +1,44 @@
+<div class="panel panel-danger" ng-if="success && content.isonvs && content.isonvs != 'unknown'">
+	<div class="panel-heading">
+		Virusshare Report
+	</div>
+	<div class="panel-body">
+		<dl class="dl-horizontal">
+			<dt>MD5</dt>
+			<dd>{{content.md5}}</dd>
+			<dt></dt>
+			<dd>
+				<form method="POST" action="https://virusshare.com/search.4n6" target="_blank">
+					<input type="hidden" value="{{content.md5}}" name="search">
+					<input class="btn btn-danger" type="submit" value="Open on Virusshare.com (Login first!)">
+				</form>
+			</dd>
+		</dl>
+	</div>	
+</div>
+<div class="panel panel-danger" ng-if="success && content.isonvs === 'unknown'">
+	<div class="panel-heading">
+		Virusshare Report
+	</div>
+	<div class="panel-body">
+		<dl class="dl-horizontal">
+			<dt>Error</dt>
+			<dd>{{content.hash}} is not MD5</dd>
+			<dt></dt>
+			<dd>Still try to search:<br />
+				<form method="POST" action="https://virusshare.com/search.4n6" target="_blank">
+					<input type="hidden" value="{{content.hash}}" name="search">
+					<input class="btn btn-danger" type="submit" value="Open on Virusshare.com (Login first!)">
+				</form>
+			</dd>
+		</dl>
+	</div>	
+</div>
+<div class="panel panel-success" ng-if="success && !content.isonvs">
+	<div class="panel-heading">
+		Virusshare Report
+	</div>
+	<div class="panel-body">
+		<span>No matches.</span>
+	</div>	
+</div>
