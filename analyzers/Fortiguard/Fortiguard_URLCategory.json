@@ -1,6 +1,9 @@
 {
     "name": "Fortiguard_URLCategory",
     "version": "1.0",
+    "author": "Eric Capuano",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
     "dataTypeList": ["domain", "url"],
     "description": "URL Category by Fortiguard: checks the category of a specific URL or domain",
     "baseConfig": "Fortiguard",

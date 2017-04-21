@@ -1,6 +1,9 @@
 {
     "name": "PassiveTotal_Enrichment",
     "version": "1.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
     "baseConfig": "PassiveTotal",
     "config": {
         "check_tlp": true,

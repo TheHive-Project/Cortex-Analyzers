@@ -1,6 +1,9 @@
 {
     "name": "Hipposcore",
     "version": "1.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
     "description": "Hippocampe Score report: provides the last report for an IP, domain or a URL",
     "dataTypeList": ["ip", "domain", "fqdn", "url"],
     "baseConfig": "Hippocampe",

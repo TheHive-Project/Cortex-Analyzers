@@ -1,6 +1,9 @@
 {
     "name": "Nessus",
     "version": "1.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
     "baseConfig": "Nessus",
     "config": {
         "check_tlp": false

@@ -1,6 +1,9 @@
 {
     "name": "DNSDB_IPHistory",
     "version": "1.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
     "baseConfig": "DNSDB",
     "config": {
         "check_tlp": true,

@@ -1,6 +1,9 @@
 {
     "name": "PhishingInitiative_Lookup",
     "version": "1.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
     "description": "Check URL against Phishing Initiative to determine if it's a verified phishing site",
     "dataTypeList": ["url"],
     "baseConfig": "PhishingInitiative",
