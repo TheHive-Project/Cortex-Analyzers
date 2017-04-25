@@ -1,0 +1,11 @@
+{
+    "name": "Yara",
+    "author": "Nils Kuhnert, CERT-Bund",
+    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+    "version": "0.1",
+    "baseConfig": "Yara",
+    "config": {},
+    "description": "Check files against yara rules using yara-python.",
+    "dataTypeList": ["file"],
+    "command": "Yara/yara_analyzer.py"
+}

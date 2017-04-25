@@ -1,0 +1,11 @@
+{
+    "name": "Virusshare",
+    "author": "Nils Kuhnert, CERT-Bund",
+    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+    "version": "0.1",
+    "baseConfig": "Virusshare",
+    "config": {},
+    "description": "Check if file (md5-hash) is available on virusshare.com",
+    "dataTypeList": ["hash", "file"],
+    "command": "Virusshare/virusshare.py"
+}

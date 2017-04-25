@@ -1,0 +1,11 @@
+{
+    "name": "CIRCLPassiveDNS",
+    "author": "Nils Kuhnert, CERT-Bund",
+    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+    "version": "0.1",
+    "baseConfig": "CIRCLPassiveDNS",
+    "config": {},
+    "description": "Checks CIRCL's Passive DNS for a given domain, API Key via circl.lu.",
+    "dataTypeList": ["domain", "url"],
+    "command": "CIRCLPassiveDNS/circl_passivedns.py"
+}

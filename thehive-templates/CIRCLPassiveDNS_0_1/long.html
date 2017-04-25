@@ -1,0 +1,25 @@
+<div class="panel panel-info">
+	<div class="panel-heading">
+		CERT-Bund Passive DNS (<a target="_blank" href="http://circl.lu/services/passive-dns/">CIRCL.lu</a>) Report
+	</div>
+	<div class="panel-body">
+
+		<!-- On error -->
+		<dl class="dl-horizontal" ng-if="content.errorMessage">
+			<dt><i class="fa fa-warning"></i> PassiveDNS: </dt>
+			<dd class="wrap">{{content.errorMessage}}</dd>
+		</dl>
+
+		<!-- Domain details -->
+		<div ng-repeat="r in content.results">
+			<dl class="dl-horizontal">
+				<dt class="wrap">{{r.rdata}}</dt>
+				<dd class="wrap">
+					Type: {{r.rrtype}}<br />
+					First seen: {{r.time_first}}<br />
+					Last seen: {{r.time_last}}
+				</dd>
+			</dl>
+		</div>
+	</div>
+</div>

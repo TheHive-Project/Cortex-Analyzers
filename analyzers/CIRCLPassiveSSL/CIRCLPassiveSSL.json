@@ -1,0 +1,11 @@
+{
+    "name": "CIRCLPassiveSSL",
+    "author": "Nils Kuhnert, CERT-Bund",
+    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+    "version": "0.1",
+    "baseConfig": "CIRCLPassiveSSL",
+    "config": {},
+    "description": "Check CIRCL's Passive SSL for a given ip or certificate hash",
+    "dataTypeList": ["ip", "certificate_hash", "hash"],
+    "command": "CIRCLPassiveSSL/circl_passivessl.py"
+}

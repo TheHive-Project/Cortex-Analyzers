@@ -1,0 +1,11 @@
+{
+    "name": "VMRay",
+    "author": "Nils Kuhnert, CERT-Bund",
+    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+    "version": "0.1",
+    "baseConfig": "VMRay",
+    "config": {},
+    "description": "Check, if observable was processed in VMRay, upload file to VMRay and return the hash.",
+    "dataTypeList": ["hash", "file"],
+    "command": "VMRay/vmray.py"
+}
