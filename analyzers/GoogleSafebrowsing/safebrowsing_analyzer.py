@@ -25,8 +25,6 @@ class SafebrowsingAnalyzer(Analyzer):
             result["matches"] = len(raw['results'])
         return result
 
-
-
     def run(self):
         report = []
         result = self.sb.query_url(self.get_data())
