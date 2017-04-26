@@ -25,7 +25,7 @@ class YaraAnalyzer(Analyzer):
                 if os.path.isfile(rulepath + '/index.yas'):
                     self.ruleset.append(yara.load(rulepath + '/index.yas'))
                 elif os.path.isfile(rulepath + '/index.yar'):
-                    self.ruleset.append(yara.load(rulepath + '/index.yar'))
+                    self.ruleset.append(yara.compile(rulepath + '/index.yar'))
 
     def check(self, file):
         """
