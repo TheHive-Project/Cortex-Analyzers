@@ -1,1 +1,3 @@
-<span class="label label-warning">Yara: {{content.length}} matches</span>
+<span class="label label-success" ng-if="content.matches == 0 || !content">Yara={{content.matches}} match</span>
+<span class="label label-danger" ng-if="content.matches == 1">Yara={{content.matches}} match</span>
+<span class="label label-danger" ng-if="content.matches > 1">Yara={{content.matches}} matches</span>
