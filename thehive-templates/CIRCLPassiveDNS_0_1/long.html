@@ -1,6 +1,6 @@
 <div class="panel panel-info">
 	<div class="panel-heading">
-		CERT-Bund Passive DNS (<a target="_blank" href="http://circl.lu/services/passive-dns/">CIRCL.lu</a>) Report
+		(<a target="_blank" href="http://circl.lu/services/passive-dns/">CIRCL.lu</a>) Passive DNS Report
 	</div>
 	<div class="panel-body">
 
@@ -11,15 +11,26 @@
 		</dl>
 
 		<!-- Domain details -->
-		<div ng-repeat="r in content.results">
-			<dl class="dl-horizontal">
-				<dt class="wrap">{{r.rdata}}</dt>
-				<dd class="wrap">
-					Type: {{r.rrtype}}<br />
-					First seen: {{r.time_first}}<br />
-					Last seen: {{r.time_last}}
-				</dd>
-			</dl>
-		</div>
+        <p ng-if="content.results.length == 0">
+            No result found.
+        </p>
+        <table class="table" ng-if="content.results">
+            <thead>
+                <th>Count</th>
+                <th>rrtype</th>
+                <th>rdata</th>
+                <th>First time</th>
+                <th>Last time</th>
+            </thead>
+            <tbody ng-repeat="r in content.results | orderBy:'-time_last'">
+                <tr>
+                    <td>{{r.count}}</td>
+                    <td>{{r.rrtype}}</td>
+                    <td>{{r.rdata}}</td>
+                    <td>{{r.time_first}}</td>
+                    <td>{{r.time_last}}</td>
+                </tr>
+            </tbody>
+        </table>
 	</div>
 </div>
