@@ -10,7 +10,7 @@ class CIRCLPassiveDNSAnalyzer(Analyzer):
         self.pdns = pypdns.PyPDNS(basic_auth=(self.getParam('config.user', None, 'No passiveDNS username given.'),
                                               self.getParam('config.password', None, 'No passiveDNS password given.')))
 
-    def query(self, domain: str):
+    def query(self, domain):
         """The actual query happens here. Time from queries is replaced with isoformat.
 
         :param domain: The domain which should gets queried.
@@ -36,7 +36,7 @@ class CIRCLPassiveDNSAnalyzer(Analyzer):
 
         return clean_result
 
-    def summary(self, raw: dict) -> dict:
+    def summary(self, raw):
         return {'hits': len(raw.get('results'))}
 
     def run(self):
