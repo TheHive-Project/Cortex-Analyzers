@@ -20,6 +20,9 @@ class VirusshareAnalyzer(Analyzer):
             self.error('Given path is not a directory.')
         self.filelist = os.listdir(self.path)
 
+    def summary(self, raw):
+        return {'isonvs': raw["isonvs"]}
+
     def run(self):
         searchhash = ''
         if self.data_type == 'hash':
