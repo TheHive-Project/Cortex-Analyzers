@@ -32,6 +32,7 @@ class JoeSandboxAnalyzer(Analyzer):
         try:
             data = {
                 'apikey': self.apikey,
+                'tandc': 1,
                 'auto': 1,
                 'comments': 'Submitted by Cortex'
             }
