@@ -1,0 +1,12 @@
+{
+    "name": "CuckooSandbox_Url_Analysis",
+    "version": "1.0",
+    "baseConfig": "CuckooSandbox",
+    "config": {
+        "check_tlp": false,
+        "service": "url_analysis"
+    },
+    "description": "Cuckoo Sandbox url analysis",
+    "dataTypeList": ["url"],
+    "command": "CuckooSandbox/cuckoosandbox_analyzer.py"
+}

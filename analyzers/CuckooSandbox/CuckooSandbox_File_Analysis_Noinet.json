@@ -1,0 +1,12 @@
+{
+    "name": "CuckooSandbox_File_Analysis_Noinet",
+    "version": "1.0",
+    "baseConfig": "CuckooSandbox",
+    "config": {
+        "check_tlp": false,
+        "service": "file_analysis_noinet"
+    },
+    "description": "Cuckoo Sandbox file analysis without Internet access",
+    "dataTypeList": ["file"],
+    "command": "CuckooSandbox/cuckoosandbox_analyzer.py"
+}
