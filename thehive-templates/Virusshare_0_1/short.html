@@ -1,0 +1,3 @@
+<span class="label label-success" ng-if="success && !content.isonvs">Virusshare: No match</span>&nbsp;
+<span class="label label-warning" ng-if="success && content.isonvs === 'unknown'">Virusshare: Not MD5</span>&nbsp;
+<span class="label label-danger" ng-if="success && content.isonvs && content.isonvs != 'unknown'">Virusshare: Match!</span>&nbsp;

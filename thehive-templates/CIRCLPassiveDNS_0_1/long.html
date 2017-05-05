@@ -1,0 +1,36 @@
+<div class="panel panel-info">
+	<div class="panel-heading">
+		(<a target="_blank" href="http://circl.lu/services/passive-dns/">CIRCL.lu</a>) Passive DNS Report
+	</div>
+	<div class="panel-body">
+
+		<!-- On error -->
+		<dl class="dl-horizontal" ng-if="content.errorMessage">
+			<dt><i class="fa fa-warning"></i> PassiveDNS: </dt>
+			<dd class="wrap">{{content.errorMessage}}</dd>
+		</dl>
+
+		<!-- Domain details -->
+        <p ng-if="content.results.length == 0">
+            No result found.
+        </p>
+        <table class="table" ng-if="content.results">
+            <thead>
+                <th>Count</th>
+                <th>rrtype</th>
+                <th>rdata</th>
+                <th>First time</th>
+                <th>Last time</th>
+            </thead>
+            <tbody ng-repeat="r in content.results | orderBy:'-time_last'">
+                <tr>
+                    <td>{{r.count}}</td>
+                    <td>{{r.rrtype}}</td>
+                    <td>{{r.rdata}}</td>
+                    <td>{{r.time_first}}</td>
+                    <td>{{r.time_last}}</td>
+                </tr>
+            </tbody>
+        </table>
+	</div>
+</div>
