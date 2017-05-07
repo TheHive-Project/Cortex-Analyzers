@@ -1,14 +1,8 @@
-<div class="panel panel-info">
+<div class="panel panel-info" ng-if="success">
 	<div class="panel-heading">
-		CERT-Bund Passive SSL (<a target="_blank" href="http://circl.lu/services/passive-ssl/">CIRCL.lu</a>) Report
+		<a target="_blank" href="http://circl.lu/services/passive-ssl/">CIRCL.lu</a> Passive SSL Report
 	</div>
 	<div class="panel-body">
-
-		<!-- On error -->
-		<dl class="dl-horizontal" ng-if="content.errorMessage">
-			<dt><i class="fa fa-warning"></i> PassiveSSL: </dt>
-			<dd class="wrap">{{content.errorMessage}}</dd>
-		</dl>
 
 		<!-- Certificate details -->
 		<div ng-if="content.cert.info">
@@ -70,4 +64,17 @@
 			</dl>
 		</div>
 	</div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+    	<dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> PassiveSSL: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
 </div>
