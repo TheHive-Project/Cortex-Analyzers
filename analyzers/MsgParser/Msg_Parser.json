@@ -4,7 +4,7 @@
     "author": "CERT-BDF",
     "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
     "license": "AGPL-V3",
-    baseconfig:"Msg_Parser",
+    "baseconfig":"Msg_Parser",
     "config": {
         "check_tlp": false,
         "max_tlp": 3,
