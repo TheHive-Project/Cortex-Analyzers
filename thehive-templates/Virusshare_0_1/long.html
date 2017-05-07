@@ -14,7 +14,7 @@
 				</form>
 			</dd>
 		</dl>
-	</div>	
+	</div>
 </div>
 <div class="panel panel-danger" ng-if="success && content.isonvs === 'unknown'">
 	<div class="panel-heading">
@@ -32,13 +32,27 @@
 				</form>
 			</dd>
 		</dl>
-	</div>	
+	</div>
 </div>
+
 <div class="panel panel-success" ng-if="success && !content.isonvs">
 	<div class="panel-heading">
 		Virusshare Report
 	</div>
 	<div class="panel-body">
-		<span>No matches.</span>
-	</div>	
+		<span>No match.</span>
+	</div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+    	<dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> PassiveDNS: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
 </div>
