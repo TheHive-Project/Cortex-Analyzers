@@ -15,10 +15,9 @@ class VirusTotalAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.service = self.getParam(
-            'config.service', None, 'Service parameter is missing')
-        self.virustotal_key = self.getParam(
-            'config.key', None, 'Missing VirusTotal API key')
+        self.service = self.getParam('config.service', None, 'Service parameter is missing')
+        self.virustotal_key = self.getParam('config.key', None, 'Missing VirusTotal API key')
+        self.polling_interval = self.getParam('config.polling_interval', 60)
 
     def wait_file_report(self, id):
         results = self.check_response(self.vt.get_file_report(id))
@@ -26,7 +25,7 @@ class VirusTotalAnalyzer(Analyzer):
         if code == 1:
             self.report(results)
         else:
-            time.sleep(10)
+            time.sleep(self.polling_interval)
             self.wait_file_report(id)
 
     def wait_url_report(self, id):
@@ -35,13 +34,15 @@ class VirusTotalAnalyzer(Analyzer):
         if code == 1:
             self.report(results)
         else:
-            time.sleep(60)
+            time.sleep(self.polling_interval)
             self.wait_url_report(id)
 
     def check_response(self, response):
         if type(response) is not dict:
             self.error('Bad response : ' + str(response))
         status = response.get('response_code', -1)
+        if status == 204:
+            self.error('VirusTotal api rate limit exceeded (Status 204).')
         if status != 200:
             self.error('Bad status : ' + str(status))
         results = response.get('results', {})

@@ -1,0 +1,32 @@
+<div class="panel panel-danger" ng-if="success && content.results.length > 0">
+	<div class="panel-heading">
+		Google Safebrowsing Report
+	</div>
+	<div class="panel-body">
+		<dl class="dl-horizontal">
+			<dt>Matches</dt>
+			<dd ng-repeat="m in content.results">
+				{{m.threat}}: {{m.platform}}
+			</dd>
+		</dl>
+	</div>
+</div>
+
+<div class="panel panel-success" ng-if="success && content.results.length == 0">
+	<div class="panel-heading">
+		Google Safebrowsing Report
+	</div>
+	<div class="panel-body">
+		<b>No matches.</b>
+	</div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

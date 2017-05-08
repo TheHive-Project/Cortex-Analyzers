@@ -1,5 +1,5 @@
 <span ng-if="content.has_result" class="label" ng-class="{'label-info': content.positives===0, 'label-warning': content.positives>0 && content.positives<5, 'label-danger': content.positives >= 5}">
-	VT:
+	VT:Score=
 	<span ng-if="content.positives > 0">{{content.positives}}/{{content.total}}</span>
 	<span ng-if="content.scans && content.scans > 0">Scans({{content.scans}})</span>
 	<span ng-if="content.resolutions && content.resolutions > 0">Resolutions({{content.resolutions}})</span>

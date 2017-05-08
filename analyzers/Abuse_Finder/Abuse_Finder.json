@@ -1,6 +1,9 @@
 {
     "name": "Abuse_Finder",
     "version": "1.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
     "baseConfig": "Abuse_Finder",
     "config": {
       "check_tlp": false,

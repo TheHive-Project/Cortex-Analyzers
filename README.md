@@ -1,4 +1,4 @@
-The following repository is used by [TheHive Project](https://thehive-project.org) to develop and store [Cortex](https://github.com/CERT-BDF/Cortex/blob/master/README.md) analyzers. 
+The following repository is used by [TheHive Project](https://thehive-project.org) to develop and store [Cortex](https://github.com/CERT-BDF/Cortex/blob/master/README.md) analyzers.
 
 ![](images/cortex-jobs.png)
 
@@ -16,6 +16,8 @@ Information, news and updates are regularly posted on [TheHive Project Twitter a
 
 # Contributing
 We welcome your contributions for new analyzers that can take away the load off overworked fellow analysts or improvements to existing ones. Please feel free to fork the code, play with it, make some patches and send us pull requests.
+
+To make it easy for every one, please send **one** pull request per analyzer. It will help us reviewing the code, and merging as soon as feasible.
 
 # Support
 if you encounter an issue with an analyzer or would like to request a new one or an improvement to an existing analyzer, please open an issue on the [analyzers' dedicated GitHub repository](https://github.com/CERT-BDF/Cortex-Analyzers/issues/new).

@@ -1,6 +1,10 @@
 {
     "name": "File_Info",
     "version": "1.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseConfig": "File_Info",
     "config": {
         "check_tlp": false,
         "max_tlp": 3,

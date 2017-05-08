@@ -1,6 +1,9 @@
 {
     "name": "JoeSandbox_Url_Analysis",
     "version": "1.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
     "baseConfig": "JoeSandbox",
     "config": {
         "check_tlp": false,
