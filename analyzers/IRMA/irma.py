@@ -25,7 +25,7 @@ class IRMA(Analyzer):
         self.force = self.getParam(
             'config.force', 1)
         self.verify = self.getParam(
-            'config.force', False)
+            'config.verify', True)
         self.time_start = time.time()
 
     def summary(self, raw):
