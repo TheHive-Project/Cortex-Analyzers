@@ -6,7 +6,7 @@
     "version": "0.1",
     "baseConfig": "CIRCLPassiveDNS",
     "config": {},
-    "description": "Checks CIRCL's Passive DNS for a given domain, API Key via circl.lu.",
+    "description": "Check CIRCL's Passive DNS for a given domain or URL",
     "dataTypeList": ["domain", "url"],
     "command": "CIRCLPassiveDNS/circl_passivedns.py"
 }
