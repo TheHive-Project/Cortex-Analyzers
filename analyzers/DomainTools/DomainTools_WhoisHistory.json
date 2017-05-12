@@ -10,7 +10,7 @@
         "max_tlp": 1,
         "service": "whois/history"
     },
-    "description": "DomainTools Whois History: provides a list of historic Whois records for a domain name",
+    "description": "Get a list of historic Whois records associated with a domain name through DomainTools Whois History service",
     "dataTypeList": ["domain"],
     "command": "DomainTools/domaintools.py"
 }

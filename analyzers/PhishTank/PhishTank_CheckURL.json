@@ -4,7 +4,7 @@
     "author": "Eric Capuano",
     "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "description": "Check URL against PhishTank to determine if it's a verified phishing site",
+    "description": "Check a URL against PhishTank to determine if it's a verified phishing site",
     "dataTypeList": ["url"],
     "baseConfig": "PhishTank",
     "config": {

@@ -4,7 +4,7 @@
     "author": "CERT-BDF",
     "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "description": "Hippocampe detailed report: provides the last detailed report for an IP, domain or a URL",
+    "description": "Get the Hippocampe detailed report for an IP address, a domain or a URL",
     "dataTypeList": ["ip", "domain", "fqdn", "url"],
     "baseConfig": "Hippocampe",
     "config": {

@@ -3,10 +3,10 @@
     "author": "Nils Kuhnert, CERT-Bund",
     "license": "AGPL-V3",
     "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-    "version": "0.1",
+    "version": "1.0",
     "baseConfig": "GoogleSafebrowsing",
     "config": {},
-    "description": "Check url against Google Safebrowsing lists.",
+    "description": "Check URLs and domain names against Google Safebrowsing",
     "dataTypeList": ["url", "domain"],
     "command": "GoogleSafebrowsing/safebrowsing_analyzer.py"
 }

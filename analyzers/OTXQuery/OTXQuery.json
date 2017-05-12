@@ -4,7 +4,7 @@
     "author": "Eric Capuano",
     "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "description": "Query AlienVault OTX for IPs, Domains, URLs, or File Hashes",
+    "description": "Query AlienVault OTX for IPs, domains, URLs, or file hashes",
     "dataTypeList": ["url", "domain", "file", "hash", "ip"],
     "baseConfig": "OTXQuery",
     "config": {
