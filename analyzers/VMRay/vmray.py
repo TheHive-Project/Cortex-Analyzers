@@ -43,22 +43,15 @@ class VMRayAnalyzer(Analyzer):
 
     def summary(self, raw):
         result = {
-            'reports': [],
-            'submits': []
+            'reports': []
         }
+
         if raw.get('scanreport', None) and len(raw.get('scanreport').get('data')) > 0:
             for scan in raw.get('scanreport').get('data'):
                 result['reports'].append({
                     'score': scan.get('sample_score'),
                     'url': scan.get('sample_webif_url')
                 })
-        elif raw.get('data', None) and len(raw.get('data').get('submissions')) > 0:
-            for subm in raw.get('data').get('submissions'):
-                result['submits'].append({
-                    'id': subm.get('submission_sample_id'),
-                    'url': subm.get('submission_webif_url')
-                })
-
         return result
 
 if __name__ == '__main__':
