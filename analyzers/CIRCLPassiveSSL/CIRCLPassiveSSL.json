@@ -6,7 +6,7 @@
     "version": "0.1",
     "baseConfig": "CIRCLPassiveSSL",
     "config": {},
-    "description": "Check CIRCL's Passive SSL for a given ip or certificate hash",
+    "description": "Check CIRCL's Passive SSL for a given IP address or a X509 certificate hash",
     "dataTypeList": ["ip", "certificate_hash", "hash"],
     "command": "CIRCLPassiveSSL/circl_passivessl.py"
 }

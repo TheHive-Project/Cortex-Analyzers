@@ -1,14 +1,14 @@
 {
     "name": "Nessus",
     "version": "1.0",
-    "author": "CERT-BDF",
+    "author": "Guillaume Rousse",
     "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
     "license": "AGPL-V3",
     "baseConfig": "Nessus",
     "config": {
         "check_tlp": false
     },
-    "description": "Nessus scanner",
+    "description": "Scan hosts using Tenable's Nessus scanner",
     "dataTypeList": ["ip", "fqdn"],
     "command": "Nessus/nessus.py"
 }

@@ -6,7 +6,7 @@
     "version": "0.1",
     "baseConfig": "Virusshare",
     "config": {},
-    "description": "Check if file (md5-hash) is available on virusshare.com",
+    "description": "Search for MD5 hashes in Virusshare.com hash list",
     "dataTypeList": ["hash", "file"],
     "command": "Virusshare/virusshare.py"
 }
