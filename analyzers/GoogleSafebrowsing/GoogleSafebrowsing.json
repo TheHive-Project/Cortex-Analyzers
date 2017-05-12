@@ -6,7 +6,7 @@
     "version": "0.1",
     "baseConfig": "GoogleSafebrowsing",
     "config": {},
-    "description": "Check url against Google Safebrowsing lists.",
+    "description": "Check URLs and domain names against Google Safebrowsing",
     "dataTypeList": ["url", "domain"],
     "command": "GoogleSafebrowsing/safebrowsing_analyzer.py"
 }
