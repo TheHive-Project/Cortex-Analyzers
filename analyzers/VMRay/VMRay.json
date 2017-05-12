@@ -5,7 +5,10 @@
     "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
     "version": "0.1",
     "baseConfig": "VMRay",
-    "config": {},
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 1
+    },
     "description": "Check, if observable was processed in VMRay, upload file to VMRay and return the hash.",
     "dataTypeList": ["hash", "file"],
     "command": "VMRay/vmray.py"
