@@ -4,7 +4,7 @@
     "author": "CERT-BDF",
     "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "description": "VirusTotal get report: provides the last report of a file, hash, domain or ip",
+    "description": "Get the latest VirusTotal report for a file, hash, domain or an IP address",
     "dataTypeList": ["file", "hash", "domain", "ip"],
     "baseConfig": "VirusTotal",
     "config": {

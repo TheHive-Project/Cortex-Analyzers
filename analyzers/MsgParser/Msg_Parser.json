@@ -10,7 +10,7 @@
         "max_tlp": 3,
         "service": ""
     },
-    "description": "Outlook .msg file parser",
+    "description": "Parse Outlook MSG files and extract the main artifacts",
     "dataTypeList": [
         "file"
     ],
