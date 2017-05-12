@@ -10,7 +10,7 @@
         "max_tlp": 1,
         "service": "name_history"
     },
-    "description": "DNSDB Passive DNS query for domain/host name history : Provides history records for an domain/host",
+    "description": "Provide history records for a fully-qualified domain name using DNSDB Passive DNS",
     "dataTypeList": ["fqdn"],
     "command": "DNSDB/dnsdb.py"
 }
