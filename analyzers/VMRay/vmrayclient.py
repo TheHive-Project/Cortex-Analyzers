@@ -26,6 +26,11 @@ class SampleFileNotFoundError(VMRayClientError):
     pass
 
 
+class UnknownSubmissionIdError(VMRayClientError):
+    """Thrown on invalid submission id or if id request fails."""
+    pass
+
+
 class VMRayClient:
     """
     Client that connects to the VMRay api and allows searching for samples via hash and uploading a new sample to VMRay.
@@ -117,3 +122,23 @@ class VMRayClient:
                                        ' Responsecode: {}; Text: {}'.format(res.status_code, res.text))
         else:
             raise SampleFileNotFoundError('Given sample file was not found.')
+
+    def query_job_status(self, submissionid):
+        """
+        Queries vmray to check id a job was 
+        
+        :param submissionid: ID of the job/submission
+        :type submissionid: int
+        :returns: True if job finished, false if not
+        :rtype: bool
+        """
+
+        apiurl = '/rest/submission/'
+        result = self.session.get('{}{}{}'.format(self.url, apiurl, submissionid))
+        if result.status_code == 200:
+            submission_info = json.loads(result.text)
+            if submission_info.get('data', {}).get('submission_finished', False):  # Or something like that
+                return True
+        else:
+            raise UnknownSubmissionIdError('Submission id seems invalid, response was not HTTP 200.')
+        return False

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from cortexutils.analyzer import Analyzer
 from vmrayclient import VMRayClient
+from time import sleep
 
 
 class VMRayAnalyzer(Analyzer):
@@ -27,8 +28,16 @@ class VMRayAnalyzer(Analyzer):
         elif self.data_type == 'file':
             filepath = self.getParam('file')
             filename = self.getParam('filename')
-            self.report(self.vmrc.submit_sample(filepath=filepath,
-                                                filename=filename))
+            submit_report = self.vmrc.submit_sample(filepath=filepath,
+                                                    filename=filename)
+            # Check for completion
+            while not self.vmrc.query_job_status(submissionid=submit_report['data']['submissions'][0]['submission_id']):
+                sleep(10)
+
+            # Return the results
+            self.report({'scanreport': self.vmrc.get_sample(
+                samplehash=submit_report['data']['submissions'][0]['submission_sample_sha256'])
+            })
         else:
             self.error('Data type currently not supported')
 
