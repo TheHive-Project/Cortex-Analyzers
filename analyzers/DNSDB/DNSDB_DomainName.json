@@ -11,7 +11,7 @@
         "service": "domain_name"
 
     },
-    "description": "DNSDB Passive DNS query for Domain Names : Provides history records for a domain",
+    "description": "Provide history records for a domain using DNSDB Passive DNS service",
     "dataTypeList": ["domain"],
     "command": "DNSDB/dnsdb.py"
 }
