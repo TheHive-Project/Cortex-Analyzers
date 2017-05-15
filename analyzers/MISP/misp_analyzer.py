@@ -12,6 +12,7 @@ class MISPAnalyzer(Analyzer):
         self.service = self.getParam('config.service', None, 'MISP service is missing')
         self.url = self.getParam('config.url', None, 'MISP url is missing')
         self.api_key = self.getParam('config.api_key', None, 'MISP api_key is missing')
+        self.ssl = self.getParam('config.ssl', True)
 
     def summary(self, raw):
         result = {
@@ -35,7 +36,9 @@ class MISPAnalyzer(Analyzer):
         try:
             # search service
             if self.service == 'search':
-                misp = PyMISP(self.url, self.api_key)
+                 if self.ssl != True:
+                    self.ssl = False
+                misp = PyMISP(self.url, self.api_key, self.ssl)
                 result = misp.search_all(data)
 
                 events = []
