@@ -68,6 +68,7 @@
 		<b>No matches.</b>
 	</div>
 </div>
+
 <div class="panel panel-danger" ng-if="!success">
 	<div class="panel-heading">
 		VMRay Report returned with an error
@@ -91,16 +92,5 @@
 			<dt>Filename:</dt>
 			<dd><a href="https://vmray.analyse.certbund/user/sample/list?quick_search_value={{e.submission_filename}}">{{e.submission_filename}} (search)</a></dd>
 		</dl>
-	</div>
-</div>
-
-<div ng-if="!success">
-	<div class="panel panel-danger">
-		<div class="panel-heading">
-			<strong>{{(artifact.data || artifact.attachment.name)| fang}}</strong>
-		</div>
-		<div class="panel-body">
-			{{content.verbose_msg}}
-		</div>
 	</div>
 </div>
