@@ -1,6 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from cortexutils.analyzer import Analyzer
 from vmrayclient import VMRayClient
+from time import sleep
 
 
 class VMRayAnalyzer(Analyzer):
@@ -27,29 +28,32 @@ class VMRayAnalyzer(Analyzer):
         elif self.data_type == 'file':
             filepath = self.getParam('file')
             filename = self.getParam('filename')
-            self.report(self.vmrc.submit_sample(filepath=filepath,
-                                                filename=filename))
+            submit_report = self.vmrc.submit_sample(filepath=filepath,
+                                                    filename=filename)
+            # Check for completion
+            while not self.vmrc.query_job_status(submissionid=submit_report['data']['submissions'][0]['submission_id']):
+                sleep(10)
+
+            # Return the results
+            self.report({'scanreport': self.vmrc.get_sample(
+                samplehash=submit_report['data']['submissions'][0]['submission_sample_sha256'])
+            })
         else:
             self.error('Data type currently not supported')
 
     def summary(self, raw):
         result = {
-            'reports': [],
-            'submits': []
+            'reports': []
         }
+
         if raw.get('scanreport', None) and len(raw.get('scanreport').get('data')) > 0:
             for scan in raw.get('scanreport').get('data'):
                 result['reports'].append({
                     'score': scan.get('sample_score'),
+                    'sample_severity': scan.get('sample_severity'),
+                    'sample_last_reputation_severity': scan.get('sample_last_reputation_severity'),
                     'url': scan.get('sample_webif_url')
                 })
-        elif raw.get('data', None) and len(raw.get('data').get('submissions')) > 0:
-            for subm in raw.get('data').get('submissions'):
-                result['submits'].append({
-                    'id': subm.get('submission_sample_id'),
-                    'url': subm.get('submission_webif_url')
-                })
-
         return result
 
 if __name__ == '__main__':
