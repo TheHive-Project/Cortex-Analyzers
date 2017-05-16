@@ -8,16 +8,43 @@
 			<dd><a href="{{sample.sample_webif_url}}">{{sample.sample_score}}</a></dd>
 		</dl>
 		<dl class="dl-horizontal">
+			<dt ng-if="sample.sample_severity">Severity</dt>
+			<dd>
+				<span class="label" ng-class="{'label-success':sample.sample_severity === 'not_suspicious',
+					'label-danger': sample.sample_severity==='malicious',
+					'label-info': sample.sample_severity!='not_suspicious' && sample.sample_severity!='malicious'}">
+					{{sample.sample_severity}}
+				</span>
+				<!--<span class="label ">{{sample.sample_last_reputation_severity}}</span>-->
+
+			</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Last reputation</dt>
+			<dd>
+				<span class="label" ng-class="{'label-info':sample.sample_last_reputation_severity === 'unknown',
+					'label-danger': sample.sample_last_reputation_severity==='blacklisted',
+					'label-info': sample.sample_last_reputation_severity!='blacklisted'}">
+				{{sample.sample_last_reputation_severity}}
+				</span>
+			</dd>
+		</dl>
+		<dl ng-if="sample.sample_webif_url" class="dl-horizontal">
+			<dt>Link to report</dt>
+			<dd>{{sample.sample_webif_url}}</span></dd>
+		</dl>
+		<hr>
+		<dl class="dl-horizontal">
+			<dt>Filename</dt>
+			<dd>{{sample.sample_filename}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
 			<dt>Type</dt>
 			<dd>{{sample.sample_type}}</dd>
 		</dl>
 		<dl class="dl-horizontal">
 			<dt>Created</dt>
 			<dd>{{sample.sample_created}}</dd>
-		</dl>
-		<dl class="dl-horizontal">
-			<dt>Filename</dt>
-			<dd>{{sample.sample_filename}}</dd>
 		</dl>
 		<dl class="dl-horizontal">
 			<dt>MD5</dt>
@@ -41,35 +68,6 @@
 		<b>No matches.</b>
 	</div>
 </div>
-<div class="panel panel-success" ng-if="success && content.data.submissions.length > 0">
-	<div class="panel-heading">
-		VMRay Upload Report
-	</div>
-	<div class="panel-body" ng-repeat="s in content.data.submissions">
-		<dl class="dl-horizontal">
-			<dt>ID</dt>
-			<dd><a href="{{s.submission_webif_url}}">{{s.submission_id}}/{{s.submission_sample_id}}</a></dd>
-		</dl>
-		<dl class="dl-horizontal">
-			<dt>Filename</dt>
-			<dd>{{s.submission_filename}}</dd>
-		</dl>
-		<dl class="dl-horizontal">
-			<dt>Tags</dt>
-			<dd ng-repeat="tag in s.submission_tags"><span class="label label-success">{{tag}}</span>&nbsp;</dd>
-		</dl>
-	</div>
-	<div class="panel-body">
-		<dl class="dl-horizontal">
-			<dt>Jobs</dt>
-			<dd ng-repeat="j in content.data.jobs">
-			ID: {{j.job_id}}<br />VM: <a href="https://vmray.analyse.certbund/user/job/view?id={{j.job_id}}">
-				{{j.job_vm_name}}&nbsp;({{j.job_status}})
-			</a>
-			</dd>
-		</dl>
-	</div>
-</div>
 <div class="panel panel-danger" ng-if="!success">
 	<div class="panel-heading">
 		VMRay Report returned with an error
@@ -81,6 +79,7 @@
 		</dl>
 	</div>
 </div>
+
 <div class="panel panel-danger" ng-if="success && content.data.errors.length > 0">
 	<div class="panel-heading">
 		VMRay Upload returned with an error (reanalyzation deactivated?)
@@ -92,5 +91,16 @@
 			<dt>Filename:</dt>
 			<dd><a href="https://vmray.analyse.certbund/user/sample/list?quick_search_value={{e.submission_filename}}">{{e.submission_filename}} (search)</a></dd>
 		</dl>
+	</div>
+</div>
+
+<div ng-if="!success">
+	<div class="panel panel-danger">
+		<div class="panel-heading">
+			<strong>{{(artifact.data || artifact.attachment.name)| fang}}</strong>
+		</div>
+		<div class="panel-body">
+			{{content.verbose_msg}}
+		</div>
 	</div>
 </div>
