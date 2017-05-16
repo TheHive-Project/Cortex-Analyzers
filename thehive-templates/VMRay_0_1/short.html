@@ -1,20 +1,8 @@
-<span ng-if="content.scanreport.data.length > 0" class="label label-info">VMRay: {{content.data.scanreport.length}} scans</span>&nbsp;
-<span ng-if="content.scanreport.data.length == 0" class="label label-info">VMRay: No scans</span>&nbsp;
-
+<span ng-if="content.reports.length == 0" class="label label-info">VMRay:scans= No scans</span>&nbsp;
+<span ng-if="content.reports.length > 0" class="label label-info">VMRay:scans= {{content.reports.length}} scans</span>&nbsp;
 <!-- For each report -->
-<div style="display: inline-block;" ng-repeat="s in content.scanreport.data">
-	<a href="{{s.sample_webif_url}}" target="_blank"><span class="label label-info">VMRay Score: {{s.sample_score}}</span></a>&nbsp;
+<div style="display: inline-block;" ng-repeat="s in content.reports">
+	<span class="label label-info">VMRay:score= {{s.sample_score}}</span></a>&nbsp;
+	<span class="label" ng-class="{'label-success':sample.sample_severity === 'not_suspicious',
+					'label-danger': sample.sample_severity==='malicious', 'label-info'">{{sample.sample_severity}}</span>
 </div>
-
-<!-- Successful submit -->
-<span class="label label-success" ng-if="content.result == 'ok' && content.data.submissions.length > 0">
-	VMRay: Successful submitted
-</span>&nbsp;
-
-<!-- For each submission -->
-<div style="display: inline-block;" ng-repeat="s in content.data.submissions">
-	<a href="{{s.submission_webif_url}}" target="_blank"><span class="label label-info">VMRay Submission: {{s.submission_id}}</span></a>&nbsp;
-</div>
-
-<!-- Sample was already submitted -->
-<a ng-if="content.data.errors[0].error_msg == 'Submission not stored because no jobs were created'" href="https://vmray.analyse.certbund/user/sample/list?quick_search_value={{content.data.errors[0].submission_filename}}"><span class="label label-info">VMRay: Already submitted</span></a>&nbsp;
