@@ -1,11 +1,12 @@
 {
     "name": "VMRay",
+    "license": "AGPL-V3", 
     "author": "Nils Kuhnert, CERT-Bund",
-    "license": "AGPL-V3",
     "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
     "version": "0.1",
     "baseConfig": "VMRay",
     "config": {
+        "cert": false,
         "check_tlp": true,
         "max_tlp": 1
     },
