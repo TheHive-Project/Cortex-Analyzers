@@ -1,8 +1,16 @@
-<span ng-if="content.reports.length == 0" class="label label-info">VMRay:scans= No scan</span>&nbsp;
-<span ng-if="content.reports.length > 0" class="label label-info">VMRay:scans= {{content.reports.length}} scans</span>&nbsp;
+<span ng-if="content.reports.length == 0" class="label label-info">VMRay:Scans= No scan</span>&nbsp;
+<span ng-if="content.reports.length > 0" class="label label-info">VMRay:Scans= {{content.reports.length}} scan(s)</span>&nbsp;
 <!-- For each report -->
 <div style="display: inline-block;" ng-repeat="s in content.reports">
-	<span class="label label-info">VMRay:score= {{s.score}}</span></a>&nbsp;
-	<span class="label" ng-class="{'label-success':sample.sample_severity === 'not_suspicious',
-					'label-danger': sample.sample_severity==='malicious', 'label-info'">{{sample.sample_severity}}</span>
+	<span class="label"
+		ng-class="{'label-info': s.score===0,
+			'label-warning': s.score>0 && s.score<50,
+			'label-danger': s.score >= 50}">
+		VMRay:Score= {{s.score}}
+	</span></a>&nbsp;
+	<span class="label" ng-class="{'label-success':s.sample_severity === 'not_suspicious',
+					'label-danger': s.sample_severity==='malicious',
+					'label-info':s.sample_severity!='malicious' && s.sample_severity === 'not_suspicious'}">
+		VMRay:Severity= {{s.sample_severity}}
+	</span>
 </div>
