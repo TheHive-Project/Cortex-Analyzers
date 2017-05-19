@@ -34,7 +34,7 @@ class CuckooSandboxAnalyzer(Analyzer):
             # file analysis
             if self.service in ['file_analysis_inet', 'file_analysis_noinet']:
                 filepath = self.getParam('file', None, 'File is missing')
-		filename = basename(filepath)
+                filename = basename(filepath)
                 with open(filepath, "rb") as sample:
                     files = {"file": (filename, sample)}
                     response = requests.post(self.url + 'tasks/create/file', files=files)
@@ -51,8 +51,8 @@ class CuckooSandboxAnalyzer(Analyzer):
 
             finished = False
             tries = 0
-            while not finished and tries <= 15: # 5 minuti di tentativo
-                time.sleep(120)
+            while not finished and tries <= 15: #wait max 15 mins
+                time.sleep(60)
                 response = requests.get(self.url + 'tasks/view/' + str(task_id))
                 content = response.json()['task']['status']
                 if content == 'reported':
@@ -63,13 +63,23 @@ class CuckooSandboxAnalyzer(Analyzer):
 
             # Download the report
             response = requests.get(self.url + 'tasks/report/' + str(task_id) + '/json')
-            #analysis['htmlrepoon()t'] = self.url + 'analysis/' + str(task_id) 
-            #analysis['pdfreport'] = self.url + 'filereport/' + str(analysis['id']) + '/0/pdf'
-            list_description = [x['description'] for x in response.json()['signatures']]
-            suri_alerts = [(x['signature'],x['dstip'],x['dstport'],x['severity']) for x in response.json()['suricata']['alerts']]
-            self.report({'malscore': response.json()['malscore'], 'signatures': list_description, 'suricata_alerts': suri_alerts})
+            resp_json = response.json()
+            list_description = [x['description'] for x in resp_json['signatures']]
+            suri_alerts = [(x['signature'],x['dstip'],x['dstport'],x['severity']) for x in resp_json['suricata']['alerts']]
+            hosts = [(x['ip'],x['hostname'],x['country_name']) for x in resp_json['network']['hosts']]
+            uri = [(x['uri']) for x in resp_json['network']['http']]
+            self.report({
+                'signatures': list_description, 
+                'suricata_alerts': suri_alerts,
+                'hosts': hosts,
+                'uri': uri, 
+                'malscore': resp_json['malscore'], 
+                'malfamily': resp_json['malfamily'],
+                'file_type': "".join([x for x in resp_json['target']['file']['type']]),
+                'yara': [ x['name'] + " - " + x['meta']['description'] if 'description' in x['meta'].keys() else x['name'] for x in resp_json['target']['file']['yara'] ]
+            })
 
-	except requests.exceptions.RequestException as e:
+        except requests.exceptions.RequestException as e:
             self.error(e)
 
         except Exception as e:
@@ -77,3 +87,4 @@ class CuckooSandboxAnalyzer(Analyzer):
 
 if __name__ == '__main__':
     CuckooSandboxAnalyzer().run()
+
