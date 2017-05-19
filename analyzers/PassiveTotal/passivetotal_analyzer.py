@@ -14,7 +14,7 @@ class PassiveTotalAnalyzer(Analyzer):
         Analyzer.__init__(self)
         self.service = self.getParam('config.service', None, 'PassiveTotal service is missing')
         self.username = self.getParam('config.username', None, 'PassiveTotal username is missing')
-        self.api_key = self.getParam('config.api_key', None, 'PassiveTotal api_key is missing')
+        self.api_key = self.getParam('config.key', None, 'PassiveTotal API key is missing')
 
     def summary(self, raw):
         result = {
