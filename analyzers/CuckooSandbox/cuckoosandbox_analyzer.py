@@ -21,9 +21,8 @@ class CuckooSandboxAnalyzer(Analyzer):
             'service': self.service,
             'dataType': self.data_type
         }
-
-        result.update(raw['info'])
-
+        result["malscore"] = raw.get("malscore", 0)
+        result["malfamily"] = raw.get("malfamily", None)
         return result
 
     def run(self):
