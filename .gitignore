@@ -4,3 +4,4 @@ thehive-templates/*.zip
 thehive-templates/*.sh
 
 .idea
+.DS_Store
