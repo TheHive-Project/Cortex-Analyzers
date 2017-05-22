@@ -5,7 +5,11 @@
     "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
     "version": "1.0",
     "baseConfig": "FireholBlocklists",
-    "config": {},
+    "config": {
+        "check_tlp": false,
+        "max_tlp": 3,
+        "service": ""
+    },
     "description": "Check ips against the firehol blocklists available at https://github.com/firehol/blocklist-ipsets.",
     "dataTypeList": ["ip"],
     "command": "FireholBlocklists/firehol_blocklists.py"
