@@ -10,7 +10,7 @@
         "check_tlp": true,
         "max_tlp": 1
     },
-    "description": "Check, if observable was processed in VMRay, upload file to VMRay and return the hash.",
+    "description": "VMRay Sandbox file analysis",
     "dataTypeList": ["hash", "file"],
     "command": "VMRay/vmray.py"
 }
