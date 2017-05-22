@@ -55,7 +55,7 @@ class FireholBlocklistsAnalyzer(Analyzer):
         # hits will be the variable to store all matches
         hits = []
         description = {}
-
+        file_date = {}
         # Check for lock
         while os.path.isfile('{}/.lock'.format(self.path)):
             sleep(10)
@@ -65,12 +65,14 @@ class FireholBlocklistsAnalyzer(Analyzer):
             with open('{}/{}'.format(self.path, ipset)) as afile:
                 ipsetname = ipset.split('.')[0]
                 description.update({ipsetname: ''})
+                file_date.update({ipsetname : ''})
                 for l in afile:
                     if l[0] == '#':
                         # Check for date and break if too old
                         if '# Source File Date: ' in l:
                             datestr = re.sub('# Source File Date: ', '', l.rstrip('\n'))
                             date = parse(datestr)
+                            file_date[ipsetname] = str(date)
                             if (date - self.now).days > self.ignoredays:
                                 break
                         description[ipsetname] += re.sub(r'^\[.*\] \(.*\) [a-zA-Z0-9.\- ]*$', '', l.lstrip('# '))\
@@ -78,7 +80,7 @@ class FireholBlocklistsAnalyzer(Analyzer):
                     else:
                         if ip in l:
                             # On match append to hits and break; next file!
-                            hits.append({'list': ipsetname, 'description': description.get(ipsetname)})
+                            hits.append({'list': ipsetname, 'description': description.get(ipsetname), 'file_date': file_date.get(ipsetname)})
                             break
 
         # Second: check the netsets
@@ -86,12 +88,14 @@ class FireholBlocklistsAnalyzer(Analyzer):
             with open('{}/{}'.format(self.path, netset)) as afile:
                 netsetname = netset.split('.')[0]
                 description.update({netsetname: ''})
+                file_date.update({ipsetname : ''})
                 for l in afile:
                     if l[0] == '#':
                         # Check for date and break if too old
                         if '# Source File Date: ' in l:
                             datestr = re.sub('# Source File Date: ', '', l.rstrip('\n'))
                             date = parse(datestr)
+                            file_date[ipsetname] = str(date)
                             if (date - self.now).days > self.ignoredays:
                                 break
                         description[netsetname] += re.sub(r'^\[.*\] \(.*\) [a-zA-Z0-9.\- ]*$', '', l.lstrip('# '))\
@@ -99,7 +103,7 @@ class FireholBlocklistsAnalyzer(Analyzer):
                     else:
                         try:
                             if ipaddress.ip_address(ip) in ipaddress.ip_network(u'{}'.format(l.split('\n')[0])):
-                                hits.append({'list': netsetname, 'description': description.get(netsetname)})
+                                hits.append({'list': netsetname, 'description': description.get(netsetname), 'file_date': file_date.get(ipsetname)})
                                 break
                         except ValueError as e:
                             self.error('ValueError occured. Used values: ipnetwork {}, ip to check {}, file {}.'
