@@ -71,7 +71,7 @@ class FireholBlocklistsAnalyzer(Analyzer):
                         if '# Source File Date: ' in l:
                             datestr = re.sub('# Source File Date: ', '', l.rstrip('\n'))
                             date = parse(datestr)
-                            if (date - self.now).days > self.ignoredays:
+                            if (self.now - date).days > self.ignoredays:
                                 break
                         description[ipsetname] += re.sub(r'^\[.*\] \(.*\) [a-zA-Z0-9.\- ]*$', '', l.lstrip('# '))\
                             .replace('\n\n', '\n')
@@ -92,7 +92,7 @@ class FireholBlocklistsAnalyzer(Analyzer):
                         if '# Source File Date: ' in l:
                             datestr = re.sub('# Source File Date: ', '', l.rstrip('\n'))
                             date = parse(datestr)
-                            if (date - self.now).days > self.ignoredays:
+                            if (self.now - date).days > self.ignoredays:
                                 break
                         description[netsetname] += re.sub(r'^\[.*\] \(.*\) [a-zA-Z0-9.\- ]*$', '', l.lstrip('# '))\
                             .replace('\n\n', '\n')
