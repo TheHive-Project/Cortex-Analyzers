@@ -73,7 +73,6 @@ class FireholBlocklistsAnalyzer(Analyzer):
                             datestr = re.sub('# Source File Date: ', '', l.rstrip('\n'))
                             date = parse(datestr)
                             file_date[ipsetname] = str(date)
-                            print(self.now - date).days
                             if (self.now - date).days > self.ignoredays:
                                 break
                         description[ipsetname] += re.sub(r'^\[.*\] \(.*\) [a-zA-Z0-9.\- ]*$', '', l.lstrip('# '))\
