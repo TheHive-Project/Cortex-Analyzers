@@ -5,6 +5,10 @@
 		Firehol IP Report (https://github.com/firehol/blocklist-ipsets)
 	</div>
 	<div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Number of matching lists:</dt>
+            <dd>{{content.count}}</dd>
+        </dl>
 
         <table class="table" ng-if="content.hits">
             <thead>
