@@ -3,11 +3,11 @@
         <strong>Detailed Information</strong>
     </div>
     <div class="panel-body">
-        <div ng-if="content.length === 0">
+        <div ng-if="content.events.length === 0">
             No records found
         </div>
-        <div ng-if="content.length > 0">
-            <div ng-repeat="event in content" class="mb-s">
+        <div ng-if="content.events.length > 0">
+            <div ng-repeat="event in content.events" class="mb-s">
                 <h4 class="text-primary">{{event.info || 'Event #'+event.id}}</h4>
                 <dl class="dl-horizontal">
                     <dt>Event ID</dt>
