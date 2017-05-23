@@ -11,8 +11,10 @@ class MISPAnalyzer(Analyzer):
         Analyzer.__init__(self)
         self.service = self.getParam('config.service', None, 'MISP service is missing')
         self.url = self.getParam('config.url', None, 'MISP url is missing')
-        self.api_key = self.getParam('config.api_key', None, 'MISP api_key is missing')
-
+        if self.get_param('config.key'):
+            self.api_key = self.get_param('config.key')
+        else:
+            self.api_key = self.get_param('config.api_key', None, 'MISP key for API is missing')
     def summary(self, raw):
         result = {
             'service': self.service,
@@ -80,7 +82,7 @@ class MISPAnalyzer(Analyzer):
 
                             events.append(event)
 
-                self.report(events)
+                self.report({"events": events})
             else:
                 self.error('Unknown MISP service')
 
