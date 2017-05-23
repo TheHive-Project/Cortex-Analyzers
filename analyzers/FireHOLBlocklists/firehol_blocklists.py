@@ -21,7 +21,7 @@ class FireholBlocklistsAnalyzer(Analyzer):
 
         # Get config parameters
         self.path = self.getParam('config.blocklistpath', '/tmp/fireholblocklists')
-        self.ignoredays = self.getParam('config.ignoredays', 365)
+        self.ignoreolderthandays = self.getParam('config.ignoreolderthandays', 365)
         self.utc = pytz.UTC
         self.now = dt.datetime.now(tz=self.utc)
 
@@ -73,7 +73,7 @@ class FireholBlocklistsAnalyzer(Analyzer):
                             datestr = re.sub('# Source File Date: ', '', l.rstrip('\n'))
                             date = parse(datestr)
                             file_date[ipsetname] = str(date)
-                            if (self.now - date).days > self.ignoredays:
+                            if (self.now - date).days > self.ignoreolderthandays:
                                 break
                         description[ipsetname] += re.sub(r'^\[.*\] \(.*\) [a-zA-Z0-9.\- ]*$', '', l.lstrip('# '))\
                             .replace('\n\n', '\n')
@@ -96,7 +96,7 @@ class FireholBlocklistsAnalyzer(Analyzer):
                             datestr = re.sub('# Source File Date: ', '', l.rstrip('\n'))
                             date = parse(datestr)
                             file_date[ipsetname] = str(date)
-                            if (self.now - date).days > self.ignoredays:
+                            if (self.now - date).days > self.ignoreolderthandays:
                                 break
                         description[netsetname] += re.sub(r'^\[.*\] \(.*\) [a-zA-Z0-9.\- ]*$', '', l.lstrip('# '))\
                             .replace('\n\n', '\n')
