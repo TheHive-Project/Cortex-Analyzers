@@ -1,6 +1,6 @@
 The following repository is used by [TheHive Project](https://thehive-project.org) to develop and store [Cortex](https://github.com/CERT-BDF/Cortex/blob/master/README.md) analyzers.
 
-![](images/cortex-jobs.png)
+![](images/cortex-main.png)
 
 Analyzers can be written in any programming language supported by Linux such as Python, Ruby, Perl, etc.
 
