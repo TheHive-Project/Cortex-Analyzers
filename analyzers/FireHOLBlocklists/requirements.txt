@@ -1,4 +1,4 @@
 ipaddress
 pytz
-dateutil
+python-dateutil
 datetime
