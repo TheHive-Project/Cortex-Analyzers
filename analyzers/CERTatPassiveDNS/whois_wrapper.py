@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from re import findall
 from subprocess import check_output
 
 
@@ -26,9 +25,12 @@ def __process_results(results):
     :returns: python list of dictionaries containing the relevant results.
     :rtype: list
     """
+
     result_list = []
-    # Create a list for each entry.
-    split = findall(r'\w*\W\w*:.*\n\w*\W\w*:.*\n\w*\W\w*:.*\n\w*\W\w*:.*\n\w*\W\w*:.*\n', results)
+
+    # Splts the result and cuts first and last dataset which are comments
+    split = results.split(sep='\n\n')[1:-1]
+
     for entry in split:
         entry_dict = {}
         for value in entry.split('\n'):
