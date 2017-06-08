@@ -1,0 +1,52 @@
+<div class="panel panel-info" ng-if="success">
+	<div class="panel-heading">
+		CERT.at Passive DNS Report
+	</div>
+	<div class="panel-body">
+        <p ng-if="content.results.length == 0">
+            No result found.
+        </p>
+        <table class="table" ng-if="content.results">
+            <thead>
+                <th>Count</th>
+                <th>rrtype</th>
+                <th>data</th>
+                <th>First time</th>
+                <th>Last time</th>
+            </thead>
+            <tbody ng-repeat="r in content.results | orderBy:'-seenlast'">
+                <tr>
+                    <td>{{r.countrequested}}</td>
+                    <td>{{r.rrtype}}</td>
+                    <td ng-if="r.rrtype !== 'SOA' ">
+                        {{r.rraddress || r.rrdname}}
+                    </td>
+                    <td ng-if="r.rrtype == 'SOA'">
+                        <p>primary: {{r.rrprimary}}</p>
+                        <p>hostmaster: {{r.rrhostmaster}}</p>
+                        <p>serial: {{r.rrserial}}</p>
+                        <p>refresh: {{r.rrrefresh}}</p>
+                        <p>retry: {{r.rrretry}}</p>
+                        <p>expire: {{r.rrexpire}}</p>
+                        <p>minimum: {{r.rrminimum}}</p>
+                    </td>
+                    <td>{{r.seenfirst}}</td>
+                    <td>{{r.seenlast}}</td>
+                </tr>
+            </tbody>
+        </table>
+	</div>
+</div>
+
+
+<div class="panel panel-danger" ng-if="!success">
+	<div class="panel-heading">
+		CERT.at Passive DNS Report <b>Error</b>
+	</div>
+	<div class="panel-body">
+		<dl class="dl-horizontal">
+			<dt>Error: </dt>
+			<dd>{{content.errorMessage}}</dd>
+		</dl>
+	</div>
+</div>
