@@ -20,9 +20,21 @@ class SafebrowsingAnalyzer(Analyzer):
         )
 
     def summary(self, raw):
-        result = {"matches":0}
+
+        result = {"level":"info", "taxonomy":{"namespace": "Google", "predicate": "Safebrowsing", "value":0}}
+
         if ("results" in raw):
-            result["matches"] = len(raw['results'])
+            r = len(raw['results'])
+
+        if r == 0 or r == 1:
+            result["taxonomy"]["value"] = "\"{} match\"".format(r)
+        else:
+            result["taxonomy"]["value"] = "\"{} matches\"".format(r)
+
+        if r > 0:
+            result["level"] = "malicious"
+        # level : info, safe, suspicious, malicious
+
         return result
 
     def run(self):
