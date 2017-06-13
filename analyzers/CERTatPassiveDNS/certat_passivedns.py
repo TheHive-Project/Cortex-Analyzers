@@ -21,5 +21,20 @@ class CERTatPassiveDNSAnalyzer(Analyzer):
         results = raw.get('results')
         return {'hits': len(results)}
 
+    def summary(self, raw):
+
+        result = {"level":"info", "taxonomy":{"namespace": "CERT.at", "predicate": "PassiveDNS", "value":0}}
+
+        results = raw.get('results')
+        r = len(results)
+
+        if r == 0 or r == 1:
+            result["taxonomy"]["value"] = "\"{} hit\"".format(r)
+        else:
+            result["taxonomy"]["value"] = "\"{} hits\"".format(r)
+
+        return result
+
+
 if __name__ == '__main__':
     CERTatPassiveDNSAnalyzer().run()
