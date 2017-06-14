@@ -151,13 +151,13 @@ class Analyzer:
         :param ensure_ascii: Force ascii output. Default: False"""
 
         analyzerInput = self.__input
-        if 'password' in analyzerInput.get('config'):
+        if 'password' in analyzerInput.get('config', {}):
             analyzerInput['config']['password'] = 'REMOVED'
-        if 'key' in analyzerInput.get('config'):
+        if 'key' in analyzerInput.get('config', {}):
             analyzerInput['config']['key'] = 'REMOVED'
-        if 'apikey' in analyzerInput.get('config'):
+        if 'apikey' in analyzerInput.get('config', {}):
             analyzerInput['config']['apikey'] = 'REMOVED'
-        if 'api_key' in analyzerInput.get('config'):
+        if 'api_key' in analyzerInput.get('config', {}):
             analyzerInput['config']['api_key'] = 'REMOVED'
 
         json.dump({'success': False,
