@@ -15,9 +15,11 @@ If an analyzer is released by its author under a different license, the subfolde
 Information, news and updates are regularly posted on [TheHive Project Twitter account](https://twitter.com/thehive_project) and on [the blog](https://blog.thehive-project.org/).
 
 # Contributing
-We welcome your contributions for new analyzers that can take away the load off overworked fellow analysts or improvements to existing ones. Please feel free to fork the code, play with it, make some patches and send us pull requests.
+We welcome your contributions for new analyzers that can take away the load off overworked fellow analysts or improvements to existing ones. Please feel free to fork the code, play with it, make some patches and send us pull requests using [issues](https://github.com/CERT-BDF/Cortex-analyzers/issues).
 
-To make it easy for every one, please send **one** pull request per analyzer. It will help us reviewing the code, and merging as soon as feasible.
+**Important**: To make it easy for every one, please send **one** pull request per analyzer. It will help us reviewing the code, and merging as soon as feasible.
+
+We do have a [Code of conduct](code_of_conduct.md). Make sure to check it out before contributing.
 
 # Support
 if you encounter an issue with an analyzer or would like to request a new one or an improvement to an existing analyzer, please open an issue on the [analyzers' dedicated GitHub repository](https://github.com/CERT-BDF/Cortex-Analyzers/issues/new).
