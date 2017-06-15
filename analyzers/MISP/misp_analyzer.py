@@ -5,6 +5,7 @@ from cortexutils.analyzer import Analyzer
 
 from pymisp import PyMISP
 
+
 class MISPAnalyzer(Analyzer):
 
     def __init__(self):
@@ -15,6 +16,7 @@ class MISPAnalyzer(Analyzer):
             self.api_key = self.get_param('config.key')
         else:
             self.api_key = self.get_param('config.api_key', None, 'MISP key for API is missing')
+
     def summary(self, raw):
         result = {
             'service': self.service,
@@ -23,7 +25,7 @@ class MISPAnalyzer(Analyzer):
 
         # search service
         if self.service == 'search':
-            result['events'] = len(raw)
+            result['events'] = len(raw['events'])
         else:
             result['events'] = 0
 
