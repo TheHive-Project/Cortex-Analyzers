@@ -66,17 +66,22 @@ class CIRCLPassiveSSLAnalyzer(Analyzer):
         return {'query': cquery,
                 'cert': cfetch}
 
-    def summary(self, raw):
-        if raw.get('cert', None):
-            result = {'num_ips_used_cert': raw.get('query').get('hits')}
 
-            # Not available for all certificates
-            if raw.get('cert').get('icsi', None):
-                result['validated'] = raw.get('cert').get('icsi').get('validated')
-                result['lastseen'] = raw.get('cert').get('icsi').get('last_seen')
-            return result
+    def summary(self, raw):
+        result = {"level": "info", "taxonomy": {"namespace": "CIRCL", "predicate": "PassiveSSL", "value": 0}}
+
+        if (self.data_type == 'hash') and ("query" in raw):
+            r = raw.get('query', 0).get('hits', 0)
+        if (self.data_type == 'ip') and ("certificates" in raw):
+            r = len(raw['certificates'])
+
+        if r == 0 or r == 1:
+            result["taxonomy"]["value"] = "\"{} hit\"".format(r)
         else:
-            return {'num_certs_by_ip': len(raw.get(self.getData()).get('certificates'))}
+            result["taxonomy"]["value"] = "\"{} hits\"".format(r)
+
+        return result
+
 
     def run(self):
         if self.data_type == 'certificate_hash' or self.data_type == 'hash':
