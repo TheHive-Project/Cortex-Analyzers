@@ -7,10 +7,11 @@ import codecs
 import json
 from cortexutils.extractor import Extractor
 
+
 class Analyzer:
 
     def __init__(self):
-        #self.__set_encoding()
+        self.__set_encoding()
 
         # Prepare in/out/err streams
         self.fperror = sys.stderr
@@ -75,14 +76,12 @@ class Analyzer:
     def __set_encoding(self):
         if sys.stdout.encoding != 'UTF-8':
             if sys.version_info[0] == 3:
-                sys.stdout = codecs.getwriter(
-                    'utf-8')(sys.stdout.buffer, 'strict')
+                sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
             else:
                 sys.stdout = codecs.getwriter('utf-8')(sys.stdout, 'strict')
         if sys.stderr.encoding != 'UTF-8':
             if sys.version_info[0] == 3:
-                sys.stderr = codecs.getwriter(
-                    'utf-8')(sys.stderr.buffer, 'strict')
+                sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
             else:
                 sys.stderr = codecs.getwriter('utf-8')(sys.stderr, 'strict')
 
@@ -151,13 +150,13 @@ class Analyzer:
         :param ensure_ascii: Force ascii output. Default: False"""
 
         analyzerInput = self.__input
-        if 'password' in analyzerInput.get('config'):
+        if 'password' in analyzerInput.get('config', {}):
             analyzerInput['config']['password'] = 'REMOVED'
-        if 'key' in analyzerInput.get('config'):
+        if 'key' in analyzerInput.get('config', {}):
             analyzerInput['config']['key'] = 'REMOVED'
-        if 'apikey' in analyzerInput.get('config'):
+        if 'apikey' in analyzerInput.get('config', {}):
             analyzerInput['config']['apikey'] = 'REMOVED'
-        if 'api_key' in analyzerInput.get('config'):
+        if 'api_key' in analyzerInput.get('config', {}):
             analyzerInput['config']['api_key'] = 'REMOVED'
 
         json.dump({'success': False,
