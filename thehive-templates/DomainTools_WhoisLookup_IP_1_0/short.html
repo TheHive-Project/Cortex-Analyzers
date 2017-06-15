@@ -1,2 +1,3 @@
-<span ng-if="content.registrant" class="label label-info">DT:Whois,REGISTRANT= {{content.registrant}}</span>
-<span ng-if="content.registrar" class="label label-info">DT:Whois,REGISTRAR= {{content.registrar}}</span>
+<span class="label" ng-repeat="t in content.taxonomies" ng-class="{'info': 'label-info', 'safe': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[t.level]">
+    {{t.namespace}}:{{t.predicate}}={{t.value}}
+</span>&nbsp;
