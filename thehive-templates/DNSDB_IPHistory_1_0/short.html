@@ -1,1 +1,3 @@
-<span ng-if="content.records" class="label label-info">DNSDB:IP History= {{content.records}} records</span>
+<span class="label" ng-init="t = content.taxonomy" ng-class="{'info': 'label-info', 'safe': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[content.level]">
+    {{t.namespace}}:{{t.predicate}}={{t.value}}
+</span>&nbsp;
