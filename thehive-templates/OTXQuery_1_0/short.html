@@ -1,4 +1,3 @@
-<span class="label" ng-class="{'false':'label-info', 'true':'label-danger'}[content.pulse_count > 0]">
-	OTX:
-	<span>Pulses=({{content.pulse_count}})&nbsp;</span>
-</span>
+<span class="label" ng-repeat="t in content.taxonomies" ng-class="{'info': 'label-info', 'safe': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[t.level]">
+    {{t.namespace}}:{{t.predicate}}={{t.value}}
+</span>&nbsp;
