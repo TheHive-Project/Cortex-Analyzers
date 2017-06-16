@@ -10,7 +10,16 @@ from cortexutils.analyzer import Analyzer
 class URLCategoryAnalyzer(Analyzer):
 
     def summary(self, raw):
-        return {'category': raw['category']}
+        taxonomy = {"level": "info", "namespace": "Fortiguard", "predicate": "URLCat", "value": 0}
+        taxonomies = []
+
+        if 'category' in raw:
+            r = raw.get('category')
+            taxonomy["value"] = r
+            taxonomies.append(taxonomy)
+
+        result = {"taxonomies": taxonomies}
+        return result
 
     def run(self):
         Analyzer.run(self)

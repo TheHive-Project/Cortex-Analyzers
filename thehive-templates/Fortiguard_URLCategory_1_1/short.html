@@ -1,4 +1,3 @@
-<span class="label label-info">
-	Fortiguard:URLCat=
-	<span ng-if="content.category">{{content.category}}&nbsp;</span>
-</span>
+<span class="label" ng-repeat="t in content.taxonomies" ng-class="{'info': 'label-info', 'safe': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[t.level]">
+    {{t.namespace}}:{{t.predicate}}={{t.value}}
+</span>&nbsp;
