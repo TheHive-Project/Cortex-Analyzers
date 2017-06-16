@@ -14,6 +14,8 @@ class MISPAnalyzer(Analyzer):
                                name=self.getParam('config.name', None))
 
     def summary(self, raw):
+        taxonomy = {"level": "info", "namespace": "MISP", "predicate": "Search", "value": 0}
+        taxonomies = []
 
         data = []
         for r in raw['results']:
@@ -23,9 +25,15 @@ class MISPAnalyzer(Analyzer):
 
         # return number of unique events
         if data == []:
-            return {'results': 0}
+            taxonomy["value"] = 0
+            taxonomies.append(taxonomy)
         else:
-            return {'results': len(list(set(data)))}
+            taxonomy["value"] = "\"{} event(s)\"".format(len(list(set(data))))
+
+        result = {"taxonomies": taxonomies}
+        return result
+
+
 
     def run(self):
         if self.data_type == 'hash':
