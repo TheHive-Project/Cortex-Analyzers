@@ -1,4 +1,3 @@
-<span ng-init="score = content[artifact.data]" class="label"
-	ng-class="{'label-danger': score < 0, 'label-default': score == 0, 'label-success': score > 0}">
-	Hippocampe:Score= {{score}}
-</span>
+<span class="label" ng-repeat="t in content.taxonomies" ng-class="{'info': 'label-info', 'safe': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[t.level]">
+    {{t.namespace}}:{{t.predicate}}={{t.value}}
+</span>&nbsp;

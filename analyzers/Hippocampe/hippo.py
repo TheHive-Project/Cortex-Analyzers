@@ -34,10 +34,25 @@ class HippoAnalyzer(Analyzer):
         return result
 
     def summary(self, raw):
+        taxonomy = {"level": "success", "namespace": "Hippocampe", "predicate": "Score", "value": 0}
+        taxonomies = []
+
+
         if (self.service == 'hipposcore'):
-            return self.scoreSummary(raw)
+            r = self.scoreSummary(raw).get("data", 0)
+            taxonomy["value"] = r
+            if r > 0:
+                taxonomy["level"] = "malicious"
+            taxonomies.append(taxonomy)
         elif (self.service == 'more'):
-            return self.moreSummary(raw)
+            r = self.moreSummary(raw).get("data", 0)
+            taxonomy["value"] = "\"{} record(s)\"".format(r)
+            if r > 0:
+                taxonomy["level"] = "malicious"
+            taxonomies.append(taxonomy)
+
+        result = {"taxonomies": taxonomies}
+        return result
 
     def run(self):
         data = self.getData()
