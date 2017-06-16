@@ -138,18 +138,38 @@ class FileAnalyzer(Analyzer):
 
     # SUMMARY
     def summary(self, fullReport):
+
+        taxonomy = {"level": "info", "namespace": "FileInfo", "predicate": "Filetype", "value": 0}
+        taxonomies = []
+
         if fullReport['Mimetype'] in ['application/x-dosexec']:
-            return self.PE_Summary(fullReport)
-        if fullReport['Mimetype'] in ['application/pdf']:
-            return self.PDF_Summary(fullReport)
-        if (fullReport['filetype'] in ['DOC','DOCM','DOCX',
+            pereport = self.PE_Summary(fullReport)
+            taxonomy["value"] = pereport['filetype']
+            taxonomies.append(taxonomy)
+        elif fullReport['Mimetype'] in ['application/pdf']:
+            pdfreport = self.PDF_Summary(fullReport)
+            taxonomy['value'] = pdfreport['filetype']
+            if pdfreport['suspicious']:
+                taxonomy['level'] = 'warning'
+            taxonomies.append(taxonomy)
+        elif (fullReport['filetype'] in ['DOC','DOCM','DOCX',
                                     'XLS', 'XLSM', 'XLSX',
                                     'PPT', "PPTM", 'PPTX']):
-            return self.MSOffice_Summary(fullReport)
+            msreport = self.MSOffice_Summary(fullReport)
+            taxonomy['value'] = msreport['filetype']
+            if msreport['suspicious']:
+                taxonomy['level'] = 'warning'
+            taxonomies.append(taxonomy)
+        else:
+            taxonomy['value'] = fullReport['filetype']
+            taxonomies.append(taxonomy)
 
-        return {
-            'filetype': fullReport['filetype']
-        }
+        result = {'taxonomies': taxonomies}
+        return result
+
+
+
+
 
     def SpecificInfo(self,report):
         # run specific program for PE
