@@ -26,9 +26,34 @@ class JoeSandboxAnalyzer(Analyzer):
             'dataType': self.data_type
         }
 
-        result.update(raw['detection'])
+        taxonomy = {"level": "info", "namespace": "JSB", "predicate": "Clean", "value": 0}
+        taxonomies = []
+
+        r = raw['detection']
+
+        taxonomy["value"] = "\"{}/{}\"".format(r["score"], r["maxscore"])
+        if r["clean"]:
+            taxonomy["level"] = "safe"
+        elif r["suspicious"]:
+            taxonomy["level"] = "suspicious"
+            taxonomy["predicate"] = "Suspicious"
+        elif r["malicious"]:
+            taxonomy["level"] = "malicious"
+            taxonomy["predicate"] = "Malicious"
+
+
+        else:
+            taxonomy["level"] = "info"
+            taxonomy["value"] = "?"
+
+        taxonomies.append(taxonomy)
+        result.update(taxonomies)
 
         return result
+
+    # content = (k,v) k.score / k.maxscore
+    #{malicious: true, service: "file_analysis_inet", dataType: "file", unknown: false, minscore: 0,…}
+
 
     def run(self):
         Analyzer.run(self)
