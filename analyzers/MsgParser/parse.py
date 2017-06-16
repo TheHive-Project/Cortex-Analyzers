@@ -17,11 +17,17 @@ class MsgParserAnalyzer(Analyzer):
         self.filepath = self.getParam('file', None, 'File is missing')
 
     def summary(self, raw):
+        taxonomy = {"level": "info", "namespace": "MsgParser", "predicate": "Attachments", "value": 0}
+        taxonomies = []
+
         result = {
             "attachments": 0
         }
         if("attachments" in raw):
-            result["attachments"] = len(raw["attachments"])
+            taxonomy["value"] = len(raw["attachments"])
+            taxonomies.append(taxonomy)
+
+        result = {"taxonomies": taxonomy}
 
         return result
 
