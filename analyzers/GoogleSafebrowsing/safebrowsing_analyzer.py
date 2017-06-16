@@ -27,14 +27,14 @@ class SafebrowsingAnalyzer(Analyzer):
         if ("results" in raw):
             r = len(raw['results'])
 
-        if r == 0 or r == 1:
-            taxonomy["value"] = "\"{} match\"".format(r)
-        else:
-            taxonomy["value"] = "\"{} matches\"".format(r)
-
-        if r > 0:
-            taxonomy["level"] = "malicious"
-        # level : info, safe, suspicious, malicious
+            if r == 0 or r == 1:
+                taxonomy["value"] = "\"{} match\"".format(r)
+            else:
+                taxonomy["value"] = "\"{} matches\"".format(r)
+    
+            if r > 0:
+                taxonomy["level"] = "malicious"
+            # level : info, safe, suspicious, malicious
 
         taxonomies.append(taxonomy)
         result = {"taxonomies": taxonomies}

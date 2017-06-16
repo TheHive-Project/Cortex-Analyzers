@@ -60,18 +60,22 @@ class DomainToolsAnalyzer(Analyzer):
         if r["service"] == "reverse-ip":
             report["predicate"] = "Reverse_IP"
             taxonomy["value"] = "\"{}, {} domains\"".format(r["ip"]["address"], r["ip"]["domain_count"])
+            taxonomies.append(taxonomy)
 
         if r["service"] == "name-server-domains":
             taxonomy["predicate"] = "Reverse_Name_Server"
             taxonomy["value"] = "\"{}, {} domains\"".format(r["name_server"], r["domain_count"])
+            taxonomies.append(taxonomy)
 
         if r["service"] == "reverse-whois":
             taxonomy["predicate"] = "Reverse_Whois"
             taxonomy["value"] = "\"curr:{} / hist:{} domains\"".format(r["domain_count"]["current"], r["domain_count"]["historic"])
+            taxonomies.append(taxonomy)
 
         if r["service"] == "whois/history":
             taxonomy["predicate"] = "Whois_History"
             taxonomy["value"] = "\"{}, {} domains \"".format(r["name_server"], r["domain_count"])
+            taxonomies.append(taxonomy)
 
         if (r["service"] == "whois/parsed") or (r['service'] == "whois"):
             taxonomy["predicate"] = "Whois"
