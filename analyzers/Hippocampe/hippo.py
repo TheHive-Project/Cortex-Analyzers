@@ -34,7 +34,7 @@ class HippoAnalyzer(Analyzer):
         return result
 
     def summary(self, raw):
-        taxonomy = {"level": "success", "namespace": "Hippocampe", "predicate": "Score", "value": 0}
+        taxonomy = {"level": "safe", "namespace": "Hippocampe", "predicate": "Score", "value": 0}
         taxonomies = []
 
 

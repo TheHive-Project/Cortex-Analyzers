@@ -51,10 +51,6 @@ class JoeSandboxAnalyzer(Analyzer):
 
         return result
 
-    # content = (k,v) k.score / k.maxscore
-    #{malicious: true, service: "file_analysis_inet", dataType: "file", unknown: false, minscore: 0,…}
-
-
     def run(self):
         Analyzer.run(self)
 

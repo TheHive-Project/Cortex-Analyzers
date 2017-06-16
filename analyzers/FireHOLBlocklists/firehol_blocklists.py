@@ -126,7 +126,7 @@ class FireholBlocklistsAnalyzer(Analyzer):
             if r > 0:
                 taxonomy["level"] = "suspicious"
             else:
-                taxonomy["level"] = "success"
+                taxonomy["level"] = "safe"
 
             taxonomies.append(taxonomy)
 
