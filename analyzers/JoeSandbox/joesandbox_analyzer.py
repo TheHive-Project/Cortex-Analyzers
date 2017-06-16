@@ -47,7 +47,7 @@ class JoeSandboxAnalyzer(Analyzer):
             taxonomy["value"] = "?"
 
         taxonomies.append(taxonomy)
-        result.update(taxonomies)
+        result.update({"taxonomies":taxonomies})
 
         return result
 
