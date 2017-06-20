@@ -10,7 +10,7 @@
       "max_tlp":3,
       "service":""
     },
-    "description": "Use CERT-SG's Abuse Finder to find the abuse contact associated with domain names, URLs, IPs and email addresses",
+    "description": "Find abuse contacts associated with domain names, URLs, IPs and email addresses",
     "dataTypeList": ["ip", "domain", "url", "mail"],
     "command": "Abuse_Finder/abusefinder.py"
 }
