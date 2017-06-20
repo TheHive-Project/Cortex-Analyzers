@@ -45,6 +45,17 @@ class YaraAnalyzer(Analyzer):
         return result
 
     def summary(self, raw):
+
+        taxonomy = {"level": "info", "namespace": "Yara", "predicate": "Match", "value": 0}
+        taxonomies = []
+        taxonomy["value"] = "\"{} rules\"".format(len(raw["results"]))
+        if len(raw["results"]) == 0:
+            taxonomy["level"] = "safe"
+        else:
+            taxonomy["level"] = "malicious"
+
+        taxonomies.append(taxonomy)
+        result = {"taxomonies": taxonomies}
         return {"matches":len(raw["results"])}
 
     def run(self):
