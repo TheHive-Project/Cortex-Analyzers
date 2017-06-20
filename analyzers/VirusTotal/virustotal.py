@@ -64,6 +64,10 @@ class VirusTotalAnalyzer(Analyzer):
             self.error('Scan not found')
 
     def summary(self, raw):
+
+        taxonomy = {"level": "clean", "namespace": "VT", "predicate": "Score", "value": 0}
+        taxonomies = []
+
         result = {
             "has_result": True
         }
@@ -91,6 +95,16 @@ class VirusTotalAnalyzer(Analyzer):
                 result["detected_downloaded_samples"] = len(
                     raw["detected_downloaded_samples"])
 
+        taxonomy['value'] = "{}/{}".format(result["positives"], result["total"])
+        if result["positives"] == 0:
+            taxonomy["level"] = "safe"
+        elif result["positives"] < 5 :
+            taxonomy["level"] = "suspicious"
+        else:
+            taxonomy["level"] = "malicious"
+
+        taxonomies.append(taxonomy)
+        result = {"taxonomies": taxonomies}
         return result
 
     def run(self):
