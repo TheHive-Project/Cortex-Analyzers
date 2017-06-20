@@ -26,10 +26,19 @@ class phishtankAnalyzer(Analyzer):
     	return json.loads(r.content)
 
     def summary(self,raw):
+
+		taxonomy = {"level": "safe", "namespace": "PhishTank", "predicate": "In_Database", "value": "False"}
+		taxonomies = []
+
         if ('in_database' in raw) :
-            return {'in_database':raw['in_database'],
-            'verified':raw['verified'],
-            'verified_at':raw['verified_at']}
+			taxonomy['value'] = "\"{}\"".format(raw['in_database'])
+			if raw['verified']:
+				taxonomy['level'] = "malicious"
+			else:
+				taxonomy['level'] = "suspicious"
+			taxonomies.append(taxonomy)
+			return {"taxonomies":taxonomies}
+
 
     def run(self):
         if self.service == 'query':
