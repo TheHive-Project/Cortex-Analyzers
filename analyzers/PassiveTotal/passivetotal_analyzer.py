@@ -21,25 +21,40 @@ class PassiveTotalAnalyzer(Analyzer):
             'service': self.service,
             'dataType': self.data_type
         }
+        taxonomy = {"level": "info", "namespace": "PT", "predicate": "Service", "value": "\"False\""}
+        taxonomies = []
 
         # malware service
         if self.service == 'malware':
+            taxonomy["predicate"] = "Malware"
             if 'results' in raw and raw['results']:
                 result['malware'] = True
-
+                taxonomy["level"] = "malicious"
+            else:
+                result['malware'] = False
+                taxonomy["level"] = "safe"
+            taxonomy["value"] = "\"{}\"".format(result['malware'])
+            taxonomies.append(taxonomy)
         # osint service
         elif self.service == 'osint':
+            taxonomy["predicate"] = "OSINT"
             if 'results' in raw and raw['results']:
                 result['osint'] = True
-
+            else:
+                result['osint'] = False
+            taxonomy["value"] = "\"{}\"".format(result['osint'])
+            taxonomies.append(taxonomy)
         # passive dns service
         elif self.service == 'passive_dns':
+            taxonomy["predicate"] = "PassiveDNS"
             if 'firstSeen' in raw and raw['firstSeen']:
                 result['firstSeen'] = raw['firstSeen']
             if 'lastSeen' in raw and raw['lastSeen']:
                 result['lastSeen'] = raw['lastSeen']
             if 'totalRecords' in raw and raw['totalRecords']:
                 result['total'] = raw['totalRecords']
+
+            if result['total'] < 2:
 
         # ssl certificate details service
         elif self.service == 'ssl_certificate_details':
@@ -68,6 +83,9 @@ class PassiveTotalAnalyzer(Analyzer):
             if 'registrar' in raw and raw['registrar']:
                 result['registrar'] = raw['registrar']
 
+
+
+        result.update({"taxonomies":taxonomies})
         return result
 
     def run(self):

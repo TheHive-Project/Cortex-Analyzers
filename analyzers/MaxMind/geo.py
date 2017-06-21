@@ -58,12 +58,14 @@ class MaxMindAnalyzer(Analyzer):
         }
 
     def summary(self, raw):
-        result = {}
+        taxonomy = {"level": "info", "namespace": "MaxMind", "predicate": "Location", "value": 0}
+        taxonomies = []
 
         if("continent" in raw):
-            result["country"] = raw["country"]["name"]
-            result["continent"] = raw["continent"]["name"]
+            taxonomy["value"] = "\"{}/{}\"".format(raw["country"]["name"], raw["continent"]["name"])
+            taxonomies.append(taxonomy)
 
+        result = {"taxonomies":taxonomies}
         return result
 
     def run(self):

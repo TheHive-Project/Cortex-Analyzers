@@ -37,7 +37,31 @@ class NessusAnalyzer(Analyzer):
             summary["medium"]   = count[2]
             summary["high"]     = count[3]
             summary["critical"] = count[4]
-        return summary
+
+        taxonomy = {"level": "info", "namespace": "Nessus", "predicate": "Info", "value": 0}
+        taxonomies = []
+
+        if summary["info"] > 0:
+            taxonomy["value"] = summary["info"]
+            taxonomies.append(taxonomy)
+        if summary["low"] >0:
+            taxonomy["value"] = summary["low"]
+            taxonomies.append(taxonomy)
+        if summary["medium"] >0:
+            taxonomy["value"] = summary["medium"]
+            taxonomy["level"] = "suspicious"
+            taxonomies.append(taxonomy)
+        if summary["high] >0:
+            taxonomy["value"] = summary["hugh"]
+            taxonomy["level"] = "suspicious"
+            taxonomies.append(taxonomy)
+        if summary["critical"] >0:
+            taxonomy["value"] = summary["critical"]
+            taxonomy["level"] = "malicious"
+            taxonomies.append(taxonomy)
+
+        result = {"taxonomies": taxonomies}
+        return result
 
     def run(self):
         Analyzer.run(self)

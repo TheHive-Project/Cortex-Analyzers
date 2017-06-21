@@ -21,35 +21,70 @@ class DomainToolsAnalyzer(Analyzer):
             'config.service', None, 'Service parameter is missing')
 
     def summary(self, raw):
-        result = {
+        r = {
             "service": self.service,
             "dataType": self.data_type
         }
 
+        taxonomy = {"level": "info", "namespace": "DT", "predicate": "Info", "value": 0}
+        taxonomies = []
+
         if("ip_addresses" in raw):
-            result["ip"] = {
+            r["ip"] = {
                 "address": raw["ip_addresses"]["ip_address"],
                 "domain_count": raw["ip_addresses"]["domain_count"]
             }
 
         if("domain_count" in raw):
-            result["domain_count"] = {
+            r["domain_count"] = {
                 "current": raw["domain_count"]["current"],
                 "historic": raw["domain_count"]["historic"]
             }
 
         if("registrant" in raw):
-            result["registrant"] = raw["registrant"]
+            r["registrant"] = raw["registrant"]
         elif("response" in raw and "registrant" in raw["response"]):
-            result["registrant"] = raw["response"]["registrant"]
+            r["registrant"] = raw["response"]["registrant"]
 
         if("parsed_whois" in raw):
-            result["registrar"] = raw["parsed_whois"]["registrar"]["name"]
+            r["registrar"] = raw["parsed_whois"]["registrar"]["name"]
+            #
 
         if("name_server" in raw):
-            result["name_server"] = raw["name_server"]["hostname"]
-            result["domain_count"] = raw["name_server"]["total"]
+            r["name_server"] = raw["name_server"]["hostname"]
+            r["domain_count"] = raw["name_server"]["total"]
 
+
+
+        # Prepare predicate and value for each service
+        if r["service"] == "reverse-ip":
+            report["predicate"] = "Reverse_IP"
+            taxonomy["value"] = "\"{}, {} domains\"".format(r["ip"]["address"], r["ip"]["domain_count"])
+            taxonomies.append(taxonomy)
+
+        if r["service"] == "name-server-domains":
+            taxonomy["predicate"] = "Reverse_Name_Server"
+            taxonomy["value"] = "\"{}, {} domains\"".format(r["name_server"], r["domain_count"])
+            taxonomies.append(taxonomy)
+
+        if r["service"] == "reverse-whois":
+            taxonomy["predicate"] = "Reverse_Whois"
+            taxonomy["value"] = "\"curr:{} / hist:{} domains\"".format(r["domain_count"]["current"], r["domain_count"]["historic"])
+            taxonomies.append(taxonomy)
+
+        if r["service"] == "whois/history":
+            taxonomy["predicate"] = "Whois_History"
+            taxonomy["value"] = "\"{}, {} domains \"".format(r["name_server"], r["domain_count"])
+            taxonomies.append(taxonomy)
+
+        if (r["service"] == "whois/parsed") or (r['service'] == "whois"):
+            taxonomy["predicate"] = "Whois"
+            taxonomy["value"] = "\"REGISTRAR:{}\"".format(r["registrar"])
+            taxonomies.append(taxonomy)
+            taxonomy["value"] = "\"REGISTRANT:{}\"".format(r["registrant"])
+            taxonomies.append(taxonomy)
+
+        result = {'taxonomies': taxonomies}
         return result
 
     def run(self):
