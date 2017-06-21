@@ -12,9 +12,15 @@ class phishinginitiativeAnalyzer(Analyzer):
                                     'Missing PhishingInitiative API key')
 
     def summary(self,raw):
-        return {
-            "status": raw["tag_label"]
-        }
+        taxonomy = {"level": "safe", "namespace": "PhishingInitiative", "predicate": "Status", "value": "Clean"}
+        taxonomies = []
+
+        if raw["tag_label"] == "phishing":
+            taxonomy['level'] = "malicious"
+            taxonomy['value'] = raw["tag_label"]
+        taxonomies.append(taxonomy)
+        result = {"taxonomies": taxonomies}
+        return result
 
     def run(self):
         Analyzer.run(self)

@@ -55,35 +55,52 @@ class PassiveTotalAnalyzer(Analyzer):
                 result['total'] = raw['totalRecords']
 
             if result['total'] < 2:
+                taxonomy["value"] = "\"{} record\"".format(result['total'])
+            else:
+                taxonomy["value"] = "\"{} records\"".format(result['total'])
+            taxonomies.append(taxonomy)
 
-        # ssl certificate details service
+
+                # ssl certificate details service
         elif self.service == 'ssl_certificate_details':
+            taxonomy["predicate"] = "SSL"
             if 'sha1' in raw:
                 result['ssl'] = True
-
+            else:
+                result['ssl'] = False
+            taxonomy["value"] = "\"{}\"".format(result['ssl'])
+            taxonomies.append(taxonomy)
 
         # ssl certificate history service
         elif self.service == 'ssl_certificate_history':
+            taxonomy["predicate"] = "SSLCertHistory"
             if 'results' in raw and raw['results']:
                 result['ssl'] = True
                 result['total'] = len(raw['results'])
-
+                taxonomy["value"] = "\"{} record(s)\"".format(result['total'])
+                taxonomies.append(taxonomy)
         # unique resolutions service
         elif self.service == 'unique_resolutions':
+            taxonomy['predicate'] = "UniqueResolution"
             if 'total' in raw:
                 result['total'] = raw['total']
-
+                taxonomy['value'] = "\"{} record(s)\"".format(result['total'])
+                taxonomies.append(taxonomy)
         # whois details service
         elif self.service == 'whois_details':
+            taxonomy['predicate'] = "Whois"
             if 'registrant' in raw and 'organization' in raw['registrant'] and raw['registrant']['organization']:
                 result['registrant'] = raw['registrant']['organization']
+                taxonomy['value'] = "\"REGISTRANT: {}\"".format(result['registrant'])
+                taxonomies.append(taxonomy)
             elif 'registrant' in raw and 'name' in raw['registrant'] and raw['registrant']['name']:
                 result['registrant'] = raw['registrant']['name']
-
+                taxonomy['value'] = "\"REGISTRANT: {}\"".format(result['registrant'])
+                taxonomies.append(taxonomy)
             if 'registrar' in raw and raw['registrar']:
                 result['registrar'] = raw['registrar']
-
-
+                taxonomy['value'] = "\"REGISTRAR: {}\"".format(result['registrar'])
+                taxonomies.append(taxonomy)
 
         result.update({"taxonomies":taxonomies})
         return result
