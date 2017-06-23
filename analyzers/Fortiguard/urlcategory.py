@@ -15,7 +15,11 @@ class URLCategoryAnalyzer(Analyzer):
 
         if 'category' in raw:
             r = raw.get('category')
-            taxonomy["value"] = r
+            taxonomy["value"] = "\"{}\"".format(r)
+            if r == "Malicious Websites":
+                taxonomy['level'] = "malicious"
+            if r == "Suspicious Websites":
+                taxonomy['level'] = 'suspicious'
             taxonomies.append(taxonomy)
 
         result = {"taxonomies": taxonomies}

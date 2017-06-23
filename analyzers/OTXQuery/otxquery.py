@@ -156,7 +156,7 @@ class OTXQueryAnalyzer(Analyzer):
     def summary(self, raw):
         taxonomy = {"level": "info", "namespace": "OTX", "predicate": "Pulses", "value": 0}
         taxonomies = []
-        taxonomy["value"] = raw["pulse_count"]
+        taxonomy["value"] = "\"{}\"".format(raw["pulse_count"])
         taxonomies.append(taxonomy)
 
         result = {"taxonomies": taxonomies}

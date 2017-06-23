@@ -21,7 +21,7 @@ class MISPAnalyzer(Analyzer):
         for r in raw['results']:
             for res in r['result']:
                 if 'uuid' in res:
-                    data.append(res['uuis'])
+                    data.append(res['uuid'])
 
         # return number of unique events
         if data == []:
@@ -29,6 +29,7 @@ class MISPAnalyzer(Analyzer):
             taxonomies.append(taxonomy)
         else:
             taxonomy["value"] = "\"{} event(s)\"".format(len(list(set(data))))
+            taxonomies.append(taxonomy)
 
         result = {"taxonomies": taxonomies}
         return result
