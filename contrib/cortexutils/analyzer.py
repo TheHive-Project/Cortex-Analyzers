@@ -128,6 +128,22 @@ class Analyzer:
 
         return self.__get_param(self.__input, name, default, message)
 
+    def build_taxonomy(self, level, namespace, predicate, value):
+        """
+
+        :param level: info, safe, suspicious or malicious
+        :param namespace: Name of analyzer
+        :param predicate: Name of service
+        :param value: value
+        :return: dict
+        """
+        return {
+                "level": level,
+                "namespace": namespace,
+                "predicate": predicate,
+                "value": value
+                }
+
     def summary(self, raw):
         """Returns a summary, needed for 'short.html' template. Overwrite it for your needs!
 
