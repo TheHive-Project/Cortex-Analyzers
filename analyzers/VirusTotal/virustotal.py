@@ -64,9 +64,11 @@ class VirusTotalAnalyzer(Analyzer):
             self.error('Scan not found')
 
     def summary(self, raw):
-
-        taxonomy = {"level": "info", "namespace": "VT", "predicate": "Score", "value": 0}
         taxonomies = []
+        level = "info"
+        namespace = "VT"
+        predicate = "Score"
+        value = "\"0\""
 
         result = {
             "has_result": True
@@ -84,32 +86,32 @@ class VirusTotalAnalyzer(Analyzer):
         if self.service == "get":
             if("scans" in raw):
                 result["scans"] = len(raw["scans"])
-                taxonomy['value'] = "{}/{}".format(result["positives"], result["total"])
+                value = "\"{}/{}\"".format(result["positives"], result["total"])
                 if result["positives"] == 0:
-                    taxonomy["level"] = "safe"
+                    level = "safe"
                 elif result["positives"] < 5:
-                    taxonomy["level"] = "suspicious"
+                    level = "suspicious"
                 else:
-                    taxonomy["level"] = "malicious"
+                    level = "malicious"
 
             if("resolutions" in raw):
                 result["resolutions"] = len(raw["resolutions"])
-                taxonomy['value'] = "{} resolution(s)".format(result["resolutions"])
+                value = "\"{} resolution(s)\"".format(result["resolutions"])
                 if result["resolutions"] == 0:
-                    taxonomy["level"] = "safe"
+                    level = "safe"
                 elif result["resolutions"] < 5:
-                    taxonomy["level"] = "suspicious"
+                    level = "suspicious"
                 else:
-                    taxonomy["level"] = "malicious"
+                    level = "malicious"
             if("detected_urls" in raw):
                 result["detected_urls"] = len(raw["detected_urls"])
-                taxonomy['value'] = "{} detected_url(s)".format(result["detected_urls"])
+                value = "\"{} detected_url(s)\"".format(result["detected_urls"])
                 if result["detected_urls"] == 0:
-                    taxonomy["level"] = "safe"
+                    level = "safe"
                 elif result["detected_urls"] < 5:
-                    taxonomy["level"] = "suspicious"
+                    level = "suspicious"
                 else:
-                    taxonomy["level"] = "malicious"
+                    level = "malicious"
 
             if("detected_downloaded_samples" in raw):
                 result["detected_downloaded_samples"] = len(
@@ -117,9 +119,8 @@ class VirusTotalAnalyzer(Analyzer):
 
 
 
-        taxonomies.append(taxonomy)
-        result = {"taxonomies": taxonomies}
-        return result
+        taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        return {"taxonomies": taxonomies}
 
     def run(self):
         Analyzer.run(self)

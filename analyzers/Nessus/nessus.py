@@ -38,30 +38,33 @@ class NessusAnalyzer(Analyzer):
             summary["high"]     = count[3]
             summary["critical"] = count[4]
 
-        taxonomy = {"level": "info", "namespace": "Nessus", "predicate": "Info", "value": 0}
         taxonomies = []
+        level = "info"
+        namespace = "Nessus"
+        predicate = "Info"
+        value = "\"0\""
 
         if summary["info"] > 0:
-            taxonomy["value"] = summary["info"]
-            taxonomies.append(taxonomy)
+            value = summary["info"]
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         if summary["low"] >0:
-            taxonomy["value"] = summary["low"]
-            taxonomies.append(taxonomy)
+            value = summary["low"]
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         if summary["medium"] >0:
-            taxonomy["value"] = summary["medium"]
-            taxonomy["level"] = "suspicious"
-            taxonomies.append(taxonomy)
-        if summary["high] >0:
-            taxonomy["value"] = summary["hugh"]
-            taxonomy["level"] = "suspicious"
-            taxonomies.append(taxonomy)
+            value = summary["medium"]
+            level = "suspicious"
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        if summary["high"] > 0:
+            value = summary["high"]
+            level = "suspicious"
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         if summary["critical"] >0:
-            taxonomy["value"] = summary["critical"]
-            taxonomy["level"] = "malicious"
-            taxonomies.append(taxonomy)
+            value = summary["critical"]
+            level = "malicious"
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
-        result = {"taxonomies": taxonomies}
-        return result
+        return {"taxonomies": taxonomies}
+
 
     def run(self):
         Analyzer.run(self)
@@ -75,7 +78,10 @@ class NessusAnalyzer(Analyzer):
             if self.data_type == 'fqdn':
                 address = IPAddress(socket.gethostbyname(data))
             else:
-                address = IPAddress(data)
+                try:
+                    address = IPAddress(data)
+                except Exception as e:
+                    self.error("{}".format(e))
             if not any(address in IPNetwork(network)
                 for network in self.allowed_networks):
                 self.error('Invalid target: not in any allowed network')

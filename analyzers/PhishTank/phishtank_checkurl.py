@@ -19,58 +19,62 @@ class phishtankAnalyzer(Analyzer):
                                     'Missing PhishTank API key')
 
     def phishtank_checkurl(self, data):
-    	#debug('>> phishtank_checkurl ' + str(data))
-    	url = 'http://checkurl.phishtank.com/checkurl/'
-    	postdata = {'url': data, 'format':'json','app_key': self.phishtank_key}
-    	r = requests.post(url, data=postdata)
-    	return json.loads(r.content)
+        url = 'http://checkurl.phishtank.com/checkurl/'
+        postdata = {'url': data, 'format':'json','app_key': self.phishtank_key}
+        r = requests.post(url, data=postdata)
+        return json.loads(r.content)
 
-    def summary(self,raw):
+    def summary(self, raw):
+        taxonomies = []
+        value = "\"False\""
+        level = ""
 
-		taxonomy = {"level": "safe", "namespace": "PhishTank", "predicate": "In_Database", "value": "False"}
-		taxonomies = []
+        if 'in_database' in raw and raw['in_database'] == "True":
+            value = "\"{}\"".format(raw['in_database'])
+            if raw.get('verified'):
+                level = "malicious"
+            else:
+                level = "suspicious"
+        else:
+            level = "safe"
+            value = "\"False\""
 
-        if ('in_database' in raw) :
-			taxonomy['value'] = "\"{}\"".format(raw['in_database'])
-			if raw['verified']:
-				taxonomy['level'] = "malicious"
-			else:
-				taxonomy['level'] = "suspicious"
-			taxonomies.append(taxonomy)
-			return {"taxonomies":taxonomies}
+        taxonomies.append(self.build_taxonomy(level, "PhishTank", "In_Database", value))
 
+        result = {"taxonomies":taxonomies}
+        return result
 
     def run(self):
         if self.service == 'query':
-        	if self.data_type == 'url':
-        		data = self.getParam('data', None, 'Data is missing')
-        		r = self.phishtank_checkurl(data)
-        		if "success" in r['meta']['status']:
-        			if r['results']['in_database']:
-        				if "verified" in r['results']:
-        					self.report({
-        						'in_database': r['results']['in_database'],
-        						'phish_detail_page': r['results']['phish_detail_page'],
-        						'verified': r['results']['verified'],
-        						'verified_at': r['results']['verified_at']
-        					})
-        				else:
-        					self.report({
-        							'in_database': r['results']['in_database'],
-        							'phish_detail_page': r['results']['phish_detail_page']
-        					})
-        			else:
-        				self.report({
-        				 'in_database': 'False'
-        				})
-        		else:
-        			self.report({
-        					'errortext': r['errortext']
-        			})
-        	else:
-        			self.error('Invalid data type')
+            if self.data_type == 'url':
+                data = self.getParam('data', None, 'Data is missing')
+                r = self.phishtank_checkurl(data)
+                if "success" in r['meta']['status']:
+                     if r['results']['in_database']:
+                         if "verified" in r['results']:
+                             self.report({
+                                 'in_database': r['results']['in_database'],
+                                 'phish_detail_page': r['results']['phish_detail_page'],
+                                 'verified': r['results']['verified'],
+                                 'verified_at': r['results']['verified_at']
+                             })
+                         else:
+                             self.report({
+                                 'in_database': r['results']['in_database'],
+                                 'phish_detail_page': r['results']['phish_detail_page']
+                             })
+                     else:
+                         self.report({
+                             'in_database': 'False'
+                         })
+                else:
+                    self.report({
+                        'errortext': r['errortext']
+                    })
+            else:
+                self.error('Invalid data type')
         else:
-        		self.error('Invalid service')
+            self.error('Invalid service')
 
 if __name__ == '__main__':
     phishtankAnalyzer().run()

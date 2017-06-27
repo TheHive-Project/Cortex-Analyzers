@@ -119,7 +119,6 @@ class Analyzer:
         :return: Data (observable value) given through Cortex"""
         return self.get_param('data', None, 'Missing data field')
 
-
     def get_param(self, name, default=None, message=None):
         """Just a wrapper for Analyzer.__get_param.
         :param name: Name of the parameter to get. JSON-like syntax, e.g. `config.username`
@@ -130,7 +129,6 @@ class Analyzer:
 
     def build_taxonomy(self, level, namespace, predicate, value):
         """
-
         :param level: info, safe, suspicious or malicious
         :param namespace: Name of analyzer
         :param predicate: Name of service
@@ -138,10 +136,10 @@ class Analyzer:
         :return: dict
         """
         return {
-                "level": level,
-                "namespace": namespace,
-                "predicate": predicate,
-                "value": value
+                'level': level,
+                'namespace': namespace,
+                'predicate': predicate,
+                'value': value
                 }
 
     def summary(self, raw):

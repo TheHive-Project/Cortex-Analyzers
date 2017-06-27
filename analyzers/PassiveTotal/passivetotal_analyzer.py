@@ -17,36 +17,38 @@ class PassiveTotalAnalyzer(Analyzer):
         self.api_key = self.getParam('config.key', None, 'PassiveTotal API key is missing')
 
     def summary(self, raw):
-        result = {
-            'service': self.service,
-            'dataType': self.data_type
-        }
-        taxonomy = {"level": "info", "namespace": "PT", "predicate": "Service", "value": "\"False\""}
         taxonomies = []
+        level = "info"
+        namespace = "PT"
+        predicate = "Service"
+        value = "\"False\""
 
+        result = {}
         # malware service
         if self.service == 'malware':
-            taxonomy["predicate"] = "Malware"
+            predicate = "Malware"
             if 'results' in raw and raw['results']:
                 result['malware'] = True
-                taxonomy["level"] = "malicious"
+                level = "malicious"
             else:
                 result['malware'] = False
-                taxonomy["level"] = "safe"
-            taxonomy["value"] = "\"{}\"".format(result['malware'])
-            taxonomies.append(taxonomy)
+                level = "safe"
+            value = "\"{}\"".format(result['malware'])
+            taxonomies.append(self.buid_taxonomy(level, namespace, predicate, value))
+
         # osint service
         elif self.service == 'osint':
-            taxonomy["predicate"] = "OSINT"
+            predicate = "OSINT"
             if 'results' in raw and raw['results']:
                 result['osint'] = True
             else:
                 result['osint'] = False
-            taxonomy["value"] = "\"{}\"".format(result['osint'])
-            taxonomies.append(taxonomy)
+            value = "\"{}\"".format(result['osint'])
+            taxonomies.append(self.buid_taxonomy(level, namespace, predicate, value))
+
         # passive dns service
         elif self.service == 'passive_dns':
-            taxonomy["predicate"] = "PassiveDNS"
+            predicate = "PassiveDNS"
             if 'firstSeen' in raw and raw['firstSeen']:
                 result['firstSeen'] = raw['firstSeen']
             if 'lastSeen' in raw and raw['lastSeen']:
@@ -55,55 +57,56 @@ class PassiveTotalAnalyzer(Analyzer):
                 result['total'] = raw['totalRecords']
 
             if result['total'] < 2:
-                taxonomy["value"] = "\"{} record\"".format(result['total'])
+                value = "\"{} record\"".format(result['total'])
             else:
-                taxonomy["value"] = "\"{} records\"".format(result['total'])
-            taxonomies.append(taxonomy)
+                value = "\"{} records\"".format(result['total'])
 
+            print(level)
+            print(namespace)
+            print(predicate)
+            print(value)
+            taxonomies.append(self.buid_taxonomy(level, namespace, predicate, value))
 
-                # ssl certificate details service
+        # ssl certificate details service
         elif self.service == 'ssl_certificate_details':
-            taxonomy["predicate"] = "SSL"
+            predicate = "SSL"
             if 'sha1' in raw:
                 result['ssl'] = True
             else:
                 result['ssl'] = False
-            taxonomy["value"] = "\"{}\"".format(result['ssl'])
-            taxonomies.append(taxonomy)
+            value = "\"{}\"".format(result['ssl'])
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         # ssl certificate history service
         elif self.service == 'ssl_certificate_history':
-            taxonomy["predicate"] = "SSLCertHistory"
+            predicate = "SSLCertHistory"
             if 'results' in raw and raw['results']:
                 result['ssl'] = True
                 result['total'] = len(raw['results'])
-                taxonomy["value"] = "\"{} record(s)\"".format(result['total'])
-                taxonomies.append(taxonomy)
+                value = "\"{} record(s)\"".format(result['total'])
+                taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+
         # unique resolutions service
         elif self.service == 'unique_resolutions':
-            taxonomy['predicate'] = "UniqueResolution"
+            predicate = "UniqueResolution"
             if 'total' in raw:
                 result['total'] = raw['total']
-                taxonomy['value'] = "\"{} record(s)\"".format(result['total'])
-                taxonomies.append(taxonomy)
+                value = "\"{} record(s)\"".format(result['total'])
+                taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+
         # whois details service
         elif self.service == 'whois_details':
-            taxonomy['predicate'] = "Whois"
+            predicate = "Whois"
             if 'registrant' in raw and 'organization' in raw['registrant'] and raw['registrant']['organization']:
                 result['registrant'] = raw['registrant']['organization']
-                taxonomy['value'] = "\"REGISTRANT: {}\"".format(result['registrant'])
-                taxonomies.append(taxonomy)
-            elif 'registrant' in raw and 'name' in raw['registrant'] and raw['registrant']['name']:
-                result['registrant'] = raw['registrant']['name']
-                taxonomy['value'] = "\"REGISTRANT: {}\"".format(result['registrant'])
-                taxonomies.append(taxonomy)
+                value = "\"REGISTRANT: {}\"".format(result['registrant'])
+                taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
             if 'registrar' in raw and raw['registrar']:
                 result['registrar'] = raw['registrar']
-                taxonomy['value'] = "\"REGISTRAR: {}\"".format(result['registrar'])
-                taxonomies.append(taxonomy)
+                value = "\"REGISTRAR: {}\"".format(result['registrar'])
+                taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
-        result.update({"taxonomies":taxonomies})
-        return result
+        return {"taxonomies":taxonomies}
 
     def run(self):
         Analyzer.run(self)

@@ -112,26 +112,26 @@ class FireholBlocklistsAnalyzer(Analyzer):
         return hits
 
     def summary(self, raw):
-        taxonomy = {"level": "info", "namespace": "Filehol", "predicate": "Blocklists", "value": 0}
         taxonomies = []
+        level = "info"
+        namespace = "Filehol"
+        predicate = "Blocklists"
+        value = "\"0 hit\""
 
         if 'count' in raw:
             r = raw.get('count', 0)
 
             if r == 0 or r == 1:
-                taxonomy["value"] = "\"{} hit\"".format(r)
+                value = "\"{} hit\"".format(r)
             else:
-                taxonomy["value"] = "\"{} hits\"".format(r)
+                value = "\"{} hits\"".format(r)
 
             if r > 0:
-                taxonomy["level"] = "suspicious"
+                level = "suspicious"
             else:
-                taxonomy["level"] = "safe"
-
-            taxonomies.append(taxonomy)
-
-        result = {"taxonomies": taxonomies}
-        return result
+                level = "safe"
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        return {"taxonomies": taxonomies}
 
     def run(self):
         ip = self.getData()

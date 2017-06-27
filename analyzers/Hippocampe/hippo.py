@@ -36,23 +36,26 @@ class HippoAnalyzer(Analyzer):
     def summary(self, raw):
         taxonomy = {"level": "safe", "namespace": "Hippocampe", "predicate": "Score", "value": 0}
         taxonomies = []
+        level = "safe"
+        namespace = "Hippocampe"
+        predicate = "Score"
+        value = "\"0 record\""
 
 
         if (self.service == 'hipposcore'):
             r = self.scoreSummary(raw).get("data", 0)
-            taxonomy["value"] = r
+            value = r
             if r > 0:
-                taxonomy["level"] = "malicious"
+                level = "malicious"
             taxonomies.append(taxonomy)
         elif (self.service == 'more'):
             r = self.moreSummary(raw).get("data", 0)
-            taxonomy["value"] = "\"{} record(s)\"".format(r)
+            value = "\"{} record(s)\"".format(r)
             if r > 0:
-                taxonomy["level"] = "malicious"
-            taxonomies.append(taxonomy)
+                level = "malicious"
+            taxonomies.append(self.buid_taxonomy(level, namespace, predicate, value))
 
-        result = {"taxonomies": taxonomies}
-        return result
+        return {"taxonomies": taxonomies}
 
     def run(self):
         data = self.getData()
