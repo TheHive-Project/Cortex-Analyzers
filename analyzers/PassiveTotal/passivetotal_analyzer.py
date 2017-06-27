@@ -34,7 +34,7 @@ class PassiveTotalAnalyzer(Analyzer):
                 result['malware'] = False
                 level = "safe"
             value = "\"{}\"".format(result['malware'])
-            taxonomies.append(self.buid_taxonomy(level, namespace, predicate, value))
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         # osint service
         elif self.service == 'osint':
@@ -44,28 +44,22 @@ class PassiveTotalAnalyzer(Analyzer):
             else:
                 result['osint'] = False
             value = "\"{}\"".format(result['osint'])
-            taxonomies.append(self.buid_taxonomy(level, namespace, predicate, value))
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         # passive dns service
         elif self.service == 'passive_dns':
             predicate = "PassiveDNS"
-            if 'firstSeen' in raw and raw['firstSeen']:
-                result['firstSeen'] = raw['firstSeen']
-            if 'lastSeen' in raw and raw['lastSeen']:
-                result['lastSeen'] = raw['lastSeen']
             if 'totalRecords' in raw and raw['totalRecords']:
                 result['total'] = raw['totalRecords']
+            else:
+                result['total'] = 0
 
             if result['total'] < 2:
                 value = "\"{} record\"".format(result['total'])
             else:
                 value = "\"{} records\"".format(result['total'])
 
-            print(level)
-            print(namespace)
-            print(predicate)
-            print(value)
-            taxonomies.append(self.buid_taxonomy(level, namespace, predicate, value))
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         # ssl certificate details service
         elif self.service == 'ssl_certificate_details':
