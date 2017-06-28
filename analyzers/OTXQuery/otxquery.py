@@ -159,7 +159,7 @@ class OTXQueryAnalyzer(Analyzer):
         namespace = "OTX"
         predicate = "Pulses"
         value = "\"{}\"".format(raw["pulse_count"])
-        taxonomies.append(self.buid_taxonomy(level, namespace, predicate, value))
+        taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         return {"taxonomies": taxonomies}
 
