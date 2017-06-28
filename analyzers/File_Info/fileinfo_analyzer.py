@@ -162,7 +162,7 @@ class FileAnalyzer(Analyzer):
                 level = 'suspicious'
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         else:
-            value = fullReport['filetype']
+            value = "\"{}\"".format(fullReport['filetype'])
             level = 'info'
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 

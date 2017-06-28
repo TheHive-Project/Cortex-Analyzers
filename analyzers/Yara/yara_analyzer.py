@@ -17,8 +17,6 @@ class YaraAnalyzer(Analyzer):
         if isinstance(self.rulepaths, str):
             self.rulepaths = [self.rulepaths]
 
-        print(self.rulepaths)
-
         self.ruleset = []
         for rulepath in self.rulepaths:
             if os.path.isfile(rulepath):
@@ -55,14 +53,14 @@ class YaraAnalyzer(Analyzer):
         namespace = "Yara"
         predicate = "Match"
 
-        value = "\"{} rules\"".format(len(raw["results"]))
+        value = "\"{} rule(s)\"".format(len(raw["results"]))
         if len(raw["results"]) == 0:
             level = "safe"
         else:
             level = "malicious"
 
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-        return {"taxomonies": taxonomies}
+        return {"taxonomies": taxonomies}
 
     def run(self):
         if self.data_type == 'file':

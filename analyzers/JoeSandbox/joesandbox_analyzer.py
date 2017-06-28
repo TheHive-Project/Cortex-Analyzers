@@ -35,15 +35,15 @@ class JoeSandboxAnalyzer(Analyzer):
 
         r = raw['detection']
 
-        taxonomy["value"] = "\"{}/{}\"".format(r["score"], r["maxscore"])
+        value = "\"{}/{}\"".format(r["score"], r["maxscore"])
+
         if r["clean"]:
             level = "safe"
         elif r["suspicious"]:
             level = "suspicious"
-            value = "Suspicious"
         elif r["malicious"]:
             level = "malicious"
-            value = "Malicious"
+
 
 
         else:

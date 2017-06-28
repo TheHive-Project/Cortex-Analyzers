@@ -27,7 +27,7 @@ class FireholBlocklistsAnalyzer(Analyzer):
 
         # Check if directory exists
         if not os.path.exists(self.path):
-            os.mkdir(self.path, mode=0o700)
+            os.mkdir(self.path, 0700)
             # Downloading/updating the list is implemented with an external cronjob which git pulls the repo
 
         # Read files in the given path and prepare file lists for ip- and netsets
