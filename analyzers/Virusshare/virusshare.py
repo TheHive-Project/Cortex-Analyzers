@@ -25,17 +25,17 @@ class VirusshareAnalyzer(Analyzer):
         level = "safe"
         namespace = "Virusshare"
         predicate = "Search"
-        value = "\"0\""
+        value = "\"Unknown\""
 
         if raw["isonvs"]:
-            if raw["isonvs"] == "unknown":
-                value = "\"{}\"".format("Not MD5")
+            if raw["isonvs"] == "Unknown":
+                value = "\"Not MD5\""
                 level = "suspicious"
             else:
-                value "\"{}\"".format("Found")
+                value = "\"Found\""
                 level = "malicious"
         else:
-            value = "\"{}\"".format("Not found")
+            value = "\"Not Found\""
 
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         return {'taxonomies': taxonomies}
