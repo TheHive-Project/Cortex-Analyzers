@@ -74,16 +74,19 @@ class Analyzer:
             os.environ['https_proxy'] = self.https_proxy
 
     def __set_encoding(self):
-        if sys.stdout.encoding != 'UTF-8':
-            if sys.version_info[0] == 3:
-                sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
-            else:
-                sys.stdout = codecs.getwriter('utf-8')(sys.stdout, 'strict')
-        if sys.stderr.encoding != 'UTF-8':
-            if sys.version_info[0] == 3:
-                sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
-            else:
-                sys.stderr = codecs.getwriter('utf-8')(sys.stderr, 'strict')
+        try:
+            if sys.stdout.encoding != 'UTF-8':
+                if sys.version_info[0] == 3:
+                    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
+                else:
+                    sys.stdout = codecs.getwriter('utf-8')(sys.stdout, 'strict')
+            if sys.stderr.encoding != 'UTF-8':
+                if sys.version_info[0] == 3:
+                    sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
+                else:
+                    sys.stderr = codecs.getwriter('utf-8')(sys.stderr, 'strict')
+        except:
+            pass
 
     def __get_param(self, source, name, default=None, message=None):
         """Extract a specific parameter from given source.
