@@ -149,7 +149,7 @@ class FileAnalyzer(Analyzer):
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, pereport['filetype']))
         elif fullReport['Mimetype'] in ['application/pdf']:
             pdfreport = self.PDF_Summary(fullReport)
-            value = pdfreport['filetype']
+            value = "\"{}\"".format(pdfreport['filetype'])
             if pdfreport['suspicious']:
                 level = 'suspicious'
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
@@ -157,7 +157,7 @@ class FileAnalyzer(Analyzer):
                                     'XLS', 'XLSM', 'XLSX',
                                     'PPT', "PPTM", 'PPTX']):
             msreport = self.MSOffice_Summary(fullReport)
-            value = msreport['filetype']
+            value = "\"{}\"".format(msreport['filetype'])
             if msreport['suspicious']:
                 level = 'suspicious'
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
