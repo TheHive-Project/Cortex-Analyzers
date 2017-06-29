@@ -63,7 +63,7 @@ class VMRayAnalyzer(Analyzer):
                 })
 
         if len(r["reports"]) == 0:
-            value = "No Scan"
+            value = "\"No Scan\""
             level = "info"
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         else:
