@@ -64,19 +64,34 @@ class CuckooSandboxAnalyzer(Analyzer):
             response = requests.get(self.url + 'tasks/report/' + str(task_id) + '/json')
             resp_json = response.json()
             list_description = [x['description'] for x in resp_json['signatures']]
-            suri_alerts = [(x['signature'],x['dstip'],x['dstport'],x['severity']) for x in resp_json['suricata']['alerts']]
+            if 'suricata' in resp_json.keys() and 'alerts' in resp_json['suricata'].keys():
+                suri_alerts = [(x['signature'],x['dstip'],x['dstport'],x['severity']) for x in resp_json['suricata']['alerts']]
+            else:
+                suri_alerts = []
             hosts = [(x['ip'],x['hostname'],x['country_name']) for x in resp_json['network']['hosts']]
             uri = [(x['uri']) for x in resp_json['network']['http']]
-            self.report({
-                'signatures': list_description, 
-                'suricata_alerts': suri_alerts,
-                'hosts': hosts,
-                'uri': uri, 
-                'malscore': resp_json['malscore'], 
-                'malfamily': resp_json['malfamily'],
-                'file_type': "".join([x for x in resp_json['target']['file']['type']]),
-                'yara': [ x['name'] + " - " + x['meta']['description'] if 'description' in x['meta'].keys() else x['name'] for x in resp_json['target']['file']['yara'] ]
-            })
+            if self.service == 'url_analysis':
+                self.report({
+                    'signatures': list_description,
+                    'suricata_alerts': suri_alerts,
+                    'hosts': hosts,
+                    'uri': uri,
+                    'malscore': resp_json['malscore'],
+                    'malfamily': resp_json['malfamily'],
+                    'file_type': 'url',
+                    'yara': resp_json['target']['url'] if 'target' in resp_json.keys() and 'url' in resp_json['target'].keys() else '-'
+                })
+            else:
+                self.report({
+                    'signatures': list_description,
+                    'suricata_alerts': suri_alerts,
+                    'hosts': hosts,
+                    'uri': uri,
+                    'malscore': resp_json['malscore'],
+                    'malfamily': resp_json['malfamily'],
+                    'file_type': "".join([x for x in resp_json['target']['file']['type']]),
+                    'yara': [ x['name'] + " - " + x['meta']['description'] if 'description' in x['meta'].keys() else x['name'] for x in resp_json['target']['file']['yara'] ]
+                })
 
         except requests.exceptions.RequestException as e:
             self.error(e)
