@@ -116,7 +116,7 @@ class FireholBlocklistsAnalyzer(Analyzer):
     def summary(self, raw):
         taxonomies = []
         level = "info"
-        namespace = "Filehol"
+        namespace = "Firehol"
         predicate = "Blocklists"
         value = "\"0 hit\""
 
