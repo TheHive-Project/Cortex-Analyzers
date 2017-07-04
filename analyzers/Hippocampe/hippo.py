@@ -71,7 +71,7 @@ class HippoAnalyzer(Analyzer):
 
         response = {}
         try:
-            request = urllib2.Request(self.url + self.service, post_data, headers)
+            request = urllib2.Request('{}/hippocampe/api/v1.0/{}'.format(self.url, self.service), post_data, headers)
             response = urllib2.urlopen(request)
             report = json.loads(response.read())
 
