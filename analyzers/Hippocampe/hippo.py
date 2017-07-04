@@ -43,13 +43,13 @@ class HippoAnalyzer(Analyzer):
 
 
         if (self.service == 'hipposcore'):
-            r = self.scoreSummary(raw).get(self.data, 0).get("hipposcore", 0)
+            r = self.scoreSummary(raw).get("data")
             value = r
             if r > 0:
                 level = "malicious"
             taxonomies.append(taxonomy)
         elif (self.service == 'more'):
-            r = len(self.moreSummary(raw).get(self.data, 0))
+            r = self.moreSummary(raw).get("data", 0)
             value = "\"{} record(s)\"".format(r)
             if r > 0:
                 level = "malicious"
