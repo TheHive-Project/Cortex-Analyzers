@@ -3,7 +3,7 @@
     "author": "Nils Kuhnert, CERT-Bund",
     "license": "AGPL-V3",
     "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-    "version": "1.0",
+    "version": "2.0",
     "baseConfig": "Virusshare",
     "config": {},
     "description": "Search for MD5 hashes in Virusshare.com hash list",

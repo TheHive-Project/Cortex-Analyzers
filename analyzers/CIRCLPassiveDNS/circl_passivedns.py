@@ -37,7 +37,25 @@ class CIRCLPassiveDNSAnalyzer(Analyzer):
         return clean_result
 
     def summary(self, raw):
-        return {'hits': len(raw.get('results'))}
+        taxonomies = []
+        level = "info"
+        namespace = "CIRCL"
+        predicate = "PassiveDNS"
+
+        if ("results" in raw):
+            r = len(raw.get('results'))
+
+        if r == 0 or r == 1:
+            value = "\"{} record\"".format(r)
+        else:
+            value = "\"{} records\"".format(r)
+
+        taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        return {"taxonomies": taxonomies}
+
+
+
+
 
     def run(self):
         query = ''

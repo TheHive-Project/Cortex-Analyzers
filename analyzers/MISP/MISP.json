@@ -1,0 +1,15 @@
+{
+    "name": "MISP",
+    "author": "Nils Kuhnert, CERT-Bund",
+    "license": "AGPL-V3",
+    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+    "version": "2.0",
+    "baseConfig": "MISP",
+    "config": {
+        "check_tlp": false,
+        "max_tlp": 3
+    },
+    "description": "Check if this IOC has been processed in different MISP instances.",
+    "dataTypeList": ["domain", "ip", "url", "fqdn", "uri_path","user-agent", "hash", "email", "mail", "mail_subject" , "registry", "regexp", "other", "filename"],
+    "command": "MISP/misp.py"
+}

@@ -1,5 +1,8 @@
 #!/usr/bin/env python
+# encoding: utf-8
+
 from cortexutils.analyzer import Analyzer
+
 import os
 import yara
 
@@ -45,7 +48,19 @@ class YaraAnalyzer(Analyzer):
         return result
 
     def summary(self, raw):
-        return {"matches":len(raw["results"])}
+        taxonomies = []
+        level = "info"
+        namespace = "Yara"
+        predicate = "Match"
+
+        value = "\"{} rule(s)\"".format(len(raw["results"]))
+        if len(raw["results"]) == 0:
+            level = "safe"
+        else:
+            level = "malicious"
+
+        taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        return {"taxonomies": taxonomies}
 
     def run(self):
         if self.data_type == 'file':

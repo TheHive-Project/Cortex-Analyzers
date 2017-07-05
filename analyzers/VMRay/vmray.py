@@ -42,19 +42,48 @@ class VMRayAnalyzer(Analyzer):
             self.error('Data type currently not supported')
 
     def summary(self, raw):
-        result = {
+
+        taxonomies = []
+        level = "info"
+        namespace = "VMRay"
+        predicate = "Scan"
+        value = "\"0\""
+
+        r = {
             'reports': []
         }
 
         if raw.get('scanreport', None) and len(raw.get('scanreport').get('data')) > 0:
             for scan in raw.get('scanreport').get('data'):
-                result['reports'].append({
+                r['reports'].append({
                     'score': scan.get('sample_score'),
                     'sample_severity': scan.get('sample_severity'),
                     'sample_last_reputation_severity': scan.get('sample_last_reputation_severity'),
                     'url': scan.get('sample_webif_url')
                 })
-        return result
+
+        if len(r["reports"]) == 0:
+            value = "\"No Scan\""
+            level = "info"
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        else:
+            for s in r["reports"]:
+                i = 1
+                if s["sample_severity"] == "not_suspicious":
+                    level = "safe"
+                elif s["sample_severity"] == "malicious":
+                    level = "malicious"
+                else:
+                    level = "info"
+
+                if r["reports"] > 1:
+                    value = "\"{}( from scan {})\"".format(s["score"], i)
+                else:
+                    value = "{}".format(s["score"])
+                taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+                i += 1
+
+        return {"taxonomies": taxonomies}
 
 if __name__ == '__main__':
     VMRayAnalyzer().run()
