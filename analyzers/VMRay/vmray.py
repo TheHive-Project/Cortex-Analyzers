@@ -43,8 +43,11 @@ class VMRayAnalyzer(Analyzer):
 
     def summary(self, raw):
 
-        taxonomy = {"level": "info", "namespace": "VMRay", "predicate": "Scan", "value": 0}
         taxonomies = []
+        level = "info"
+        namespace = "VMRay"
+        predicate = "Scan"
+        value = "\"0\""
 
         r = {
             'reports': []
@@ -60,28 +63,27 @@ class VMRayAnalyzer(Analyzer):
                 })
 
         if len(r["reports"]) == 0:
-            taxonomy["value"] = "No Scan"
-            taxonomy["level"] = "info"
-            taxonomies.append(taxonomy)
+            value = "\"No Scan\""
+            level = "info"
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         else:
             for s in r["reports"]:
                 i = 1
                 if s["sample_severity"] == "not_suspicious":
-                    taxonomy["level"] = "safe"
-                elif s["sample_severity"] == "malicious" :
-                    taxonomy["level"] = "suspicious"
+                    level = "safe"
+                elif s["sample_severity"] == "malicious":
+                    level = "malicious"
                 else:
-                    taxonomy["level"] = "safe"
+                    level = "info"
 
                 if r["reports"] > 1:
-                    taxonomy["value"] = "\"{}( from scan {})\"".format(s["score"], i)
+                    value = "\"{}( from scan {})\"".format(s["score"], i)
                 else:
-                    taxonomy["value"] = "{}".format(s["score"])
-                taxonomies.append(taxonomy)
+                    value = "{}".format(s["score"])
+                taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
                 i += 1
 
-        result = {"taxonomies": taxonomies}
-        return result
+        return {"taxonomies": taxonomies}
 
 if __name__ == '__main__':
     VMRayAnalyzer().run()

@@ -14,24 +14,27 @@ class MISPAnalyzer(Analyzer):
                                name=self.getParam('config.name', None))
 
     def summary(self, raw):
-        taxonomy = {"level": "info", "namespace": "MISP", "predicate": "Search", "value": 0}
         taxonomies = []
+        level = "info"
+        namespace = "MISP"
+        predicate = "Search"
+        value = "\"0\""
 
         data = []
         for r in raw['results']:
             for res in r['result']:
                 if 'uuid' in res:
-                    data.append(res['uuis'])
+                    data.append(res['uuid'])
 
         # return number of unique events
         if data == []:
-            taxonomy["value"] = 0
-            taxonomies.append(taxonomy)
+            value = "\"0 event\""
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         else:
-            taxonomy["value"] = "\"{} event(s)\"".format(len(list(set(data))))
+            value = "\"{} event(s)\"".format(len(list(set(data))))
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
-        result = {"taxonomies": taxonomies}
-        return result
+        return {"taxonomies": taxonomies}
 
 
 

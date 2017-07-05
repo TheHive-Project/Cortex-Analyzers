@@ -68,8 +68,10 @@ class CIRCLPassiveSSLAnalyzer(Analyzer):
 
 
     def summary(self, raw):
-        taxonomy = {"level": "info", "namespace": "CIRCL", "predicate": "PassiveSSL", "value": 0}
         taxonomies = []
+        level = "info"
+        namespace = "CIRCL"
+        predicate = "PassiveSSL"
 
         if (self.data_type == 'hash') and ("query" in raw):
             r = raw.get('query', 0).get('hits', 0)
@@ -77,13 +79,13 @@ class CIRCLPassiveSSLAnalyzer(Analyzer):
             r = len(raw['certificates'])
 
         if r == 0 or r == 1:
-            taxonomy["value"] = "\"{} hit\"".format(r)
+            value = "\"{} record\"".format(r)
         else:
-            taxonomy["value"] = "\"{} hits\"".format(r)
-        taxonomies.append(taxonomy)
+            value = "\"{} records\"".format(r)
+        taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
-        result = {"taxonomies": taxonomies}
-        return result
+        return {"taxonomies": taxonomies}
+
 
 
     def run(self):

@@ -26,27 +26,31 @@ class JoeSandboxAnalyzer(Analyzer):
             'dataType': self.data_type
         }
 
-        taxonomy = {"level": "info", "namespace": "JSB", "predicate": "Clean", "value": 0}
         taxonomies = []
+        level = "info"
+        namespace = "JSB"
+        predicate = "Report"
+        value = "\"Clean\""
+
 
         r = raw['detection']
 
-        taxonomy["value"] = "\"{}/{}\"".format(r["score"], r["maxscore"])
+        value = "\"{}/{}\"".format(r["score"], r["maxscore"])
+
         if r["clean"]:
-            taxonomy["level"] = "safe"
+            level = "safe"
         elif r["suspicious"]:
-            taxonomy["level"] = "suspicious"
-            taxonomy["predicate"] = "Suspicious"
+            level = "suspicious"
         elif r["malicious"]:
-            taxonomy["level"] = "malicious"
-            taxonomy["predicate"] = "Malicious"
+            level = "malicious"
+
 
 
         else:
-            taxonomy["level"] = "info"
-            taxonomy["value"] = "?"
+            level = "info"
+            value = "Unknown"
 
-        taxonomies.append(taxonomy)
+        taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         result.update({"taxonomies":taxonomies})
 
         return result

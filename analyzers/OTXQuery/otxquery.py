@@ -154,13 +154,14 @@ class OTXQueryAnalyzer(Analyzer):
             self.error('API Error! Please verify data type is correct.')
 
     def summary(self, raw):
-        taxonomy = {"level": "info", "namespace": "OTX", "predicate": "Pulses", "value": 0}
         taxonomies = []
-        taxonomy["value"] = raw["pulse_count"]
-        taxonomies.append(taxonomy)
+        level = "info"
+        namespace = "OTX"
+        predicate = "Pulses"
+        value = "\"{}\"".format(raw["pulse_count"])
+        taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
-        result = {"taxonomies": taxonomies}
-        return result
+        return {"taxonomies": taxonomies}
 
     def run(self):
         Analyzer.run(self)

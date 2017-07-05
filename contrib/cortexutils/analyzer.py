@@ -74,16 +74,19 @@ class Analyzer:
             os.environ['https_proxy'] = self.https_proxy
 
     def __set_encoding(self):
-        if sys.stdout.encoding != 'UTF-8':
-            if sys.version_info[0] == 3:
-                sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
-            else:
-                sys.stdout = codecs.getwriter('utf-8')(sys.stdout, 'strict')
-        if sys.stderr.encoding != 'UTF-8':
-            if sys.version_info[0] == 3:
-                sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
-            else:
-                sys.stderr = codecs.getwriter('utf-8')(sys.stderr, 'strict')
+        try:
+            if sys.stdout.encoding != 'UTF-8':
+                if sys.version_info[0] == 3:
+                    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
+                else:
+                    sys.stdout = codecs.getwriter('utf-8')(sys.stdout, 'strict')
+            if sys.stderr.encoding != 'UTF-8':
+                if sys.version_info[0] == 3:
+                    sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
+                else:
+                    sys.stderr = codecs.getwriter('utf-8')(sys.stderr, 'strict')
+        except:
+            pass
 
     def __get_param(self, source, name, default=None, message=None):
         """Extract a specific parameter from given source.
@@ -119,7 +122,6 @@ class Analyzer:
         :return: Data (observable value) given through Cortex"""
         return self.get_param('data', None, 'Missing data field')
 
-
     def get_param(self, name, default=None, message=None):
         """Just a wrapper for Analyzer.__get_param.
         :param name: Name of the parameter to get. JSON-like syntax, e.g. `config.username`
@@ -127,6 +129,21 @@ class Analyzer:
         :param message: Error message. If given and name not found, exit with error. Default: None"""
 
         return self.__get_param(self.__input, name, default, message)
+
+    def build_taxonomy(self, level, namespace, predicate, value):
+        """
+        :param level: info, safe, suspicious or malicious
+        :param namespace: Name of analyzer
+        :param predicate: Name of service
+        :param value: value
+        :return: dict
+        """
+        return {
+                'level': level,
+                'namespace': namespace,
+                'predicate': predicate,
+                'value': value
+                }
 
     def summary(self, raw):
         """Returns a summary, needed for 'short.html' template. Overwrite it for your needs!
