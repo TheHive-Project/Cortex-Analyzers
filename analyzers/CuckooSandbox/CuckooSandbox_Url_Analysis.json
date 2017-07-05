@@ -1,0 +1,15 @@
+{
+    "name": "CuckooSandbox_Url_Analysis",
+    "version": "1.0",
+    "author": "Andrea Garavaglia, LDO-CERT",
+    "url": "https://github.com/garanews/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseConfig": "CuckooSandbox",
+    "config": {
+        "check_tlp": false,
+        "service": "url_analysis"
+    },
+    "description": "Cuckoo Sandbox url analysis",
+    "dataTypeList": ["url"],
+    "command": "CuckooSandbox/cuckoosandbox_analyzer.py"
+}

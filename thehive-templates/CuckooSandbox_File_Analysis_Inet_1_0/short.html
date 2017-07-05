@@ -1,0 +1,5 @@
+<span class="label" ng-class="{'label-info': content.malscore<=2, 'label-warning': content.malscore>2 && content.malscore<=6.5, 'label-danger': content.malscore >6.5}">
+                Cuckoo Sandbox=
+        <span ng-if="content.malscore">CSB:Malscore={{content.malscore}}</span>
+        <span ng-if="content.malfamily">CSB:Malfamily=[{{ content.malfamily}}]</span>
+</span>
