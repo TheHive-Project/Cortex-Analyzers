@@ -1,0 +1,16 @@
+{
+    "name": "IRMA_Scan",
+    "license": "AGPL-V3",
+    "author": "Unit777",
+    "url": "https://github.com/CERT-BDF/cortex-analyzers",
+    "version": "1.0",
+    "description": "Scan a file using IRMA",
+    "dataTypeList": ["file"],
+    "baseConfig": "IRMA",
+    "config": {
+        "check_tlp": false,
+        "service": "scan",
+        "max_tlp": 1
+    },
+    "command": "IRMA/irma.py"
+}
