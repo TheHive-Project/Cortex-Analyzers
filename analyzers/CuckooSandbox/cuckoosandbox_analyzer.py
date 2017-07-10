@@ -17,13 +17,30 @@ class CuckooSandboxAnalyzer(Analyzer):
         #self.networktimeout = self.getParam('config.networktimeout', 30, None)
 
     def summary(self, raw):
+        taxonomies = []
+        level = "safe"
+        namespace = "CSB"
+        predicate = "Malscore"
+        value = "\"0\""
+
         result = {
             'service': self.service,
             'dataType': self.data_type
         }
         result["malscore"] = raw.get("malscore", None)
         result["malfamily"] = raw.get("malfamily", None)
-        return result
+
+        if result["malscore"] > 6.5:
+            level = "malicious"
+        elif result["malscore"] > 2:
+            level = "suspicious"
+        elif result["malscore"] > 0:
+            level = "safe"
+
+        taxonomies.append(self.build_taxonomy(level, namespace, predicate, result["malscore"]))
+        taxonomies.append(self.build_taxonomy(level, namespace, "Malfamily", result["malfamily"]))
+
+        return taxonomies
 
     def run(self):
         Analyzer.run(self)
