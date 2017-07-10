@@ -55,6 +55,12 @@ class IRMAAnalyzer(Analyzer):
        """
     # IRMA statuses https://github.com/quarkslab/irma-cli/blob/master/irma/apiclient.py
     IRMA_FINISHED_STATUS = 50
+    ERROR_STATUS = {
+        1000: "Unexpected error",
+        1010: "probelist missing",
+        1011: "probe(s) not available",
+        1020: "ftp upload error"
+    }
 
     def _request_json(self, url, **kwargs):
         """Wrapper around doing a request and parsing its JSON output."""
@@ -71,6 +77,10 @@ class IRMAAnalyzer(Analyzer):
             return r.json() if r.status_code == 200 else {}
         except (requests.ConnectionError, ValueError) as e:
             self.unexpectedError(e)
+
+    # IRMA statuses https://github.com/quarkslab/irma-cli/blob/master/irma/apiclient.py
+    def _is_error_status(self, status):
+        return status >= 1000
 
     def _scan_file(self, file_name, file_path, force):
         # Initialize scan in IRMA.
@@ -95,14 +105,24 @@ class IRMAAnalyzer(Analyzer):
         requests.post(url, json=params, verify=self.verify, auth=self.auth)
 
         result = None
+        timeout_exceeded = False
 
-        while result is None or result.get(
-                "status") != self.IRMA_FINISHED_STATUS or time.time() < self.time_start + self.timeout:
+        while result is None or result.get("status") != self.IRMA_FINISHED_STATUS and not timeout_exceeded:
             url = urlparse.urljoin(
                 self.url, "/api/v1.1/scans/%s" % init.get("id")
             )
             result = self._request_json(url)
+
+            if result is not None and self._is_error_status(result.get("status")):
+                self.error('An error occurred during the file scan: {}'.format(
+                    self.ERROR_STATUS.get(result.get("status"), "Unexpected error"))
+                )
+
             time.sleep(10)
+            timeout_exceeded = time.time() >= self.time_start + self.timeout
+
+        if timeout_exceeded:
+            self.error('The {} seconds timeout has been exceeded')
 
         return
 
