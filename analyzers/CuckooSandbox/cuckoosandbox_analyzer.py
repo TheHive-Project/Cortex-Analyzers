@@ -40,7 +40,7 @@ class CuckooSandboxAnalyzer(Analyzer):
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, result["malscore"]))
         taxonomies.append(self.build_taxonomy(level, namespace, "Malfamily", result["malfamily"]))
 
-        return taxonomies
+        return {"taxonomies": taxonomies}
 
     def run(self):
         Analyzer.run(self)
