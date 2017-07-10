@@ -19,7 +19,7 @@ class CuckooSandboxAnalyzer(Analyzer):
     def summary(self, raw):
         taxonomies = []
         level = "safe"
-        namespace = "CSB"
+        namespace = "Cuckoo"
         predicate = "Malscore"
         value = "\"0\""
 
