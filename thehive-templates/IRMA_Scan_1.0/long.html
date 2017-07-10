@@ -14,7 +14,7 @@
                         'text-success': probe.status ===0 ,
                         'text-danger': probe.status === 1,
                         'text-warning': probe.status === -1
-                    }">
+                    }" ng-if="probe.type === 'antivirus'">
                     <td>
                         <strong>{{probe.name}}</strong>
                     </td>

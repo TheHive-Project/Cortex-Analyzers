@@ -72,18 +72,18 @@ class IRMAAnalyzer(Analyzer):
         except (requests.ConnectionError, ValueError) as e:
             self.unexpectedError(e)
 
-    def _scan_file(self, filepath, force):
+    def _scan_file(self, file_name, file_path, force):
         # Initialize scan in IRMA.
         init = self._post_json(urlparse.urljoin(self.url, "/api/v1.1/scans"))
 
         # Post file for scanning.
         files = {
-            "files": open(filepath, "rb"),
+            "files": (file_name, open(file_path, "rb")),
         }
         url = urlparse.urljoin(
             self.url, "/api/v1.1/scans/%s/files" % init.get("id")
         )
-        self._post_json(url, files=files, )
+        self._post_json(url, files=files)
 
         # launch posted file scan
         params = {
@@ -123,7 +123,7 @@ class IRMAAnalyzer(Analyzer):
     def run(self):
         if self.service == 'scan':
             if self.data_type == 'file':
-                filename = self.get_param('attachment.name', 'noname.ext')
+                file_name = self.get_param('attachment.name', 'noname.ext')
                 file_path = self.get_param('file', None, 'File is missing')
                 hashes = self.get_param('attachment.hashes', None)
 
@@ -139,7 +139,7 @@ class IRMAAnalyzer(Analyzer):
                 if not self.force and not self.scan and not results:
                     return {}
                 elif self.force or (not results and self.scan):
-                    self._scan_file(file_path, self.force)
+                    self._scan_file(file_name, file_path, self.force)
                     results = self._get_results(file_hash) or {}
 
                 """ FIXME! could use a proper fix here
