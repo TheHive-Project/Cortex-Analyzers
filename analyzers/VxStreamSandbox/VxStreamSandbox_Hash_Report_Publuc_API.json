@@ -10,8 +10,6 @@
     "config": {
         "check_tlp": true,
         "max_tlp": 1,
-        "api_key": "2vvp0uyg8vcwokwws0ows8cgo",
-        "secret": "cc8c097e86f4d8d2b36278cfee56ebc46515993168babe61"
     },
     "command": "VxStreamSandbox/vxstreamsandbox_analyzer.py"
 }
