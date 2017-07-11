@@ -1,0 +1,17 @@
+{
+    "name": "VxStreamSandbox_Hash_Report_Publuc_API",
+    "version": "1.0",
+    "author": "Daniil Yugoslavskiy, Tieto",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "dataTypeList": ["hash", "file", "filename"],
+    "description": "VxStream Sandbox (Hybrid-Analysis) report for a Hash",
+    "baseConfig": "VxStreamSandbox_Public_API",
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 1,
+        "api_key": "2vvp0uyg8vcwokwws0ows8cgo",
+        "secret": "cc8c097e86f4d8d2b36278cfee56ebc46515993168babe61"
+    },
+    "command": "VxStreamSandbox/vxstreamsandbox_analyzer.py"
+}
