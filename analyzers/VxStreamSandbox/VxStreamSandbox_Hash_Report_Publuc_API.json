@@ -9,7 +9,7 @@
     "baseConfig": "VxStreamSandbox_Public_API",
     "config": {
         "check_tlp": true,
-        "max_tlp": 1,
+        "max_tlp": 1
     },
     "command": "VxStreamSandbox/vxstreamsandbox_analyzer.py"
 }
