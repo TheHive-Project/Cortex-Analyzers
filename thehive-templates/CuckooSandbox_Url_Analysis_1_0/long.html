@@ -105,8 +105,8 @@
             <div ng-if="content.yara">
                 <h4>Yara</h4>
                 <br>
-                <dl class="dl-horizontal" ng-repeat="yara in content.yara track by $index">
-                    <dd>{{ yara }}<dd>
+                <dl class="dl-horizontal">
+                    <dd>{{ content.yara }}<dd>
                 </dl>
             </div>
             <div ng-if="!content.yara">
@@ -129,7 +129,7 @@
                     <dd>{{ suri }}<dd>
                 </dl>
             </div>
-            <div ng-if="!content.suri">
+            <div ng-if="!content.suricata_alerts">
                 No suspicious suricata alerts reported
             </div>
         </div>
