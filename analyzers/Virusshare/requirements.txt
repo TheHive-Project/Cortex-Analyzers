@@ -1,3 +1,4 @@
 requests
 progressbar2
 cortexutils
+future

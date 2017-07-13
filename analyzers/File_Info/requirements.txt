@@ -6,3 +6,4 @@ oletools
 olefile
 git+https://github.com/AnyMaster/pehashng
 cortexutils
+future
