@@ -1,0 +1,16 @@
+{
+    "name": "FireHOLBlocklists",
+    "author": "Nils Kuhnert, CERT-Bund",
+    "license": "AGPL-V3",
+    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+    "version": "2.0",
+    "baseConfig": "FireHOLBlocklists",
+    "config": {
+        "check_tlp": false,
+        "max_tlp": 3,
+        "service": ""
+    },
+    "description": "Check IP addresses against the FireHOL blocklists",
+    "dataTypeList": ["ip"],
+    "command": "FireHOLBlocklists/firehol_blocklists.py"
+}

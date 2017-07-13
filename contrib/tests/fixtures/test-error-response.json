@@ -1,0 +1,10 @@
+{
+    "dataType": "ip",
+    "data": "1.1.1.1",
+    "config": {
+        "password": "secret",
+        "key": "secret",
+        "apikey": "secret",
+        "api_key": "secret"
+    }
+}

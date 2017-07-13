@@ -1,6 +1,9 @@
 {
     "name": "DNSDB_DomainName",
-    "version": "1.1",
+    "version": "2.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
     "baseConfig": "DNSDB",
     "config": {
         "check_tlp": true,
@@ -8,7 +11,7 @@
         "service": "domain_name"
 
     },
-    "description": "DNSDB Passive DNS query for Domain Names : Provides history records for a domain",
+    "description": "Provide history records for a domain using DNSDB Passive DNS service",
     "dataTypeList": ["domain"],
     "command": "DNSDB/dnsdb.py"
 }

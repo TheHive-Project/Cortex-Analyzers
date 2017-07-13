@@ -1,0 +1,8 @@
+{
+    "dataType": "ip",
+    "data": "1.1.1.1",
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 2
+    }
+}

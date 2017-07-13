@@ -15,10 +15,9 @@ class VirusTotalAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.service = self.getParam(
-            'config.service', None, 'Service parameter is missing')
-        self.virustotal_key = self.getParam(
-            'config.key', None, 'Missing VirusTotal API key')
+        self.service = self.getParam('config.service', None, 'Service parameter is missing')
+        self.virustotal_key = self.getParam('config.key', None, 'Missing VirusTotal API key')
+        self.polling_interval = self.getParam('config.polling_interval', 60)
 
     def wait_file_report(self, id):
         results = self.check_response(self.vt.get_file_report(id))
@@ -26,7 +25,7 @@ class VirusTotalAnalyzer(Analyzer):
         if code == 1:
             self.report(results)
         else:
-            time.sleep(10)
+            time.sleep(self.polling_interval)
             self.wait_file_report(id)
 
     def wait_url_report(self, id):
@@ -35,13 +34,15 @@ class VirusTotalAnalyzer(Analyzer):
         if code == 1:
             self.report(results)
         else:
-            time.sleep(60)
+            time.sleep(self.polling_interval)
             self.wait_url_report(id)
 
     def check_response(self, response):
         if type(response) is not dict:
             self.error('Bad response : ' + str(response))
         status = response.get('response_code', -1)
+        if status == 204:
+            self.error('VirusTotal api rate limit exceeded (Status 204).')
         if status != 200:
             self.error('Bad status : ' + str(status))
         results = response.get('results', {})
@@ -63,6 +64,12 @@ class VirusTotalAnalyzer(Analyzer):
             self.error('Scan not found')
 
     def summary(self, raw):
+        taxonomies = []
+        level = "info"
+        namespace = "VT"
+        predicate = "Score"
+        value = "\"0\""
+
         result = {
             "has_result": True
         }
@@ -79,18 +86,41 @@ class VirusTotalAnalyzer(Analyzer):
         if self.service == "get":
             if("scans" in raw):
                 result["scans"] = len(raw["scans"])
+                value = "\"{}/{}\"".format(result["positives"], result["total"])
+                if result["positives"] == 0:
+                    level = "safe"
+                elif result["positives"] < 5:
+                    level = "suspicious"
+                else:
+                    level = "malicious"
 
             if("resolutions" in raw):
                 result["resolutions"] = len(raw["resolutions"])
-
+                value = "\"{} resolution(s)\"".format(result["resolutions"])
+                if result["resolutions"] == 0:
+                    level = "safe"
+                elif result["resolutions"] < 5:
+                    level = "suspicious"
+                else:
+                    level = "malicious"
             if("detected_urls" in raw):
                 result["detected_urls"] = len(raw["detected_urls"])
+                value = "\"{} detected_url(s)\"".format(result["detected_urls"])
+                if result["detected_urls"] == 0:
+                    level = "safe"
+                elif result["detected_urls"] < 5:
+                    level = "suspicious"
+                else:
+                    level = "malicious"
 
             if("detected_downloaded_samples" in raw):
                 result["detected_downloaded_samples"] = len(
                     raw["detected_downloaded_samples"])
 
-        return result
+
+
+        taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        return {"taxonomies": taxonomies}
 
     def run(self):
         Analyzer.run(self)

@@ -1,0 +1,50 @@
+
+<div class="panel panel-info" ng-if="content.count > 0">
+
+    <div class="panel-heading">
+		Firehol IP Report (https://github.com/firehol/blocklist-ipsets)
+	</div>
+	<div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Number of matching lists:</dt>
+            <dd>{{content.count}}</dd>
+        </dl>
+
+        <table class="table" ng-if="content.hits">
+            <thead>
+                <th>List name</th>
+                <th>Last updated</th>
+                <th>Description</th>
+            </thead>
+            <tbody ng-repeat="h in content.hits | orderBy:'-file_date'">
+                <tr>
+                    <td>{{h.list}}</td>
+                    <td>{{h.file_date}}</td>
+                    <td>
+                        <a target="_blank" href="http://iplists.firehol.org/?ipset={{h.list}}">http://iplists.firehol.org/?ipset={{h.list}}</a>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+	</div>
+</div>
+
+<div class="panel panel-success" ng-if="content.count == 0 && success">
+	<div class="panel-heading">
+		Firehol IP Report (https://github.com/firehol/blocklist-ipsets): <b>No match found</b>
+	</div>
+</div>
+
+<!-- on error  -->
+<div class="panel panel-danger" ng-if="!success">
+	<div class="panel-heading">
+		Firehol IP Report (https://github.com/firehol/blocklist-ipsets) <b>Error</b>
+	</div>
+	<div class="panel-body">
+		<dl class="dl-horizontal">
+			<dt>Error: </dt>
+			<dd>{{content.errorMessage}}</dd>
+		</dl>
+	</div>
+</div>

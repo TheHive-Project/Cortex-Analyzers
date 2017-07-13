@@ -17,58 +17,90 @@ class PassiveTotalAnalyzer(Analyzer):
         self.api_key = self.getParam('config.key', None, 'PassiveTotal API key is missing')
 
     def summary(self, raw):
-        result = {
-            'service': self.service,
-            'dataType': self.data_type
-        }
+        taxonomies = []
+        level = "info"
+        namespace = "PT"
+        predicate = "Service"
+        value = "\"False\""
 
+        result = {}
         # malware service
         if self.service == 'malware':
+            predicate = "Malware"
             if 'results' in raw and raw['results']:
                 result['malware'] = True
+                level = "malicious"
+            else:
+                result['malware'] = False
+                level = "safe"
+            value = "\"{}\"".format(result['malware'])
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         # osint service
         elif self.service == 'osint':
+            predicate = "OSINT"
             if 'results' in raw and raw['results']:
                 result['osint'] = True
+            else:
+                result['osint'] = False
+            value = "\"{}\"".format(result['osint'])
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         # passive dns service
         elif self.service == 'passive_dns':
-            if 'firstSeen' in raw and raw['firstSeen']:
-                result['firstSeen'] = raw['firstSeen']
-            if 'lastSeen' in raw and raw['lastSeen']:
-                result['lastSeen'] = raw['lastSeen']
+            predicate = "PassiveDNS"
             if 'totalRecords' in raw and raw['totalRecords']:
                 result['total'] = raw['totalRecords']
+            else:
+                result['total'] = 0
+
+            if result['total'] < 2:
+                value = "\"{} record\"".format(result['total'])
+            else:
+                value = "\"{} records\"".format(result['total'])
+
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         # ssl certificate details service
         elif self.service == 'ssl_certificate_details':
+            predicate = "SSL"
             if 'sha1' in raw:
                 result['ssl'] = True
-
+            else:
+                result['ssl'] = False
+            value = "\"{}\"".format(result['ssl'])
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         # ssl certificate history service
         elif self.service == 'ssl_certificate_history':
+            predicate = "SSLCertHistory"
             if 'results' in raw and raw['results']:
                 result['ssl'] = True
                 result['total'] = len(raw['results'])
+                value = "\"{} record(s)\"".format(result['total'])
+                taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         # unique resolutions service
         elif self.service == 'unique_resolutions':
+            predicate = "UniqueResolution"
             if 'total' in raw:
                 result['total'] = raw['total']
+                value = "\"{} record(s)\"".format(result['total'])
+                taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         # whois details service
         elif self.service == 'whois_details':
+            predicate = "Whois"
             if 'registrant' in raw and 'organization' in raw['registrant'] and raw['registrant']['organization']:
                 result['registrant'] = raw['registrant']['organization']
-            elif 'registrant' in raw and 'name' in raw['registrant'] and raw['registrant']['name']:
-                result['registrant'] = raw['registrant']['name']
-
+                value = "\"REGISTRANT: {}\"".format(result['registrant'])
+                taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
             if 'registrar' in raw and raw['registrar']:
                 result['registrar'] = raw['registrar']
+                value = "\"REGISTRAR: {}\"".format(result['registrar'])
+                taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
-        return result
+        return {"taxonomies":taxonomies}
 
     def run(self):
         Analyzer.run(self)

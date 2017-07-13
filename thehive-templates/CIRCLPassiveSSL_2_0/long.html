@@ -1,0 +1,80 @@
+<div class="panel panel-info" ng-if="success">
+	<div class="panel-heading">
+		<a target="_blank" href="http://circl.lu/services/passive-ssl/">CIRCL.lu</a> Passive SSL Report
+	</div>
+	<div class="panel-body">
+
+		<!-- Certificate details -->
+		<div ng-if="content.cert.info">
+			<dl class="dl-horizontal">
+				<dt>Certificate fingerprint</dt>
+				<dd class="wrap">{{content.cert.info.fingerprint}}</dd>
+			</dl>
+
+			<dl class="dl-horizontal">
+				<dt>Subject</dt>
+				<dd class="wrap">{{content.cert.info.subject}}</dd>
+			</dl>
+
+			<dl class="dl-horizontal">
+				<dt>Issuer</dt>
+				<dd class="wrap">{{content.cert.info.issuer}}</dd>
+			</dl>
+
+			<dl class="dl-horizontal">
+				<dt>Key length</dt>
+				<dd class="wrap">{{content.cert.info.keylength}}</dd>
+			</dl>
+
+			<dl class="dl-horizontal">
+				<dt>Key</dt>
+				<dd class="wrap"><pre>{{content.cert.info.key}}</pre></dd>
+			</dl>
+
+			<dl class="dl-horizontal">
+				<dt>Valid from</dt>
+				<dd class="wrap">{{content.cert.info.not_before}}</dd>
+			</dl>
+
+			<dl class="dl-horizontal">
+				<dt>Valid until</dt>
+				<dd class="wrap">{{content.cert.info.not_after}}</dd>
+			</dl>
+		</div>
+
+		<!-- IP-Addresses in certificate report -->
+		<div ng-if="content.query.seen.length > 0">
+			<dl class="dl-horizontal">
+				<dt>IPs used that certificate: </dt>
+				<dd class="wrap">
+					<span ng-repeat="ip in content.query.seen">{{ip}}<br /></span>
+				</dd>
+			</dl>
+		</div>
+
+		<!-- IP-Address report -->
+		<div ng-if="content.ip">
+			<dl class="dl-horizontal">
+				<dt>IP-Address:</dt>
+				<dd>{{content.ip}}</dd>
+			</dl>
+			<dl class="dl-horizontal" ng-repeat="cert in content.certificates">
+				<dt>Used certificate:</dt>
+				<dd>Fingerprint: {{cert.fingerprint}}<br />Subject: {{cert.subject}}</dd>
+			</dl>
+		</div>
+	</div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+    	<dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> PassiveSSL: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

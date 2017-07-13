@@ -9,7 +9,7 @@
         "check_tlp": false,
         "service": "url_analysis"
     },
-    "description": "Cuckoo Sandbox url analysis",
+    "description": "Cuckoo Sandbox URL analysis",
     "dataTypeList": ["url"],
     "command": "CuckooSandbox/cuckoosandbox_analyzer.py"
 }

@@ -1,13 +1,16 @@
 {
     "name": "DNSDB_NameHistory",
-    "version": "1.0",
+    "version": "2.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
     "baseConfig": "DNSDB",
     "config": {
         "check_tlp": true,
         "max_tlp": 1,
         "service": "name_history"
     },
-    "description": "DNSDB Passive DNS query for domain/host name history : Provides history records for an domain/host",
+    "description": "Provide history records for a fully-qualified domain name using DNSDB Passive DNS",
     "dataTypeList": ["fqdn"],
     "command": "DNSDB/dnsdb.py"
 }

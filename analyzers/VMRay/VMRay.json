@@ -1,0 +1,16 @@
+{
+    "name": "VMRay",
+    "license": "AGPL-V3", 
+    "author": "Nils Kuhnert, CERT-Bund",
+    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+    "version": "2.0",
+    "baseConfig": "VMRay",
+    "config": {
+        "cert": false,
+        "check_tlp": true,
+        "max_tlp": 1
+    },
+    "description": "VMRay Sandbox file analysis",
+    "dataTypeList": ["hash", "file"],
+    "command": "VMRay/vmray.py"
+}

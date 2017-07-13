@@ -1,13 +1,16 @@
 {
     "name": "DomainTools_ReverseNameServer",
-    "version": "1.0",
+    "version": "2.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
     "baseConfig": "DomainTools",
     "config": {
         "check_tlp": true,
         "max_tlp": 1,
         "service": "name-server-domains"
     },
-    "description": "DomainTools Reverse Name server: provides a list of domain names that share the same primary or secondary name server",
+    "description": "Use DomainTools Reverse Name Server service to get a list of domain names that share the same primary or secondary name server",
     "dataTypeList": ["domain"],
     "command": "DomainTools/domaintools.py"
 }

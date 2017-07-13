@@ -1,7 +1,10 @@
 {
     "name": "VirusTotal_Scan",
-    "version": "2.0",
-    "description": "VirusTotal scan file or url",
+    "version": "3.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Scan a file or URL using VirusTotal",
     "dataTypeList": ["file", "url"],
     "baseConfig": "VirusTotal",
     "config": {

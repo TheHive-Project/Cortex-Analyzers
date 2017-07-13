@@ -1,13 +1,16 @@
 {
     "name": "DomainTools_WhoisLookup",
-    "version": "1.0",
+    "version": "2.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
     "baseConfig": "DomainTools",
     "config": {
         "check_tlp": true,
         "max_tlp": 1,
         "service": "whois/parsed"
     },
-    "description": "DomainTools Whois Lookup: provides the ownership record for a domain name with basic registration details",
+    "description": "Get the ownership record for a domain with basic registration details using DomainTools Whois Lookup service",
     "dataTypeList": ["domain"],
     "command": "DomainTools/domaintools.py"
 }

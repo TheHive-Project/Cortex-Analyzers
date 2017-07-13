@@ -1,7 +1,10 @@
 {
     "name": "HippoMore",
-    "version": "1.0",
-    "description": "Hippocampe detailed report: provides the last detailed report for an IP, domain or a URL",
+    "version": "2.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Get the Hippocampe detailed report for an IP address, a domain or a URL",
     "dataTypeList": ["ip", "domain", "fqdn", "url"],
     "baseConfig": "Hippocampe",
     "config": {
