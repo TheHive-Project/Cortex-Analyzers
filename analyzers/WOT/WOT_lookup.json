@@ -1,0 +1,16 @@
+{
+    "name": "WOT_Lookup",
+    "version": "1.0",
+    "author": "Andrea Garavaglia - CERT-LDO",
+    "url": "https://github.com/garanews/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Check a URL against Web of Trust (WOT) a website reputation service",
+    "dataTypeList": ["url"],
+    "baseConfig": "WOT",
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 1,
+        "service": "query"
+    },
+    "command": "WOT/WOT_lookup.py"
+}
