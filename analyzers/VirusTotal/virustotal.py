@@ -117,7 +117,16 @@ class VirusTotalAnalyzer(Analyzer):
                 result["detected_downloaded_samples"] = len(
                     raw["detected_downloaded_samples"])
 
-
+        if self.service == "scan":
+            if("scans" in raw):
+                result["scans"] = len(raw["scans"])
+                value = "\"{}/{}\"".format(result["positives"], result["total"])
+                if result["positives"] == 0:
+                    level = "safe"
+                elif result["positives"] < 5:
+                    level = "suspicious"
+                else:
+                    level = "malicious"
 
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         return {"taxonomies": taxonomies}
