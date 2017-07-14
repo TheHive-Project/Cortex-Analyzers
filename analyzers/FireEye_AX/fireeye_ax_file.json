@@ -1,0 +1,25 @@
+{
+    "name": "FireEye_AX_File_Submission",
+    "version": "1.0",
+    "author": "Unit777",
+    "license": "AGPL-V3",
+    "url": "https://github.com/UNIT777/Cortex-Analyzers",
+    "dataTypeList": ["file"],
+    "description": "Submits file to a FireEye AX appliance",
+    "baseConfig": "FireEye_AX",
+    "config": {
+        "check_tlp": false,
+        "max_tlp": 4,
+        "service": "scan",
+        "sandbox_options": {
+            "analysistype": "0",
+            "timeout": "180",
+            "priority": "0",
+            "profiles": ["winxp-sp3"],
+            "application": "0",
+            "force": "true",
+            "prefetch": "1"
+        }
+    },
+    "command": "FireEye_AX/fireeye_ax.py"
+}
