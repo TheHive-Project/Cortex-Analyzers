@@ -13,7 +13,7 @@ class YetiAnalyzer(Analyzer):
 
     def summary(self, raw):
         count = len(raw.get('findings', []))
-        value = "\"{}\" item(s)".format(count)
+        value = "\"{} hit{}\"".format(count, "(s)" if count > 1 else "")
 
         result = {
             "taxonomies": [{
@@ -31,11 +31,15 @@ class YetiAnalyzer(Analyzer):
 
         try:
             result = api.observable_search(value=data)
+
+            if not result:
+                self.error('Service unavailable, please check if Yeti server is running')
+
             self.report({
                 'findings': result
             })
         except:
-            self.error('An issue occurred while calling Yeyi API')
+            self.error('An issue occurred while calling Yeti API')
 
 if __name__ == '__main__':
     YetiAnalyzer().run()
