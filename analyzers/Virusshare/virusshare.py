@@ -67,7 +67,7 @@ class VirusshareAnalyzer(Analyzer):
                     # Skipping comments
                     if line[0] == '#':
                         continue
-                    if line.strip('\n') == searchhash:
+                    if searchhash.lower() in line:
                         self.report({'isonvs': True,
                                      'md5': searchhash})
         self.report({'isonvs': False,
