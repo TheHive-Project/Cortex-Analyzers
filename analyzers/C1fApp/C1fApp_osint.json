@@ -1,7 +1,7 @@
 {
     "name": "C1fApp",
     "version": "1.0",
-    "author": "etz69",
+    "author": "Dimitris Lambrou, etz69.dev@gmail.com",
     "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
     "license": "AGPL-V3",
     "description": "Query C1fApp OSINT Aggregator for IPs, domains and URLs",
