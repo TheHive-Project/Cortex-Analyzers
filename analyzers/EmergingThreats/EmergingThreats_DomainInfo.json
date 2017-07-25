@@ -1,0 +1,14 @@
+{
+    "name": "EmergingThreats_DomainInfo",
+    "version": "1.0",
+    "author": "Arcuri Davide",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseConfig": "EmergingThreats",
+    "config": { 
+        "service": "domain-info"
+    },
+    "description": "Retrieves reputation and related malware and IDS requests related to domain",
+    "dataTypeList": ["domain"],
+    "command": "EmergingThreats/emergingthreats_analyzer.py"
+}
