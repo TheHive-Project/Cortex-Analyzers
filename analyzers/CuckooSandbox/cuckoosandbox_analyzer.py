@@ -37,8 +37,8 @@ class CuckooSandboxAnalyzer(Analyzer):
         elif result["malscore"] > 0:
             level = "safe"
 
-        taxonomies.append(self.build_taxonomy(level, namespace, predicate, result["malscore"]))
-        taxonomies.append(self.build_taxonomy(level, namespace, "Malfamily", result["malfamily"]))
+        taxonomies.append(self.build_taxonomy(level, namespace, predicate, "\"{}\"".format(result["malscore"])))
+        taxonomies.append(self.build_taxonomy(level, namespace, "Malfamily", "\"{}\"".format(result["malfamily"])))
 
         return {"taxonomies": taxonomies}
 
