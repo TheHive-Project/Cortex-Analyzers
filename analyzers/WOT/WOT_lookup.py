@@ -1,14 +1,9 @@
 #!/usr/bin/env python
 # encoding: utf-8
-import sys
-import os
+
 import json
-import codecs
-import time
-import re
 import requests
 import datetime
-import ast
 from cortexutils.analyzer import Analyzer
 
 class WOTAnalyzer(Analyzer):
@@ -91,7 +86,7 @@ class WOTAnalyzer(Analyzer):
 
     def run(self):
         if self.service == 'query':
-            if self.data_type == 'url':
+            if self.data_type in ['domain', 'fqdn']:
                 data = self.getParam('data', None, 'Data is missing')
                 r = self.WOT_checkurl(data)
                 if data in r.keys():
