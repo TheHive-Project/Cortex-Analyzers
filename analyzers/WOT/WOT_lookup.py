@@ -36,7 +36,6 @@ class WOTAnalyzer(Analyzer):
             "302": "Alternative or controversial medicine",
             "303": "Opinions, religion, politics",
             "304": "Other",
-            "501": "Good site",
             "401": "Adult content",
             "402": "Incidental nudity",
             "403": "Gruesome or shocking",
@@ -87,7 +86,7 @@ class WOTAnalyzer(Analyzer):
             else:
                 level = "malicious"
             
-        taxonomies.append(self.build_taxonomy(level, "WOT", "Category", value))
+        taxonomies.append(self.build_taxonomy(level, "WOT", "Category", "\"{}\"".format(value)))
         return {"taxonomies": taxonomies}
 
     def run(self):
