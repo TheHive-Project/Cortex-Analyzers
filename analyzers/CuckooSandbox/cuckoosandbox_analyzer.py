@@ -48,7 +48,7 @@ class CuckooSandboxAnalyzer(Analyzer):
         try:
 
             # file analysis
-            if self.service in ['file_analysis_inet', 'file_analysis_noinet']:
+            if self.service in ['file_analysis']:
                 filepath = self.getParam('file', None, 'File is missing')
                 filename = basename(filepath)
                 with open(filepath, "rb") as sample:

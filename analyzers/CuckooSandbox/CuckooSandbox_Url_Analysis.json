@@ -6,7 +6,8 @@
     "license": "AGPL-V3",
     "baseConfig": "CuckooSandbox",
     "config": {
-        "check_tlp": false,
+        "check_tlp": true,
+        "max_tlp":1,
         "service": "url_analysis"
     },
     "description": "Cuckoo Sandbox URL analysis",
