@@ -1,0 +1,48 @@
+<div ng-if="success">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Summary</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <th>Scanner</th>
+                    <th>Detected</th>
+                    <th>Result</th>
+                </tr>
+                <tr ng-repeat="probe in content.probe_results" ng-class="{
+                        'text-success': probe.status ===0 ,
+                        'text-danger': probe.status === 1,
+                        'text-warning': probe.status === -1
+                    }" ng-if="probe.type === 'antivirus'">
+                    <td>
+                        <strong>{{probe.name}}</strong>
+                    </td>
+                    <td ng-switch="probe.status">
+                        <span ng-switch-when="0">
+                             <i class="text-success fa fa-check"></i> Safe
+                        </span>
+                        <span ng-switch-when="1">
+                            <i class="fa fa-bug"></i> Malicious
+                        </span>
+                        <span ng-switch-default>
+                            <i class="fa fa-question-circle"></i> Scan error
+                        </span>
+                    </td>
+                    <td class="wrap">
+                        {{probe.results || 'No results available'}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.attachment.name}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
