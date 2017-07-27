@@ -7,6 +7,26 @@ import requests
 import time
 import tldextract
 
+RED_CATEGORIES = [
+    "Blackhole", "Bot", "Brute_Forcer", "CnC", 
+    "Compromised", "DDoSAttacker", "DDoSTarget", 
+    "DriveBySrc", "Drop", "EXE_Source", 
+    "FakeAV", "Mobile_CnC", "Mobile_Spyware_CnC", 
+    "P2PCnC", "Scanner", "Spam", "SpywareCnC"
+]
+
+YELLOW_CATEGORIES = [
+    "AbusedTLD", "Bitcoin_Related", "ChatServer",
+    "DynDNS",  "IPCheck", "OnlineGaming", "P2P", 
+    "Parking", "Proxy", "RemoteAccessService",
+    "SelfSignedSSL", "Skype_SuperNode", "TorNode", 
+    "Undesirable",  "VPN"
+]
+
+GREEN_CATEGORIES = [
+    "Utility"
+]
+
 class EmergingThreatsAnalyzer(Analyzer):
 
     def __init__(self):
@@ -18,7 +38,6 @@ class EmergingThreatsAnalyzer(Analyzer):
 
     def summary(self, raw):
         taxonomies = []
-        level = "safe"
         namespace = "ET"
         predicate = self.service
 
@@ -27,9 +46,16 @@ class EmergingThreatsAnalyzer(Analyzer):
             'dataType': self.data_type
         }
         
-        if predicate in ['domain-info', 'ip-info']:
-            value = "|".join([x['category'] + "=" + str(x['score']) for x in result["reputation"] if result["reputation"] != '-'])
-            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        if predicate in ['domain-info', 'ip-info'] and result['reputation'] != "-":
+            for x in result["reputation"]:
+                value = "%s=%d" % (x['category'], x['score'])
+                if x['category'] in RED_CATEGORIES and x['score'] >= 70:
+                    level = "malicious"
+                elif (40 <= x['score'] < 70 and x['category'] in RED_CATEGORIES) or (x['score'] >= 70 and x['category'] in YELLOW_CATEGORIES):
+                    level = "suspicious"
+                else:
+                    level = "safe"
+                taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
             
         result.update({"taxonomies":taxonomies})
         return result
