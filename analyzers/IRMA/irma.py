@@ -44,7 +44,7 @@ class IRMAAnalyzer(Analyzer):
                 'safe' if findings == 0 else 'malicious',
                 'IRMA',
                 'Scan',
-                '0' if total == 0 else '{}/{}'.format(findings, total)
+                '\"0\"' if total == 0 else '\"{}/{}\"'.format(findings, total)
             )]
         }
 
