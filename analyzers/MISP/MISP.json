@@ -9,7 +9,7 @@
         "check_tlp": false,
         "max_tlp": 3
     },
-    "description": "Check if this IOC has been processed in different MISP instances.",
+    "description": "Query multiple MISP instances for events containing an observable.",
     "dataTypeList": ["domain", "ip", "url", "fqdn", "uri_path","user-agent", "hash", "email", "mail", "mail_subject" , "registry", "regexp", "other", "filename"],
     "command": "MISP/misp.py"
 }
