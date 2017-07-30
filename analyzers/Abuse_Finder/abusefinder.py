@@ -1,6 +1,9 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
+# -*- coding: utf-8 -*
+"""This analyzer leverages abuse_finder, an Open Source Python library provided by CERT Société Générale to help
+automatically find the most appropriate contact for abuse reports.
+See https://github.com/certsocietegenerale/abuse_finder for further reference.
+"""
 
 import sys
 import json
@@ -32,7 +35,7 @@ class AbuseFinderAnalyzer(Analyzer):
         elif self.data_type == "url":
             return url_abuse(self.getData())
         else:
-            self.error("datatype not handled")
+            self.error("invalid datatype")
 
     def run(self):
         self.report({'abuse_finder':self.abuse()})
