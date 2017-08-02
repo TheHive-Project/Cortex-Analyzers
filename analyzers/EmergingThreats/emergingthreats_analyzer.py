@@ -40,14 +40,9 @@ class EmergingThreatsAnalyzer(Analyzer):
         taxonomies = []
         namespace = "ET"
         predicate = self.service
-
-        result = {
-            'service': self.service,
-            'dataType': self.data_type
-        }
         
-        if predicate in ['domain-info', 'ip-info'] and result['reputation'] != "-":
-            for x in result["reputation"]:
+        if predicate in ['domain-info', 'ip-info'] and raw['reputation'] != "-":
+            for x in raw["reputation"]:
                 value = "%s=%d" % (x['category'], x['score'])
                 if x['category'] in RED_CATEGORIES and x['score'] >= 70:
                     level = "malicious"
@@ -57,8 +52,7 @@ class EmergingThreatsAnalyzer(Analyzer):
                     level = "safe"
                 taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
             
-        result.update({"taxonomies":taxonomies})
-        return result
+        return {"taxonomies":taxonomies}
 
     def run(self):
         Analyzer.run(self)
