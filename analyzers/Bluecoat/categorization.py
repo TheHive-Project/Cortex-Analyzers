@@ -13,7 +13,7 @@ class BluecoatAnalyzer(Analyzer):
 			self.BC_rest_page = "rest/categorization"
 
 		"""
-			Extract desired field through a regex
+			Extract desired fields through regex
 			- category
 			- id
 			- date
@@ -37,6 +37,7 @@ class BluecoatAnalyzer(Analyzer):
 					result = None
 
 				return result
+			else : return None
 
 
 		"""
@@ -76,20 +77,10 @@ class BluecoatAnalyzer(Analyzer):
 			taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 			return {"taxonomies" : taxonomies}
 
-		"""
-			retrieve domain from url
-		"""
-		def url_to_domain(self, url):
-			REGEX_DOMAIN = r"(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)\/?"
-			try:
-				return  re.findall(REGEX_DOMAIN, url)[0]
-			except:
-				return None
-
 
 		def run(self):
 
-			if self.data_type == "domain" or self.data_type == "url":
+			if self.data_type == "domain" or self.data_type == "url" or self.data_type == "fqdn":
 
 				if self.data_type == "url":
 					domain = self.url_to_domain(self.getData())
@@ -108,10 +99,6 @@ class BluecoatAnalyzer(Analyzer):
 							return self.error("%s : %s" % (JSON_answer["errorType"], JSON_answer["error"]))
 						except Exception as b:
 							return self.error(str(b))
-
-			elif self.data_type == "url":
-				self.url_to_domain(self.getData())
-
 			else:
 				return self.error("Invalid data type !")
 
