@@ -1,0 +1,16 @@
+{
+        "name" : "Bluecoat_Categorization",
+        "version" : "1.0",
+        "author" : "...",
+        "url" : "https://github.com/CERT-BDF/Cortex-Analyzers",
+        "description" : "Retrieve Bluecoat categorization for a domain / url ",
+        "dataTypeList" : ["domain", "url"],
+       	"license" : "AGPL-V3",
+	 "command" : "Bluecoat/categorization.py",
+        "config": {
+                "check_tlp": false,
+                "max_tlp" :3,
+                "service" : ""
+        }
+}
+
