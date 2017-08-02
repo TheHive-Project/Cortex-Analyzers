@@ -5,7 +5,6 @@ from cortexutils.analyzer import Analyzer
 
 import requests
 import time
-import tldextract
 
 RED_CATEGORIES = [
     "Blackhole", "Bot", "Brute_Forcer", "CnC", 
@@ -61,7 +60,6 @@ class EmergingThreatsAnalyzer(Analyzer):
             objectName = self.getData()
             if self.service == 'domain-info':
                 self.data_type = 'domain'
-                objectName = tldextract.extract(objectName).registered_domain
                 url = "https://api.emergingthreats.net/v1/domains/"
                 features = {'reputation', 'urls', 'samples', 'ips', 'events', 'nameservers', 'whois', 'geoloc'}
 
