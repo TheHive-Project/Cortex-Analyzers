@@ -76,7 +76,6 @@ class ThreatCrowdAnalyzer(Analyzer):
         Analyzer.run(self)
         data = self.getData()
         try:
-            #data = self.getParam('data', None, 'Data is missing')
             if self.data_type == "email":
                 r = requests.get("https://www.threatcrowd.org/searchApi/v2/email/report/", params = {"email": data})
             elif (self.data_type == "domain") or (self.data_type == "url"):
@@ -105,39 +104,6 @@ class ThreatCrowdAnalyzer(Analyzer):
                 rep['domains'] = [self.doMISPLookup(d, "domain") for d in rep['domains']]
             if rep.get('emails'):
                 rep['emails'] = [self.doMISPLookup(e, "email") for e in rep['emails']]
-
-
-            """
-            # TODO fix errors
-            pool = Pool()
-            if rep.get('hashes'):
-                resultsHashPool = [pool.apply_async(self.doMISPLookup, (a, "md5",)) for a in rep['hashes']]
-            if rep.get('resolutions'):
-                if (self.data_type == "domain") or (self.data_type == "url"):
-                    resultsResolutionsPool = [pool.apply_async(self.doMISPLookup, (b['ip_address'], "ip",)) for b in rep['resolutions']]
-                elif self.data_type == "ip":
-                    resultsResolutionsPool = [pool.apply_async(self.doMISPLookup, (b['domain'], "domain",)) for b in rep['resolutions']]
-            if rep.get('subdomains'):
-                resultsSubdomainsPool = [pool.apply_async(self.doMISPLookup, (c, "domain",)) for c in rep['subdomains']]
-            if rep.get('domains'):
-                resultsDomainsPool = [pool.apply_async(self.doMISPLookup, (d, "domain",)) for d in rep['domains']]
-            if rep.get('emails'):
-                resultsEMailsPool = [pool.apply_async(self.doMISPLookup, (e, "email",)) for e in rep['emails']]
-
-            pool.close()
-            pool.join()
-
-            if rep.get('hashes'):
-                rep['hashes'] = [f.get() for f in resultsHashPool]
-            if rep.get('resolutions'):
-                rep['resolutions'] = [g.get() for g in resultsResolutionsPool]
-            if rep.get('subdomains'):
-                rep['subdomains'] = [h.get() for h in resultsSubdomainsPool]
-            if rep.get('domains'):
-                rep['domains'] = [i.get() for i in resultsDomainsPool]
-            if rep.get('emails'):
-                rep['emails'] = [k.get() for k in resultsEMailsPool]
-            """
 
             # send result
             self.report(rep)

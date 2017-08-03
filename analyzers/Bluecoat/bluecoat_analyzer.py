@@ -22,7 +22,6 @@ class BluecoatAnalyzer(Analyzer):
     def run(self):
         # get input data
         Analyzer.run(self)
-        #data = self.getData()
         data = self.getParam('data', None, 'Data is missing')
         try:
             # send service
