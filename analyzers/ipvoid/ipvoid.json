@@ -1,0 +1,15 @@
+{
+    "name": "ipvoid",
+    "version": "0.1",
+    "author": "IFX-CDC Alexander Goedeke",
+    "url": "https://github.com/IFX-CDC/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseConfig": "ipvoid",
+    "config": {
+        "check_tlp": true,
+        "service": "search"
+    },
+    "description": "The analyser search for an ip in ipvoid.",
+    "dataTypeList": ["ip"],
+    "command": "ipvoid/ipvoid_analyzer.py"
+}
