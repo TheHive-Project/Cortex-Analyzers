@@ -78,6 +78,8 @@ class EmergingThreatsAnalyzer(Analyzer):
             for feature in features:
                 end = '/' if feature else ''
                 r = self.session.get(url + objectName + end + feature)
+                if feature == '':
+                    feature = 'main'
                 r_json= r.json()
                 if r.status_code == 200 and r_json['response'] not in [{}, []]:
                     info[feature] = r_json['response']
