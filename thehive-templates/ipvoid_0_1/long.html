@@ -1,0 +1,42 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        <strong>IP Address Information</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-repeat="(key, val) in content  ">
+            <div ng-if="key != 'report'">
+                <dt>{{key}}</dt>
+                <dd>{{val}}</dd>
+            </div>
+        </dl>
+    </div>
+</div>
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        <strong>IP Blacklist Report</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>           
+                <tr>
+                    <th>Scanner</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="r in content.report">
+                    <td>{{r[1]}}</td>
+                    <td><i class="{{r[0]}}"></i></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

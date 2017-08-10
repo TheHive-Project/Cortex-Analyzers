@@ -1,0 +1,30 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        <strong>Summary</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.ratedate">
+            <dt>Last Time Reviewed</dt>
+            <dd class="wrap">{{content.ratedate}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.categorization.length > 0">
+            <dt>Categorization</dt>
+            <dd>
+                <div>
+                    <strong>The domain has been assigned to the following categories.</strong>
+                </div>
+                <div ng-repeat="cat in content.categorization">
+                    <span class="text-danger wrap">{{cat}}</span>
+                </div>
+            </dd>
+        </dl>
+    </div>
+</div>

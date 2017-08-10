@@ -1,0 +1,207 @@
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        Email message details
+    </div>
+    <div class="panel-body">
+        <div ng-show="content.traits.is_anonymous_proxy" class="alert alert-warning">Is anonymous proxy</div>
+        <div ng-show="content.traits.is_satellite_provider" class="alert alert-warning">Is satellite provider</div>
+        <dl class="dl-horizontal">
+            <dt>From</dt>
+            <dd>{{content.from}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Date</dt>
+            <dd>{{content.date}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>To</dt>
+            <dd>{{content.to}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Subject</dt>
+            <dd>{{content.subject || '-'}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>CC</dt>
+            <dd>{{content.cc || '-'}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Bcc</dt>
+            <dd>{{content.bcc || '-'}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.attachments && content.attachments.length !== 0">
+            <dt>Attachments</dt>
+            <dd>
+                <div class="bm10">
+                    This message file includes
+                    <ng-pluralize count="content.attachments.length" when="{'1': '1 attachment', 'other': '{} attachments'}"></ng-pluralize>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Filename</th>
+                            <th>Filetype</th>
+                            <th>Mime Type</th>
+                            <th>Magic</th>
+                            <th>Hash</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="a in content.attachments">
+                            <td class="wrap">{{a.filename}}</td>
+                            <td class="wrap">{{a.filetype}}</td>
+                            <td class="wrap">{{a.Mimetype}}</td>
+                            <td class="wrap">{{a.Magic}}</td>
+                            <td>
+                                <div class="dropdown" ng-repeat="t in a.Identification">
+                                    <i ng-class="{'text-danger fa fa-bug': t.status == true, 'text-success fa fa-check-circle': t.status == false, 'text-info fa fa-question-circle': t.status === null}">
+                                    <a href data-toggle="dropdown"><strong>{{t.type}}: </strong>{{t.value}}</a>
+                                        <ul ng-if="t.events.length != 0" class="dropdown-menu">
+                                            <li class="dropdown-header">MISP events</li>
+                                            <li ng-repeat="event in t.events">
+                                                <a href="{{event.url}}" target="_blank">{{event.info}} ({{event.date}})</a>
+                                            </li>
+                                        </ul>
+                                    </i>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.Received && content.Received.length !== 0">
+            <dt>Recieved</dt>
+            <dd>
+                <div class="bm10">
+                    This message was recieved by {{content.Received.length}} mail server
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>By</th>
+                            <th></th>
+                            <th>From</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="t in content.Received">
+                        <td> {{t.date}}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <i ng-if="t.by.value" ng-class="{'text-danger fa fa-bug': t.by.status == true, 'text-success fa fa-check-circle': t.by.status == false, 'text-info fa fa-question-circle': t.by.status === null}">
+                                    <a href data-toggle="dropdown">{{t.by.value}}</a>
+                                        <ul ng-if="t.by.events.length != 0" class="dropdown-menu">
+                                            <li class="dropdown-header">MISP events</li>
+                                            <li ng-repeat="event in t.by.events">
+                                                <a href="{{event.url}}" target="_blank">{{event.info}} ({{event.date}})</a>
+                                            </li>
+                                        </ul>
+                                    </i>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                    <i ng-if="t.byIP.value" ng-class="{'text-danger fa fa-bug': t.byIP.status == true, 'text-success fa fa-check-circle': t.byIP.status == false, 'text-info fa fa-question-circle': t.byIP.status === null}">
+                                    <a href data-toggle="dropdown">{{t.byIP.value}}</a>
+                                        <ul ng-if="t.byIP.events.length != 0" class="dropdown-menu">
+                                            <li class="dropdown-header">MISP events</li>
+                                            <li ng-repeat="event in t.byIP.events">
+                                                <a href="{{event.url}}" target="_blank">{{event.info}} ({{event.date}})</a>
+                                            </li>
+                                        </ul>
+                                    </i>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                    <i ng-if="t.from.value" ng-class="{'text-danger fa fa-bug': t.from.status == true, 'text-success fa fa-check-circle': t.from.status == false, 'text-info fa fa-question-circle': t.from.status === null}">
+                                    <a href data-toggle="dropdown">{{t.from.value}}</a>
+                                        <ul ng-if="t.from.events.length != 0" class="dropdown-menu">
+                                            <li class="dropdown-header">MISP events</li>
+                                            <li ng-repeat="event in t.from.events">
+                                                <a href="{{event.url}}" target="_blank">{{event.info}} ({{event.date}})</a>
+                                            </li>
+                                        </ul>
+                                    </i>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                    <i ng-if="t.fromIP.value" ng-class="{'text-danger fa fa-bug': t.fromIP.status == true, 'text-success fa fa-check-circle': t.fromIP.status == false, 'text-info fa fa-question-circle': t.fromIP.status === null}">
+                                    <a href data-toggle="dropdown">{{t.fromIP.value}}</a>
+                                        <ul ng-if="t.fromIP.events.length != 0" class="dropdown-menu">
+                                            <li class="dropdown-header">MISP events</li>
+                                            <li ng-repeat="event in t.fromIP.events">
+                                                <a href="{{event.url}}" target="_blank">{{event.info}} ({{event.date}})</a>
+                                            </li>
+                                        </ul>
+                                    </i>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </dd>
+        </dl>
+
+        <dl class="dl-horizontal" ng-if="content.bodyURLs && content.bodyURLs.length !== 0">
+            <dt>Body URLs</dt>
+            <dd>
+                <div class="bm10">
+                    The body of this message includes
+                    <ng-pluralize count="content.bodyURLs.length" when="{'1': '1 URL', 'other': '{} URLs'}"></ng-pluralize>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>URL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="t in content.bodyURLs">
+                            <td>
+                                <div class="dropdown">
+                                    <i ng-if="t.value" ng-class="{'text-danger fa fa-bug': t.status == true, 'text-success fa fa-check-circle': t.status == false, 'text-info fa fa-question-circle': t.status === null}">
+                                    <a href data-toggle="dropdown">{{t.value}}</a>
+                                        <ul ng-if="t.events.length != 0" class="dropdown-menu">
+                                            <li class="dropdown-header">MISP events</li>
+                                            <li ng-repeat="event in t.events">
+                                                <a href="{{event.url}}" target="_blank">{{event.info}} ({{event.date}})</a>
+                                            </li>
+                                        </ul>
+                                    </i>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </dd>
+        </dl>
+
+
+        <uib-accordion>
+            <div uib-accordion-group class="panel-default">
+                <uib-accordion-heading>Header</uib-accordion-heading>
+                <pre>{{content.header}}</pre>
+            </div>
+            <div uib-accordion-group class="panel-default">
+                <uib-accordion-heading>Body</uib-accordion-heading>
+                <pre>{{content.body}}</pre>
+            </div>
+        </uib-accordion>
+    </div>
+</div>

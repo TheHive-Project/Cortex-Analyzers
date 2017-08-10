@@ -1,0 +1,200 @@
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+<div class="panel panel-danger" ng-if="success && content.response_code == 0">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        no data found on ThreatCrowd
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.response_code == 1">
+    <div class="panel-heading">
+        <strong>Info</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.permalink">
+            <dt><i class="fa fa-search"></i> Full Report</dt>
+            <dd class="wrap"><a href="{{content.permalink}}">{{content.permalink}}</a></dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.permalink">
+            <dt>References</dt>
+            <dd class="wrap">
+                <div ng-repeat="t in content.references">
+                    <a href="{{t}}">{{t}}</a>
+                </div>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.response_code == 1 && content.resolutions.length > 0">
+    <div class="panel-heading">
+        <strong>Resolutions</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>           
+                <tr>
+                    <th>Last resolved</th>
+                    <th>Domain</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="t in content.resolutions">
+                    <td>{{t.last_resolved}}</td>
+                    <td>
+                        <div class="dropdown">
+                            <i ng-if="t.value" ng-class="{'text-danger fa fa-bug': t.status == true, 'text-success fa fa-check-circle': t.status == false, 'text-info fa fa-question-circle': t.status === null}">
+                            <a href data-toggle="dropdown">{{t.value}}</a>
+                                <ul ng-if="t.events.length != 0" class="dropdown-menu">
+                                    <li class="dropdown-header">MISP events</li>
+                                    <li ng-repeat="event in t.events">
+                                        <a href="{{event.url}}" target="_blank">{{event.info}} ({{event.date}})</a>
+                                    </li>
+                                </ul>
+                            </i>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.response_code == 1 && content.hashes.length > 0">
+    <div class="panel-heading">
+        <strong>Hashes</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>           
+                <tr>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="t in content.hashes">
+                    <td>
+                        <div class="dropdown">
+                            <i ng-if="t.value" ng-class="{'text-danger fa fa-bug': t.status == true, 'text-success fa fa-check-circle': t.status == false, 'text-info fa fa-question-circle': t.status === null}">
+                            <a href data-toggle="dropdown">{{t.value}}</a>
+                                <ul ng-if="t.events.length != 0" class="dropdown-menu">
+                                    <li class="dropdown-header">MISP events</li>
+                                    <li ng-repeat="event in t.events">
+                                        <a href="{{event.url}}" target="_blank">{{event.info}} ({{event.date}})</a>
+                                    </li>
+                                </ul>
+                            </i>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.response_code == 1 && content.emails.length > 0">
+    <div class="panel-heading">
+        <strong>EMails</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>           
+                <tr>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="t in content.emails">
+                    <td>
+                        <div class="dropdown">
+                            <i ng-if="t.value" ng-class="{'text-danger fa fa-bug': t.status == true, 'text-success fa fa-check-circle': t.status == false, 'text-info fa fa-question-circle': t.status === null}">
+                            <a href data-toggle="dropdown">{{t.value}}</a>
+                                <ul ng-if="t.events.length != 0" class="dropdown-menu">
+                                    <li class="dropdown-header">MISP events</li>
+                                    <li ng-repeat="event in t.events">
+                                        <a href="{{event.url}}" target="_blank">{{event.info}} ({{event.date}})</a>
+                                    </li>
+                                </ul>
+                            </i>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.response_code == 1 && content.subdomains.length > 0">
+    <div class="panel-heading">
+        <strong>Subdomains</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>           
+                <tr>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="t in content.subdomains">
+                    <td>
+                        <div class="dropdown">
+                            <i ng-if="t.value" ng-class="{'text-danger fa fa-bug': t.status == true, 'text-success fa fa-check-circle': t.status == false, 'text-info fa fa-question-circle': t.status === null}">
+                            <a href data-toggle="dropdown">{{t.value}}</a>
+                                <ul ng-if="t.events.length != 0" class="dropdown-menu">
+                                    <li class="dropdown-header">MISP events</li>
+                                    <li ng-repeat="event in t.events">
+                                        <a href="{{event.url}}" target="_blank">{{event.info}} ({{event.date}})</a>
+                                    </li>
+                                </ul>
+                            </i>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.response_code == 1 && content.domains.length > 0">
+    <div class="panel-heading">
+        <strong>Domains</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>           
+                <tr>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="t in content.domains">
+                    <td>
+                        <div class="dropdown">
+                            <i ng-if="t.value" ng-class="{'text-danger fa fa-bug': t.status == true, 'text-success fa fa-check-circle': t.status == false, 'text-info fa fa-question-circle': t.status === null}">
+                            <a href data-toggle="dropdown">{{t.value}}</a>
+                                <ul ng-if="t.events.length != 0" class="dropdown-menu">
+                                    <li class="dropdown-header">MISP events</li>
+                                    <li ng-repeat="event in t.events">
+                                        <a href="{{event.url}}" target="_blank">{{event.info}} ({{event.date}})</a>
+                                    </li>
+                                </ul>
+                            </i>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
