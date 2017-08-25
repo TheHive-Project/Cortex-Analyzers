@@ -28,7 +28,7 @@ class VirusshareAnalyzer(Analyzer):
         value = "\"Unknown\""
 
         if raw["isonvs"]:
-            if raw["isonvs"] == "Unknown":
+            if raw["isonvs"] == "unknown":
                 value = "\"Not MD5\""
                 level = "suspicious"
             else:
@@ -45,7 +45,7 @@ class VirusshareAnalyzer(Analyzer):
         if self.data_type == 'hash':
             searchhash = self.getData()
             if len(searchhash) != 32:
-                self.report({'isonvs': 'Unknown',
+                self.report({'isonvs': 'unknown',
                              'hash': searchhash})
         elif self.data_type == 'file':
             filepath = self.getParam('file')
