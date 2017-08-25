@@ -45,7 +45,7 @@ class VirusshareAnalyzer(Analyzer):
         if self.data_type == 'hash':
             searchhash = self.getData()
             if len(searchhash) != 32:
-                self.report({'isonvs': 'unknown',
+                self.report({'isonvs': 'Unknown',
                              'hash': searchhash})
         elif self.data_type == 'file':
             filepath = self.getParam('file')
