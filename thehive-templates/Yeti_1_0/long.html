@@ -1,0 +1,59 @@
+<div class="report-yeti" ng-if="success">
+    <style>
+        .report-yeti dl {
+            margin-bottom: 2px;
+        }
+    </style>
+
+    <div ng-if="content.findings.length === 0">
+        No records found
+    </div>
+
+    <div class="panel panel-info" ng-if="content.findings.length > 0" ng-repeat="finding in content.findings track by 'id'">
+        <div class="panel-heading">
+            <strong>[{{finding.type | uppercase}}] - {{finding.value | fang}}</strong>
+            <a href="{{finding.human_url}}" target="_blank">
+                <i class="fa fa-link"></i>
+            </a>
+        </div>
+        <div class="panel-body">
+            <div>
+                <h5 class="text-primary"><strong>Basic Information</strong></h5>
+                <dl class="dl-horizontal">
+                    <dt>Description</dt>
+                    <dd class="wrap">{{finding.description || 'No description' }}</dd>
+                </dl>
+
+                <dl class="dl-horizontal">
+                    <dt>Tags</dt>
+                    <dd>
+                        <div ng-if="finding.tags.length === 0">No Tags defined</div>
+                        <div class="tags-list" ng-if="finding.tags.length > 0">
+                            <span class="label label-primary mr-xxxs" ng-repeat="tag in finding.tags">{{tag.name}}</span>
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+
+            <div class="mt-xs" ng-repeat="context in finding.context track by $index">
+                <h5 class="text-primary"><strong>{{context.source}}</strong></h5>
+
+                <dl class="dl-horizontal" ng-repeat="(key, value) in context" ng-if="key !== 'source'">
+                    <dt>{{key}}</dt>
+                    <dd class="wrap">{{value || '-'}}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+
