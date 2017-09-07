@@ -45,11 +45,14 @@ class EmergingThreatsAnalyzer(Analyzer):
                 value = "%s=%d" % (x['category'], x['score'])
                 if x['category'] in RED_CATEGORIES and x['score'] >= 70:
                     level = "malicious"
-                elif (40 <= x['score'] < 70 and x['category'] in RED_CATEGORIES) or (x['score'] >= 70 and x['category'] in YELLOW_CATEGORIES):
+                elif (70 <= x['score'] < 100 and x['category'] in RED_CATEGORIES) or (x['score'] >= 100 and x['category'] in YELLOW_CATEGORIES):    
                     level = "suspicious"
                 else:
                     level = "safe"
                 taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        elif predicate == 'malware-info' and raw['events'] != "-":
+            value = str(len(raw['events'])) + " signatures" 
+            taxonomies.append(self.build_taxonomy("malicious", namespace, predicate, value))
             
         return {"taxonomies":taxonomies}
 
@@ -77,6 +80,7 @@ class EmergingThreatsAnalyzer(Analyzer):
 
             for feature in features:
                 end = '/' if feature else ''
+                time.sleep(1)
                 r = self.session.get(url + objectName + end + feature)
                 if feature == '':
                     feature = 'main'
