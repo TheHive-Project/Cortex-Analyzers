@@ -8,10 +8,16 @@ class MISPAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
+
+        # Fixes #94. Instead of None, the string Unnamed should be passed to MISPClient constructor
+        name = self.getParam('config.name', None)
+        if not name:
+            name = 'Unnamed'
+
         self.misp = MISPClient(url=self.getParam('config.url', None, 'No MISP url given.'),
                                key=self.getParam('config.key', None, 'No MISP api key given.'),
                                ssl=self.getParam('config.certpath', True),
-                               name=self.getParam('config.name', None))
+                               name=name)
 
     def summary(self, raw):
         taxonomies = []
@@ -27,7 +33,7 @@ class MISPAnalyzer(Analyzer):
                     data.append(res['uuid'])
 
         # return number of unique events
-        if data == []:
+        if not data:
             value = "\"0 event\""
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         else:
@@ -35,8 +41,6 @@ class MISPAnalyzer(Analyzer):
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         return {"taxonomies": taxonomies}
-
-
 
     def run(self):
         if self.data_type == 'hash':
@@ -57,6 +61,7 @@ class MISPAnalyzer(Analyzer):
             response = self.misp.searchall(self.getData())
 
         self.report({'results': response})
+
 
 if __name__ == '__main__':
     MISPAnalyzer().run()
