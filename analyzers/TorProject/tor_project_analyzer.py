@@ -8,9 +8,15 @@ class TorProjectAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
         self.ttl = self.getParam('config.ttl', 84600)
+        self.cache_duration = self.getParam('config.cache.duration', 3600)
+        self.cache_root = self.getParam(
+            'config.cache.root', '/tmp/cortex/tor_project'
+        )
 
         self.client = tor_project.TorProjectClient(
-            ttl=self.ttl
+            ttl=self.ttl,
+            cache_duration=self.cache_duration,
+            cache_root=self.cache_root
         )
 
     def summary(self, raw):
