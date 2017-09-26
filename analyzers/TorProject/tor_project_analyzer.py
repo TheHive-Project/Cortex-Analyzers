@@ -7,7 +7,11 @@ class TorProjectAnalyzer(Analyzer):
     """Cortex analyzer to query TorProject for exit nodes IP addresses"""
     def __init__(self):
         Analyzer.__init__(self)
-        self.client = tor_project.TorProjectClient()
+        self.ttl = self.getParam('config.ttl', 84600)
+
+        self.client = tor_project.TorProjectClient(
+            ttl=self.ttl
+        )
 
     def summary(self, raw):
         taxonomies = []
