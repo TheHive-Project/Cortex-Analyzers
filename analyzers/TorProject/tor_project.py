@@ -7,11 +7,13 @@ class TorProjectClient:
         self.session = requests.Session()
         self.url = 'https://check.torproject.org/exit-addresses'
 
+    def _get_raw_data(self):
+        return self.session.get(self.url).text
+
     def query(self, ip):
         data = {}
-        r = self.session.get(self.url)
         tmp = {}
-        for line in r.text.splitlines():
+        for line in self._get_raw_data().splitlines():
             params = line.split(' ')
             if params[0] == 'ExitNode':
                 tmp['node'] = params[1]
