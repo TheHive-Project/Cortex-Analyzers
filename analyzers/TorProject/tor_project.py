@@ -6,21 +6,56 @@ import pyfscache
 
 
 class TorProjectClient:
-    """docstring for TorProjectClient"""
-    def __init__(self, ttl, cache_duration, cache_root):
+    """Simple client to query torproject.org for exit nodes.
+
+    The client will download https://check.torproject.org/exit-addresses
+    and check if a specified IP address is present in it. If that IP address
+    is found it will check for its last update time and return a description
+    of the node if its last update time is less than `ttl` seconds ago.
+
+    :param ttl: Tor node will be kept only if its last update was
+                less than `ttl` seconds ago. Ignored if `ttl` is 0
+    :param cache_duration: Duration before refreshing the cache (in seconds).
+                           Ignored if `cache_duration` is 0.
+    :param cache_root: Path where to store the cached file
+                       downloaded from torproject.org
+    :type ttl: int
+    :type cache_duration: int
+    :type cache_root: str
+    """
+    def __init__(self, ttl=86400, cache_duration=3600,
+                 cache_root='/tmp/cortex/tor_project'):
         self.session = requests.Session()
-        self.delta = timedelta(seconds=ttl)
-        self.cache = pyfscache.FSCache(cache_root, seconds=cache_duration)
+        self.delta = None
+        self.cache = None
+        if ttl > 0:
+            self.delta = timedelta(seconds=ttl)
+        if cache_duration > 0:
+            self.cache = pyfscache.FSCache(cache_root, seconds=cache_duration)
         self.url = 'https://check.torproject.org/exit-addresses'
 
     def _get_raw_data(self):
-        try:
-            return self.cache['raw_data']
-        except KeyError:
-            self.cache['raw_data'] = self.session.get(self.url).text
-            return self.cache['raw_data']
+        if self.cache is None:
+            return self.session.get(self.url).text
+        else:
+            try:
+                return self.cache['raw_data']
+            except KeyError:
+                self.cache['raw_data'] = self.session.get(self.url).text
+                return self.cache['raw_data']
 
-    def query(self, ip):
+    def search_tor_node(self, ip):
+        """Lookup an IP address to check if it is a known tor exit node.
+
+        :param ip: The IP address to lookup
+        :type ip: str
+        :return: Data relative to the tor node. If `ip`is a tor exit node
+                 it will contain a `node` key with the hash of the node and
+                 a `last_status` key with the last update time of the node.
+                 If `ip` is not a tor exit node, the function will return an
+                 empty dictionary.
+        :rtype: dict
+        """
         data = {}
         tmp = {}
         present = datetime.utcnow().replace(tzinfo=pytz.utc)
@@ -31,7 +66,8 @@ class TorProjectClient:
             elif params[0] == 'ExitAddress':
                 tmp['last_status'] = params[2] + 'T' + params[3] + '+0000'
                 last_status = parse(tmp['last_status'])
-                if (present - last_status) < self.delta:
+                if (self.delta is None or
+                   (present - last_status) < self.delta):
                     data[params[1]] = tmp
                 tmp = {}
             else:

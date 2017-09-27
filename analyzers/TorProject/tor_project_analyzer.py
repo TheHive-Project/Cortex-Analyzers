@@ -7,7 +7,7 @@ class TorProjectAnalyzer(Analyzer):
     """Cortex analyzer to query TorProject for exit nodes IP addresses"""
     def __init__(self):
         Analyzer.__init__(self)
-        self.ttl = self.getParam('config.ttl', 84600)
+        self.ttl = self.getParam('config.ttl', 86400)
         self.cache_duration = self.getParam('config.cache.duration', 3600)
         self.cache_root = self.getParam(
             'config.cache.root', '/tmp/cortex/tor_project'
@@ -35,7 +35,7 @@ class TorProjectAnalyzer(Analyzer):
     def run(self):
         if self.data_type != 'ip':
             return self.error('Not an IP address')
-        report = self.client.query(self.get_data())
+        report = self.client.search_tor_node(self.get_data())
         self.report({'results': report})
 
 
