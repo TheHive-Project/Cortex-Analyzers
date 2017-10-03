@@ -15,12 +15,15 @@
   </div>
   <!-- Hash and File (also hash) -->
   <div class="panel-body">
-    <div ng-repeat="r in ::content.results.response">
+    <div ng-if="!content.results.response.result" ng-repeat="r in ::content.results.response">
       <dl class="dl-horizontal" ng-if="r.verdict">
         <strong>Verdict: </strong>
         <span class="label" ng-class="{'no specific threat': 'label-info', 'Whitelisted': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[r.verdict]">
             {{r.verdict}}
         </span><br/>
+      </dl>
+      <dl class="dl-horizontal" ng-if="r.threatscore">
+          <strong>Threat Score: </strong> {{r.threatscore}}<br/>
       </dl>
       <dl class="dl-horizontal" ng-if="r.classification_tags.length > 0">
           <strong>Tagged as:</strong>
@@ -46,9 +49,6 @@
       <dl class="dl-horizontal" ng-if="r.type">
         <strong>File Description: </strong> {{r.type}}<br/>
       </dl>
-      <dl class="dl-horizontal" ng-if="r.threatscore">
-        <strong>Threat Score: </strong> {{r.threatscore}}<br/>
-      </dl>
       <dl class="dl-horizontal" ng-if="r.avdetect">
         <strong>AVdetect Score: </strong> {{r.avdetect}}<br/>
       </dl>
@@ -69,16 +69,25 @@
       </dl>
       <dl class="dl-horizontal" ng-if="r.hosts.length > 0">
           <strong>Online report:</strong>
-          <a href="https://www.hybrid-analysis.com/sample/"+{{r.sha256}}>"https://www.hybrid-analysis.com/sample/"+{{r.sha256}}</a>
+          <a href="https://www.hybrid-analysis.com/sample/{{r.sha256}}">https://www.hybrid-analysis.com/sample/{{r.sha256}}</a>
         </dl>
       <hr>
     </div>
   </div>
   <!-- Filename -->
   <div class="panel-body">
-    <div ng-repeat="r in ::content.results.response.result">
+    <div ng-if="content.results.response.result" ng-repeat="r in ::content.results.response.result">
+    <dl class="dl-horizontal" ng-if="r.verdict">
+        <strong>Verdict: </strong>
+        <span class="label" ng-class="{'no specific threat': 'label-info', 'Whitelisted': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[r.verdict]">
+            {{r.verdict}}
+        </span><br/>
+      </dl>
       <dl class="dl-horizontal" ng-if="r.submitname">
         <strong>Submitted filename: </strong> {{r.submitname}}<br/>
+      </dl>
+      <dl class="dl-horizontal" ng-if="r.threatscore">
+          <strong>Threat Score: </strong> {{r.threatscore}}<br/>
       </dl>
       <dl class="dl-horizontal" ng-if="r.sha256">
         <strong>SHA256: </strong> {{r.sha256}}<br/>
@@ -89,9 +98,6 @@
       <dl class="dl-horizontal" ng-if="r.type">
         <strong>File Description: </strong> {{r.type}}<br/>
       </dl>
-      <dl class="dl-horizontal" ng-if="r.threatscore">
-        <strong>Threat Score: </strong> {{r.threatscore}}<br/>
-      </dl>
       <dl class="dl-horizontal" ng-if="r.avdetect">
         <strong>AVdetect Score: </strong> {{r.avdetect}}<br/>
       </dl>
@@ -101,11 +107,7 @@
       <dl class="dl-horizontal" ng-if="r.environmentDescription">
         <strong>Environment Description: </strong> {{r.environmentDescription}}<br/>
       </dl>
-      <dl class="dl-horizontal" ng-if="r.verdict">
-        <strong>Verdict: </strong>{{r.verdict}} <br/>
-      </dl>
       <hr>
     </div>
   </div>
-
 </div>
