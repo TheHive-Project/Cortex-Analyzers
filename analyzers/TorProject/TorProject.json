@@ -1,7 +1,7 @@
 {
   "name": "TorProject",
   "url": "https://github.com/srilumpa/Cortex-Analyzers",
-  "version": "0.1",
+  "version": "2.0",
   "baseConfig": "TorProject",
   "config": {
     "check_tlp": false,
