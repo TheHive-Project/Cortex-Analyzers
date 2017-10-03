@@ -40,15 +40,15 @@ class VxStreamSandboxAnalyzer(Analyzer):
         value = "\"No verdict\""
 
         # define json keys to loop
-        if (self.data_type == 'hash') or (self.data_type == 'file'):
-            minireports = raw_report[u'results'][u'response']
-        elif self.data_type == 'filename':
-            minireports = raw_report[u'results'][u'response'][u'result']
-
+        if self.data_type in ['hash', 'file']:
+            minireports = raw_report.get('results').get('response')
+        elif self.data_type in ['filename']:
+            minireports = raw_report.get('results').get('response').get('result')
+                    
         # get first report with not Null verdict
         for minireport in minireports:
-            if minireport[u'verdict'] is not None:
-                report_verdict = minireport[u'verdict']
+            if minireport.get('verdict') is not None:
+                report_verdict = minireport.get('verdict')
                 break
 
         # create shield badge for short.html
@@ -96,9 +96,8 @@ class VxStreamSandboxAnalyzer(Analyzer):
 
             error = True
             while error:
-                r = requests.get(url, headers=self.headers, auth=HTTPBasicAuth(self.api_key, self.secret))
-                if r.json()[u'response'][
-                    u'error'] == "Exceeded maximum API requests per minute(5). Please try again later.":
+                r = requests.get(url, headers=self.headers, auth=HTTPBasicAuth(self.api_key, self.secret), verify=False)
+                if "error" in r.json().get('response') == "Exceeded maximum API requests per minute(5). Please try again later.":
                     time.sleep(60)
                 else:
                     error = False
