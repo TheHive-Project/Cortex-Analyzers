@@ -1,13 +1,14 @@
 {
-  "name": "TorProject",
-  "url": "https://github.com/srilumpa/Cortex-Analyzers",
-  "version": "2.0",
-  "baseConfig": "TorProject",
-  "config": {
-    "check_tlp": false,
-    "max_tlp": 3
-  },
-  "description": "Query https://check.torproject.org/exit-addresses for TOR exit nodes IP addresses.",
-  "dataTypeList": ["ip"],
-  "command": "TorProject/tor_project_analyzer.py"
+    "name": "TorProject",
+    "author": "@srilumpa",
+    "url": "https://github.com/srilumpa/Cortex-Analyzers",
+    "version": "2.0",
+    "baseConfig": "TorProject",
+    "config": {
+        "check_tlp": false,
+        "max_tlp": 3
+    },
+    "description": "Query https://check.torproject.org/exit-addresses for TOR exit nodes IP addresses.",
+    "dataTypeList": ["ip"],
+    "command": "TorProject/tor_project_analyzer.py"
 }
