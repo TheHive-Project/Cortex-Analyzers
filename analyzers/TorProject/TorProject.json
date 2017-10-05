@@ -3,7 +3,7 @@
     "author": "@srilumpa",
     "license": "AGPL-V3",
     "url": "https://github.com/srilumpa/Cortex-Analyzers",
-    "version": "2.0",
+    "version": "1.0",
     "baseConfig": "TorProject",
     "config": {
         "check_tlp": false,
