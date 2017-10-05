@@ -1,15 +1,15 @@
 <!-- Node found -->
-<div class="panel panel-danger" ng-if="success && content.results.node">
+<div class="panel panel-danger" ng-if="success && content.node">
 	<div class="panel-heading">
 		Tor Project
 	</div>
 	<div class="panel-body">
-		Exit node found: {{content.results.node}} updated at {{content.results.last_status}}
+		Exit node found: {{content.node}} updated at {{content.last_status}}
 	</div>
 </div>
 
 <!-- Empty result -->
-<div class="panel panel-success" ng-if="success && !content.results.node">
+<div class="panel panel-success" ng-if="success && !content.node">
 	<div class="panel-heading">
 		Tor Project
 	</div>

@@ -22,21 +22,19 @@ class TorProjectAnalyzer(Analyzer):
     def summary(self, raw):
         taxonomies = []
         level = 'info'
-        value = 'false'
-        if ("results" in raw):
-            r = len(raw['results'])
-            if r > 0:
-                level = 'suspicious'
-                value = 'true'
+        value = False
+        if ("node" in raw):
+            level = 'suspicious'
+            value = True
         taxonomies.append(
             self.build_taxonomy(level, 'TorProject', 'Node', value))
-        return taxonomies
+        return {"taxonomies": taxonomies}
 
     def run(self):
         if self.data_type != 'ip':
             return self.error('Not an IP address')
         report = self.client.search_tor_node(self.get_data())
-        self.report({'results': report})
+        self.report(report)
 
 
 if __name__ == '__main__':
