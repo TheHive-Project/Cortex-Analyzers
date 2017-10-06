@@ -54,7 +54,7 @@ class CuckooSandboxAnalyzer(Analyzer):
                 with open(filepath, "rb") as sample:
                     files = {"file": (filename, sample)}
                     response = requests.post(self.url + 'tasks/create/file', files=files)
-                task_id = response.json()['task_ids'][0]
+                task_id = response.json()['task_ids'][0] if 'task_ids' in response.json().keys() else response.json()['task_id']
 
             # url analysis
             elif self.service == 'url_analysis':
@@ -85,16 +85,19 @@ class CuckooSandboxAnalyzer(Analyzer):
                 suri_alerts = [(x['signature'],x['dstip'],x['dstport'],x['severity']) for x in resp_json['suricata']['alerts']]
             else:
                 suri_alerts = []
-            hosts = [(x['ip'],x['hostname'],x['country_name']) for x in resp_json['network']['hosts']]
-            uri = [(x['uri']) for x in resp_json['network']['http']]
+            try:
+                hosts = [(x['ip'],x['hostname'],x['country_name']) for x in resp_json['network']['hosts']] if 'hosts' in resp_json['network'].keys() else None
+            except TypeError as e:
+                hosts = [x for x in resp_json['network']['hosts']] if 'hosts' in resp_json['network'].keys() else []
+            uri = [(x['uri']) for x in resp_json['network']['http']] if 'http' in resp_json['network'].keys() else []
             if self.service == 'url_analysis':
                 self.report({
                     'signatures': list_description,
                     'suricata_alerts': suri_alerts,
                     'hosts': hosts,
                     'uri': uri,
-                    'malscore': resp_json['malscore'],
-                    'malfamily': resp_json['malfamily'],
+                    'malscore': resp_json['malscore'] if 'malscore' in resp_json.keys() else resp_json['info'].get('score', None),
+                    'malfamily': resp_json.get('malfamily', None),
                     'file_type': 'url',
                     'yara': resp_json['target']['url'] if 'target' in resp_json.keys() and 'url' in resp_json['target'].keys() else '-'
                 })
@@ -104,8 +107,8 @@ class CuckooSandboxAnalyzer(Analyzer):
                     'suricata_alerts': suri_alerts,
                     'hosts': hosts,
                     'uri': uri,
-                    'malscore': resp_json['malscore'],
-                    'malfamily': resp_json['malfamily'],
+                    'malscore': resp_json['malscore'] if 'malscore' in resp_json.keys() else resp_json['info'].get('score', None),
+                    'malfamily': resp_json.get('malfamily', None),
                     'file_type': "".join([x for x in resp_json['target']['file']['type']]),
                     'yara': [ x['name'] + " - " + x['meta']['description'] if 'description' in x['meta'].keys() else x['name'] for x in resp_json['target']['file']['yara'] ]
                 })
