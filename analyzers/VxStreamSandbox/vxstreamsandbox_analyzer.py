@@ -28,7 +28,7 @@ class VxStreamSandboxAnalyzer(Analyzer):
         self.headers = {'User-Agent': 'VxStream'}
 
         self.secret = self.getParam('config.secret', None, 'VxStream Sandbox secret key is missing')
-        self.api_key = self.getParam('config.api_key', None, 'VxStream Sandbox API key is missing')
+        self.api_key = self.getParam('config.key', None, 'VxStream Sandbox API key is missing')
 
     def summary(self, raw_report):
         taxonomies = []
