@@ -5,11 +5,11 @@
     "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
     "license": "AGPL-V3",
     "dataTypeList": ["hash", "file", "filename"],
-    "description": "VxStream Sandbox (Hybrid-Analysis) report for a Hash using the public API",
+    "description": "VxStream Sandbox (Hybrid-Analysis) report for a hash, file (compute hash) or filename using the public API. This analyzer does not send any file to VxStream",
     "baseConfig": "VxStreamSandbox_Public_API",
     "config": {
         "check_tlp": true,
-        "max_tlp": 2
+        "max_tlp": 1
     },
     "command": "VxStreamSandbox/vxstreamsandbox_analyzer.py"
 }
