@@ -27,14 +27,23 @@ class MISPClient:
         if type(url) is list:
             for idx, server in enumerate(url):
                 verify = True
-                if os.path.isfile(ssl[idx]):
-                    verify = ssl[idx]
+                if isinstance(ssl, list):
+                    if os.path.isfile(ssl[idx]):
+                        verify = ssl[idx]
+                elif isinstance(ssl, str):
+                    if os.path.isfile(ssl):
+                        verify = ssl
+                elif isinstance(ssl, bool):
+                    verify = ssl
                 self.misp_connections.append(pymisp.PyMISP(url=server,
                                                            key=key[idx],
                                                            ssl=verify))
         else:
             verify = True
-            if os.path.isfile(ssl):
+            if isinstance(ssl, str):
+                if os.path.isfile(ssl):
+                    verify = ssl
+            elif isinstance(ssl, bool):
                 verify = ssl
             self.misp_connections.append(pymisp.PyMISP(url=url,
                                                        key=key,
