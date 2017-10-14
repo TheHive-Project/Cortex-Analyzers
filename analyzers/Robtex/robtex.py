@@ -7,6 +7,7 @@ from cortexutils.analyzer import Analyzer
 class RobtexAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
+        self.mode = self.get_param('config.service', None, 'No service given.')
 
     def query_ip(self):
         """
@@ -46,17 +47,63 @@ class RobtexAnalyzer(Analyzer):
         return jsonresults
 
     def run(self):
-        if self.get_param('config.service', None, 'Service not given') == 'ipquery'\
-                and self.get_param('dataType', None) == 'ip':
+        if self.mode == 'ipquery' and self.get_param('dataType', None) == 'ip':
             self.report(self.query_ip())
-        elif self.get_param('config.service', None, 'Service not given') == 'rpdnsquery'\
-                and self.get_param('dataType', None) == 'ip':
+        elif self.mode == 'rpdnsquery' and self.get_param('dataType', None) == 'ip':
             self.report(self.query_rpdns())
-        elif self.get_param('config.service', None, 'Service not given') == 'fpdnsquery' \
-                and self.get_param('dataType', None) in ['fqdn', 'domain']:
+        elif self.mode == 'fpdnsquery' and self.get_param('dataType', None) in ['fqdn', 'domain']:
             self.report(self.query_fpdns())
         else:
             self.error('Service or data type not supported by this analyzer.')
+
+    def summary(self, raw):
+        taxonomies = []
+        if self.mode == 'ipquery':
+            if len(raw['act']) > 0:
+                taxonomies.append(self.build_taxonomy(
+                    'suspicious',
+                    'Robtex',
+                    'ActiveDNS',
+                    '{} entries'.format(len(raw['act']))
+                ))
+            if len(raw['acth']) > 0:
+                taxonomies.append(self.build_taxonomy(
+                    'suspicious',
+                    'Robtex',
+                    'ActiveDNSHistory',
+                    '{} entries'.format(len(raw['acth']))
+                ))
+            if len(raw['pas']) > 0:
+                taxonomies.append(self.build_taxonomy(
+                    'suspicious',
+                    'Robtex',
+                    'PassiveDNS',
+                    '{} entries'.format(len(raw['pas']))
+                ))
+            if len(raw['pash']) > 0:
+                taxonomies.append(self.build_taxonomy(
+                    'suspicious',
+                    'Robtex',
+                    'PassiveDNSHistory',
+                    '{} entries'.format(len(raw['pash']))
+                ))
+        elif self.mode == 'rpdnsquery':
+            if len(raw) > 0:
+                taxonomies.append(self.build_taxonomy(
+                    'suspicious',
+                    'Robtex',
+                    'ReversePassiveDNS',
+                    '{} entries'.format(len(raw))
+                ))
+        elif self.mode == 'fpdnsquery':
+            if len(raw) > 0:
+                taxonomies.append(self.build_taxonomy(
+                    'suspicious',
+                    'Robtex',
+                    'ForwardPassiveDNS',
+                    '{} entries'.format(len(raw))
+                ))
+        return {'taxonomies': taxonomies}
 
 
 if __name__ == '__main__':
