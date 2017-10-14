@@ -1,4 +1,5 @@
 import requests
+import json
 
 from cortexutils.analyzer import Analyzer
 
@@ -21,9 +22,14 @@ class RobtexAnalyzer(Analyzer):
         Queries robtex reverse pdns-api using an ip as parameter
 
         :return: Dictionary containing results
-        :rtype: dict
+        :rtype: list
         """
-        return requests.get('https://freeapi.robtex.com/pdns/reverse/{}'.format(self.get_data())).json()
+        results = requests.get('https://freeapi.robtex.com/pdns/reverse/{}'.format(self.get_data())).text.split('\r\n')
+        jsonresults = []
+        for idx, r in enumerate(results):
+            if len(r) > 0:
+                jsonresults.append(json.loads(r))
+        return jsonresults
 
     def query_fpdns(self):
         """
@@ -32,7 +38,12 @@ class RobtexAnalyzer(Analyzer):
         :return: Dictionary containing results
         :rtype: dict
         """
-        return requests.get('https://freeapi.robtex.com/pdns/forward/{}'.format(self.get_data())).json()
+        results = requests.get('https://freeapi.robtex.com/pdns/forward/{}'.format(self.get_data())).text.split('\r\n')
+        jsonresults = []
+        for idx, r in enumerate(results):
+            if len(r) > 0:
+                jsonresults.append(json.loads(r))
+        return jsonresults
 
     def run(self):
         if self.get_param('config.service', None, 'Service not given') == 'ipquery'\
