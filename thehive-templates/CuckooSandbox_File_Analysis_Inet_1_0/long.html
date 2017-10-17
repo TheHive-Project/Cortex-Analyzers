@@ -116,24 +116,37 @@
         </div>
     </div>
 
-    <div class="panel panel-info">
+    <div class="panel panel-info" ng-if="content.suricata_alerts">
         <div class="panel-heading">
             <strong>Suricata</strong>
         </div>
         <div class="panel-body">
-
-            <div ng-if="content.suricata_alerts">
+            <div>
                 <h4>Suricata Alerts</h4>
                 <br>
                 <dl class="dl-horizontal" ng-repeat="suri in content.suricata_alerts track by $index">
                     <dd>{{ suri }}<dd>
                 </dl>
             </div>
-            <div ng-if="!content.suricata_alerts">
-                No suspicious suricata alerts reported
-            </div>
         </div>
     </div>
+	
+    <div class="panel panel-info" ng-if="content.snort_alerts">
+        <div class="panel-heading">
+            <strong>Snort</strong>
+        </div>
+        <div class="panel-body">
+
+            <div>
+                <h4>Suricata Alerts</h4>
+                <br>
+                <dl class="dl-horizontal" ng-repeat="snort in content.snort_alerts track by $index">
+                    <dd>{{ snort }}<dd>
+                </dl>
+            </div>
+			
+        </div>
+    </div>	
 </div>
 
 
