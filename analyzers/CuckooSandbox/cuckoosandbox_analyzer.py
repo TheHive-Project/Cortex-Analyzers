@@ -82,9 +82,19 @@ class CuckooSandboxAnalyzer(Analyzer):
             resp_json = response.json()
             list_description = [x['description'] for x in resp_json['signatures']]
             if 'suricata' in resp_json.keys() and 'alerts' in resp_json['suricata'].keys():
-                suri_alerts = [(x['signature'],x['dstip'],x['dstport'],x['severity']) for x in resp_json['suricata']['alerts']]
+				if 'dstport' in resp_json['suricata']['alerts'].keys():
+					suri_alerts = [(x['signature'],x['dstip'],x['dstport'],x['severity']) for x in resp_json['suricata']['alerts']]
+				elif 'dst_port' in resp_json['suricata']['alerts'].keys():
+					suri_alerts = [(x['signature'],x['dst_ip'],x['dst_port'],x['severity']) for x in resp_json['suricata']['alerts']]
             else:
                 suri_alerts = []
+            if 'snort' in resp_json.keys() and 'alerts' in resp_json['snort'].keys():
+				if 'dstport' in resp_json['snort']['alerts'].keys():
+					snort_alerts = [(x['message'],x['dstip'],x['dstport'],x['priority']) for x in resp_json['snort']['alerts']]
+				elif 'dst_port' in resp_json['snort']['alerts'].keys():
+					snort_alerts = [(x['message'],x['dst_ip'],x['dst_port'],x['priority']) for x in resp_json['snort']['alerts']]
+            else:
+                snort_alerts = []				
             try:
                 hosts = [(x['ip'],x['hostname'],x['country_name']) for x in resp_json['network']['hosts']] if 'hosts' in resp_json['network'].keys() else None
             except TypeError as e:
@@ -94,6 +104,7 @@ class CuckooSandboxAnalyzer(Analyzer):
                 self.report({
                     'signatures': list_description,
                     'suricata_alerts': suri_alerts,
+					'snort_alerts': snort_alerts,
                     'hosts': hosts,
                     'uri': uri,
                     'malscore': resp_json['malscore'] if 'malscore' in resp_json.keys() else resp_json['info'].get('score', None),
@@ -105,6 +116,7 @@ class CuckooSandboxAnalyzer(Analyzer):
                 self.report({
                     'signatures': list_description,
                     'suricata_alerts': suri_alerts,
+					'snort_alerts': snort_alerts,					
                     'hosts': hosts,
                     'uri': uri,
                     'malscore': resp_json['malscore'] if 'malscore' in resp_json.keys() else resp_json['info'].get('score', None),
@@ -121,4 +133,3 @@ class CuckooSandboxAnalyzer(Analyzer):
 
 if __name__ == '__main__':
     CuckooSandboxAnalyzer().run()
-
