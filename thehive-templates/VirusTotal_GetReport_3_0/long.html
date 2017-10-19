@@ -54,17 +54,17 @@
                     <dd>
                         <span ng-if="artifact.dataType === 'domain'">
                             <i class="fa fa-search"></i>
-                            <a ng-href="https://www.virustotal.com/en/domain/{{artifact.data}}/information/" target="_blank">
+                            <a ng-href="https://www.virustotal.com/#/domain/{{artifact.data}}" target="_blank">
                                 View Full Report</a>
                         </span>
                         <span ng-if="artifact.dataType === 'ip'">
                             <i class="fa fa-search"></i>
-                            <a ng-href="https://www.virustotal.com/en/ip-address/{{artifact.data}}/information/" target="_blank">
+                            <a ng-href="https://www.virustotal.com/#/ip-address/{{artifact.data}}" target="_blank">
                                 View Full Report</a>
                         </span>
                         <span ng-if="artifact.dataType === 'hash'">
                             <i class="fa fa-search"></i>
-                            <a ng-href="https://www.virustotal.com/en/file/{{artifact.data}}/analysis/" target="_blank">
+                            <a ng-href="https://www.virustotal.com/#/file/{{artifact.data}}/detection" target="_blank">
                                 View Full Report</a>
                         </span>
                     </dd>
