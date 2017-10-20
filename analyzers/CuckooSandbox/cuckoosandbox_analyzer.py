@@ -13,6 +13,7 @@ class CuckooSandboxAnalyzer(Analyzer):
         Analyzer.__init__(self)
         self.service = self.getParam('config.service', None, 'CuckooSandbox service is missing')
         self.url = self.getParam('config.url', None, 'CuckooSandbox url is missing')
+	self.url = self.url + "/" if not self.url.endswith("/") else self.url
         #self.analysistimeout = self.getParam('config.analysistimeout', 30*60, None)
         #self.networktimeout = self.getParam('config.networktimeout', 30, None)
 
