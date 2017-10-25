@@ -1,0 +1,15 @@
+{
+    "name": "Yeti",
+    "author": "CERT-BDF",
+    "license": "AGPL-V3",
+    "url": "https://github.com/CERT/cortex-analyzers",
+    "version": "1.0",
+    "baseConfig": "Yeti",
+    "config": {
+        "check_tlp": false,
+        "max_tlp": 3
+    },
+    "description": "Fetch all information related to an observable stored on a YETI instance.",
+    "dataTypeList": ["domain", "fqdn", "ip", "url", "hash"],
+    "command": "Yeti/yeti.py"
+}

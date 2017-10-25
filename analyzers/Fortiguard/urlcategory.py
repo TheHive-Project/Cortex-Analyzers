@@ -10,7 +10,25 @@ from cortexutils.analyzer import Analyzer
 class URLCategoryAnalyzer(Analyzer):
 
     def summary(self, raw):
-        return {'category': raw['category']}
+
+        taxonomies = []
+
+        if 'category' in raw:
+            r = raw.get('category')
+            value = "\"{}\"".format(r)
+            if r == "Malicious Websites":
+                level = "malicious"
+            elif r == "Suspicious Websites":
+                level = "suspicious"
+            elif r == "Not Rated":
+                level = "info"
+            else:
+                level = "safe"
+
+            taxonomies.append(self.build_taxonomy(level, "Fortiguard", "URLCat", value))
+
+        result = {"taxonomies": taxonomies}
+        return result
 
     def run(self):
         Analyzer.run(self)

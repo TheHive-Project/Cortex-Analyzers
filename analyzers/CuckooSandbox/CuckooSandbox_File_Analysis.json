@@ -1,0 +1,16 @@
+{
+    "name": "CuckooSandbox_File_Analysis_Inet",
+    "version": "1.0",
+    "author": "Andrea Garavaglia, LDO-CERT",
+    "url": "https://github.com/garanews/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseConfig": "CuckooSandbox",
+    "config": {
+        "check_tlp": true,
+        "max_tlp":1,
+        "service": "file_analysis"
+    },
+    "description": "Cuckoo Sandbox file analysis with Internet access.",
+    "dataTypeList": ["file"],
+    "command": "CuckooSandbox/cuckoosandbox_analyzer.py"
+}

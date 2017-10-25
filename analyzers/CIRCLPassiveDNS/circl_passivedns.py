@@ -37,7 +37,25 @@ class CIRCLPassiveDNSAnalyzer(Analyzer):
         return clean_result
 
     def summary(self, raw):
-        return {'hits': len(raw.get('results'))}
+        taxonomies = []
+        level = "info"
+        namespace = "CIRCL"
+        predicate = "PassiveDNS"
+
+        if ("results" in raw):
+            r = len(raw.get('results'))
+
+        if r == 0 or r == 1:
+            value = "\"{} record\"".format(r)
+        else:
+            value = "\"{} records\"".format(r)
+
+        taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        return {"taxonomies": taxonomies}
+
+
+
+
 
     def run(self):
         query = ''
@@ -50,9 +68,9 @@ class CIRCLPassiveDNSAnalyzer(Analyzer):
         elif self.data_type == 'domain':
             query = self.getData()
             if '/' in query:
-                self.error('\'/\' in domain. use url data type instead.')
+                self.error('\'/\' found in the supplied domain. use the URL datatype instead')
         else:
-            self.error('Incompatible data type.')
+            self.error('invalid datatype')
         self.report({'results': self.query(query)})
 
 if __name__ == '__main__':

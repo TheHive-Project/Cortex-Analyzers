@@ -21,7 +21,24 @@ class VirusshareAnalyzer(Analyzer):
         self.filelist = os.listdir(self.path)
 
     def summary(self, raw):
-        return {'isonvs': raw["isonvs"]}
+        taxonomies = []
+        level = "safe"
+        namespace = "Virusshare"
+        predicate = "Search"
+        value = "\"Unknown\""
+
+        if raw["isonvs"]:
+            if raw["isonvs"] == "unknown":
+                value = "\"Not MD5\""
+                level = "suspicious"
+            else:
+                value = "\"Found\""
+                level = "malicious"
+        else:
+            value = "\"Not Found\""
+
+        taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        return {'taxonomies': taxonomies}
 
     def run(self):
         searchhash = ''
@@ -50,7 +67,7 @@ class VirusshareAnalyzer(Analyzer):
                     # Skipping comments
                     if line[0] == '#':
                         continue
-                    if line.strip('\n') == searchhash:
+                    if searchhash.lower() in line:
                         self.report({'isonvs': True,
                                      'md5': searchhash})
         self.report({'isonvs': False,

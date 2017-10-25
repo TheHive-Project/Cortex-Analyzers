@@ -37,7 +37,34 @@ class NessusAnalyzer(Analyzer):
             summary["medium"]   = count[2]
             summary["high"]     = count[3]
             summary["critical"] = count[4]
-        return summary
+
+        taxonomies = []
+        level = "info"
+        namespace = "Nessus"
+        predicate = "Info"
+        value = "\"0\""
+
+        if summary["info"] > 0:
+            value = summary["info"]
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        if summary["low"] >0:
+            value = summary["low"]
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        if summary["medium"] >0:
+            value = summary["medium"]
+            level = "suspicious"
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        if summary["high"] > 0:
+            value = summary["high"]
+            level = "suspicious"
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        if summary["critical"] >0:
+            value = summary["critical"]
+            level = "malicious"
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+
+        return {"taxonomies": taxonomies}
+
 
     def run(self):
         Analyzer.run(self)
@@ -51,7 +78,10 @@ class NessusAnalyzer(Analyzer):
             if self.data_type == 'fqdn':
                 address = IPAddress(socket.gethostbyname(data))
             else:
-                address = IPAddress(data)
+                try:
+                    address = IPAddress(data)
+                except Exception as e:
+                    self.error("{}".format(e))
             if not any(address in IPNetwork(network)
                 for network in self.allowed_networks):
                 self.error('Invalid target: not in any allowed network')
