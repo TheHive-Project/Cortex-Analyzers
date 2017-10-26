@@ -1,0 +1,15 @@
+{
+    "name": "Hybrid-Analysis_GetReport",
+    "version": "1.0",
+    "author": "Daniil Yugoslavskiy, Tieto",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "dataTypeList": ["hash", "file", "filename"],
+    "description": "VxStream Sandbox (Hybrid-Analysis) report for a hash, file (compute hash) or filename using the public API. This analyzer does not send any file to VxStream",
+    "baseConfig": "VxStreamSandbox_Public_API",
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 1
+    },
+    "command": "VxStreamSandbox/vxstreamsandbox_analyzer.py"
+}
