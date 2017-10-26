@@ -1,4 +1,4 @@
-<!-- General error  -->
+  <!-- General error  -->
 <div class="panel panel-danger" ng-if="!success">
   <div class="panel-heading">
     <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
@@ -18,7 +18,7 @@
     <div ng-if="!content.results.response.result" ng-repeat="r in ::content.results.response">
       <dl class="dl-horizontal" ng-if="r.verdict">
         <strong>Verdict: </strong>
-        <span class="label" ng-class="{'no specific threat': 'label-info', 'Whitelisted': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[r.verdict]">
+        <span class="label" ng-class="{'no specific threat': 'label-info', 'whitelisted': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[r.verdict]">
             {{r.verdict}}
         </span><br/>
       </dl>
@@ -67,7 +67,7 @@
       <dl class="dl-horizontal" ng-if="r.hosts.length > 0">
         <strong>Contacted Hosts:</strong><ul><li ng-repeat="host in ::r.hosts">{{host}}</li></ul>
       </dl>
-      <dl class="dl-horizontal" ng-if="r.hosts.length > 0">
+      <dl class="dl-horizontal" ng-if="r.sha256">
           <strong>Online report:</strong>
           <a href="https://www.hybrid-analysis.com/sample/{{r.sha256}}">https://www.hybrid-analysis.com/sample/{{r.sha256}}</a>
         </dl>
@@ -79,7 +79,7 @@
     <div ng-if="content.results.response.result" ng-repeat="r in ::content.results.response.result">
     <dl class="dl-horizontal" ng-if="r.verdict">
         <strong>Verdict: </strong>
-        <span class="label" ng-class="{'no specific threat': 'label-info', 'Whitelisted': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[r.verdict]">
+        <span class="label" ng-class="{'no specific threat': 'label-info', 'whitelisted': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[r.verdict]">
             {{r.verdict}}
         </span><br/>
       </dl>
@@ -106,6 +106,10 @@
       </dl>
       <dl class="dl-horizontal" ng-if="r.environmentDescription">
         <strong>Environment Description: </strong> {{r.environmentDescription}}<br/>
+      </dl>
+      <dl class="dl-horizontal" ng-if="r.sha256">
+        <strong>Online report:</strong>
+        <a href="https://www.hybrid-analysis.com/sample/{{r.sha256}}">https://www.hybrid-analysis.com/sample/{{r.sha256}}</a>
       </dl>
       <hr>
     </div>
