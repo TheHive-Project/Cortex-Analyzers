@@ -1,0 +1,102 @@
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+<div class="report-ProofPoint" ng-if="success">
+	<div ng-if="content.known == true">
+		<style>
+			.report-ProofPoint dl {
+				margin-bottom: 2px;
+			}
+			.smaller {
+				width: 25%;
+			}
+		</style>
+		<div class="panel panel-info">
+			<div class="panel-heading"><strong>ProofPoint Report</strong></div>
+				<div ng-if="content.reports && content.reports.length > 0">
+					<div class="panel-body">
+						<dl class="dl-horizontal">
+							<dt>Last analysis date</dt>
+							<dd>{{content.generated}}</dd>
+						</dl>
+						<div class="dl-horizontal" ng-repeat="(indexRep,reportFor) in content.reports">
+							<div ng-repeat="(indexElem,elem) in reportFor">
+								<div ng-if="indexElem == 'name'">
+									<dl class="dl-horizontal">
+										<dt>Threat Name</dt>
+										<dd>{{elem}}</dd>
+									</dl>
+								</div>
+								<div ng-if="indexElem == 'type'">
+									<dl class="dl-horizontal">
+										<dt>Threat Type</dt>
+										<dd>{{elem}}</dd>
+									</dl>
+								</div>
+								<div ng-if="indexElem == 'threatStatus'">
+									<dl class="dl-horizontal">
+										<dt>Threat Status</dt>
+										<dd>{{elem}}</dd>
+									</dl>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+		</div>
+		<div ng-if="content.reports && content.reports.length > 0">
+			<div ng-if="content.reports[0].forensics.length > 0">
+				<div class="panel panel-info">
+					<div class="panel-heading"><strong>Malicious Indicators</strong></div>
+						<div class="panel-body">
+							<div class="dl-horizontal" ng-repeat="(indexRep,reportFor) in content.reports">
+								<div ng-repeat="(indexElem,elem) in reportFor">
+									<div ng-if="indexElem == 'forensics'">
+										<div ng-repeat="(indexForens,forensics) in elem">
+											<div class="dl-horizontal" ng-if="forensics.malicious == true">
+												<dt>IOC Type</dt>
+												<dd>{{forensics.type}}</dd>
+												<br>
+												<dt>IOC Description</dt>
+												<dd>{{forensics.display}}</dd>
+												<br>
+												<div ng-if="forensics.note">
+													<dt>IOC Category</dt>
+													<dd>{{forensics.note}}</dd>
+													<br>
+												</div>
+												<br>
+											</div>
+										</div>
+										<div ng-repeat="(indexForens,forensics) in elem">
+											<div class="dl-horizontal" ng-if="forensics.type == 'screenshot'">
+												<dd><img class="img-responsive smaller" ng-src="{{forensics.what.url}}"/></dd>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div ng-if="content.known == false">
+		<div class="panel panel-info">
+			<div class="panel-heading"><strong>ProofPoint Report</strong></div>
+				<div class="panel-body">
+					<dl class="dl-horizontal">
+						<dt>Last analysis date</dt>
+						<dd>Data Unknown by ProofPoint</dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
