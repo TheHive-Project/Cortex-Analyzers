@@ -1,7 +1,7 @@
 <!-- Node found -->
-<div class="panel panel-danger" ng-if="success && content.node">
+<div class="panel panel-warning" ng-if="success && content.node">
 	<div class="panel-heading">
-		Tor Project
+		Tor Project - <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
 	</div>
 	<div class="panel-body">
 		Exit node found: {{content.node}} updated at {{content.last_status}}
@@ -11,7 +11,7 @@
 <!-- Empty result -->
 <div class="panel panel-success" ng-if="success && !content.node">
 	<div class="panel-heading">
-		Tor Project
+		Tor Project - <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
 	</div>
 	<div class="panel-body">
 		<b>Not a known exit node.</b>
@@ -21,7 +21,7 @@
 <!-- General error  -->
 <div class="panel panel-danger" ng-if="!success">
     <div class="panel-heading">
-        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+        Tor Project - <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
     </div>
     <div class="panel-body">
         {{content.errorMessage}}
