@@ -2,7 +2,7 @@
     "name": "Shodan_Host",
     "version": "1.0",
     "author": "Sebastien Larinier @Sebdraven",
-    "url": "https://github.com/sebdraven/cortex-shodan",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers/Shodan",
     "license": "AGPL-V3",
     "description": "",
     "dataTypeList": ["ip"],
