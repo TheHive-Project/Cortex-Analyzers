@@ -1,0 +1,29 @@
+    <div class="panel panel-info" ng-if="success">
+        <div class="panel-heading">
+            Host Information of  <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+        </div>
+        <div class="panel-body">
+            asn: {{content.asn}}
+            <br>
+            isp: {{content.isp}}
+            <br>
+            hostnames: {{content.hostnames.join(',')}}
+            <br>
+            Country: {{content.country_code}}
+            <br>
+            ports: {{content.ports.join(',')}}
+            <br>
+            last_update: {{content.last_update}}
+            <br>
+            <a ng-href="http://google.com/maps/place/{{content.latitude}},{{content.longitude}}",target="_blank">Geolocalisation</a>
+        </div>
+    </div>
+
+    <div class="panel panel-danger" ng-if="!success">
+        <div class="panel-heading">
+            <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+        </div>
+        <div class="panel-body">
+            {{content.errorMessage}}
+        </div>
+    </div>

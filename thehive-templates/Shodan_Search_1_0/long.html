@@ -1,0 +1,52 @@
+    <div class="panel panel-info" ng-if="success">
+        <div class="panel-heading">
+            Domain Information of  <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+        </div>
+        <div class="panel-body">
+            asn:
+                <li data-ng-repeat="i in content.infos_domain.asn">
+                    {{i}}
+                </li>
+            <br>
+            isp:
+                <li data-ng-repeat=" i in content.infos_domain.isp">
+                    {{i}}
+                </li>
+            <br>
+            all_domains:
+                <li data-ng-repeat="i in content.infos_domain.all_domains">
+                    {{i}}
+                </li>
+            <br>
+            ports:
+                <li data-ng-repeat="i in content.infos_domain.ports">
+                    {{i}}
+                </li>
+            <br>
+            orgs:
+                <li data-ng-repeat="i in content.infos_domain.orgs">
+                    {{i}}
+                </li>
+            <br>
+            transports:
+                <li data-ng-repeat="i in content.infos_domain.transports">
+                    {{i}}
+                </li>
+            <br>
+            ips:
+                <li data-ng-repeat="i in content.infos_domain.ips">
+                    {{i}}
+                </li>
+            <br>
+
+        </div>
+    </div>
+
+    <div class="panel panel-danger" ng-if="!success">
+        <div class="panel-heading">
+            <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+        </div>
+        <div class="panel-body">
+            {{content.errorMessage}}
+        </div>
+    </div>

@@ -1,0 +1,16 @@
+{
+    "name": "Shodan_Host",
+    "version": "1.0",
+    "author": "Sebastien Larinier @Sebdraven",
+    "url": "https://github.com/sebdraven/cortex-shodan",
+    "license": "AGPL-V3",
+    "description": "",
+    "dataTypeList": ["ip"],
+    "baseConfig": "Shodan",
+    "config": {
+        "check_tlp": true,
+        "service": "host",
+        "max_tlp": 1
+    },
+    "command": "Shodan/shodan_analyzer.py"
+}
