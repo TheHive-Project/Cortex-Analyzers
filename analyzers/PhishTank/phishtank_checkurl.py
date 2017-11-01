@@ -19,7 +19,7 @@ class phishtankAnalyzer(Analyzer):
                                     'Missing PhishTank API key')
 
     def phishtank_checkurl(self, data):
-        url = 'http://checkurl.phishtank.com/checkurl/'
+        url = 'https://checkurl.phishtank.com/checkurl/'
         postdata = {'url': data, 'format':'json','app_key': self.phishtank_key}
         r = requests.post(url, data=postdata)
         return json.loads(r.content)
@@ -29,7 +29,7 @@ class phishtankAnalyzer(Analyzer):
         value = "\"False\""
         level = ""
 
-        if 'in_database' in raw and raw['in_database'] == "True":
+        if 'in_database' in raw and raw['in_database'] == True:
             value = "\"{}\"".format(raw['in_database'])
             if raw.get('verified'):
                 level = "malicious"
