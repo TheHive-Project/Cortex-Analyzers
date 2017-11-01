@@ -10,7 +10,7 @@
         "max_tlp":1,
         "service": "ssl_certificate_details"
     },
-    "description": "PassiveTotal Ssl Certificate Details Lookup",
+    "description": "PassiveTotal SSL Certificate Details Lookup",
     "dataTypeList": ["hash", "ip"],
     "command": "PassiveTotal/passivetotal_analyzer.py"
 }
