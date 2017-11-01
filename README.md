@@ -1,10 +1,14 @@
-The following repository is used by [TheHive Project](https://thehive-project.org) to develop and store [Cortex](https://github.com/CERT-BDF/Cortex/blob/master/README.md) analyzers.
+The following repository is used by [TheHive Project](https://thehive-project.org)
+to develop and store [Cortex](https://github.com/CERT-BDF/Cortex/blob/master/README.md)
+analyzers.
 
 ![](images/cortex-main.png)
 
-Analyzers can be written in any programming language supported by Linux such as Python, Ruby, Perl, etc.
+Analyzers can be written in any programming language supported by Linux such 
+as Python, Ruby, Perl, etc. Refer to the [How to Write and Submit an Analyzer](https://github.com/CERT-BDF/CortexDocs/blob/master/api/how-to-create-an-analyzer.md)
+page for details on how to write and submit one.
 
-For further details, please refer to the [Cortex README](https://github.com/CERT-BDF/Cortex/blob/master/README.md) or to [the project website](https://thehive-project.org).
+To configure analyzers, please read the [Cortex Analyzer Requirements Guide](https://github.com/CERT-BDF/CortexDocs/blob/master/analyzer_requirements.md).
 
 # License
 **Unless specified otherwise**, analyzers are released under the [AGPL](https://github.com/CERT-BDF/Cortex-analyzers/blob/master/LICENSE) (Affero General Public License).
@@ -15,7 +19,8 @@ If an analyzer is released by its author under a different license, the subfolde
 Information, news and updates are regularly posted on [TheHive Project Twitter account](https://twitter.com/thehive_project) and on [the blog](https://blog.thehive-project.org/).
 
 # Contributing
-We welcome your contributions for new analyzers that can take away the load off overworked fellow analysts or improvements to existing ones. Please feel free to fork the code, play with it, make some patches and send us pull requests using [issues](https://github.com/CERT-BDF/Cortex-analyzers/issues).
+We welcome your **[contributions for new analyzers](https://github.com/CERT-BDF/CortexDocs/blob/master/api/how-to-create-an-analyzer.md)**
+that can take away the load off overworked fellow analysts or improvements to existing ones. Please feel free to fork the code, play with it, make some patches and send us pull requests using [issues](https://github.com/CERT-BDF/Cortex-analyzers/issues).
 
 **Important**: To make it easy for every one, please send **one** pull request per analyzer. It will help us reviewing the code, and merging as soon as feasible.
 
