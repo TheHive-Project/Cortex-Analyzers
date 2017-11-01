@@ -78,4 +78,3 @@ class phishtankAnalyzer(Analyzer):
 
 if __name__ == '__main__':
     phishtankAnalyzer().run()
-    phishtankAnalyzer().summary()
