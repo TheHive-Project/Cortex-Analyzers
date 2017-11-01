@@ -10,7 +10,7 @@
         "max_tlp": 1,
         "service": "whois"
     },
-    "description": "Get the ownership record for an IP address with basic registration details using DomainTools Whois Lookup IP service",
+    "description": "Use DomainTools to get the ownership record for an IP address with basic registration details",
     "dataTypeList": ["ip"],
     "command": "DomainTools/domaintools.py"
 }

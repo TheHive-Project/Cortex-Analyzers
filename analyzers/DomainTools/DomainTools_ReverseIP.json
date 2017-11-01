@@ -10,7 +10,7 @@
         "max_tlp": 1,
         "service": "reverse-ip"
     },
-    "description": "Use DomainTools Reverse IP service to provide a list of domain names sharing the same IP address",
+    "description": "Use DomainTools to get a list of domain names sharing the same IP address",
     "dataTypeList": ["ip"],
     "command": "DomainTools/domaintools.py"
 }
