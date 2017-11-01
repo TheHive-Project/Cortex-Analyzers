@@ -19,7 +19,7 @@ class phishtankAnalyzer(Analyzer):
                                     'Missing PhishTank API key')
 
     def phishtank_checkurl(self, data):
-        url = 'http://checkurl.phishtank.com/checkurl/'
+        url = 'https://checkurl.phishtank.com/checkurl/'
         postdata = {'url': data, 'format':'json','app_key': self.phishtank_key}
         r = requests.post(url, data=postdata)
         return json.loads(r.content)
@@ -78,4 +78,3 @@ class phishtankAnalyzer(Analyzer):
 
 if __name__ == '__main__':
     phishtankAnalyzer().run()
-    phishtankAnalyzer().summary()
