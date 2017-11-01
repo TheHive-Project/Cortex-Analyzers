@@ -10,7 +10,7 @@
         "max_tlp": 1,
         "service": "name_history"
     },
-    "description": "Use DNSDB to fetch historical records for a fully-qualified domain name.",
+    "description": "Fetch historical records for a fully-qualified domain name using DNSDB",
     "dataTypeList": ["fqdn"],
     "command": "DNSDB/dnsdb.py"
 }
