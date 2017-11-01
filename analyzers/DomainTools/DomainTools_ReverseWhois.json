@@ -10,7 +10,7 @@
         "max_tlp": 1,
         "service": "reverse-whois"
     },
-    "description": "Get a list of domain names which share the same registrant information through Domaintools Reverse Whois service",
+    "description": "Use DomainTools to get a list of domain names which share the same registrant information",
     "dataTypeList": ["mail", "ip", "domain", "other"],
     "command": "DomainTools/domaintools.py"
 }
