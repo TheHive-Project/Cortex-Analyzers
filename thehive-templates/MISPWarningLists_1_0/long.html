@@ -1,0 +1,29 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        MISP warninglists information for <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+      <dl class="dl-horizontal" ng-if="content.results">
+        <dt>Results:</dt>
+        <dd>
+            <p>
+                Observable was found in following MISP warning lists:
+            </p>
+            <ul ng-repeat="list in content.results">
+                <li>{{list.name}}</li>
+            </ul>
+            <p>The warning lists were updated {{content.last_update | number:0}} seconds ago.</p>
+        </dd>
+      </dl>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
