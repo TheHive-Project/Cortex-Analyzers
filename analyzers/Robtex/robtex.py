@@ -49,11 +49,11 @@ class RobtexAnalyzer(Analyzer):
 
     def run(self):
         if self.mode == 'ipquery' and self.get_param('dataType', None) == 'ip':
-            self.report(self.query_ip())
+            self.report({"ip": self.query_ip()})
         elif self.mode == 'rpdnsquery' and self.get_param('dataType', None) == 'ip':
-            self.report(self.query_rpdns())
+            self.report({"rpdns": self.query_rpdns()})
         elif self.mode == 'fpdnsquery' and self.get_param('dataType', None) in ['fqdn', 'domain']:
-            self.report(self.query_fpdns())
+            self.report({"fpdns": self.query_fpdns()})
         else:
             self.error('Service or data type not supported by this analyzer.')
 
