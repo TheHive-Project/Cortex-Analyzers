@@ -60,49 +60,49 @@ class RobtexAnalyzer(Analyzer):
     def summary(self, raw):
         taxonomies = []
         if self.mode == 'ipquery':
-            if len(raw['act']) > 0:
+            if len(raw['ip']['act']) > 0:
                 taxonomies.append(self.build_taxonomy(
                     'suspicious',
                     'Robtex',
                     'ActiveDNS',
-                    '{} entries'.format(len(raw['act']))
+                    '{} entries'.format(len(raw['ip']['act']))
                 ))
-            if len(raw['acth']) > 0:
+            if len(raw['ip']['acth']) > 0:
                 taxonomies.append(self.build_taxonomy(
                     'suspicious',
                     'Robtex',
                     'ActiveDNSHistory',
-                    '{} entries'.format(len(raw['acth']))
+                    '{} entries'.format(len(raw['ip']['acth']))
                 ))
-            if len(raw['pas']) > 0:
+            if len(raw['ip']['pas']) > 0:
                 taxonomies.append(self.build_taxonomy(
                     'suspicious',
                     'Robtex',
                     'PassiveDNS',
-                    '{} entries'.format(len(raw['pas']))
+                    '{} entries'.format(len(raw['ip']['pas']))
                 ))
-            if len(raw['pash']) > 0:
+            if len(raw['ip']['pash']) > 0:
                 taxonomies.append(self.build_taxonomy(
                     'suspicious',
                     'Robtex',
                     'PassiveDNSHistory',
-                    '{} entries'.format(len(raw['pash']))
+                    '{} entries'.format(len(raw['ip']['pash']))
                 ))
         elif self.mode == 'rpdnsquery':
-            if len(raw) > 0:
+            if len(raw['rpdns']) > 0:
                 taxonomies.append(self.build_taxonomy(
                     'suspicious',
                     'Robtex',
                     'ReversePassiveDNS',
-                    '{} entries'.format(len(raw))
+                    '{} entries'.format(len(raw['rpdns']))
                 ))
         elif self.mode == 'fpdnsquery':
-            if len(raw) > 0:
+            if len(raw['fpdns']) > 0:
                 taxonomies.append(self.build_taxonomy(
                     'suspicious',
                     'Robtex',
                     'ForwardPassiveDNS',
-                    '{} entries'.format(len(raw))
+                    '{} entries'.format(len(raw['rpdns']))
                 ))
         return {'taxonomies': taxonomies}
 
