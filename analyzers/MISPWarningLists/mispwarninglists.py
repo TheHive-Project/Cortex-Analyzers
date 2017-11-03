@@ -47,7 +47,7 @@ class MISPWarninglistsAnalyzer(Analyzer):
         return listcontent
 
     def __lastcommit(self):
-        with io.open('{}/.git/refs/head/master'.format(self.path), 'r') as fh:
+        with io.open('{}/.git/refs/heads/master'.format(self.path), 'r') as fh:
             return fh.read()
 
     def run(self):
