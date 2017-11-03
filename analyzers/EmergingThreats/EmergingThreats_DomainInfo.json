@@ -8,7 +8,7 @@
     "config": { 
         "service": "domain-info"
     },
-    "description": "Retrieves reputation and related malware and IDS requests related to domain",
+    "description": "Retrieves reputation, related malware, IDS requests for a given domain",
     "dataTypeList": ["domain"],
     "command": "EmergingThreats/emergingthreats_analyzer.py"
 }

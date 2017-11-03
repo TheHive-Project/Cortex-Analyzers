@@ -40,7 +40,7 @@ class EmergingThreatsAnalyzer(Analyzer):
         namespace = "ET"
         predicate = self.service
         
-        if predicate in ['domain-info', 'ip-info'] and raw['reputation'] != "-":
+        if predicate in ['domain-info', 'ip-info'] and raw['reputation'] not in ["-", "Error"]:
             for x in raw["reputation"]:
                 value = "%s=%d" % (x['category'], x['score'])
                 if x['category'] in RED_CATEGORIES and x['score'] >= 70:
@@ -50,7 +50,7 @@ class EmergingThreatsAnalyzer(Analyzer):
                 else:
                     level = "safe"
                 taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-        elif predicate == 'malware-info' and raw['events'] != "-":
+        elif predicate == 'malware-info' and raw['events'] not in ["-", "Error"]:
             value = str(len(raw['events'])) + " signatures" 
             taxonomies.append(self.build_taxonomy("malicious", namespace, predicate, value))
             

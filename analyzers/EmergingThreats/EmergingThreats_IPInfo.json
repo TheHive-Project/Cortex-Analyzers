@@ -10,7 +10,7 @@
         "max-tlp": 1,
         "service": "ip-info"
     },
-    "description": "Retrieves reputation and related malware and IDS requests related to IP address",
+    "description": "Retrieves reputation, related malware, IDS requests for a given IP address",
     "dataTypeList": ["ip"],
     "command": "EmergingThreats/emergingthreats_analyzer.py"
 }
