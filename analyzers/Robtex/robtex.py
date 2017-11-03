@@ -102,7 +102,7 @@ class RobtexAnalyzer(Analyzer):
                     'suspicious',
                     'Robtex',
                     'ForwardPassiveDNS',
-                    '{} entries'.format(len(raw['rpdns']))
+                    '{} entries'.format(len(raw['fpdns']))
                 ))
         return {'taxonomies': taxonomies}
 
