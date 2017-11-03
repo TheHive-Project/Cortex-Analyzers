@@ -7,7 +7,7 @@
         
 <div class="report-EmergingThreats" ng-if="success">
 
-    <div class="panel panel-info" ng-if="content.reputation != '-' && content.reputation != 'Error'">
+    <div class="panel panel-info" ng-if="content.reputation && content.reputation != '-' && content.reputation != 'Error'">
         <div class="panel-heading">
             <strong>Reputation</strong>
         </div>
@@ -19,7 +19,7 @@
         </div>
     </div>
 
-    <div class="panel panel-info" ng-if="content.events != '-' && content.events != 'Error'">
+    <div class="panel panel-info" ng-if="content.events && content.events != '-' && content.events != 'Error'">
         <div class="panel-heading">
             <strong>Events</strong>
         </div>
@@ -34,9 +34,9 @@
                     <th>Source</th>
                 </tr>
                 <tr ng-repeat="events in content.events track by $index">
-                    <td>{{ events.count }}</td>
+                    <td align="right">{{ events.count }}</td>
                     <td>{{ events.date }}</td>
-                    <td>{{ events.domain }}</td>
+                    <td align="center">{{ events.domain || '-' }}</td>
                     <td>{{ events.sid }}</td>
                     <td>{{ events.signature }}</td>
                     <td>{{ events.source }}</td>
@@ -45,7 +45,7 @@
         </div>
     </div>
 
-    <div class="panel panel-info" ng-if="content.geoloc != '-' && content.geoloc != 'Error'">
+    <div class="panel panel-info" ng-if="content.geoloc  && content.geoloc != '-' && content.geoloc != 'Error'">
         <div class="panel-heading">
             <strong>Geoloc</strong>
         </div>
@@ -105,87 +105,87 @@
         </div>
     </div>
 
-    <div class="panel panel-info" ng-if="content.ips != '-' && content.ips != 'Error'">
+    <div class="panel panel-info" ng-if="content.ips && content.ips != '-' && content.ips != 'Error'">
         <div class="panel-heading">
             <strong>IPs</strong>
         </div>
         <div class="panel-body">
             <table class="table table-hover">
                 <tr>
-                    <th>First seen</th>
                     <th>IP</th>
+                    <th>First seen</th>\
                     <th>Last seen</th>
                 </tr>
-                <tr ng-repeat="ip in content.ips track by $index">
-                    <td>{{ ip.first_seen }}</td>
+                <tr ng-repeat="ip in content.ips | orderBy:'-last_seen'">
                     <td>{{ ip.ip }}</td>
+                    <td>{{ ip.first_seen }}</td>
                     <td>{{ ip.last_seen }}</td>
                 </tr>
             </table>
         </div>
     </div>
 
-    <div class="panel panel-info" ng-if="content.domains != '-' && content.domains != 'Error'">
+    <div class="panel panel-info" ng-if="content.domains && content.domains != '-' && content.domains != 'Error'">
         <div class="panel-heading">
             <strong>Domains</strong>
         </div>
         <div class="panel-body">
             <table class="table table-hover">
                 <tr>
-                    <th>First seen</th>
                     <th>Name</th>
+                    <th>First seen</th>
                     <th>Last seen</th>
                 </tr>
-                <tr ng-repeat="domain in content.domains track by $index">
-                    <td>{{ domain.first_seen }}</td>
+                <tr ng-repeat="domain in content.domains | orderBy:'-last_seen'">
                     <td>{{ domain.domain }}</td>
+                    <td>{{ domain.first_seen }}</td>
                     <td>{{ domain.last_seen }}</td>
                 </tr>
             </table>
         </div>
     </div>
 
-    <div class="panel panel-info" ng-if="content.samples != '-' && content.samples != 'Error'">
+    <div class="panel panel-info" ng-if="content.samples && content.samples != '-' && content.samples != 'Error'">
         <div class="panel-heading">
             <strong>Samples</strong>
         </div>
         <div class="panel-body">
             <table class="table table-hover">
                 <tr>
+                    <th>Source</th>
                     <th>First seen</th>
                     <th>Last seen</th>
-                    <th>Source</th>
                 </tr>
-                <tr ng-repeat="sample in content.samples track by $index">
+                <tr ng-repeat="sample in content.samples | orderBy:'-last_seen'">
+                    <td>{{ sample.source }}</td>
                     <td>{{ sample.first_seen }}</td>
                     <td>{{ sample.last_seen }}</td>
-                    <td>{{ sample.source }}</td>
                 </tr>
             </table>
         </div>
     </div>
 
-    <div class="panel panel-info" ng-if="content.nameservers != '-' && content.nameservers != 'Error'">
+    <div class="panel panel-info" ng-if="content.nameservers && content.nameservers != '-' && content.nameservers != 'Error'">
         <div class="panel-heading">
             <strong>Nameservers</strong>
         </div>
         <div class="panel-body">
             <table class="table table-hover">
                 <tr>
-                    <th>First seen</th>
-                    <th>Last seen</th>
                     <th>Server</th>
+                    <th>First seen</th>
+                    <th>Last seen</th>\
                 </tr>
-                <tr ng-repeat="nameserver in content.nameservers track by $index">
+                <tr ng-repeat="nameserver in content.nameservers | orderBy:'-last_seen'">
+                    <td>{{ nameserver.server }}</td>
                     <td>{{ nameserver.first_seen }}</td>
                     <td>{{ nameserver.last_seen }}</td>
-                    <td>{{ nameserver.server }}</td>
                 </tr>
             </table>
         </div>
     </div>
 
-    <div class="panel panel-info" ng-if="content.reputation != '-' && content.reputation != 'Error'">
+    <div class="panel panel-info" ng-if="content.reputation && content.reputation != '-' && content.reputation != 'Error'">
         <div class="panel-heading">
             <strong>Urls</strong>
         </div>
@@ -196,7 +196,7 @@
         </div>
     </div>
 
-    <div class="panel panel-info" ng-if="content.whois != '-' && content.whois != 'Error'">
+    <div class="panel panel-info" ng-if="content.whois && content.whois != '-' && content.whois != 'Error'">
         <div class="panel-heading">
             <strong>Whois</strong>
         </div>
