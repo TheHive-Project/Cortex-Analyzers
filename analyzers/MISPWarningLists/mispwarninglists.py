@@ -1,62 +1,24 @@
 #!/usr/bin/env python
 import io
 import json
-import pygit2
 
 from cortexutils.analyzer import Analyzer
 from glob import glob
-from time import sleep, time
-from shutil import rmtree
 from os.path import exists
-from os import remove
 
 
 class MISPWarninglistsAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
 
-        # Wait for unlocking the repo
-        while exists('.lock'):
-            sleep(5)
-
-        self.delta = None
-
-        if self.get_param('config.enablepull', True) and self.__needpull():
-            self.__pullrepo()
-
-        self.data = self.getData()
+        self.data = self.get_data()
+        self.path = self.get_param('config.path', 'misp-warninglists')
+        if not exists(self.path):
+            self.error('Path to misp-warninglists does not exist.')
         self.warninglists = self.__readwarninglists()
 
-    def __needpull(self):
-        if not exists('last_update.json'):
-            return True
-        with io.open('last_update.json', 'r') as fh:
-            self.delta = abs(float(json.loads(fh.read()).get('last_update', 0)) - time())
-        if self.delta > self.get_param('config.alloweddelta', 86400):
-            return True
-        return False
-
-    def __pullrepo(self):
-        # Todo: Implement git pulling instead of cloning, if repo is already cloned
-
-        # lock
-        with io.open('.lock', 'w') as fh:
-            fh.write(str(time()))
-
-        # update
-        if exists('misp-warninglists'):
-            rmtree('misp-warninglists')
-
-        pygit2.clone_repository('https://github.com/MISP/misp-warninglists', 'misp-warninglists')
-        with io.open('last_update.json', 'w') as fh:
-            fh.write(json.dumps({'last_update': time()}))
-        self.delta = 0
-
-        # rm lock
-        remove('.lock')
-
     def __readwarninglists(self):
-        files = glob('misp-warninglists/lists/*/*.json')
+        files = glob('{}/lists/*/*.json'.format(self.path))
         listcontent = []
         for file in files:
             with io.open(file, 'r') as fh:
@@ -78,10 +40,15 @@ class MISPWarninglistsAnalyzer(Analyzer):
                         continue
                     if 'domain' in type:
                         obj['dataTypes'].append('domain')
+                        continue
                     if 'url' in type:
                         obj['dataTypes'].append('url')
                 listcontent.append(obj)
         return listcontent
+
+    def __lastcommit(self):
+        with io.open('{}/.git/refs/head/master'.format(self.path), 'r') as fh:
+            return fh.read()
 
     def run(self):
         results = []
@@ -96,7 +63,7 @@ class MISPWarninglistsAnalyzer(Analyzer):
 
         self.report({
             "results": results,
-            "last_update": self.delta}
+            "last_update": self.__lastcommit()}
         )
 
     def summary(self, raw):
