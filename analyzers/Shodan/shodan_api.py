@@ -22,9 +22,9 @@ class ShodanAPIPublic(Shodan):
             ips = list(set([r['ip_str'] for r in results['matches']]))
             ports = list(set([r['port'] for r in results['matches']]))
             transports = list(set([r['transport'] for r in results['matches']]))
-            isp = list(set([r['isp'] for r in results['matches']]))
-            asn = list(set([r['asn'] for r in results['matches']]))
-            orgs = list(set([r['org'] for r in results['matches']]))
+            isp = list(set([r['isp'] for r in results['matches'] if 'isp' in r]))
+            asn = list(set([r['asn'] for r in results['matches'] if 'asn' in r]))
+            orgs = list(set([r['org'] for r in results['matches'] if 'org' in r]))
 
             return {'all_domains': all_domains, 'ips': ips, 'ports': ports, 'transports': transports,
                     'isp': isp, 'asn': asn, 'orgs': orgs
