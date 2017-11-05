@@ -10,7 +10,7 @@
         "max_tlp": 3,
         "service": ""
     },
-    "description": "Geolocate an IP Address via MaxMind",
+    "description": "Use MaxMind to geolocate an IP address.",
     "dataTypeList": ["ip"],
     "command": "MaxMind/geo.py"
 }

@@ -10,7 +10,7 @@
         "max_tlp":1,
         "service": "unique_resolutions"
     },
-    "description": "PassiveTotal Unique Resolutions Lookup",
+    "description": "PassiveTotal Unique Resolutions Lookup.",
     "dataTypeList": ["domain", "fqdn", "ip"],
     "command": "PassiveTotal/passivetotal_analyzer.py"
 }
