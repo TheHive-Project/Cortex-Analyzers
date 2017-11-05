@@ -10,7 +10,7 @@
         "max_tlp":1,
         "service": "file_analysis"
     },
-    "description": "Cuckoo Sandbox file analysis with Internet access",
+    "description": "Cuckoo Sandbox file analysis with Internet access.",
     "dataTypeList": ["file"],
     "command": "CuckooSandbox/cuckoosandbox_analyzer.py"
 }

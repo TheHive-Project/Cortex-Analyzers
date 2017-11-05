@@ -10,7 +10,7 @@
         "max_tlp": 3,
         "service": ""
     },
-    "description": "Parse Outlook MSG files and extract the main artifacts",
+    "description": "Parse Outlook MSG files and extract the main artifacts.",
     "dataTypeList": [
         "file"
     ],

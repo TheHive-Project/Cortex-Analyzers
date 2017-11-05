@@ -11,7 +11,7 @@
         "service": "domain_name"
 
     },
-    "description": "Use DNSDB to fetch historical records for a domain with DNSDB",
+    "description": "Use DNSDB to fetch historical records for a domain.",
     "dataTypeList": ["domain"],
     "command": "DNSDB/dnsdb.py"
 }

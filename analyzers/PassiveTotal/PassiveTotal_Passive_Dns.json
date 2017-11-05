@@ -10,7 +10,7 @@
         "max_tlp":1,
         "service": "passive_dns"
     },
-    "description": "PassiveTotal Passive DNS Lookup",
+    "description": "PassiveTotal Passive DNS Lookup.",
     "dataTypeList": ["domain", "fqdn", "ip"],
     "command": "PassiveTotal/passivetotal_analyzer.py"
 }
