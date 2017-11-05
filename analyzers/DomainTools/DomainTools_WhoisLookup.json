@@ -10,7 +10,7 @@
         "max_tlp": 1,
         "service": "whois/parsed"
     },
-    "description": "Use DomainTools to get the ownership record for a domain with basic registration details",
+    "description": "Use DomainTools to get the ownership record for a domain with basic registration details.",
     "dataTypeList": ["domain"],
     "command": "DomainTools/domaintools.py"
 }

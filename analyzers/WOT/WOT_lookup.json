@@ -4,7 +4,7 @@
     "author": "Andrea Garavaglia, LDO-CERT",
     "url": "https://github.com/garanews/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "description": "Check the reputation of a domain or fqdn against Web of Trust (WOT).",
+    "description": "Use Web of Trust to check a domain's reputation.",
     "dataTypeList": ["domain", "fqdn"],
     "baseConfig": "WOT",
     "config": {

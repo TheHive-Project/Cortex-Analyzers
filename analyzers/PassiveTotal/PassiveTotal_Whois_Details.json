@@ -10,7 +10,7 @@
         "max_tlp":1,
         "service": "whois_details"
     },
-    "description": "PassiveTotal Whois Details Lookup",
+    "description": "PassiveTotal Whois Details Lookup.",
     "dataTypeList": ["domain", "fqdn", "ip"],
     "command": "PassiveTotal/passivetotal_analyzer.py"
 }

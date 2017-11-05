@@ -10,7 +10,7 @@
         "check_tlp": true,
         "max_tlp": 1
     },
-    "description": "VMRay Sandbox file analysis",
+    "description": "VMRay Sandbox file analysis.",
     "dataTypeList": ["hash", "file"],
     "command": "VMRay/vmray.py"
 }
