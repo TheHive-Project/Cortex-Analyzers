@@ -1,0 +1,16 @@
+{
+    "name": "Cymon_Check_IP",
+    "version": "2.0",
+    "author": "Julian Gonzalez",
+    "url": "https://github.com/ST2labs/Analyzers",
+    "license": "AGPL-V3",
+    "baseConfig": "Cymon",
+    "config": {
+        "check_tlp": true,
+        "max_tlp":1,
+        "service": "Check_IP"
+    },
+    "description": "Cymon.io Database Search / Report for IP",
+    "dataTypeList": ["ip"],
+    "command": "Cymon/cymon_analyzer.py"
+}
