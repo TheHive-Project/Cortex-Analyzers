@@ -4,7 +4,7 @@
     "author": "Sebastien Larinier @Sebdraven",
     "url": "https://github.com/CERT-BDF/Cortex-Analyzers/Shodan",
     "license": "AGPL-V3",
-    "description": "",
+    "description": "Retrieve key Shodan information on a domain.",
     "dataTypeList": ["domain"],
     "baseConfig": "Shodan",
     "config": {
