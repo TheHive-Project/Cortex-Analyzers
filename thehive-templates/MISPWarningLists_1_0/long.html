@@ -12,9 +12,14 @@
             <ul ng-repeat="list in content.results">
                 <li>{{list.name}}</li>
             </ul>
-            <p>MISP-warninglists is currently at {{content.last_update}}.</p>
         </dd>
       </dl>
+      <div class="alert alert-success" ng-if="content.is_uptodate">
+        Your misp-warninglists repository is up-to-date.
+      </div>
+      <div class="alert alert-warning" ng-if="!content.is_uptodate">
+        Your misp-warninglists repository is <strong>not</strong> up-to-date.
+      </div>
     </div>
 </div>
 
