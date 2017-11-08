@@ -7,7 +7,7 @@
     "baseConfig": "EmergingThreats",
     "config": {
         "check_tlp": true,
-        "max-tlp": 1,
+        "max_tlp" : 2,
         "service": "ip-info"
     },
     "description": "Retrieve ET reputation, related malware, and IDS requests for a given IP address.",
