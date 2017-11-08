@@ -1,7 +1,7 @@
 {
     "name": "WOT_Lookup",
     "version": "1.0",
-    "author": "Andrea Garavaglia - LDO-CERT",
+    "author": "Andrea Garavaglia, LDO-CERT",
     "url": "https://github.com/garanews/Cortex-Analyzers",
     "license": "AGPL-V3",
     "description": "Use Web of Trust to check a domain's reputation.",
