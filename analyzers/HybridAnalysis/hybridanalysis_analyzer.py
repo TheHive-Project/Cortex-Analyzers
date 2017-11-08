@@ -35,7 +35,7 @@ class VxStreamSandboxAnalyzer(Analyzer):
 
         # default values
         level = "info"
-        namespace = "VxStreamSB"
+        namespace = "HybridAnalysis"
         predicate = "Threat level"
         value = "\"No verdict\""
 
