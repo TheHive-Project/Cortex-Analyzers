@@ -9,8 +9,8 @@
     "baseConfig": "Shodan",
     "config": {
         "check_tlp": true,
-        "service": "search",
-        "max_tlp": 1
+        "max_tlp": 1,
+        "service": "search"
     },
     "command": "Shodan/shodan_analyzer.py"
 }
