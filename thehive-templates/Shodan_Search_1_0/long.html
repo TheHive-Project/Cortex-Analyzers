@@ -6,20 +6,22 @@
         <dl class="dl-horizontal">
             <dt>ASN</dt>
             <dd>
-                {{content.infos_domain.asn.join(', ')}}
+                {{content.infos_domain.asn.join(', ') || '-'}}
             </dd>
         </dl>
         <dl class="dl-horizontal">
             <dt>ISP</dt>
             <dd>
+                <span ng-if="content.infos_domain.isp.length === 0">-</span>
                 <ul class="list-unstyled">
                     <li data-ng-repeat=" i in content.infos_domain.isp">{{i}}</li>
                 </ul>
             </dd>
         </dl>
         <dl class="dl-horizontal">
-            <dt>all_domains</dt>
+            <dt>Domains</dt>
             <dd>
+                <span ng-if="content.infos_domain.all_domains.length === 0">-</span>
                 <ul class="list-unstyled">
                     <li data-ng-repeat="i in content.infos_domain.all_domains">{{i | fang}}</li>
                 </ul>
@@ -28,12 +30,13 @@
         <dl class="dl-horizontal">
             <dt>Ports</dt>
             <dd>
-                {{content.infos_domain.ports.join(', ')}}
+                {{content.infos_domain.ports.join(', ') || '-'}}
             </dd>
         </dl>
         <dl class="dl-horizontal">
             <dt>Orgs</dt>
             <dd>
+                <span ng-if="content.infos_domain.orgs.length === 0">-</span>
                 <ul class="list-unstyled">
                     <li data-ng-repeat="i in content.infos_domain.orgs">{{i}}</li>
                 </ul>
@@ -42,12 +45,13 @@
         <dl class="dl-horizontal">
             <dt>Transports</dt>
             <dd>
-                {{content.infos_domain.transports.join(', ')}}                
+                {{content.infos_domain.transports.join(', ') || '-'}}
             </dd>
         </dl>
         <dl class="dl-horizontal">
             <dt>IPs</dt>
             <dd>
+                <span ng-if="content.infos_domain.ips.length === 0">-</span>
                 <ul class="list-unstyled">
                     <li data-ng-repeat="i in content.infos_domain.ips">{{i | fang}}</li>
                 </ul>
