@@ -138,7 +138,7 @@ class VirusTotalAnalyzer(Analyzer):
 
         if self.service == 'scan':
             if self.data_type == 'file':
-                filename = self.getParam('attachment.name', 'noname.ext')
+                filename = self.getParam('filename', 'noname.ext')
                 filepath = self.getParam('file', None, 'File is missing')
                 self.read_scan_response(self.vt.scan_file(
                     (filename, open(filepath, 'rb'))), self.wait_file_report)
