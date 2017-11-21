@@ -1,0 +1,19 @@
+{
+    "name": "Splunk_Search_3_months",
+    "version": "2.0",
+    "url": "",
+    "author": "Unit777",
+    "license": "AGPL-V3",
+    "dataTypeList": ["url", "domain"],
+    "description": "Searches for hits in Splunk web proxy logs for past 3 months",
+    "baseConfig": "Splunk",
+    "config": {
+        "check_tlp": false,
+        "max_tlp": 4,
+        "service": "search",
+        "num_of_days": 90,
+        "sourcetype":"proxylogs",
+        "filter_expression": "| eval time=strftime(_time, \"%y-%m-%d\") | eval action=if(isnull(action), \"-\",action) | eval url=if(isnull(url), \"-\",url) | eval http_referrer=if(isnull(http_referrer), \"-\",http_referrer) | eval dest_domain_full=if(isnull(dest_domain_full), \"-\",dest_domain_full) | eval http_method=if(isnull(http_method), \"-\",http_method) | eval Event=action.\"^\".url.\"^\".http_referrer.\"^\".dest_domain_full.\"^\".http_method.\"^\".time |top Event limit=5 by user |stats count, values(Event) as Events by user | table *"
+    },
+    "command": "Splunk/splunk.py"
+}

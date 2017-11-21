@@ -1,0 +1,31 @@
+<div>
+    <div class="panel panel-danger" ng-if="!success">
+        <div class="panel-heading">
+             <strong>{{(artifact.data || artifact.attachment.name)}}</strong>
+        </div>
+        <div class="panel-body">
+            An error has occurred with the Splunk search
+        </div>
+    </div>
+    <div class="panel panel-danger" ng-if="content.length===0">
+        <div class="panel-heading">
+             Nothing found
+        </div>
+        <div class="panel-body">
+            There were no hits for this Splunk search
+        </div>
+    </div>
+    <div ng-if="success && content.length > 0 ">
+        <div class="panel panel-info" ng-repeat="n in content">
+            <div class="panel-heading">
+                 Splunk Log
+            </div>
+            <div class="panel-body">
+                <dl class="dl-horizontal" ng-repeat="(key,value) in n">
+                    <dt>{{key}}</dt>
+                    <dd>{{value}}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>

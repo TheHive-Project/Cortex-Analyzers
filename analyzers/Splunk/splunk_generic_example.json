@@ -1,0 +1,19 @@
+{
+    "name": "Splunk_Generic_Search",
+    "version": "2.0",
+    "url": "",
+    "author": "Unit777",
+    "license": "AGPL-V3",
+    "dataTypeList": ["domain", "url", "hash", "mail"],
+    "description": "Generic Splunk Search",
+    "baseConfig": "Splunk",
+    "config": {
+        "check_tlp": false,
+        "max_tlp": 4,
+        "service": "search",
+        "num_of_days": 30,
+        "sourcetype":"genericlogs",
+        "filter_query": "| table *"
+    },
+    "command": "Splunk/splunk.py"
+}

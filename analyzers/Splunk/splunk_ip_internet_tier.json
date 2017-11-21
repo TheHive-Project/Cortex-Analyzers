@@ -1,0 +1,19 @@
+{
+    "name": "Splunk_Search_IP_Logs",
+    "version": "2.0",
+    "url": "",
+    "author": "Unit777",
+    "license": "AGPL-V3",
+    "dataTypeList": ["ip"],
+    "description": "Searches for hits in Splunk IP logs for past 30 days",
+    "baseConfig": "Splunk",
+    "config": {
+        "check_tlp": false,
+        "max_tlp": 4,
+        "service": "search",
+        "num_of_days": 30,
+        "sourcetype":"iplogs",
+        "filter_expression": "| eval time=strftime(_time, \"%y-%m-%d\") | eval src_ip=if(isnull(src_ip), \"-\",src_ip) | eval src=if(isnull(src), \"-\",src) | eval Event=src_ip.\"^\".src.\"^\".time |dedup src |stats count, values(Event) as Events by src_ip | table *"
+    },
+    "command": "Splunk/splunk.py"
+}

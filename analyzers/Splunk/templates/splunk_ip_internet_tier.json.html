@@ -1,0 +1,52 @@
+<div>
+    <div class="panel panel-danger" ng-if="!success">
+        <div class="panel-heading">
+             <strong>{{(artifact.data || artifact.attachment.name)}}</strong>
+        </div>
+        <div class="panel-body">
+            An error has occurred with the Splunk search
+        </div>
+    </div>
+    <div class="panel panel-danger" ng-if="content.length===0">
+        <div class="panel-heading">
+             Nothing found
+        </div>
+        <div class="panel-body">
+            There were no hits for this Splunk search
+        </div>
+    </div>
+    <div ng-if="success && content.length > 0 ">
+        <div class="panel panel-info">
+            <div class="panel-heading"><strong>Summary</strong></div>
+            <div class="panel-body">
+                <dl class="dl-horizontal">
+                    <table class="table table-hover" style="width: 100%;table-layout: fixed;">
+                    <thead>
+                        <th>Date (YY/MM/DD)</th>
+                        <th>IP</th>
+                        <th>Domain</th>
+                    </thead>
+                    <tbody ng-repeat="hits in content" ng-if="hits.count !== '1'">
+                        <tr ng-repeat="events in hits.Events">
+                            <td>
+                                {{events.split('^')[2]}}
+                            </td>
+                            <td style="word-wrap: break-word">{{events.split('^')[0] | fang}}</td>
+                            <td style="word-wrap: break-word">{{events.split('^')[1] | fang}}</td>
+                        </tr>
+                    <tbody>
+                    <tbody ng-repeat="hits in content" ng-if="hits.count==='1'">
+                        <tr>
+                            <td>
+                                {{hits.Events.split('^')[2]}}
+                            </td>
+                            <td style="word-wrap: break-word">{{hits.Events.split('^')[0] | fang}}</td>
+                            <td style="word-wrap: break-word">{{hits.Events.split('^')[1] | fang}}</td>
+                        </tr>
+                    <tbody>
+                    </table>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
