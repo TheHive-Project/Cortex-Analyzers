@@ -14,7 +14,7 @@ class FileAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
 
-        self.filename = self.getParam('attachment.name', 'noname.ext')
+        self.filename = self.getParam('filename', 'noname.ext')
         self.filepath = self.getParam('file', None, 'File is missing')
 
 
