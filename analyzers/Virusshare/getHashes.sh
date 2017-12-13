@@ -21,7 +21,7 @@ if [ ! -d $1 ]; then
 fi
 
 cd $1
-for u in `curl https://virusshare.com/hashes.4n6|grep hashes/|cut -d\" -f2`
+for u in `curl https://virusshare.com/hashes.4n6\ | grep hashes/VirusShare_ | cut -d\" -f2`
 do
     echo $u
     wget https://virusshare.com/$u
