@@ -3,7 +3,7 @@
 
 
 display_usage() { 
-    echo "getHashes v0.1" 
+    echo "getHashes v0.2"
     echo "  Fetch all Virusshare.com hashes" 
     echo -e "\n  Usage: $0 <path> \n"
 } 
