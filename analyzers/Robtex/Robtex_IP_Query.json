@@ -8,8 +8,7 @@
     "dataTypeList": ["ip"],
     "baseConfig": "Robtex",
     "config": {
-        "check_tlp": true,
-        "max_tlp": 1,
+        "check_tlp": false,
         "service": "ipquery"
     },
     "command": "Robtex/robtex.py"

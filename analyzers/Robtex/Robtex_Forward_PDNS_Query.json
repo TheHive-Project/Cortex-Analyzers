@@ -8,8 +8,7 @@
     "dataTypeList": ["domain", "fqdn"],
     "baseConfig": "Robtex",
     "config": {
-        "check_tlp": true,
-        "max_tlp": 1,
+        "check_tlp": false,
         "service": "fpdnsquery"
     },
     "command": "Robtex/robtex.py"
