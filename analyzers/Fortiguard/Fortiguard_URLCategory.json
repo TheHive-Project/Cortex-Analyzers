@@ -5,7 +5,7 @@
     "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
     "license": "AGPL-V3",
     "dataTypeList": ["domain", "url"],
-    "description": "Check the Fortiguard category of a URL or a domain",
+    "description": "Check the Fortiguard category of a URL or a domain.",
     "baseConfig": "Fortiguard",
     "config": {
         "check_tlp": true,

@@ -31,7 +31,7 @@ class VirusTotalAnalyzer(Analyzer):
     def wait_url_report(self, id):
         results = self.check_response(self.vt.get_url_report(id))
         code = results.get('response_code', None)
-        if code == 1:
+        if code == 1 and (results.get('scan_id') == id):
             self.report(results)
         else:
             time.sleep(self.polling_interval)

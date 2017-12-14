@@ -4,7 +4,7 @@
     "author": "CERT-BDF",
     "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "description": "Scan a file or URL using VirusTotal",
+    "description": "Use VirusTotal to scan a file or URL.",
     "dataTypeList": ["file", "url"],
     "baseConfig": "VirusTotal",
     "config": {
