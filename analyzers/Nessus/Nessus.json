@@ -8,7 +8,7 @@
     "config": {
         "check_tlp": false
     },
-    "description": "Scan hosts using Tenable's Nessus scanner",
+    "description": "Use Nessus Professional to scan hosts.",
     "dataTypeList": ["ip", "fqdn"],
     "command": "Nessus/nessus.py"
 }

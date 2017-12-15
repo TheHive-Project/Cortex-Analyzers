@@ -10,7 +10,7 @@
         "max_tlp": 1,
         "service": "ip_history"
     },
-    "description": "Provide history records for an IP address using DNSDB Passive DNS service",
+    "description": "Use DNSDB to fetch historical records for an IP address.",
     "dataTypeList": ["ip"],
     "command": "DNSDB/dnsdb.py"
 }

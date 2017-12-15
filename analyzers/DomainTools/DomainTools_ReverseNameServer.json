@@ -10,7 +10,7 @@
         "max_tlp": 1,
         "service": "name-server-domains"
     },
-    "description": "Use DomainTools Reverse Name Server service to get a list of domain names that share the same primary or secondary name server",
+    "description": "Use DomainTools to get a list of domain names that share the same primary or secondary name server.",
     "dataTypeList": ["domain"],
     "command": "DomainTools/domaintools.py"
 }

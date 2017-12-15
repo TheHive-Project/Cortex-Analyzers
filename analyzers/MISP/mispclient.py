@@ -132,13 +132,13 @@ class MISPClient:
 
         response = []
         for event in related_events:
-            ev = {}
-            ev['info'] = event['Event']['info']
-            ev['id'] = event['Event']['id']
+            ev = {
+                'info': event['Event']['info'],
+                'id': event['Event']['id']
+            }
             response.append(ev)
 
         return response
-
 
     def __clean_event(self, misp_event):
         """
@@ -171,7 +171,6 @@ class MISPClient:
         if 'RelatedEvent' in misp_event:
             misp_event['RelatedEvent'] = self.__clean_relatedevent(misp_event['RelatedEvent'])
 
-
         return misp_event
 
     def __clean(self, misp_response):
@@ -200,8 +199,15 @@ class MISPClient:
             raise EmptySearchtermError
         for idx, connection in enumerate(self.misp_connections):
             misp_response = connection.search(type_attribute=type_attribute, values=value)
+
+            # Fixes #94
+            if isinstance(self.misp_name, list):
+                name = self.misp_name[idx]
+            else:
+                name = self.misp_name
+
             results.append({'url': connection.root_url,
-                            'name': self.misp_name[idx],
+                            'name': name,
                             'result': self.__clean(misp_response)})
         return results
 

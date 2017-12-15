@@ -10,7 +10,7 @@
         "max_tlp":1,
         "service": "url_analysis"
     },
-    "description": "Cuckoo Sandbox URL analysis",
+    "description": "Cuckoo Sandbox URL analysis.",
     "dataTypeList": ["url"],
     "command": "CuckooSandbox/cuckoosandbox_analyzer.py"
 }

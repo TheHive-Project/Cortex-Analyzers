@@ -9,7 +9,7 @@
         "check_tlp": true,
         "max_tlp": 1
     },
-    "description": "Check URLs and domain names against Google Safebrowsing",
+    "description": "Use Google Safebrowing to check URLs and domain names.",
     "dataTypeList": ["url", "domain"],
     "command": "GoogleSafebrowsing/safebrowsing_analyzer.py"
 }

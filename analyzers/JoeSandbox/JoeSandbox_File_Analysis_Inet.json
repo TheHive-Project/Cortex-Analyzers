@@ -9,7 +9,7 @@
         "check_tlp": false,
         "service": "file_analysis_inet"
     },
-    "description": "Joe Sandbox file analysis with Internet access",
+    "description": "Joe Sandbox file analysis with Internet access.",
     "dataTypeList": ["file"],
     "command": "JoeSandbox/joesandbox_analyzer.py"
 }

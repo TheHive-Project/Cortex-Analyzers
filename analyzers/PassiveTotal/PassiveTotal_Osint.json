@@ -10,7 +10,7 @@
         "max_tlp":1,
         "service": "osint"
     },
-    "description": "PassiveTotal Osint Lookup",
+    "description": "PassiveTotal OSINT Lookup.",
     "dataTypeList": ["domain", "fqdn", "ip"],
     "command": "PassiveTotal/passivetotal_analyzer.py"
 }
