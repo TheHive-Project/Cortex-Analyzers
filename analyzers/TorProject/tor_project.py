@@ -2,7 +2,7 @@ import requests
 from datetime import datetime, timedelta
 from dateutil.parser import parse
 import pytz
-import pyfscache
+from diskcache import Cache
 
 
 class TorProjectClient:
@@ -31,18 +31,23 @@ class TorProjectClient:
         if ttl > 0:
             self.delta = timedelta(seconds=ttl)
         if cache_duration > 0:
-            self.cache = pyfscache.FSCache(cache_root, seconds=cache_duration)
+            self.cache = Cache(cache_root)
+            self.cache_duration = cache_duration
         self.url = 'https://check.torproject.org/exit-addresses'
 
+    __cache_key = __name__ + ':raw_data'
+
     def _get_raw_data(self):
-        if self.cache is None:
+        try:
+            return self.cache['raw_data']
+        except(AttributeError, TypeError):
             return self.session.get(self.url).text
-        else:
-            try:
-                return self.cache['raw_data']
-            except KeyError:
-                self.cache['raw_data'] = self.session.get(self.url).text
-                return self.cache['raw_data']
+        except KeyError:
+            self.cache.set(
+                'raw_data',
+                self.session.get(self.url).text,
+                expire=self.cache_duration)
+            return self.cache['raw_data']
 
     def search_tor_node(self, ip):
         """Lookup an IP address to check if it is a known tor exit node.
