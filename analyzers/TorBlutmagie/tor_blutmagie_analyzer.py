@@ -30,8 +30,8 @@ class TorBlutmagieAnalyzer(Analyzer):
                 level = 'suspicious'
             else:
                 level = 'info'
-        taxonomies.append(
-            self.build_taxonomy(level, 'TorBlutmagie', 'Node', value))
+            taxonomies.append(
+                self.build_taxonomy(level, 'TorBlutmagie', 'Node', value))
         return {"taxonomies": taxonomies}
 
     def run(self):
