@@ -28,17 +28,16 @@ class TorBlutmagieClient:
     __cache_key = __name__ + ':raw_data'
 
     def _get_raw_data(self):
-        if self.cache is None:
+        try:
+            return self.cache[self.__cache_key]
+        except (AttributeError, TypeError):
             return self.session.get(self.url).text.encode('utf-8')
-        else:
-            try:
-                return self.cache[self.__cache_key]
-            except KeyError:
-                self.cache.set(
-                    self.__cache_key,
-                    self.session.get(self.url).text.encode('utf-8'),
-                    expire=self.cache_duration, read=True)
-                return self.cache[self.__cache_key]
+        except KeyError:
+            self.cache.set(
+                self.__cache_key,
+                self.session.get(self.url).text.encode('utf-8'),
+                expire=self.cache_duration, read=True)
+            return self.cache[self.__cache_key]
 
     def _get_data(self):
         return csv.DictReader(
