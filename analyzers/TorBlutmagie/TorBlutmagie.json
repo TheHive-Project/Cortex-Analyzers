@@ -1,8 +1,8 @@
 {
     "name": "TorBlutmagie",
-    "author": "@srilumpa",
+    "author": "Marc-André DOLL, STARC by EXAPROBE",
     "license": "AGPL-V3",
-    "url": "https://github.com/srilumpa/Cortex-Analyzers",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
     "version": "1.0",
     "baseConfig": "TorBlutmagie",
     "config": {
