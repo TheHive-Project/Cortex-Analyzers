@@ -25,18 +25,20 @@ class TorBlutmagieClient:
             self.cache = Cache(cache_root)
         self.url = 'http://torstatus.blutmagie.de/query_export.php/Tor_query_EXPORT.csv'
 
+    __cache_key = __name__ + ':raw_data'
+
     def _get_raw_data(self):
         if self.cache is None:
             return self.session.get(self.url).text.encode('utf-8')
         else:
             try:
-                return self.cache['raw_data']
+                return self.cache[self.__cache_key]
             except KeyError:
                 self.cache.set(
-                    'raw_data',
+                    self.__cache_key,
                     self.session.get(self.url).text.encode('utf-8'),
                     expire=self.cache_duration, read=True)
-                return self.cache['raw_data']
+                return self.cache[self.__cache_key]
 
     def _get_data(self):
         return csv.DictReader(
