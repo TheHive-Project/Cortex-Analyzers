@@ -1,6 +1,6 @@
 import requests
-import pyfscache
 import csv
+from diskcache import Cache
 
 
 class TorBlutmagieClient:
@@ -20,8 +20,9 @@ class TorBlutmagieClient:
     """
     def __init__(self, cache_duration=3600, cache_root='/tmp/cortex/tor_project'):
         self.session = requests.Session()
-        if cache_duration > 0:
-            self.cache = pyfscache.FSCache(cache_root, seconds=cache_duration)
+        self.cache_duration = cache_duration
+        if self.cache_duration > 0:
+            self.cache = Cache(cache_root)
         self.url = 'http://torstatus.blutmagie.de/query_export.php/Tor_query_EXPORT.csv'
 
     def _get_raw_data(self):
@@ -31,11 +32,16 @@ class TorBlutmagieClient:
             try:
                 return self.cache['raw_data']
             except KeyError:
-                self.cache['raw_data'] = self.session.get(self.url).text.encode('utf-8')
+                self.cache.set(
+                    'raw_data',
+                    self.session.get(self.url).text.encode('utf-8'),
+                    expire=self.cache_duration, read=True)
                 return self.cache['raw_data']
 
     def _get_data(self):
-        return csv.DictReader(self._get_raw_data().splitlines(), delimiter=',')
+        return csv.DictReader(
+            self._get_raw_data().decode('utf-8').splitlines(),
+            delimiter=',')
 
     def _extract_fields(self, line):
         return {
