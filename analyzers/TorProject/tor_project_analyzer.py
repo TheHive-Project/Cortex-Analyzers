@@ -7,9 +7,9 @@ class TorProjectAnalyzer(Analyzer):
     """Cortex analyzer to query TorProject for exit nodes IP addresses"""
     def __init__(self):
         Analyzer.__init__(self)
-        self.ttl = self.getParam('config.ttl', 86400)
-        self.cache_duration = self.getParam('config.cache.duration', 3600)
-        self.cache_root = self.getParam(
+        self.ttl = self.get_param('config.ttl', 86400)
+        self.cache_duration = self.get_param('config.cache.duration', 3600)
+        self.cache_root = self.get_param(
             'config.cache.root', '/tmp/cortex/tor_project'
         )
 
