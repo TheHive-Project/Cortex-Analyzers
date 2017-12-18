@@ -1,0 +1,15 @@
+{
+    "name": "TorBlutmagie",
+    "author": "Marc-André DOLL, STARC by EXAPROBE",
+    "license": "AGPL-V3",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "version": "1.0",
+    "baseConfig": "TorBlutmagie",
+    "config": {
+        "check_tlp": false,
+        "max_tlp": 3
+    },
+    "description": "Query http://torstatus.blutmagie.de/query_export.php/Tor_query_EXPORT.csv for TOR exit nodes IP addresses or names.",
+    "dataTypeList": ["ip", "domain", "fqdn"],
+    "command": "TorBlutmagie/tor_blutmagie_analyzer.py"
+}
