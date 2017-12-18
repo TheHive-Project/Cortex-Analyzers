@@ -9,16 +9,16 @@
       </div>
       <div class="panel-body">
         <dl class="dl-horizontal">
-          <dd>Address</dd>
-          <dt>{{n.hostname | fang}} ({{n.ip_address | fang}})</dt>
-          <dd>AS</dd>
-          <dt>{{n.as_name}} ({{n.as_number}})</dt>
-          <dd>Country</dd>
-          <dt>{{n.country_code}}</dt>
+          <dt>Address</dt>
+          <dd>{{n.hostname | fang}} ({{n.ip | fang}})</dd>
+          <dt>AS</dt>
+          <dd>{{n.as_name}} ({{n.as_number}})</dd>
+          <dt>Country</dt>
+          <dd>{{n.country_code}}</dd>
         </dl>
         <span>
           <i class="fa fa-search"></i>
-          <a ng-href="http://torstatus.blutmagie.de/cgi-bin/whois.pl?ip={{n.ip_address}}" target="_blank">WHOIS</a>
+          <a ng-href="http://torstatus.blutmagie.de/cgi-bin/whois.pl?ip={{n.ip}}" target="_blank">WHOIS</a>
         </span>
       </div>
     </div>
