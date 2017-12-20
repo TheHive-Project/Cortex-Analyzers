@@ -2,7 +2,7 @@
     "name": "HippoMore",
     "version": "2.0",
     "author": "CERT-BDF",
-    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
     "description": "Get the Hippocampe detailed report for an IP address, a domain or a URL.",
     "dataTypeList": ["ip", "domain", "fqdn", "url"],
