@@ -4,14 +4,16 @@
     </div>
     <div class="panel-body">
       <dl class="dl-horizontal">
-        <dt>Results:</dt>
+        <dt>Status</dt>
         <dd>
-            <div class="alert alert-success" ng-if="content.is_sinkhole">
-                IP is sinkholed.
-            </div>
-            <div class="alert alert-warning" ng-if="!content.is_sinkhole">
-                IP is <strong>not</strong> sinkholed.
-            </div>
+            <p style="font-size: 1.5em;">
+                <span class="label label-success" ng-if="content.is_sinkhole">
+                    IP is sinkholed.
+                </span>
+                <span class="label label-warning" ng-if="!content.is_sinkhole">
+                    IP is <strong>not</strong> sinkholed.
+                </span>
+            </p>
         </dd>
       </dl>
     </div>
