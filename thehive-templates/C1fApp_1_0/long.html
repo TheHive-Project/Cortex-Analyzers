@@ -1,0 +1,47 @@
+<!-- Success case -->
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        <strong>{{name}}</strong>
+    </div>
+    <div class="panel-body">
+     
+      <div>C1fApp information found from {{artifact.data | fang}}</div>
+      <b>DGA indication</b>
+          {{dga}}
+      <ul><b>Assessment</b>
+          <li ng-repeat="assessment in content.assessment">{{assessment}}</li>
+      </ul>
+      <ul><b>Description</b>
+          <li ng-repeat="description in content.description">{{description}}</li>
+      </ul>
+      <ul><b>Feed</b>
+          <li ng-repeat="feed_label in content.feed_label">Feed: {{feed_label}}</li>
+     </ul>
+     
+     <ul>
+          <li ng-repeat="country in content.country">Country: {{country}}</li>
+          
+          <li ng-repeat="asn in content.asn">ASN: {{asn}}</li>
+          <li ng-repeat="asn_desc in content.asn_desc">ASN desc: {{asn_desc}}</li>
+      </ul>
+      <div>IP addresses from {{artifact.data | fang}}</div>
+      <ul>
+      <li ng-repeat="ip in content.ip_addresses">{{ip}}</li>
+      </ul>
+      <div>Domains found from {{artifact.data | fang}}</div>
+      <ul>
+      <li ng-repeat="domain in content.domains">{{domain}}</li>
+      </ul>
+      
+    </div>
+</div>
+
+<!-- Failure case -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
