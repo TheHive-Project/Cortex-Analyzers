@@ -7,7 +7,7 @@ Add the following to application.conf to enable analyzer
 C1fApp {
         service="query"
         key="Get your key from www.c1fapp.com"
-        api_url="https://www.c1fapp.com/cifapp/api/"
+        url="https://www.c1fapp.com/cifapp/api/"
        }
 ```
 

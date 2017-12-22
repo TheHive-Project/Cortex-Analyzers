@@ -13,7 +13,7 @@ class C1fQueryAnalyzer(Analyzer):
         self.service = self.getParam(
             'config.service', None, 'Service parameter is missing')
         self.cif_key = self.getParam('config.key', None, 'Missing C1fApp API key')
-        self.api_url = self.getParam('config.api_url', None, 'Missing API URL')
+        self.api_url = self.getParam('config.url', None, 'Missing API URL')
 
     @staticmethod
     def _getheaders():
