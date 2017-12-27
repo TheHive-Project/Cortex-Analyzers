@@ -1,0 +1,115 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        Robtex IP query for <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Key</th>
+                <th>Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Country:</td>
+                <td>{{content.ip.country}}</td>
+            </tr>
+            <tr>
+                <td>City</td>
+                <td>{{content.ip.city}}</td>
+            </tr>
+            <tr>
+                <td>AS</td>
+                <td>{{content.ip.as}}</td>
+            </tr>
+            <tr>
+                <td>AS name</td>
+                <td>{{content.ip.asname}}</td>
+            </tr>
+            <tr>
+                <td>AS description</td>
+                <td>{{content.ip.asdesc}}</td>
+            </tr>
+            <tr>
+                <td>Whois description</td>
+                <td>{{content.ip.whoisdesc}}</td>
+            </tr>
+            <tr>
+                <td>Route description</td>
+                <td>{{content.ip.routedesc}}</td>
+            </tr>
+            <tr>
+                <td>BGP route</td>
+                <td>{{content.ip.bgproute}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table">
+            <thead>
+            <th>Type</th>
+            <th>Domainname</th>
+            <th>Timestamp</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="hit in content.ip.pas">
+                <td>PAS</td>
+                <td>{{hit.o}}</td>
+                <td>{{hit.t * 1000 | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>
+            </tr>
+            <tr ng-repeat="hit in content.ip.pash">
+                <td>PASH</td>
+                <td>{{hit.o}}</td>
+                <td>{{hit.t * 1000 | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>
+            </tr>
+            <tr ng-repeat="hit in content.ip.act">
+                <td>ACT</td>
+                <td>{{hit.o}}</td>
+                <td>{{hit.t * 1000 | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>
+            </tr>
+            <tr ng-repeat="hit in content.ip.acth">
+                <td>ACTH</td>
+                <td>{{hit.o}}</td>
+                <td>{{hit.t * 1000 | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <dl class="dl-horizontal">
+            <table class="table">
+
+                <thead>
+                <th>Acronym</th>
+                <th>Description</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>PAS</td>
+                    <td>Passive reverse dns</td>
+                </tr>
+                <tr>
+                    <td>PASH</td>
+                    <td>Passive dns history</td>
+                </tr>
+                <tr>
+                    <td>ACT</td>
+                    <td>Active forward dns</td>
+                </tr>
+                <tr>
+                    <td>ACTH</td>
+                    <td>Active dns history</td>
+                </tr>
+                </tbody>
+            </table>
+        </dl>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
