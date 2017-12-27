@@ -1,25 +1,33 @@
 <div class="panel panel-info" ng-if="success">
     <div class="panel-heading">
-        MISP warninglists information for <strong>{{artifact.data}}</strong>
+        MISP warning lists information for <strong>{{artifact.data}}</strong>
     </div>
     <div class="panel-body">
-      <dl class="dl-horizontal" ng-if="content.results">
-        <dt>Results:</dt>
-        <dd>
-            <p>
-                Observable was found in following MISP warning lists:
-            </p>
-            <ul ng-repeat="list in content.results">
-                <li>{{list.name}}</li>
-            </ul>
-        </dd>
-      </dl>
-      <div class="alert alert-success" ng-if="content.is_uptodate">
-        Your misp-warninglists repository is up-to-date.
-      </div>
-      <div class="alert alert-warning" ng-if="!content.is_uptodate">
-        Your misp-warninglists repository is <strong>not</strong> up-to-date.
-      </div>
+        <dl class="dl-horizontal" ng-if="content.results">
+            <dt>Results:</dt>
+            <dd ng-if="content.results.results">
+                <p>
+                    Observable was found in following MISP warning lists:
+                </p>
+                <ul ng-repeat="list in content.results">
+                    <li>{{list.name}}</li>
+                </ul>
+            </dd>
+            <dd ng-if="!content.results.results">
+                <p>
+                    Observable was not found in warning lists.
+                </p>
+            </dd>
+            <dt>Warning lists status:</dt>
+            <dd>
+                <span class="label label-success" ng-if="content.is_uptodate">
+                    Up-to-date
+                </span>
+                <span class="label label-warning" ng-if="!content.is_uptodate">
+                    Outdated
+                </span>
+            </dd>
+        </dl>
     </div>
 </div>
 

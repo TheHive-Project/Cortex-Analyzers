@@ -84,6 +84,9 @@ class MISPWarninglistsAnalyzer(Analyzer):
         else:
             taxonomies.append(self.build_taxonomy('info', 'MISP', 'Warninglists', 'No hits'))
 
+        if not raw.get('is_uptodate', False):
+            taxonomies.append(self.build_taxonomy('info', 'MISP', 'Warninglists', 'Outdated'))
+
         return {
             "taxonomies": taxonomies
         }
