@@ -14,44 +14,47 @@
 
         <dl class="dl-horizontal" ng-if="content.assessment">
             <dt>Assessment</dt>
-            <dd>
-                <li ng-repeat="assessment in content.assessment">{{assessment}}</li>
+            <dd ng-repeat="assessment in content.assessment">
+                {{assessment}}
             </dd>
         </dl>
 
         <dl class="dl-horizontal" ng-if="content.description">
             <dt>Description</dt>
-            <dd>
-                <li ng-repeat="description in content.description">{{description}}</li>
+            <dd ng-repeat="description in content.description">
+                {{description}}
             </dd>
         </dl>
 
         <dl class="dl-horizontal" ng-if="content.feed_label">
             <dt>Feeds</dt>
-            <dd>
-                <li ng-repeat="feed_label in content.feed_label">Feed: {{feed_label}}</li>
+            <dd ng-repeat="feed_label in content.feed_label">
+                {{feed_label}}
             </dd>
         </dl>
 
         <dl class="dl-horizontal">
             <dt>Geolocation</dt>
-            <dd>
-                <li  ng-repeat="country in content.country">Country: {{country}}</li>
-                <li  ng-repeat="asn in content.asn">ASN: {{asn}}</li>
-                <li  ng-repeat="asn_desc in content.asn_desc">ASN desc: {{asn_desc}}</li>
+            <dd ng-repeat="country in content.country">
+                <b>Country:</b> {{country}}
+            </dd>
+            <dd ng-repeat="asn in content.asn">
+                <b>ASN:</b> {{asn}}
+            </dd>
+            <dd ng-repeat="asn_desc in content.asn_desc">
+                <b>ASN desc:</b> {{asn_desc}}
             </dd>
         </dl>
 
         <dl class="dl-horizontal">
             <dt>Related IP addresses</dt>
-            <dd>
-               <li ng-repeat="ip in content.ip_addresses">{{ip}}</li>
+            <dd ng-repeat="ip in content.ip_addresses">{{ip}}
             </dd>
         </dl>
         <dl class="dl-horizontal">
             <dt>Related Domains</dt>
-            <dd>
-                <li ng-repeat="domain in content.domains">{{domain}}</li>
+            <dd ng-repeat="domain in content.domains">
+                {{domain}}
             </dd>
         </dl>
 
