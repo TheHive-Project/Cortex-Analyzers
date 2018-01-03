@@ -97,11 +97,21 @@ class C1fQueryAnalyzer(Analyzer):
 
         return results
 
-    @staticmethod
-    def summary(raw):
-        return {
-            "count": raw["count"]
-        }
+    def summary(self, raw):
+        taxonomies = []
+        level = "info"
+        namespace = "C1fApp"
+        predicate = "Assessment"
+        for a in raw["assessment"]:
+            if a in ["whitelist"]:
+                level = "safe"
+            elif a in ["suspicious"]:
+                level = "suspicious"
+            elif a in ["phishing", "malware", "botnet"]:
+                level = "malicious"
+            value = "\"{}\"".format(a)
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        return {"taxonomies": taxonomies}
 
     def run(self):
 
