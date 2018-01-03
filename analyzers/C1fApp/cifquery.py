@@ -107,7 +107,7 @@ class C1fQueryAnalyzer(Analyzer):
                 level = "safe"
             elif a in ["suspicious"]:
                 level = "suspicious"
-            elif a in ["phishing", "malware", "botnet"]:
+            elif a in ["phishing", "malware", "botnet", "Exploit"]:
                 level = "malicious"
             value = "\"{}\"".format(a)
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
