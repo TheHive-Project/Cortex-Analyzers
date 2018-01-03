@@ -3,8 +3,8 @@
     "data": "38.229.72.16",
     "config":{
         "service": "query",
-        "key": "YOUR_KEY",
-        "api_url": "https://www.c1fapp.com/cifapp/api/"
+        "key": "Get your key from www.c1fapp.com",
+        "url": "https://www.c1fapp.com/cifapp/api/"
 	
     }
 }
