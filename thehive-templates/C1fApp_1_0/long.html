@@ -1,0 +1,72 @@
+<!-- Success case -->
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        <strong>{{name}} report</strong>
+    </div>
+    <div class="panel-body">
+     
+        <h4>C1fApp information for {{artifact.data | fang}}</h4>
+
+        <dl class="dl-horizontal">
+            <dt>DGA indication</dt>
+            <dd>{{dga || "None"}}</dd>
+        </dl>
+
+        <dl class="dl-horizontal" ng-if="content.assessment">
+            <dt>Assessment</dt>
+            <dd ng-repeat="assessment in content.assessment">
+                {{assessment}}
+            </dd>
+        </dl>
+
+        <dl class="dl-horizontal" ng-if="content.description">
+            <dt>Description</dt>
+            <dd ng-repeat="description in content.description">
+                {{description}}
+            </dd>
+        </dl>
+
+        <dl class="dl-horizontal" ng-if="content.feed_label">
+            <dt>Feeds</dt>
+            <dd ng-repeat="feed_label in content.feed_label">
+                {{feed_label}}
+            </dd>
+        </dl>
+
+        <dl class="dl-horizontal">
+            <dt>Geolocation</dt>
+            <dd ng-repeat="country in content.country">
+                <b>Country:</b> {{country}}
+            </dd>
+            <dd ng-repeat="asn in content.asn">
+                <b>ASN:</b> {{asn}}
+            </dd>
+            <dd ng-repeat="asn_desc in content.asn_desc">
+                <b>ASN desc:</b> {{asn_desc}}
+            </dd>
+        </dl>
+
+        <dl class="dl-horizontal">
+            <dt>Related IP addresses</dt>
+            <dd ng-repeat="ip in content.ip_addresses">{{ip}}
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Related Domains</dt>
+            <dd ng-repeat="domain in content.domains">
+                {{domain}}
+            </dd>
+        </dl>
+
+    </div>
+</div>
+
+<!-- Failure case -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

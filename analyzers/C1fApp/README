@@ -1,0 +1,24 @@
+C1fApp is a free threat feed aggregator. It queries the most common
+OSINT threat feeds.
+
+Add the following to application.conf to enable analyzer
+
+```
+C1fApp {
+        service="query"
+        key="Get your key from www.c1fapp.com"
+        url="https://www.c1fapp.com/cifapp/api/"
+       }
+```
+
+To test the analyzer from cmdline
+
+python cifquery.py < input
+
+Testing
+--------
+cd /opt/thehive
+
+bin/thehive -Dconfig.file=conf/application.conf
+
+bin/cortex -Dconfig.file=/opt/cortex/conf/application.conf
