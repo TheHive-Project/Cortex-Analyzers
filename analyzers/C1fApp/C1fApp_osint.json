@@ -9,7 +9,7 @@
     "baseConfig": "C1fApp",
     "config": {
         "check_tlp":true,
-        "max_tlp": 4,
+        "max_tlp": 2,
         "service": "query"
 
     },
