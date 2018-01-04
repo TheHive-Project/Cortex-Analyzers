@@ -3,7 +3,59 @@
 		Onyphe Ports - <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
 	</div>
 	<div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>
+                My IP
+            </dt>
+            <dd>
+                {{content.ports.myip}}
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>
+                Number of results
+            </dt>
+            <dd>
+                {{content.ports.count}}
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>
+                Error(s)
+            </dt>
+            <dd>
+                {{content.ports.error}}
+            </dd>
+        </dl>
 
+		<table class="table" ng-if="content.ports.results.length !== 0 ">
+            <thead>
+                <th>Category</th>
+                <th>Type</th>
+                <th>ASN</th>
+                <th>Country</th>
+                <th>IPv4</th>
+                <th>Location</th>
+                <th>Organisation</th>
+                <th>OS</th>
+                <th>Port</th>
+                <th>Seen date</th>
+            </thead>
+            <tbody ng-repeat="r in content.ports.results | orderBy:'-seen_date'">
+                <tr>
+                    <td>{{r["@category"]}}</td>
+                    <td>{{r["@type"]}}</td>
+                    <td>{{r.asn}}</td>
+                    <td>{{r.country}}</td>
+                    <td>{{r.ip}}</td>
+                    <td>{{r.organization}}</td>
+                    <td>{{r.location}}</td>
+                    <td>{{r.os}}</td>
+                    <td>{{r.port}}</td>
+                    <td>{{r.seen_date}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
