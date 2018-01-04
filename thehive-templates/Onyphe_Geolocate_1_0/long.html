@@ -3,7 +3,62 @@
 		Onyphe Geolocate - <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
 	</div>
 	<div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>
+                My IP
+            </dt>
+            <dd>
+                {{content.location.myip}}
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>
+                Number of result
+            </dt>
+            <dd>
+                {{content.location.count}}
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>
+                Error(s)
+            </dt>
+            <dd>
+                {{content.location.error}}
+            </dd>
+        </dl>
 
+		<table class="table" ng-if="content.location.results.length !== 0 ">
+            <thead>
+                <th>Category</th>
+                <th>Type</th>
+                <th>ASN</th>
+                <th>City</th>
+                <th>Country</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Organization</th>
+                <th>IPv4</th>
+                <th>IPv6</th>
+                <th>Subnet</th>
+
+            </thead>
+            <tbody ng-repeat="r in content.location.results">
+                <tr>
+                    <td>{{r["@category"]}}</td>
+                    <td>{{r["@type"]}}</td>
+                    <td>{{r.asn}}</td>
+                    <td>{{r.city}}</td>
+                    <td>{{r.country_name}}/{{r.country}}</td>
+                    <td>{{r.latitude}}</td>
+                    <td>{{r.longitude}}</td>
+                    <td>{{r.organisation}}</td>
+                    <td>{{r.ip}}</td>
+                    <td>{{r.ipv6}}</td>
+                    <td>{{r.subnet}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
