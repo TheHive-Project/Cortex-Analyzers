@@ -3,7 +3,52 @@
 		Onyphe Reverse - <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
 	</div>
 	<div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>
+                My IP
+            </dt>
+            <dd>
+                {{content.reverses.myip}}
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>
+                Number of result
+            </dt>
+            <dd>
+                {{content.reverses.count}}
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>
+                Error(s)
+            </dt>
+            <dd>
+                {{content.reverses.error}}
+            </dd>
+        </dl>
 
+		<table class="table" ng-if="content.reverses.results.length !== 0 ">
+            <thead>
+                <th>Category</th>
+                <th>Type</th>
+                <th>Domain</th>
+                <th>IPv4</th>
+                <th>IPv6</th>
+                <th>Reverse</th>
+                <th>Seen date</th>
+            </thead>
+            <tbody ng-repeat="r in content.reverses.results | orderBy:'-seen_date'">
+                <tr>
+                    <td>{{r["@category"]}}</td>
+                    <td>{{r["@type"]}}</td>
+                    <td>{{r.domain}}</td>
+                    <td>{{r.ip}}</td>
+                    <td>{{r.ipv6}}</td>
+                    <td>{{r.reverse}}</td>
+                    <td>{{r.seen_date}}</td>
+                </tr>
+            </tbody>
     </div>
 </div>
 
