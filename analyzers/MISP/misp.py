@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from cortexutils.analyzer import Analyzer
-from mispclient import MISPClient
+from mispclient import MISPClient, MISPClientError
 
 
 class MISPAnalyzer(Analyzer):
@@ -13,11 +13,15 @@ class MISPAnalyzer(Analyzer):
         name = self.getParam('config.name', None)
         if not name:
             name = 'Unnamed'
-
-        self.misp = MISPClient(url=self.getParam('config.url', None, 'No MISP url given.'),
-                               key=self.getParam('config.key', None, 'No MISP api key given.'),
-                               ssl=self.getParam('config.certpath', True),
-                               name=name)
+        try:
+            self.misp = MISPClient(url=self.getParam('config.url', None, 'No MISP url given.'),
+                                key=self.getParam('config.key', None, 'No MISP api key given.'),
+                                ssl=self.getParam('config.certpath', True),
+                                name=name)
+        except MISPClientError as e:
+            self.error(str(e))
+        except TypeError as te:
+            self.error(str(te))
 
     def summary(self, raw):
         taxonomies = []
