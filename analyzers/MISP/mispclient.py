@@ -3,8 +3,18 @@ import pymisp
 import os
 
 
-class EmptySearchtermError(Exception):
+class MISPClientError(Exception):
+    """Basic Error class"""
+    pass
+
+
+class EmptySearchtermError(MISPClientError):
     """Exception raised, when no search terms are given."""
+    pass
+
+
+class CertificateNotFoundError(MISPClientError):
+    """Raised if certificate file could not be found"""
     pass
 
 
@@ -27,14 +37,25 @@ class MISPClient:
         if type(url) is list:
             for idx, server in enumerate(url):
                 verify = True
+
+                # Given ssl parameter is a list
                 if isinstance(ssl, list):
-                    if os.path.isfile(ssl[idx]):
+                    if isinstance(ssl[idx], str) and os.path.isfile(ssl[idx]):
                         verify = ssl[idx]
+                    elif isinstance(ssl[idx], str) and not os.path.isfile(ssl[idx]):
+                        raise CertificateNotFoundError('Certificate not found under {}.'.format(ssl[idx]))
+                    elif isinstance(ssl[idx], bool):
+                        verify = ssl[idx]
+                    else:
+                        raise TypeError('SSL parameter is a not expected type.')
+                # Do the same checks again, for the non-list type
                 elif isinstance(ssl, str):
                     if os.path.isfile(ssl):
                         verify = ssl
                 elif isinstance(ssl, bool):
                     verify = ssl
+                else:
+                    raise TypeError('SSL parameter is a not expected type.')
                 self.misp_connections.append(pymisp.PyMISP(url=server,
                                                            key=key[idx],
                                                            ssl=verify))
