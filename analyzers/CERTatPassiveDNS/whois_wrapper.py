@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from re import findall
 from subprocess import check_output
 
 

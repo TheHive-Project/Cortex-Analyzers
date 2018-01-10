@@ -1,18 +1,17 @@
 #!/usr/bin/env python
 # encoding: utf-8
-
 import json
 import requests
 import datetime
 from cortexutils.analyzer import Analyzer
 
-class WOTAnalyzer(Analyzer):
 
+class WOTAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
-        self.service = self.getParam(
+        self.service = self.get_param(
             'config.service', None, 'Service parameter is missing')
-        self.WOT_key = self.getParam('config.key', None,
+        self.WOT_key = self.get_param('config.key', None,
                                     'Missing WOT API key')
         self.categories = {
             "101": "Malware or viruses",
@@ -50,16 +49,15 @@ class WOTAnalyzer(Analyzer):
         else:
             return "Very poor"
 
-    def WOT_checkurl(self, data):
+    def wot_checkurl(self, data):
         url = 'http://api.mywot.com/0.4/public_link_json2?hosts=' + data + '/&callback=process&key=' + self.WOT_key
         r = requests.get(url)
         return json.loads(r.text.replace("process(","").replace(")",""))
 
     def summary(self, raw):
         taxonomies = []
-        level = "safe"
         value = "-"
-	
+
         categories = raw.get("Categories", None)
         blacklists = raw.get("Blacklists", None)
         num_categories = raw.get("Categories Identifier", None)
@@ -87,8 +85,8 @@ class WOTAnalyzer(Analyzer):
     def run(self):
         if self.service == 'query':
             if self.data_type in ['domain', 'fqdn']:
-                data = self.getParam('data', None, 'Data is missing')
-                r = self.WOT_checkurl(data)
+                data = self.get_param('data', None, 'Data is missing')
+                r = self.wot_checkurl(data)
                 if data in r.keys():
                     info = r[data]
                     r_dict = {}
@@ -110,6 +108,7 @@ class WOTAnalyzer(Analyzer):
                 self.error('Invalid data type')
         else:
             self.error('Invalid service')
+
 
 if __name__ == '__main__':
     WOTAnalyzer().run()

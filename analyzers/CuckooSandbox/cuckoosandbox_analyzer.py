@@ -7,15 +7,15 @@ import requests
 import time
 from os.path import basename
 
-class CuckooSandboxAnalyzer(Analyzer):
 
+class CuckooSandboxAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
-        self.service = self.getParam('config.service', None, 'CuckooSandbox service is missing')
-        self.url = self.getParam('config.url', None, 'CuckooSandbox url is missing')
+        self.service = self.get_param('config.service', None, 'CuckooSandbox service is missing')
+        self.url = self.get_param('config.url', None, 'CuckooSandbox url is missing')
         self.url = self.url + "/" if not self.url.endswith("/") else self.url
-        #self.analysistimeout = self.getParam('config.analysistimeout', 30*60, None)
-        #self.networktimeout = self.getParam('config.networktimeout', 30, None)
+        # self.analysistimeout = self.get_param('config.analysistimeout', 30*60, None)
+        # self.networktimeout = self.get_param('config.networktimeout', 30, None)
 
     def summary(self, raw):
         taxonomies = []
@@ -26,10 +26,10 @@ class CuckooSandboxAnalyzer(Analyzer):
 
         result = {
             'service': self.service,
-            'dataType': self.data_type
+            'dataType': self.data_type,
+            'malscore': raw.get('malscore', None),
+            'malfamily': raw.get('malfamily', None)
         }
-        result["malscore"] = raw.get("malscore", None)
-        result["malfamily"] = raw.get("malfamily", None)
 
         if result["malscore"] > 6.5:
             level = "malicious"
@@ -50,7 +50,7 @@ class CuckooSandboxAnalyzer(Analyzer):
 
             # file analysis
             if self.service in ['file_analysis']:
-                filepath = self.getParam('file', None, 'File is missing')
+                filepath = self.get_param('file', None, 'File is missing')
                 filename = basename(filepath)
                 with open(filepath, "rb") as sample:
                     files = {"file": (filename, sample)}
@@ -59,7 +59,7 @@ class CuckooSandboxAnalyzer(Analyzer):
 
             # url analysis
             elif self.service == 'url_analysis':
-                data = {"url": self.getData()}
+                data = {"url": self.get_data()}
                 response = requests.post(self.url + 'tasks/create/url', data=data)
                 task_id = response.json()['task_id']
 
@@ -68,7 +68,7 @@ class CuckooSandboxAnalyzer(Analyzer):
 
             finished = False
             tries = 0
-            while not finished and tries <= 15: #wait max 15 mins
+            while not finished and tries <= 15:  # wait max 15 mins
                 time.sleep(60)
                 response = requests.get(self.url + 'tasks/view/' + str(task_id))
                 content = response.json()['task']['status']
@@ -135,6 +135,7 @@ class CuckooSandboxAnalyzer(Analyzer):
 
         except Exception as e:
             self.unexpectedError(e)
+
 
 if __name__ == '__main__':
     CuckooSandboxAnalyzer().run()

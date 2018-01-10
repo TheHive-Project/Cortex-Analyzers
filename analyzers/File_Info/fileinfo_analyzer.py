@@ -6,7 +6,7 @@ import sys
 import json
 import codecs
 import magic
-from  lib.File_analysis import file
+from lib.File_analysis import file
 from cortexutils.analyzer import Analyzer
 
 
@@ -14,11 +14,10 @@ class FileAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
 
-        self.filename = self.getParam('filename', 'noname.ext')
-        self.filepath = self.getParam('file', None, 'File is missing')
+        self.filename = self.get_param('filename', 'noname.ext')
+        self.filepath = self.get_param('file', None, 'File is missing')
 
-
-    def FileInfo(self, report):
+    def file_info(self, report):
         result = report
         f = file(self.filepath)
         try:
@@ -26,36 +25,35 @@ class FileAnalyzer(Analyzer):
         except Exception as excp:
             error(str(excp))
         result['Exif'] = f.exif()
-        result['Magic']= f.magic()
-        result['filetype']=f.filetype()
-        result['Identification']= {'MD5': f.md5(),
-                                'SHA1':f.sha1(),
-                                'SHA256':f.sha256(),
-                                'ssdeep':f.ssdeep()}
+        result['Magic'] = f.magic()
+        result['filetype'] = f.filetype()
+        result['Identification'] = {'MD5': f.md5(),
+                                    'SHA1': f.sha1(),
+                                    'SHA256': f.sha256(),
+                                    'ssdeep': f.ssdeep()}
         return result
 
     # PE_Info analyzer
-    def PE_Info(self, report):
+    def pe_info(self, report):
         result = report
         f = file(self.filepath)
-        result['Identification'].update({'impash':f.imphash(),
-                                'ssdeep':f.ssdeep(),
-                                'pehash':f.pehash(),
-                                'OperatingSystem':f.PE_OperatingSystem(),
-                                'Type':f.PEtype()})
-        result['PE']={}
-        result['PE']['BasicInformation'] = {'FileInfo':f.PE_info(),
-                                  'FileSize': f.filesize(),
-                                  'TargetMachine' : f.PE_Machine(),
-                                  'CompilationTimestamp' : f.PE_CompilationTimestamp(),
-                                  'EntryPoint':f.PE_EntryPoint()}
+        result['Identification'].update({'impash': f.imphash(),
+                                         'ssdeep': f.ssdeep(),
+                                         'pehash': f.pehash(),
+                                         'OperatingSystem': f.PE_OperatingSystem(),
+                                         'Type': f.PEtype()})
+        result['PE'] = {}
+        result['PE']['BasicInformation'] = {'FileInfo': f.PE_info(),
+                                            'FileSize': f.filesize(),
+                                            'TargetMachine': f.PE_Machine(),
+                                            'CompilationTimestamp': f.PE_CompilationTimestamp(),
+                                            'EntryPoint': f.PE_EntryPoint()}
 
         result['PE']['Sections'] = f.PE_sections()
         result['PE']['ImportAdressTable'] = f.PE_iat()
         return result
 
-
-    def PE_Summary(self, report):
+    def pe_summary(self, report):
         result = {}
         detections = {}
         result.update({'detections': detections})
@@ -63,7 +61,7 @@ class FileAnalyzer(Analyzer):
         return result
 
     # PDFiD results analysis -- input for full report and summary
-    def Pdfid_analysis(self, report):
+    def pdfid_analysis(self, report):
         # Parse detections
         detections = {}
         filetype = report['filetype']
@@ -72,12 +70,11 @@ class FileAnalyzer(Analyzer):
             if obj['name'].startswith('/'):
                 detections[obj['name']] = obj['count']
         # Count detections
-        countJavaScript = detections['/JavaScript']
-        countOpenAction = detections['/OpenAction']
-        countRichMedia = detections['/RichMedia']
-        countObjStm = detections['/ObjStm']
-        countOpenAction = detections['/OpenAction']
-        countLaunch = detections['/Launch']
+        count_java_script = detections['/JavaScript']
+        count_rich_media = detections['/RichMedia']
+        count_obj_stm = detections['/ObjStm']
+        count_open_action = detections['/OpenAction']
+        count_launch = detections['/Launch']
         detect = detections
         detections = {}
         detections['/JavaScript'] = detect['/JavaScript']
@@ -86,37 +83,39 @@ class FileAnalyzer(Analyzer):
         detections['/ObjStm'] = detect['/ObjStm']
         detections['/OpenAction'] = detect['/OpenAction']
         detections['/Launch'] = detect['/Launch']
-        score = countJavaScript + countOpenAction + countRichMedia + countObjStm + countOpenAction + countLaunch
+        score = count_java_script + count_open_action + count_rich_media + count_obj_stm + count_open_action\
+            + count_launch
+
         if score > 0:
             suspicious = True
         else:
             suspicious = False
-        return {'score':score, 'detections':detections, 'suspicious': suspicious, 'filetype': filetype}
+        return {'score': score, 'detections': detections, 'suspicious': suspicious, 'filetype': filetype}
 
     # PDF_Info analyzer
-    def PDF_Info(self, report):
+    def pdf_info(self, report):
         result = report
         f = file(self.filepath)
-        result['PDF']={}
-        result['PDF']['pdfid'] =f.pdfid_cmd()
+        result['PDF'] = {}
+        result['PDF']['pdfid'] = f.pdfid_cmd()
         result['PDF']['pdfid'][0]['pdfid']['filename'] = self.filename
-        result['PDF']['pdfid'][0]['detections'] = self.Pdfid_analysis(result)['detections']
-        result['PDF']['pdfid'][0]['score'] = self.Pdfid_analysis(result)['score']
-        result['PDF']['pdfid'][0]['suspicious'] = self.Pdfid_analysis(result)['suspicious']
+        result['PDF']['pdfid'][0]['detections'] = self.pdfid_analysis(result)['detections']
+        result['PDF']['pdfid'][0]['score'] = self.pdfid_analysis(result)['score']
+        result['PDF']['pdfid'][0]['suspicious'] = self.pdfid_analysis(result)['suspicious']
         return result
 
-    def PDF_Summary(self,report):
+    def pdf_summary(self, report):
         result = {}
         detections = {}
-        result.update({'score': self.Pdfid_analysis(report)['score']})
-        result.update({'suspicious': self.Pdfid_analysis(report)['suspicious']})
-        result.update({'detections': self.Pdfid_analysis(report)['detections']})
-        result.update({'filetype': self.Pdfid_analysis(report)['filetype']})
+        result.update({'score': self.pdfid_analysis(report)['score']})
+        result.update({'suspicious': self.pdfid_analysis(report)['suspicious']})
+        result.update({'detections': self.pdfid_analysis(report)['detections']})
+        result.update({'filetype': self.pdfid_analysis(report)['filetype']})
         return result
 
     # Office_Info
-    def MSOffice_Info(self,report):
-        result=report
+    def msoffice_info(self, report):
+        result = report
         f = file(self.filepath)
         result['MSOffice'] = {}
         result['MSOffice']['olevba'] = f.olevba_info()
@@ -124,7 +123,7 @@ class FileAnalyzer(Analyzer):
         return result
 
     # MSOffice_Summary
-    def MSOffice_Summary(self,report):
+    def msoffice_summary(self, report):
         r = report['MSOffice']['olevba']
         result = {}
         detections = {}
@@ -143,20 +142,19 @@ class FileAnalyzer(Analyzer):
         namespace = "FileInfo"
         predicate = "Filetype"
 
-
         if fullReport['Mimetype'] in ['application/x-dosexec']:
-            pereport = self.PE_Summary(fullReport)
+            pereport = self.pe_summary(fullReport)
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, pereport['filetype']))
         elif fullReport['Mimetype'] in ['application/pdf']:
-            pdfreport = self.PDF_Summary(fullReport)
+            pdfreport = self.pdf_summary(fullReport)
             value = "\"{}\"".format(pdfreport['filetype'])
             if pdfreport['suspicious']:
                 level = 'suspicious'
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-        elif (fullReport['filetype'] in ['DOC','DOCM','DOCX',
-                                    'XLS', 'XLSM', 'XLSX',
-                                    'PPT', "PPTM", 'PPTX']):
-            msreport = self.MSOffice_Summary(fullReport)
+        elif (fullReport['filetype'] in ['DOC', 'DOCM', 'DOCX',
+                                         'XLS', 'XLSM', 'XLSX',
+                                         'PPT', "PPTM", 'PPTX']):
+            msreport = self.msoffice_summary(fullReport)
             value = "\"{}\"".format(msreport['filetype'])
             if msreport['suspicious']:
                 level = 'suspicious'
@@ -169,31 +167,26 @@ class FileAnalyzer(Analyzer):
         result = {'taxonomies': taxonomies}
         return result
 
-
-
-
-
-    def SpecificInfo(self,report):
+    def specific_info(self, report):
         # run specific program for PE
         if report['Mimetype'] in ['application/x-dosexec']:
-            self.PE_Info(report)
+            self.pe_info(report)
         # run specific program for PDF
         if report['Mimetype'] in ['application/pdf']:
-            self.PDF_Info(report)
+            self.pdf_info(report)
         # run specific program for MSOffice
-        if (report['filetype'] in ['DOC','DOCM','DOCX',
-                                    'XLS', 'XLSM', 'XLSX',
-                                    'PPT', "PPTM", 'PPTX']):
-            self.MSOffice_Info(report)
-
+        if (report['filetype'] in ['DOC', 'DOCM', 'DOCX',
+                                   'XLS', 'XLSM', 'XLSX',
+                                   'PPT', "PPTM", 'PPTX']):
+            self.msoffice_info(report)
 
     def run(self):
-        fullReport = {}
+        full_report = {}
         if self.data_type == 'file':
             try:
-                self.FileInfo(fullReport)
-                self.SpecificInfo(fullReport)
-                self.report(fullReport)
+                self.file_info(full_report)
+                self.specific_info(full_report)
+                self.report(full_report)
             except Exception as e:
                 self.unexpectedError(e)
         else:

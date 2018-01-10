@@ -10,10 +10,10 @@ class C1fQueryAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.service = self.getParam(
+        self.service = self.get_param(
             'config.service', None, 'Service parameter is missing')
-        self.cif_key = self.getParam('config.key', None, 'Missing C1fApp API key')
-        self.api_url = self.getParam('config.url', None, 'Missing API URL')
+        self.cif_key = self.get_param('config.key', None, 'Missing C1fApp API key')
+        self.api_url = self.get_param('config.url', None, 'Missing API URL')
 
     @staticmethod
     def _getheaders():
@@ -118,7 +118,7 @@ class C1fQueryAnalyzer(Analyzer):
         if self.service == 'query':
             if self.data_type == 'url' or self.data_type == 'domain' \
                     or self.data_type == 'ip':
-                data = self.getParam('data', None, 'Data is missing')
+                data = self.get_param('data', None, 'Data is missing')
 
                 rep = self.c1f_query(data)
                 self.report(rep)

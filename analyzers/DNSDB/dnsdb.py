@@ -1,9 +1,5 @@
 #!/usr/bin/env python
 # encoding: utf-8
-import sys
-import os
-import json
-import codecs
 import datetime
 from urllib2 import HTTPError
 from dnsdb_query import DnsdbClient, QueryError
@@ -14,15 +10,15 @@ class DnsDbAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.service = self.getParam(
+        self.service = self.get_param(
             'config.service', None, 'Service parameter is missing')
-        self.dnsdb_server = self.getParam(
+        self.dnsdb_server = self.get_param(
             'config.server', None, 'Missing DNSDB server name')
-        self.dnsdb_key = self.getParam(
+        self.dnsdb_key = self.get_param(
             'config.key', None, 'Missing DNSDB API key')
 
     def execute_dnsdb_service(self, client):
-        data = self.getData()
+        data = self.get_data()
 
         if self.service == 'domain_name' and self.data_type == 'domain':
             return client.query_rrset(data)
@@ -46,7 +42,7 @@ class DnsDbAnalyzer(Analyzer):
         namespace = "Farsight"
         predicate = "DNSDB"
 
-        if ("records" in raw):
+        if "records" in raw:
             r = len(raw["records"])
 
             if r == 0 or r == 1:

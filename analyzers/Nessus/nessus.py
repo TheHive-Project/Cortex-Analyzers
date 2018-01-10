@@ -9,26 +9,27 @@ from cortexutils.analyzer import Analyzer
 from nessrest import ness6rest
 from netaddr import IPNetwork, IPAddress
 
+
 class NessusAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.url = self.getParam(
+        self.url = self.get_param(
             'config.url', None, 'Missing Nessus scanner URL')
-        self.login = self.getParam(
+        self.login = self.get_param(
             'config.login', None, 'Missing Nessus scanner login')
-        self.password = self.getParam(
+        self.password = self.get_param(
             'config.password', None, 'Missing Nessus scanner password')
-        self.policy = self.getParam(
+        self.policy = self.get_param(
             'config.policy', None, 'Missing Nessus scanner policy')
-        self.ca_bundle = self.getParam(
+        self.ca_bundle = self.get_param(
             'config.ca_bundle')
-        self.allowed_networks = self.getParam(
+        self.allowed_networks = self.get_param(
             'config.allowed_networks')
 
     def summary(self, raw):
         summary = {}
-        if ("vulnerabilities" in raw):
+        if "vulnerabilities" in raw:
             count = [ 0, 0, 0, 0, 0 ]
             for vuln in raw["vulnerabilities"]:
                 count[vuln["severity"]] += 1
@@ -65,11 +66,10 @@ class NessusAnalyzer(Analyzer):
 
         return {"taxonomies": taxonomies}
 
-
     def run(self):
         Analyzer.run(self)
 
-        data = self.getParam('data', None, 'Data is missing')
+        data = self.get_param('data', None, 'Data is missing')
 
         if self.data_type != 'fqdn' and self.data_type != 'ip':
             self.error('Invalid data type')
@@ -137,6 +137,7 @@ class NessusAnalyzer(Analyzer):
     def _delete_scan(self, scanner):
         scanner.action(
             "scans/" + str(scanner.scan_id), method="DELETE")
+
 
 if __name__ == '__main__':
     NessusAnalyzer().run()

@@ -26,8 +26,8 @@ GREEN_CATEGORIES = [
     "Utility"
 ]
 
-class EmergingThreatsAnalyzer(Analyzer):
 
+class EmergingThreatsAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
         self.service = self.get_param('config.service', None, 'EmergingThreats service is missing')
@@ -60,7 +60,7 @@ class EmergingThreatsAnalyzer(Analyzer):
         Analyzer.run(self)
         info = {}
         try:
-            objectName = self.getData()
+            object_name = self.get_data()
             if self.service == 'domain-info':
                 self.data_type = 'domain'
                 url = "https://api.emergingthreats.net/v1/domains/"
@@ -81,7 +81,7 @@ class EmergingThreatsAnalyzer(Analyzer):
             for feature in features:
                 end = '/' if feature else ''
                 time.sleep(1)
-                r = self.session.get(url + objectName + end + feature)
+                r = self.session.get(url + object_name + end + feature)
                 if feature == '':
                     feature = 'main'
                 r_json= r.json()
@@ -96,6 +96,7 @@ class EmergingThreatsAnalyzer(Analyzer):
 
         except Exception as e:
             self.unexpectedError(e)
+
 
 if __name__ == '__main__':
     EmergingThreatsAnalyzer().run()
