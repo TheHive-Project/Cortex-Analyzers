@@ -2,7 +2,7 @@
     "name": "Shodan_Search",
     "version": "1.0",
     "author": "Sebastien Larinier @Sebdraven",
-    "url": "https://github.com/CERT-BDF/Cortex-Analyzers/Shodan",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
     "license": "AGPL-V3",
     "description": "Retrieve key Shodan information on a domain.",
     "dataTypeList": ["domain"],

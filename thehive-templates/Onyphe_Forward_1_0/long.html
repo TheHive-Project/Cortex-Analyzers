@@ -1,0 +1,62 @@
+<div class="panel panel-info" ng-if="success">
+	<div class="panel-heading">
+		Onyphe Forward - <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+	</div>
+	<div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>
+                My IP
+            </dt>
+            <dd>
+                {{content.forwards.myip}}
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>
+                Number of results
+            </dt>
+            <dd>
+                {{content.forwards.count}}
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>
+                Error(s)
+            </dt>
+            <dd>
+                {{content.forwards.error}}
+            </dd>
+        </dl>
+
+		<table class="table" ng-if="content.forwards.results.length !== 0 ">
+            <thead>
+                <th>Category</th>
+                <th>Type</th>
+                <th>Domain</th>
+                <th>IPv4</th>
+                <th>IPv6</th>
+                <th>Seen date</th>
+            </thead>
+            <tbody ng-repeat="r in content.forwards.results | orderBy:'-seen_date'">
+                <tr>
+                    <td>{{r["@category"]}}</td>
+                    <td>{{r["@type"]}}</td>
+                    <td>{{r.domain}}</td>
+                    <td>{{r.ip}}</td>
+                    <td>{{r.ipv6}}</td>
+                    <td>{{r.seen_date}}</td>
+                </tr>
+            </tbody>
+        </table>
+	</div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{results.errorMessage}}
+    </div>
+</div>

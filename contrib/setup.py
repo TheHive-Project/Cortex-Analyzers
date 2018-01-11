@@ -8,7 +8,7 @@ setup(
     author='TheHive-Project',
     author_email='support@thehive-project.org',
     license='AGPL-V3',
-    url='https://github.com/CERT-BDF/Cortex-Analyzers/tree/master/contrib',
+    url='https://github.com/TheHive-Project/Cortex-Analyzers/tree/master/contrib',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
