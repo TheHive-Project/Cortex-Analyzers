@@ -8,6 +8,7 @@ import time
 import hashlib
 
 from virustotal_api import PublicApi as VirusTotalPublicApi
+#from virus_total_apis import PublicApi as VirusTotalPublicApi
 from cortexutils.analyzer import Analyzer
 
 
@@ -18,6 +19,8 @@ class VirusTotalAnalyzer(Analyzer):
         self.service = self.getParam('config.service', None, 'Service parameter is missing')
         self.virustotal_key = self.getParam('config.key', None, 'Missing VirusTotal API key')
         self.polling_interval = self.getParam('config.polling_interval', 60)
+        self.proxies = self.getParam('config.proxy', None)
+
 
     def wait_file_report(self, id):
         results = self.check_response(self.vt.get_file_report(id))
@@ -133,12 +136,11 @@ class VirusTotalAnalyzer(Analyzer):
 
     def run(self):
         Analyzer.run(self)
-
-        self.vt = VirusTotalPublicApi(self.virustotal_key)
+        self.vt = VirusTotalPublicApi(self.virustotal_key, self.proxies)
 
         if self.service == 'scan':
             if self.data_type == 'file':
-                filename = self.getParam('attachment.name', 'noname.ext')
+                filename = self.getParam('filename', 'noname.ext')
                 filepath = self.getParam('file', None, 'File is missing')
                 self.read_scan_response(self.vt.scan_file(
                     (filename, open(filepath, 'rb'))), self.wait_file_report)

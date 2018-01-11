@@ -1,0 +1,16 @@
+{
+  "name": "Onyphe_Threats",
+  "version": "1.0",
+  "author": "Pierre Baudry, Adrien Barchapt",
+  "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Retrieve Onyphe threats information on an IPv{4,6} address with history.",
+  "dataTypeList": ["ip"],
+  "baseConfig": "Onyphe",
+  "config": {
+    "check_tlp": true,
+    "max_tlp": 1,
+    "service": "threats"
+  },
+  "command": "Onyphe/onyphe_analyzer.py"
+}
