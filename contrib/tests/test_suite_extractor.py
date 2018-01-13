@@ -147,3 +147,10 @@ class TestExtractorValidInput(unittest.TestCase):
             l_expected,
             'Check_iterable: wrong list returned.'
         )
+    
+    def test_float(self):
+        self.assertEqual(
+            self.extractor.check_string(value='0.001234'),
+            '',
+            'Check_float: float was recognized, but should not.'
+        )

@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 from builtins import str as unicode
+
+import io
 import re
 
 
@@ -11,9 +13,13 @@ class Extractor:
 
     Currently, this is not a fulltext search, so the the ioc's must be isolated strings, to get found.
     This can be iterated for ioc's.
+
+    :param ignore: List of strings or a single string to ignore when matching artifacts to type
+    :type ignore: list, str
     """
 
-    def __init__(self):
+    def __init__(self, ignore=None):
+        self.ignore = ignore
         self.regex = self.__init_regex()
 
     @staticmethod
@@ -63,9 +69,10 @@ class Extractor:
         })
 
         # domain
+        tldpattern = '('
         regex.append({
             'type': 'domain',
-            'regex': re.compile(r'^(?!http\:\/\/|https\:\/\/)^[\w\-]+\.\w+$')
+            'regex': re.compile(r'^(?!http\:\/\/|https\:\/\/)^[\w\-]+\.[a-zA-Z]+$'.format(tldpattern))
         })
 
         # hash
@@ -108,6 +115,16 @@ class Extractor:
 
         return regex
 
+    @staticmethod
+    def __get_tlds():
+        """Get a list of tlds from the contributed mozille tld list"""
+        tlds = []
+        with io.open('contrib/tlds.txt') as tldfile:
+            for line in tldfile:
+                if line != '' and not line.beginswith('//'):
+                    tlds.append(line)
+        return tlds
+
     def __checktype(self, value):
         """Checks if the given value is a known datatype
 
@@ -116,6 +133,8 @@ class Extractor:
         :return: Data type of value, if known, else empty string
         :rtype: str
         """
+        if self.ignore and value in self.ignore:
+            return ''
 
         if isinstance(value, (str, unicode)):
             for r in self.regex:
