@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 from builtins import str as unicode
 
-import io
 import re
 
 
@@ -69,10 +68,9 @@ class Extractor:
         })
 
         # domain
-        tldpattern = '('
         regex.append({
             'type': 'domain',
-            'regex': re.compile(r'^(?!http\:\/\/|https\:\/\/)^[\w\-]+\.[a-zA-Z]+$'.format(tldpattern))
+            'regex': re.compile(r'^(?!http\:\/\/|https\:\/\/)^[\w\-]+\.[a-zA-Z]+$')
         })
 
         # hash
@@ -114,16 +112,6 @@ class Extractor:
         })
 
         return regex
-
-    @staticmethod
-    def __get_tlds():
-        """Get a list of tlds from the contributed mozille tld list"""
-        tlds = []
-        with io.open('contrib/tlds.txt') as tldfile:
-            for line in tldfile:
-                if line != '' and not line.beginswith('//'):
-                    tlds.append(line)
-        return tlds
 
     def __checktype(self, value):
         """Checks if the given value is a known datatype
