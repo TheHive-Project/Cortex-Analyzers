@@ -108,7 +108,7 @@ class Extractor:
         # fqdn
         regex.append({
             'type': 'fqdn',
-            'regex': re.compile(r'^(?!http\:\/\/|https\:\/\/)^[\w\-\.]+\.[\w\-]+\.\w+$')
+            'regex': re.compile(r'^(?!http\:\/\/|https\:\/\/)^[\w\-\.]+\.[\w\-]+\.[a-zA-Z]+$')
         })
 
         return regex
