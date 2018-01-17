@@ -10,6 +10,19 @@ page for details on how to write and submit one.
 
 To configure analyzers, please read the [Cortex Analyzer Requirements Guide](https://github.com/CERT-BDF/CortexDocs/blob/master/analyzer_requirements.md).
 
+# Cortex-Analyzers and Docker
+[![Status](https://api.travis-ci.org/3c7/Cortex-Analyzers.svg?branch=features%2Fdockerized)](https://github.com/3c7/Cortex-Analyzers/tree/features/dockerized)
+
+This is in an early testing stage. Do not use the "dockerized" analyzers in production environments. To build the docker images, the script `./build_docker_images.sh` can be used which creates two base images (Python 2 and Python 3) based on alpine linux and iterates over the Dockerfiles available in analyzers-docker. To use the analyzers in Cortex, the path has to be changed from `analyzers` to `analyzers-docker`. Every analyzer runs in the respective docker container in interactive mode. Analyzer can be tested in the following way:
+```
+#               IMAGE NAME                      python(3)     python module
+$ docker run -i cortex-analyzers-abuse_finder   python        abuse_finder.py <<< '{
+"dataType": "domain",
+"data": "google.de"
+}'
+{<output here>}
+```
+
 # License
 **Unless specified otherwise**, analyzers are released under the [AGPL](https://github.com/CERT-BDF/Cortex-analyzers/blob/master/LICENSE) (Affero General Public License).
 
