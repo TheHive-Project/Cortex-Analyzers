@@ -1,0 +1,16 @@
+{
+    "name": "EmergingThreats_IPInfo",
+    "version": "1.0",
+    "author": "Arcuri Davide, Garavaglia Andrea [LDO-CERT]",
+    "url": "https://github.com/dadokkio/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseConfig": "EmergingThreats",
+    "config": {
+        "check_tlp": true,
+        "max_tlp" : 2,
+        "service": "ip-info"
+    },
+    "description": "Retrieve ET reputation, related malware, and IDS requests for a given IP address.",
+    "dataTypeList": ["ip"],
+    "command": "docker run -i cortex-analyzers-domaintools python3 emergingthreats_analyzer.py"
+}

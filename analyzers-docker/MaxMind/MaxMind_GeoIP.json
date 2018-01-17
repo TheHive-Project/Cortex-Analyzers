@@ -1,0 +1,16 @@
+{
+    "name": "MaxMind_GeoIP",
+    "version": "3.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseconfig":"MaxMind_GeoIP",
+    "config": {
+        "check_tlp": false,
+        "max_tlp": 3,
+        "service": ""
+    },
+    "description": "Use MaxMind to geolocate an IP address.",
+    "dataTypeList": ["ip"],
+    "command": "docker run -i cortex-analyzers-maxmind python3 geo.py"
+}

@@ -1,0 +1,14 @@
+{
+    "name": "Nessus",
+    "version": "2.0",
+    "author": "Guillaume Rousse",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseConfig": "Nessus",
+    "config": {
+        "check_tlp": false
+    },
+    "description": "Use Nessus Professional to scan hosts.",
+    "dataTypeList": ["ip", "fqdn"],
+    "command": "docker run -i cortex-analyzers-nessus python3 nessus.py"
+}

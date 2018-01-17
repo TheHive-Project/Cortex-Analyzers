@@ -1,0 +1,16 @@
+{
+    "name": "PassiveTotal_Ssl_Certificate_History",
+    "version": "2.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseConfig": "PassiveTotal",
+    "config": {
+        "check_tlp": true,
+        "max_tlp":1,
+        "service": "ssl_certificate_history"
+    },
+    "description": "PassiveTotal SSL Certificate History Lookup.",
+    "dataTypeList": ["hash", "ip"],
+    "command": "docker run -i cortex-analyzers-passivetotal python3 passivetotal_analyzer.py"
+}

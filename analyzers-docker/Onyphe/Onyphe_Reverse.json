@@ -1,0 +1,16 @@
+{
+  "name": "Onyphe_Reverse",
+  "version": "1.0",
+  "author": "Pierre Baudry, Adrien Barchapt",
+  "url": "https://github.com/cybernardo/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Retrieve reverse DNS lookup information we have for the given IPv{4,6} address with history of changes.",
+  "dataTypeList": ["ip"],
+  "baseConfig": "Onyphe",
+  "config": {
+    "check_tlp": true,
+    "max_tlp": 1,
+    "service": "reverse"
+  },
+  "command": "docker run -i cortex-analyzers-onyphe python3 onyphe_analyzer.py"
+}

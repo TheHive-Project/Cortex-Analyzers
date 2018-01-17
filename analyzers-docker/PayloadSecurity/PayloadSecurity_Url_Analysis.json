@@ -1,0 +1,16 @@
+{
+    "name": "PayloadSecurity_Url_Analysis",
+    "version": "1.0",
+    "author": "Emmanuel Torquato",
+    "url": "https://github.com/notset/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseConfig": "PayloadSecurity",
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 3,
+        "service": "url_analysis"
+    },
+    "description": "PayloadSecurity Sandbox Url Analysis",
+    "dataTypeList": ["url"],
+    "command": "docker run -i cortex-analyzers-payloadsecurity python3 payloadsecurity_analyzer.py"
+}

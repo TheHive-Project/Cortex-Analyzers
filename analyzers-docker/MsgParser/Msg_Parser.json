@@ -1,0 +1,18 @@
+{
+    "name": "Msg_Parser",
+    "version": "2.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseconfig":"Msg_Parser",
+    "config": {
+        "check_tlp": false,
+        "max_tlp": 3,
+        "service": ""
+    },
+    "description": "Parse Outlook MSG files and extract the main artifacts.",
+    "dataTypeList": [
+        "file"
+    ],
+    "command": "docker run -i cortex-analyzers-msgparser python parse.py"
+}

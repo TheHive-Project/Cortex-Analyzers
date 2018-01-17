@@ -1,0 +1,16 @@
+{
+    "name": "PhishTank_CheckURL",
+    "version": "2.1",
+    "author": "Eric Capuano",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Use PhishTank to check if a URL is a verified phishing site.",
+    "dataTypeList": ["url"],
+    "baseConfig": "PhishTank",
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 1,
+        "service": "query"
+    },
+    "command": "docker run -i cortex-analyzers-phishtank python3 phishtank_checkurl.py"
+}

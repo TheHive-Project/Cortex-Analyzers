@@ -1,0 +1,17 @@
+{
+    "name": "DNSDB_DomainName",
+    "version": "2.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseConfig": "DNSDB",
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 1,
+        "service": "domain_name"
+
+    },
+    "description": "Use DNSDB to fetch historical records for a domain.",
+    "dataTypeList": ["domain"],
+    "command": "docker run -i cortex-analyzers-dnsdb python dnsdb.py"
+}

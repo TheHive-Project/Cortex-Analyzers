@@ -1,0 +1,12 @@
+{
+    "name": "Virusshare",
+    "author": "Nils Kuhnert, CERT-Bund",
+    "license": "AGPL-V3",
+    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+    "version": "2.0",
+    "baseConfig": "Virusshare",
+    "config": {},
+    "description": "Search for MD5 hashes in Virusshare.com hash list",
+    "dataTypeList": ["hash", "file"],
+    "command": "docker run -i cortex-analyzers-virusshare python3 virusshare.py"
+}

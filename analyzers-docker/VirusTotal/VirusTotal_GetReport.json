@@ -1,0 +1,16 @@
+{
+    "name": "VirusTotal_GetReport",
+    "version": "3.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Get the latest VirusTotal report for a file, hash, domain or an IP address.",
+    "dataTypeList": ["file", "hash", "domain", "ip"],
+    "baseConfig": "VirusTotal",
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 3,
+        "service": "get"
+    },
+    "command": "docker run -i cortex-analyzers-virustotal python3 virustotal.py"
+}

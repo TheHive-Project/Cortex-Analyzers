@@ -1,0 +1,15 @@
+{
+    "name": "TorProject",
+    "author": "Marc-André DOLL, STARC by EXAPROBE",
+    "license": "AGPL-V3",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "version": "1.0",
+    "baseConfig": "TorProject",
+    "config": {
+        "check_tlp": false,
+        "max_tlp": 3
+    },
+    "description": "Query https://check.torproject.org/exit-addresses for TOR exit nodes IP addresses.",
+    "dataTypeList": ["ip"],
+    "command": "docker run -i cortex-analyzers-torproject python3 tor_project_analyzer.py"
+}

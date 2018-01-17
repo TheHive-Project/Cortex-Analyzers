@@ -1,0 +1,16 @@
+{
+    "name": "HippoMore",
+    "version": "2.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Get the Hippocampe detailed report for an IP address, a domain or a URL.",
+    "dataTypeList": ["ip", "domain", "fqdn", "url"],
+    "baseConfig": "Hippocampe",
+    "config": {
+        "check_tlp": false,
+        "max_tlp":3,
+        "service": "more"
+    },
+    "command": "docker run -i cortex-analyzers-hippocampe python3 hippo.py"
+}

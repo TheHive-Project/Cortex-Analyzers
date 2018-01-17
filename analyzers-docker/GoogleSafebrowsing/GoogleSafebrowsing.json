@@ -1,0 +1,15 @@
+{
+    "name": "GoogleSafebrowsing",
+    "author": "Nils Kuhnert, CERT-Bund",
+    "license": "AGPL-V3",
+    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+    "version": "2.0",
+    "baseConfig": "GoogleSafebrowsing",
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 1
+    },
+    "description": "Use Google Safebrowing to check URLs and domain names.",
+    "dataTypeList": ["url", "domain"],
+    "command": "docker run -i cortex-analyzers-googlesafebrowsing python3 safebrowsing_analyzer.py"
+}

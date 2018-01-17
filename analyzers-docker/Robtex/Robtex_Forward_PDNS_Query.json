@@ -1,0 +1,15 @@
+{
+    "name": "Robtex_Forward_PDNS_Query",
+    "version": "1.0",
+    "author": "Nils Kuhnert",
+    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Check domains/fqdns using the Robtex passive dns API",
+    "dataTypeList": ["domain", "fqdn"],
+    "baseConfig": "Robtex",
+    "config": {
+        "check_tlp": false,
+        "service": "fpdnsquery"
+    },
+    "command": "docker run -i cortex-analyzers-robtex python3 robtex.py"
+}

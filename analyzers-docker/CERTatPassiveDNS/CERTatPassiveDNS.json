@@ -1,0 +1,12 @@
+{
+    "name": "CERTatPassiveDNS",
+    "author": "Nils Kuhnert, CERT-Bund",
+    "license": "AGPL-V3",
+    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+    "version": "2.0",
+    "baseConfig": "CERTatPassiveDNS",
+    "config": {},
+    "description": "Checks CERT.at Passive DNS for a given domain.",
+    "dataTypeList": ["domain", "fqdn"],
+    "command": "docker run -i cortex-analyzers-certatpassivedns python3 certat_passivedns.py"
+}

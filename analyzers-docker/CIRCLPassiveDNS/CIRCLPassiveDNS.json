@@ -1,0 +1,12 @@
+{
+    "name": "CIRCLPassiveDNS",
+    "author": "Nils Kuhnert, CERT-Bund",
+    "license": "AGPL-V3",
+    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+    "version": "2.0",
+    "baseConfig": "CIRCLPassiveDNS",
+    "config": {},
+    "description": "Check CIRCL's Passive DNS for a given domain or URL.",
+    "dataTypeList": ["domain", "url"],
+    "command": "docker run -i cortex-analyzers-circlpassivedns python3 circl_passivedns.py"
+}

@@ -1,0 +1,16 @@
+{
+  "name": "Onyphe_Geolocate",
+  "version": "1.0",
+  "author": "Pierre Baudry, Adrien Barchapt",
+  "url": "https://github.com/cybernardo/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Retrieve geolocation information for the given IPv{4,6} address.",
+  "dataTypeList": ["ip"],
+  "baseConfig": "Onyphe",
+  "config": {
+    "check_tlp": true,
+    "max_tlp": 1,
+    "service": "geolocate"
+  },
+  "command": "docker run -i cortex-analyzers-onyphe python3 onyphe_analyzer.py"
+}
