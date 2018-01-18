@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-
+#!/usr/bin/env python3
 import os
 import io
 import sys
@@ -21,7 +20,7 @@ class MalpediaAnalyzer(Analyzer):
         Analyzer.__init__(self)
 
         self.baseurl = "https://malpedia.caad.fkie.fraunhofer.de/api/get"
-        self.rulepaths = str(self.get_param('config.rules', None, 'No rulepath provided.'))
+        self.rulepaths = self.get_param('config.path', None, 'No rulepath provided.')
         self.user = self.get_param('config.username', None, 'No username provided.')
         self.pwd = self.get_param('config.password', None, 'No password provided.')
         self.update_hours = int(self.get_param('config.update_hours', 10))
@@ -48,14 +47,13 @@ class MalpediaAnalyzer(Analyzer):
                     rules_json = json.loads(req.text)
                     for color, color_data in rules_json.items():
                         for rule_name, rule_text in color_data.items():
-                            with io.open(os.path.join(self.rulepaths, rule_name), 'w') as f:
+                            with io.open(os.path.join(self.rulepaths, rule_name), 'w', encoding='utf-8') as f:
                                 f.write(rule_text)
                 else:
                     self.error('Could not download new rules due tue HTTP {}: {}'.format(req.status_code, req.text))
-            except Exception:
-                e = sys.exc_info()[1]
+            except Exception as e:
                 with io.open('%s' % os.path.join(self.rulepaths, "error.txt"), 'w') as f:
-                    f.write(e.args[0])
+                    f.write('Error: {}\n'.format(e))
 
     def check(self, file):
         """

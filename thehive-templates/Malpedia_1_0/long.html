@@ -7,13 +7,28 @@
             <h4>{{m.common_name}} <span style="font-size: small">[{{m.family}}]</span></h4>
             <dl class="dl-horizontal">
                 <dt>Description</dt>
-                <dd>{{m.description}}</dd>
+                <dd>{{m.description || "No description given."}}</dd>
                 <dt>Attributions</dt>
-                <dd><p ng-repeat="x in m.attribution">{{x}}</dd>
+		<dd>
+			<span ng-if="m.attribution.length == 0">No attributions given.</span>
+			<ul ng-if="m.attribution.length > 0">
+				<li ng-repeat="x in m.attribution">{{x}}</li>
+			</ul>
+		</dd>
                 <dt>Alternative Names</dt>
-                <dd><p ng-repeat="x in m.alt_names">{{x}}</dd>
+                <dd>
+			<span ng-if="m.alt_names.length == 0">No alternative names given.</span>
+			<ul ng-if="m.alt_names.length > 0">
+				<li ng-repeat="x in m.alt_names">{{x}}</li>
+			</ul>
+		</dd>
                 <dt>Urls</dt>
-                <dd><p ng-repeat="x in m.urls"><a href="{{x}}" target="_blank">{{x}}</a></dd>
+                <dd>
+			<span ng-if="m.urls.length == 0">No Urls given.</span>
+			<ul ng-if="m.urls.length > 0">
+				<li ng-repeat="x in m.urls"><a href="{{x}}" target="_blank">{{x}}</a></li>
+			</ul>
+		</dd>
             </dl>
         </div>
     </div>
