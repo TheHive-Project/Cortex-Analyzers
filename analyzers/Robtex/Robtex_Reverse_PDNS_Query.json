@@ -1,40 +1,32 @@
 {
-    "name": "Robtex_Reverse_PDNS_Query",
-    "version": "1.0",
-    "author": "Nils Kuhnert",
-    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "Check IPs using the Robtex reverse passive dns API",
-    "dataTypeList": ["ip"],
-    "baseConfig": "Robtex",
-    "command": "Robtex/robtex.py",
-    "config": {
-        "configurationItems": [
-            {
-                "name": "service",
-                "description": "Service Name",
-                "type": "string",
-                "multi": false,
-                "required": true,
-                "defaultValue":  "rpdnsquery"
-            },
-            {
-                "name": "check_tlp",
-                "description": "Define if the analyzer should check TLP of data before running",
-                "type": "bool",
-                "multi": false,
-                "required": true,
-                "defaultValue": false
-            },
-            {
-                "name": "max_tlp",
-                "description": "Define the maximum TLP level autorized",
-                "type": "number",
-                "multi": false,
-                "required": true,
-                "defaultValue": 3
-            }
-        ]
+  "name": "Robtex_Reverse_PDNS_Query",
+  "version": "1.0",
+  "author": "Nils Kuhnert",
+  "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Check IPs using the Robtex reverse passive dns API",
+  "dataTypeList": ["ip"],
+  "baseConfig": "Robtex",
+  "command": "Robtex/robtex.py",
+  "config": {
+    "service": "rpdnsquery"
+  },
+  "configurationItems": [
+    {
+      "name": "check_tlp",
+      "description": "Define if the analyzer should check TLP of data before running",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": false
     },
-
+    {
+      "name": "max_tlp",
+      "description": "Define the maximum TLP level autorized",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 3
+    }
+  ]
 }

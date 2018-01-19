@@ -9,47 +9,40 @@
   "command": "VirusTotal/virustotal.py",
   "baseConfig": "VirusTotal",
   "config": {
-    "configurationItems": [
-      {
-        "name": "service",
-        "description": "Service Name",
-        "type": "string",
-        "multi": false,
-        "required": false,
-        "defaultValue":  "get"
-      },
-      {
-        "name": "check_tlp",
-        "description": "Define if the analyzer should check TLP of data before running",
-        "type": "bool",
-        "multi": false,
-        "required": true,
-        "defaultValue": false
-      },
-      {
-        "name": "max_tlp",
-        "description": "Define the maximum TLP level autorized",
-        "type": "number",
-        "multi": false,
-        "required": true,
-        "defaultValue": 3
-      },
-      {
-        "name": "key",
-        "description": "API key for Virustotal",
-        "type": "string",
-        "multi": false,
-        "required": true,
-        "defaultValue": "<API key>"
-      },
-      {
-        "name": "polling_interval",
-        "description": "Define time interval between two requests attempts for the report",
-        "type": "number",
-        "multi": false,
-        "required": false,
-        "defaultValue": 60
-      }
-    ]
-  }
+    "service": "get"
+  },
+  "configurationItems": [
+    {
+      "name": "check_tlp",
+      "description": "Define if the analyzer should check TLP of data before running",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": false
+    },
+    {
+      "name": "max_tlp",
+      "description": "Define the maximum TLP level autorized",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 3
+    },
+    {
+      "name": "key",
+      "description": "API key for Virustotal",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "<API key>"
+    },
+    {
+      "name": "polling_interval",
+      "description": "Define time interval between two requests attempts for the report",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 60
+    }
+  ]
 }
