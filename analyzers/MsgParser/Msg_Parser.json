@@ -4,15 +4,31 @@
     "author": "CERT-BDF",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "baseconfig":"Msg_Parser",
-    "config": {
-        "check_tlp": false,
-        "max_tlp": 3,
-        "service": ""
-    },
     "description": "Parse Outlook MSG files and extract the main artifacts.",
     "dataTypeList": [
         "file"
     ],
-    "command": "MsgParser/parse.py"
+    "command": "MsgParser/parse.py",
+    "baseconfig":"Msg_Parser",
+    "config": {
+        "service": ""
+    },
+    "configurationItems": [
+    {
+      "name": "check_tlp",
+      "description": "Define if the analyzer should check TLP of data before running",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "max_tlp",
+      "description": "Define the maximum TLP level autorized",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 3
+    }
+  ]
 }

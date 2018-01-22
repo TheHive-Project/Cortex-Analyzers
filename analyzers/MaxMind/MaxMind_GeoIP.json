@@ -4,13 +4,29 @@
     "author": "CERT-BDF",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "baseconfig":"MaxMind_GeoIP",
-    "config": {
-        "check_tlp": false,
-        "max_tlp": 3,
-        "service": ""
-    },
     "description": "Use MaxMind to geolocate an IP address.",
     "dataTypeList": ["ip"],
-    "command": "MaxMind/geo.py"
+    "command": "MaxMind/geo.py",
+    "baseconfig":"MaxMind_GeoIP",
+    "config": {
+        "service": ""
+    },
+    "configurationItems": [
+    {
+      "name": "check_tlp",
+      "description": "Define if the analyzer should check TLP of data before running",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "max_tlp",
+      "description": "Define the maximum TLP level autorized",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 3
+    }
+  ]
 }

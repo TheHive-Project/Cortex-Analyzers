@@ -4,12 +4,29 @@
     "license": "AGPL-V3",
     "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
     "version": "2.0",
-    "baseConfig": "GoogleSafebrowsing",
-    "config": {
-        "check_tlp": true,
-        "max_tlp": 1
-    },
     "description": "Use Google Safebrowing to check URLs and domain names.",
     "dataTypeList": ["url", "domain"],
-    "command": "GoogleSafebrowsing/safebrowsing_analyzer.py"
+    "command": "GoogleSafebrowsing/safebrowsing_analyzer.py",
+    "baseConfig": "GoogleSafebrowsing",
+    "config": {
+    },
+    "configurationItems": [
+    {
+      "name": "check_tlp",
+      "description": "Define if the analyzer should check TLP of data before running",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "max_tlp",
+      "description": "Define the maximum TLP level autorized",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 1
+    }
+  ]
+
 }
