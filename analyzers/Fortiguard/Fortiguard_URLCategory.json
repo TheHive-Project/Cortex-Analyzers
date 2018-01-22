@@ -6,12 +6,28 @@
     "license": "AGPL-V3",
     "dataTypeList": ["domain", "url"],
     "description": "Check the Fortiguard category of a URL or a domain.",
+    "command": "Fortiguard/urlcategory.py",
     "baseConfig": "Fortiguard",
     "config": {
-        "check_tlp": true,
-        "max_tlp": 1,
         "service": "query"
-
     },
-    "command": "Fortiguard/urlcategory.py"
+    "configurationItems": [
+    {
+      "name": "check_tlp",
+      "description": "Define if the analyzer should check TLP of data before running",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "max_tlp",
+      "description": "Define the maximum TLP level autorized",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 1
+    }
+  ]
+
 }

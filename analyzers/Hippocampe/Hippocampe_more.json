@@ -6,11 +6,27 @@
     "license": "AGPL-V3",
     "description": "Get the Hippocampe detailed report for an IP address, a domain or a URL.",
     "dataTypeList": ["ip", "domain", "fqdn", "url"],
+    "command": "Hippocampe/hippo.py",
     "baseConfig": "Hippocampe",
     "config": {
-        "check_tlp": false,
-        "max_tlp":3,
         "service": "more"
     },
-    "command": "Hippocampe/hippo.py"
+    "configurationItems": [
+    {
+      "name": "check_tlp",
+      "description": "Define if the analyzer should check TLP of data before running",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "max_tlp",
+      "description": "Define the maximum TLP level autorized",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 3
+    }
+  ]
 }
