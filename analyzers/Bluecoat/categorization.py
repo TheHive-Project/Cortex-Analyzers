@@ -20,7 +20,7 @@ class BluecoatAnalyzer(Analyzer):
         Extract desired fields using RegEx
         """
         regex_category_id = r'catdesc\.jsp\?catnum=(\d+)'
-        regex_category = r'>([\w\s\/]+)<\/a>'
+        regex_category = r'(?<=>)[A-Za-z\/\- ]+'
         regex_date = r'Last Time Rated\/Reviewed:(.*)<img'
 
         if categorization != "":
@@ -98,8 +98,8 @@ class BluecoatAnalyzer(Analyzer):
                 except Exception:
                     try:
                         return self.error('{} : {}'.format(json_answer['errorType'], json_answer['error']))
-                    except Exception as b:
-                        return self.error(b)
+                    except Exception:
+                        return self.error('Undefinded Bluecoat error.')
         else:
             return self.error('Invalid data type !')
 
