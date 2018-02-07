@@ -9,7 +9,7 @@
     "command": "PhishingInitiative/phishinginitiative_lookup.py",
     "baseConfig": "PhishingInitiative",
     "config": {
-        "service": "query",
+        "service": "query"
     },
     "configurationItems": [
     {
