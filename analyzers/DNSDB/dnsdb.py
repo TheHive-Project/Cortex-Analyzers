@@ -28,7 +28,7 @@ class DnsDbAnalyzer(Analyzer):
             return client.query_rrset(data)
         elif self.service == 'ip_history' and self.data_type == 'ip':
             return client.query_rdata_ip(data)
-        elif self.service == 'name_history' and self.data_type == 'fqdn':
+        elif self.service == 'name_history' and self.data_type in ['domain','fqdn']:
             return client.query_rdata_name(data)
         else:
             self.error('Unknown DNSDB service or invalid data type')
