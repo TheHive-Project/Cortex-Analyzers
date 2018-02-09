@@ -27,6 +27,14 @@
       "multi": false,
       "required": true,
       "defaultValue": 1
+    },
+    {
+      "name": "key",
+      "description": "Define the API Key",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "API key"
     }
   ]
 }

@@ -25,6 +25,14 @@
         "multi": false,
         "required": true,
         "defaultValue": 3
+      },
+      {
+        "name": "path",
+        "description": "Define the path to the stored data",
+        "type": "string",
+        "multi": false,
+        "required": false,
+        "defaultValue": "path"
       }
     ]
 }

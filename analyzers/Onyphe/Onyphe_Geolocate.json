@@ -27,6 +27,14 @@
     "multi": false,
     "required": true,
     "defaultValue": 1
+  },
+  {
+    "name": "key",
+    "description": "Define the API key to use to connect the service",
+    "type": "string",
+    "multi": false,
+    "required": true,
+    "defaultValue": "API key"
   }
 ]
 }

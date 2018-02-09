@@ -25,6 +25,14 @@
         "multi": false,
         "required": true,
         "defaultValue": 3
+    },
+    {
+      "name": "rules",
+      "description": "Define the path rules folder",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "path"
     }
     ]
 }

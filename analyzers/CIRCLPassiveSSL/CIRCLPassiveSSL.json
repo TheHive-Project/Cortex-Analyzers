@@ -25,6 +25,22 @@
       "multi": false,
       "required": true,
       "defaultValue": 3
+    },
+    {
+      "name": "user",
+      "description": "Username",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "username"
+    },
+    {
+      "name": "password",
+      "description": "Password",
+      "type": "sring",
+      "multi": false,
+      "required": true,
+      "defaultValue": "password"
     }
   ]
 }

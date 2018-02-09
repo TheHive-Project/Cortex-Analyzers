@@ -27,6 +27,22 @@
       "multi": false,
       "required": true,
       "defaultValue": 1
+    },
+    {
+      "name": "username",
+      "description": "Define the username of the account used to connect the service",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "username"
+    },
+    {
+      "name": "key",
+      "description": "Define the API key to use to connect the service",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "API key"
     }
   ]
 }

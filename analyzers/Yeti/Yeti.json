@@ -26,6 +26,14 @@
         "multi": false,
         "required": true,
         "defaultValue": 3
+    },
+    {
+      "name": "url",
+      "description": "Define the URL of the service",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "url"
     }
     ]
 }
