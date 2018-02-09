@@ -24,7 +24,7 @@ class DnsDbAnalyzer(Analyzer):
     def execute_dnsdb_service(self, client):
         data = self.getData()
 
-        if self.service == 'domain_name' and self.data_type == 'domain':
+        if self.service == 'domain_name' and self.data_type in ['domain', 'fqdn']:
             return client.query_rrset(data)
         elif self.service == 'ip_history' and self.data_type == 'ip':
             return client.query_rdata_ip(data)
