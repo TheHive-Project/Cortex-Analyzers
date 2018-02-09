@@ -27,6 +27,14 @@
       "multi": false,
       "required": true,
       "defaultValue": 3
+    },
+    {
+      "name": "blocklistpath",
+      "description": "Path to blocklists",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "path"
     }
   ]
 

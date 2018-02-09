@@ -26,6 +26,22 @@
       "multi": false,
       "required": true,
       "defaultValue": 1
+    },
+    {
+      "name": "client_id",
+      "description": "Client identifier",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "Cortex"
+    },
+    {
+      "name": "key",
+      "description": "API key",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "API Key"
     }
   ]
 

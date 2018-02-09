@@ -26,6 +26,22 @@
         "multi": false,
         "required": true,
         "defaultValue": 3
+      },
+      {
+        "name": "cache.duration",
+        "description": "Define the cache duration",
+        "type": "number",
+        "multi": false,
+        "required": true,
+        "defaultValue": 3600
+      },
+      {
+        "name": "cache.root",
+        "description": "Define the path to the stored data",
+        "type": "string",
+        "multi": false,
+        "required": false,
+        "defaultValue": "/tmp/cortex/tor_project"
       }
     ]
 }

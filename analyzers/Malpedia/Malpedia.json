@@ -25,6 +25,30 @@
       "multi": false,
       "required": true,
       "defaultValue": 3
+    },
+    {
+      "name": "path",
+      "description": "Rulepath",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": false
+    },
+    {
+      "name": "username",
+      "description": "Username",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "username"
+    },
+    {
+      "name": "password",
+      "description": "Password",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "password"
     }
   ]
 }

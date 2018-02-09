@@ -26,6 +26,22 @@
       "multi": false,
       "required": true,
       "defaultValue": 2
+    },
+    {
+      "name": "secret",
+      "description": "HybridAnalysis secret",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": false
+    },
+    {
+      "name": "key",
+      "description": "API key",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "API Key"
     }
   ]
 }

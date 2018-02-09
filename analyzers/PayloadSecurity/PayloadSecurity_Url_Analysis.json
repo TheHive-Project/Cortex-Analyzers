@@ -27,6 +27,54 @@
       "multi": false,
       "required": true,
       "defaultValue": 3
+    },
+    {
+      "name": "url",
+      "description": "Define the url of the service",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": false
+    },
+    {
+      "name": "key",
+      "description": "Define the API key used to connect the service",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "API key"
+    },
+    {
+      "name": "secret",
+      "description": "Define the secret used to connect the service",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "Secret"
+    },
+    {
+      "name": "environmentId",
+      "description": "Define the environment Id used by the service",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": "100"
+    },
+    {
+      "name": "timeout",
+      "description": "Define the timeout of requests to the service",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 15
+    },
+    {
+      "name": "verifyssl",
+      "description": "Verify SSL certificate",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
     }
   ]
 }

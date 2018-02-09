@@ -27,6 +27,30 @@
       "multi": false,
       "required": true,
       "defaultValue": 3
+    },
+    {
+      "name": "key",
+      "description": "API key",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "API key"
+    },
+    {
+      "name": "analysistimeout",
+      "description": "Analysis timeout (seconds)",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 240
+    },
+    {
+      "name": "networktimeout",
+      "description": "Network timeout (second)",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 30
     }
   ]
 }
