@@ -4,13 +4,30 @@
     "author": "CERT-BDF",
     "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "baseConfig": "DomainTools",
-    "config": {
-        "check_tlp": true,
-        "max_tlp": 1,
-        "service": "whois"
-    },
     "description": "Use DomainTools to get the ownership record for an IP address with basic registration details.",
     "dataTypeList": ["ip"],
-    "command": "DomainTools/domaintools.py"
+    "command": "DomainTools/domaintools.py",
+    "baseConfig": "DomainTools",
+    "config": {
+        "service": "whois"
+    },
+    "configurationItems": [
+    {
+      "name": "check_tlp",
+      "description": "Define if the analyzer should check TLP of data before running",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "max_tlp",
+      "description": "Define the maximum TLP level autorized",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 1
+    }
+  ]
+
 }

@@ -4,9 +4,43 @@
     "license": "AGPL-V3",
     "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
     "version": "2.0",
-    "baseConfig": "CIRCLPassiveSSL",
-    "config": {},
     "description": "Check CIRCL's Passive SSL for a given IP address or a X509 certificate hash.",
     "dataTypeList": ["ip", "certificate_hash", "hash"],
-    "command": "CIRCLPassiveSSL/circl_passivessl.py"
+    "command": "CIRCLPassiveSSL/circl_passivessl.py",
+    "baseConfig": "CIRCLPassiveSSL",
+    "config": {},
+    "configurationItems": [
+    {
+      "name": "check_tlp",
+      "description": "Define if the analyzer should check TLP of data before running",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "max_tlp",
+      "description": "Define the maximum TLP level autorized",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 3
+    },
+    {
+      "name": "user",
+      "description": "Username",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "username"
+    },
+    {
+      "name": "password",
+      "description": "Password",
+      "type": "sring",
+      "multi": false,
+      "required": true,
+      "defaultValue": "password"
+    }
+  ]
 }

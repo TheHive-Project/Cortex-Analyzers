@@ -1,16 +1,14 @@
 {
-    "name": "PassiveTotal_Enrichment",
-    "version": "2.0",
-    "author": "CERT-BDF",
-    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "name": "Malpedia",
+    "author": "Davide Arcuri, Andrea Garavaglia - LDO-CERT",
     "license": "AGPL-V3",
-    "description": "PassiveTotal Enrichment Lookup.",
-    "dataTypeList": ["domain", "fqdn", "ip"],
-    "command": "PassiveTotal/passivetotal_analyzer.py",
-    "baseConfig": "PassiveTotal",
-    "config": {
-        "service": "enrichment"
-    },
+    "url": "https://github.com/LDO-CERT/cortex-analyzers",
+    "version": "1.0",
+    "description": "Check files against Malpedia YARA rules.",
+    "dataTypeList": ["file"],
+    "command": "Malpedia/malpedia_analyzer.py",
+    "baseConfig": "Malpedia",
+    "config": {},
     "configurationItems": [
     {
       "name": "check_tlp",
@@ -26,23 +24,31 @@
       "type": "number",
       "multi": false,
       "required": true,
-      "defaultValue": 1
+      "defaultValue": 3
+    },
+    {
+      "name": "path",
+      "description": "Rulepath",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": false
     },
     {
       "name": "username",
-      "description": "Define the username of the account used to connect the service",
+      "description": "Username",
       "type": "string",
       "multi": false,
       "required": true,
       "defaultValue": "username"
     },
     {
-      "name": "key",
-      "description": "Define the API key to use to connect the service",
+      "name": "password",
+      "description": "Password",
       "type": "string",
       "multi": false,
       "required": true,
-      "defaultValue": "API key"
+      "defaultValue": "password"
     }
   ]
 }

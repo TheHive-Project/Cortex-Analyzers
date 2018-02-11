@@ -4,12 +4,45 @@
     "author": "CERT-BDF",
     "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "baseConfig": "JoeSandbox",
-    "config": {
-        "check_tlp": false,
-        "service": "file_analysis_noinet"
-    },
     "description": "Joe Sandbox file analysis without Internet access.",
     "dataTypeList": ["file"],
-    "command": "JoeSandbox/joesandbox_analyzer.py"
+    "command": "JoeSandbox/joesandbox_analyzer.py",
+    "baseConfig": "JoeSandbox",
+    "config": {
+        "service": "file_analysis_noinet"
+    },
+    "configurationItems": [
+    {
+      "name": "check_tlp",
+      "description": "Define if the analyzer should check TLP of data before running",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "max_tlp",
+      "description": "Define the maximum TLP level autorized",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 3
+    },
+    {
+      "name": "key",
+      "description": "API key",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "API Key"
+    },
+    {
+      "name": "analysistimeout",
+      "description": "Analysis timeout (seconds)",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 240
+    }
+  ]
 }

@@ -4,9 +4,43 @@
     "license": "AGPL-V3",
     "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
     "version": "2.0",
-    "baseConfig": "CIRCLPassiveDNS",
-    "config": {},
     "description": "Check CIRCL's Passive DNS for a given domain or URL.",
     "dataTypeList": ["domain", "url"],
-    "command": "CIRCLPassiveDNS/circl_passivedns.py"
+    "command": "CIRCLPassiveDNS/circl_passivedns.py",
+    "baseConfig": "CIRCLPassiveDNS",
+    "config": {},
+    "configurationItems": [
+    {
+      "name": "check_tlp",
+      "description": "Define if the analyzer should check TLP of data before running",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "max_tlp",
+      "description": "Define the maximum TLP level autorized",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 3
+    },
+    {
+      "name": "user",
+      "description": "Username",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "username"
+    },
+    {
+      "name": "password",
+      "description": "Password",
+      "type": "sring",
+      "multi": false,
+      "required": true,
+      "defaultValue": "password"
+    }
+  ]
 }

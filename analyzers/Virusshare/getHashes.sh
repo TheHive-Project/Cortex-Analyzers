@@ -3,7 +3,7 @@
 
 
 display_usage() { 
-    echo "getHashes v0.1" 
+    echo "getHashes v0.2"
     echo "  Fetch all Virusshare.com hashes" 
     echo -e "\n  Usage: $0 <path> \n"
 } 
@@ -21,7 +21,7 @@ if [ ! -d $1 ]; then
 fi
 
 cd $1
-for u in `curl https://virusshare.com/hashes.4n6|grep hashes/|cut -d\" -f2`
+for u in `curl https://virusshare.com/hashes.4n6 | grep -E "hashes\/VirusShare_[0-9]{5}\.md5" | cut -d\" -f2`
 do
     echo $u
     wget https://virusshare.com/$u

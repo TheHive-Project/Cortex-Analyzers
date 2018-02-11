@@ -4,13 +4,38 @@
     "license": "AGPL-V3",
     "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
     "version": "2.0",
-    "baseConfig": "FireHOLBlocklists",
-    "config": {
-        "check_tlp": false,
-        "max_tlp": 3,
-        "service": ""
-    },
     "description": "Check IP addresses against the FireHOL blocklists",
     "dataTypeList": ["ip"],
-    "command": "FireHOLBlocklists/firehol_blocklists.py"
+    "command": "FireHOLBlocklists/firehol_blocklists.py",
+    "baseConfig": "FireHOLBlocklists",
+    "config": {
+        "service": ""
+    },
+    "configurationItems": [
+    {
+      "name": "check_tlp",
+      "description": "Define if the analyzer should check TLP of data before running",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "max_tlp",
+      "description": "Define the maximum TLP level autorized",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 3
+    },
+    {
+      "name": "blocklistpath",
+      "description": "Path to blocklists",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "path"
+    }
+  ]
+
 }

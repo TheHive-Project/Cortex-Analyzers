@@ -1,0 +1,56 @@
+<div class="panel panel-danger" ng-if="success && content.results.length > 0">
+    <div class="panel-heading">
+        Malpedia Report
+    </div>
+    <div class="panel-body">
+        <div ng-repeat="m in content.results">
+            <h4>{{m.common_name}} <span style="font-size: small">[{{m.family}}]</span></h4>
+            <dl class="dl-horizontal">
+                <dt>Description</dt>
+                <dd>{{m.description || "No description given."}}</dd>
+                <dt>Attributions</dt>
+		<dd>
+			<span ng-if="m.attribution.length == 0">No attributions given.</span>
+			<ul ng-if="m.attribution.length > 0">
+				<li ng-repeat="x in m.attribution">{{x}}</li>
+			</ul>
+		</dd>
+                <dt>Alternative Names</dt>
+                <dd>
+			<span ng-if="m.alt_names.length == 0">No alternative names given.</span>
+			<ul ng-if="m.alt_names.length > 0">
+				<li ng-repeat="x in m.alt_names">{{x}}</li>
+			</ul>
+		</dd>
+                <dt>Urls</dt>
+                <dd>
+			<span ng-if="m.urls.length == 0">No Urls given.</span>
+			<ul ng-if="m.urls.length > 0">
+				<li ng-repeat="x in m.urls"><a href="{{x}}" target="_blank">{{x}}</a></li>
+			</ul>
+		</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<div class="panel panel-success" ng-if="success && content.results.length == 0">
+    <div class="panel-heading">
+        Malpedia Report
+    </div>
+    <div class="panel-body">
+        <span>No matches.</span>
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> Yara: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

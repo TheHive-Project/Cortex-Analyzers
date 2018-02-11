@@ -6,11 +6,35 @@
   "license": "AGPL-V3",
   "description": "Retrieve geolocation information for the given IPv{4,6} address.",
   "dataTypeList": ["ip"],
+  "command": "Onyphe/onyphe_analyzer.py",
   "baseConfig": "Onyphe",
   "config": {
-    "check_tlp": true,
-    "max_tlp": 1,
     "service": "geolocate"
   },
-  "command": "Onyphe/onyphe_analyzer.py"
+  "configurationItems": [
+  {
+    "name": "check_tlp",
+    "description": "Define if the analyzer should check TLP of data before running",
+    "type": "boolean",
+    "multi": false,
+    "required": true,
+    "defaultValue": true
+  },
+  {
+    "name": "max_tlp",
+    "description": "Define the maximum TLP level autorized",
+    "type": "number",
+    "multi": false,
+    "required": true,
+    "defaultValue": 1
+  },
+  {
+    "name": "key",
+    "description": "Define the API key to use to connect the service",
+    "type": "string",
+    "multi": false,
+    "required": true,
+    "defaultValue": "API key"
+  }
+]
 }
