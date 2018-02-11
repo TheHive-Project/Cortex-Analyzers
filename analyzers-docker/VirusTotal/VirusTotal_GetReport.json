@@ -6,11 +6,44 @@
     "license": "AGPL-V3",
     "description": "Get the latest VirusTotal report for a file, hash, domain or an IP address.",
     "dataTypeList": ["file", "hash", "domain", "ip"],
+    "command": "docker run -i cortex-analyzers-virustotal python3 virustotal.py",
     "baseConfig": "VirusTotal",
     "config": {
-        "check_tlp": true,
-        "max_tlp": 3,
-        "service": "get"
+      "service": "get"
     },
-    "command": "docker run -i cortex-analyzers-virustotal python3 virustotal.py"
-}
+    "configurationItems": [
+      {
+        "name": "check_tlp",
+        "description": "Define if the analyzer should check TLP of data before running",
+        "type": "boolean",
+        "multi": false,
+        "required": true,
+        "defaultValue": false
+      },
+      {
+        "name": "max_tlp",
+        "description": "Define the maximum TLP level autorized",
+        "type": "number",
+        "multi": false,
+        "required": true,
+        "defaultValue": 3
+      },
+      {
+        "name": "key",
+        "description": "API key for Virustotal",
+        "type": "string",
+        "multi": false,
+        "required": true,
+        "defaultValue": "<API key>"
+      },
+      {
+        "name": "polling_interval",
+        "description": "Define time interval between two requests attempts for the report",
+        "type": "number",
+        "multi": false,
+        "required": false,
+        "defaultValue": 60
+      }
+    ]
+  }
+  

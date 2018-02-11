@@ -6,11 +6,35 @@
     "license": "AGPL-V3",
     "description": "Use PhishTank to check if a URL is a verified phishing site.",
     "dataTypeList": ["url"],
+    "command": "docker run -i cortex-analyzers-phishtank python3 phishtank_checkurl.py",
     "baseConfig": "PhishTank",
     "config": {
-        "check_tlp": true,
-        "max_tlp": 1,
         "service": "query"
     },
-    "command": "docker run -i cortex-analyzers-phishtank python3 phishtank_checkurl.py"
+    "configurationItems": [
+    {
+      "name": "check_tlp",
+      "description": "Define if the analyzer should check TLP of data before running",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "max_tlp",
+      "description": "Define the maximum TLP level autorized",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 1
+    },
+    {
+      "name": "key",
+      "description": "Define the API Key",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "API key"
+    }
+  ]
 }

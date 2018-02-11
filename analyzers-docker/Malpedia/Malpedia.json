@@ -1,13 +1,13 @@
 {
-    "name": "CIRCLPassiveDNS",
-    "author": "Nils Kuhnert, CERT-Bund",
+    "name": "Malpedia",
+    "author": "Davide Arcuri, Andrea Garavaglia - LDO-CERT",
     "license": "AGPL-V3",
-    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-    "version": "2.0",
-    "description": "Check CIRCL's Passive DNS for a given domain or URL.",
-    "dataTypeList": ["domain", "url"],
-    "command": "docker run -i cortex-analyzers-circlpassivedns python3 circl_passivedns.py",
-    "baseConfig": "CIRCLPassiveDNS",
+    "url": "https://github.com/LDO-CERT/cortex-analyzers",
+    "version": "1.0",
+    "description": "Check files against Malpedia YARA rules.",
+    "dataTypeList": ["file"],
+    "command": "docker run -i cortex-analyzers-malpedia python3 malpedia_analyzer.py",
+    "baseConfig": "Malpedia",
     "config": {},
     "configurationItems": [
     {
@@ -27,7 +27,15 @@
       "defaultValue": 3
     },
     {
-      "name": "user",
+      "name": "path",
+      "description": "Rulepath",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": false
+    },
+    {
+      "name": "username",
       "description": "Username",
       "type": "string",
       "multi": false,
@@ -37,7 +45,7 @@
     {
       "name": "password",
       "description": "Password",
-      "type": "sring",
+      "type": "string",
       "multi": false,
       "required": true,
       "defaultValue": "password"

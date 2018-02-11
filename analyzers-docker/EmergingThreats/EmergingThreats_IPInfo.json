@@ -4,13 +4,38 @@
     "author": "Arcuri Davide, Garavaglia Andrea [LDO-CERT]",
     "url": "https://github.com/dadokkio/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "baseConfig": "EmergingThreats",
-    "config": {
-        "check_tlp": true,
-        "max_tlp" : 2,
-        "service": "ip-info"
-    },
     "description": "Retrieve ET reputation, related malware, and IDS requests for a given IP address.",
     "dataTypeList": ["ip"],
-    "command": "docker run -i cortex-analyzers-domaintools python3 emergingthreats_analyzer.py"
+    "command": "docker run -i cortex-analyzers-domaintools python3 emergingthreats_analyzer.py",
+    "baseConfig": "EmergingThreats",
+    "config": {
+        "service": "ip-info"
+    },
+    "configurationItems": [
+    {
+      "name": "check_tlp",
+      "description": "Define if the analyzer should check TLP of data before running",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "max_tlp",
+      "description": "Define the maximum TLP level autorized",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 2
+    },
+    {
+      "name": "key",
+      "description": "API key",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "API Key"
+    }
+  ]
+
 }

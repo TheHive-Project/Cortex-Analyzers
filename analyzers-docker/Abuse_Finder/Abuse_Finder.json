@@ -1,16 +1,30 @@
 {
-    "name": "Abuse_Finder",
-    "version": "2.0",
-    "author": "CERT-BDF",
-    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "baseConfig": "Abuse_Finder",
-    "config": {
-      "check_tlp": false,
-      "max_tlp":3,
-      "service":""
+  "name": "Abuse_Finder",
+  "version": "2.0",
+  "author": "CERT-BDF",
+  "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Find abuse contacts associated with domain names, URLs, IPs and email addresses.",
+  "dataTypeList": ["ip", "domain", "url", "mail"],
+  "command": "docker run -i cortex-analyzers-abuse_finder python abusefinder.py",
+  "baseConfig": "Abuse_Finder",
+  "config": {},
+  "configurationItems": [
+    {
+      "name": "check_tlp",
+      "description": "Define if the analyzer should check TLP of data before running",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": false
     },
-    "description": "Find abuse contacts associated with domain names, URLs, IPs and email addresses.",
-    "dataTypeList": ["ip", "domain", "url", "mail"],
-    "command": "docker run -i cortex-analyzers-abuse_finder python abusefinder.py"
+    {
+      "name": "max_tlp",
+      "description": "Define the maximum TLP level autorized",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 3
+    }
+  ]
 }

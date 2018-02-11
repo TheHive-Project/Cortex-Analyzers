@@ -6,11 +6,35 @@
     "license": "AGPL-V3",
     "description": "Use Phishing Initiative to check if a URL is a verified phishing site.",
     "dataTypeList": ["url"],
+    "command": "docker run -i cortex-analyzers-phishinginitiative python3 phishinginitiative_lookup.py",
     "baseConfig": "PhishingInitiative",
     "config": {
-        "service": "query",
-        "max_tlp": 1,
-	"check_tlp": true
+        "service": "query"
     },
-    "command": "docker run -i cortex-analyzers-phishinginitiative python3 phishinginitiative_lookup.py"
+    "configurationItems": [
+    {
+      "name": "check_tlp",
+      "description": "Define if the analyzer should check TLP of data before running",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "max_tlp",
+      "description": "Define the maximum TLP level autorized",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 1
+    },
+    {
+      "name": "key",
+      "description": "Define the API Key",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "API Key"
+    }
+  ]
 }

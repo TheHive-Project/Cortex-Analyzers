@@ -6,11 +6,35 @@
     "license": "AGPL-V3",
     "description": "Use Web of Trust to check a domain's reputation.",
     "dataTypeList": ["domain", "fqdn"],
+    "command": "docker run -i cortex-analyzers-wot python3 WOT_lookup.py",
     "baseConfig": "WOT",
     "config": {
-        "check_tlp": true,
-        "max_tlp": 1,
         "service": "query"
     },
-    "command": "docker run -i cortex-analyzers-wot python3 WOT_lookup.py"
+    "configurationItems": [
+      {
+        "name": "check_tlp",
+        "description": "Define if the analyzer should check TLP of data before running",
+        "type": "boolean",
+        "multi": false,
+        "required": true,
+        "defaultValue": false
+      },
+      {
+        "name": "max_tlp",
+        "description": "Define the maximum TLP level autorized",
+        "type": "number",
+        "multi": false,
+        "required": true,
+        "defaultValue": 1
+    },
+    {
+      "name": "key",
+      "description": "Define the API key",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "API key"
+    }
+    ]
 }

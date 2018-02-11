@@ -4,12 +4,44 @@
     "license": "AGPL-V3",
     "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
     "version": "1.0",
-    "baseConfig": "TorBlutmagie",
-    "config": {
-        "check_tlp": false,
-        "max_tlp": 3
-    },
     "description": "Query http://torstatus.blutmagie.de/query_export.php/Tor_query_EXPORT.csv for TOR exit nodes IP addresses or names.",
     "dataTypeList": ["ip", "domain", "fqdn"],
-    "command": "docker run -i cortex-analyzers-torblutmagie python3 tor_blutmagie_analyzer.py"
+    "command": "docker run -i cortex-analyzers-torblutmagie python3 tor_blutmagie_analyzer.py",
+    "baseConfig": "TorBlutmagie",
+    "config": {
+    },
+    "configurationItems": [
+      {
+        "name": "check_tlp",
+        "description": "Define if the analyzer should check TLP of data before running",
+        "type": "boolean",
+        "multi": false,
+        "required": true,
+        "defaultValue": false
+      },
+      {
+        "name": "max_tlp",
+        "description": "Define the maximum TLP level autorized",
+        "type": "number",
+        "multi": false,
+        "required": true,
+        "defaultValue": 3
+      },
+      {
+        "name": "cache.duration",
+        "description": "Define the cache duration",
+        "type": "number",
+        "multi": false,
+        "required": true,
+        "defaultValue": 3600
+      },
+      {
+        "name": "cache.root",
+        "description": "Define the path to the stored data",
+        "type": "string",
+        "multi": false,
+        "required": false,
+        "defaultValue": "/tmp/cortex/tor_project"
+      }
+    ]
 }
