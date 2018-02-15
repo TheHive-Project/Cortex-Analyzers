@@ -75,7 +75,7 @@ class BluecoatAnalyzer(Analyzer):
         namespace = 'BlueCoat'
         predicate = 'Category'
         value = '{}'.format(raw['category'])
-        categories_string = value.split()
+        categories_string = value.split(' and ')
 	
         for categories in categories_string:
         	if categories in info_categories:
