@@ -1,0 +1,16 @@
+{
+    "name": "IBMXForce",
+    "version": "1.0",
+    "author": "Davide Arcuri, Andrea Garavaglia, LDO-CERT",
+    "url": "https://github.com/dadokkio/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "IBM X-Force Exchange is a threat intelligence sharing platform enabling research on security threats, aggregation of intelligence, and collaboration with peers.",
+    "dataTypeList": ["domain", "ip", "hash", "url"],
+    "baseConfig": "IBMXForce",
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 1,
+        "service": "query"
+    },
+    "command": "IBMXForce/ibmxforce_lookup.py"
+}
