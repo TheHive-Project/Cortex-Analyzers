@@ -1,5 +1,5 @@
 {
-    "dataType":"email",
+    "dataType":"mail",
     "data": "matt.erasmus@gmail.com",
     "config":{
         "service": "query",
