@@ -19,9 +19,15 @@ class HIBPQueryAnalyzer(Analyzer):
 
         # TODO: Make this better (return the long URL for reports)
         response = dict()
+        matches = []
+        found = False
+        count = 0
 
+        for entry in return_data:
+            found = True
+            matches.append(entry.get('full'))
 
-        response = return_data
+        response['full'] = list(set(matches[0]))
 
         return response
 
