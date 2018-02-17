@@ -1,0 +1,14 @@
+{
+    "name": "HIBP_Query",
+    "version": "1.0",
+    "author": "znb",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Query haveibeenpwned.com for a compromised email address",
+    "dataTypeList": ["email"],
+    "baseConfig": "HIBP_Query",
+    "config": {
+        "service": "query"
+    },
+    "command": "HIBP_Query/hibpquery_analyzer.py"
+}

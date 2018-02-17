@@ -1,0 +1,8 @@
+{
+    "dataType":"email",
+    "data": "matt.erasmus@gmail.com",
+    "config":{
+        "service": "query",
+        "url": "https://haveibeenpwned.com/api/breachedaccount/"
+    }
+}
