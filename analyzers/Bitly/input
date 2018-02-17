@@ -1,0 +1,9 @@
+{
+    "dataType":"url",
+    "data": "http%3A%2F%2Fbit.ly%2F2nXAU6Z",
+    "config":{
+        "service": "query",
+        "url": "https://api-ssl.bitly.com/v3/expand",
+        "access_token": "Get your key from https://dev.bitly.com"
+    }
+}
