@@ -15,12 +15,6 @@ class HIBPQueryAnalyzer(Analyzer):
         self.api_url = self.getParam('config.url', None, 'Missing API URL')
 
     @staticmethod
-    def _getheaders():
-        return {
-            'Accept': 'application/json'
-        }
-
-    @staticmethod
     def cleanup(return_data):
 
         # TODO: Make this better (return the long URL for reports)
@@ -29,16 +23,16 @@ class HIBPQueryAnalyzer(Analyzer):
 
         found = False
 
-        response = return_data
+        response = return_data['artifacts']
 
         return response
 
     def hibp_query(self, data):
-        headers = self._getheaders()
         results = dict()
 
         try:
-            _query = requests.get(self.api_url, headers=headers, params=data)
+            hibpurl = self.api_url + data
+            _query = requests.get(hibpurl)
             if _query.status_code == 200:
                 if _query.text == "[]":
                     return dict()
