@@ -59,7 +59,7 @@ class HIBPQueryAnalyzer(Analyzer):
     def run(self):
 
         if self.service == 'query':
-            if self.data_type == 'url':
+            if self.data_type == 'mail':
                 data = self.getParam('data', None, 'Data is missing')
 
                 rep = self.hibp_query(data)
