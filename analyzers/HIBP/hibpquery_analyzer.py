@@ -19,11 +19,9 @@ class HIBPQueryAnalyzer(Analyzer):
 
         # TODO: Make this better (return the long URL for reports)
         response = dict()
-        long_urls = []
 
-        found = False
 
-        response = return_data['artifacts']
+        response = return_data
 
         return response
 
