@@ -17,7 +17,6 @@ class HIBPQueryAnalyzer(Analyzer):
     @staticmethod
     def cleanup(return_data):
 
-        # TODO: Make this better (return the long URL for reports)
         response = dict()
         matches = []
         found = False
@@ -25,9 +24,9 @@ class HIBPQueryAnalyzer(Analyzer):
 
         for entry in return_data:
             found = True
-            matches.append(entry.get('full'))
+            matches.append(str(entry))
 
-        response['full'] = list(set(matches[0]))
+        response['CompromisedAccounts'] = list(set(matches))
 
         return response
 
@@ -42,6 +41,8 @@ class HIBPQueryAnalyzer(Analyzer):
                     return dict()
                 else:
                     return self.cleanup(_query.json())
+            elif _query.status_code == 404:
+                return dict()
             else:
                 self.error('API Access error: %s' % _query.text)
 
@@ -55,7 +56,17 @@ class HIBPQueryAnalyzer(Analyzer):
         level = "info"
         namespace = "HIBP"
         predicate = "Compromised"
-        value = "\"Yup\""
+        if len(raw) == 0:
+            level = "safe"
+            namespace = "HIBP"
+            predicate = "Compromised"
+            value = "False"
+        elif len(raw) > 0:
+            level = "malicious"
+            namespace = "HIBP"
+            predicate = "Compromised"
+            value = "True"
+
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         return {"taxonomies": taxonomies}
