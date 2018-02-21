@@ -27,10 +27,10 @@ class IBMXForceAnalyzer(Analyzer):
     def cleanup(self, ip_data={}, malware_data={}, dns_data={}):
 
         response = {
-            'malware': [], 
-            'history': [], 
-            'dns': [], 
-            'cats': [], 
+            'malware': [],
+            'history': [],
+            'dns': [],
+            'cats': [],
             'families': [],
             'emails_info': [],
             'subjects_info': [],
@@ -51,8 +51,8 @@ class IBMXForceAnalyzer(Analyzer):
             score_nr = score_value
             cats = ip_data.get('result', {}).get('cats', {})
             cats = [x for x in cats.keys()]
-            score = "%d [%d category(s)]" % (score_value, len(cats)) if len(cats) > 0 else score_value  
-            families = []          
+            score = "%d [%d category(s)]" % (score_value, len(cats)) if len(cats) > 0 else score_value
+            families = []
 
         else:
             score_value = malware_data.get('malware', {}).get('risk', 'low')
@@ -65,7 +65,7 @@ class IBMXForceAnalyzer(Analyzer):
 
             families = malware_data.get('malware', {}).get('family', [])
             score = "%s [%d family(s)]" % (score_value, len(families)) if len(families) > 0 else score_value
-            cats = [] 
+            cats = []
 
         response['score_value'] = score_value
         response['cats'] = cats
@@ -79,8 +79,8 @@ class IBMXForceAnalyzer(Analyzer):
             tmp['country'] = hist.get('geo', {}).get('country', None)
             tmp['ip'] = hist.get('ip', None)
             tmp['score'] = hist.get('score', 0)
-            tmp['ans'] = hist.get('asns',{})
-            tmp['cats'] = [{'name':x, 'score': y} for (x, y) in hist.get('cats', {}).items()]
+            tmp['ans'] = hist.get('asns', {})
+            tmp['cats'] = [{'name': x, 'score': y} for (x, y) in hist.get('cats', {}).items()]
             tmp['deleted'] = hist.get('deleted', False)
             response['history'].append(tmp)
         response['history'].reverse()
@@ -118,11 +118,11 @@ class IBMXForceAnalyzer(Analyzer):
                 '%s/ipr/malware/%s' % (self.url, data))
             _query_info = _session.get('%s/resolve/%s' % (self.url, data))
 
-            if (_query_ip.status_code == 200 and
-                _query_malware.status_code == 200 and
-                    _query_info.status_code == 200):
-                  return self.cleanup(ip_data=_query_ip.json(), malware_data=_query_malware.json(), dns_data=_query_info.json())
-
+            ip_data = _query_ip.json() if _query_ip.status_code == 200 else {}
+            malware_data = _query_malware.json() if _query_malware.status_code == 200 else {}
+            dns_data = _query_info.json() if _query_info.status_code == 200 else {}
+            if ip_data or malware_data or dns_data:
+                return self.cleanup(ip_data=ip_data, malware_data=malware_data, dns_data=dns_data)
             else:
                 self.error('API Access error')
 
@@ -143,9 +143,11 @@ class IBMXForceAnalyzer(Analyzer):
                 '%s/url/malware/%s' % (self.url, data))
             _query_info = _session.get('%s/resolve/%s' % (self.url, data))
 
-            if (_query_url.status_code == 200 and
-                    _query_malware.status_code == 200):
-                return self.cleanup(ip_data=_query_url.json(), malware_data=_query_malware.json(), dns_data=_query_info.json())
+            url_data = _query_url.json() if _query_url.status_code == 200 else {}
+            malware_data = _query_malware.json() if _query_malware.status_code == 200 else {}
+            dns_data = _query_info.json() if _query_info.status_code == 200 else {}
+            if url_data or malware_data or dns_data:
+                return self.cleanup(ip_data=url_data, malware_data=malware_data, dns_data=dns_data)
             else:
                 self.error('API Access error')
 
@@ -211,7 +213,5 @@ class IBMXForceAnalyzer(Analyzer):
         else:
             self.error('Invalid service')
 
-
 if __name__ == '__main__':
     IBMXForceAnalyzer().run()
-
