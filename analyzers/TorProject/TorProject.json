@@ -29,8 +29,7 @@
       "description": "Define the path to the stored data",
       "type": "string",
       "multi": false,
-      "required": false,
-      "defaultValue": "/tmp/cortex/tor_project"
+      "required": false
     }
   ]
 }

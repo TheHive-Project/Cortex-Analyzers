@@ -13,16 +13,14 @@
       "description": "URL of C1fApp service",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "Server1"
+      "required": true
     },
     {
       "name": "key",
       "description": "API key",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "API key"
+      "required": true
     }
   ]
 }

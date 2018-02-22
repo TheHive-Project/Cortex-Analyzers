@@ -13,16 +13,14 @@
       "description": "UID for Censys",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "UUID"
+      "required": true
     },
     {
       "name": "key",
       "description": "API key",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "API key"
+      "required": true
     }
   ]
 }

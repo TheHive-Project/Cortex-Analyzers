@@ -13,24 +13,21 @@
           "description": "URL of MISP servers",
           "type": "string",
           "multi": true,
-          "required": true,
-          "defaultValue": [ "Server1", "Server2"]
+          "required": true
       },
       {
           "name": "key",
           "description": "API key for each server",
           "type": "string",
           "multi": true,
-          "required": true,
-          "defaultValue": [ "API key for Server1", "API key for Server2"]
+          "required": true
       },
       {
           "name": "cert_path",
           "description": "Verify server certificate or path to the CA on the system",
           "type": "boolean",
           "multi": true,
-          "required": false,
-          "defaultValue": [ true, true]
+          "required": false
       }
   ]
 }

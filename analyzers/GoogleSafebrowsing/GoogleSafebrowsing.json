@@ -13,16 +13,14 @@
       "description": "Client identifier",
       "type": "string",
       "multi": false,
-      "required": false,
-      "defaultValue": "Cortex"
+      "required": false
     },
     {
       "name": "key",
       "description": "API key",
       "type": "string",
       "multi": false,
-      "required": false,
-      "defaultValue": "API Key"
+      "required": false
     }
   ]
 }

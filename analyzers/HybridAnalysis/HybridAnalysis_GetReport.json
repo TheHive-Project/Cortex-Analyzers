@@ -14,16 +14,14 @@
       "description": "HybridAnalysis secret",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": false
+      "required": true
     },
     {
       "name": "key",
       "description": "API key",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "API Key"
+      "required": true
     }
   ]
 }

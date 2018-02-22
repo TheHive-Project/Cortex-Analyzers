@@ -14,8 +14,7 @@
       "description": "API key",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "API Key"
+      "required": true
     }
   ]
 }

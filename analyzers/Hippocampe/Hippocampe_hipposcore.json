@@ -17,8 +17,7 @@
       "description": "URL of the service",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "URL"
+      "required": true
     }
   ]
 }

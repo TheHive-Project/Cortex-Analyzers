@@ -13,8 +13,7 @@
       "description": "Path to blocklists",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "path"
+      "required": true
     }
   ]
 }

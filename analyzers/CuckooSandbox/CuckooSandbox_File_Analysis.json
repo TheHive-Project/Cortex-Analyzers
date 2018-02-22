@@ -14,8 +14,7 @@
       "description": "URL",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "url"
+      "required": true
     }
   ]
 }

@@ -13,8 +13,7 @@
       "description": "Define the path to the stored data",
       "type": "string",
       "multi": false,
-      "required": false,
-      "defaultValue": "path"
+      "required": false
     }
   ]
 }

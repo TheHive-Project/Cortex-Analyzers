@@ -17,16 +17,14 @@
       "description": "DNSDB server name",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "server name"
+      "required": true
     },
     {
       "name": "key",
       "description": "Key",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "API Key"
+      "required": true
     }
   ]
 }

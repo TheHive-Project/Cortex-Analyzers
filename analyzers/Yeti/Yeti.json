@@ -13,8 +13,7 @@
       "description": "Define the URL of the service",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "url"
+      "required": true
     }
   ]
 }

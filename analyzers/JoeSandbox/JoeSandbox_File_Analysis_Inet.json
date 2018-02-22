@@ -17,8 +17,7 @@
       "description": "API key",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "API key"
+      "required": true
     },
     {
       "name": "analysistimeout",

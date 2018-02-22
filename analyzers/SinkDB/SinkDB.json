@@ -13,8 +13,7 @@
       "description": "Define the API Key",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "API key"
+      "required": true
     }
   ]
 }

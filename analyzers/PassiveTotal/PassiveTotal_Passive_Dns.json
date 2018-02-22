@@ -17,16 +17,14 @@
       "description": "Define the username of the account used to connect the service",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "username"
+      "required": true
     },
     {
       "name": "key",
       "description": "Define the API key to use to connect the service",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "API key"
+      "required": true
     }
   ]
 }

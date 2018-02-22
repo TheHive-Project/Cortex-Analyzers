@@ -14,24 +14,21 @@
       "description": "Define the url of the service",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": false
+      "required": true
     },
     {
       "name": "key",
       "description": "Define the API key used to connect the service",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": false
+      "required": true
     },
     {
       "name": "secret",
       "description": "Define the secret used to connect the service",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "Secret"
+      "required": true
     },
     {
       "name": "environmentId",
@@ -39,7 +36,7 @@
       "type": "number",
       "multi": false,
       "required": true,
-      "defaultValue": "100"
+      "defaultValue": 100
     },
     {
       "name": "timeout",
