@@ -17,7 +17,8 @@
       "description": "DNSDB server name",
       "type": "string",
       "multi": false,
-      "required": true
+      "required": true,
+      "defaultValue": "https://api.dnsdb.info"
     },
     {
       "name": "key",
