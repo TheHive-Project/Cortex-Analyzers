@@ -7,25 +7,7 @@
   "description": "Check if ip is sinkholed via sinkdb.abuse.ch",
   "dataTypeList": ["ip"],
   "command": "SinkDB/sinkdb.py",
-  "baseConfig": "SinkDB",
-  "config": {},
   "configurationItems": [
-    {
-      "name": "check_tlp",
-      "description": "Define if the analyzer should check TLP of data before running",
-      "type": "boolean",
-      "multi": false,
-      "required": true,
-      "defaultValue": false
-    },
-    {
-      "name": "max_tlp",
-      "description": "Define the maximum TLP level autorized",
-      "type": "number",
-      "multi": false,
-      "required": true,
-      "defaultValue": 3
-    },
     {
       "name": "key",
       "description": "Define the API Key",

@@ -1,32 +1,13 @@
 {
-    "name": "Nessus",
-    "version": "2.0",
-    "author": "Guillaume Rousse",
-    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "Use Nessus Professional to scan hosts.",
-    "dataTypeList": ["ip", "fqdn"],
-    "command": "Nessus/nessus.py",
-    "baseConfig": "Nessus",
-    "config": {
-    },
-    "configurationItems": [
-    {
-      "name": "check_tlp",
-      "description": "Define if the analyzer should check TLP of data before running",
-      "type": "boolean",
-      "multi": false,
-      "required": true,
-      "defaultValue": true
-    },
-    {
-      "name": "max_tlp",
-      "description": "Define the maximum TLP level autorized",
-      "type": "number",
-      "multi": false,
-      "required": true,
-      "defaultValue": 3
-    },
+  "name": "Nessus",
+  "version": "2.0",
+  "author": "Guillaume Rousse",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use Nessus Professional to scan hosts.",
+  "dataTypeList": ["ip", "fqdn"],
+  "command": "Nessus/nessus.py",
+  "configurationItems": [
     {
       "name": "url",
       "description": "Define the URL to the Nessus service",

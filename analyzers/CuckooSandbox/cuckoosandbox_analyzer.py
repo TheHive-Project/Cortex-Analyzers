@@ -11,7 +11,6 @@ class CuckooSandboxAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.service = self.getParam('config.service', None, 'CuckooSandbox service is missing')
         self.url = self.getParam('config.url', None, 'CuckooSandbox url is missing')
         self.url = self.url + "/" if not self.url.endswith("/") else self.url
         #self.analysistimeout = self.getParam('config.analysistimeout', 30*60, None)
@@ -25,7 +24,7 @@ class CuckooSandboxAnalyzer(Analyzer):
         value = "\"0\""
 
         result = {
-            'service': self.service,
+            'service': self.data_type + '_analysis',
             'dataType': self.data_type
         }
         result["malscore"] = raw.get("malscore", None)
@@ -49,7 +48,7 @@ class CuckooSandboxAnalyzer(Analyzer):
         try:
 
             # file analysis
-            if self.service in ['file_analysis']:
+            if self.data_type == 'file':
                 filepath = self.getParam('file', None, 'File is missing')
                 filename = basename(filepath)
                 with open(filepath, "rb") as sample:
@@ -58,13 +57,13 @@ class CuckooSandboxAnalyzer(Analyzer):
                 task_id = response.json()['task_ids'][0] if 'task_ids' in response.json().keys() else response.json()['task_id']
 
             # url analysis
-            elif self.service == 'url_analysis':
+            elif self.data_type == 'url':
                 data = {"url": self.getData()}
                 response = requests.post(self.url + 'tasks/create/url', data=data)
                 task_id = response.json()['task_id']
 
             else:
-                self.error('Unknown CuckooSandbox service')
+                self.error('Invalid data type !')
 
             finished = False
             tries = 0
@@ -99,13 +98,13 @@ class CuckooSandboxAnalyzer(Analyzer):
                 else:
                     snort_alerts = []
             else:
-                snort_alerts = []               
+                snort_alerts = []
             try:
                 hosts = [(x['ip'],x['hostname'],x['country_name']) for x in resp_json['network']['hosts']] if 'hosts' in resp_json['network'].keys() else None
             except TypeError as e:
                 hosts = [x for x in resp_json['network']['hosts']] if 'hosts' in resp_json['network'].keys() else []
             uri = [(x['uri']) for x in resp_json['network']['http']] if 'http' in resp_json['network'].keys() else []
-            if self.service == 'url_analysis':
+            if self.data_type == 'url':
                 self.report({
                     'signatures': list_description,
                     'suricata_alerts': suri_alerts,
@@ -121,7 +120,7 @@ class CuckooSandboxAnalyzer(Analyzer):
                 self.report({
                     'signatures': list_description,
                     'suricata_alerts': suri_alerts,
-                    'snort_alerts': snort_alerts,                   
+                    'snort_alerts': snort_alerts,
                     'hosts': hosts,
                     'uri': uri,
                     'malscore': resp_json['malscore'] if 'malscore' in resp_json.keys() else resp_json['info'].get('score', None),

@@ -1,33 +1,30 @@
 {
-    "name": "DomainTools_WhoisLookup_IP",
-    "version": "2.0",
-    "author": "CERT-BDF",
-    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "Use DomainTools to get the ownership record for an IP address with basic registration details.",
-    "dataTypeList": ["ip"],
-    "command": "DomainTools/domaintools.py",
-    "baseConfig": "DomainTools",
-    "config": {
-        "service": "whois"
-    },
-    "configurationItems": [
+  "name": "DomainTools_WhoisLookup_IP",
+  "version": "2.0",
+  "author": "CERT-BDF",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use DomainTools to get the ownership record for an IP address with basic registration details.",
+  "dataTypeList": ["ip"],
+  "command": "DomainTools/domaintools.py",
+  "baseConfig": "DomainTools",
+  "config": {
+      "service": "whois"
+  },
+  "configurationItems": [
     {
-      "name": "check_tlp",
-      "description": "Define if the analyzer should check TLP of data before running",
-      "type": "boolean",
+      "name": "username",
+      "description": "DomainTools API credentials",
+      "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": true
+      "required": true
     },
     {
-      "name": "max_tlp",
-      "description": "Define the maximum TLP level autorized",
-      "type": "number",
+      "name": "key",
+      "description": "DomainTools API credentials",
+      "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": 1
+      "required": true
     }
   ]
-
 }

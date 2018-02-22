@@ -7,32 +7,14 @@
   "description": "Check IoCs/Observables against MISP Warninglists to filter false positives.",
   "dataTypeList": ["ip", "hash", "domain", "fqdn", "url"],
   "command": "MISPWarningLists/mispwarninglists.py",
-  "baseConfig": "MISPWarningLists",
-  "config": {},
   "configurationItems": [
-  {
-    "name": "check_tlp",
-    "description": "Define if the analyzer should check TLP of data before running",
-    "type": "boolean",
-    "multi": false,
-    "required": true,
-    "defaultValue": true
-  },
-  {
-    "name": "max_tlp",
-    "description": "Define the maximum TLP level autorized",
-    "type": "number",
-    "multi": false,
-    "required": true,
-    "defaultValue": 3
-  },
-  {
-    "name": "path",
-    "description": "path to Warninglists folder",
-    "type": "string",
-    "multi": false,
-    "required": true,
-    "defaultValue": "path"
-  }
-]
+    {
+      "name": "path",
+      "description": "path to Warninglists folder",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "path"
+    }
+  ]
 }

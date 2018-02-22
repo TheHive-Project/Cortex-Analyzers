@@ -1,54 +1,36 @@
 {
-    "name": "TorProject",
-    "author": "Marc-André DOLL, STARC by EXAPROBE",
-    "license": "AGPL-V3",
-    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
-    "version": "1.0",
-    "description": "Query https://check.torproject.org/exit-addresses for TOR exit nodes IP addresses.",
-    "dataTypeList": ["ip"],
-    "command": "TorProject/tor_project_analyzer.py",
-    "baseConfig": "TorProject",
-    "config": {},
-    "configurationItems": [
-      {
-        "name": "check_tlp",
-        "description": "Define if the analyzer should check TLP of data before running",
-        "type": "boolean",
-        "multi": false,
-        "required": true,
-        "defaultValue": false
-      },
-      {
-        "name": "max_tlp",
-        "description": "Define the maximum TLP level autorized",
-        "type": "number",
-        "multi": false,
-        "required": true,
-        "defaultValue": 3
-      },
-      {
-        "name": "ttl",
-        "description": "Define the TTL",
-        "type": "number",
-        "multi": false,
-        "required": true,
-        "defaultValue": 86400
-      },
-      {
-        "name": "cache.duration",
-        "description": "Define the cache duration",
-        "type": "number",
-        "multi": false,
-        "required": true,
-        "defaultValue": 3600
-      },
-      {
-        "name": "cache.root",
-        "description": "Define the path to the stored data",
-        "type": "string",
-        "multi": false,
-        "required": false,
-        "defaultValue": "/tmp/cortex/tor_project"
-      }
-    ]
+  "name": "TorProject",
+  "author": "Marc-André DOLL, STARC by EXAPROBE",
+  "license": "AGPL-V3",
+  "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+  "version": "1.0",
+  "description": "Query https://check.torproject.org/exit-addresses for TOR exit nodes IP addresses.",
+  "dataTypeList": ["ip"],
+  "command": "TorProject/tor_project_analyzer.py",
+  "configurationItems": [
+    {
+      "name": "ttl",
+      "description": "Define the TTL",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 86400
+    },
+    {
+      "name": "cache.duration",
+      "description": "Define the cache duration",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 3600
+    },
+    {
+      "name": "cache.root",
+      "description": "Define the path to the stored data",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "/tmp/cortex/tor_project"
+    }
+  ]
 }

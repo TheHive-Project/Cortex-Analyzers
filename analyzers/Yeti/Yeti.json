@@ -1,32 +1,13 @@
 {
-    "name": "Yeti",
-    "author": "CERT-BDF",
-    "license": "AGPL-V3",
-    "url": "https://github.com/CERT/cortex-analyzers",
-    "version": "1.0",
-    "description": "Fetch observable details from a YETI instance.",
-    "dataTypeList": ["domain", "fqdn", "ip", "url", "hash"],
-    "command": "Yeti/yeti.py",
-    "baseConfig": "Yeti",
-    "config": {
-    },
-    "configurationItems": [
-      {
-        "name": "check_tlp",
-        "description": "Define if the analyzer should check TLP of data before running",
-        "type": "boolean",
-        "multi": false,
-        "required": true,
-        "defaultValue": false
-      },
-      {
-        "name": "max_tlp",
-        "description": "Define the maximum TLP level autorized",
-        "type": "number",
-        "multi": false,
-        "required": true,
-        "defaultValue": 3
-    },
+  "name": "Yeti",
+  "author": "CERT-BDF",
+  "license": "AGPL-V3",
+  "url": "https://github.com/CERT/cortex-analyzers",
+  "version": "1.0",
+  "description": "Fetch observable details from a YETI instance.",
+  "dataTypeList": ["domain", "fqdn", "ip", "url", "hash"],
+  "command": "Yeti/yeti.py",
+  "configurationItems": [
     {
       "name": "url",
       "description": "Define the URL of the service",
@@ -35,5 +16,5 @@
       "required": true,
       "defaultValue": "url"
     }
-    ]
+  ]
 }

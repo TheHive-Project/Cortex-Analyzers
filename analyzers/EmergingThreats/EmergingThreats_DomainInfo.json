@@ -1,33 +1,14 @@
 {
-    "name": "EmergingThreats_DomainInfo",
-    "version": "1.0",
-    "author": "Arcuri Davide, Garavaglia Andrea [LDO-CERT]",
-    "url": "https://github.com/dadokkio/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "Retrieve ET reputation, related malware, and IDS requests for a given domain.",
-    "dataTypeList": ["domain"],
-    "command": "EmergingThreats/emergingthreats_analyzer.py",
-    "baseConfig": "EmergingThreats",
-    "config": {
-        "service": "domain-info"
-    },
-    "configurationItems": [
-    {
-      "name": "check_tlp",
-      "description": "Define if the analyzer should check TLP of data before running",
-      "type": "boolean",
-      "multi": false,
-      "required": true,
-      "defaultValue": true
-    },
-    {
-      "name": "max_tlp",
-      "description": "Define the maximum TLP level autorized",
-      "type": "number",
-      "multi": false,
-      "required": true,
-      "defaultValue": 2
-    },
+  "name": "EmergingThreats_DomainInfo",
+  "version": "1.0",
+  "author": "Arcuri Davide, Garavaglia Andrea [LDO-CERT]",
+  "url": "https://github.com/dadokkio/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Retrieve ET reputation, related malware, and IDS requests for a given domain.",
+  "dataTypeList": ["domain"],
+  "command": "EmergingThreats/emergingthreats_analyzer.py",
+  "baseConfig": "EmergingThreats",
+  "configurationItems": [
     {
       "name": "key",
       "description": "API key",
@@ -37,5 +18,4 @@
       "defaultValue": "API Key"
     }
   ]
-
 }
