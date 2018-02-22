@@ -28,7 +28,7 @@ class Extractor:
         # IPv4
         regex = [{
             'type': 'ip',
-            'regex': re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
+            'regex': re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?:\/\d\d?)?$')
         }]
 
         # IPv6
