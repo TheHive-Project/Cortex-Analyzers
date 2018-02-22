@@ -13,6 +13,13 @@
   },
   "configurationItems": [
     {
+      "name": "url",
+      "description": "URL of JoeSandbox service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
       "name": "key",
       "description": "API key",
       "type": "string",
