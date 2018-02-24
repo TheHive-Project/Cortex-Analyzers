@@ -27,10 +27,16 @@ class DomainToolsAnalyzer(Analyzer):
         }
 
         if("ip_addresses" in raw):
-            r["ip"] = {
-                "address": raw["ip_addresses"]["ip_address"],
-                "domain_count": raw["ip_addresses"]["domain_count"]
-            }
+            if type(raw["ip_addresses"]) == dict:
+                r["ip"] = {
+                    "address": raw["ip_addresses"]["ip_address"],
+                    "domain_count": raw["ip_addresses"]["domain_count"]
+                }
+            elif type(raw["ip_addresses"]) == list:
+                r["ip"] = {
+                    "address": "{} IP addresses".format(len(r)),
+                    "domain_count": sum(d["domain_count"] for d in raw["ip_addresses"])
+                }
 
         if("domain_count" in raw):
             r["domain_count"] = {
@@ -54,7 +60,7 @@ class DomainToolsAnalyzer(Analyzer):
         taxonomies = []
 
         # Prepare predicate and value for each service
-        if r["service"] == "reverse-ip":
+        if r["service"] in ["reverse-ip", "host-domains"]:
             taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_IP","\"{}, {} domains\"".format(r["ip"]["address"], r["ip"]["domain_count"])))
 
         if r["service"] == "name-server-domains":
@@ -92,7 +98,7 @@ class DomainToolsAnalyzer(Analyzer):
         else:
             query = {}
 
-        if (self.service == 'reverse-ip' and self.data_type == 'domain') or \
+        if (self.service == 'reverse-ip' and self.data_type in ['domain', 'ip', 'fqdn']) or \
                 (self.service == 'host-domains' and self.data_type == 'ip') or \
                 (self.service == 'name-server-domains' and self.data_type == 'domain') or \
                 (self.service == 'whois/history' and self.data_type == 'domain') or \
