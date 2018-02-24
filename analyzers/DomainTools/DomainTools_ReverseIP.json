@@ -11,6 +11,6 @@
         "service": "reverse-ip"
     },
     "description": "Use DomainTools to get a list of domain names sharing the same IP address.",
-    "dataTypeList": ["ip"],
+    "dataTypeList": ["ip", "domain", "fqdn"],
     "command": "DomainTools/domaintools.py"
 }
