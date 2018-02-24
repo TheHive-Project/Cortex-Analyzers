@@ -1,17 +1,17 @@
 {
-  "name": "DomainTools_ReverseIP",
-  "version": "2.0",
-  "author": "CERT-BDF",
-  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-  "license": "AGPL-V3",
-  "description": "Use DomainTools to get a list of domain names sharing the same IP address.",
-  "dataTypeList": ["ip", "domain", "fqdn"],
-  "command": "DomainTools/domaintools.py",
-  "baseConfig": "DomainTools",
-  "config": {
-      "service": "reverse-ip"
-  },
-  "configurationItems": [
+    "name": "DomainTools_ReverseIP",
+    "version": "2.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Use DomainTools to get a list of domain names sharing the same IP address.",
+    "dataTypeList": ["ip", "domain","fqdn"],
+    "command": "DomainTools/domaintools.py",
+    "baseConfig": "DomainTools",
+    "config": {
+        "service": "reverse-ip"
+    },
+    "configurationItems": [
     {
       "name": "username",
       "description": "DomainTools API credentials",
