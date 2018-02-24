@@ -69,6 +69,8 @@ class CIRCLPassiveDNSAnalyzer(Analyzer):
             query = self.getData()
             if '/' in query:
                 self.error('\'/\' found in the supplied domain. use the URL datatype instead')
+        elif self.data_type == 'ip':
+            query = self.getData()
         else:
             self.error('invalid datatype')
         self.report({'results': self.query(query)})
