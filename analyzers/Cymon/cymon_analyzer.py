@@ -73,11 +73,9 @@ class CymonApi(object):
         return r.json()
 
 
-class CymonEngine():
+class CymonEngine(object):
 
-    def __init__(self):
-
-        default_file = 'config.json'
+    def __init__(self, key):
 
         self.cymon_cat = ['malware',
                      'botnet',
@@ -87,11 +85,8 @@ class CymonEngine():
                      'blacklist',
                      'dnsbl']
 
-        if os.path.isfile(default_file):
-            conf = self.loadSetting(default_file)
-            c_token = conf['1']['cymon']['token']
 
-        self.api = CymonApi(c_token)
+        self.api = CymonApi(key)
 
     def loadSetting(self, filepath):
 
@@ -155,7 +150,9 @@ class CymonAnalyzer(Analyzer):
 
         self.service = self.getParam('config.service', None,
                                      'Cymon service is missing')
-        self.con = CymonEngine()
+        self.key = self.getParam('config.key', None,
+                                 'Cymon API key is missing')
+        self.con = CymonEngine(self.key)
 
     def summary(self, raw_report):
 
@@ -205,7 +202,7 @@ class CymonAnalyzer(Analyzer):
 
         Analyzer.run(self)
 
-        data = self.getData()
+        data = self.get_data()
 
         try:
             if self.service == 'Check_IP':
