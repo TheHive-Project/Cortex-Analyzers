@@ -130,6 +130,9 @@ class FireEyeiSightAnalyzer(Analyzer):
                 elif self.data_type == 'hash':
                     tmp_info = [x for x in r['message'].get('publishedIndicators', []) if x.get(
                         'md5', None) == data or x.get('sha1', None) == data or x.get('sha256', None) == data] if r != -1 else []
+				elif self.data_type == 'ip':
+                    tmp_info = [x for x in r['message'].get('publishedIndicators', []) if x.get(
+                        'ip', None) == data] if r != -1 else []
                 if tmp_info:
                     for x in tmp_info:
                         tmp_dict = {k: v for k, v in x.items() if v}
