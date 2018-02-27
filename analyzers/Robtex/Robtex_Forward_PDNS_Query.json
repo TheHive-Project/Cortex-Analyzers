@@ -6,6 +6,7 @@
   "license": "AGPL-V3",
   "description": "Check domains/fqdns using the Robtex passive dns API",
   "dataTypeList": ["domain", "fqdn"],
+  "baseConfig": "Robtex",
   "command": "Robtex/robtex.py",
   "config": {
     "service": "fpdnsquery"

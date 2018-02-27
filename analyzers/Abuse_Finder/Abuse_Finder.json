@@ -6,5 +6,6 @@
   "license": "AGPL-V3",
   "description": "Find abuse contacts associated with domain names, URLs, IPs and email addresses.",
   "dataTypeList": ["ip", "domain", "url", "mail"],
+  "baseConfig": "Abuse_Finder",
   "command": "Abuse_Finder/abusefinder.py"
 }

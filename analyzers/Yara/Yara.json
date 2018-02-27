@@ -7,6 +7,7 @@
   "description": "Check files against YARA rules.",
   "dataTypeList": ["file"],
   "command": "Yara/yara_analyzer.py",
+  "baseConfig": "Yara",
   "configurationItems": [
     {
       "name": "rules",

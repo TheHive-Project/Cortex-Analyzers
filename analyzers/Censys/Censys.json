@@ -6,6 +6,7 @@
   "version": "1.0",
   "description": "Check IPs, certificate hashes or domains against censys.io.",
   "dataTypeList": ["ip", "hash", "domain"],
+  "baseConfig": "Censys",
   "command": "Censys/censys_analyzer.py",
   "configurationItems": [
     {

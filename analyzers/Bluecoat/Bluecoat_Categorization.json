@@ -10,5 +10,6 @@
     "fqdn"
   ],
   "license": "AGPL-V3",
+  "baseConfig": "Bluecoat",
   "command": "Bluecoat/categorization.py"
 }

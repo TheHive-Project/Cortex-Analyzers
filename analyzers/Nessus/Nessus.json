@@ -6,6 +6,7 @@
   "license": "AGPL-V3",
   "description": "Use Nessus Professional to scan hosts.",
   "dataTypeList": ["ip", "fqdn"],
+  "baseConfig": "Nessus",
   "command": "Nessus/nessus.py",
   "configurationItems": [
     {

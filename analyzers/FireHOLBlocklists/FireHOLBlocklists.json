@@ -6,6 +6,7 @@
   "version": "2.0",
   "description": "Check IP addresses against the FireHOL blocklists",
   "dataTypeList": ["ip"],
+  "baseConfig": "FireHOLBlocklists",
   "command": "FireHOLBlocklists/firehol_blocklists.py",
   "configurationItems": [
     {

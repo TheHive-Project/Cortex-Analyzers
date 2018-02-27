@@ -7,6 +7,7 @@
   "description": "Check if ip is sinkholed via sinkdb.abuse.ch",
   "dataTypeList": ["ip"],
   "command": "SinkDB/sinkdb.py",
+  "baseConfig": "SinkDB",
   "configurationItems": [
     {
       "name": "key",

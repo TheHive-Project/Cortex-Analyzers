@@ -6,6 +6,7 @@
   "version": "1.0",
   "description": "Check IoCs/Observables against MISP Warninglists to filter false positives.",
   "dataTypeList": ["ip", "hash", "domain", "fqdn", "url"],
+  "baseConfig": "MISPWarningLists",
   "command": "MISPWarningLists/mispwarninglists.py",
   "configurationItems": [
     {

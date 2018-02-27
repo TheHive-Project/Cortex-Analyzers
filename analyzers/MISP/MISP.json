@@ -6,6 +6,7 @@
   "version": "2.0",
   "description": "Query multiple MISP instances for events containing an observable.",
   "dataTypeList": ["domain", "ip", "url", "fqdn", "uri_path","user-agent", "hash", "email", "mail", "mail_subject" , "registry", "regexp", "other", "filename"],
+  "baseConfig": "MISP",
   "command": "MISP/misp.py",
   "configurationItems": [
       {

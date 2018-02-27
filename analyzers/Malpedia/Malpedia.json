@@ -6,6 +6,7 @@
   "version": "1.0",
   "description": "Check files against Malpedia YARA rules.",
   "dataTypeList": ["file"],
+  "baseConfig": "Malpedia",
   "command": "Malpedia/malpedia_analyzer.py",
   "configurationItems": [
     {

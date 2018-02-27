@@ -6,5 +6,6 @@
   "license": "AGPL-V3",
   "description": "Use MaxMind to geolocate an IP address.",
   "dataTypeList": ["ip"],
+  "baseConfig": "MaxMind",
   "command": "MaxMind/geo.py"
 }

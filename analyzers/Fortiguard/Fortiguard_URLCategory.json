@@ -6,5 +6,6 @@
   "license": "AGPL-V3",
   "dataTypeList": ["domain", "url"],
   "description": "Check the Fortiguard category of a URL or a domain.",
+  "baseConfig": "Fortiguard",
   "command": "Fortiguard/urlcategory.py"
 }

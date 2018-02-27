@@ -6,5 +6,6 @@
   "license": "AGPL-V3",
   "description": "Parse Outlook MSG files and extract the main artifacts.",
   "dataTypeList": ["file"],
+  "baseConfig": "MsgParser",
   "command": "MsgParser/parse.py"
 }

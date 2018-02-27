@@ -6,6 +6,7 @@
   "license": "AGPL-V3",
   "description": "Check IPs using the Robtex reverse passive dns API",
   "dataTypeList": ["ip"],
+  "baseConfig": "Robtex",
   "command": "Robtex/robtex.py",
   "config": {
     "service": "rpdnsquery"

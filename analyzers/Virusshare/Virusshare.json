@@ -7,6 +7,7 @@
   "description": "Search for MD5 hashes in Virusshare.com hash list",
   "dataTypeList": ["hash", "file"],
   "command": "Virusshare/virusshare.py",
+  "baseConfig": "Virusshare",
   "configurationItems": [
     {
       "name": "path",

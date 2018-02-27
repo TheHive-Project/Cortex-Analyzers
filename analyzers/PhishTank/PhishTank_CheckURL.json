@@ -6,6 +6,7 @@
     "license": "AGPL-V3",
     "description": "Use PhishTank to check if a URL is a verified phishing site.",
     "dataTypeList": ["url"],
+    "baseConfig": "PhishTank",
     "command": "PhishTank/phishtank_checkurl.py",
     "configurationItems": [
     {

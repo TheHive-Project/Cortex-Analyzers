@@ -6,6 +6,7 @@
     "license": "AGPL-V3",
     "description": "Use Phishing Initiative to check if a URL is a verified phishing site.",
     "dataTypeList": ["url"],
+    "baseConfig": "PhishingInitiative",
     "command": "PhishingInitiative/phishinginitiative_lookup.py",
     "configurationItems": [
     {

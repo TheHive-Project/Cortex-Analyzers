@@ -6,5 +6,6 @@
   "license": "AGPL-V3",
   "description": "Parse files in several formats such as OLE and OpenXML to detect VBA macros, extract their source code, generate useful information on PE, PDF files...",
   "dataTypeList": ["file"],
+  "baseConfig": "File_Info",
   "command": "File_Info/fileinfo_analyzer.py"
 }
