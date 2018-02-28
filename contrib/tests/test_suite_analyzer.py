@@ -132,7 +132,7 @@ class TestReportResponse(unittest.TestCase):
         load_test_fixture('fixtures/test-report-response.json')
         self.analyzer = Analyzer()
 
-    def test_error_response(self):
+    def test_report_response(self):
         # Run the analyzer report method
         self.analyzer.report({'report_id':'12345'})
 

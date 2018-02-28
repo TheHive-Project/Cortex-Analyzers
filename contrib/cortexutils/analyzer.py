@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # encoding: utf-8
-
 import os
 import sys
 import codecs
@@ -154,7 +153,7 @@ class Analyzer:
     def artifacts(self, raw):
         # Use the regex extractor, if auto_extract setting is not False
         if self.auto_extract:
-            extractor = Extractor()
+            extractor = Extractor(ignore=self.get_data())
             return extractor.check_iterable(raw)
 
         # Return empty list

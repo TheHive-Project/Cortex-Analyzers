@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from builtins import str as unicode
+
 import re
 
 
@@ -11,9 +12,13 @@ class Extractor:
 
     Currently, this is not a fulltext search, so the the ioc's must be isolated strings, to get found.
     This can be iterated for ioc's.
+
+    :param ignore: List of strings or a single string to ignore when matching artifacts to type
+    :type ignore: list, str
     """
 
-    def __init__(self):
+    def __init__(self, ignore=None):
+        self.ignore = ignore
         self.regex = self.__init_regex()
 
     @staticmethod
@@ -65,7 +70,7 @@ class Extractor:
         # domain
         regex.append({
             'type': 'domain',
-            'regex': re.compile(r'^(?!http\:\/\/|https\:\/\/)^[\w\-]+\.\w+$')
+            'regex': re.compile(r'^(?!http\:\/\/|https\:\/\/)^[\w\-]+\.[a-zA-Z]+$')
         })
 
         # hash
@@ -103,7 +108,7 @@ class Extractor:
         # fqdn
         regex.append({
             'type': 'fqdn',
-            'regex': re.compile(r'^(?!http\:\/\/|https\:\/\/)^[\w\-\.]+\.[\w\-]+\.\w+$')
+            'regex': re.compile(r'^(?!http\:\/\/|https\:\/\/)^[\w\-\.]+\.[\w\-]+\.[a-zA-Z]+$')
         })
 
         return regex
@@ -116,6 +121,8 @@ class Extractor:
         :return: Data type of value, if known, else empty string
         :rtype: str
         """
+        if self.ignore and value in self.ignore:
+            return ''
 
         if isinstance(value, (str, unicode)):
             for r in self.regex:
