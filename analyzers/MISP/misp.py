@@ -10,13 +10,15 @@ class MISPAnalyzer(Analyzer):
         Analyzer.__init__(self)
 
         # Fixes #94. Instead of None, the string Unnamed should be passed to MISPClient constructor
-        name = self.getParam('config.name', None)
-        if not name:
-            name = 'Unnamed'
+        name = self.getParam('config.name', 'Unnamed')
+        if self.getParam('config.cert_check', True):
+            ssl = self.getParam('config.cert_path', True)
+        else:
+            ssl = False
         try:
             self.misp = MISPClient(url=self.getParam('config.url', None, 'No MISP url given.'),
                                 key=self.getParam('config.key', None, 'No MISP api key given.'),
-                                ssl=self.getParam('config.certpath', True),
+                                ssl=ssl,
                                 name=name)
         except MISPClientError as e:
             self.error(str(e))
@@ -28,7 +30,6 @@ class MISPAnalyzer(Analyzer):
         level = "info"
         namespace = "MISP"
         predicate = "Search"
-        value = "\"0\""
 
         data = []
         for r in raw['results']:
