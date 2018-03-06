@@ -12,6 +12,7 @@ if sys.version_info >= (3, 0):
 else:
     from StringIO import StringIO
 
+
 class AnalyzerExtractorOutputTest(unittest.TestCase):
     def setUp(self):
         sys.stdin = StringIO(json.dumps({

@@ -98,7 +98,7 @@ class PassiveTotalAnalyzer(Analyzer):
                 value = "\"REGISTRAR: {}\"".format(result['registrar'])
                 taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
-        return {"taxonomies":taxonomies}
+        return {"taxonomies": taxonomies}
 
     def run(self):
         data = self.get_data()

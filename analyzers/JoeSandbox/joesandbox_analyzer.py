@@ -46,7 +46,7 @@ class JoeSandboxAnalyzer(Analyzer):
             value = "Unknown"
 
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-        result.update({"taxonomies":taxonomies})
+        result.update({"taxonomies": taxonomies})
 
         return result
 
@@ -150,7 +150,10 @@ class JoeSandboxAnalyzer(Analyzer):
             self.error('Unknown JoeSandbox service')
 
         # Submit the file/url for analysis
-        response = requests.post(self.url + 'api/v2/analysis/submit', files=files, data=data, timeout=self.networktimeout)
+        response = requests.post(self.url + 'api/v2/analysis/submit',
+                                 files=files,
+                                 data=data,
+                                 timeout=self.networktimeout)
         webid = response.json()['data']['webids'][0]
 
         # Wait for the analysis to finish
@@ -191,7 +194,10 @@ class JoeSandboxAnalyzer(Analyzer):
                 'apikey': self.apikey
             }
             # Check whether API v2 is supported or not
-            response = requests.post(self.url + 'api/v2/server/online', data=data, timeout=self.networktimeout, allow_redirects=False)
+            response = requests.post(self.url + 'api/v2/server/online',
+                                     data=data,
+                                     timeout=self.networktimeout,
+                                     allow_redirects=False)
             if response.status_code == 200:
                 self.runv2()
             else:

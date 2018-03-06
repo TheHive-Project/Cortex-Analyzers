@@ -35,7 +35,7 @@ class AbuseFinderAnalyzer(Analyzer):
             self.error("invalid datatype")
 
     def run(self):
-        self.report({'abuse_finder':self.abuse()})
+        self.report({'abuse_finder': self.abuse()})
 
 
 if __name__ == '__main__':

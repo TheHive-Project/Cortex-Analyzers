@@ -24,7 +24,7 @@ class DnsDbAnalyzer(Analyzer):
             return client.query_rrset(data)
         elif self.service == 'ip_history' and self.data_type == 'ip':
             return client.query_rdata_ip(data)
-        elif self.service == 'name_history' and self.data_type in ['domain','fqdn']:
+        elif self.service == 'name_history' and self.data_type in ['domain', 'fqdn']:
             return client.query_rdata_name(data)
         else:
             self.error('Unknown DNSDB service or invalid data type')
@@ -50,16 +50,16 @@ class DnsDbAnalyzer(Analyzer):
             else:
                 value = "\"{} records\"".format(r)
 
-            taxonomies.append(self.build_taxonomy(level, namespace,predicate,value))
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         return {'taxonomies': taxonomies}
-
 
     def run(self):
         try:
             client = DnsdbClient(self.dnsdb_server, self.dnsdb_key)
             self.report({
-                "records": map(lambda r: self.update_date('time_first', self.update_date('time_last', r)), self.execute_dnsdb_service(client))
+                "records": map(lambda r: self.update_date('time_first', self.update_date('time_last', r)),
+                               self.execute_dnsdb_service(client))
             })
         except HTTPError, e:
             if e.code != 404:

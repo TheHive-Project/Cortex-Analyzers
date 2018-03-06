@@ -54,7 +54,8 @@ class CuckooSandboxAnalyzer(Analyzer):
                 with open(filepath, "rb") as sample:
                     files = {"file": (filename, sample)}
                     response = requests.post(self.url + 'tasks/create/file', files=files)
-                task_id = response.json()['task_ids'][0] if 'task_ids' in response.json().keys() else response.json()['task_id']
+                task_id = response.json()['task_ids'][0] if 'task_ids' in response.json().keys() \
+                    else response.json()['task_id']
 
             # url analysis
             elif self.data_type == 'url':
@@ -83,24 +84,29 @@ class CuckooSandboxAnalyzer(Analyzer):
             list_description = [x['description'] for x in resp_json['signatures']]
             if 'suricata' in resp_json.keys() and 'alerts' in resp_json['suricata'].keys():
                 if any('dstport' in x for x in resp_json['suricata']['alerts']):
-                    suri_alerts = [(x['signature'],x['dstip'],x['dstport'],x['severity']) for x in resp_json['suricata']['alerts'] if 'dstport' in x.keys()]
+                    suri_alerts = [(x['signature'], x['dstip'], x['dstport'], x['severity']) for x in
+                                   resp_json['suricata']['alerts'] if 'dstport' in x.keys()]
                 elif any('dst_port' in x for x in resp_json['suricata']['alerts']):
-                    suri_alerts = [(x['signature'],x['dst_ip'],x['dst_port'],x['severity']) for x in resp_json['suricata']['alerts']]
+                    suri_alerts = [(x['signature'], x['dst_ip'], x['dst_port'], x['severity']) for x in
+                                   resp_json['suricata']['alerts']]
                 else:
                     suri_alerts = []
             else:
                 suri_alerts = []
             if 'snort' in resp_json.keys() and 'alerts' in resp_json['snort'].keys():
                 if any('dstport' in x for x in resp_json['snort']['alerts']):
-                    snort_alerts = [(x['message'],x['dstip'],x['dstport'],x['priority']) for x in resp_json['snort']['alerts']]
+                    snort_alerts = [(x['message'], x['dstip'], x['dstport'], x['priority']) for x in
+                                    resp_json['snort']['alerts']]
                 elif any('dst_port' in x for x in resp_json['snort']['alerts']):
-                    snort_alerts = [(x['message'],x['dst_ip'],x['dst_port'],x['priority']) for x in resp_json['snort']['alerts']]
+                    snort_alerts = [(x['message'], x['dst_ip'], x['dst_port'], x['priority']) for x in
+                                    resp_json['snort']['alerts']]
                 else:
                     snort_alerts = []
             else:
                 snort_alerts = []
             try:
-                hosts = [(x['ip'],x['hostname'],x['country_name']) for x in resp_json['network']['hosts']] if 'hosts' in resp_json['network'].keys() else None
+                hosts = [(x['ip'], x['hostname'], x['country_name']) for x in
+                         resp_json['network']['hosts']] if 'hosts' in resp_json['network'].keys() else None
             except TypeError as e:
                 hosts = [x for x in resp_json['network']['hosts']] if 'hosts' in resp_json['network'].keys() else []
             uri = [(x['uri']) for x in resp_json['network']['http']] if 'http' in resp_json['network'].keys() else []
@@ -111,10 +117,12 @@ class CuckooSandboxAnalyzer(Analyzer):
                     'snort_alerts': snort_alerts,
                     'hosts': hosts,
                     'uri': uri,
-                    'malscore': resp_json['malscore'] if 'malscore' in resp_json.keys() else resp_json['info'].get('score', None),
+                    'malscore': resp_json['malscore'] if 'malscore' in resp_json.keys() else resp_json['info'].get(
+                        'score', None),
                     'malfamily': resp_json.get('malfamily', None),
                     'file_type': 'url',
-                    'yara': resp_json['target']['url'] if 'target' in resp_json.keys() and 'url' in resp_json['target'].keys() else '-'
+                    'yara': resp_json['target']['url'] if 'target' in resp_json.keys() and 'url' in resp_json[
+                        'target'].keys() else '-'
                 })
             else:
                 self.report({
@@ -123,10 +131,13 @@ class CuckooSandboxAnalyzer(Analyzer):
                     'snort_alerts': snort_alerts,
                     'hosts': hosts,
                     'uri': uri,
-                    'malscore': resp_json['malscore'] if 'malscore' in resp_json.keys() else resp_json['info'].get('score', None),
+                    'malscore': resp_json['malscore'] if 'malscore' in resp_json.keys() else resp_json['info'].get(
+                        'score', None),
                     'malfamily': resp_json.get('malfamily', None),
                     'file_type': "".join([x for x in resp_json['target']['file']['type']]),
-                    'yara': [ x['name'] + " - " + x['meta']['description'] if 'description' in x['meta'].keys() else x['name'] for x in resp_json['target']['file']['yara'] ]
+                    'yara': [
+                        x['name'] + " - " + x['meta']['description'] if 'description' in x['meta'].keys() else x['name']
+                        for x in resp_json['target']['file']['yara']]
                 })
 
         except requests.exceptions.RequestException as e:

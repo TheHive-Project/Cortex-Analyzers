@@ -23,7 +23,7 @@ class FileAnalyzer(Analyzer):
         try:
             result['Mimetype'] = f.mimetype()
         except Exception as excp:
-            error(str(excp))
+            self.error(str(excp))
         result['Exif'] = f.exif()
         result['Magic'] = f.magic()
         result['filetype'] = f.filetype()
@@ -66,25 +66,11 @@ class FileAnalyzer(Analyzer):
         detections = {}
         filetype = report['filetype']
         keywords = report['PDF']['pdfid'][0]['pdfid']['keywords']['keyword']
+        score = 0
         for obj in keywords:
-            if obj['name'].startswith('/'):
+            if obj['name'] in ['/JavaScript', '/OpenAction', '/RichMedia', '/ObjStm', '/Launch']:
+                score = score + obj['count']
                 detections[obj['name']] = obj['count']
-        # Count detections
-        count_java_script = detections['/JavaScript']
-        count_rich_media = detections['/RichMedia']
-        count_obj_stm = detections['/ObjStm']
-        count_open_action = detections['/OpenAction']
-        count_launch = detections['/Launch']
-        detect = detections
-        detections = {}
-        detections['/JavaScript'] = detect['/JavaScript']
-        detections['/OpenAction'] = detect['/OpenAction']
-        detections['/RichMedia'] = detect['/RichMedia']
-        detections['/ObjStm'] = detect['/ObjStm']
-        detections['/OpenAction'] = detect['/OpenAction']
-        detections['/Launch'] = detect['/Launch']
-        score = count_java_script + count_open_action + count_rich_media + count_obj_stm + count_open_action\
-            + count_launch
 
         if score > 0:
             suspicious = True
@@ -106,7 +92,6 @@ class FileAnalyzer(Analyzer):
 
     def pdf_summary(self, report):
         result = {}
-        detections = {}
         result.update({'score': self.pdfid_analysis(report)['score']})
         result.update({'suspicious': self.pdfid_analysis(report)['suspicious']})
         result.update({'detections': self.pdfid_analysis(report)['detections']})
@@ -136,31 +121,31 @@ class FileAnalyzer(Analyzer):
         return result
 
     # SUMMARY
-    def summary(self, fullReport):
+    def summary(self, full_report):
         taxonomies = []
         level = "info"
         namespace = "FileInfo"
         predicate = "Filetype"
 
-        if fullReport['Mimetype'] in ['application/x-dosexec']:
-            pereport = self.pe_summary(fullReport)
+        if full_report['Mimetype'] in ['application/x-dosexec']:
+            pereport = self.pe_summary(full_report)
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, pereport['filetype']))
-        elif fullReport['Mimetype'] in ['application/pdf']:
-            pdfreport = self.pdf_summary(fullReport)
+        elif full_report['Mimetype'] in ['application/pdf']:
+            pdfreport = self.pdf_summary(full_report)
             value = "\"{}\"".format(pdfreport['filetype'])
             if pdfreport['suspicious']:
                 level = 'suspicious'
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-        elif (fullReport['filetype'] in ['DOC', 'DOCM', 'DOCX',
-                                         'XLS', 'XLSM', 'XLSX',
-                                         'PPT', "PPTM", 'PPTX']):
-            msreport = self.msoffice_summary(fullReport)
+        elif (full_report['filetype'] in ['DOC', 'DOCM', 'DOCX',
+                                          'XLS', 'XLSM', 'XLSX',
+                                          'PPT', "PPTM", 'PPTX']):
+            msreport = self.msoffice_summary(full_report)
             value = "\"{}\"".format(msreport['filetype'])
             if msreport['suspicious']:
                 level = 'suspicious'
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         else:
-            value = "\"{}\"".format(fullReport['filetype'])
+            value = "\"{}\"".format(full_report['filetype'])
             level = 'info'
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 

@@ -16,10 +16,10 @@ RED_CATEGORIES = [
 
 YELLOW_CATEGORIES = [
     "AbusedTLD", "Bitcoin_Related", "ChatServer",
-    "DynDNS",  "IPCheck", "OnlineGaming", "P2P",
+    "DynDNS", "IPCheck", "OnlineGaming", "P2P",
     "Parking", "Proxy", "RemoteAccessService",
     "SelfSignedSSL", "Skype_SuperNode", "TorNode",
-    "Undesirable",  "VPN"
+    "Undesirable", "VPN"
 ]
 
 GREEN_CATEGORIES = [
@@ -43,7 +43,8 @@ class EmergingThreatsAnalyzer(Analyzer):
                 value = "%s=%d" % (x['category'], x['score'])
                 if x['category'] in RED_CATEGORIES and x['score'] >= 70:
                     level = "malicious"
-                elif (70 <= x['score'] < 100 and x['category'] in RED_CATEGORIES) or (x['score'] >= 100 and x['category'] in YELLOW_CATEGORIES):
+                elif (70 <= x['score'] < 100 and x['category'] in RED_CATEGORIES) or (
+                        x['score'] >= 100 and x['category'] in YELLOW_CATEGORIES):
                     level = "suspicious"
                 else:
                     level = "safe"
@@ -52,7 +53,7 @@ class EmergingThreatsAnalyzer(Analyzer):
             value = str(len(raw['events'])) + " signatures"
             taxonomies.append(self.build_taxonomy("malicious", namespace, 'malware-info', value))
 
-        return {"taxonomies":taxonomies}
+        return {"taxonomies": taxonomies}
 
     def run(self):
         Analyzer.run(self)
@@ -63,11 +64,11 @@ class EmergingThreatsAnalyzer(Analyzer):
                 url = "https://api.emergingthreats.net/v1/domains/"
                 features = {'reputation', 'urls', 'samples', 'ips', 'events', 'nameservers', 'whois', 'geoloc'}
 
-            elif self.data_type == 'ip'
+            elif self.data_type == 'ip':
                 url = "https://api.emergingthreats.net/v1/ips/"
                 features = {'reputation', 'urls', 'samples', 'domains', 'events', 'geoloc'}
 
-            elif self.data_type == 'malware'
+            elif self.data_type == 'malware':
                 url = "https://api.emergingthreats.net/v1/samples/"
                 features = {'', 'connections', 'dns', 'events'}
             else:
@@ -79,7 +80,7 @@ class EmergingThreatsAnalyzer(Analyzer):
                 r = self.session.get(url + object_name + end + feature)
                 if feature == '':
                     feature = 'main'
-                r_json= r.json()
+                r_json = r.json()
                 if r.status_code == 200 and r_json['response'] not in [{}, []]:
                     info[feature] = r_json['response']
                 elif r.status_code != 200:

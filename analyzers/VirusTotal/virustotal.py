@@ -79,7 +79,7 @@ class VirusTotalAnalyzer(Analyzer):
         result["positives"] = raw.get("positives", 0)
         result["total"] = raw.get("total", 0)
 
-        if "scan_date" in raw :
+        if "scan_date" in raw:
             result["scan_date"] = raw["scan_date"]
 
         if self.service == "get":
@@ -153,11 +153,10 @@ class VirusTotalAnalyzer(Analyzer):
                 self.report(self.check_response(self.vt.get_ip_report(data)))
             elif self.data_type == 'file':
 
-                hashes = self.get_param('attachment.hashes',
-                                    None)
+                hashes = self.get_param('attachment.hashes', None)
                 if hashes is None:
                     filepath = self.get_param('file', None, 'File is missing')
-                    hash = hashlib.sha256(open(filepath, 'r').read()).hexdigest();
+                    hash = hashlib.sha256(open(filepath, 'r').read()).hexdigest()
                 else:
                     # find SHA256 hash
                     hash = next(h for h in hashes if len(h) == 64)

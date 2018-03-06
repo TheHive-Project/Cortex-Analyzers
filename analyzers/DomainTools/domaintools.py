@@ -61,22 +61,30 @@ class DomainToolsAnalyzer(Analyzer):
 
         # Prepare predicate and value for each service
         if r["service"] in ["reverse-ip", "host-domains"]:
-            taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_IP","\"{}, {} domains\"".format(r["ip"]["address"], r["ip"]["domain_count"])))
+            taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_IP",
+                                                  "\"{}, {} domains\"".format(r["ip"]["address"],
+                                                                              r["ip"]["domain_count"])))
 
         if r["service"] == "name-server-domains":
-            taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_Name_Server","\"{}, {} domains\"".format(r["name_server"], r["domain_count"])))
+            taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_Name_Server",
+                                                  "\"{}, {} domains\"".format(r["name_server"], r["domain_count"])))
 
         if r["service"] == "reverse-whois":
-            taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_Whois","\"curr:{} / hist:{} domains\"".format(r["domain_count"]["current"], r["domain_count"]["historic"])))
+            taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_Whois",
+                                                  "\"curr:{} / hist:{} domains\"".format(r["domain_count"]["current"],
+                                                                                         r["domain_count"][
+                                                                                             "historic"])))
 
         if r["service"] == "whois/history":
-            taxonomies.append(self.build_taxonomy("info", "DT", "Whois_History","\"{}, {} domains \"".format(r["name_server"], r["domain_count"])))
+            taxonomies.append(self.build_taxonomy("info", "DT", "Whois_History",
+                                                  "\"{}, {} domains \"".format(r["name_server"], r["domain_count"])))
 
         if r["service"] == "whois/parsed" or r['service'] == "whois":
             if r["registrar"]:
                 taxonomies.append(self.build_taxonomy("info", "DT", "Whois", "\"REGISTRAR:{}\"".format(r["registrar"])))
             if r["registrant"]:
-                taxonomies.append(self.build_taxonomy("info", "DT", "Whois", "\"REGISTRANT:{}\"".format(r["registrant"])))
+                taxonomies.append(
+                    self.build_taxonomy("info", "DT", "Whois", "\"REGISTRANT:{}\"".format(r["registrant"])))
 
         result = {'taxonomies': taxonomies}
         return result

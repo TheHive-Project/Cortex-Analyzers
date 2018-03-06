@@ -30,7 +30,7 @@ class NessusAnalyzer(Analyzer):
     def summary(self, raw):
         summary = {}
         if "vulnerabilities" in raw:
-            count = [ 0, 0, 0, 0, 0 ]
+            count = [0, 0, 0, 0, 0]
             for vuln in raw["vulnerabilities"]:
                 count[vuln["severity"]] += 1
             summary["info"]     = count[0]
@@ -43,15 +43,14 @@ class NessusAnalyzer(Analyzer):
         level = "info"
         namespace = "Nessus"
         predicate = "Info"
-        value = "\"0\""
 
         if summary["info"] > 0:
             value = summary["info"]
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-        if summary["low"] >0:
+        if summary["low"] > 0:
             value = summary["low"]
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-        if summary["medium"] >0:
+        if summary["medium"] > 0:
             value = summary["medium"]
             level = "suspicious"
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
@@ -59,7 +58,7 @@ class NessusAnalyzer(Analyzer):
             value = summary["high"]
             level = "suspicious"
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-        if summary["critical"] >0:
+        if summary["critical"] > 0:
             value = summary["critical"]
             level = "malicious"
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
@@ -82,12 +81,14 @@ class NessusAnalyzer(Analyzer):
                     address = IPAddress(data)
                 except Exception as e:
                     self.error("{}".format(e))
-            if not any(address in IPNetwork(network)
-                for network in self.allowed_networks):
+            if not any(address in IPNetwork(network) for network in self.allowed_networks):
                 self.error('Invalid target: not in any allowed network')
 
         scanner_args = {
-            'url': self.url, 'login': self.login, 'password': self.password }
+            'url': self.url,
+            'login': self.login,
+            'password': self.password
+        }
         if self.ca_bundle is not None:
             scanner_args.update({'ca_bundle': self.ca_bundle})
         else:

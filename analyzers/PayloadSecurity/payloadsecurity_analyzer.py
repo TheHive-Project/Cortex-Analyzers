@@ -58,7 +58,7 @@ class PayloadSecurityAnalyzer(Analyzer):
 
             # Submit Analysis
             # File
-            if self.data_type = 'file':
+            if self.data_type == 'file':
                 data = {'environmentId': self.environmentid, 'comment': 'Submitted by Cortex'}
                 filepath = self.get_param('file', None, 'File is missing')
                 f = open(filepath, "rb")

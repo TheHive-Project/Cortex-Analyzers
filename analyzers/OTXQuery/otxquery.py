@@ -40,9 +40,9 @@ class OTXQueryAnalyzer(Analyzer):
             ip_general = ip_['general']
             ip_geo = ip_['geo']
             self.report({
-                'pulse_count': ip_general.get('pulse_info',{}).get('count',"0"),
-                'pulses': ip_general.get('pulse_info',{}).get('pulses',"-"),
-                'whois': ip_general.get('whois',"-"),
+                'pulse_count': ip_general.get('pulse_info', {}).get('count', "0"),
+                'pulses': ip_general.get('pulse_info', {}).get('pulses', "-"),
+                'whois': ip_general.get('whois', "-"),
                 'continent_code': ip_geo.get('continent_code', "-"),
                 'country_code': ip_geo.get('country_code', "-"),
                 'country_name': ip_geo.get('country_name', "-"),
@@ -50,9 +50,9 @@ class OTXQueryAnalyzer(Analyzer):
                 'longitude': ip_general.get('longitude', "-"),
                 'latitude': ip_general.get('latitude', "-"),
                 'asn': ip_geo.get('asn', "-"),
-                'malware_samples': ip_.get('malware',{}).get('result',"-"),
-                'url_list': ip_.get('url_list',{}).get('url_list',"-"),
-                'passive_dns': ip_.get('passive_dns',{}).get('passive_dns',"-")
+                'malware_samples': ip_.get('malware', {}).get('result', "-"),
+                'url_list': ip_.get('url_list', {}).get('url_list', "-"),
+                'passive_dns': ip_.get('passive_dns', {}).get('passive_dns', "-")
             })
         except Exception:
             self.error('API Error! Please verify data type is correct.')
@@ -68,22 +68,22 @@ class OTXQueryAnalyzer(Analyzer):
                 ip_[section] = json.loads(requests.get(queryurl, headers=headers).content)
 
             result = {
-                'pulse_count': ip_.get('general',{}).get('pulse_info',{}).get('count',"0"),
-                'pulses': ip_.get('general',{}).get('pulse_info',{}).get('pulses',"-"),
-                'whois': ip_.get('general',{}).get('whois',"-"),
-                'malware_samples': ip_.get('malware',{}).get('result',"-"),
-                'url_list': ip_.get('url_list',{}).get('url_list',"-"),
-                'passive_dns': ip_.get('passive_dns',{}).get('passive_dns',"-")
-                }
+                'pulse_count': ip_.get('general', {}).get('pulse_info', {}).get('count', "0"),
+                'pulses': ip_.get('general', {}).get('pulse_info', {}).get('pulses', "-"),
+                'whois': ip_.get('general', {}).get('whois', "-"),
+                'malware_samples': ip_.get('malware', {}).get('result', "-"),
+                'url_list': ip_.get('url_list', {}).get('url_list', "-"),
+                'passive_dns': ip_.get('passive_dns', {}).get('passive_dns', "-")
+            }
 
             try:
                 result.update({
-                    'continent_code': ip_.get('geo',{}).get('continent_code',"-"),
-                    'country_code': ip_.get('geo',{}).get('country_code',"-"),
-                    'country_name': ip_.get('geo',{}).get('country_name',"-"),
-                    'city': ip_.get('geo',{}).get('city',"-"),
-                    'asn': ip_.get('geo',{}).get('asn',"-")
-                    })
+                    'continent_code': ip_.get('geo', {}).get('continent_code', "-"),
+                    'country_code': ip_.get('geo', {}).get('country_code', "-"),
+                    'country_name': ip_.get('geo', {}).get('country_name', "-"),
+                    'city': ip_.get('geo', {}).get('city', "-"),
+                    'asn': ip_.get('geo', {}).get('asn', "-")
+                })
             except Exception:
                 pass
 
@@ -104,17 +104,24 @@ class OTXQueryAnalyzer(Analyzer):
             if ip_['analysis']['analysis']:
                 # file has been analyzed before
                 self.report({
-                    'pulse_count': ip_.get('general',{}).get('pulse_info',{}).get('count',"0"),
-                    'pulses': ip_.get('general',{}).get('pulse_info',{}).get('pulses',"-"),
-                    'malware': ip_.get('analysis',{}).get('malware',"-"),
-                    'page_type': ip_.get('analysis',{}).get('page_type',"-"),
-                    'sha1': ip_.get('analysis',{}).get('analysis',{}).get('info',{}).get('results',{}).get('sha1',"-"),
-                    'sha256': ip_.get('analysis',{}).get('analysis',{}).get('info',{}).get('results',{}).get('sha256',"-"),
-                    'md5': ip_.get('analysis',{}).get('analysis',{}).get('info',{}).get('results',{}).get('md5',"-"),
-                    'file_class': ip_.get('analysis',{}).get('analysis',{}).get('info',{}).get('results',{}).get('file_class',"-"),
-                    'file_type': ip_.get('analysis',{}).get('analysis',{}).get('info',{}).get('results',{}).get('file_type',"-"),
-                    'filesize': ip_.get('analysis',{}).get('analysis',{}).get('info',{}).get('results',{}).get('filesize',"-"),
-                    'ssdeep': ip_.get('analysis',{}).get('analysis',{}).get('info',{}).get('results',{}).get('ssdeep')
+                    'pulse_count': ip_.get('general', {}).get('pulse_info', {}).get('count', "0"),
+                    'pulses': ip_.get('general', {}).get('pulse_info', {}).get('pulses', "-"),
+                    'malware': ip_.get('analysis', {}).get('malware', "-"),
+                    'page_type': ip_.get('analysis', {}).get('page_type', "-"),
+                    'sha1': ip_.get('analysis', {}).get('analysis', {}).get('info', {}).get('results', {}).get('sha1',
+                                                                                                               "-"),
+                    'sha256': ip_.get('analysis', {}).get('analysis', {}).get('info', {}).get('results', {}).get(
+                        'sha256', "-"),
+                    'md5': ip_.get('analysis', {}).get('analysis', {}).get('info', {}).get('results', {}).get('md5',
+                                                                                                              "-"),
+                    'file_class': ip_.get('analysis', {}).get('analysis', {}).get('info', {}).get('results', {}).get(
+                        'file_class', "-"),
+                    'file_type': ip_.get('analysis', {}).get('analysis', {}).get('info', {}).get('results', {}).get(
+                        'file_type', "-"),
+                    'filesize': ip_.get('analysis', {}).get('analysis', {}).get('info', {}).get('results', {}).get(
+                        'filesize', "-"),
+                    'ssdeep': ip_.get('analysis', {}).get('analysis', {}).get('info', {}).get('results', {}).get(
+                        'ssdeep')
                 })
             else:
                 # file has not been analyzed before
@@ -139,11 +146,11 @@ class OTXQueryAnalyzer(Analyzer):
                 IP_[section] = json.loads(requests.get(queryurl, headers=headers).content)
 
             self.report({
-                'pulse_count': IP_.get('general',{}).get('pulse_info',{}).get('count',"0"),
-                'pulses': IP_.get('general',{}).get('pulse_info',{}).get('pulses',"-"),
-                'alexa': IP_.get('general',{}).get('alexa',"-"),
-                'whois': IP_.get('general',{}).get('whois',"-"),
-                'url_list': IP_.get('url_list',{}).get('url_list',"-")
+                'pulse_count': IP_.get('general', {}).get('pulse_info', {}).get('count', "0"),
+                'pulses': IP_.get('general', {}).get('pulse_info', {}).get('pulses', "-"),
+                'alexa': IP_.get('general', {}).get('alexa', "-"),
+                'whois': IP_.get('general', {}).get('whois', "-"),
+                'url_list': IP_.get('url_list', {}).get('url_list', "-")
             })
         except:
             self.error('API Error! Please verify data type is correct.')
