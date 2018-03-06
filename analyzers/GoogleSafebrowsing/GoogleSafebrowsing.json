@@ -14,7 +14,8 @@
       "description": "Client identifier",
       "type": "string",
       "multi": false,
-      "required": false
+      "required": false,
+      "defaultValue": "cortex"
     },
     {
       "name": "key",
