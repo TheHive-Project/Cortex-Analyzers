@@ -1,15 +1,14 @@
 {
-    "name": "Robtex_Reverse_PDNS_Query",
-    "version": "1.0",
-    "author": "Nils Kuhnert",
-    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "Check IPs using the Robtex reverse passive dns API",
-    "dataTypeList": ["ip"],
-    "baseConfig": "Robtex",
-    "config": {
-        "check_tlp": false,
-        "service": "rpdnsquery"
-    },
-    "command": "Robtex/robtex.py"
+  "name": "Robtex_Reverse_PDNS_Query",
+  "version": "1.0",
+  "author": "Nils Kuhnert",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Check IPs using the Robtex reverse passive dns API",
+  "dataTypeList": ["ip"],
+  "baseConfig": "Robtex",
+  "command": "Robtex/robtex.py",
+  "config": {
+    "service": "rpdnsquery"
+  }
 }

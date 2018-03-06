@@ -1,18 +1,11 @@
 {
-    "name": "Msg_Parser",
-    "version": "2.0",
-    "author": "CERT-BDF",
-    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "baseconfig":"Msg_Parser",
-    "config": {
-        "check_tlp": false,
-        "max_tlp": 3,
-        "service": ""
-    },
-    "description": "Parse Outlook MSG files and extract the main artifacts.",
-    "dataTypeList": [
-        "file"
-    ],
-    "command": "MsgParser/parse.py"
+  "name": "Msg_Parser",
+  "version": "2.0",
+  "author": "CERT-BDF",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Parse Outlook MSG files and extract the main artifacts.",
+  "dataTypeList": ["file"],
+  "baseConfig": "MsgParser",
+  "command": "MsgParser/parse.py"
 }

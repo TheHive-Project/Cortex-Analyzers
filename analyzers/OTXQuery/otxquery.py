@@ -15,8 +15,6 @@ class OTXQueryAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.service = self.getParam(
-            'config.service', None, 'Service parameter is missing')
         self.otx_key = self.getParam('config.key', None, 'Missing OTX API key')
 
     def _getHeaders(self):
@@ -165,34 +163,30 @@ class OTXQueryAnalyzer(Analyzer):
 
     def run(self):
         Analyzer.run(self)
-
-        if self.service == 'query':
-            if self.data_type == 'file':
-                hashes = self.getParam('attachment.hashes', None)
-                if hashes is None:
-                    filepath = self.getParam('file', None, 'File is missing')
-                    hash = hashlib.sha256(open(filepath, 'r').read()).hexdigest();
-                else:
-                    # find SHA256 hash
-                    hash = next(h for h in hashes if len(h) == 64)
-                self.OTX_Query_File(hash)
-            elif self.data_type == 'url':
-                data = self.getParam('data', None, 'Data is missing')
-                self.OTX_Query_URL(data)
-            elif self.data_type == 'domain':
-                data = self.getParam('data', None, 'Data is missing')
-                self.OTX_Query_Domain(data)
-            elif self.data_type == 'ip':
-                data = self.getParam('data', None, 'Data is missing')
-                self.OTX_Query_IP(data)
-            elif self.data_type == 'hash':
-                data = self.getParam('data', None, 'Data is missing')
-
-                self.OTX_Query_File(data)
+        if self.data_type == 'file':
+            hashes = self.getParam('attachment.hashes', None)
+            if hashes is None:
+                filepath = self.getParam('file', None, 'File is missing')
+                hash = hashlib.sha256(open(filepath, 'r').read()).hexdigest();
             else:
-                self.error('Invalid data type')
+                # find SHA256 hash
+                hash = next(h for h in hashes if len(h) == 64)
+            self.OTX_Query_File(hash)
+        elif self.data_type == 'url':
+            data = self.getParam('data', None, 'Data is missing')
+            self.OTX_Query_URL(data)
+        elif self.data_type == 'domain':
+            data = self.getParam('data', None, 'Data is missing')
+            self.OTX_Query_Domain(data)
+        elif self.data_type == 'ip':
+            data = self.getParam('data', None, 'Data is missing')
+            self.OTX_Query_IP(data)
+        elif self.data_type == 'hash':
+            data = self.getParam('data', None, 'Data is missing')
+
+            self.OTX_Query_File(data)
         else:
-            self.error('Invalid service')
+            self.error('Invalid data type')
 
 
 if __name__ == '__main__':

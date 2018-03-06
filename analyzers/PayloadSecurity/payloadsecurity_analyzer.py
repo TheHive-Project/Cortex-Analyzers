@@ -10,7 +10,6 @@ import time
 class PayloadSecurityAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
-        self.service = self.getParam('config.service', None, 'PayloadSecurity service is missing')
         self.url = self.getParam('config.url', None, 'PayloadSecurity url is missing')
         self.apikey = self.getParam('config.key', None, 'PayloadSecurity apikey is missing')
         self.secret = self.getParam('config.secret', None, 'PayloadSecurity secret is missing')
@@ -29,7 +28,7 @@ class PayloadSecurityAnalyzer(Analyzer):
         value = "\"0/100\""
 
         result = {
-            'service': self.service,
+            'service': self.data_type + '_analysis',
             'dataType': self.data_type
         }
         result["verdict"] = raw.get("verdict", None)
@@ -59,7 +58,7 @@ class PayloadSecurityAnalyzer(Analyzer):
 
             # Submit Analysis
             # File
-            if self.service in ['file_analysis']:
+            if self.data_type = 'file':
                 data = {'environmentId': self.environmentid, 'comment': 'Submitted by Cortex'}
                 filepath = self.getParam('file', None, 'File is missing')
                 f = open(filepath, "rb")
@@ -88,7 +87,7 @@ class PayloadSecurityAnalyzer(Analyzer):
                     self.error('Unknown Server Error')
 
             # URL
-            elif self.service == 'url_analysis':
+        elif self.data_type == 'url':
                 data = {'environmentId': self.environmentid, 'analyzeurl': self.getData(),
                         'comment': 'Submitted by Cortex'}
                 response = requests.post(self.url.strip('/') + '/api/submiturl', data=data, headers=user_agent,

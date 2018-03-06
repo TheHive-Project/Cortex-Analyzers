@@ -1,17 +1,31 @@
 {
-    "name": "DNSDB_DomainName",
-    "version": "2.0",
-    "author": "CERT-BDF",
-    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "baseConfig": "DNSDB",
-    "config": {
-        "check_tlp": true,
-        "max_tlp": 1,
-        "service": "domain_name"
-
+  "name": "DNSDB_DomainName",
+  "version": "2.0",
+  "author": "CERT-BDF",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use DNSDB to fetch historical records for a domain.",
+  "dataTypeList": ["domain", "fqdn"],
+  "command": "DNSDB/dnsdb.py",
+  "baseConfig": "DNSDB",
+  "config": {
+      "service": "domain_name"
+  },
+  "configurationItems": [
+    {
+      "name": "server",
+      "description": "DNSDB server name",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "https://api.dnsdb.info"
     },
-    "description": "Use DNSDB to fetch historical records for a domain.",
-    "dataTypeList": ["domain", "fqdn"],
-    "command": "DNSDB/dnsdb.py"
+    {
+      "name": "key",
+      "description": "Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
 }

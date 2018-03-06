@@ -1,16 +1,30 @@
 {
-    "name": "DomainTools_WhoisLookup",
-    "version": "2.0",
-    "author": "CERT-BDF",
-    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "baseConfig": "DomainTools",
-    "config": {
-        "check_tlp": true,
-        "max_tlp": 1,
-        "service": "whois/parsed"
+  "name": "DomainTools_WhoisLookup",
+  "version": "2.0",
+  "author": "CERT-BDF",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use DomainTools to get the ownership record for a domain with basic registration details.",
+  "dataTypeList": ["domain"],
+  "command": "DomainTools/domaintools.py",
+  "baseConfig": "DomainTools",
+  "config": {
+      "service": "whois/parsed"
+  },
+  "configurationItems": [
+    {
+      "name": "username",
+      "description": "DomainTools API credentials",
+      "type": "string",
+      "multi": false,
+      "required": true
     },
-    "description": "Use DomainTools to get the ownership record for a domain with basic registration details.",
-    "dataTypeList": ["domain"],
-    "command": "DomainTools/domaintools.py"
+    {
+      "name": "key",
+      "description": "DomainTools API credentials",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
 }

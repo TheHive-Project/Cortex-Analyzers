@@ -1,16 +1,43 @@
 {
-    "name": "VMRay",
-    "license": "AGPL-V3", 
-    "author": "Nils Kuhnert, CERT-Bund",
-    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-    "version": "2.0",
-    "baseConfig": "VMRay",
-    "config": {
-        "cert": false,
-        "check_tlp": true,
-        "max_tlp": 1
+  "name": "VMRay",
+  "license": "AGPL-V3",
+  "author": "Nils Kuhnert, CERT-Bund",
+  "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+  "version": "2.0",
+  "description": "VMRay Sandbox file analysis.",
+  "dataTypeList": ["hash", "file"],
+  "command": "VMRay/vmray.py",
+  "baseConfig": "VMRay",
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "Define the URL of the service",
+      "type": "string",
+      "multi": false,
+      "required": true
     },
-    "description": "VMRay Sandbox file analysis.",
-    "dataTypeList": ["hash", "file"],
-    "command": "VMRay/vmray.py"
+    {
+      "name": "key",
+      "description": "Define the API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "certpath",
+      "description": "Verify certificates",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "disablereanalyze",
+      "description": "Define if reanalyze is required or not",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    }
+  ]
 }

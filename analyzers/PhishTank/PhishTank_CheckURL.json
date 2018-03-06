@@ -7,10 +7,14 @@
     "description": "Use PhishTank to check if a URL is a verified phishing site.",
     "dataTypeList": ["url"],
     "baseConfig": "PhishTank",
-    "config": {
-        "check_tlp": true,
-        "max_tlp": 1,
-        "service": "query"
-    },
-    "command": "PhishTank/phishtank_checkurl.py"
+    "command": "PhishTank/phishtank_checkurl.py",
+    "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
 }

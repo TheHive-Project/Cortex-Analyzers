@@ -1,16 +1,23 @@
 {
-    "name": "WOT_Lookup",
-    "version": "1.0",
-    "author": "Andrea Garavaglia, LDO-CERT",
-    "url": "https://github.com/garanews/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "Use Web of Trust to check a domain's reputation.",
-    "dataTypeList": ["domain", "fqdn"],
-    "baseConfig": "WOT",
-    "config": {
-        "check_tlp": true,
-        "max_tlp": 1,
-        "service": "query"
-    },
-    "command": "WOT/WOT_lookup.py"
+  "name": "WOT_Lookup",
+  "version": "1.0",
+  "author": "Andrea Garavaglia, LDO-CERT",
+  "url": "https://github.com/garanews/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use Web of Trust to check a domain's reputation.",
+  "dataTypeList": ["domain", "fqdn"],
+  "command": "WOT/WOT_lookup.py",
+  "baseConfig": "WOT",
+  "config": {
+      "service": "query"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
 }

@@ -1,16 +1,21 @@
 {
-    "name": "CuckooSandbox_Url_Analysis",
-    "version": "1.0",
-    "author": "Andrea Garavaglia, LDO-CERT",
-    "url": "https://github.com/garanews/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "baseConfig": "CuckooSandbox",
-    "config": {
-        "check_tlp": true,
-        "max_tlp":1,
-        "service": "url_analysis"
-    },
-    "description": "Cuckoo Sandbox URL analysis.",
-    "dataTypeList": ["url"],
-    "command": "CuckooSandbox/cuckoosandbox_analyzer.py"
+  "name": "CuckooSandbox_Url_Analysis",
+  "version": "1.0",
+  "author": "Andrea Garavaglia, LDO-CERT",
+  "url": "https://github.com/garanews/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Cuckoo Sandbox URL analysis.",
+  "dataTypeList": ["url"],
+  "command": "CuckooSandbox/cuckoosandbox_analyzer.py",
+  "baseConfig": "CuckooSandbox",
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "URL",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+
 }

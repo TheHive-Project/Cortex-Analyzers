@@ -1,15 +1,28 @@
 {
-    "name": "TorBlutmagie",
-    "author": "Marc-André DOLL, STARC by EXAPROBE",
-    "license": "AGPL-V3",
-    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
-    "version": "1.0",
-    "baseConfig": "TorBlutmagie",
-    "config": {
-        "check_tlp": false,
-        "max_tlp": 3
+  "name": "TorBlutmagie",
+  "author": "Marc-André DOLL, STARC by EXAPROBE",
+  "license": "AGPL-V3",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "version": "1.0",
+  "description": "Query http://torstatus.blutmagie.de/query_export.php/Tor_query_EXPORT.csv for TOR exit nodes IP addresses or names.",
+  "dataTypeList": ["ip", "domain", "fqdn"],
+  "command": "TorBlutmagie/tor_blutmagie_analyzer.py",
+  "baseConfig": "TorBlutmagie",
+  "configurationItems": [
+    {
+      "name": "cache.duration",
+      "description": "Define the cache duration",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 3600
     },
-    "description": "Query http://torstatus.blutmagie.de/query_export.php/Tor_query_EXPORT.csv for TOR exit nodes IP addresses or names.",
-    "dataTypeList": ["ip", "domain", "fqdn"],
-    "command": "TorBlutmagie/tor_blutmagie_analyzer.py"
+    {
+      "name": "cache.root",
+      "description": "Define the path to the stored data",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ]
 }
