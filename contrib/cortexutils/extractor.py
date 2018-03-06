@@ -64,13 +64,13 @@ class Extractor:
         # URL
         regex.append({
             'type': 'url',
-            'regex': re.compile(r'^(http\:\/\/|https:\/\/)')
+            'regex': re.compile(r'^(http://|https://)')
         })
 
         # domain
         regex.append({
             'type': 'domain',
-            'regex': re.compile(r'^(?!http\:\/\/|https\:\/\/)^[\w\-]+\.[a-zA-Z]+$')
+            'regex': re.compile(r'^(?!http://|https://)^[\w\-]+\.[a-zA-Z]+$')
         })
 
         # hash
@@ -82,14 +82,14 @@ class Extractor:
         # user-agent
         regex.append({
             'type': 'user-agent',
-            'regex': re.compile(r'^(Mozilla\/[45]\.0 |AppleWebKit\/[0-9]{3}\.[0-9]{2} |Chrome\/[0-9]{2}\.[0-9]\.'
-                                r'[0-9]{4}\.[0-9]{3} |Safari\/[0-9]{3}\.[0-9]{2} ).*?$')
+            'regex': re.compile(r'^(Mozilla/[45]\.0 |AppleWebKit/[0-9]{3}\.[0-9]{2} |Chrome/[0-9]{2}\.[0-9]\.'
+                                r'[0-9]{4}\.[0-9]{3} |Safari/[0-9]{3}\.[0-9]{2} ).*?$')
         })
 
         # uri_path
         regex.append({
             'type': 'uri_path',
-            'regex': re.compile(r'^(?!http\:\/\/|https\:\/\/)[A-Za-z]*\:\/\/')
+            'regex': re.compile(r'^(?!http://|https://)[A-Za-z]*://')
         })
 
         # regkey
@@ -102,13 +102,13 @@ class Extractor:
         # mail
         regex.append({
             'type': 'mail',
-            'regex': re.compile(r'[\w\.\-]+@\w+\.[\w\.]+')
+            'regex': re.compile(r'[\w.\-]+@\w+\.[\w.]+')
         })
 
         # fqdn
         regex.append({
             'type': 'fqdn',
-            'regex': re.compile(r'^(?!http\:\/\/|https\:\/\/)^[\w\-\.]+\.[\w\-]+\.[a-zA-Z]+$')
+            'regex': re.compile(r'^(?!http://|https://)^[\w\-.]+\.[\w\-]+\.[a-zA-Z]+$')
         })
 
         return regex

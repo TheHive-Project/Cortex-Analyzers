@@ -23,15 +23,14 @@
         <div >
             <dl ng-repeat="(k,v) in content.Founds" class="dl-horizontal" >
                 <dt ng-if="v">{{k}}</dt>
-                <dd ng-repeat="l in content[k]">{{l}}</dt>
+                <dd ng-repeat="l in content[k]">{{l}}</dd>
             </dl>
         </div>
 
         <dl class="dl-horizontal" >
             <dt>permalink</dt>
-            <dd ><a href=content.permalink>{{content.permalink}}</a></dt>
+            <dd ><a href=content.permalink>{{content.permalink}}</a></dd>
         </dl>
-        
-        </div>
+
     </div>
 </div>

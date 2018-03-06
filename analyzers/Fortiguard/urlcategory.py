@@ -37,7 +37,7 @@ class URLCategoryAnalyzer(Analyzer):
             try:
                 pattern = re.compile("(?:Category: )([\w\s]+)")
                 baseurl = 'https://www.fortiguard.com/webfilter?q='
-                url = baseurl + self.getData()
+                url = baseurl + self.get_data()
                 req = requests.get(url)
                 category_match = re.search(pattern, req.content, flags=0)
                 self.report({
@@ -47,6 +47,7 @@ class URLCategoryAnalyzer(Analyzer):
                 self.unexpectedError(e)
         else:
             self.notSupported()
+
 
 if __name__ == '__main__':
     URLCategoryAnalyzer().run()

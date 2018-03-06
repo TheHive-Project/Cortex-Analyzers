@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-
-import ipaddress
-
-from requests.compat import urljoin, quote_plus
+from requests.compat import urljoin
 import requests
 
 
@@ -59,7 +56,7 @@ class Onyphe:
             raise APIRateLimiting(response.text)
         try:
             response_data = response.json()
-        except:
+        except Exception:
             raise APIError("Couldn't parse response JSON")
 
         if response_data["error"] > 0:
@@ -68,7 +65,7 @@ class Onyphe:
 
         return response_data
 
-    def myip(self, ip: str):
+    def myip(self):
         """This method is open to use. There is need for an API key.
         """
         url_path = "/api/myip"

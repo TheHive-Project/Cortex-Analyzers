@@ -1,17 +1,16 @@
 #!/usr/bin/env python
 # encoding: utf-8
-
 import json
 import requests
 import datetime
 from cortexutils.analyzer import Analyzer
 
-class WOTAnalyzer(Analyzer):
 
+class WOTAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
-        self.WOT_key = self.getParam('config.key', None,
-                                    'Missing WOT API key')
+        self.WOT_key = self.get_param('config.key', None,
+                                      'Missing WOT API key')
         self.categories = {
             "101": "Malware or viruses",
             "102": "Poor customer experience",
@@ -48,14 +47,13 @@ class WOTAnalyzer(Analyzer):
         else:
             return "Very poor"
 
-    def WOT_checkurl(self, data):
+    def wot_checkurl(self, data):
         url = 'http://api.mywot.com/0.4/public_link_json2?hosts=' + data + '/&callback=process&key=' + self.WOT_key
         r = requests.get(url)
-        return json.loads(r.text.replace("process(","").replace(")",""))
+        return json.loads(r.text.replace("process(", "").replace(")", ""))
 
     def summary(self, raw):
         taxonomies = []
-        level = "safe"
         value = "-"
 
         categories = raw.get("Categories", None)
@@ -84,8 +82,8 @@ class WOTAnalyzer(Analyzer):
 
     def run(self):
         if self.data_type in ['domain', 'fqdn']:
-            data = self.getParam('data', None, 'Data is missing')
-            r = self.WOT_checkurl(data)
+            data = self.get_param('data', None, 'Data is missing')
+            r = self.wot_checkurl(data)
             if data in r.keys():
                 info = r[data]
                 r_dict = {}
@@ -98,13 +96,15 @@ class WOTAnalyzer(Analyzer):
                     r_dict['Child_Safety']['Reputation'] = self.points_to_verbose(info['4'][0])
                     r_dict['Child_Safety']['Confidence'] = self.points_to_verbose(info['4'][1])
                 if 'blacklists' in info.keys():
-                    r_dict['Blacklists'] = [(k, datetime.datetime.fromtimestamp(v).strftime('%Y-%m-%d %H:%M:%S') ) for k,v in info['blacklists'].items()]
+                    r_dict['Blacklists'] = [(k, datetime.datetime.fromtimestamp(v).strftime('%Y-%m-%d %H:%M:%S'))
+                                            for k, v in info['blacklists'].items()]
                 if 'categories' in info.keys():
                     r_dict['Categories'] = [self.categories[x] for x in list(info['categories'].keys())]
                     r_dict['Categories Identifier'] = list(info['categories'].keys())
                 self.report(r_dict)
         else:
             self.error('Invalid data type')
+
 
 if __name__ == '__main__':
     WOTAnalyzer().run()

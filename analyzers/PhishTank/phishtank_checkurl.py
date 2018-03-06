@@ -1,37 +1,31 @@
 #!/usr/bin/env python
 # encoding: utf-8
-import sys
-import os
 import json
-import codecs
-import time
-import re
 import requests
 from cortexutils.analyzer import Analyzer
 
-class phishtankAnalyzer(Analyzer):
+
+class PhishtankAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.phishtank_key = self.getParam('config.key', None,
-                                    'Missing PhishTank API key')
+        self.phishtank_key = self.get_param('config.key', None,
+                                            'Missing PhishTank API key')
 
     def phishtank_checkurl(self, data):
         url = 'https://checkurl.phishtank.com/checkurl/'
-        postdata = {'url': data, 'format':'json','app_key': self.phishtank_key}
+        postdata = {'url': data, 'format': 'json', 'app_key': self.phishtank_key}
         r = requests.post(url, data=postdata)
         return json.loads(r.content)
 
     def summary(self, raw):
         taxonomies = []
-        value = "\"False\""
-        level = ""
 
-        if 'in_database' in raw and raw['in_database'] == True:
+        if 'in_database' in raw and raw['in_database'] is True:
             value = "\"{}\"".format(raw['in_database'])
             if raw.get('verified') and raw.get('valid'):
                 level = "malicious"
-            elif ( raw.get('verified') and raw.get('valid') == False):
+            elif raw.get('verified') and raw.get('valid') is False:
                 level = "safe"
             else:
                 level = "suspicious"
@@ -41,12 +35,12 @@ class phishtankAnalyzer(Analyzer):
 
         taxonomies.append(self.build_taxonomy(level, "PhishTank", "In_Database", value))
 
-        result = {"taxonomies":taxonomies}
+        result = {"taxonomies": taxonomies}
         return result
 
     def run(self):
         if self.data_type == 'url':
-            data = self.getParam('data', None, 'Data is missing')
+            data = self.get_param('data', None, 'Data is missing')
             r = self.phishtank_checkurl(data)
             if "success" in r['meta']['status']:
                 if r['results']['in_database']:
@@ -76,4 +70,4 @@ class phishtankAnalyzer(Analyzer):
 
 
 if __name__ == '__main__':
-    phishtankAnalyzer().run()
+    PhishtankAnalyzer().run()

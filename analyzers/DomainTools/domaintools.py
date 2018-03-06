@@ -17,7 +17,7 @@ class DomainToolsAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.service = self.getParam(
+        self.service = self.get_param(
             'config.service', None, 'Service parameter is missing')
 
     def summary(self, raw):
@@ -26,7 +26,7 @@ class DomainToolsAnalyzer(Analyzer):
             "dataType": self.data_type
         }
 
-        if("ip_addresses" in raw):
+        if "ip_addresses" in raw:
             if type(raw["ip_addresses"]) == dict:
                 r["ip"] = {
                     "address": raw["ip_addresses"]["ip_address"],
@@ -38,22 +38,22 @@ class DomainToolsAnalyzer(Analyzer):
                     "domain_count": sum(d["domain_count"] for d in raw["ip_addresses"])
                 }
 
-        if("domain_count" in raw):
+        if "domain_count" in raw:
             r["domain_count"] = {
                 "current": raw["domain_count"]["current"],
                 "historic": raw["domain_count"]["historic"]
             }
 
-        if("registrant" in raw):
+        if "registrant" in raw:
             r["registrant"] = raw["registrant"]
-        elif("response" in raw and "registrant" in raw["response"]):
+        elif "response" in raw and "registrant" in raw["response"]:
             r["registrant"] = raw["response"]["registrant"]
 
-        if("parsed_whois" in raw):
+        if "parsed_whois" in raw:
             r["registrar"] = raw["parsed_whois"]["registrar"]["name"]
             #
 
-        if("name_server" in raw):
+        if "name_server" in raw:
             r["name_server"] = raw["name_server"]["hostname"]
             r["domain_count"] = raw["name_server"]["total"]
 
@@ -61,28 +61,36 @@ class DomainToolsAnalyzer(Analyzer):
 
         # Prepare predicate and value for each service
         if r["service"] in ["reverse-ip", "host-domains"]:
-            taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_IP","\"{}, {} domains\"".format(r["ip"]["address"], r["ip"]["domain_count"])))
+            taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_IP",
+                                                  "\"{}, {} domains\"".format(r["ip"]["address"],
+                                                                              r["ip"]["domain_count"])))
 
         if r["service"] == "name-server-domains":
-            taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_Name_Server","\"{}, {} domains\"".format(r["name_server"], r["domain_count"])))
+            taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_Name_Server",
+                                                  "\"{}, {} domains\"".format(r["name_server"], r["domain_count"])))
 
         if r["service"] == "reverse-whois":
-            taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_Whois","\"curr:{} / hist:{} domains\"".format(r["domain_count"]["current"], r["domain_count"]["historic"])))
+            taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_Whois",
+                                                  "\"curr:{} / hist:{} domains\"".format(r["domain_count"]["current"],
+                                                                                         r["domain_count"][
+                                                                                             "historic"])))
 
         if r["service"] == "whois/history":
-            taxonomies.append(self.build_taxonomy("info", "DT", "Whois_History","\"{}, {} domains \"".format(r["name_server"], r["domain_count"])))
+            taxonomies.append(self.build_taxonomy("info", "DT", "Whois_History",
+                                                  "\"{}, {} domains \"".format(r["name_server"], r["domain_count"])))
 
-        if (r["service"] == "whois/parsed") or (r['service'] == "whois"):
+        if r["service"] == "whois/parsed" or r['service'] == "whois":
             if r["registrar"]:
                 taxonomies.append(self.build_taxonomy("info", "DT", "Whois", "\"REGISTRAR:{}\"".format(r["registrar"])))
             if r["registrant"]:
-                taxonomies.append(self.build_taxonomy("info", "DT", "Whois", "\"REGISTRANT:{}\"".format(r["registrant"])))
+                taxonomies.append(
+                    self.build_taxonomy("info", "DT", "Whois", "\"REGISTRANT:{}\"".format(r["registrant"])))
 
         result = {'taxonomies': taxonomies}
         return result
 
     def run(self):
-        data = self.getData()
+        data = self.get_data()
 
         if 'proxy' in self.artifact['config']:
             del self.artifact['config']['proxy']
@@ -91,9 +99,10 @@ class DomainToolsAnalyzer(Analyzer):
             self.service = 'host-domains'
 
         if self.service == 'reverse-whois':
-            query = {}
-            query['terms'] = data
-            query['mode'] = "purchase"
+            query = {
+                'terms': data,
+                'mode': "purchase"
+            }
             data = ''
         else:
             query = {}
@@ -108,7 +117,7 @@ class DomainToolsAnalyzer(Analyzer):
             response = {}
 
             try:
-                configuration = Configuration(self.getParam('config'))
+                configuration = Configuration(self.get_param('config'))
                 response = Request(configuration).service(self.service).domain(data).where(query).toJson().execute()
 
                 r = json.loads(response)

@@ -1,9 +1,5 @@
 #!/usr/bin/env python
 # encoding: utf-8
-import sys
-import os
-import json
-import codecs
 import datetime
 from urllib2 import HTTPError
 from dnsdb_query import DnsdbClient, QueryError
@@ -14,21 +10,21 @@ class DnsDbAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.service = self.getParam(
+        self.service = self.get_param(
             'config.service', None, 'Service parameter is missing')
-        self.dnsdb_server = self.getParam(
+        self.dnsdb_server = self.get_param(
             'config.server', None, 'Missing DNSDB server name')
-        self.dnsdb_key = self.getParam(
+        self.dnsdb_key = self.get_param(
             'config.key', None, 'Missing DNSDB API key')
 
     def execute_dnsdb_service(self, client):
-        data = self.getData()
+        data = self.get_data()
 
         if self.service == 'domain_name' and self.data_type in ['domain', 'fqdn']:
             return client.query_rrset(data)
         elif self.service == 'ip_history' and self.data_type == 'ip':
             return client.query_rdata_ip(data)
-        elif self.service == 'name_history' and self.data_type in ['domain','fqdn']:
+        elif self.service == 'name_history' and self.data_type in ['domain', 'fqdn']:
             return client.query_rdata_name(data)
         else:
             self.error('Unknown DNSDB service or invalid data type')
@@ -46,7 +42,7 @@ class DnsDbAnalyzer(Analyzer):
         namespace = "Farsight"
         predicate = "DNSDB"
 
-        if ("records" in raw):
+        if "records" in raw:
             r = len(raw["records"])
 
             if r == 0 or r == 1:
@@ -54,16 +50,16 @@ class DnsDbAnalyzer(Analyzer):
             else:
                 value = "\"{} records\"".format(r)
 
-            taxonomies.append(self.build_taxonomy(level, namespace,predicate,value))
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         return {'taxonomies': taxonomies}
-
 
     def run(self):
         try:
             client = DnsdbClient(self.dnsdb_server, self.dnsdb_key)
             self.report({
-                "records": map(lambda r: self.update_date('time_first', self.update_date('time_last', r)), self.execute_dnsdb_service(client))
+                "records": map(lambda r: self.update_date('time_first', self.update_date('time_last', r)),
+                               self.execute_dnsdb_service(client))
             })
         except HTTPError, e:
             if e.code != 404:

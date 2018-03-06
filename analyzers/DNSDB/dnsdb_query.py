@@ -71,7 +71,6 @@ class DnsdbClient(object):
         return self._query(path, before, after)
 
     def _query(self, path, before=None, after=None):
-        res = []
         url = '%s/lookup/%s' % (self.server, path)
 
         params = {}

@@ -84,7 +84,7 @@ class Analyzer:
                     sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
                 else:
                     sys.stderr = codecs.getwriter('utf-8')(sys.stderr, 'strict')
-        except:
+        except Exception:
             pass
 
     def __get_param(self, source, name, default=None, message=None):
@@ -193,7 +193,7 @@ class Analyzer:
         summary = {}
         try:
             summary = self.summary(full_report)
-        except:
+        except Exception:
             pass
 
         report = {
