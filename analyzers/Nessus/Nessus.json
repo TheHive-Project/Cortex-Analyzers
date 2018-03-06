@@ -42,7 +42,7 @@
       "description": "Define the path to the Nessus CA",
       "type": "string",
       "multi": false,
-      "required": true
+      "required": false
     },
     {
       "name": "allowed_network",
