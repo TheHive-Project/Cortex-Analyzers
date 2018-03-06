@@ -7,6 +7,7 @@ import os.path
 import requests
 import time
 
+
 class JoeSandboxAnalyzer(Analyzer):
 
     def __init__(self):
@@ -27,11 +28,8 @@ class JoeSandboxAnalyzer(Analyzer):
         }
 
         taxonomies = []
-        level = "info"
         namespace = "JSB"
         predicate = "Report"
-        value = "\"Clean\""
-
 
         r = raw['detection']
 
@@ -43,9 +41,6 @@ class JoeSandboxAnalyzer(Analyzer):
             level = "suspicious"
         elif r["malicious"]:
             level = "malicious"
-
-
-
         else:
             level = "info"
             value = "Unknown"
@@ -82,7 +77,7 @@ class JoeSandboxAnalyzer(Analyzer):
 
         # url analysis
         elif self.service == 'url_analysis':
-            data['url'] = self.getData()
+            data['url'] = self.get_data()
             data['type'] = 'url'
             data['inet'] = 1
 
@@ -148,7 +143,7 @@ class JoeSandboxAnalyzer(Analyzer):
 
         # url analysis
         elif self.service == 'url_analysis':
-            data['url'] = self.getData()
+            data['url'] = self.get_data()
             data['internet-access'] = '1'
 
         else:
@@ -204,6 +199,7 @@ class JoeSandboxAnalyzer(Analyzer):
 
         except Exception as e:
             self.unexpectedError(e)
+
 
 if __name__ == '__main__':
     JoeSandboxAnalyzer().run()

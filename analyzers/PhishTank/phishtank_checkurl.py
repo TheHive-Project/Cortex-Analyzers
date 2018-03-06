@@ -1,20 +1,16 @@
 #!/usr/bin/env python
 # encoding: utf-8
-import sys
-import os
 import json
-import codecs
-import time
-import re
 import requests
 from cortexutils.analyzer import Analyzer
 
-class phishtankAnalyzer(Analyzer):
+
+class PhishtankAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.phishtank_key = self.getParam('config.key', None,
-                                    'Missing PhishTank API key')
+        self.phishtank_key = self.get_param('config.key', None,
+                                            'Missing PhishTank API key')
 
     def phishtank_checkurl(self, data):
         url = 'https://checkurl.phishtank.com/checkurl/'
@@ -24,8 +20,6 @@ class phishtankAnalyzer(Analyzer):
 
     def summary(self, raw):
         taxonomies = []
-        value = "\"False\""
-        level = ""
 
         if 'in_database' in raw and raw['in_database'] == True:
             value = "\"{}\"".format(raw['in_database'])
@@ -46,27 +40,28 @@ class phishtankAnalyzer(Analyzer):
 
     def run(self):
         if self.data_type == 'url':
-            data = self.getParam('data', None, 'Data is missing')
+            data = self.get_param('data', None, 'Data is missing')
             r = self.phishtank_checkurl(data)
             if "success" in r['meta']['status']:
                 if r['results']['in_database']:
-                    if "verified" in r['results']:
-                        self.report({
-                            'in_database': r['results']['in_database'],
-                            'phish_detail_page': r['results']['phish_detail_page'],
-                            'verified': r['results']['verified'],
-                            'verified_at': r['results']['verified_at'],
-                            'valid': r['results']['valid']
-                        })
-                    else:
-                        self.report({
-                            'in_database': r['results']['in_database'],
-                            'phish_detail_page': r['results']['phish_detail_page']
-                        })
-                else:
-                    self.report({
-                        'in_database': 'False'
-                    })
+                     if "verified" in r['results']:
+                         self.report({
+                             'in_database': r['results']['in_database'],
+                             'phish_detail_page': r['results']['phish_detail_page'],
+                             'verified': r['results']['verified'],
+                             'verified_at': r['results']['verified_at'],
+                             'valid': r['results']['valid']
+                         })
+                     else:
+                         self.report({
+                             'in_database': r['results']['in_database'],
+                             'phish_detail_page': r['results']['phish_detail_page']
+                         })
+
+                 else:
+                     self.report({
+                         'in_database': 'False'
+                     })
             else:
                 self.report({
                     'errortext': r['errortext']
@@ -75,5 +70,6 @@ class phishtankAnalyzer(Analyzer):
             self.error('Invalid data type')
 
 
+
 if __name__ == '__main__':
-    phishtankAnalyzer().run()
+    PhishtankAnalyzer().run()

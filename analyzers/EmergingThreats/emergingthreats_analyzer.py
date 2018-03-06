@@ -26,8 +26,8 @@ GREEN_CATEGORIES = [
     "Utility"
 ]
 
-class EmergingThreatsAnalyzer(Analyzer):
 
+class EmergingThreatsAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
         self.apikey = self.get_param('config.key', None, 'EmergingThreats apikey is missing')
@@ -38,7 +38,7 @@ class EmergingThreatsAnalyzer(Analyzer):
         taxonomies = []
         namespace = "ET"
 
-        if predicate in ['domain-info', 'ip-info'] and raw['reputation'] not in ["-", "Error"]:
+        if self.data_type in ['domain', 'ip'] and raw['reputation'] not in ["-", "Error"]:
             for x in raw["reputation"]:
                 value = "%s=%d" % (x['category'], x['score'])
                 if x['category'] in RED_CATEGORIES and x['score'] >= 70:
@@ -47,10 +47,10 @@ class EmergingThreatsAnalyzer(Analyzer):
                     level = "suspicious"
                 else:
                     level = "safe"
-                taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-        elif predicate == 'malware-info' and raw['events'] not in ["-", "Error"]:
+                taxonomies.append(self.build_taxonomy(level, namespace, "%s-info" % self.data_type, value))
+        elif self.data_type == 'hash' and raw['events'] not in ["-", "Error"]:
             value = str(len(raw['events'])) + " signatures"
-            taxonomies.append(self.build_taxonomy("malicious", namespace, predicate, value))
+            taxonomies.append(self.build_taxonomy("malicious", namespace, 'malware-info', value))
 
         return {"taxonomies":taxonomies}
 
@@ -58,7 +58,7 @@ class EmergingThreatsAnalyzer(Analyzer):
         Analyzer.run(self)
         info = {}
         try:
-            objectName = self.getData()
+            object_name = self.get_data()
             if self.data_type == 'domain':
                 url = "https://api.emergingthreats.net/v1/domains/"
                 features = {'reputation', 'urls', 'samples', 'ips', 'events', 'nameservers', 'whois', 'geoloc'}
@@ -76,7 +76,7 @@ class EmergingThreatsAnalyzer(Analyzer):
             for feature in features:
                 end = '/' if feature else ''
                 time.sleep(1)
-                r = self.session.get(url + objectName + end + feature)
+                r = self.session.get(url + object_name + end + feature)
                 if feature == '':
                     feature = 'main'
                 r_json= r.json()
@@ -91,6 +91,7 @@ class EmergingThreatsAnalyzer(Analyzer):
 
         except Exception as e:
             self.unexpectedError(e)
+
 
 if __name__ == '__main__':
     EmergingThreatsAnalyzer().run()

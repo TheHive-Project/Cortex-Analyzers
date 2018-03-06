@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf-8
-import sys
 import os
-import json
 import geoip2.database
 from geoip2.errors import AddressNotFoundError
 from cortexutils.analyzer import Analyzer
@@ -65,7 +63,7 @@ class MaxMindAnalyzer(Analyzer):
         predicate = "Location"
         value = "\"\""
 
-        if("continent" in raw):
+        if "continent" in raw:
             value = "\"{}/{}\"".format(raw["country"]["name"], raw["continent"]["name"])
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
@@ -76,10 +74,9 @@ class MaxMindAnalyzer(Analyzer):
 
         if self.data_type == 'ip':
             try:
-                data = self.getData()
+                data = self.get_data()
 
                 city = geoip2.database.Reader(os.path.dirname(__file__) + '/GeoLite2-City.mmdb').city(data)
-                country = geoip2.database.Reader(os.path.dirname(__file__) + '/GeoLite2-Country.mmdb').country(data)
 
                 self.report({
                     'city': self.dumpCity(city.city),
