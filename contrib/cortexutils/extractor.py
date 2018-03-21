@@ -4,6 +4,10 @@ from builtins import str as unicode
 import re
 
 
+class ExtractionError(Exception):
+    pass
+
+
 class Extractor:
     """
     The extractor class tries to detect ioc attribute types using regex-matching. Two functions are provided:
@@ -121,7 +125,7 @@ class Extractor:
         :return: Data type of value, if known, else empty string
         :rtype: str
         """
-        if self.ignore and value in self.ignore:
+        if self.ignore and self.ignore in value:
             return ''
 
         if isinstance(value, (str, unicode)):
