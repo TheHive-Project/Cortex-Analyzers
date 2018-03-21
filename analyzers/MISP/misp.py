@@ -19,7 +19,8 @@ class MISPAnalyzer(Analyzer):
             self.misp = MISPClient(url=self.get_param('config.url', None, 'No MISP url given.'),
                                    key=self.get_param('config.key', None, 'No MISP api key given.'),
                                    ssl=ssl,
-                                   name=name)
+                                   name=name,
+                                   proxies={'http': self.http_proxy, 'https': self.https_proxy})
         except MISPClientError as e:
             self.error(str(e))
         except TypeError as te:
