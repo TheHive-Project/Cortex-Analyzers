@@ -30,9 +30,11 @@ class MISPClient:
     :type ssl: [bool, list, str]
     :param name: Name of the MISP instance, is sent back in the report for matching the results.
     :type name: [str, list]
+    :param proxies: Proxy to use for pymisp instances
+    :type proxies: dict
     """
 
-    def __init__(self, url, key, ssl=True, name='Unnamed'):
+    def __init__(self, url, key, ssl=True, name='Unnamed', proxies=None):
         self.misp_connections = []
         if type(url) is list:
             for idx, server in enumerate(url):
@@ -58,7 +60,8 @@ class MISPClient:
                     raise TypeError('SSL parameter is a not expected type.')
                 self.misp_connections.append(pymisp.PyMISP(url=server,
                                                            key=key[idx],
-                                                           ssl=verify))
+                                                           ssl=verify,
+                                                           proxies=proxies))
         else:
             verify = True
             if isinstance(ssl, str):
@@ -68,7 +71,8 @@ class MISPClient:
                 verify = ssl
             self.misp_connections.append(pymisp.PyMISP(url=url,
                                                        key=key,
-                                                       ssl=verify))
+                                                       ssl=verify,
+                                                       proxies=proxies))
         self.misp_name = name
 
     @staticmethod
@@ -131,7 +135,7 @@ class MISPClient:
         :rtype: list
         """
         return ['regkey', 'regkey|value']
-    
+
     @staticmethod
     def __mispfilenametypes():
         """Just for better readability, all __misp*type methods return just a list of misp data types
@@ -279,7 +283,7 @@ class MISPClient:
         :rtype: list
         """
         return self.__search(type_attribute=self.__mispregistrytypes(), value=searchterm)
-    
+
     def search_filename(self, searchterm):
         """Search for filenames
         

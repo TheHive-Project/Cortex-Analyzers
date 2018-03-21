@@ -10,14 +10,15 @@ class MISPAnalyzer(Analyzer):
         Analyzer.__init__(self)
 
         # Fixes #94. Instead of None, the string Unnamed should be passed to MISPClient constructor
-        name = self.getParam('config.name', None)
+        name = self.get_param('config.name', None)
         if not name:
             name = 'Unnamed'
         try:
-            self.misp = MISPClient(url=self.getParam('config.url', None, 'No MISP url given.'),
-                                key=self.getParam('config.key', None, 'No MISP api key given.'),
-                                ssl=self.getParam('config.certpath', True),
-                                name=name)
+            self.misp = MISPClient(url=self.get_param('config.url', None, 'No MISP url given.'),
+                                   key=self.get_param('config.key', None, 'No MISP api key given.'),
+                                   ssl=self.get_param('config.certpath', True),
+                                   name=name,
+                                   proxies={'http': self.http_proxy, 'https': self.https_proxy})
         except MISPClientError as e:
             self.error(str(e))
         except TypeError as te:
@@ -48,21 +49,21 @@ class MISPAnalyzer(Analyzer):
 
     def run(self):
         if self.data_type == 'hash':
-            response = self.misp.search_hash(self.getData())
+            response = self.misp.search_hash(self.get_data())
         elif self.data_type == 'url':
-            response = self.misp.search_url(self.getData())
+            response = self.misp.search_url(self.get_data())
         elif self.data_type == 'domain' or self.data_type == 'fqdn':
-            response = self.misp.search_domain(self.getData())
+            response = self.misp.search_domain(self.get_data())
         elif self.data_type == 'mail' or self.data_type == 'mail_subject':
-            response = self.misp.search_mail(self.getData())
+            response = self.misp.search_mail(self.get_data())
         elif self.data_type == 'ip':
-            response = self.misp.search_ip(self.getData())
+            response = self.misp.search_ip(self.get_data())
         elif self.data_type == 'registry':
-            response = self.misp.search_registry(self.getData())
+            response = self.misp.search_registry(self.get_data())
         elif self.data_type == 'filename':
-            response = self.misp.search_filename(self.getData())
+            response = self.misp.search_filename(self.get_data())
         else:
-            response = self.misp.searchall(self.getData())
+            response = self.misp.searchall(self.get_data())
 
         self.report({'results': response})
 
