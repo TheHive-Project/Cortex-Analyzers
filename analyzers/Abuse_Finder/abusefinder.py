@@ -24,6 +24,8 @@ class AbuseFinderAnalyzer(Analyzer):
             for abuse in raw['abuse_finder']['abuse']:
                 taxonomies.append(self.build_taxonomy("info", "Abuse_Finder", "Address", abuse))
             return {"taxonomies": taxonomies}
+        
+        return {}
 
     def abuse(self):
         if self.data_type == "ip":
