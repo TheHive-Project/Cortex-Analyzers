@@ -2,7 +2,7 @@
     "name": "MaxMind_GeoIP",
     "version": "3.0",
     "author": "CERT-BDF",
-    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
     "description": "Use MaxMind to geolocate an IP address.",
     "dataTypeList": ["ip"],

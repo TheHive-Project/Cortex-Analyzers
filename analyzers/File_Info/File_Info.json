@@ -1,19 +1,19 @@
 {
-    "name": "File_Info",
-    "version": "2.0",
-    "author": "CERT-BDF",
-    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "Parse files in several formats such as OLE and OpenXML to detect VBA macros, extract their source code, generate useful information on PE, PDF files...",
-    "dataTypeList": [
-        "file"
-    ],
-    "command": "File_Info/fileinfo_analyzer.py",
-    "baseConfig": "File_Info",
-    "config": {
-        "service": ""
-    },
-    "configurationItems": [
+  "name": "File_Info",
+  "version": "2.0",
+  "author": "CERT-BDF",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Parse files in several formats such as OLE and OpenXML to detect VBA macros, extract their source code, generate useful information on PE, PDF files...",
+  "dataTypeList": [
+    "file"
+  ],
+  "command": "File_Info/fileinfo_analyzer.py",
+  "baseConfig": "File_Info",
+  "config": {
+    "service": ""
+  },
+  "configurationItems": [
     {
       "name": "check_tlp",
       "description": "Define if the analyzer should check TLP of data before running",
@@ -31,5 +31,4 @@
       "defaultValue": 3
     }
   ]
-
 }

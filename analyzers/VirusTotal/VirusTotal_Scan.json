@@ -2,10 +2,13 @@
   "name": "VirusTotal_Scan",
   "version": "3.0",
   "author": "CERT-BDF",
-  "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Use VirusTotal to scan a file or URL.",
-  "dataTypeList": ["file", "url"],
+  "dataTypeList": [
+    "file",
+    "url"
+  ],
   "baseConfig": "VirusTotal",
   "config": {
     "service": "scan"
@@ -32,8 +35,7 @@
       "description": "API key for Virustotal",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "<API key>"
+      "required": true
     },
     {
       "name": "polling_interval",

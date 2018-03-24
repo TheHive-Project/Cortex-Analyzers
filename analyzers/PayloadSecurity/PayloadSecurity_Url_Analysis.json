@@ -1,17 +1,19 @@
 {
-    "name": "PayloadSecurity_Url_Analysis",
-    "version": "1.0",
-    "author": "Emmanuel Torquato",
-    "url": "https://github.com/notset/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "PayloadSecurity Sandbox Url Analysis",
-    "dataTypeList": ["url"],
-    "command": "PayloadSecurity/payloadsecurity_analyzer.py",
-    "baseConfig": "PayloadSecurity",
-    "config": {
-        "service": "url_analysis"
-    },
-    "configurationItems": [
+  "name": "PayloadSecurity_Url_Analysis",
+  "version": "1.0",
+  "author": "Emmanuel Torquato",
+  "url": "https://github.com/notset/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "PayloadSecurity Sandbox Url Analysis",
+  "dataTypeList": [
+    "url"
+  ],
+  "command": "PayloadSecurity/payloadsecurity_analyzer.py",
+  "baseConfig": "PayloadSecurity",
+  "config": {
+    "service": "url_analysis"
+  },
+  "configurationItems": [
     {
       "name": "check_tlp",
       "description": "Define if the analyzer should check TLP of data before running",
@@ -33,24 +35,21 @@
       "description": "Define the url of the service",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": false
+      "required": true
     },
     {
       "name": "key",
       "description": "Define the API key used to connect the service",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "API key"
+      "required": true
     },
     {
       "name": "secret",
       "description": "Define the secret used to connect the service",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "Secret"
+      "required": true
     },
     {
       "name": "environmentId",
@@ -58,7 +57,7 @@
       "type": "number",
       "multi": false,
       "required": true,
-      "defaultValue": "100"
+      "defaultValue": 100
     },
     {
       "name": "timeout",

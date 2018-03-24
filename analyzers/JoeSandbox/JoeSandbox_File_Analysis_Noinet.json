@@ -1,17 +1,19 @@
 {
-    "name": "JoeSandbox_File_Analysis_Noinet",
-    "version": "2.0",
-    "author": "CERT-BDF",
-    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "Joe Sandbox file analysis without Internet access.",
-    "dataTypeList": ["file"],
-    "command": "JoeSandbox/joesandbox_analyzer.py",
-    "baseConfig": "JoeSandbox",
-    "config": {
-        "service": "file_analysis_noinet"
-    },
-    "configurationItems": [
+  "name": "JoeSandbox_File_Analysis_Noinet",
+  "version": "2.0",
+  "author": "CERT-BDF",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Joe Sandbox file analysis without Internet access.",
+  "dataTypeList": [
+    "file"
+  ],
+  "command": "JoeSandbox/joesandbox_analyzer.py",
+  "baseConfig": "JoeSandbox",
+  "config": {
+    "service": "file_analysis_noinet"
+  },
+  "configurationItems": [
     {
       "name": "check_tlp",
       "description": "Define if the analyzer should check TLP of data before running",
@@ -29,12 +31,18 @@
       "defaultValue": 3
     },
     {
+      "name": "url",
+      "description": "URL of JoeSandbox service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
       "name": "key",
       "description": "API key",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "API Key"
+      "required": true
     },
     {
       "name": "analysistimeout",

@@ -2,10 +2,15 @@
   "name": "VirusTotal_GetReport",
   "version": "3.0",
   "author": "CERT-BDF",
-  "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Get the latest VirusTotal report for a file, hash, domain or an IP address.",
-  "dataTypeList": ["file", "hash", "domain", "ip"],
+  "dataTypeList": [
+    "file",
+    "hash",
+    "domain",
+    "ip"
+  ],
   "command": "VirusTotal/virustotal.py",
   "baseConfig": "VirusTotal",
   "config": {
@@ -33,8 +38,7 @@
       "description": "API key for Virustotal",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "<API key>"
+      "required": true
     },
     {
       "name": "polling_interval",

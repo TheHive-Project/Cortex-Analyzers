@@ -1,17 +1,21 @@
 {
-    "name": "PassiveTotal_Unique_Resolutions",
-    "version": "2.0",
-    "author": "CERT-BDF",
-    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "PassiveTotal Unique Resolutions Lookup.",
-    "dataTypeList": ["domain", "fqdn", "ip"],
-    "command": "PassiveTotal/passivetotal_analyzer.py",
-    "baseConfig": "PassiveTotal",
-    "config": {
-        "service": "unique_resolutions"
-    },
-    "configurationItems": [
+  "name": "PassiveTotal_Unique_Resolutions",
+  "version": "2.0",
+  "author": "CERT-BDF",
+  "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "PassiveTotal Unique Resolutions Lookup.",
+  "dataTypeList": [
+    "domain",
+    "fqdn",
+    "ip"
+  ],
+  "command": "PassiveTotal/passivetotal_analyzer.py",
+  "baseConfig": "PassiveTotal",
+  "config": {
+    "service": "unique_resolutions"
+  },
+  "configurationItems": [
     {
       "name": "check_tlp",
       "description": "Define if the analyzer should check TLP of data before running",
@@ -33,16 +37,14 @@
       "description": "Define the username of the account used to connect the service",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "username"
+      "required": true
     },
     {
       "name": "key",
       "description": "Define the API key to use to connect the service",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "API key"
+      "required": true
     }
   ]
 }

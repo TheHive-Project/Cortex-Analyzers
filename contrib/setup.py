@@ -2,13 +2,13 @@ from setuptools import setup
 
 setup(
     name='cortexutils',
-    version='1.2.0',
+    version='1.2.2',
     description='A Python library for including utility classes for Cortex analyzers',
     long_description=open('README').read(),
     author='TheHive-Project',
     author_email='support@thehive-project.org',
     license='AGPL-V3',
-    url='https://github.com/CERT-BDF/Cortex-Analyzers/tree/master/contrib',
+    url='https://github.com/TheHive-Project/Cortex-Analyzers/tree/master/contrib',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',

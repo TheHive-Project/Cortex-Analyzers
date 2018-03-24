@@ -10,38 +10,37 @@
   "baseConfig": "Censys",
   "config": {},
   "configurationItems": [
-  {
-    "name": "check_tlp",
-    "description": "Define if the analyzer should check TLP of data before running",
-    "type": "boolean",
-    "multi": false,
-    "required": true,
-    "defaultValue": false
-  },
-  {
-    "name": "max_tlp",
-    "description": "Define the maximum TLP level autorized",
-    "type": "number",
-    "multi": false,
-    "required": true,
-    "defaultValue": 3
-  },
-  {
-    "name": "uuid",
-    "description": "UID for Censys",
-    "type": "string",
-    "multi": false,
-    "required": true,
-    "defaultValue": "UUID"
-  },
-  {
-    "name": "key",
-    "description": "API key",
-    "type": "string",
-    "multi": false,
-    "required": true,
-    "defaultValue": "API key"
-  }
-]
-
+    {
+      "name": "check_tlp",
+      "description": "Define if the analyzer should check TLP of data before running",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": false
+    },
+    {
+      "name": "max_tlp",
+      "description": "Define the maximum TLP level autorized",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 3
+    },
+    {
+      "name": "uuid",
+      "description": "UID for Censys",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "UUID"
+    },
+    {
+      "name": "key",
+      "description": "API key",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "API key"
+    }
+  ]
 }

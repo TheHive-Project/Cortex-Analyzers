@@ -2,7 +2,7 @@
   "name": "Bluecoat_Categorization",
   "version": "1.0",
   "author": "CERT La Poste",
-  "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "description": "Retrieve Bluecoat categorization of a domain / url / FQDN",
   "dataTypeList": [
     "domain",

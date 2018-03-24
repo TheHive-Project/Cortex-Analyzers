@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # encoding: utf-8
-
 from cortexutils.analyzer import Analyzer
 
 import os
@@ -13,7 +12,7 @@ class YaraAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
 
-        self.rulepaths = self.getParam('config.rules', None, 'No paths for rules provided.')
+        self.rulepaths = self.get_param('config.rules', None, 'No paths for rules provided.')
         if isinstance(self.rulepaths, str):
             self.rulepaths = [self.rulepaths]
 
@@ -49,7 +48,6 @@ class YaraAnalyzer(Analyzer):
 
     def summary(self, raw):
         taxonomies = []
-        level = "info"
         namespace = "Yara"
         predicate = "Match"
 
@@ -64,9 +62,10 @@ class YaraAnalyzer(Analyzer):
 
     def run(self):
         if self.data_type == 'file':
-            self.report({'results': self.check(self.getParam('file'))})
+            self.report({'results': self.check(self.get_param('file'))})
         else:
             self.error('Wrong data type.')
+
 
 if __name__ == '__main__':
     YaraAnalyzer().run()

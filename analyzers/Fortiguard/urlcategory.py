@@ -36,8 +36,8 @@ class URLCategoryAnalyzer(Analyzer):
         if self.data_type == 'domain' or self.data_type == 'url':
             try:
                 pattern = re.compile("(?:Category: )([\w\s]+)")
-                baseurl = 'http://www.fortiguard.com/webfilter?q='
-                url = baseurl + self.getData()
+                baseurl = 'https://www.fortiguard.com/webfilter?q='
+                url = baseurl + self.get_data()
                 req = requests.get(url)
                 category_match = re.search(pattern, req.content, flags=0)
                 self.report({
@@ -47,6 +47,7 @@ class URLCategoryAnalyzer(Analyzer):
                 self.unexpectedError(e)
         else:
             self.notSupported()
+
 
 if __name__ == '__main__':
     URLCategoryAnalyzer().run()

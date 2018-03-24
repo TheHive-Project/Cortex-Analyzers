@@ -8,20 +8,18 @@ from passivetotal.libs.enrichment import EnrichmentRequest
 from passivetotal.libs.ssl import SslRequest
 from passivetotal.libs.whois import WhoisRequest
 
-class PassiveTotalAnalyzer(Analyzer):
 
+class PassiveTotalAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
-        self.service = self.getParam('config.service', None, 'PassiveTotal service is missing')
-        self.username = self.getParam('config.username', None, 'PassiveTotal username is missing')
-        self.api_key = self.getParam('config.key', None, 'PassiveTotal API key is missing')
+        self.service = self.get_param('config.service', None, 'PassiveTotal service is missing')
+        self.username = self.get_param('config.username', None, 'PassiveTotal username is missing')
+        self.api_key = self.get_param('config.key', None, 'PassiveTotal API key is missing')
 
     def summary(self, raw):
         taxonomies = []
         level = "info"
         namespace = "PT"
-        predicate = "Service"
-        value = "\"False\""
 
         result = {}
         # malware service
@@ -100,12 +98,10 @@ class PassiveTotalAnalyzer(Analyzer):
                 value = "\"REGISTRAR: {}\"".format(result['registrar'])
                 taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
-        return {"taxonomies":taxonomies}
+        return {"taxonomies": taxonomies}
 
     def run(self):
-        Analyzer.run(self)
-
-        data = self.getData()
+        data = self.get_data()
 
         try:
             # enrichment service
@@ -161,6 +157,7 @@ class PassiveTotalAnalyzer(Analyzer):
 
         except Exception as e:
             self.unexpectedError(e)
+
 
 if __name__ == '__main__':
     PassiveTotalAnalyzer().run()

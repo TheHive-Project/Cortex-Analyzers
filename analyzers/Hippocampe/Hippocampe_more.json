@@ -1,17 +1,22 @@
 {
-    "name": "HippoMore",
-    "version": "2.0",
-    "author": "CERT-BDF",
-    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "Get the Hippocampe detailed report for an IP address, a domain or a URL.",
-    "dataTypeList": ["ip", "domain", "fqdn", "url"],
-    "command": "Hippocampe/hippo.py",
-    "baseConfig": "Hippocampe",
-    "config": {
-        "service": "more"
-    },
-    "configurationItems": [
+  "name": "HippoMore",
+  "version": "2.0",
+  "author": "CERT-BDF",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get the Hippocampe detailed report for an IP address, a domain or a URL.",
+  "dataTypeList": [
+    "ip",
+    "domain",
+    "fqdn",
+    "url"
+  ],
+  "command": "Hippocampe/hippo.py",
+  "baseConfig": "Hippocampe",
+  "config": {
+    "service": "more"
+  },
+  "configurationItems": [
     {
       "name": "check_tlp",
       "description": "Define if the analyzer should check TLP of data before running",
@@ -33,8 +38,7 @@
       "description": "URL of the service",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "URL"
+      "required": true
     }
   ]
 }

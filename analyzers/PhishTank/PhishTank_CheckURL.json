@@ -1,17 +1,19 @@
 {
-    "name": "PhishTank_CheckURL",
-    "version": "2.1",
-    "author": "Eric Capuano",
-    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "Use PhishTank to check if a URL is a verified phishing site.",
-    "dataTypeList": ["url"],
-    "command": "PhishTank/phishtank_checkurl.py",
-    "baseConfig": "PhishTank",
-    "config": {
-        "service": "query"
-    },
-    "configurationItems": [
+  "name": "PhishTank_CheckURL",
+  "version": "2.1",
+  "author": "Eric Capuano",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use PhishTank to check if a URL is a verified phishing site.",
+  "dataTypeList": [
+    "url"
+  ],
+  "command": "PhishTank/phishtank_checkurl.py",
+  "baseConfig": "PhishTank",
+  "config": {
+    "service": "query"
+  },
+  "configurationItems": [
     {
       "name": "check_tlp",
       "description": "Define if the analyzer should check TLP of data before running",
@@ -33,8 +35,7 @@
       "description": "Define the API Key",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "API key"
+      "required": true
     }
   ]
 }

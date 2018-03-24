@@ -31,16 +31,14 @@
       "description": "Username",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "username"
+      "required": true
     },
     {
       "name": "password",
       "description": "Password",
-      "type": "sring",
+      "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "password"
+      "required": true
     }
   ]
 }

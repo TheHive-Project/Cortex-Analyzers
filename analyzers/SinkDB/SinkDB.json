@@ -2,10 +2,12 @@
   "name": "SinkDB",
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
-  "url": "https://github.com/BSI-CERT-Bund/sinkdb-analyzer",
+  "url": "https://github.com/CERT-Bund/sinkdb-analyzer",
   "version": "1.0",
   "description": "Check if ip is sinkholed via sinkdb.abuse.ch",
-  "dataTypeList": ["ip"],
+  "dataTypeList": [
+    "ip"
+  ],
   "command": "SinkDB/sinkdb.py",
   "baseConfig": "SinkDB",
   "config": {},
@@ -31,8 +33,7 @@
       "description": "Define the API Key",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "API key"
+      "required": true
     }
   ]
 }

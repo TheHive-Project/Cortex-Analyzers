@@ -1,17 +1,19 @@
 {
-    "name": "FireHOLBlocklists",
-    "author": "Nils Kuhnert, CERT-Bund",
-    "license": "AGPL-V3",
-    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-    "version": "2.0",
-    "description": "Check IP addresses against the FireHOL blocklists",
-    "dataTypeList": ["ip"],
-    "command": "FireHOLBlocklists/firehol_blocklists.py",
-    "baseConfig": "FireHOLBlocklists",
-    "config": {
-        "service": ""
-    },
-    "configurationItems": [
+  "name": "FireHOLBlocklists",
+  "author": "Nils Kuhnert, CERT-Bund",
+  "license": "AGPL-V3",
+  "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+  "version": "2.0",
+  "description": "Check IP addresses against the FireHOL blocklists",
+  "dataTypeList": [
+    "ip"
+  ],
+  "command": "FireHOLBlocklists/firehol_blocklists.py",
+  "baseConfig": "FireHOLBlocklists",
+  "config": {
+    "service": ""
+  },
+  "configurationItems": [
     {
       "name": "check_tlp",
       "description": "Define if the analyzer should check TLP of data before running",
@@ -33,9 +35,6 @@
       "description": "Path to blocklists",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "path"
+      "required": true
     }
-  ]
-
-}
+    }

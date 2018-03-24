@@ -1,64 +1,74 @@
 {
-    "name": "MISP",
-    "author": "Nils Kuhnert, CERT-Bund",
-    "license": "AGPL-V3",
-    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-    "version": "2.0",
-    "baseConfig": "MISP",
-    "config": {
-      "service": "misp"
+  "name": "MISP",
+  "author": "Nils Kuhnert, CERT-Bund",
+  "license": "AGPL-V3",
+  "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+  "version": "2.0",
+  "baseConfig": "MISP",
+  "config": {
+    "service": "misp"
+  },
+  "configurationItems": [
+    {
+      "name": "service",
+      "description": "Service Name",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "misp"
     },
-    "configurationItems": [
-        {
-            "name": "service",
-            "description": "Service Name",
-            "type": "string",
-            "multi": false,
-            "required": false,
-            "defaultValue":  "misp"
-        },
-        {
-            "name": "check_tlp",
-            "description": "Define if the analyzer should check TLP of data before running",
-            "type": "boolean",
-            "multi": false,
-            "required": true,
-            "defaultValue": false
-        },
-        {
-            "name": "max_tlp",
-            "description": "Define the maximum TLP level autorized",
-            "type": "number",
-            "multi": false,
-            "required": true,
-            "defaultValue": 3
-        },
-        {
-            "name": "url",
-            "description": "URL of MISP servers",
-            "type": "string",
-            "multi": true,
-            "required": true,
-            "defaultValue": [ "Server1", "Server2"]
-        },
-        {
-            "name": "key",
-            "description": "API key for each server",
-            "type": "string",
-            "multi": true,
-            "required": true,
-            "defaultValue": [ "API key for Server1", "API key for Server2"]
-        },
-        {
-            "name": "cert_path",
-            "description": "Verify server certificate or path to the CA on the system",
-            "type": "boolean",
-            "multi": true,
-            "required": false,
-            "defaultValue": [ true, true]
-        }
-    ],
-    "description": "Query multiple MISP instances for events containing an observable.",
-    "dataTypeList": ["domain", "ip", "url", "fqdn", "uri_path","user-agent", "hash", "email", "mail", "mail_subject" , "registry", "regexp", "other", "filename"],
-    "command": "MISP/misp.py"
+    {
+      "name": "check_tlp",
+      "description": "Define if the analyzer should check TLP of data before running",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": false
+    },
+    {
+      "name": "max_tlp",
+      "description": "Define the maximum TLP level autorized",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 3
+    },
+    {
+      "name": "url",
+      "description": "URL of MISP servers",
+      "type": "string",
+      "multi": true,
+      "required": true,
+      "defaultValue": [
+        "Server1",
+        "Server2"
+      ]
+    },
+    {
+      "name": "key",
+      "description": "API key for each server",
+      "type": "string",
+      "multi": true,
+      "required": true,
+      "defaultValue": [
+        "API key for Server1",
+        "API key for Server2"
+      ]
+    },
+    {
+      "name": "cert_check",
+      "description": "Verify server certificate",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "cert_path",
+      "description": "Path to the CA on the system used to check server certificate",
+      "type": "string",
+      "multi": true,
+      "required": false
+    }
+  ]
 }

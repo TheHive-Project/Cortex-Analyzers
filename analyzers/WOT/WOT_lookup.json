@@ -1,40 +1,42 @@
 {
-    "name": "WOT_Lookup",
-    "version": "1.0",
-    "author": "Andrea Garavaglia, LDO-CERT",
-    "url": "https://github.com/garanews/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "Use Web of Trust to check a domain's reputation.",
-    "dataTypeList": ["domain", "fqdn"],
-    "command": "WOT/WOT_lookup.py",
-    "baseConfig": "WOT",
-    "config": {
-        "service": "query"
+  "name": "WOT_Lookup",
+  "version": "1.0",
+  "author": "Andrea Garavaglia, LDO-CERT",
+  "url": "https://github.com/garanews/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use Web of Trust to check a domain's reputation.",
+  "dataTypeList": [
+    "domain",
+    "fqdn"
+  ],
+  "command": "WOT/WOT_lookup.py",
+  "baseConfig": "WOT",
+  "config": {
+    "service": "query"
+  },
+  "configurationItems": [
+    {
+      "name": "check_tlp",
+      "description": "Define if the analyzer should check TLP of data before running",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": false
     },
-    "configurationItems": [
-      {
-        "name": "check_tlp",
-        "description": "Define if the analyzer should check TLP of data before running",
-        "type": "boolean",
-        "multi": false,
-        "required": true,
-        "defaultValue": false
-      },
-      {
-        "name": "max_tlp",
-        "description": "Define the maximum TLP level autorized",
-        "type": "number",
-        "multi": false,
-        "required": true,
-        "defaultValue": 1
+    {
+      "name": "max_tlp",
+      "description": "Define the maximum TLP level autorized",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 1
     },
     {
       "name": "key",
       "description": "Define the API key",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "API key"
+      "required": true
     }
-    ]
+  ]
 }

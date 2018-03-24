@@ -1,17 +1,19 @@
 {
-    "name": "CuckooSandbox_Url_Analysis",
-    "version": "1.0",
-    "author": "Andrea Garavaglia, LDO-CERT",
-    "url": "https://github.com/garanews/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "Cuckoo Sandbox URL analysis.",
-    "dataTypeList": ["url"],
-    "command": "CuckooSandbox/cuckoosandbox_analyzer.py",
-    "baseConfig": "CuckooSandbox",
-    "config": {
-        "service": "url_analysis"
-    },
-    "configurationItems": [
+  "name": "CuckooSandbox_Url_Analysis",
+  "version": "1.0",
+  "author": "Andrea Garavaglia, LDO-CERT",
+  "url": "https://github.com/garanews/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Cuckoo Sandbox URL analysis.",
+  "dataTypeList": [
+    "url"
+  ],
+  "command": "CuckooSandbox/cuckoosandbox_analyzer.py",
+  "baseConfig": "CuckooSandbox",
+  "config": {
+    "service": "url_analysis"
+  },
+  "configurationItems": [
     {
       "name": "check_tlp",
       "description": "Define if the analyzer should check TLP of data before running",
@@ -33,9 +35,7 @@
       "description": "URL",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "url"
+      "required": true
     }
   ]
-
 }

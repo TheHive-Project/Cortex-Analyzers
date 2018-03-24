@@ -1,17 +1,19 @@
 {
-    "name": "PhishingInitiative_Lookup",
-    "version": "2.0",
-    "author": "CERT-BDF",
-    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "Use Phishing Initiative to check if a URL is a verified phishing site.",
-    "dataTypeList": ["url"],
-    "command": "PhishingInitiative/phishinginitiative_lookup.py",
-    "baseConfig": "PhishingInitiative",
-    "config": {
-        "service": "query"
-    },
-    "configurationItems": [
+  "name": "PhishingInitiative_Lookup",
+  "version": "2.0",
+  "author": "CERT-BDF",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use Phishing Initiative to check if a URL is a verified phishing site.",
+  "dataTypeList": [
+    "url"
+  ],
+  "command": "PhishingInitiative/phishinginitiative_lookup.py",
+  "baseConfig": "PhishingInitiative",
+  "config": {
+    "service": "query"
+  },
+  "configurationItems": [
     {
       "name": "check_tlp",
       "description": "Define if the analyzer should check TLP of data before running",
@@ -33,8 +35,7 @@
       "description": "Define the API Key",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "API Key"
+      "required": true
     }
   ]
 }

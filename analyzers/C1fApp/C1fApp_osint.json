@@ -2,7 +2,7 @@
     "name": "C1fApp",
     "version": "1.0",
     "author": "etz69",
-    "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
     "description": "Query C1fApp OSINT Aggregator for IPs, domains and URLs",
     "dataTypeList": ["url", "domain", "ip"],
@@ -33,16 +33,14 @@
       "description": "URL of C1fApp service",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "Server1"
+      "required": true
     },
     {
       "name": "key",
       "description": "API key",
       "type": "string",
       "multi": false,
-      "required": true,
-      "defaultValue": "API key"
+      "required": true
     }
   ]
 }

@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # encoding: utf-8
-
 import os
 import sys
 import codecs
@@ -85,7 +84,7 @@ class Analyzer:
                     sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
                 else:
                     sys.stderr = codecs.getwriter('utf-8')(sys.stderr, 'strict')
-        except:
+        except Exception:
             pass
 
     def __get_param(self, source, name, default=None, message=None):
@@ -154,7 +153,7 @@ class Analyzer:
     def artifacts(self, raw):
         # Use the regex extractor, if auto_extract setting is not False
         if self.auto_extract:
-            extractor = Extractor()
+            extractor = Extractor(ignore=self.get_data())
             return extractor.check_iterable(raw)
 
         # Return empty list
@@ -194,7 +193,7 @@ class Analyzer:
         summary = {}
         try:
             summary = self.summary(full_report)
-        except:
+        except Exception:
             pass
 
         report = {

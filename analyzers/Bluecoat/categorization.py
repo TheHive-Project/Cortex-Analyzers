@@ -20,7 +20,7 @@ class BluecoatAnalyzer(Analyzer):
         Extract desired fields using RegEx
         """
         regex_category_id = r'catdesc\.jsp\?catnum=(\d+)'
-        regex_category = r'>([\w\s\/]+)<\/a>'
+        regex_category = r'(?<=>)[A-Za-z\/\- ]+'
         regex_date = r'Last Time Rated\/Reviewed:(.*)<img'
 
         if categorization != "":
@@ -81,25 +81,25 @@ class BluecoatAnalyzer(Analyzer):
         json_answer = None
         if self.data_type == 'domain' or self.data_type == 'url' or self.data_type == 'fqdn':
             if self.data_type == 'url':
-                domain = self.url_to_domain(self.getData())
+                domain = self.url_to_domain(self.get_data())
                 if domain:
                     json_answer = self.call_bluecoat_api(domain)
                 else:
                     self.error('Domain not found')
 
             else:
-                json_answer = self.call_bluecoat_api(self.getData())
+                json_answer = self.call_bluecoat_api(self.get_data())
 
             if json_answer:
                 try:
                     result = self.parse_answer(json_answer['categorization'], json_answer['ratedate'])
-                    result['host'] = self.getData()
+                    result['host'] = self.get_data()
                     return self.report(result)
                 except Exception:
                     try:
                         return self.error('{} : {}'.format(json_answer['errorType'], json_answer['error']))
-                    except Exception as b:
-                        return self.error(b)
+                    except Exception:
+                        return self.error('Undefinded Bluecoat error.')
         else:
             return self.error('Invalid data type !')
 
