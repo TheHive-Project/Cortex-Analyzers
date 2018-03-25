@@ -26,8 +26,8 @@ class BluecoatAnalyzer(Analyzer):
         if categorization != "":
             result = {}
             try:
-                result['category'] = re.findall(regex_category, categorization)[0]
-                result['id'] = re.findall(regex_category_id, categorization)[0]
+                result['category'] = ''.join(re.findall(regex_category, categorization))
+                result['id'] =  re.findall(regex_category_id, categorization)[0]
                 result['date'] = re.findall(regex_date, ratedate)
                 if not result['date']:
                     result['date'] = False
@@ -66,13 +66,26 @@ class BluecoatAnalyzer(Analyzer):
 
     def summary(self, raw):
         taxonomies = []
-        level = 'info'
+        categories_string = []
+        level = 'safe'
+        suspicious_categories = ['Scam/Questionable/Illegal','Hacking','Proxy Avoidance','Spam','Suspicious','Placeholders','Phishing','Remote Access Tools','Potentially Unwanted Software','Dynamic DNS Host','Child Pornography']
+        malicious_categories = ['Malicious Outbound Data/Botnets','Malicious Sources/Malnets']
+        info_categories = ['Extreme','Violence/Hate/Racism','Gambling','Nudity','Adult/Mature Content','Peer-to-Peer (P2P)','Pornography','Piracy/Copyright Concerns','Controlled Substances','Uncategorized','Weapons','Marijuana','Computer/Information Security','Internet Connected Devices','Web Ads/Analytics','Mixed Content/Potentially Adult']
+							   
         namespace = 'BlueCoat'
         predicate = 'Category'
         value = '{}'.format(raw['category'])
-
-        if value == '\"Uncategorized\"':
-            level = 'suspicious'
+        categories_string = value.split(' and ')
+	
+        for categories in categories_string:
+        	if categories in info_categories:
+        		level = 'info'
+        for categories in categories_string:
+        	if categories in suspicious_categories:
+        		level = 'suspicious'
+        for categories in categories_string:
+        	if value in malicious_categories:
+        		level = 'malicious'
 
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         return {'taxonomies': taxonomies}
@@ -80,12 +93,12 @@ class BluecoatAnalyzer(Analyzer):
     def run(self):
         json_answer = None
         if self.data_type == 'domain' or self.data_type == 'url' or self.data_type == 'fqdn':
-            if self.data_type == 'url':
+            if self.data_type == 'domain' or self.data_type == 'fqdn':
                 domain = self.url_to_domain(self.getData())
                 if domain:
                     json_answer = self.call_bluecoat_api(domain)
                 else:
-                    self.error('Domain not found')
+                    self.error('Domain of FQDN not found')
 
             else:
                 json_answer = self.call_bluecoat_api(self.getData())
