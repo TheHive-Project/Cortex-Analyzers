@@ -16,7 +16,8 @@ class FileInfoAnalyzer(Analyzer):
 
         # Create a dictionary of custom submodules
         self.available_submodules = [
-            GZIPSubmodule()
+            GZIPSubmodule(),
+            PESubmodule()
         ]
 
     def run(self):

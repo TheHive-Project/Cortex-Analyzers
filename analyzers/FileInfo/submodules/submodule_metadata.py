@@ -20,6 +20,14 @@ class MetadataSubmodule(SubmoduleBaseclass):
         """
         return True
 
+    def exif(self, path):
+        # Exif info
+        exifreport = pyexifinfo.get_json(path)
+        result = dict((key, value) for key, value in exifreport[0].items() if
+                      not (key.startswith("File") or key.startswith("SourceFile")))
+        return result
+
+
     def analyze_file(self, path):
         # Hash the file
         with io.open(path, 'rb') as fh:
@@ -40,6 +48,9 @@ class MetadataSubmodule(SubmoduleBaseclass):
             'ssdeep': ssdeep.digest()
         })
 
+        self.add_result_subsection('Exif Info', self.exif(path)
+        )
+
         # Get libmagic info
         magicliteral = magic.Magic().from_file(path)
         mimetype = magic.Magic(mime=True).from_file(path)
@@ -47,6 +58,7 @@ class MetadataSubmodule(SubmoduleBaseclass):
             'Magic literal': magicliteral,
             'MimeType': mimetype,
             'Filetype': pyexifinfo.fileType(path)
+
         })
 
         return self.results
