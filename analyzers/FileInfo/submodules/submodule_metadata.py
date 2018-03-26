@@ -1,6 +1,7 @@
 import magic
 import hashlib
 import io
+import pyexifinfo
 
 from .submodule_base import SubmoduleBaseclass
 from ssdeep import Hash
@@ -11,7 +12,7 @@ class MetadataSubmodule(SubmoduleBaseclass):
         SubmoduleBaseclass.__init__(self)
         self.name = 'Metadata'
 
-    def check_file(self, path):
+    def check_file(self, **kwargs):
         """
         Metadata submodule will analyze every file, therefore it will always return true.
 
@@ -42,9 +43,10 @@ class MetadataSubmodule(SubmoduleBaseclass):
         # Get libmagic info
         magicliteral = magic.Magic().from_file(path)
         mimetype = magic.Magic(mime=True).from_file(path)
-        self.add_result_subsection('Libmagic information', {
+        self.add_result_subsection('Filetype determination', {
             'Magic literal': magicliteral,
-            'MimeType': mimetype
+            'MimeType': mimetype,
+            'Filetype': pyexifinfo.fileType(path)
         })
 
         return self.results

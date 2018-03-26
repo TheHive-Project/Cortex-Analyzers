@@ -12,10 +12,17 @@ class SubmoduleBaseclass(object):
         """
         return self.name
 
-    def check_file(self, path):
+    def check_file(self, **kwargs):
         """
-        Checks if a file can be analyzed by the respective submodule.
+        Checks if a file can be analyzed by the respective submodule. This can be done using the file-parameter or the
+        filetype-parameter (fileType() of pyexiftool). Submodules can choose how to check, if a file fits their analysis
+        method.
+        If this returns true, the analyze_file() function gets called.
 
+        :param file: used for checking compatiblity for a file directly.
+        :type file: str
+        :param filetype: used for checking compatibility for a file using the filetype string of pyexiftool.fileType().
+        :type filetype: str
         :return: true on success, false otherwise
         :rtype: bool
         """
@@ -23,7 +30,7 @@ class SubmoduleBaseclass(object):
 
     def analyze_file(self, path):
         """
-        This starts the analyzation process.
+        This starts the analyzation process. Depends on the return value of check_file().
 
         :param path: path to file
         :return:

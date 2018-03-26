@@ -1,1 +1,2 @@
 from .submodule_metadata import MetadataSubmodule
+from .submodule_gzip import GZIPSubmodule
