@@ -31,7 +31,7 @@ class FileInfoAnalyzer(Analyzer):
         })
 
         for module in self.available_submodules:
-            if module.check_file(file=self.filepath, filetype=self.filetype):
+            if module.check_file(file=self.filepath, filetype=self.filetype, filename=self.filename):
                 # temporary report
                 results.append({
                     'submodule_name': module.name,
