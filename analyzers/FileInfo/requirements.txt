@@ -1,0 +1,3 @@
+cortexutils
+python-magic
+ssdeep

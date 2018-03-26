@@ -1,0 +1,1 @@
+from .submodule_metadata import MetadataSubmodule
