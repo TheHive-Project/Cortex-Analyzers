@@ -55,13 +55,9 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
 
             if parser.detect_vba_macros():
                 for idx, (filename, stream_path, vba_filename, vba_code) in enumerate(parser.extract_all_macros()):
-                    # Decode strings often produces errors
-                    scanner = VBA_Scanner(vba_code)
+                    # Decode strings often produces errors or gibberish
+                    scan_results = VBA_Scanner(vba_code).scan(include_decoded_strings=False)
                     scan_results_to_report = []
-                    try:
-                        scan_results = scanner.scan(include_decoded_strings=True)
-                    except ProcessingError:
-                        scan_results = scanner.scan(include_decoded_strings=False)
 
                     for type, keyword, description in scan_results:
                         scan_results_to_report.append({
@@ -88,4 +84,4 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
         if len(results) > 0:
             self.add_result_subsection('Oletools DDE Analysis', {'DDEUrl': results})
         else:
-            self.add_result_subsection('Oletools DDE Analysis', {'Info': 'No URLs found.'})
+            self.add_result_subsection('Oletools DDE Analysis', {'Info': 'No DDE URLs found.'})
