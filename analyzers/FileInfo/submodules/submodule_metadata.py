@@ -1,6 +1,7 @@
 import magic
 import hashlib
 import io
+import os
 import pyexifinfo
 
 from .submodule_base import SubmoduleBaseclass
@@ -10,7 +11,7 @@ from ssdeep import Hash
 class MetadataSubmodule(SubmoduleBaseclass):
     def __init__(self):
         SubmoduleBaseclass.__init__(self)
-        self.name = 'Metadata'
+        self.name = 'Basic properties'
 
     def check_file(self, **kwargs):
         """
@@ -57,7 +58,8 @@ class MetadataSubmodule(SubmoduleBaseclass):
         self.add_result_subsection('Filetype determination', {
             'Magic literal': magicliteral,
             'MimeType': mimetype,
-            'Filetype': pyexifinfo.fileType(path)
+            'Filetype': pyexifinfo.fileType(path),
+            'Filesize': os.path.getsize(path)
 
         })
 

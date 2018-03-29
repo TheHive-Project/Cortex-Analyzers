@@ -1,3 +1,5 @@
 cortexutils
 python-magic
 ssdeep
+git+https://github.com/AnyMaster/pehashng
+git+https://github.com/Rafiot/pdfid.git
