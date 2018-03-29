@@ -3,6 +3,9 @@
         Censys.io information for <strong>{{artifact.data}}</strong>
     </div>
     <div class="panel-body">
+        <div class="message" ng-if="content.message">
+            {{content.message}}
+        </div>
         <div class="ip-results" ng-if="content.ip">
             <dl class="dl-horizontal">
                 <dt class="text-bold">IP</dt>
@@ -88,7 +91,7 @@
                         </div>
                     </div>
                 </dd>
-            </tr>
+            </dl>
         </div>
         <div class="website-results" ng-if="content.website">
 

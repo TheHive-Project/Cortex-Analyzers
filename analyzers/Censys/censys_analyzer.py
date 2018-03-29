@@ -70,7 +70,9 @@ class CensysAnalyzer(Analyzer):
             else:
                 self.error('Data type not supported. Please use this analyzer with data types hash, ip or domain.')
         except CensysNotFoundException:
-            self.error('{} not found.'.format(self.get_data()))
+            self.report({
+                'message': '{} could not be found.'.format(self.get_data())
+            })
         except CensysUnauthorizedException:
             self.error('Censys raised NotAuthorizedException. Please check your credentials.')
         except CensysRateLimitExceededException:

@@ -1,17 +1,20 @@
 {
-    "name": "OTXQuery",
-    "version": "2.0",
-    "author": "Eric Capuano",
-    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "Query AlienVault OTX for IPs, domains, URLs, or file hashes.",
-    "dataTypeList": ["url", "domain", "file", "hash", "ip"],
-    "baseConfig": "OTXQuery",
-    "config": {
-        "check_tlp":true,
-        "max_tlp": 3,
-        "service": "query"
-
-    },
-    "command": "OTXQuery/otxquery.py"
+  "name": "OTXQuery",
+  "version": "2.0",
+  "author": "Eric Capuano",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Query AlienVault OTX for IPs, domains, URLs, or file hashes.",
+  "dataTypeList": ["url", "domain", "file", "hash", "ip"],
+  "baseConfig": "OTXQuery",
+  "command": "OTXQuery/otxquery.py",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API key to use to connect the service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
 }

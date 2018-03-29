@@ -8,7 +8,7 @@ class ShodanAPIPublic(Shodan):
     def __init__(self, api_key):
         Shodan.__init__(self, api_key)
 
-    def host(self, ips, history=False, minify=False):
+    def host(self, ips):
 
         host = Shodan.host(self, ips)
         if host:

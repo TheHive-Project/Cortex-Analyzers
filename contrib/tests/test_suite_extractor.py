@@ -147,3 +147,17 @@ class TestExtractorValidInput(unittest.TestCase):
             l_expected,
             'Check_iterable: wrong list returned.'
         )
+    
+    def test_float_domain(self):
+        self.assertEqual(
+            self.extractor.check_string(value='0.001234'),
+            '',
+            'Check_float: float was recognized as domain, but should not.'
+        )
+
+    def test_float_fqdn(self):
+        self.assertEqual(
+            self.extractor.check_string(value='0.1234.5678'),
+            '',
+            'Check_float_fqdn: float was recognized as fqdn but should not.'
+        )

@@ -1,16 +1,30 @@
 {
-    "name": "PassiveTotal_Unique_Resolutions",
-    "version": "2.0",
-    "author": "CERT-BDF",
-    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "baseConfig": "PassiveTotal",
-    "config": {
-        "check_tlp": true,
-        "max_tlp":1,
-        "service": "unique_resolutions"
+  "name": "PassiveTotal_Unique_Resolutions",
+  "version": "2.0",
+  "author": "CERT-BDF",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "PassiveTotal Unique Resolutions Lookup.",
+  "dataTypeList": ["domain", "fqdn", "ip"],
+  "command": "PassiveTotal/passivetotal_analyzer.py",
+  "baseConfig": "PassiveTotal",
+  "config": {
+    "service": "unique_resolutions"
+  },
+  "configurationItems": [
+    {
+      "name": "username",
+      "description": "Define the username of the account used to connect the service",
+      "type": "string",
+      "multi": false,
+      "required": true
     },
-    "description": "PassiveTotal Unique Resolutions Lookup.",
-    "dataTypeList": ["domain", "fqdn", "ip"],
-    "command": "PassiveTotal/passivetotal_analyzer.py"
+    {
+      "name": "key",
+      "description": "Define the API key to use to connect the service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
 }
