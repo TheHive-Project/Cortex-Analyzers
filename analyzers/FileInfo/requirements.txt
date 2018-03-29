@@ -3,3 +3,5 @@ python-magic
 ssdeep
 pyexifinfo
 pefile
+git+https://github.com/AnyMaster/pehashng
+git+https://github.com/Rafiot/pdfid.git

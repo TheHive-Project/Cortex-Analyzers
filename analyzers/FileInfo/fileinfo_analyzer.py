@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import pyexifinfo
 
-
 from cortexutils.analyzer import Analyzer
 from submodules import available_submodules
 from submodules.submodule_metadata import MetadataSubmodule
