@@ -1,3 +1,5 @@
 cortexutils
 python-magic
 ssdeep
+pyexifinfo
+pefile

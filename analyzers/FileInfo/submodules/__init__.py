@@ -1,3 +1,7 @@
-from .submodule_metadata import MetadataSubmodule
-from .submodule_gzip import GZIPSubmodule
+from .submodule_oletools import OLEToolsSubmodule
 from .submodule_pe import PESubmodule
+
+available_submodules = [
+    PESubmodule(),
+    OLEToolsSubmodule()
+]

@@ -3,7 +3,8 @@ import pyexifinfo
 
 
 from cortexutils.analyzer import Analyzer
-from submodules import *
+from submodules import available_submodules
+from submodules.submodule_metadata import MetadataSubmodule
 
 
 class FileInfoAnalyzer(Analyzer):
@@ -12,13 +13,6 @@ class FileInfoAnalyzer(Analyzer):
         self.filepath = self.get_param('file', None, 'File parameter is missing.')
         self.filename = self.get_param('filename', None, 'Filename is missing.')
         self.filetype = pyexifinfo.fileType(self.filepath)
-        #self.auto_extract = False
-
-        # Create a dictionary of custom submodules
-        self.available_submodules = [
-            GZIPSubmodule(),
-            PESubmodule()
-        ]
 
     def run(self):
         results = []
@@ -30,15 +24,13 @@ class FileInfoAnalyzer(Analyzer):
             'results': m.analyze_file(self.filepath)
         })
 
-        for module in self.available_submodules:
+        for module in available_submodules:
             if module.check_file(file=self.filepath, filetype=self.filetype, filename=self.filename):
-                # temporary report
                 results.append({
                     'submodule_name': module.name,
                     'results': module.analyze_file(self.filepath)
                 })
         self.report(results)
-
 
 
 if __name__ == '__main__':
