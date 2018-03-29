@@ -23,6 +23,8 @@ class SubmoduleBaseclass(object):
         :type file: str
         :param filetype: used for checking compatibility for a file using the filetype string of pyexiftool.fileType().
         :type filetype: str
+        :param filename: the original filename, not the one given by cortex
+        :type filename: str
         :return: true on success, false otherwise
         :rtype: bool
         """
