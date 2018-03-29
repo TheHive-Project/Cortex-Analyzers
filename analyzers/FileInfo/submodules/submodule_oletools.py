@@ -29,7 +29,10 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
         return False
 
     def analyze_file(self, path):
-        pass
+        # Run the analyze functions
+        self.analyze_vba(path)
+
+        return self.results
 
     def analyze_vba(self, path):
         """Analyze a given sample for malicios vba."""
@@ -57,7 +60,7 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
                         'OLE stream: {}'.format(stream_path),
                         {
                             'olevba_filename': vba_filename,
-                            'olevba_code': vba_code,
+                            'olevba_code': vba_code.decode('unicode-escape'),
                             'olevba_results': scan_results_to_report
                         }
                     )
