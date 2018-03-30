@@ -125,8 +125,11 @@ class Extractor:
         :return: Data type of value, if known, else empty string
         :rtype: str
         """
-        if self.ignore and self.ignore in value:
-            return ''
+        if self.ignore:
+            if isinstance(value, str) and self.ignore in value:
+                return ''
+            if self.ignore == value:
+                return ''
 
         if isinstance(value, (str, unicode)):
             for r in self.regex:
