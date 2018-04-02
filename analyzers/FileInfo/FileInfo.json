@@ -1,0 +1,12 @@
+{
+  "name": "FileInfo",
+  "version": "3.0",
+  "author": "TheHive-Project",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Parse files in several formats such as OLE and OpenXML to detect VBA macros, extract their source code, generate useful information on PE, PDF files...",
+  "dataTypeList": ["file"],
+  "baseConfig": "FileInfo",
+  "command": "FileInfo/fileinfo_analyzer.py"
+}
+
