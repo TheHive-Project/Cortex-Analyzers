@@ -9,9 +9,7 @@ from cortexutils.analyzer import Analyzer
 
 class OTXQueryAnalyzer(Analyzer):
     def __init__(self):
-        Analyzer.__init__(self)
-        self.service = self.get_param(
-            'config.service', None, 'Service parameter is missing')
+        Analyzer.__init__(self)        
         self.otx_key = self.get_param('config.key', None, 'Missing OTX API key')
 
     def _get_headers(self):
