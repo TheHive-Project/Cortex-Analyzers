@@ -41,7 +41,7 @@ class Analyzer:
         self.artifact = self.__input
 
         # Check for auto extraction config
-        self.auto_extract = self.get_param('config.auto_extract', True)
+        self.auto_extract = self.get_param('config.auto_extract', self.get_param('config.auto_extract_artifacts', True))
 
     # Not breaking compatibility
     def notSupported(self):
