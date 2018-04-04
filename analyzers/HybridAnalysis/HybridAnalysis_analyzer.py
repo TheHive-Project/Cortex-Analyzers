@@ -95,8 +95,9 @@ class VxStreamSandboxAnalyzer(Analyzer):
             error = True
             while error:
                 r = requests.get(url, headers=self.headers, auth=HTTPBasicAuth(self.api_key, self.secret), verify=False)
-                if "error" in r.json().get('response') == "Exceeded maximum API requests per minute(5). Please try again later.":
-                    time.sleep(60)
+                if "error" in r.json().get('response'):
+                    if "Exceeded maximum API requests per minute(5)" in r.json().get('response').get('error'):
+                        time.sleep(60)
                 else:
                     error = False
 
