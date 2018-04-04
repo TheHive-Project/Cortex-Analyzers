@@ -119,6 +119,8 @@ class Analyzer:
         """Wrapper for getting data from input dict.
 
         :return: Data (observable value) given through Cortex"""
+        if self.data_type == 'file':
+            return self.get_param('filename', None, 'Missing filename.')
         return self.get_param('data', None, 'Missing data field')
 
     def get_param(self, name, default=None, message=None):
