@@ -41,7 +41,7 @@ class Analyzer:
         self.artifact = self.__input
 
         # Check for auto extraction config
-        self.auto_extract = self.get_param('config.auto_extract', True)
+        self.auto_extract = self.get_param('config.auto_extract', self.get_param('config.auto_extract_artifacts', True))
 
     # Not breaking compatibility
     def notSupported(self):
@@ -119,6 +119,8 @@ class Analyzer:
         """Wrapper for getting data from input dict.
 
         :return: Data (observable value) given through Cortex"""
+        if self.data_type == 'file':
+            return self.get_param('filename', None, 'Missing filename.')
         return self.get_param('data', None, 'Missing data field')
 
     def get_param(self, name, default=None, message=None):
