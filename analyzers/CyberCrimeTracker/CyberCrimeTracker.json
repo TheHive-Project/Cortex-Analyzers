@@ -1,0 +1,16 @@
+{
+  "name": "CyberCrime-Tracker",
+  "author": "ph34tur3",
+  "license": "AGPL-V3",
+  "url": "https://github.com/ph34tur3/Cortex-Analyzers",
+  "version": "1.0",
+  "description": "Search cybercrime-tracker.net for c2 servers.",
+  "dataTypeList": ["domain", "fqdn", "ip", "url", "other"],
+  "command": "CyberCrimeTracker/cct.py",
+  "baseConfig": "CyberCrimeTracker",
+  "config": {
+    "check_tlp": true,
+    "max_tlp": 2
+  },
+  "configurationItems": []
+}
