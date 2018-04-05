@@ -35,7 +35,7 @@ class StopforumspamClient:
             StopforumspamClient._type_conversion[type]: data
         }
 
-    def data_conversion(self, data):
+    def _data_conversion(self, data):
         if 'appears' in data:
             data['appears'] = (data['appears'] == 1)
         if 'torexit' in data:
@@ -61,7 +61,7 @@ class StopforumspamClient:
         report = response.json()
         if report['success']:
             data = report[StopforumspamClient._type_conversion[datatype]]
-            result.append(self.data_conversion(data))
+            result.append(self._data_conversion(data))
         else:
             pass
         return result
