@@ -4,20 +4,20 @@ from stopforumspam_client import StopforumspamClient
 
 
 class StopforumspamAnalyzer(Analyzer):
-    """docstring for StopforumspamAnalyzer."""
 
     _malicious_default_confidence_level = 90.0
     _suspicious_default_confidence_level = 0.0
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.client = StopforumspamClient()
+        self.proxies = self.get_param('config.proxy', None)
         self.malicious_confidence_level = self.get_param(
             'config.malicious_confidence_level',
             StopforumspamAnalyzer._malicious_default_confidence_level)
         self.suspicious_confidence_level = self.get_param(
             'config.suspicious_confidence_level',
             StopforumspamAnalyzer._suspicious_default_confidence_level)
+        self.client = StopforumspamClient(proxies=self.proxies)
 
     def summary(self, raw):
         taxonomies = []

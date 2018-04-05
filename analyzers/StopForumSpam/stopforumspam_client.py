@@ -25,8 +25,9 @@ class StopforumspamClient:
 
     _type_conversion = {'ip': 'ip', 'mail': 'email'}
 
-    def __init__(self):
+    def __init__(self, proxies=None):
         self.client = requests.Session()
+        self.proxies = proxies
 
     def _set_payload(type, data):
         return {
@@ -56,7 +57,8 @@ class StopforumspamClient:
         result = []
         params = StopforumspamClient._set_payload(datatype, data)
         response = self.client.get(
-            'https://api.stopforumspam.org/api', params=params)
+            'https://api.stopforumspam.org/api',
+            params=params, proxies=self.proxies)
         response.raise_for_status()
         report = response.json()
         if report['success']:
