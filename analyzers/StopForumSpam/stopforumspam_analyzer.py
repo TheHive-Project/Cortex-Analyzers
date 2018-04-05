@@ -5,30 +5,36 @@ from stopforumspam_client import StopforumspamClient
 
 class StopforumspamAnalyzer(Analyzer):
     """docstring for StopforumspamAnalyzer."""
+
+    _malicious_default_confidence_level = 90.0
+
     def __init__(self):
         Analyzer.__init__(self)
         self.client = StopforumspamClient()
-
-    def _format_ip_report(self, data):
-        return data
-
-    def _format_email_report(self, data):
-        return data
+        self.malicious_confidence_level = self.get_param('config.malicious_confidence_level', StopforumspamAnalyzer._malicious_default_confidence_level)
 
     def summary(self, raw):
         taxonomies = []
         ns = 'SFS'
-        predicate = ''
-        level = ''
-        value = ''
+        predicate = self.data_type
+        level = 'info'
+        value = 0
+        if 'results' in raw:
+            for r in raw['results']:
+                if r['appears']:
+                    value = max(value, r['confidence'])
+            if value >= self.malicious_confidence_level:
+                level = 'malicious'
+            elif value > 0:
+                level = 'suspicious'
         taxonomies.append(self.build_taxonomy(level, ns, predicate, value))
         return {'taxonomies': taxonomies}
 
     def run(self):
         if self.data_type == 'ip':
-            self.report({'results': self._format_ip_report(self.client.get_data(self.data_type, self.get_data()))})
+            self.report({'results': self.client.get_data(self.data_type, self.get_data())})
         elif self.data_type == 'mail':
-            self.report({'results': self._format_email_report(self.client.get_data(self.data_type, self.get_data()))})
+            self.report({'results': self.client.get_data(self.data_type, self.get_data())})
         else:
             self.error('Unsupported dataType {}'.format(self.data_type))
 
