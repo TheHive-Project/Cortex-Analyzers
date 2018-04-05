@@ -7,11 +7,13 @@ class StopforumspamAnalyzer(Analyzer):
     """docstring for StopforumspamAnalyzer."""
 
     _malicious_default_confidence_level = 90.0
+    _suspicious_default_confidence_level = 0.0
 
     def __init__(self):
         Analyzer.__init__(self)
         self.client = StopforumspamClient()
         self.malicious_confidence_level = self.get_param('config.malicious_confidence_level', StopforumspamAnalyzer._malicious_default_confidence_level)
+        self.suspicious_confidence_level = self.get_param('config.suspicious_confidence_level', StopforumspamAnalyzer._suspicious_default_confidence_level)
 
     def summary(self, raw):
         taxonomies = []
@@ -20,13 +22,16 @@ class StopforumspamAnalyzer(Analyzer):
         level = 'info'
         value = 0
         if 'results' in raw:
-            for r in raw['results']:
-                if r['appears']:
-                    value = max(value, r['confidence'])
-            if value >= self.malicious_confidence_level:
-                level = 'malicious'
-            elif value > 0:
-                level = 'suspicious'
+            if raw['results']:
+                for r in raw['results']:
+                    if r['appears']:
+                        value = max(value, r['confidence'])
+                if value > self.malicious_confidence_level:
+                    level = 'malicious'
+                elif value > self.suspicious_confidence_level:
+                    level = 'suspicious'
+                else:
+                    level = 'safe'
         taxonomies.append(self.build_taxonomy(level, ns, predicate, value))
         return {'taxonomies': taxonomies}
 
