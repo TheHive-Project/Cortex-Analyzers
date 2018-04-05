@@ -12,8 +12,12 @@ class StopforumspamAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
         self.client = StopforumspamClient()
-        self.malicious_confidence_level = self.get_param('config.malicious_confidence_level', StopforumspamAnalyzer._malicious_default_confidence_level)
-        self.suspicious_confidence_level = self.get_param('config.suspicious_confidence_level', StopforumspamAnalyzer._suspicious_default_confidence_level)
+        self.malicious_confidence_level = self.get_param(
+            'config.malicious_confidence_level',
+            StopforumspamAnalyzer._malicious_default_confidence_level)
+        self.suspicious_confidence_level = self.get_param(
+            'config.suspicious_confidence_level',
+            StopforumspamAnalyzer._suspicious_default_confidence_level)
 
     def summary(self, raw):
         taxonomies = []
@@ -37,9 +41,15 @@ class StopforumspamAnalyzer(Analyzer):
 
     def run(self):
         if self.data_type == 'ip':
-            self.report({'results': self.client.get_data(self.data_type, self.get_data())})
+            self.report({
+                'results': self.client.get_data(
+                    self.data_type, self.get_data())
+            })
         elif self.data_type == 'mail':
-            self.report({'results': self.client.get_data(self.data_type, self.get_data())})
+            self.report({
+                'results': self.client.get_data(
+                    self.data_type, self.get_data())
+            })
         else:
             self.error('Unsupported dataType {}'.format(self.data_type))
 
