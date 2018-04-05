@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # encoding: utf-8
-
 import os
 import sys
 import codecs
@@ -42,7 +41,7 @@ class Analyzer:
         self.artifact = self.__input
 
         # Check for auto extraction config
-        self.auto_extract = self.get_param('config.auto_extract', True)
+        self.auto_extract = self.get_param('config.auto_extract', self.get_param('config.auto_extract_artifacts', True))
 
     # Not breaking compatibility
     def notSupported(self):
@@ -85,7 +84,7 @@ class Analyzer:
                     sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
                 else:
                     sys.stderr = codecs.getwriter('utf-8')(sys.stderr, 'strict')
-        except:
+        except Exception:
             pass
 
     def __get_param(self, source, name, default=None, message=None):
@@ -120,6 +119,8 @@ class Analyzer:
         """Wrapper for getting data from input dict.
 
         :return: Data (observable value) given through Cortex"""
+        if self.data_type == 'file':
+            return self.get_param('filename', None, 'Missing filename.')
         return self.get_param('data', None, 'Missing data field')
 
     def get_param(self, name, default=None, message=None):
@@ -154,7 +155,7 @@ class Analyzer:
     def artifacts(self, raw):
         # Use the regex extractor, if auto_extract setting is not False
         if self.auto_extract:
-            extractor = Extractor()
+            extractor = Extractor(ignore=self.get_data())
             return extractor.check_iterable(raw)
 
         # Return empty list
@@ -194,7 +195,7 @@ class Analyzer:
         summary = {}
         try:
             summary = self.summary(full_report)
-        except:
+        except Exception:
             pass
 
         report = {

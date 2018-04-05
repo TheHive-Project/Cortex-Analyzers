@@ -7,6 +7,7 @@ import os.path
 import requests
 import time
 
+
 class JoeSandboxAnalyzer(Analyzer):
 
     def __init__(self):
@@ -27,11 +28,8 @@ class JoeSandboxAnalyzer(Analyzer):
         }
 
         taxonomies = []
-        level = "info"
         namespace = "JSB"
         predicate = "Report"
-        value = "\"Clean\""
-
 
         r = raw['detection']
 
@@ -43,15 +41,12 @@ class JoeSandboxAnalyzer(Analyzer):
             level = "suspicious"
         elif r["malicious"]:
             level = "malicious"
-
-
-
         else:
             level = "info"
             value = "Unknown"
 
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-        result.update({"taxonomies":taxonomies})
+        result.update({"taxonomies": taxonomies})
 
         return result
 
@@ -82,7 +77,7 @@ class JoeSandboxAnalyzer(Analyzer):
 
         # url analysis
         elif self.service == 'url_analysis':
-            data['url'] = self.getData()
+            data['url'] = self.get_data()
             data['type'] = 'url'
             data['inet'] = 1
 
@@ -148,14 +143,17 @@ class JoeSandboxAnalyzer(Analyzer):
 
         # url analysis
         elif self.service == 'url_analysis':
-            data['url'] = self.getData()
+            data['url'] = self.get_data()
             data['internet-access'] = '1'
 
         else:
             self.error('Unknown JoeSandbox service')
 
         # Submit the file/url for analysis
-        response = requests.post(self.url + 'api/v2/analysis/submit', files=files, data=data, timeout=self.networktimeout)
+        response = requests.post(self.url + 'api/v2/analysis/submit',
+                                 files=files,
+                                 data=data,
+                                 timeout=self.networktimeout)
         webid = response.json()['data']['webids'][0]
 
         # Wait for the analysis to finish
@@ -196,7 +194,10 @@ class JoeSandboxAnalyzer(Analyzer):
                 'apikey': self.apikey
             }
             # Check whether API v2 is supported or not
-            response = requests.post(self.url + 'api/v2/server/online', data=data, timeout=self.networktimeout, allow_redirects=False)
+            response = requests.post(self.url + 'api/v2/server/online',
+                                     data=data,
+                                     timeout=self.networktimeout,
+                                     allow_redirects=False)
             if response.status_code == 200:
                 self.runv2()
             else:
@@ -204,6 +205,7 @@ class JoeSandboxAnalyzer(Analyzer):
 
         except Exception as e:
             self.unexpectedError(e)
+
 
 if __name__ == '__main__':
     JoeSandboxAnalyzer().run()

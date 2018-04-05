@@ -1,12 +1,27 @@
 {
-    "name": "CIRCLPassiveSSL",
-    "author": "Nils Kuhnert, CERT-Bund",
-    "license": "AGPL-V3",
-    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-    "version": "2.0",
-    "baseConfig": "CIRCLPassiveSSL",
-    "config": {},
-    "description": "Check CIRCL's Passive SSL for a given IP address or a X509 certificate hash.",
-    "dataTypeList": ["ip", "certificate_hash", "hash"],
-    "command": "CIRCLPassiveSSL/circl_passivessl.py"
+  "name": "CIRCLPassiveSSL",
+  "author": "Nils Kuhnert, CERT-Bund",
+  "license": "AGPL-V3",
+  "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+  "version": "2.0",
+  "description": "Check CIRCL's Passive SSL for a given IP address or a X509 certificate hash.",
+  "dataTypeList": ["ip", "certificate_hash", "hash"],
+  "baseConfig": "CIRCL",
+  "command": "CIRCLPassiveSSL/circl_passivessl.py",
+  "configurationItems": [
+    {
+      "name": "user",
+      "description": "Username",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "password",
+      "description": "Password",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
 }

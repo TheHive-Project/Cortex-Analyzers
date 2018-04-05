@@ -11,23 +11,23 @@ class VMRayAnalyzer(Analyzer):
     """
     def __init__(self):
         Analyzer.__init__(self)
-        self.url = self.getParam('config.url', None, 'No VMRay url given.').rstrip('/ ')
-        disable_reanalyze = self.getParam('config.disablereanalyze', False)
+        self.url = self.get_param('config.url', None, 'No VMRay url given.').rstrip('/ ')
+        disable_reanalyze = self.get_param('config.disablereanalyze', False)
         if disable_reanalyze == 'true' or disable_reanalyze:
             reanalyze = False
         else:
             reanalyze = True
         self.vmrc = VMRayClient(url=self.url,
-                                key=self.getParam('config.key', None, 'No VMRay API key given.'),
-                                cert=self.getParam('config.certpath', True),
+                                key=self.get_param('config.key', None, 'No VMRay API key given.'),
+                                cert=self.get_param('config.certpath', True),
                                 reanalyze=reanalyze)
 
     def run(self):
         if self.data_type == 'hash':
-            self.report({'scanreport': self.vmrc.get_sample(self.getData())})
+            self.report({'scanreport': self.vmrc.get_sample(self.get_data())})
         elif self.data_type == 'file':
-            filepath = self.getParam('file')
-            filename = self.getParam('filename')
+            filepath = self.get_param('file')
+            filename = self.get_param('filename')
             submit_report = self.vmrc.submit_sample(filepath=filepath,
                                                     filename=filename)
             # Check for completion
@@ -42,12 +42,9 @@ class VMRayAnalyzer(Analyzer):
             self.error('Data type currently not supported')
 
     def summary(self, raw):
-
         taxonomies = []
-        level = "info"
         namespace = "VMRay"
         predicate = "Scan"
-        value = "\"0\""
 
         r = {
             'reports': []
@@ -84,6 +81,7 @@ class VMRayAnalyzer(Analyzer):
                 i += 1
 
         return {"taxonomies": taxonomies}
+
 
 if __name__ == '__main__':
     VMRayAnalyzer().run()

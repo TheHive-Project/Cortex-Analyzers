@@ -132,9 +132,9 @@ class TestReportResponse(unittest.TestCase):
         load_test_fixture('fixtures/test-report-response.json')
         self.analyzer = Analyzer()
 
-    def test_error_response(self):
+    def test_report_response(self):
         # Run the analyzer report method
-        self.analyzer.report({'report_id':'12345'})
+        self.analyzer.report({'report_id': '12345'})
 
         # Get the output
         output = self.analyzer.fpoutput.getvalue().strip()
@@ -143,6 +143,7 @@ class TestReportResponse(unittest.TestCase):
         self.assertEqual(json_output.get('success'), True)
         self.assertEqual(json_output.get('errorMessage', None), None)
         self.assertEqual(json_output['full']['report_id'], '12345')        
+
 
 if __name__ == '__main__':
     unittest.main()

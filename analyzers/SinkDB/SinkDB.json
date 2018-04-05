@@ -4,9 +4,17 @@
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/sinkdb-analyzer",
   "version": "1.0",
-  "baseConfig": "SinkDB",
-  "config": {},
   "description": "Check if ip is sinkholed via sinkdb.abuse.ch",
   "dataTypeList": ["ip"],
-  "command": "SinkDB/sinkdb.py"
+  "command": "SinkDB/sinkdb.py",
+  "baseConfig": "SinkDB",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
 }

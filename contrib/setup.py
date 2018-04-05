@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='cortexutils',
-    version='1.2.0',
+    version='1.2.3',
     description='A Python library for including utility classes for Cortex analyzers',
     long_description=open('README').read(),
     author='TheHive-Project',

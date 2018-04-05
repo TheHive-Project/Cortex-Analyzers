@@ -8,19 +8,16 @@ from shodan.exception import APIError
 class ShodanAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
-        self.service = self.getParam('config.service', None, 'Service parameter is missing')
-        self.shodan_key = self.getParam('config.key', None, 'Missing Shodan API key')
+        self.shodan_key = self.get_param('config.key', None, 'Missing Shodan API key')
         self.shodan_client = None
-        self.polling_interval = self.getParam('config.polling_interval', 60)
+        self.polling_interval = self.get_param('config.polling_interval', 60)
 
     def summary(self, raw):
-
-        taxonomy = {"level": "info", "namespace": "Shodan", "predicate": "Location", "value": 0}
         taxonomies = []
         level = "info"
         namespace = "Shodan"
         predicate = "Location"
-        if self.service == 'host':
+        if self.data_type == 'ip':
             if 'country_name' in raw['host']:
                 value = raw['host']['country_name']
                 taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
@@ -28,7 +25,7 @@ class ShodanAnalyzer(Analyzer):
                 taxonomies.append(self.build_taxonomy(level, namespace, 'Org', raw['host']['org']))
             if 'asn' in raw['host']:
                 taxonomies.append(self.build_taxonomy(level, namespace, 'ASN', raw['host']['asn']))
-        elif self.service == 'search':
+        elif self.data_type == 'domain':
             if 'ips' in raw['infos_domain']:
                 value = "\"{}\"".format(len(raw['infos_domain']['ips']))
                 taxonomies.append(self.build_taxonomy(level, namespace, 'IPs', value))
@@ -49,13 +46,13 @@ class ShodanAnalyzer(Analyzer):
 
         try:
             self.shodan_client = ShodanAPIPublic(self.shodan_key)
-            if self.service == 'host':
-                ip = self.getParam('data', None, 'Data is missing')
+            if self.data_type == 'ip':
+                ip = self.get_param('data', None, 'Data is missing')
                 results = {'reverse_dns': {'hostnames': self.shodan_client.reverse_dns(ip)[ip]},
                            'host': self.shodan_client.host(ip)}
                 self.report(results)
-            if self.service == 'search':
-                domain = self.getParam('data', None, 'Data is missing')
+            if self.data_type == 'domain':
+                domain = self.get_param('data', None, 'Data is missing')
                 result = {'dns_resolve': self.shodan_client.dns_resolve(domain),
                           'infos_domain': self.shodan_client.info_domains(domain)}
                 self.report(result)

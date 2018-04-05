@@ -15,7 +15,7 @@ class VirusshareAnalyzer(Analyzer):
     """
     def __init__(self):
         Analyzer.__init__(self)
-        self.path = self.getParam('config.path', None, 'No path to virusshare hash directory given.')
+        self.path = self.get_param('config.path', None, 'No path to virusshare hash directory given.')
         if not os.path.isdir(self.path):
             self.error('Given path is not a directory.')
         self.filelist = os.listdir(self.path)
@@ -25,7 +25,6 @@ class VirusshareAnalyzer(Analyzer):
         level = "safe"
         namespace = "Virusshare"
         predicate = "Search"
-        value = "\"Unknown\""
 
         if raw["isonvs"]:
             if raw["isonvs"] == "unknown":
@@ -43,12 +42,12 @@ class VirusshareAnalyzer(Analyzer):
     def run(self):
         searchhash = ''
         if self.data_type == 'hash':
-            searchhash = self.getData()
+            searchhash = self.get_data()
             if len(searchhash) != 32:
                 self.report({'isonvs': 'unknown',
                              'hash': searchhash})
         elif self.data_type == 'file':
-            filepath = self.getParam('file')
+            filepath = self.get_param('file')
             hasher = hashlib.md5()
             with io.open(filepath, mode='rb') as afile:
                 for chunk in iter(lambda: afile.read(65536), b''):
@@ -72,6 +71,7 @@ class VirusshareAnalyzer(Analyzer):
                                      'md5': searchhash})
         self.report({'isonvs': False,
                      'md5': searchhash})
+
 
 if __name__ == '__main__':
     VirusshareAnalyzer().run()

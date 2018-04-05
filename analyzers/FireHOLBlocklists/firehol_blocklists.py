@@ -20,14 +20,14 @@ class FireholBlocklistsAnalyzer(Analyzer):
         Analyzer.__init__(self)
 
         # Get config parameters
-        self.path = self.getParam('config.blocklistpath', None, 'No path to blocklists provided.')
-        self.ignoreolderthandays = self.getParam('config.ignoreolderthandays', 365)
+        self.path = self.get_param('config.blocklistpath', None, 'No path to blocklists provided.')
+        self.ignoreolderthandays = self.get_param('config.ignoreolderthandays', 365)
         self.utc = pytz.UTC
         self.now = dt.datetime.now(tz=self.utc)
 
         # Check if directory exists
         if not os.path.exists(self.path):
-            os.mkdir(self.path, 0o700)
+            os.mkdir(self.path, 0o0700)
             # Downloading/updating the list is implemented with an external cronjob which git pulls the repo
 
         # Read files in the given path and prepare file lists for ip- and netsets
@@ -115,7 +115,6 @@ class FireholBlocklistsAnalyzer(Analyzer):
 
     def summary(self, raw):
         taxonomies = []
-        level = "info"
         namespace = "Firehol"
         predicate = "Blocklists"
         value = "\"0 hit\""
@@ -136,7 +135,7 @@ class FireholBlocklistsAnalyzer(Analyzer):
         return {"taxonomies": taxonomies}
 
     def run(self):
-        ip = self.getData()
+        ip = self.get_data()
         if '/' in ip:
             self.error('CIDR notation currently not supported.')
         hits = self._check_ip(ip)
