@@ -23,8 +23,6 @@ class CyberCrimeTrackerAnalyzer(Analyzer):
         value = "\"{} hits\"".format(hit_count)
         if hit_count == 1:
             value = value[:-2] + "\""
-        
-        value = "\"{} hit{}\"".format(hit_count, "" if hit_count == 1 else "s")
 
         if count > 0:
             level = 'malicious'
