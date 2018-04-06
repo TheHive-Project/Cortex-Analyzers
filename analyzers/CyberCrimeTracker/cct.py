@@ -44,7 +44,7 @@ class CyberCrimeTrackerAnalyzer(Analyzer):
 
         try:
             while True:
-                new_results = cybercrimeTrackerAPI.search(query=observable, offset=offset, limit=limit)
+                new_results = cybercrimeTrackerAPI().search(query=observable, offset=offset, limit=limit)
                 results.extend(new_results)
 
                 current_hit_count = len(new_results)
