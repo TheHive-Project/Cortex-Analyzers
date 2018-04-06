@@ -18,8 +18,8 @@ class PESubmodule(SubmoduleBaseclass):
         if kwargs.get('filetype') in ['Win32 EXE']:
             return True
 
-
-    def pe_machine(self, pedict):
+    @staticmethod
+    def pe_machine(pedict):
         if pedict:
             machinetype = pedict.get('FILE_HEADER').get('Machine').get('Value')
             mt = {'0x14c': 'x86', '0x0200': 'Itanium', '0x8664': 'x64'}
@@ -28,13 +28,15 @@ class PESubmodule(SubmoduleBaseclass):
             else:
                 return str(machinetype) + ' => Not x86/64 or Itanium'
 
-    def compilation_timestamp(self, pedict):
+    @staticmethod
+    def compilation_timestamp(pedict):
         if pedict:
             return pedict.get('FILE_HEADER').get('TimeDateStamp').get('Value')
         else:
             return 'None'
 
-    def pe_entrypoint(self, pedict):
+    @staticmethod
+    def pe_entrypoint(pedict):
         if pedict:
             return hex(pedict.get('OPTIONAL_HEADER').get('AddressOfEntryPoint').get('Value'))
         else:
@@ -58,7 +60,8 @@ class PESubmodule(SubmoduleBaseclass):
         except Exception as excp:
             return 'None'
 
-    def pe_iat(self, pe):
+    @staticmethod
+    def pe_iat(pe):
         if pe:
             table = []
             for entry in pe.DIRECTORY_ENTRY_IMPORT:
@@ -71,7 +74,8 @@ class PESubmodule(SubmoduleBaseclass):
         return table
 
     # PE:Sections list of {Name, Size, Entropy, MD5, SHA1, SHA256, SHA512} #
-    def pe_sections(self, pe):
+    @staticmethod
+    def pe_sections(pe):
         if pe:
             table = []
             for entry in pe.sections:
