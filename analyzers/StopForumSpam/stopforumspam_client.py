@@ -33,6 +33,7 @@ class StopforumspamClient:
         return {
             'json': True,
             'confidence': True,
+            'unix': True,
             StopforumspamClient._type_conversion[type]: data
         }
 

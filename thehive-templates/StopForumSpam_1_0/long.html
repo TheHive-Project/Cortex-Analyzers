@@ -5,12 +5,12 @@
 	<div class="panel-body">
 		<div class="panel panel-default">
       <div class="panel-heading">
-        {{(content.normalized || artifact.data) | fang}} appeared {{content.frequency}} times
+        {{(content.normalized || artifact.data) | fang}} - {{content.frequency}} occurrences
       </div>
       <div class="panel-body" ng-if="content.appears && artifact.dataType == 'ip'">
         <dl class="dl-horizontal">
 					<dt>Last seen</dt>
-					<dd>{{content.lastseen}}</dd>
+					<dd>{{content.lastseen * 1000 | date:'medium'}}</dd>
           <dt>SPAM scoring</dt>
           <dd>{{content.confidence}}</dd>
           <dt>ASN</dt>
@@ -26,7 +26,7 @@
 			<div class="panel-body" ng-if="content.appears && artifact.dataType == 'mail'">
         <dl class="dl-horizontal">
 					<dt>Last seen</dt>
-					<dd>{{content.lastseen}}</dd>
+					<dd>{{content.lastseen * 1000 | date:'medium'}}</dd>
           <dt>SPAM scoring</dt>
           <dd>{{content.confidence}}</dd>
         </dl>
