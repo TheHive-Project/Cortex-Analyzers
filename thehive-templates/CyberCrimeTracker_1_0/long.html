@@ -3,8 +3,8 @@
     <div class="panel-heading">
         CyberCrimeTracker C2 Search Report
     </div>
-    <div class="panel-body" nq-repeat="r in content.results">
-        <dl class="dl-horizontal">
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-repeat="r in content.results">
             <dt>IP:</dt>
             <dd>{{r.ip}}</dd>
             <dt>URL:</dt>
@@ -15,7 +15,7 @@
             <dd>{{r.type}}</dd>
             <dt>VirusTotal (Latest Scan):</dt>
             <dd>{{r.vt_latest_scan}}</dd>
-            <dt>VirusTotal (IP Information):</dt>
+            <dt>VirusTotal (IP Info):</dt>
             <dd>{{r.vt_ip}}</dd>
         </dl>
     </div>
