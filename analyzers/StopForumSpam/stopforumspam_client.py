@@ -52,9 +52,9 @@ class StopforumspamClient:
         :type datatype: str
         :type data: str
         :return: Data relative to the looked up artifact.
-        :rtype: list
+        :rtype: dict
         """
-        result = []
+        result = {}
         params = StopforumspamClient._set_payload(datatype, data)
         response = self.client.get(
             'https://api.stopforumspam.org/api',
@@ -63,7 +63,7 @@ class StopforumspamClient:
         report = response.json()
         if report['success']:
             data = report[StopforumspamClient._type_conversion[datatype]]
-            result.append(self._data_conversion(data))
+            result = self._data_conversion(data)
         else:
             pass
         return result

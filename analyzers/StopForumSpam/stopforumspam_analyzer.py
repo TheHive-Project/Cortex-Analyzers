@@ -41,15 +41,9 @@ class StopforumspamAnalyzer(Analyzer):
 
     def run(self):
         if self.data_type == 'ip':
-            self.report({
-                'results': self.client.get_data(
-                    self.data_type, self.get_data())
-            })
+            self.report(self.client.get_data(self.data_type, self.get_data()))
         elif self.data_type == 'mail':
-            self.report({
-                'results': self.client.get_data(
-                    self.data_type, self.get_data())
-            })
+            self.report(self.client.get_data(self.data_type, self.get_data()))
         else:
             self.error('Unsupported dataType {}'.format(self.data_type))
 
