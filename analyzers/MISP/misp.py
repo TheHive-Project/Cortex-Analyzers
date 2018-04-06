@@ -40,10 +40,11 @@ class MISPAnalyzer(Analyzer):
 
         # return number of unique events
         if not data:
-            value = "\"0 event\""
+            value = "\"0 events\""
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         else:
             value = "\"{} event(s)\"".format(len(list(set(data))))
+            level = "suspicious"
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         return {"taxonomies": taxonomies}
