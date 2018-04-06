@@ -24,7 +24,7 @@ class CyberCrimeTrackerAnalyzer(Analyzer):
         if hit_count == 1:
             value = value[:-2] + "\""
 
-        if count > 0:
+        if hit_count > 0:
             level = 'malicious'
 
         taxonomies = []
