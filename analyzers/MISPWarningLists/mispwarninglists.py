@@ -67,7 +67,7 @@ class MISPWarninglistsAnalyzer(Analyzer):
             if self.data_type not in list.get('dataTypes'):
                 continue
 
-            if self.data in list.get('values', []):
+            if self.data.lower() in list.get('values', []):
                 results.append({
                     "name": list.get('name')
                 })
