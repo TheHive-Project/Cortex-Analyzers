@@ -75,8 +75,9 @@
         <div class="panel panel-info" ng-if="::content.detected_urls" ng-init="detected_urls_limit = 20">
             <div class="panel-heading">
                 <strong>Latest detected URLs</strong>
-                <span class="pull-right" ng-if="::content.detected_urls.length > 20">
-                    <a ng-click="detected_urls_limit = undefined">View All ({{::content.detected_urls.length}})</a>
+                <span class="pull-right" ng-show="::content.detected_urls.length > 20">
+                    <a href ng-show="detected_urls_limit===20" ng-click="detected_urls_limit = undefined">Show All ({{::content.detected_urls.length}})</a>
+                    <a href ng-show="!detected_urls_limit"ng-click="detected_urls_limit = 20">Show less</a>
                 </span>
             </div>
             <div class="panel-body">
@@ -103,8 +104,9 @@
         <div class="panel panel-info" ng-if="content.detected_downloaded_samples" ng-init="detected_downloaded_samples_limit=20">
             <div class="panel-heading">
                 <strong>Latest detected files that were downloaded from this IP address</strong>
-                <span class="pull-right" ng-if="::content.detected_downloaded_samples.length > 20">
-                    <a ng-click="detected_downloaded_samples_limit = undefined">View All ({{::content.detected_downloaded_samples.length}})</a>
+                <span class="pull-right" ng-show="::content.detected_downloaded_samples.length > 20">
+                    <a href ng-show="detected_downloaded_samples_limit===20" ng-click="detected_downloaded_samples_limit = undefined">Show All ({{::content.detected_downloaded_samples.length}})</a>
+                    <a href ng-show="!detected_downloaded_samples_limit"ng-click="detected_downloaded_samples_limit = 20">Show less</a>
                 </span>
             </div>
             <div class="panel-body">
@@ -131,8 +133,9 @@
         <div class="panel panel-info" ng-if="content.detected_referrer_samples" ng-init="detected_referrer_samples_limit=20">
             <div class="panel-heading">
                 <strong>Latest detected files that embed this IP address in their strings</strong>
-                <span class="pull-right" ng-if="::content.detected_referrer_samples.length > 20">
-                    <a ng-click="detected_referrer_samples_limit = undefined">View All ({{::content.detected_referrer_samples.length}})</a>
+                <span class="pull-right" ng-show="::content.detected_referrer_samples.length > 20">
+                    <a href ng-show="detected_referrer_samples_limit===20" ng-click="detected_referrer_samples_limit = undefined">Show All ({{::content.detected_referrer_samples.length}})</a>
+                    <a href ng-show="!detected_referrer_samples_limit" ng-click="detected_referrer_samples_limit = 20">Show less</a>
                 </span>
             </div>
             <div class="panel-body">

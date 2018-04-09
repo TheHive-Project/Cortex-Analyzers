@@ -6,7 +6,7 @@
   "license": "AGPL-V3",
   "description": "Use DomainTools to get a list of domain names which share the same registrant information.",
   "dataTypeList": ["mail", "ip", "domain", "other"],
-  "command": "DomainTools/domaintools.py",
+  "command": "DomainTools/domaintools_analyzer.py",
   "baseConfig": "DomainTools",
   "config": {
       "service": "reverse-whois"

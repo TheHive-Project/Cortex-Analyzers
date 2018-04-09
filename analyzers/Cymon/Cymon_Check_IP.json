@@ -9,8 +9,6 @@
     "command": "Cymon/cymon_analyzer.py",
     "baseConfig": "Cymon",
     "config": {
-        "check_tlp": true,
-        "max_tlp":1,
         "service": "Check_IP"
     },
     "configurationItems": [
