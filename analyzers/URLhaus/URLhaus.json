@@ -6,5 +6,22 @@
   "version": "0.1.0",
   "description": "Search domains, URLs or hashes on URLhaus",
   "dataTypeList": ["domain", "url", "hash"],
-  "command": "URLhaus/URLhaus_analyzer.py"
+  "command": "URLhaus/URLhaus_analyzer.py",
+  "configurationItems": [
+    {
+      "name": "cache.duration",
+      "description": "Define the cache duration",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 3600
+    },
+    {
+      "name": "cache.root",
+      "description": "Define the path to the stored data",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ]
 }

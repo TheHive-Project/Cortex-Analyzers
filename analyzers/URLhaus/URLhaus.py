@@ -1,23 +1,54 @@
-from requests_html import HTMLSession
-import urllib
+from diskcache import Cache
+from requests_html import HTML
+import requests
 
 
 class URLhaus:
-    def __init__(self, query):
+    """Simple client to query URLhaus by abuse.ch.
+    :param query: domain, url or hash.
+    :param cache_duration: Duration before refreshing the cache (in seconds).
+                           Ignored if `cache_duration` is 0.
+    :param cache_root: Path where to store the cached file.
+    :type query: string
+    :type cache_duration: int
+    :type cache_root: str
+    """
+
+    def __init__(self,
+                 query,
+                 cache_duration=3600,
+                 cache_root="/tmp/cortex/URLhaus"):
         self.URL = "https://urlhaus.abuse.ch/browse.php"
         self.query = query
+        self.cache = None
+        if cache_duration > 0:
+            self.cache = Cache(cache_root)
+            self.cache_duration = cache_duration
+
+    def _get_raw_data(self):
+        try:
+            return self.cache[self.query.encode('utf-8')]
+        except(AttributeError, TypeError):
+            return self.fetch()
+        except KeyError:
+            self.cache.set(
+                self.query.encode('utf-8'),
+                self.fetch(),
+                expire=self.cache_duration)
+            return self.cache[self.query.encode('utf-8')]
 
     def search(self):
-        res = self.fetch()
+        res = self._get_raw_data()
         return self.parse(res)
 
     def fetch(self):
-        session = HTMLSession()
-        return session.get(self.target_url())
+        payload = {"search": self.query}
+        return requests.get(self.URL, params=payload).text
 
-    def parse(self, res):
+    def parse(self, doc):
         results = []
-        table = res.html.find("table.table", first=True)
+        html = HTML(html=doc)
+        table = html.find("table.table", first=True)
         rows = table.find("tr")[1:]
         for row in rows:
             cols = row.find("td")
@@ -31,9 +62,3 @@ class URLhaus:
                 "reporter": cols[5].text
             })
         return results
-
-    def target_url(self):
-        return "{}?{}".format(
-            self.URL,
-            urllib.parse.urlencode({"search": self.query})
-        )
