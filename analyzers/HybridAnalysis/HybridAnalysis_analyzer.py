@@ -98,6 +98,8 @@ class VxStreamSandboxAnalyzer(Analyzer):
                 if "error" in r.json().get('response'):
                     if "Exceeded maximum API requests per minute(5)" in r.json().get('response').get('error'):
                         time.sleep(60)
+                    else:
+                        self.error(r.json().get('response').get('error'))
                 else:
                     error = False
 
