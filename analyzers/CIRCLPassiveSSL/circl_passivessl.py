@@ -88,6 +88,9 @@ class CIRCLPassiveSSLAnalyzer(Analyzer):
 
     def run(self):
         if self.data_type == 'certificate_hash' or self.data_type == 'hash':
+            data = self.get_data()
+            if len(data) != 40:
+                self.error('CIRCL Passive SSL expects a sha1 hash, given hash has more or less than 40 characters.')
             self.report(self.query_certificate(self.get_data()))
         elif self.data_type == 'ip':
             ip = self.get_data()
