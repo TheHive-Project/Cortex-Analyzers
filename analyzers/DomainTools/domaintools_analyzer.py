@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # encoding: utf-8
-import sys
-import os
-import json
-import codecs
-from domaintools.api.request import Request, Configuration
 
 from domaintools.exceptions import NotFoundException
 from domaintools.exceptions import NotAuthorizedException
 from domaintools.exceptions import ServiceUnavailableException
+
+
+from domaintools import API
+
 
 from cortexutils.analyzer import Analyzer
 
@@ -19,6 +18,41 @@ class DomainToolsAnalyzer(Analyzer):
         Analyzer.__init__(self)
         self.service = self.get_param(
             'config.service', None, 'Service parameter is missing')
+
+    def domaintools(self, data):
+        """
+
+        :param service:
+        :return:
+        """
+        if (self.service == 'reverse-ip' and self.data_type == 'ip'):
+            self.service = 'host-domains'
+
+        api = API(self.get_param('config.username'), self.get_param('config.key'))
+
+        if self.service == 'reverse-ip' and self.data_type in ['domain', 'ip', 'fqdn']:
+            response = api.reverse_ip(data).response()
+
+        elif self.service == 'host-domains' and self.data_type == 'ip':
+            response = api.host_domains(data).response()
+
+        elif self.service == 'name-server-domains' and self.data_type == 'domain':
+            response = api.reverse_name_server(data).response()
+
+        elif self.service == 'whois/history' and self.data_type == 'domain':
+            response = api.whois_history(data).response()
+
+        elif self.service == 'whois/parsed' and self.data_type == 'domain':
+            response = api.parsed_whois(data).response()
+
+        elif self.service == 'reverse-whois':
+            response = api.reverse_whois(data, mode='purchase').response()
+
+        elif self.service == 'whois' and self.data_type == 'ip':
+            response = api.whois(data).response()
+
+        return response
+
 
     def summary(self, raw):
         r = {
@@ -92,50 +126,24 @@ class DomainToolsAnalyzer(Analyzer):
     def run(self):
         data = self.get_data()
 
-        if 'proxy' in self.artifact['config']:
-            del self.artifact['config']['proxy']
+        try:
+            r = self.domaintools(data)
 
-        if self.service == 'reverse-ip' and self.data_type == 'ip':
-            self.service = 'host-domains'
+            if 'response' in r:
+                self.report(r.get('response'))
+            elif 'error' in r and 'message' in r['error']:
+                self.error(r['error']['message'])
+            else:
+                self.report(r)
 
-        if self.service == 'reverse-whois':
-            query = {
-                'terms': data,
-                'mode': "purchase"
-            }
-            data = ''
-        else:
-            query = {}
-
-        if (self.service == 'reverse-ip' and self.data_type in ['domain', 'ip', 'fqdn']) or \
-                (self.service == 'host-domains' and self.data_type == 'ip') or \
-                (self.service == 'name-server-domains' and self.data_type == 'domain') or \
-                (self.service == 'whois/history' and self.data_type == 'domain') or \
-                (self.service == 'whois/parsed' and self.data_type == 'domain') or \
-                (self.service == 'reverse-whois') or \
-                (self.service == 'whois' and self.data_type == 'ip'):
-            response = {}
-
-            try:
-                configuration = Configuration(self.get_param('config'))
-                response = Request(configuration).service(self.service).domain(data).where(query).toJson().execute()
-
-                r = json.loads(response)
-                if 'response' in r:
-                    self.report(r['response'])
-                elif 'error' in r and 'message' in r['error']:
-                    self.error(r['error']['message'])
-                else:
-                    self.report(r)
-
-            except NotFoundException:
-                self.error(self.data_type.capitalize() + " not found")
-            except NotAuthorizedException:
-                self.error("An authorization error occurred")
-            except ServiceUnavailableException:
-                self.error("DomainTools Service is currenlty unavailable")
-            except Exception as e:
-                self.unexpectedError(e)
+        except NotFoundException:
+            self.error(self.data_type.capitalize() + " not found")
+        except NotAuthorizedException:
+            self.error("An authorization error occurred")
+        except ServiceUnavailableException:
+            self.error("DomainTools Service is currenlty unavailable")
+        except Exception as e:
+            self.unexpectedError(e)
 
         else:
             self.error('Unknown DomainTools service or invalid data type')
