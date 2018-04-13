@@ -73,8 +73,22 @@
 
                     <div ng-if="k === 'ips'">
                         <h5>IP addresses</h5>
-                        <dl class="dl-horizontal" ng-repeat="ip in v.ip">
-                            <dd>{{ip}}</dd>
+                        <dl class="dl-horizontal" ng-if="v.ip.substr">
+                            <dd>
+                                {{v.ip}}
+                            </dd>
+                        </dl>
+                        <dl class="dl-horizontal" ng-if="!v.ip.substr" ng-repeat="ip in v.ip">
+                            <dd ng-if="!ip.substr">
+                                <span ng-if="ip['@malicious'] === 'true'" class="text-danger"><i class="fa fa-thumbs-down"></i>
+                                </span>
+                                <span ng-if="ip['@malicious'] === 'false'" class="text-success"><i class="fa fa-thumbs-up"></i>
+                                </span>
+                                {{ip.$}}
+                            </dd>
+                            <dd ng-if="ip.substr">
+                                {{ip}}
+                            </dd>
                         </dl>
                     </div>
                 </div>
