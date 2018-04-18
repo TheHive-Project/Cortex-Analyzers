@@ -1,0 +1,25 @@
+{
+    "name": "GreyNoise",
+    "version": "2.2",
+    "author": "Nclose",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "APLv2",
+    "description": "Determine whether IP has known scanning activity",
+    "dataTypeList": ["ip"],
+    "baseConfig": "GreyNoise",
+    "command": "GreyNoise/greynoise.py",
+    "configurationItems": [
+      {
+        "name": "key",
+        "description": "API key for GreyNoise",
+        "type": "string",
+        "multi": false,
+        "required": false
+      }
+    ],
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 2,
+        "auto_extract": false
+    }
+}

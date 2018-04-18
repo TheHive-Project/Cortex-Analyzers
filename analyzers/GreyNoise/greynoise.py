@@ -1,0 +1,87 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from collections import defaultdict, OrderedDict
+from functools import partial
+
+from cortexutils.analyzer import Analyzer
+import requests
+
+
+class GreyNoiseAnalyzer(Analyzer):
+    """
+    GreyNoise API docs: https://github.com/GreyNoise-Intelligence/api.greynoise.io
+    """
+
+    @staticmethod
+    def _get_level(current_level, new_intention):
+        """
+        Map GreyNoise intentions to Cortex maliciousness levels.
+        Accept a Cortex level and a GreyNoise intention, the return the more malicious of the two.
+
+        :param current_level: A Cortex maliciousness level
+            https://github.com/TheHive-Project/CortexDocs/blob/master/api/how-to-create-an-analyzer.md#output
+        :param new_intention: An intention field value from a GreyNoise record
+            https://github.com/GreyNoise-Intelligence/api.greynoise.io#v1queryip
+        :return: The more malicious of the 2 submitted values as a Cortex maliciousness level
+        """
+
+        intention_level_map = OrderedDict([
+            ('info', 'info'),
+            ('benign', 'safe'),
+            ('suspicious', 'suspicious'),
+            ('malicious', 'malicious')
+        ])
+        levels = intention_level_map.values()
+
+        new_level = intention_level_map.get(new_intention, 'info')
+        new_index = levels.index(new_level)
+
+        try:
+            current_index = levels.index(current_level)
+        except ValueError:  # There is no existing level
+            current_index = -1
+
+        return new_level if new_index > current_index else current_level
+
+    def run(self):
+
+        if self.data_type == "ip":
+            api_key = self.get_param('config.key', None)
+            url = 'http://api.greynoise.io:8888/v1/query/ip'
+            headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+            data = {'ip': self.getData()}
+            if api_key:
+                data['key'] = api_key
+            response = requests.post(url, data=data, headers=headers)
+            if not (200 <= response.status_code < 300):
+                self.error('Unable to query GreyNoise API\n{}'.format(response.text))
+            self.report(response.json())
+        else:
+            self.notSupported()
+
+    def summary(self, raw):
+        """
+        Sum the number of times a specific name appears for the given IP and choose the highest level from the list
+        """
+
+        try:
+            taxonomy_data = defaultdict(partial(defaultdict, int))
+            for record in raw.get('records', []):
+                name = record.get('name', 'unknown')
+                intention = record.get('intention', 'unknown')
+                taxonomy_data[name]['count'] += 1
+                taxonomy_data[name]['level'] = self._get_level(taxonomy_data[name]['level'], intention)
+
+            taxonomies = []
+            for name, details in taxonomy_data.iteritems():
+                taxonomies.append(self.build_taxonomy(details['level'], 'GreyNoise', name, details['count']))
+
+            return {"taxonomies": taxonomies}
+
+        except Exception, e:
+            self.error('Summary failed\n{}'.format(e.message))
+
+
+if __name__ == '__main__':
+    GreyNoiseAnalyzer().run()
