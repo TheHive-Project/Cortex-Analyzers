@@ -1,6 +1,6 @@
 {
   "name": "Malpedia",
-  "author": "Davide Arcuri, Andrea Garavaglia - LDO-CERT",
+  "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
   "license": "AGPL-V3",
   "url": "https://github.com/LDO-CERT/cortex-analyzers",
   "version": "1.0",
