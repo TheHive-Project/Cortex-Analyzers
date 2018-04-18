@@ -15,8 +15,12 @@ class PESubmodule(SubmoduleBaseclass):
 
         :return: True
         """
-        if kwargs.get('filetype') in ['Win32 EXE']:
-            return True
+        try:
+            if kwargs.get('filetype') in ['Win32 EXE']:
+                return True
+        except KeyError:
+            return False
+        return False
 
     @staticmethod
     def pe_machine(pedict):

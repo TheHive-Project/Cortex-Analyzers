@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import pyexifinfo
+import magic
 
 from cortexutils.analyzer import Analyzer
 from submodules import available_submodules
@@ -12,6 +13,7 @@ class FileInfoAnalyzer(Analyzer):
         self.filepath = self.get_param('file', None, 'File parameter is missing.')
         self.filename = self.get_param('filename', None, 'Filename is missing.')
         self.filetype = pyexifinfo.fileType(self.filepath)
+        self.mimtype = magic.Magic(mime=True).from_file(path)
 
     def run(self):
         results = []

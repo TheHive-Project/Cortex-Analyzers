@@ -15,16 +15,29 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
 
     def check_file(self, **kwargs):
         """Oletools accepts MS office documents."""
+
         try:
-            self.fileextension = kwargs.get('filename').rsplit('.', 1)[1]
-            if self.fileextension in [
-                'doc',
-                'docx',
-                'xls',
-                'xlsx',
-                'ppt',
-                'pptx'
+            if kwargs.get('filetype') in [
+                'DOC',
+                'DOCM',
+                'DOCX',
+                'XLS',
+                'XLSM',
+                'XLSX',
+                'PPT',
+                'PPTM',
+                'PPTX'
             ]:
+        # try:
+        #     self.fileextension = kwargs.get('filename').rsplit('.', 1)[1]
+        #     if self.fileextension in [
+        #         'doc',
+        #         'docx',
+        #         'xls',
+        #         'xlsx',
+        #         'ppt',
+        #         'pptx'
+        #     ]:
                 return True
         except KeyError:
             return False
