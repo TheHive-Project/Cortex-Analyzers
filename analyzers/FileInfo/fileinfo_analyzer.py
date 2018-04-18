@@ -13,7 +13,7 @@ class FileInfoAnalyzer(Analyzer):
         self.filepath = self.get_param('file', None, 'File parameter is missing.')
         self.filename = self.get_param('filename', None, 'Filename is missing.')
         self.filetype = pyexifinfo.fileType(self.filepath)
-        self.mimtype = magic.Magic(mime=True).from_file(path)
+        self.mimetype = magic.Magic(mime=True).from_file(self.filepath)
 
     def run(self):
         results = []
@@ -26,7 +26,8 @@ class FileInfoAnalyzer(Analyzer):
         })
 
         for module in available_submodules:
-            if module.check_file(file=self.filepath, filetype=self.filetype, filename=self.filename):
+            if module.check_file(file=self.filepath, filetype=self.filetype, filename=self.filename,
+                                 mimetype=self.mimetype):
                 results.append({
                     'submodule_name': module.name,
                     'results': module.analyze_file(self.filepath)

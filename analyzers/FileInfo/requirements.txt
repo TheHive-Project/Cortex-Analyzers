@@ -6,3 +6,5 @@ pefile
 git+https://github.com/AnyMaster/pehashng
 git+https://github.com/Rafiot/pdfid.git
 oletools
+git+https://github.com/mattgwwalker/msg-extractor.git
+IMAPClient
