@@ -1,0 +1,80 @@
+{
+  "name": "Splunk_Search",
+  "version": "2.0",
+  "url": "http://blog.scilabs.mx",
+  "author": "Unit777",
+  "license": "AGPL-V3",
+  "dataTypeList": ["url", "domain", "ip"],
+  "description": "Searches for hits in Splunk",
+  "baseConfig": "Splunk",
+  "command": "Splunk/splunk.py",
+  "config": {
+    "service": "search"
+  },
+  "configurationItems": [
+    {
+        "name": "host",
+        "description": "The host to connect to",
+        "type": "string",
+        "multi": false,
+        "required": true
+    },
+    {
+        "name": "port",
+        "description": "The port to connect to",
+        "type": "number",
+        "multi": false,
+        "required": true
+    },
+    {
+        "name": "username",
+        "description": "Login username for splunk",
+        "type": "string",
+        "multi": false,
+        "required": false
+    },
+    {
+        "name": "password",
+        "description": "Login password for splunk",
+        "type": "string",
+        "multi": false,
+        "required": false
+    },
+    {
+        "name": "num_of_days",
+        "description": "Number of days to consult",
+        "type": "number",
+        "multi": false,
+        "required": true
+    },
+    {
+        "name": "filter_expression",
+        "description": "Add a filter expression to the query",
+        "type": "string",
+        "multi": false,
+        "required": false
+    },
+    {
+        "name": "sourcetype",
+        "description": "Sourcetype to search in splunk. * for all",
+        "type": "string",
+        "multi": false,
+        "required": false
+    },
+    {
+      "name": "index",
+      "description": "Index to search in splunk. * for all",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "skip_auth",
+      "description": "If used with a username and password combination of 1:1 it skips auth",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    }
+  ]
+}
