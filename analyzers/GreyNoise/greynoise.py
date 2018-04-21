@@ -66,6 +66,48 @@ class GreyNoiseAnalyzer(Analyzer):
             If there are multiple tags, use "entries" as the predicate
             Use the total count as the value
             Use the most malicious level found
+
+
+        Examples:
+
+
+        Input
+        {
+            "name": SCANNER1,
+            "intention": ""
+        }
+        Output
+        GreyNoise:SCANNER1 = 1 (info)
+
+
+        Input
+        {
+            "name": SCANNER1,
+            "intention": "malicious"
+        },
+        {
+            "name": SCANNER1,
+            "intention": "benign"
+        }
+        Output
+        GreyNoise:SCANNER1 = 2 (malicious)
+
+
+        Input
+        {
+            "name": SCANNER1,
+            "intention": ""
+        },
+        {
+            "name": SCANNER1,
+            "intention": "safe"
+        },
+        {
+            "name": SCANNER2,
+            "intention": ""
+        }
+        Output
+        GreyNoise:entries = 3 (safe)
         """
 
         try:
