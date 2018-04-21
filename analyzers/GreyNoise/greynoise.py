@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from collections import defaultdict, OrderedDict
-from functools import partial
 
 from cortexutils.analyzer import Analyzer
 import requests
@@ -62,20 +61,28 @@ class GreyNoiseAnalyzer(Analyzer):
 
     def summary(self, raw):
         """
-        Sum the number of times a specific name appears for the given IP and choose the highest level from the list
+        Return one taxonomy summarizing the reported tags
+            If there is only one tag, use it as the predicate
+            If there are multiple tags, use "entries" as the predicate
+            Use the total count as the value
+            Use the most malicious level found
         """
 
         try:
-            taxonomy_data = defaultdict(partial(defaultdict, int))
+            final_level = None
+            taxonomy_data = defaultdict(int)
             for record in raw.get('records', []):
                 name = record.get('name', 'unknown')
                 intention = record.get('intention', 'unknown')
-                taxonomy_data[name]['count'] += 1
-                taxonomy_data[name]['level'] = self._get_level(taxonomy_data[name]['level'], intention)
+                taxonomy_data[name] += 1
+                final_level = self._get_level(final_level, intention)
 
             taxonomies = []
-            for name, details in taxonomy_data.iteritems():
-                taxonomies.append(self.build_taxonomy(details['level'], 'GreyNoise', name, details['count']))
+            if len(taxonomy_data) > 1:  # Multiple tags have been found
+                taxonomies.append(self.build_taxonomy(final_level, 'GreyNoise', 'entries', len(taxonomy_data)))
+            else:  # There is only one tag found, possibly multiple times
+                for name, count in taxonomy_data.iteritems():
+                    taxonomies.append(self.build_taxonomy(final_level, 'GreyNoise', name, count))
 
             return {"taxonomies": taxonomies}
 
