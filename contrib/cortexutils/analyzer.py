@@ -139,6 +139,9 @@ class Analyzer:
         :param value: value
         :return: dict
         """
+        # Set info level if something not expected is set
+        if level not in ['info', 'safe', 'suspicious', 'malicious']:
+            level = 'info'
         return {
                 'level': level,
                 'namespace': namespace,
