@@ -4,7 +4,7 @@
   "author": "Pierre Baudry, Adrien Barchapt",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Retrieve Onyphe threats information on an IPv{4,6} address with history.",
+  "description": "Retrieve Onyphe threat information for the given IPv{4,6} address with history.",
   "dataTypeList": ["ip"],
   "command": "Onyphe/onyphe_analyzer.py",
   "baseConfig": "Onyphe",
