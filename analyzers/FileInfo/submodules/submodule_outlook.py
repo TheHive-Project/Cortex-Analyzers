@@ -4,7 +4,7 @@ from ExtractMsg import Message, Attachment
 from imapclient.imapclient import decode_utf7
 
 class OutlookSubmodule(SubmoduleBaseclass):
-    """This is just for showing how to include a submodule. No real functionality here."""
+    """Parse Outlook Mail and get useful information"""
 
     def __init__(self):
         SubmoduleBaseclass.__init__(self)
@@ -35,7 +35,7 @@ class OutlookSubmodule(SubmoduleBaseclass):
             a.append({'name': attachment.longFilename,
                       'sha256': sha256})
 
-        email = { 'header': xstr(m.header),
+        email = {'header': xstr(m.header),
                     'from': xstr(m.sender),
                     'to': xstr(m.to),
                     'cc': xstr(m.cc),

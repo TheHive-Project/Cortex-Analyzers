@@ -98,7 +98,7 @@ class PESubmodule(SubmoduleBaseclass):
             pe = pefile.PE(path)
             pedict = pe.dump_dict()
         except Exception as excp:
-            print("Failed processing {}".format(path))
+            return "Failed processing {}".format(path)
 
         self.add_result_subsection('Headers', self.pe_info(pe))
         self.add_result_subsection('Hashes', {
