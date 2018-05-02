@@ -40,16 +40,6 @@ class SubmoduleBaseclass(object):
         """
         pass
 
-    def add_result(self, subsection_name, value):
-        """
-
-
-        :param type: type of result
-        :param value:
-        :return:
-        """
-        pass
-
     def add_result_subsection(self, subsection_header, results):
         """
         Adding a subsection to the section of the analyzer module

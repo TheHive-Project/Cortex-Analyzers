@@ -28,7 +28,6 @@ class MetadataSubmodule(SubmoduleBaseclass):
                       not (key.startswith("File") or key.startswith("SourceFile")))
         return result
 
-
     def analyze_file(self, path):
         # Hash the file
         with io.open(path, 'rb') as fh:
@@ -49,8 +48,7 @@ class MetadataSubmodule(SubmoduleBaseclass):
             'ssdeep': ssdeep.digest()
         })
 
-        self.add_result_subsection('Exif Info', self.exif(path)
-        )
+        self.add_result_subsection('Exif Info', self.exif(path))
 
         # Get libmagic info
         magicliteral = magic.Magic().from_file(path)

@@ -29,7 +29,7 @@ class FileInfoAnalyzer(Analyzer):
                     'submodule_name': module.name,
                     'results': module.analyze_file(self.filepath)
                 })
-        self.report(results)
+        self.report({'results': results})
 
 
 if __name__ == '__main__':

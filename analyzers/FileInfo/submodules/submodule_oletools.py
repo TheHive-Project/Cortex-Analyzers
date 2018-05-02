@@ -11,13 +11,11 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
     def __init__(self):
         SubmoduleBaseclass.__init__(self)
         self.name = 'Oletools Submodule'
-        self.fileextension = None
 
     def check_file(self, **kwargs):
         """Oletools accepts MS office documents."""
         try:
-            self.fileextension = kwargs.get('filename').rsplit('.', 1)[1]
-            if self.fileextension in [
+            if kwargs.get('filetype').lower() in [
                 'doc',
                 'docx',
                 'xls',
