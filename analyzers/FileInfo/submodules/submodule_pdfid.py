@@ -22,10 +22,9 @@ class PDFIDSubmodule(SubmoduleBaseclass):
         try:
             j = json.loads(
                 PDFiD2JSON(PDFiD(path, allNames=True, extraData=True, disarm=True, force=True), force=True))
-            print(j)
         except Exception as e:
-            print(e)
+            return e
 
     def analyze_file(self, path):
-        self.add_result_subsection('pdfid', self.pdfid_cmd(path))
+        self.add_result_subsection('PDFiD Information', self.pdfid_cmd(path))
         return self.results
