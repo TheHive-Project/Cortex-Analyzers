@@ -1,0 +1,34 @@
+{
+  "name": "IntelMQ_Fody_Event_Search",
+  "version": "1.0",
+  "author": "Nils Kuhnert, CERT-Bund",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Searches for events containing given ip or domain",
+  "dataTypeList": ["ip", "domain", "fqdn"],
+  "command": "IntelMQ/intelmq-fody.py",
+  "baseConfig": "IntelMQ",
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "URL of IntelMQ Fody Backend",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "username",
+      "description": "Username",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "password",
+      "description": "Password",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}
