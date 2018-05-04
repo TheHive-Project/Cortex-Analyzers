@@ -1,19 +1,20 @@
 {
-  "name": "IntelMQ_Fody_Event_Search",
+  "name": "IntelMQ_Fody_ContactDB_Search",
   "version": "1.0",
   "author": "Nils Kuhnert, CERT-Bund",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Searches for events containing given ip or domain",
+  "description": "Searches for contacts responsible for given ip, domain or asn.",
   "dataTypeList": [
     "ip",
     "domain",
-    "fqdn"
+    "fqdn",
+    "autonomous-system"
   ],
   "command": "IntelMQ/intelmq-fody.py",
   "baseConfig": "IntelMQ",
   "config": {
-    "service": "eventSearch"
+    "service": "contactDBSearch"
   },
   "configurationItems": [
     {

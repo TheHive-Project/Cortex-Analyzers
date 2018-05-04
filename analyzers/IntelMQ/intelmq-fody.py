@@ -18,8 +18,9 @@ class IntelmqFodyAnalyzer(Analyzer):
             password=self._password,
             sslverify=ssl_verify
         )
+        self._service = self.get_param('config.service', None, 'No service given.')
 
-    def run(self):
+    def _search_event(self):
         if self.data_type == 'ip':
             events = {
                 'destination': self._client.search_event({
@@ -43,6 +44,27 @@ class IntelmqFodyAnalyzer(Analyzer):
         self.report({
             'results': events
         })
+
+    def _search_contact_db(self):
+        if self.data_type == 'ip':
+            orgs = self._client.search_ip(self.get_data())
+        elif self.data_type == 'domain' or self.data_type == 'fqdn':
+            orgs = self._client.search_fqdn(self.get_data())
+        elif self.data_type == 'autonomous-system':
+            orgs = self._client.search_asn(self.get_data())
+        else:
+            self.error('Data type {} is currently not supported.'.format(self.data_type))
+        self.report({
+            'results': orgs
+        })
+
+    def run(self):
+        if self._service == 'eventSearch':
+            self._search_event()
+        elif self._service == 'contactDBSearch':
+            self._search_contact_db()
+        else:
+            self.error('Service {} not supported by analyzer.'.format(self._service))
 
 
 if __name__ == '__main__':
