@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from cortexutils.analyzer import Analyzer
 from imqfody import IMQFody
 
