@@ -9,10 +9,14 @@ class IntelmqFodyAnalyzer(Analyzer):
         self._url = self.get_param('config.url', None, 'No URL given.')
         self._username = self.get_param('config.username', None, 'No username given.')
         self._password = self.get_param('config.password', None, 'No password given.')
+        cert_check = self.get_param('config.cert_check', True)
+        cert_path = self.get_param('config.cert_path', None)
+        ssl_verify = cert_path if cert_path and cert_check else cert_check
         self._client = IMQFody(
             url=self._url,
             username=self._username,
-            password=self._password
+            password=self._password,
+            sslverify=ssl_verify
         )
 
     def run(self):
