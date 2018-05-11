@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from cortexutils.analyzer import Analyzer
 from imqfody import IMQFody
+from warnings import catch_warnings, simplefilter
 
 
 class IntelmqFodyAnalyzer(Analyzer):
@@ -12,12 +13,15 @@ class IntelmqFodyAnalyzer(Analyzer):
         cert_check = self.get_param('config.cert_check', True)
         cert_path = self.get_param('config.cert_path', None)
         ssl_verify = cert_path if cert_path and cert_check else cert_check
-        self._client = IMQFody(
-            url=self._url,
-            username=self._username,
-            password=self._password,
-            sslverify=ssl_verify
-        )
+        if ssl_verify:
+            with catch_warnings():
+                simplefilter('ignore')
+                self._client = IMQFody(
+                    url=self._url,
+                    username=self._username,
+                    password=self._password,
+                    sslverify=ssl_verify
+                )
         self._service = self.get_param('config.service', None, 'No service given.')
 
     def _search_event_source(self):
