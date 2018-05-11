@@ -1,0 +1,30 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        Threatcrowd analysis for 
+        <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+        <p class="dl-horizontal">
+            Votes :  <strong>{{content.votes}}</strong>
+            <br/>
+            <a href="{{content.permalink}}">View report on threatcrowd.org</a>
+        </p>
+        <table>
+            <tr>
+                <th>references</th>
+            </tr>
+            <tr ng-repeat="ref in ::content.references">
+				{{ref}}
+			</tr>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
