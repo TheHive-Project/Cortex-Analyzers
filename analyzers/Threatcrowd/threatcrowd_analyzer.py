@@ -6,7 +6,7 @@ from cortexutils.analyzer import Analyzer
 
 class Threatcrowd(Analyzer):
 
-    URI = "http://www.threatcrowd.org/searchApi/v2"
+    URI = "https://www.threatcrowd.org/searchApi/v2"
 
     def summary(self, raw):
         taxonomies = []
