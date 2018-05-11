@@ -49,7 +49,7 @@
       "name": "cert_path",
       "description": "Path to the CA on the system used to check server certificate",
       "type": "string",
-      "multi": true,
+      "multi": false,
       "required": false
     }
   ]
