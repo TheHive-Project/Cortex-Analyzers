@@ -1,0 +1,56 @@
+{
+  "name": "IntelMQ_Fody_Event_Destination_Search",
+  "version": "1.0",
+  "author": "Nils Kuhnert, CERT-Bund",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Searches for events containing given ip or domain",
+  "dataTypeList": [
+    "ip",
+    "domain",
+    "fqdn"
+  ],
+  "command": "IntelMQ/intelmq-fody.py",
+  "baseConfig": "IntelMQ",
+  "config": {
+    "service": "eventDestinationSearch"
+  },
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "URL of IntelMQ Fody Backend",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "username",
+      "description": "Username",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "password",
+      "description": "Password",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "cert_check",
+      "description": "Verify server certificate",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "cert_path",
+      "description": "Path to the CA on the system used to check server certificate",
+      "type": "string",
+      "multi": true,
+      "required": false
+    }
+  ]
+}

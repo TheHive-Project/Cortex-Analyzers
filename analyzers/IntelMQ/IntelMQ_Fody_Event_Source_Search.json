@@ -1,10 +1,10 @@
 {
-  "name": "IntelMQ_Fody_Event_Search",
+  "name": "IntelMQ_Fody_Event_Source_Search",
   "version": "1.0",
   "author": "Nils Kuhnert, CERT-Bund",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Searches for events containing given ip or domain",
+  "description": "Searches for events containing given ip or domain as source",
   "dataTypeList": [
     "ip",
     "domain",
@@ -13,7 +13,7 @@
   "command": "IntelMQ/intelmq-fody.py",
   "baseConfig": "IntelMQ",
   "config": {
-    "service": "eventSearch"
+    "service": "eventSourceSearch"
   },
   "configurationItems": [
     {

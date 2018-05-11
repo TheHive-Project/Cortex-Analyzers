@@ -20,30 +20,39 @@ class IntelmqFodyAnalyzer(Analyzer):
         )
         self._service = self.get_param('config.service', None, 'No service given.')
 
-    def _search_event(self):
+    def _search_event_source(self):
         if self.data_type == 'ip':
             events = {
-                'destination': self._client.search_event({
-                    'destination-ip_is': self.get_data()
-                }),
                 'source': self._client.search_event({
                     'source-ip_is': self.get_data()
                 })
             }
-        elif self.data_type == 'fqdn' or self.data_type == 'domain':
+        elif self.data_type == 'fqdn':
             events = {
-                'destination': self._client.search_event({
-                    'destination-fqdn_icontains': self.get_data()
-                }),
                 'source': self._client.search_event({
                     'source-fqdn_icontains': self.get_data()
                 })
             }
         else:
             self.error('Data type {} is currently not supported.'.format(self.data_type))
-        self.report({
-            'results': events
-        })
+        return events
+
+    def _search_event_destination(self):
+        if self.data_type == 'ip':
+            events = {
+                'destination': self._client.search_event({
+                    'destination-ip_is': self.get_data()
+                })
+            }
+        elif self.data_type == 'fqdn':
+            events = {
+                'destination': self._client.search_event({
+                    'destination-fqdn_icontains': self.get_data()
+                })
+            }
+        else:
+            self.error('Data type {} is currently not supported.'.format(self.data_type))
+        return events
 
     def _search_contact_db(self):
         if self.data_type == 'ip':
@@ -59,8 +68,10 @@ class IntelmqFodyAnalyzer(Analyzer):
         })
 
     def run(self):
-        if self._service == 'eventSearch':
-            self._search_event()
+        if self._service == 'eventSourceSearch':
+            self._search_event_source()
+        elif self._service == 'eventDestinationSearch':
+            self._search_event_destination()
         elif self._service == 'contactDBSearch':
             self._search_contact_db()
         else:
