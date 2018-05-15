@@ -6,4 +6,5 @@ services:
 language: generic
 
 script:
+- bash create_docker_analyzers.sh
 - bash build_docker_images.sh
