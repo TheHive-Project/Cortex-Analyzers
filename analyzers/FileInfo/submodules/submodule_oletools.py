@@ -1,7 +1,7 @@
 """FileInfo oletools submodule; WIP"""
 from .submodule_base import SubmoduleBaseclass
 from oletools.oleid import OleID
-from oletools.olevba3 import VBA_Parser, VBA_Scanner, ProcessingError
+from oletools.olevba3 import  VBA_Parser_CLI
 from oletools.msodde import process_file
 
 
@@ -34,49 +34,34 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
 
     def analyze_file(self, path):
         # Run the analyze functions
-        self.analyze_oleid(path)
+        #self.analyze_oleid(path)
         self.analyze_vba(path)
         self.analyze_dde(path)
 
         return self.results
 
-    def analyze_oleid(self, path):
-        indicators = OleID(path).check()
-        results = {}
-
-        for indicator in indicators:
-            if indicator.id == 'appname':
-                continue
-            results.update({indicator.name: indicator.value})
-        self.add_result_subsection('Oletools OleID Results', results)
+    # def analyze_oleid(self, path):
+    #     indicators = OleID(path).check()
+    #     results = {}
+    #
+    #     for indicator in indicators:
+    #         if indicator.id == 'appname':
+    #             continue
+    #         results.update({indicator.name: indicator.value})
+    #     self.add_result_subsection('Oletools OleID Results', results)
 
     def analyze_vba(self, path):
         """Analyze a given sample for malicios vba."""
         try:
-            parser = VBA_Parser(path)
 
-            if parser.detect_vba_macros():
-                for idx, (filename, stream_path, vba_filename, vba_code) in enumerate(parser.extract_all_macros()):
-                    # Decode strings often produces errors or gibberish
-                    scan_results = VBA_Scanner(vba_code).scan(include_decoded_strings=False)
-                    scan_results_to_report = []
-
-                    for type, keyword, description in scan_results:
-                        scan_results_to_report.append({
-                            'type': type,
-                            'keyword': keyword,
-                            'description': description
-                        })
-
-                    self.add_result_subsection(
-                        'OLE stream: {}'.format(stream_path),
-                        {
-                            'olevba_filename': vba_filename,
-                            'olevba_code': vba_code.decode('unicode-escape'),
-                            'olevba_results': scan_results_to_report
-                        }
-                    )
-
+            vba_parser = VBA_Parser_CLI(path, relaxed=True)
+            vbaparser_result = vba_parser.process_file_json(show_decoded_strings=True,
+                                                            display_code=True,
+                                                            hide_attributes=False,
+                                                            vba_code_only=False,
+                                                            show_deobfuscated_code=True,
+                                                            deobfuscate=True)
+            self.add_result_subsection('Olevba', vbaparser_result)
         except TypeError:
             self.add_result_subsection('Oletools VBA Analysis failed', 'Analysis failed due to an filetype error.'
                                                                  'The file does not seem to be a valid MS-Office file.')
