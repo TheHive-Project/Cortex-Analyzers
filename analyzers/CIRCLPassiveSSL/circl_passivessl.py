@@ -55,7 +55,8 @@ class CIRCLPassiveSSLAnalyzer(Analyzer):
             cquery = self.pssl.query_cert(cert_hash)
         except Exception:
             self.error('Exception during processing with passiveSSL. '
-                       'Please check the format of certificate_hash, no colons or dashed in the hash.')
+                       'This happens if the given hash is not sha1 or contains dashes/colons etc. '
+                       'Please make sure to submit a clean formatted sha1 hash.')
 
         # fetch_cert raises an error if no certificate was found.
         try:
@@ -87,6 +88,9 @@ class CIRCLPassiveSSLAnalyzer(Analyzer):
 
     def run(self):
         if self.data_type == 'certificate_hash' or self.data_type == 'hash':
+            data = self.get_data()
+            if len(data) != 40:
+                self.error('CIRCL Passive SSL expects a sha1 hash, given hash has more or less than 40 characters.')
             self.report(self.query_certificate(self.get_data()))
         elif self.data_type == 'ip':
             ip = self.get_data()

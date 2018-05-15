@@ -1,3 +1,2 @@
 cortexutils
-abuse_finder
-future
+abuse_finder;python_version<='2.7'

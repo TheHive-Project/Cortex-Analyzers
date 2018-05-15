@@ -1,37 +1,17 @@
 {
-  "name": "DomainTools_ReverseIP",
-  "version": "2.0",
-  "author": "CERT-BDF",
-  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-  "license": "AGPL-V3",
-  "description": "Use DomainTools to get a list of domain names sharing the same IP address.",
-  "dataTypeList": [
-    "ip",
-    "domain",
-    "fqdn"
-  ],
-  "command": "DomainTools/domaintools.py",
-  "baseConfig": "DomainTools",
-  "config": {
-    "service": "reverse-ip"
-  },
-  "configurationItems": [
-    {
-      "name": "check_tlp",
-      "description": "Define if the analyzer should check TLP of data before running",
-      "type": "boolean",
-      "multi": false,
-      "required": true,
-      "defaultValue": true
+    "name": "DomainTools_ReverseIP",
+    "version": "2.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Use DomainTools to get a list of domain names sharing the same IP address.",
+    "dataTypeList": ["ip", "domain","fqdn"],
+    "command": "DomainTools/domaintools_analyzer.py",
+    "baseConfig": "DomainTools",
+    "config": {
+        "service": "reverse-ip"
     },
-    {
-      "name": "max_tlp",
-      "description": "Define the maximum TLP level autorized",
-      "type": "number",
-      "multi": false,
-      "required": true,
-      "defaultValue": 1
-    },
+    "configurationItems": [
     {
       "name": "username",
       "description": "DomainTools API credentials",

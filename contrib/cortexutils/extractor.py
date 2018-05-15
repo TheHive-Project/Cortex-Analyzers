@@ -121,12 +121,15 @@ class Extractor:
         """Checks if the given value is a known datatype
 
         :param value: The value to check
-        :type value: str        
+        :type value: str or number
         :return: Data type of value, if known, else empty string
         :rtype: str
         """
-        if self.ignore and self.ignore in value:
-            return ''
+        if self.ignore:
+            if isinstance(value, str) and self.ignore in value:
+                return ''
+            if self.ignore == value:
+                return ''
 
         if isinstance(value, (str, unicode)):
             for r in self.regex:

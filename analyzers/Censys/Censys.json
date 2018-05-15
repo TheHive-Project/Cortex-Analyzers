@@ -11,6 +11,7 @@
   "config": {},
   "configurationItems": [
     {
+<<<<<<< HEAD
       "name": "check_tlp",
       "description": "Define if the analyzer should check TLP of data before running",
       "type": "boolean",
@@ -27,7 +28,8 @@
       "defaultValue": 3
     },
     {
-      "name": "uuid",
+
+      "name": "uid",
       "description": "UID for Censys",
       "type": "string",
       "multi": false,

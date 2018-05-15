@@ -5,10 +5,8 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Use DomainTools to get a list of historical Whois records associated with a domain name.",
-  "dataTypeList": [
-    "domain"
-  ],
-  "command": "DomainTools/domaintools.py",
+  "dataTypeList": ["domain"],
+  "command": "DomainTools/domaintools_analyzer.py",
   "baseConfig": "DomainTools",
   "config": {
     "service": "whois/history"

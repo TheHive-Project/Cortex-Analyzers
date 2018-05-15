@@ -4,10 +4,8 @@
   "author": "Pierre Baudry, Adrien Barchapt",
   "url": "https://github.com/cybernardo/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Retrieve forward DNS lookup information we have for the given IPv{4,6} address with history of changes.",
-  "dataTypeList": [
-    "ip"
-  ],
+  "description": "Retrieve forward DNS lookup information Onyphe has for the given IPv{4,6} address with history of changes.",
+  "dataTypeList": ["ip"],
   "command": "Onyphe/onyphe_analyzer.py",
   "baseConfig": "Onyphe",
   "config": {
