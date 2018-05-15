@@ -1,5 +1,20 @@
 #!/usr/bin/env bash
 for analyzer in $(ls -1 analyzers); do
+
+    # Skip currently not supported analyzers or analyzers that need some kind of custom image
+    if [ ${analyzer} = 'File_Info' ]; then
+        echo "[-] Skipping File_Info."
+        continue
+    fi
+    if [ ${analyzer} = 'Yara' ]; then
+        echo "[-] Skipping Yara."
+        continue
+    fi
+    if [ ${analyzer} = 'FileInfo' ]; then
+        echo "[-] Skipping FileInfo."
+        continue
+    fi
+
 	echo "[*] Preparing ${analyzer}"
 	if [ ! -d analyzers-docker/${analyzer} ]; then
 		echo "    Directory does not exist, creating it."
