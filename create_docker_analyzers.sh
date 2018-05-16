@@ -40,7 +40,7 @@ for analyzer in $(ls -1 analyzers); do
 	    echo "ADD ./analyzers/${analyzer} /analyzer" >> analyzers-docker/${analyzer}/Dockerfile
 	    echo "WORKDIR /analyzer" >> analyzers-docker/${analyzer}/Dockerfile
 	    echo "RUN pip3 install --no-cache-dir -r requirements.txt" >> analyzers-docker/${analyzer}/Dockerfile
-	    echo "CMD ${command}" >> analyzers-docker/${analyzer}/Dockerfile
+	    echo "CMD ./${command}" >> analyzers-docker/${analyzer}/Dockerfile
 	fi
 	echo "[*] Checking analyzer flavours for ${analyzer}."
 	for flavour in $(ls -1 analyzers/${analyzer}/*.json); do
