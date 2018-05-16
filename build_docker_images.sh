@@ -18,7 +18,7 @@ else
 fi
 
 echo "Building analyzer images..."
-for analyzer in `ls -1 analyzers/|grep -v File_Info`; do
+for analyzer in `ls -1 analyzers-docker/`; do
   lower=`echo ${analyzer} | tr "[:upper:]" "[:lower:]"`
   echo "Building cortex-analyzers-$lower"
   if [ ! ${PREFIX} = "" ]; then
