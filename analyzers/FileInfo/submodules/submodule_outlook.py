@@ -30,12 +30,10 @@ class OutlookSubmodule(SubmoduleBaseclass):
         attachments = m.attachments
         a = []
         for attachment in attachments:
-            with attachment.data as fh:
-                buf = fh.read()
-                sha256 = hashlib.sha256()
-                sha256.update(buf)
+            sha256 = hashlib.sha256()
+            sha256.update(attachment.data)
             a.append({'name': attachment.longFilename,
-                      'sha256': sha256})
+                      'sha256': sha256.hexdigest()})
 
         email = {'header': xstr(m.header),
                     'from': xstr(m.sender),

@@ -130,8 +130,23 @@
                                 <dd class="wrap"><pre>{{r.submodule_section_content.body}}</pre></dd>
                             </dl>
                             <dl class="dl-horizontal">
-                                <dt>Attachment hashes</dt>
-                                <dd class="wrap"><pre>{{r.submodule_section_content.attachments}}</pre></dd>
+                                <dt>Attachments</dt>
+                                <dd class="wrap">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th >Filename</th>
+                                                <th >SHA256</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody ng-repeat="a in r.submodule_section_content.attachments">
+                                            <tr>
+                                                <td>{{a.name}}</td>
+                                                <td>{{a.sha256}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </dd>
                             </dl>
                             <dl class="dl-horizontal">
                                 <dt>All Headers</dt>
@@ -139,6 +154,51 @@
                             </dl>
                         </div>
                     </div>
+                </div>
+            </div>
+            <!-- PDF Information (PDFiD)-->
+            <div ng-if="result.submodule_name=='PDF Information'">
+                <div class="panel-body">
+                    <div ng-repeat="r in result.results" class="panel panel-primary">
+                        <div class="panel-heading" ng-if="r.submodule_section_header=='PDFiD Information'">
+                            <h4 class="panel-title">
+                               {{r.submodule_section_header}}
+                            </h4>
+                        </div>
+                        <div class="panel-body">
+                            <div ng-repeat="(k,v) in r.submodule_section_content[0].pdfid">
+                                <dl class="dl-horizontal" ng-if="k!='keywords'">
+                                    <dt>{{k}}</dt>
+                                    <dd class="wrap">{{v}}</dd>
+                                </dl>
+                                <dl class="dl-horizontal" ng-if="k=='keywords'">
+                                    <dt>{{k}}</dt>
+                                    <dd class="wrap">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th >name</th>
+                                                    <th >hexcodecount</th>
+                                                    <th >count</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody ng-repeat="a in v.keyword">
+                                                <tr>
+                                                    <td>{{a.name}}</td>
+                                                    <td>{{a.hexcodecount}}</td>
+                                                    <td>{{a.count}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </dd>
+                                </dl>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
             </div>
             <!--Next submodule here -->
         </uib-tab>

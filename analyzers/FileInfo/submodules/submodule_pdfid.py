@@ -1,5 +1,5 @@
 from pdfid.pdfid import *
-import optparse
+
 import json
 
 from .submodule_base import SubmoduleBaseclass
@@ -25,6 +25,7 @@ class PDFIDSubmodule(SubmoduleBaseclass):
                 PDFiD2JSON(PDFiD(path, allNames=True, extraData=True, disarm=True, force=True), force=True))
         except Exception as e:
             return e
+        return j
 
     def analyze_file(self, path):
         self.add_result_subsection('PDFiD Information', self.pdfid_cmd(path))
