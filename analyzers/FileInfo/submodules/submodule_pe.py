@@ -66,11 +66,13 @@ class PESubmodule(SubmoduleBaseclass):
 
     @staticmethod
     def pe_iat(pe):
+        table = []
         if pe:
-            table = []
             for entry in pe.DIRECTORY_ENTRY_IMPORT:
-                imp = {'entryname': '', 'symbols': []}
-                imp['entryname'] = entry.dll.decode()
+                imp = {
+                    'entryname': entry.dll.decode(),
+                    'symbols': []
+                }
                 for symbol in entry.imports:
                     if symbol.name is not None:
                         imp['symbols'].append(symbol.name.decode())
@@ -80,8 +82,8 @@ class PESubmodule(SubmoduleBaseclass):
     # PE:Sections list of {Name, Size, Entropy, MD5, SHA1, SHA256, SHA512} #
     @staticmethod
     def pe_sections(pe):
+        table = []
         if pe:
-            table = []
             for entry in pe.sections:
                 sect = {'entryname': str(entry.Name.decode()), 'SizeOfRawData': hex(entry.SizeOfRawData),
                         'Entropy': entry.get_entropy(),
@@ -90,14 +92,12 @@ class PESubmodule(SubmoduleBaseclass):
                         'SHA256': entry.get_hash_sha256(),
                         'SHA512': entry.get_hash_sha512()}
                 table.append(sect)
-                sect = {}
         return table
 
     def analyze_file(self, path):
         try:
             pe = pefile.PE(path)
-            pedict = pe.dump_dict()
-        except Exception as excp:
+        except Exception:
             return "Failed processing {}".format(path)
 
         self.add_result_subsection('Headers', self.pe_info(pe))

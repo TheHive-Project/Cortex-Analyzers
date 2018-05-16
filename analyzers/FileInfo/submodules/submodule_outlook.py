@@ -1,7 +1,9 @@
+import hashlib
 from .submodule_base import SubmoduleBaseclass
 
 from ExtractMsg import Message, Attachment
 from imapclient.imapclient import decode_utf7
+
 
 class OutlookSubmodule(SubmoduleBaseclass):
     """Parse Outlook Mail and get useful information"""
