@@ -8,7 +8,7 @@
     "dataTypeList": [
         "file"
     ],
-    "command": "docker run -i cortex-analyzers-msgparser python parse.py",
+    "command": "docker run -i cortex-analyzers-msgparser",
     "baseconfig":"Msg_Parser",
     "config": {
         "service": ""

@@ -6,7 +6,7 @@
     "license": "AGPL-V3",
     "description": "Use MaxMind to geolocate an IP address.",
     "dataTypeList": ["ip"],
-    "command": "docker run -i cortex-analyzers-maxmind python3 geo.py",
+    "command": "docker run -i cortex-analyzers-maxmind",
     "baseconfig":"MaxMind_GeoIP",
     "config": {
         "service": ""

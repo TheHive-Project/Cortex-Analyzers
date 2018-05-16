@@ -14,6 +14,18 @@ for analyzer in $(ls -1 analyzers); do
         echo "[-] Skipping FileInfo."
         continue
     fi
+    if [ ${analyzer} = 'MsgParser' ]; then
+        echo "[-] Skipping FileInfo."
+        continue
+    fi
+    if [ ${analyzer} = 'Abuse_Finder' ]; then
+        echo "[-] Skipping FileInfo."
+        continue
+    fi
+    if [ ${analyzer} = 'Malpedia' ]; then
+        echo "[-] Skipping FileInfo."
+        continue
+    fi
 
 	echo "[*] Preparing ${analyzer}"
 	if [ ! -d analyzers-docker/${analyzer} ]; then
