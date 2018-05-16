@@ -12,7 +12,7 @@ class OutlookSubmodule(SubmoduleBaseclass):
 
     def check_file(self, **kwargs):
         try:
-            if kwargs.get('mimetype') == 'application/vnd.ms-outlook':
+            if kwargs.get('mimetype') in ['application/vnd.ms-outlook', 'application/CDFV2-unknown']:
                 return True
         except KeyError:
             return False

@@ -53,7 +53,7 @@ class MetadataSubmodule(SubmoduleBaseclass):
         # Get libmagic info
         magicliteral = magic.Magic().from_file(path)
         mimetype = magic.Magic(mime=True).from_file(path)
-        self.add_result_subsection('Filetype determination', {
+        self.add_result_subsection('File information', {
             'Magic literal': magicliteral,
             'MimeType': mimetype,
             'Filetype': pyexifinfo.fileType(path),
