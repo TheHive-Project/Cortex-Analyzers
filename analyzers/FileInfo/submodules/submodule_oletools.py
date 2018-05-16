@@ -1,7 +1,6 @@
 """FileInfo oletools submodule; WIP"""
 from .submodule_base import SubmoduleBaseclass
-from oletools.oleid import OleID
-from oletools.olevba3 import  VBA_Parser_CLI
+from oletools.olevba3 import VBA_Parser_CLI
 from oletools.msodde import process_file
 
 
@@ -34,21 +33,10 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
 
     def analyze_file(self, path):
         # Run the analyze functions
-        #self.analyze_oleid(path)
         self.analyze_vba(path)
         self.analyze_dde(path)
 
         return self.results
-
-    # def analyze_oleid(self, path):
-    #     indicators = OleID(path).check()
-    #     results = {}
-    #
-    #     for indicator in indicators:
-    #         if indicator.id == 'appname':
-    #             continue
-    #         results.update({indicator.name: indicator.value})
-    #     self.add_result_subsection('Oletools OleID Results', results)
 
     def analyze_vba(self, path):
         """Analyze a given sample for malicios vba."""
@@ -64,7 +52,8 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
             self.add_result_subsection('Olevba', vbaparser_result)
         except TypeError:
             self.add_result_subsection('Oletools VBA Analysis failed', 'Analysis failed due to an filetype error.'
-                                                                 'The file does not seem to be a valid MS-Office file.')
+                                                                       'The file does not seem to be a valid MS-Office '
+                                                                       'file.')
 
     def analyze_dde(self, path):
         results = process_file(path)

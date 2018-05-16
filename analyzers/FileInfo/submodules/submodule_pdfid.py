@@ -4,6 +4,7 @@ import json
 
 from .submodule_base import SubmoduleBaseclass
 
+
 class PDFIDSubmodule(SubmoduleBaseclass):
     def __init__(self):
         SubmoduleBaseclass.__init__(self)
