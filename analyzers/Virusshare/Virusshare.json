@@ -2,33 +2,13 @@
   "name": "Virusshare",
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
-  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
   "version": "2.0",
   "description": "Search for MD5 hashes in Virusshare.com hash list",
-  "dataTypeList": [
-    "hash",
-    "file"
-  ],
+  "dataTypeList": ["hash", "file"],
   "command": "Virusshare/virusshare.py",
   "baseConfig": "Virusshare",
-  "config": {},
   "configurationItems": [
-    {
-      "name": "check_tlp",
-      "description": "Define if the analyzer should check TLP of data before running",
-      "type": "boolean",
-      "multi": false,
-      "required": true,
-      "defaultValue": false
-    },
-    {
-      "name": "max_tlp",
-      "description": "Define the maximum TLP level autorized",
-      "type": "number",
-      "multi": false,
-      "required": true,
-      "defaultValue": 3
-    },
     {
       "name": "path",
       "description": "Define the path to the stored data",

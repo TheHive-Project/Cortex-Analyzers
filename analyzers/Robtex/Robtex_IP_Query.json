@@ -5,30 +5,10 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Check IPs using the Robtex IP API",
-  "dataTypeList": [
-    "ip"
-  ],
-  "command": "Robtex/robtex.py",
+  "dataTypeList": ["ip"],
   "baseConfig": "Robtex",
+  "command": "Robtex/robtex.py",
   "config": {
     "service": "ipquery"
-  },
-  "configurationItems": [
-    {
-      "name": "check_tlp",
-      "description": "Define if the analyzer should check TLP of data before running",
-      "type": "boolean",
-      "multi": false,
-      "required": true,
-      "defaultValue": false
-    },
-    {
-      "name": "max_tlp",
-      "description": "Define the maximum TLP level autorized",
-      "type": "number",
-      "multi": false,
-      "required": true,
-      "defaultValue": 3
-    }
-  ]
+  }
 }

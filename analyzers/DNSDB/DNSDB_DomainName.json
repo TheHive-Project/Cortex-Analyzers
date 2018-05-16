@@ -5,31 +5,13 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Use DNSDB to fetch historical records for a domain.",
-  "dataTypeList": [
-    "domain"
-  ],
+  "dataTypeList": ["domain", "fqdn"],
   "command": "DNSDB/dnsdb.py",
   "baseConfig": "DNSDB",
   "config": {
-    "service": "domain_name"
+      "service": "domain_name"
   },
   "configurationItems": [
-    {
-      "name": "check_tlp",
-      "description": "Define if the analyzer should check TLP of data before running",
-      "type": "boolean",
-      "multi": false,
-      "required": true,
-      "defaultValue": true
-    },
-    {
-      "name": "max_tlp",
-      "description": "Define the maximum TLP level autorized",
-      "type": "number",
-      "multi": false,
-      "required": true,
-      "defaultValue": 1
-    },
     {
       "name": "server",
       "description": "DNSDB server name",

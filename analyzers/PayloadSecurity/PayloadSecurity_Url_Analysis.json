@@ -5,31 +5,10 @@
   "url": "https://github.com/notset/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "PayloadSecurity Sandbox Url Analysis",
-  "dataTypeList": [
-    "url"
-  ],
+  "dataTypeList": ["url"],
   "command": "PayloadSecurity/payloadsecurity_analyzer.py",
   "baseConfig": "PayloadSecurity",
-  "config": {
-    "service": "url_analysis"
-  },
   "configurationItems": [
-    {
-      "name": "check_tlp",
-      "description": "Define if the analyzer should check TLP of data before running",
-      "type": "boolean",
-      "multi": false,
-      "required": true,
-      "defaultValue": true
-    },
-    {
-      "name": "max_tlp",
-      "description": "Define the maximum TLP level autorized",
-      "type": "number",
-      "multi": false,
-      "required": true,
-      "defaultValue": 3
-    },
     {
       "name": "url",
       "description": "Define the url of the service",

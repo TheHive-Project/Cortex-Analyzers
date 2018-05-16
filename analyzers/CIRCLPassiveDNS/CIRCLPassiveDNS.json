@@ -1,31 +1,14 @@
 {
-    "name": "CIRCLPassiveDNS",
-    "author": "Nils Kuhnert, CERT-Bund",
-    "license": "AGPL-V3",
-    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-    "version": "2.0",
-    "description": "Check CIRCL's Passive DNS for a given domain or URL.",
-    "dataTypeList": ["domain", "url"],
-    "command": "CIRCLPassiveDNS/circl_passivedns.py",
-    "baseConfig": "CIRCLPassiveDNS",
-    "config": {},
-    "configurationItems": [
-    {
-      "name": "check_tlp",
-      "description": "Define if the analyzer should check TLP of data before running",
-      "type": "boolean",
-      "multi": false,
-      "required": true,
-      "defaultValue": true
-    },
-    {
-      "name": "max_tlp",
-      "description": "Define the maximum TLP level autorized",
-      "type": "number",
-      "multi": false,
-      "required": true,
-      "defaultValue": 3
-    },
+  "name": "CIRCLPassiveDNS",
+  "author": "Nils Kuhnert, CERT-Bund",
+  "license": "AGPL-V3",
+  "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+  "version": "2.0",
+  "description": "Check CIRCL's Passive DNS for a given domain or URL.",
+  "dataTypeList": ["domain", "url", "ip"],
+  "baseConfig": "CIRCL",
+  "command": "CIRCLPassiveDNS/circl_passivedns.py",
+  "configurationItems": [
     {
       "name": "user",
       "description": "Username",

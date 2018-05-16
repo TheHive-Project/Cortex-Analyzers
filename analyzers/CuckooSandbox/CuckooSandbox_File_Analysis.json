@@ -1,39 +1,20 @@
 {
-    "name": "CuckooSandbox_File_Analysis_Inet",
-    "version": "1.0",
-    "author": "Andrea Garavaglia, LDO-CERT",
-    "url": "https://github.com/garanews/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "Cuckoo Sandbox file analysis with Internet access.",
-    "dataTypeList": ["file"],
-    "command": "CuckooSandbox/cuckoosandbox_analyzer.py",
-    "baseConfig": "CuckooSandbox",
-    "config": {
-        "service": "file_analysis"
-    },
-    "configurationItems": [
-      {
-        "name": "check_tlp",
-        "description": "Define if the analyzer should check TLP of data before running",
-        "type": "boolean",
-        "multi": false,
-        "required": true,
-        "defaultValue": true
-      },
-      {
-        "name": "max_tlp",
-        "description": "Define the maximum TLP level autorized",
-        "type": "number",
-        "multi": false,
-        "required": true,
-        "defaultValue": 1
-      },
-      {
-        "name": "url",
-        "description": "URL",
-        "type": "string",
-        "multi": false,
-        "required": true
-      }
-    ]
+  "name": "CuckooSandbox_File_Analysis_Inet",
+  "version": "1.0",
+  "author": "Andrea Garavaglia, LDO-CERT",
+  "url": "https://github.com/garanews/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Cuckoo Sandbox file analysis with Internet access.",
+  "dataTypeList": ["file"],
+  "command": "CuckooSandbox/cuckoosandbox_analyzer.py",
+  "baseConfig": "CuckooSandbox",
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "URL",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
 }

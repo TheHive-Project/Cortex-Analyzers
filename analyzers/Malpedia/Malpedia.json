@@ -5,29 +5,10 @@
   "url": "https://github.com/LDO-CERT/cortex-analyzers",
   "version": "1.0",
   "description": "Check files against Malpedia YARA rules.",
-  "dataTypeList": [
-    "file"
-  ],
-  "command": "Malpedia/malpedia_analyzer.py",
+  "dataTypeList": ["file"],
   "baseConfig": "Malpedia",
-  "config": {},
+  "command": "Malpedia/malpedia_analyzer.py",
   "configurationItems": [
-    {
-      "name": "check_tlp",
-      "description": "Define if the analyzer should check TLP of data before running",
-      "type": "boolean",
-      "multi": false,
-      "required": true,
-      "defaultValue": true
-    },
-    {
-      "name": "max_tlp",
-      "description": "Define the maximum TLP level autorized",
-      "type": "number",
-      "multi": false,
-      "required": true,
-      "defaultValue": 3
-    },
     {
       "name": "path",
       "description": "Rulepath",

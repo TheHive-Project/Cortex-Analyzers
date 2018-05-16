@@ -5,35 +5,10 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Query AlienVault OTX for IPs, domains, URLs, or file hashes.",
-  "dataTypeList": [
-    "url",
-    "domain",
-    "file",
-    "hash",
-    "ip"
-  ],
-  "command": "OTXQuery/otxquery.py",
+  "dataTypeList": ["url", "domain", "file", "hash", "ip"],
   "baseConfig": "OTXQuery",
-  "config": {
-    "service": "query"
-  },
+  "command": "OTXQuery/otxquery.py",
   "configurationItems": [
-    {
-      "name": "check_tlp",
-      "description": "Define if the analyzer should check TLP of data before running",
-      "type": "boolean",
-      "multi": false,
-      "required": true,
-      "defaultValue": true
-    },
-    {
-      "name": "max_tlp",
-      "description": "Define the maximum TLP level autorized",
-      "type": "number",
-      "multi": false,
-      "required": true,
-      "defaultValue": 3
-    },
     {
       "name": "key",
       "description": "Define the API key to use to connect the service",

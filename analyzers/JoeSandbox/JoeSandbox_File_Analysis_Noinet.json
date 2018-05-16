@@ -5,31 +5,13 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Joe Sandbox file analysis without Internet access.",
-  "dataTypeList": [
-    "file"
-  ],
+  "dataTypeList": ["file"],
   "command": "JoeSandbox/joesandbox_analyzer.py",
   "baseConfig": "JoeSandbox",
   "config": {
-    "service": "file_analysis_noinet"
+      "service": "file_analysis_noinet"
   },
   "configurationItems": [
-    {
-      "name": "check_tlp",
-      "description": "Define if the analyzer should check TLP of data before running",
-      "type": "boolean",
-      "multi": false,
-      "required": true,
-      "defaultValue": true
-    },
-    {
-      "name": "max_tlp",
-      "description": "Define the maximum TLP level autorized",
-      "type": "number",
-      "multi": false,
-      "required": true,
-      "defaultValue": 3
-    },
     {
       "name": "url",
       "description": "URL of JoeSandbox service",
@@ -50,7 +32,15 @@
       "type": "number",
       "multi": false,
       "required": true,
-      "defaultValue": 240
+      "defaultValue": 1800
+    },
+    {
+      "name": "networktimeout",
+      "description": "Network timeout (second)",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 30
     }
   ]
 }

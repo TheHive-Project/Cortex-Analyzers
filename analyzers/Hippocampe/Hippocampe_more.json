@@ -5,34 +5,13 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Get the Hippocampe detailed report for an IP address, a domain or a URL.",
-  "dataTypeList": [
-    "ip",
-    "domain",
-    "fqdn",
-    "url"
-  ],
+  "dataTypeList": ["ip", "domain", "fqdn", "url"],
   "command": "Hippocampe/hippo.py",
   "baseConfig": "Hippocampe",
   "config": {
-    "service": "more"
+      "service": "more"
   },
   "configurationItems": [
-    {
-      "name": "check_tlp",
-      "description": "Define if the analyzer should check TLP of data before running",
-      "type": "boolean",
-      "multi": false,
-      "required": true,
-      "defaultValue": true
-    },
-    {
-      "name": "max_tlp",
-      "description": "Define the maximum TLP level autorized",
-      "type": "number",
-      "multi": false,
-      "required": true,
-      "defaultValue": 3
-    },
     {
       "name": "url",
       "description": "URL of the service",
