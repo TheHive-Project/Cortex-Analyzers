@@ -27,10 +27,9 @@ class UnshortenlinkAnalyzer(Analyzer):
         else:
             proxies = {}
 
+        result = {'found': False, 'url': None}
         try:
             response = requests.get(url, proxies=proxies, allow_redirects=False) 
-    
-            result = {'found': False, 'url': None}
         
             if (response.status_code == 301) or (response.status_code == 302):
                 result['url'] = response.headers['Location']
