@@ -21,9 +21,16 @@ if [ ! -d $1 ]; then
 fi
 
 cd $1
-for u in `curl https://virusshare.com/hashes.4n6 | grep -E "hashes\/VirusShare_[0-9]{5}\.md5" | cut -d\" -f2`
+for u in `curl https://virusshare.com/hashes.4n6 | grep -E "VirusShare_[0-9]{5}\.md5" | c\
+ut -d\" -f2 | cut -d\/ -f2`
 do
     echo $u
-    wget https://virusshare.com/$u
+    if [ -e $1/$u ]; then
+        echo "File already downloaded"
+    else
+        wget https://virusshare.com/hashes/$u
+        sleep 3
+    fi
+
 done | tee -a ../$0.log
 cd ..
