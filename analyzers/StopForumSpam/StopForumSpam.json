@@ -7,7 +7,7 @@
     "baseConfig": "StopForumSpam",
     "config": {
         "check_tlp": true,
-        "max_tlp": 1
+        "max_tlp": 2
     },
     "configurationItems": [
       {
