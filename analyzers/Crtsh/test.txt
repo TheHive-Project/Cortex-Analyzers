@@ -1,0 +1,2 @@
+ echo '{"data":"alternate.de", "dataType":"domain","tlp":0}' | python crtshquery.py  | json_pp
+
