@@ -50,7 +50,7 @@ class CuckooSandboxAnalyzer(Analyzer):
             # file analysis
             if self.data_type == 'file':
                 filepath = self.get_param('file', None, 'File is missing')
-                filename = basename(filepath)
+                filename = self.get_param('filename', basename(filepath))
                 with open(filepath, "rb") as sample:
                     files = {"file": (filename, sample)}
                     response = requests.post(self.url + 'tasks/create/file', files=files)

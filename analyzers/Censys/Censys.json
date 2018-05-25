@@ -10,7 +10,7 @@
   "command": "Censys/censys_analyzer.py",
   "configurationItems": [
     {
-      "name": "uuid",
+      "name": "uid",
       "description": "UID for Censys",
       "type": "string",
       "multi": false,
