@@ -25,17 +25,17 @@ class StopforumspamAnalyzer(Analyzer):
         predicate = self.data_type
         level = 'info'
         value = 0
-        if 'results' in raw:
-            if raw['results']:
-                for r in raw['results']:
-                    if r['appears']:
-                        value = max(value, r['confidence'])
+        if bool(raw):
+            if raw['appears']:
+                value = raw['confidence']
                 if value > self.malicious_confidence_level:
                     level = 'malicious'
                 elif value > self.suspicious_confidence_level:
                     level = 'suspicious'
                 else:
                     level = 'safe'
+            else:
+                value = 'Not found'
         taxonomies.append(self.build_taxonomy(level, ns, predicate, value))
         return {'taxonomies': taxonomies}
 
