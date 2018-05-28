@@ -1,0 +1,71 @@
+<div class="panel panel-info">
+    <style>
+        table {
+            table-layout:fixed;
+            width:100%;
+            word-break: break-all;
+        }
+    </style>
+
+
+    <div class="panel-heading">
+        <strong>Summary</strong>
+    </div>
+
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>PDNS - Public</dt>
+            <dd>
+                <span>
+                    <i class="fa fa-search"></i>
+                    <a ng-href="https://passivedns.mnemonic.no/search/{{artifact.data}}/" target="_blank">
+                        View Full Report
+                    </a>
+                </span>
+            </dd>
+            <dt>Count</dt>
+            <dd>
+                <span>
+                   {{content.findings.count}}
+                </span>
+            </dd>
+        </dl>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.findings.count !== 0">
+        <div class="panel-heading">
+            <strong>Mnemonic PDNS - Public</strong>
+        </div>
+        <div class="panel-body">
+
+            <table class="table table-hover">
+
+                <tr>
+                    <th ng-style="width:10%;">Times</th>
+                    <th>TLP</th>
+                    <th>Answer</th>
+                    <th>LastSeen</th>
+                    <th>FirstSeen</th>
+                    <th ng-style="max-width:80%;">Query</th>
+                    <th>RRType</th>
+                    <th>max TTL</th>
+                </tr>
+                <tr ng-repeat="res in content.findings.data">
+                    <td>{{res.times}}</td>
+                    <td>
+                        <span class="label" ng-class="{'white': 'label-info', 'green': 'label-success', 'amber': 'label-warning', 'red':'label-danger'}[res.tlp]">
+                            {{res.tlp}}
+                        </span>
+                    </td>
+                    <td>{{res.answer}}</td>
+                    <td>{{res.lastSeenTimestamp | amDateFormat:'MM.DD.YYYY HH:mm:ss'}}</td>
+                    <td>{{res.firstSeenTimestamp | amDateFormat:'MM.DD.YYYY HH:mm:ss'}}</td>
+                    <td ng-style="max-width:80%;">{{res.query}}</td>
+                    <td>{{res.rrtype}}</td>
+                    <td>{{res.maxTtl}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>
