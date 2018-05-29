@@ -12,5 +12,21 @@
         "max_tlp": 2,
         "service": "query"
     },
-    "command": "FireEyeiSight/fireeyeisight_lookup.py"
+    "command": "FireEyeiSight/fireeyeisight_lookup.py",
+    "configurationItems": [
+        {
+            "name": "key",
+            "description": "API key for FireEye iSIGHT.",
+            "required": true,
+            "type": "string",
+            "multi": false
+        },
+        {
+            "name": "pwd",
+            "description": "API password for give API key.",
+            "required": true,
+            "type": "string",
+            "multi": false
+        }
+    ]
 }

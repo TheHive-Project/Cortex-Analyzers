@@ -46,7 +46,6 @@ class FireEyeiSightAnalyzer(Analyzer):
         Analyzer.__init__(self)
         self.service = self.get_param(
             'config.service', None, 'Service parameter is missing')
-        self.url = self.get_param('config.url', None, 'Missing API url')
         self.key = self.get_param('config.key', None, 'Missing API key')
         self.pwd = self.get_param('config.pwd', None, 'Missing API password')
         self.request_handler = APIRequestHandler(self.key, self.pwd)
