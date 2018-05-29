@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # encoding: utf-8
-import json
 import requests
 import hashlib
 import hmac
@@ -9,8 +8,8 @@ from datetime import datetime, date
 
 from cortexutils.analyzer import Analyzer
 
-class APIRequestHandler(object):
 
+class APIRequestHandler(object):
     def __init__(self, public_key, private_key):
         self.URL = 'https://api.isightpartners.com'
         self.public_key = public_key
@@ -40,17 +39,16 @@ class APIRequestHandler(object):
             return r.json()
         else:
             return -1
-        
+
 
 class FireEyeiSightAnalyzer(Analyzer):
-
     def __init__(self):
         Analyzer.__init__(self)
-        self.service = self.getParam(
+        self.service = self.get_param(
             'config.service', None, 'Service parameter is missing')
-        self.url = self.getParam('config.url', None, 'Missing API url')
-        self.key = self.getParam('config.key', None, 'Missing API key')
-        self.pwd = self.getParam('config.pwd', None, 'Missing API password')
+        self.url = self.get_param('config.url', None, 'Missing API url')
+        self.key = self.get_param('config.key', None, 'Missing API key')
+        self.pwd = self.get_param('config.pwd', None, 'Missing API password')
         self.request_handler = APIRequestHandler(self.key, self.pwd)
 
     def cleanup(self, data_info=[]):
@@ -66,21 +64,23 @@ class FireEyeiSightAnalyzer(Analyzer):
             'webLink': [],
             'identifier': [],
             'observationTime': [],
-            'ThreatScape':[],
-            'title': [], 
+            'ThreatScape': [],
+            'title': [],
             'size': [],
             'fileName': [],
             'packer': [],
-            'actor': [],   
+            'actor': [],
             'report_data': []
         }
 
-        json_fields = ['domain', 'intelligenceType', 'ip', 'title', 'webLink', 'observationTime', 'ThreatScape', 'sha1', 'sha256', 'md5', 'size', 'fileName', 'packer', 'actor']
+        json_fields = ['domain', 'intelligenceType', 'ip', 'title', 'webLink', 'observationTime', 'ThreatScape', 'sha1',
+                       'sha256', 'md5', 'size', 'fileName', 'packer', 'actor']
         json_unique_fields = ['domain', 'ip', 'sha1', 'sha256', 'md5', 'size', 'fileName', 'packer', 'actor']
 
         for report in data_info:
 
-            identifier = report.get('fileIdentifier', None) if self.data_type == 'hash' else report.get('networkIdentifier', None)
+            identifier = report.get('fileIdentifier', None) if self.data_type == 'hash' else report.get(
+                'networkIdentifier', None)
             if identifier and identifier not in response['identifier']:
                 response['identifier'].append(identifier)
 
@@ -92,7 +92,7 @@ class FireEyeiSightAnalyzer(Analyzer):
                     response[field].append(field_value)
                 elif field_value and field not in json_unique_fields:
                     response[field].append(field_value)
-        
+
         for identifier in response['identifier']:
             if identifier in ['Attacker', 'Compromised']:
                 response['level'] = 'malicious'
@@ -100,11 +100,11 @@ class FireEyeiSightAnalyzer(Analyzer):
                 response['level'] = 'safe'
 
         for i in range(len(data_info)):
-            response['report_data'].append({'title': response['title'][i], 
-                'threatScape': response['ThreatScape'][i], 
-				'intelligenceType': response['intelligenceType'][i],
-                'webLink': response['webLink'][i], 
-                'observationTime': response['observationTime'][i]})
+            response['report_data'].append({'title': response['title'][i],
+                                            'threatScape': response['ThreatScape'][i],
+                                            'intelligenceType': response['intelligenceType'][i],
+                                            'webLink': response['webLink'][i],
+                                            'observationTime': response['observationTime'][i]})
 
         response['score'] = len(data_info)
 
@@ -125,14 +125,15 @@ class FireEyeiSightAnalyzer(Analyzer):
             for report in report_ids:
                 r = self.request_handler.exec_query('/pivot/report/%s/indicator' % report)
                 if self.data_type == 'domain':
-                    tmp_info = [x for x in r['message'].get('publishedIndicators', []) if x.get(
-                        'domain', None) == data] if r != -1 else []
+                    tmp_info = [x for x in r['message'].get('publishedIndicators', [])
+                                if x.get('domain', None) == data] if r != -1 else []
                 elif self.data_type == 'hash':
-                    tmp_info = [x for x in r['message'].get('publishedIndicators', []) if x.get(
-                        'md5', None) == data or x.get('sha1', None) == data or x.get('sha256', None) == data] if r != -1 else []
-				elif self.data_type == 'ip':
-                    tmp_info = [x for x in r['message'].get('publishedIndicators', []) if x.get(
-                        'ip', None) == data] if r != -1 else []
+                    tmp_info = [x for x in r['message'].get('publishedIndicators', [])
+                                if x.get('md5', None) == data or x.get('sha1', None) == data
+                                or x.get('sha256', None) == data] if r != -1 else []
+                elif self.data_type == 'ip':
+                    tmp_info = [x for x in r['message'].get('publishedIndicators', [])
+                                if x.get('ip', None) == data] if r != -1 else []
                 if tmp_info:
                     for x in tmp_info:
                         tmp_dict = {k: v for k, v in x.items() if v}
@@ -157,7 +158,7 @@ class FireEyeiSightAnalyzer(Analyzer):
     def run(self):
 
         if self.service == 'query':
-            data = self.getParam('data', None, 'Data is missing')
+            data = self.get_param('data', None, 'Data is missing')
             if self.data_type in ['domain', 'url', 'hash', 'ip']:
                 rep = self.query(data)
                 self.report(rep)
@@ -169,4 +170,3 @@ class FireEyeiSightAnalyzer(Analyzer):
 
 if __name__ == '__main__':
     FireEyeiSightAnalyzer().run()
-
