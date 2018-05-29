@@ -68,7 +68,7 @@ class EmergingThreatsAnalyzer(Analyzer):
                 url = "https://api.emergingthreats.net/v1/ips/"
                 features = {'reputation', 'urls', 'samples', 'domains', 'events', 'geoloc'}
 
-            elif self.data_type == 'malware':
+            elif self.data_type == 'hash':
                 url = "https://api.emergingthreats.net/v1/samples/"
                 features = {'', 'connections', 'dns', 'events'}
             else:
