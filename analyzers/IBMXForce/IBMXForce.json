@@ -1,16 +1,44 @@
 {
-    "name": "IBMXForce",
-    "version": "1.0",
-    "author": "Davide Arcuri, Andrea Garavaglia, LDO-CERT",
-    "url": "https://github.com/LDO-CERT/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "IBM X-Force Exchange is a threat intelligence sharing platform enabling research on security threats, aggregation of intelligence, and collaboration with peers.",
-    "dataTypeList": ["domain", "ip", "hash", "url"],
-    "baseConfig": "IBMXForce",
-    "config": {
-        "check_tlp": true,
-        "max_tlp": 1,
-        "service": "query"
+  "name": "IBMXForce",
+  "version": "1.0",
+  "author": "Davide Arcuri, Andrea Garavaglia, LDO-CERT",
+  "url": "https://github.com/LDO-CERT/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "IBM X-Force Exchange is a threat intelligence sharing platform enabling research on security threats, aggregation of intelligence, and collaboration with peers.",
+  "dataTypeList": [
+    "domain",
+    "ip",
+    "hash",
+    "url"
+  ],
+  "baseConfig": "IBMXForce",
+  "config": {
+    "check_tlp": true,
+    "max_tlp": 1,
+    "service": "query"
+  },
+  "command": "IBMXForce/ibmxforce_lookup.py",
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "X-Force API URL",
+      "required": true,
+      "multi": false,
+      "type": "string"
     },
-    "command": "IBMXForce/ibmxforce_lookup.py"
+    {
+      "name": "key",
+      "description": "X-Force API Key",
+      "required": true,
+      "multi": false,
+      "type": "string"
+    },
+    {
+      "name": "pwd",
+      "description": "X-Force API Password",
+      "required": true,
+      "multi": false,
+      "type": "string"
+    }
+  ]
 }

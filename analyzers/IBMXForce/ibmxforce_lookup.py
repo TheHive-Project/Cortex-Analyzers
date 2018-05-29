@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
-import json
 import requests
-from datetime import datetime, date
+from datetime import datetime
 
 from cortexutils.analyzer import Analyzer
 
@@ -11,11 +10,11 @@ class IBMXForceAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.service = self.getParam(
+        self.service = self.get_param(
             'config.service', None, 'Service parameter is missing')
-        self.url = self.getParam('config.url', None, 'Missing API url')
-        self.key = self.getParam('config.key', None, 'Missing API key')
-        self.pwd = self.getParam('config.pwd', None, 'Missing API password')
+        self.url = self.get_param('config.url', None, 'Missing API url')
+        self.key = self.get_param('config.key', None, 'Missing API key')
+        self.pwd = self.get_param('config.pwd', None, 'Missing API password')
 
     def parse_data(self, date):
         try:
@@ -25,7 +24,6 @@ class IBMXForceAnalyzer(Analyzer):
         return date.strftime("%Y-%m-%d")
 
     def cleanup(self, ip_data={}, malware_data={}, dns_data={}):
-
         response = {
             'malware': [],
             'history': [],
@@ -198,7 +196,7 @@ class IBMXForceAnalyzer(Analyzer):
     def run(self):
 
         if self.service == 'query':
-            data = self.getParam('data', None, 'Data is missing')
+            data = self.get_param('data', None, 'Data is missing')
             if self.data_type == 'ip':
                 rep = self.ip_query(data)
                 self.report(rep)
@@ -212,6 +210,7 @@ class IBMXForceAnalyzer(Analyzer):
                 self.error('Invalid data type')
         else:
             self.error('Invalid service')
+
 
 if __name__ == '__main__':
     IBMXForceAnalyzer().run()
