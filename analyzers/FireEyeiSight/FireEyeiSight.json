@@ -1,0 +1,16 @@
+{
+    "name": "FireEyeiSight",
+    "version": "1.0",
+    "author": "Davide Arcuri, Andrea Garavaglia - LDO-CERT",
+    "url": "https://github.com/LDO-CERT/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "iSIGHT API extends FireEye cyber threat intelligence products and associated technical indicators so that customers and partners can easily match indicators to rich intelligence context, ingest indicator data associated with intelligence reporting, and collect and consume intelligence reports. Integrating data tied to context allows the people, processes, and technologies within intelligence-led security organizations to more efficiently and effectively employ knowledge to proactively defend their business.",
+    "dataTypeList": ["domain", "ip", "hash", "url"],
+    "baseConfig": "FireEyeiSight",
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 2,
+        "service": "query"
+    },
+    "command": "FireEyeiSight/fireeyeisight_lookup.py"
+}
