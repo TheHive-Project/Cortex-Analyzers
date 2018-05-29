@@ -5,7 +5,8 @@ import requests
 import json
 from cortexutils.analyzer import Analyzer
 
-class crtshAnalyzer(Analyzer):
+
+class CrtshAnalyzer(Analyzer):
     def search(self, domain, wildcard=True):
         """
         Search crt.sh for the given domain.
@@ -24,9 +25,9 @@ class crtshAnalyzer(Analyzer):
             "min_entry_timestamp": "2018-02-08T16:47:39.089",
             "not_before": "2018-02-08T15:47:39"
         }
-	
-	XML notation would also include the base64 cert: 
-	https://crt.sh/atom?q={}
+
+        XML notation would also include the base64 cert:
+        https://crt.sh/atom?q={}
         """
         base_url = "https://crt.sh/?q={}&output=json"
         if wildcard:
@@ -41,20 +42,18 @@ class crtshAnalyzer(Analyzer):
                 content = req.content.decode('utf-8')
                 data = json.loads("[{}]".format(content.replace('}{', '},{')))
                 return data
-            except Exception as err:
+            except Exception:
                 self.error("Error retrieving information.")
         return None
 
-
     def __init__(self):
-	Analyzer.__init__(self)
+        Analyzer.__init__(self)
 
-    def dumpData(self, domain):
+    def dump_data(self, domain):
         return {
-	    'domain': domain, 
+            'domain': domain,
             'result': self.search(domain)
         }
-
 
     def summary(self, raw):
         taxonomies = []
@@ -63,21 +62,21 @@ class crtshAnalyzer(Analyzer):
         predicate = "Certificates"
         value = "\"\""
 
-        if("certobj" in raw):
+        if "certobj" in raw:
             value = "\"{}\"".format(len(raw["certobj"]["result"]))
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
-        return {"taxonomies":taxonomies}
+        return {"taxonomies": taxonomies}
 
     def run(self):
         Analyzer.run(self)
 
         if self.data_type == 'domain':
-	    try:
+            try:
                 data = self.getData()
                 mydata = data
                 self.report({
-                    'certobj': self.dumpData(mydata)
+                    'certobj': self.dump_data(mydata)
                 })
             except Exception as e:
                 self.unexpectedError(e)
@@ -85,6 +84,5 @@ class crtshAnalyzer(Analyzer):
             self.notSupported()
 
 
-
 if __name__ == '__main__':
-    crtshAnalyzer().run()
+    CrtshAnalyzer().run()

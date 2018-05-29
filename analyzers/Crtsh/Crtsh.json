@@ -1,5 +1,5 @@
 {
-  "name": "Crtsh",
+  "name": "Crt.sh transparency logs query",
   "author": "crackytsi",
   "license": "AGPL-V3",
   "url": "https://crt.sh",
@@ -9,7 +9,7 @@
         "check_tlp": false,
         "max_tlp": 3
   },
-  "description": "crt.sh certificate transparency logs",
+  "description": "This analyzer queries the certificate transparency lists available at crt.sh.",
   "dataTypeList": ["domain"],
   "command": "Crtsh/crtshquery.py",
   "configurationItems": [
