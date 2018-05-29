@@ -1,0 +1,44 @@
+<!-- Success -->
+<div class="panel panel-danger" ng-if="success && content.results.length > 0">
+    <div class="panel-heading">
+        CyberCrimeTracker C2 Search Report
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-repeat="r in content.results">
+            <dt>IP:</dt>
+            <dd>{{r.ip}}</dd>
+            <dt>URL:</dt>
+            <dd>{{r.url}}</dd>
+            <dt>Date:</dt>
+            <dd>{{r.date}}</dd>
+            <dt>Type:</dt>
+            <dd>{{r.type}}</dd>
+            <dt>VirusTotal (Latest Scan):</dt>
+            <dd>{{r.vt_latest_scan}}</dd>
+            <dt>VirusTotal (IP Info):</dt>
+            <dd>{{r.vt_ip}}</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.results.length == 0">
+    <div class="panel-heading">
+        CyberCrimeTracker C2 Search Report
+    </div>
+    <div class="panel-body">
+        <b>No matches.</b>
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> CyberCrimeTracker: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
