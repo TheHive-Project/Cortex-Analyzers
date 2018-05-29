@@ -4,7 +4,8 @@
 import requests
 from cortexutils.analyzer import Analyzer
 
-class pdns_v3(Analyzer):
+
+class PDNSv3(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
@@ -13,15 +14,15 @@ class pdns_v3(Analyzer):
         self.apikey = self.get_param("config.key", None)
         self.service = self.get_param('config.service', None, 'Service parameter is missing')
 
-        self.headers = { 
+        self.headers = {
             "User-Agent": "Cortex 2",
-            "Accept" : "application/json"
+            "Accept": "application/json"
         }
         self.params = {
             "aggregate": "true",
-            "limit" : "0"
+            "limit": "0"
         }
-
+        self.response = None
 
     def get_pdns(self, content):
 
@@ -31,7 +32,6 @@ class pdns_v3(Analyzer):
         content = r.json()
 
         return content
-
 
     def run(self):
 
@@ -49,7 +49,6 @@ class pdns_v3(Analyzer):
 
             self.headers["Argus-API-Key"] = self.apikey
 
-
         elif self.service == "public":
             # Fetch Public PDNS data
             self.predicate = "Public"
@@ -60,7 +59,6 @@ class pdns_v3(Analyzer):
             # Did not match any services
             self.error("Invalid service")
 
-
         response = self.get_pdns(content)
         self.response = response
 
@@ -68,16 +66,15 @@ class pdns_v3(Analyzer):
 
         return self.report(result)
 
-
     def summary(self, raw_report):
 
         return {
             "count": self.response["count"],
             "size": self.response["size"],
-            "metaData" : self.response["metaData"],
-            "messages" : self.response["messages"],
-            "responseCode" : self.response["responseCode"],
-            "taxonomies":[{
+            "metaData": self.response["metaData"],
+            "messages": self.response["messages"],
+            "responseCode": self.response["responseCode"],
+            "taxonomies": [{
                 "namespace": "MN_PDNS",
                 "predicate": self.predicate,
                 "value": self.response['count'],
@@ -87,4 +84,4 @@ class pdns_v3(Analyzer):
 
 
 if __name__ == '__main__':
-    pdns_v3().run()
+    PDNSv3().run()
