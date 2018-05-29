@@ -60,7 +60,7 @@ class EmergingThreatsAnalyzer(Analyzer):
         info = {}
         try:
             object_name = self.get_data()
-            if self.data_type == 'domain':
+            if self.data_type in ['domain', 'fqdn']:
                 url = "https://api.emergingthreats.net/v1/domains/"
                 features = {'reputation', 'urls', 'samples', 'ips', 'events', 'nameservers', 'whois', 'geoloc'}
 
