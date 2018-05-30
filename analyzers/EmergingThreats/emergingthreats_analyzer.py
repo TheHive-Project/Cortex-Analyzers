@@ -73,11 +73,11 @@ class EmergingThreatsAnalyzer(Analyzer):
 
             elif self.data_type == 'hash':
                 url = "https://api.emergingthreats.net/v1/samples/"
-                features = {'', 'connections', 'dns', 'events'}
+                features = {'', 'connections', 'dns', 'http', 'events'}
 
             elif self.data_type == 'file':
                 url = "https://api.emergingthreats.net/v1/samples/"
-                features = {'', 'connections', 'dns', 'events'}
+                features = {'', 'connections', 'dns', 'http', 'events'}
                 hashes = self.get_param('attachment.hashes', None)
                 if hashes is None:
                     filepath = self.get_param('file', None, 'File is missing')
