@@ -6,7 +6,7 @@
     "version": "1.0",
     "description": "Search for information on threatcrowd.org",
     "dataTypeList": [
-        "email",
+        "mail",
         "ip",
         "domain"
     ],
