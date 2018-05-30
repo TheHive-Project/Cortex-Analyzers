@@ -11,8 +11,8 @@ class Threatcrowd(Analyzer):
     def summary(self, raw):
         taxonomies = []
 
-        level = "info"
-        value = "None"
+        level = None
+        value = None
 
         if 'votes' in raw:
             r = raw.get('votes')
@@ -23,6 +23,9 @@ class Threatcrowd(Analyzer):
                 level = "suspicious"
             elif r == -1:
                 level = "malicious"
+            else:
+                value = "unknow"
+                level = "info"
 
         taxonomies.append(self.build_taxonomy(level, "Threatcrowd", "votes", value))
 
@@ -32,9 +35,10 @@ class Threatcrowd(Analyzer):
     def run(self):
         Analyzer.run(self)
 
-        if (self.data_type == 'domain' or self.data_type == 'ip' or self.data_type == 'email'):
+        if (self.data_type == 'domain' or self.data_type == 'ip' or self.data_type == 'mail'):
+            threatcrowd_data_type = self.data_type if self.data_type != 'mail' else 'email'
             try:
-                response = requests.get("{}/{}/report/".format(self.URI, self.data_type), {self.data_type: self.get_data()})
+                response = requests.get("{}/{}/report/".format(self.URI, threatcrowd_data_type), {threatcrowd_data_type: self.get_data()})
                 self.report(response.json())
             except Exception as e:
                 self.unexpectedError(e)
