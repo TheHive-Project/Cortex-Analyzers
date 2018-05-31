@@ -87,12 +87,11 @@ class PESubmodule(SubmoduleBaseclass):
         if pe:
             try:
                 for entry in pe.DIRECTORY_ENTRY_IMPORT:
-                    # try:
                     imp = {
                         'entryname': entry.dll.decode(),
                         'symbols': []
                     }
-                    # try:
+
                     for symbol in entry.imports:
                         if symbol.name is not None:
                             imp['symbols'].append(symbol.name.decode())
