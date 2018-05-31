@@ -16,7 +16,7 @@ class PESubmodule(SubmoduleBaseclass):
         :return: True
         """
         try:
-            if kwargs.get('filetype') in ['Win32 EXE']:
+            if kwargs.get('filetype') in ['Win32 EXE', 'Win64 EXE']:
                 return True
         except KeyError:
             return False
@@ -31,6 +31,22 @@ class PESubmodule(SubmoduleBaseclass):
                 return mt[str(hex(machinetype))]
             else:
                 return str(machinetype) + ' => Not x86/64 or Itanium'
+
+    @staticmethod
+    def pe_type(pe):
+        if pe.is_exe():
+            return "EXE"
+        elif pe.is_dll():
+            return "DLL"
+        elif pe.is_driver():
+            return "DRIVER"
+        else:
+            return "UNKNOWN"
+
+    @staticmethod
+    def pe_dump(pe):
+        return pe.dump_info()
+
 
     @staticmethod
     def compilation_timestamp(pedict):
@@ -67,16 +83,22 @@ class PESubmodule(SubmoduleBaseclass):
     @staticmethod
     def pe_iat(pe):
         table = []
+
         if pe:
-            for entry in pe.DIRECTORY_ENTRY_IMPORT:
-                imp = {
-                    'entryname': entry.dll.decode(),
-                    'symbols': []
-                }
-                for symbol in entry.imports:
-                    if symbol.name is not None:
-                        imp['symbols'].append(symbol.name.decode())
-                table.append(imp)
+            try:
+                for entry in pe.DIRECTORY_ENTRY_IMPORT:
+                    # try:
+                    imp = {
+                        'entryname': entry.dll.decode(),
+                        'symbols': []
+                    }
+                    # try:
+                    for symbol in entry.imports:
+                        if symbol.name is not None:
+                            imp['symbols'].append(symbol.name.decode())
+                    table.append(imp)
+            except AttributeError:
+                pass
         return table
 
     # PE:Sections list of {Name, Size, Entropy, MD5, SHA1, SHA256, SHA512} #
@@ -107,4 +129,5 @@ class PESubmodule(SubmoduleBaseclass):
             })
         self.add_result_subsection('Import Adress Tables', self.pe_iat(pe))
         self.add_result_subsection('Sections', self.pe_sections(pe))
+        self.add_result_subsection('pefile raw output', self.pe_dump(pe))
         return self.results
