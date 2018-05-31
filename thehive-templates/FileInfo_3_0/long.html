@@ -200,6 +200,124 @@
 
                 </div>
             </div>
+
+            <!-- PE Information submodule-->
+            <div ng-if="result.submodule_name=='PE Information'">
+                <div class="panel-body">
+                    <div  ng-repeat="r in result.results">
+                        <uib-accordion>
+
+                            <div uib-accordion-group ng-if="r.submodule_section_header=='Headers'" class="panel-primary" heading="{{r.submodule_section_header}}" is-open="true" is-disabled="status.isFirstDisabled">
+                                <div ng-repeat="h in r.submodule_section_content">
+                                    <dl class="dl-horizontal">
+                                    <dt>{{h.Info}}</dt>
+                                    <dd class="wrap">{{h.Value}}</dd>
+                                    </dl>
+                                </div>
+                            </div>
+
+                            <div uib-accordion-group ng-if="r.submodule_section_header=='Hashes'" class="panel-primary" heading="{{r.submodule_section_header}}" is-open="true" is-disabled="status.isFirstDisabled">
+                                <dl class="dl-horizontal" data-ng-repeat="(k,v) in r.submodule_section_content">
+                                    <dt>{{k}}</dt>
+                                    <dd class="wrap">{{v}}</dd>
+                                </dl>
+                            </div>
+
+                            <div uib-accordion-group ng-if="r.submodule_section_header=='Import Adress Tables'" class="panel-primary" heading="{{r.submodule_section_header}}" is-open="true" is-disabled="status.isFirstDisabled">
+
+                                <div ng-repeat="table in r.submodule_section_content" ng-init="table.showRows=false;">
+                                    <dl class="dl-horizontal">
+                                        <dt>
+                                            <a href="" ng-click="table.showRows = !table.showRows">
+                                                <i class="fa" ng-class="{ true:'fa-minus-square-o', false:'fa-plus-square-o' }[table.showRows]"></i>
+                                            </a>
+                                            {{table.entryname}}
+                                        </dt>
+                                        <dd class="wrap" >
+                                            <ul class="list-unstyled">
+                                                <div ng-if="!table.showRows">
+                                                {{table.symbols.length}}
+                                                items
+                                                </div>
+                                                <div ng-if="table.showRows" ng-repeat="s in table.symbols">{{s}}</div>
+                                            </ul>
+                                        </dd>
+                                    </dl>
+                                </div>
+
+                            </div>
+
+                            <div uib-accordion-group ng-if="r.submodule_section_header=='Sections'" class="panel-primary" heading="{{r.submodule_section_header}}" is-open="true" is-disabled="status.isFirstDisabled">
+                                <table class="table">
+                                    <thead>
+                                        <th>Section</th>
+                                        <th>SizeOfRawData</th>
+                                        <th>Entroy</th>
+                                    </thead>
+                                    <tbody ng-repeat="section in  r.submodule_section_content">
+                                        <tr>
+                                            <td>
+                                                <b>{{section.entryname}}</b>
+                                            </td>
+                                            <td>{{section.SizeOfRawData}}</td>
+                                            <td>{{section.Entropy}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan=3>
+                                                <dl class="dl-horizontal">
+                                                    <dt>
+                                                        <small>MD5</small>
+                                                    </dt>
+                                                    <dd>
+                                                        <small>{{section.MD5}}</small>
+                                                    </dd>
+                                                </dl>
+                                                <dl class="dl-horizontal">
+                                                    <dt>
+                                                        <small>SHA1</small>
+                                                    </dt>
+                                                    <dd>
+                                                        <small>{{section.SHA1}}</small>
+                                                    </dd>
+                                                </dl>
+                                                <dl class="dl-horizontal">
+                                                    <dt>
+                                                        <small>SHA256</small>
+                                                    </dt>
+                                                    <dd>
+                                                        <small>{{section.SHA256}}</small>
+                                                    </dd>
+                                                </dl>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div uib-accordion-group ng-if="r.submodule_section_header=='pefile raw output'" class="panel-primary" heading="pefile raw output" is-open="false" is-disabled="status.isFirstDisabled">
+                                <pre>
+                                    {{r.submodule_section_content}}
+                                </pre>
+                            </div>
+
+                    <!--<div ng-repeat="r in result.results" class="panel panel-primary">-->
+                            <!--<div class="panel-heading" ng-if="r.submodule_section_header=='Headers'">-->
+                                <!--<h4 class="panel-title">-->
+                                   <!--{{r.submodule_section_header}}-->
+                                <!--</h4>-->
+                            <!--</div>-->
+                            <!--<div class="panel-body">-->
+                                <!--<div ng-repeat="(k,v) in r.submodule_section_content">-->
+
+                                <!--</div>-->
+                            <!--</div>-->
+
+                        </uib-accordion>
+
+                        <!--</div>-->
+                    </div>
+                </div>
+            </div>
             <!--Next submodule here -->
         </uib-tab>
     </uib-tabset>
