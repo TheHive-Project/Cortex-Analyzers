@@ -2,6 +2,7 @@ class SubmoduleBaseclass(object):
     def __init__(self):
         self.name = 'This is where the module name should go.'
         self.results = []
+        self.summary = []
 
     def get_name(self):
         """
@@ -11,6 +12,21 @@ class SubmoduleBaseclass(object):
         :rtype: str
         """
         return self.name
+
+    def build_taxonomy(self, level, namespace, predicate, value):
+        """
+        :param level: info, safe, suspicious or malicious
+        :param namespace: Name of analyzer
+        :param predicate: Name of service
+        :param value: value
+        :return: dict
+        """
+        return {
+                'level': level,
+                'namespace': namespace,
+                'predicate': predicate,
+                'value': value
+                }
 
     def check_file(self, **kwargs):
         """
@@ -40,15 +56,17 @@ class SubmoduleBaseclass(object):
         """
         pass
 
-    def add_result_subsection(self, subsection_header, results):
+    def add_result_subsection(self, subsection_header, results, summary={"taxonomies": []}):
         """
         Adding a subsection to the section of the analyzer module
 
         :param subsection_header: header of the subsection
         :param results: result dictionary or list
+        :param summary: result dictionary
         :return:
         """
         self.results.append({
             "submodule_section_header": subsection_header,
-            "submodule_section_content": results
+            "submodule_section_content": results,
+            "submodule_section_summary": summary
         })
