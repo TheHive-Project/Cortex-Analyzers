@@ -38,8 +38,36 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
 
         return self.results
 
+
+
+    def olevba_summary(self, analysis):
+        """ Build summary for Olevba part of the submodule"""
+
+        summary = {'taxonomies': []}
+
+
+        type_list = []
+        for a in analysis:
+            if a["type"] not in type_list:
+                type_list.append(a["type"])
+
+        predicate = "Olevba"
+        namespace = "FileInfo"
+        level = "info"
+
+        if "Suspicious" in type_list:
+            level = 'suspicious'
+        if "VBA string" in type_list:
+            summary["taxonomies"].append(self.build_taxonomy(level, namespace, predicate, "VBA string"))
+        if "Base64 String" in type_list:
+            summary["taxonomies"].append(self.build_taxonomy(level, namespace, predicate, "Base64 string"))
+        if "Hex String" in type_list:
+            summary["taxonomies"].append(self.build_taxonomy(level, namespace, predicate, "Hex string"))
+
+        return summary
+
     def analyze_vba(self, path):
-        """Analyze a given sample for malicios vba."""
+        """Analyze a given sample for malicious vba."""
         try:
 
             vba_parser = VBA_Parser_CLI(path, relaxed=True)
@@ -49,7 +77,7 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
                                                             vba_code_only=False,
                                                             show_deobfuscated_code=True,
                                                             deobfuscate=True)
-            self.add_result_subsection('Olevba', vbaparser_result)
+            self.add_result_subsection('Olevba', vbaparser_result, self.olevba_summary(vbaparser_result["analysis"]))
         except TypeError:
             self.add_result_subsection('Oletools VBA Analysis failed', 'Analysis failed due to an filetype error.'
                                                                        'The file does not seem to be a valid MS-Office '
@@ -58,6 +86,8 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
     def analyze_dde(self, path):
         results = process_file(path)
         if len(results) > 0:
-            self.add_result_subsection('Oletools DDE Analysis', {'DDEUrl': results})
+            self.add_result_subsection('Oletools DDE Analysis', {'DDEUrl': results}, {"DDE": True})
         else:
             self.add_result_subsection('Oletools DDE Analysis', {'Info': 'No DDE URLs found.'})
+
+

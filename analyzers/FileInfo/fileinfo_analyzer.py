@@ -15,24 +15,41 @@ class FileInfoAnalyzer(Analyzer):
         self.filetype = pyexifinfo.fileType(self.filepath)
         self.mimetype = magic.Magic(mime=True).from_file(self.filepath)
 
+
+    def build_summary(self, summary, module_results):
+
+        for m in module_results:
+            if m["submodule_section_summary"]["taxonomies"] != []:
+
+                summary += m["submodule_section_summary"]["taxonomies"]
+
+        return summary
+
     def run(self):
         results = []
+        summary = []
 
         # Add metadata to result directly as it's mandatory
         m = MetadataSubmodule()
+        matadata_results = m.analyze_file(self.filepath)
         results.append({
             'submodule_name': m.name,
-            'results': m.analyze_file(self.filepath)
+            'results': matadata_results
         })
+        self.build_summary(summary, matadata_results)
 
         for module in available_submodules:
             if module.check_file(file=self.filepath, filetype=self.filetype, filename=self.filename,
                                  mimetype=self.mimetype):
+                module_results = module.analyze_file(self.filepath)
                 results.append({
-                    'submodule_name': module.name,
-                    'results': module.analyze_file(self.filepath)
+                   'submodule_name': module.name,
+                   'results': module_results
                 })
-        self.report({'results': results})
+
+                self.build_summary(summary, module_results)
+
+        self.report({'results': results, 'summary': summary})
 
 
 if __name__ == '__main__':
