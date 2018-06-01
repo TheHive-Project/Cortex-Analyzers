@@ -1,0 +1,24 @@
+{
+    "name": "Mnemonic_PDNS_closed",
+    "version": "3.0",
+    "author": "Michael Stensrud, Nordic Financial CERT",
+    "url": "https://passivedns.mnemonic.no/search",
+    "license" : "AGPL-V3",
+    "description": "Query against Mnemonic pDNS",
+    "dataTypeList": ["ip", "domain"],
+    "command": "Mnemonic_pdns/pdns.py",
+    "baseConfig": "Mnemonic_pDNS",
+    "config": {
+        "check_tlp": true,
+        "service" : "closed"
+    },
+    "configurationItems": [
+        {
+          "name": "key",
+          "description": "Define the API Key",
+          "type": "string",
+          "multi": false,
+          "required": true
+        }
+    ]
+}
