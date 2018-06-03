@@ -56,6 +56,8 @@ class SubmoduleBaseclass(object):
         """
         pass
 
+    def section_summary(self, report):
+
     def add_result_subsection(self, subsection_header, results, summary={"taxonomies": []}):
         """
         Adding a subsection to the section of the analyzer module

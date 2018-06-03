@@ -6,6 +6,9 @@
 
     </style>
 
+
+    <br>
+
     <uib-tabset active="active">
         <uib-tab index="$index" ng-repeat="result in content.results" heading="{{result.submodule_name}}" disable="tab.disabled">
             <br>
@@ -30,7 +33,41 @@
 
             <!--  Oletools -->
             <div ng-if="result.submodule_name=='Oletools Submodule'">
+
+
                 <div class="panel-body">
+
+                    <!-- summary -->
+                    <div>
+                        <div ngif=result.summary class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Summary</h4>
+                            </div>
+                            <div class="panel-body">
+                                <dl class="dl-horizontal">
+                                    <dt>Olevba version</dt>
+                                    <dd class="wrap">{{result.summary["Olevba version"]}}</dd>
+                                </dl>
+                                <dl class="dl-horizontal">
+                                    <dt>Msodde version</dt>
+                                    <dd class="wrap">{{result.summary["Msodde version"]}}</dd>
+                                </dl>
+
+
+                                <dl class="dl-horizontal">
+                                        <dt>Oletools scanner</dt>
+                                        <dd class="wrap">
+                                            <span class="label" ng-repeat="t in result.summary.taxonomies" ng-class="{'info': 'label-info', 'safe': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[t.level]">
+                                                {{t.namespace}}:{{t.predicate}}={{t.value}}
+                                            </span>
+                                        </dd>
+                                    </dl>
+
+                            </div>
+
+                        </div>
+                    </div>
+
                     <div ng-repeat="r in result.results">
                         <uib-accordion ng-if="r.submodule_section_header=='Olevba'">
 
