@@ -23,7 +23,7 @@
         },
         {
             "name": "pwd",
-            "description": "API password for give API key.",
+            "description": "Password associated to the API key.",
             "required": true,
             "type": "string",
             "multi": false
