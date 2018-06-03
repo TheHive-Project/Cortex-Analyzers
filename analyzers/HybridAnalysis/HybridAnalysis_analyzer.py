@@ -65,7 +65,7 @@ class VxStreamSandboxAnalyzer(Analyzer):
                 value = "\"No Specific Threat\""
         else:
             level = 'info'
-            value = "\"None\""
+            value = "\"Unknown\""
 
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         return {"taxonomies": taxonomies}
