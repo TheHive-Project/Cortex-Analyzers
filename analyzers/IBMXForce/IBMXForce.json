@@ -1,10 +1,10 @@
 {
   "name": "IBMXForce",
   "version": "1.0",
-  "author": "Davide Arcuri, Andrea Garavaglia, LDO-CERT",
+  "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
   "url": "https://github.com/LDO-CERT/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "IBM X-Force Exchange is a threat intelligence sharing platform enabling research on security threats, aggregation of intelligence, and collaboration with peers.",
+  "description": "Query domains, IPs, hashes and URLs against IBM X-Force threat intelligence sharing platform.",
   "dataTypeList": [
     "domain",
     "ip",

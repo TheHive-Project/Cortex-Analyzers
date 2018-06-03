@@ -9,7 +9,7 @@
         "check_tlp": false,
         "max_tlp": 3
   },
-  "description": "This analyzer queries the certificate transparency lists available at crt.sh.",
+  "description": "Query the certificate transparency lists available at crt.sh.",
   "dataTypeList": ["domain"],
   "command": "Crtsh/crtshquery.py",
   "configurationItems": [
