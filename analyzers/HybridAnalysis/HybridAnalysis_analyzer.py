@@ -42,26 +42,30 @@ class VxStreamSandboxAnalyzer(Analyzer):
             minireports = raw_report.get('results').get('response')
         elif self.data_type in ['filename']:
             minireports = raw_report.get('results').get('response').get('result')
-                    
-        # get first report with not Null verdict
-        for minireport in minireports:
-            if minireport.get('verdict') is not None:
-                report_verdict = minireport.get('verdict')
-                break
 
-        # create shield badge for short.html
-        if report_verdict == 'malicious':
-            level = 'malicious'
-            value = "\"Malicious\""
-        elif report_verdict == 'suspicious':
-            level = 'suspicious'
-            value = "\"Suspicious\""
-        elif report_verdict == 'whitelisted':
-            level = 'safe'
-            value = "\"Whitelisted\""
-        elif report_verdict == 'no specific threat':
+        if len(minireports) != 0:
+            # get first report with not Null verdict
+            for minireport in minireports:
+                if minireport.get('verdict') is not None:
+                    report_verdict = minireport.get('verdict')
+                    break
+
+            # create shield badge for short.html
+            if report_verdict == 'malicious':
+                level = 'malicious'
+                value = "\"Malicious\""
+            elif report_verdict == 'suspicious':
+                level = 'suspicious'
+                value = "\"Suspicious\""
+            elif report_verdict == 'whitelisted':
+                level = 'safe'
+                value = "\"Whitelisted\""
+            elif report_verdict == 'no specific threat':
+                level = 'info'
+                value = "\"No Specific Threat\""
+        else:
             level = 'info'
-            value = "\"No Specific Threat\""
+            value = "\"No threat found\""
 
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         return {"taxonomies": taxonomies}
