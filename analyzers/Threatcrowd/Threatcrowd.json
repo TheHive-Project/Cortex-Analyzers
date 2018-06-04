@@ -1,10 +1,10 @@
 {
     "name": "Threatcrowd",
-    "author": "Rémi ALLAIN, Cyberprotect",
+    "author": "Rémi llain, Cyberprotect",
     "license": "AGPL-V3",
     "url": "https://github.com/Cyberprotect/Cortex-Analyzers",
     "version": "1.0",
-    "description": "Search for information on threatcrowd.org",
+    "description": "Look up domains, mail and IP addresses on ThreatCrowd.",
     "dataTypeList": [
         "mail",
         "ip",
