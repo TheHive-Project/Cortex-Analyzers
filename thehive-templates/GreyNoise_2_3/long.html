@@ -10,7 +10,6 @@
                 <th>Last update</th>
                 <th>Name</th>
                 <th>Tags</th>
-                <th>Metadata</th>
             </thead>
             <tbody ng-repeat="record in content.records | orderBy:'-last_updated'">
                 <tr>
@@ -19,11 +18,15 @@
                     <td>{{record.last_updated}}</td>
                     <td>{{record.name}}</td>
                     <td><span class="label label-warning" ng-if="content.metadata.tor">Tor-Node</span></td>
-                    <td><pre>{{record.metadata}}</pre></td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        Metadata: <pre>{{record.metadata | json}}</pre>
+                    </td>
                 </tr>
             </tbody>
         </table>
-        <p ng-ig="!content.records">No records found for {{artifact.data}}.</p>
+        <p ng-if="!content.records">No records found for {{artifact.data}}.</p>
     </div>
 </div>
 
