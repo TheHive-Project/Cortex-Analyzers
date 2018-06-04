@@ -1,8 +1,8 @@
 {
-    "name": "staxx",
+    "name": "Staxx",
     "author": "Robert Nixon",
     "license": "AGPL-V3",
-    "url": "https://github.com/CERT/cortex-analyzers",
+    "url": "https://github.com/robertnixon2003/Cortex-Analyzers",
     "version": "1.0",
     "description": "Fetch observable details from a Anomali STAXX instance.",
     "dataTypeList": ["domain", "fqdn", "ip", "url", "hash", "mail"],
@@ -44,7 +44,7 @@
         "type": "boolean",
         "multi": false,
         "required": true,
-        "defaultValue": false
+        "defaultValue": true
     },
     {
         "name": "cert_path",
