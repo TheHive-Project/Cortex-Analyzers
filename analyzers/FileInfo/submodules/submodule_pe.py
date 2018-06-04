@@ -1,5 +1,6 @@
 import pefile
 import pehashng
+from pefile import __version__ as pefile_version
 
 from .submodule_base import SubmoduleBaseclass
 
@@ -114,6 +115,10 @@ class PESubmodule(SubmoduleBaseclass):
                         'SHA512': entry.get_hash_sha512()}
                 table.append(sect)
         return table
+
+
+    def module_summary(self):
+        return {'pefile': pefile_version}
 
     def analyze_file(self, path):
         try:

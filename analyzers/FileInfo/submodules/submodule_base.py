@@ -54,11 +54,13 @@ class SubmoduleBaseclass(object):
         :return:
         :rtype: dict
         """
+        return {}
+
+
+    def module_summary(self):
         pass
 
-    def section_summary(self, report):
-
-    def add_result_subsection(self, subsection_header, results, summary={"taxonomies": []}):
+    def add_result_subsection(self, subsection_header, results):
         """
         Adding a subsection to the section of the analyzer module
 
@@ -69,6 +71,5 @@ class SubmoduleBaseclass(object):
         """
         self.results.append({
             "submodule_section_header": subsection_header,
-            "submodule_section_content": results,
-            "submodule_section_summary": summary
+            "submodule_section_content": results
         })

@@ -15,45 +15,39 @@ class FileInfoAnalyzer(Analyzer):
         self.filetype = pyexifinfo.fileType(self.filepath)
         self.mimetype = magic.Magic(mime=True).from_file(self.filepath)
 
+    def summary(self, raw):
+        taxonomies = []
+        for submodule in raw['results']:
+            taxonomies += submodule['summary']['taxonomies']
+        return {'taxonomies': taxonomies}
 
-    def build_summary(self, module_results):
 
-        summary = []
-        for m in module_results:
-            if m["submodule_section_summary"]["taxonomies"] != []:
-
-                summary += m["submodule_section_summary"]["taxonomies"]
-
-        return summary
 
     def run(self):
         results = []
-        summary = []
 
         # Add metadata to result directly as it's mandatory
         m = MetadataSubmodule()
-        matadata_results = m.analyze_file(self.filepath)
+        metadata_results = m.analyze_file(self.filepath)
         results.append({
             'submodule_name': m.name,
-            'results': matadata_results,
-            'summary': self.build_summary(matadata_results)
-
+            'results': metadata_results,
+            'summary': m.module_summary()
         })
-        # self.build_summary(summary, matadata_results)
 
         for module in available_submodules:
             if module.check_file(file=self.filepath, filetype=self.filetype, filename=self.filename,
                                  mimetype=self.mimetype):
                 module_results = module.analyze_file(self.filepath)
+                module_summaries = module.module_summary()
                 results.append({
                    'submodule_name': module.name,
                    'results': module_results,
-                    'summary': self.build_summary(module_results)
+                    'summary': module_summaries
                 })
 
-                # self.build_summary(summary, module_results)
 
-        self.report({'results': results, 'summary': summary})
+        self.report({'results': results})
 
 
 if __name__ == '__main__':

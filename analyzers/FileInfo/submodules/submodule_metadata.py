@@ -28,6 +28,20 @@ class MetadataSubmodule(SubmoduleBaseclass):
                       not (key.startswith("File") or key.startswith("SourceFile")))
         return result
 
+    def module_summary(self):
+        taxonomy = {'level': 'info', 'namespace': 'FileInfo', 'predicate': 'Filetype', 'value': ''}
+        taxonomies = []
+
+        for section in self.results:
+            if section['submodule_section_header'] == 'File information':
+                t = taxonomy
+                t['value'] = section['submodule_section_content']['Filetype']
+                taxonomies.append(t)
+            else:
+                pass
+        return {'taxonomies': taxonomies}
+
+
     def analyze_file(self, path):
         # Hash the file
         with io.open(path, 'rb') as fh:
@@ -53,14 +67,14 @@ class MetadataSubmodule(SubmoduleBaseclass):
         # Get libmagic info
         magicliteral = magic.Magic().from_file(path)
         mimetype = magic.Magic(mime=True).from_file(path)
-        filetype = pyexifinfo.fileType(path)
-        taxonomy = {'level': 'info', 'namespace': 'FileInfo', 'predicate': 'Filetype', 'value': filetype}
+        # filetype = pyexifinfo.fileType(path)
+
 
         self.add_result_subsection('File information', {
             'Magic literal': magicliteral,
             'MimeType': mimetype,
             'Filetype': pyexifinfo.fileType(path),
-            'Filesize': os.path.getsize(path)},{'taxonomies': [taxonomy]}
+            'Filesize': os.path.getsize(path)}
                                    )
 
         return self.results

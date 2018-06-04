@@ -43,38 +43,45 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
 
 
 
-    def olevba_summary(self, analysis):
-        """ Build summary for Olevba part of the submodule"""
+    def module_summary(self):
+        taxonomies = []
+        level = 'info'
+        namespace = 'FileInfo'
+        predicate = ''
+        value = ''
 
-        version = {'Olevba version': olevba_version}
-        summary = {'taxonomies': [],
-                   'version': [version]}
+        for section in self.results:
+            if section['submodule_section_header'] == 'Olevba':
+                predicate = 'Olevba'
+                type_list = []
+                for a in section['submodule_section_content']['analysis']:
+                    if a["type"] not in type_list:
+                        type_list.append(a["type"])
 
+                if "Suspicious" in type_list:
+                    level = 'suspicious'
+                if "VBA string" in type_list:
+                    taxonomies.append(self.build_taxonomy(level, namespace, predicate, "VBA string"))
+                if "Base64 String" in type_list:
+                    taxonomies.append(self.build_taxonomy(level, namespace, predicate, "Base64 string"))
+                if "Hex String" in type_list:
+                    taxonomies.append(self.build_taxonomy(level, namespace, predicate, "Hex string"))
 
-        type_list = []
-        for a in analysis:
-            if a["type"] not in type_list:
-                type_list.append(a["type"])
+            if section['submodule_section_header'] == 'DDE Analysis':
+                predicate = 'DDE'
+                if section['submodule_section_content']['Info']:
+                    level = 'info'
+                    taxonomies.append(self.build_taxonomy(level, namespace, predicate, 'None'))
+                else:
+                    level = 'suspicious'
+                    taxonomies.append(self.build_taxonomy(level, namespace, predicate, 'URL found'))
 
-        predicate = "Olevba"
-        namespace = "FileInfo"
-        level = "info"
-
-        if "Suspicious" in type_list:
-            level = 'suspicious'
-        if "VBA string" in type_list:
-            summary["taxonomies"].append(self.build_taxonomy(level, namespace, predicate, "VBA string"))
-        if "Base64 String" in type_list:
-            summary["taxonomies"].append(self.build_taxonomy(level, namespace, predicate, "Base64 string"))
-        if "Hex String" in type_list:
-            summary["taxonomies"].append(self.build_taxonomy(level, namespace, predicate, "Hex string"))
-
-        return summary
+        return {'taxonomies': taxonomies,
+                'Olevba': olevba_version,
+                'Msodde': msodde_version}
 
     def analyze_vba(self, path):
         """Analyze a given sample for malicious vba."""
-
-
 
         try:
 
@@ -86,7 +93,7 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
                                                             show_deobfuscated_code=True,
                                                             deobfuscate=True)
 
-            self.add_result_subsection('Olevba', vbaparser_result, self.olevba_summary(vbaparser_result["analysis"]))
+            self.add_result_subsection('Olevba', vbaparser_result)
         except TypeError:
             self.add_result_subsection('Oletools VBA Analysis failed', 'Analysis failed due to an filetype error.'
                                                                        'The file does not seem to be a valid MS-Office '
@@ -94,14 +101,10 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
 
     def analyze_dde(self, path):
         version = {'Msodde version': msodde_version}
-        summary = {'taxonomies':[],
-                   'version': [version]}
         results = process_file(path)
         if len(results) > 0:
-            summary["taxonomies"].append(self.build_taxonomy('suspicious', 'FileInfo', 'DDE', 'URL found'))
-            self.add_result_subsection('Oletools DDE Analysis', {'DDEUrl': results}, summary)
+            self.add_result_subsection('DDE Analysis', {'DDEUrl': results})
         else:
-            summary["taxonomies"].append(self.build_taxonomy('info', 'FileInfo', 'DDE', 'Not found'))
-            self.add_result_subsection('Oletools DDE Analysis', {'Info': 'No DDE URLs found.'}, summary)
+            self.add_result_subsection('DDE Analysis', {'Info': 'No DDE URLs found.'})
 
 
