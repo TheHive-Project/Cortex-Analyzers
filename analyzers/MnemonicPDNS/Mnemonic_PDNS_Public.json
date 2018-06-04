@@ -4,7 +4,7 @@
     "author": "Michael Stensrud, Nordic Financial CERT",
     "url": "https://passivedns.mnemonic.no/search",
     "license" : "AGPL-V3",
-    "description": "Query against Mnemonic pDNS",
+    "description": "Query IP addresses and domains against Mnemonic pDNS public service.",
     "dataTypeList": ["ip", "domain"],
     "command": "Mnemonic_pdns/pdns.py",
     "baseConfig": "Mnemonic_pDNS",
