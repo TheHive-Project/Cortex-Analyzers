@@ -4,8 +4,8 @@
 import requests
 from cortexutils.analyzer import Analyzer
 
-class Threatcrowd(Analyzer):
 
+class Threatcrowd(Analyzer):
     URI = "https://www.threatcrowd.org/searchApi/v2"
 
     def summary(self, raw):
@@ -35,10 +35,11 @@ class Threatcrowd(Analyzer):
     def run(self):
         Analyzer.run(self)
 
-        if (self.data_type == 'domain' or self.data_type == 'ip' or self.data_type == 'mail'):
+        if self.data_type == 'domain' or self.data_type == 'ip' or self.data_type == 'mail':
             threatcrowd_data_type = self.data_type if self.data_type != 'mail' else 'email'
             try:
-                response = requests.get("{}/{}/report/".format(self.URI, threatcrowd_data_type), {threatcrowd_data_type: self.get_data()})
+                response = requests.get("{}/{}/report/".format(self.URI, threatcrowd_data_type),
+                                        {threatcrowd_data_type: self.get_data()})
                 self.report(response.json())
             except Exception as e:
                 self.unexpectedError(e)
