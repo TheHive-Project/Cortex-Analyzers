@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from collections import defaultdict, OrderedDict
-
-from cortexutils.analyzer import Analyzer
 import requests
+
+from collections import defaultdict, OrderedDict
+from cortexutils.analyzer import Analyzer
 
 
 class GreyNoiseAnalyzer(Analyzer):
@@ -128,7 +128,7 @@ class GreyNoiseAnalyzer(Analyzer):
 
             return {"taxonomies": taxonomies}
 
-        except Exception, e:
+        except Exception as e:
             self.error('Summary failed\n{}'.format(e.message))
 
 
