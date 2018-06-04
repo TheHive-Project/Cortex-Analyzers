@@ -1,0 +1,38 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        GreyNoise results for <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table" ng-if="content.records">
+            <thead>
+                <th>Category</th>
+                <th>Confidence</th>
+                <th>Last update</th>
+                <th>Name</th>
+                <th>Tags</th>
+                <th>Metadata</th>
+            </thead>
+            <tbody ng-repeat="record in content.records | orderBy:'-last_updated'">
+                <tr>
+                    <td>{{record.category}}</td>
+                    <td><span class="label" ng-class="{'high': 'label-success', 'low': 'label-warning'}[record.confidence]">{{record.confidence}}</span></td>
+                    <td>{{record.last_updated}}</td>
+                    <td>{{record.name}}</td>
+                    <td><span class="label label-warning" ng-if="content.metadata.tor">Tor-Node</span></td>
+                    <td><pre>{{record.metadata}}</pre></td>
+                </tr>
+            </tbody>
+        </table>
+        <p ng-ig="!content.records">No records found for {{artifact.data}}.</p>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
