@@ -47,9 +47,9 @@ class GreyNoiseAnalyzer(Analyzer):
 
         if self.data_type == "ip":
             api_key = self.get_param('config.key', None)
-            url = 'http://api.greynoise.io:8888/v1/query/ip'
+            url = 'https://api.greynoise.io/v1/query/ip'
             headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-            data = {'ip': self.getData()}
+            data = {'ip': self.get_data()}
             if api_key:
                 data['key'] = api_key
             response = requests.post(url, data=data, headers=headers)
