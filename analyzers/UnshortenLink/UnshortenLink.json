@@ -1,7 +1,7 @@
 {
     "name": "UnshortenLink",
     "version": "1.0",
-    "author": "Re©mi Pointel (CERT-BDF)",
+    "author": "Remi Pointel (CERT-BDF)",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
     "description": "Use UnshortenLink to reveal the real URL.",
