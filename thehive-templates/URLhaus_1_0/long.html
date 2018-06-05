@@ -24,11 +24,11 @@
               {{r.malware_url}}
             </a>
           </td>
-          <td>{{r.status}}</td>
+          <td><span  class="label" ng-class="{'Offline': 'label-success', 'Online':'label-danger'}[r.status]">{{r.status}}</span></td>
           <td>
-            <span ng-repeat="tag in r.tags"> {{tag}} </span>
+            <span class="label label-primary mr-xxs" ng-repeat="tag in r.tags"> {{tag}} </span>
           </td>
-          <td>{{r.gsb}}</td>
+          <td><span class="label" ng-class="{'Clean': 'label-success', '!Clean':'label-warning'}[r.gsb]">{{r.gsb}}</span></td>
           <td>{{r.reporter}}</td>
         </tr>
       </tbody>
