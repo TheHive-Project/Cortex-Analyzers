@@ -27,7 +27,7 @@ class Threatcrowd(Analyzer):
                 value = "unknown"
                 level = "info"
         else:
-            value = "unknown"
+            value = "None"
             level = "info"
 
         taxonomies.append(self.build_taxonomy(level, "Threatcrowd", "votes", value))
