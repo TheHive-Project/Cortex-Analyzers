@@ -19,13 +19,34 @@ class PDFIDSubmodule(SubmoduleBaseclass):
         if kwargs.get('filetype') in ['PDF']:
             return True
 
+    def module_summary(self):
+        taxonomies = []
+        level = 'info'
+        namespace = 'FileInfo'
+        predicate = 'PDFiD'
+        value = ''
+        pdfid_version = ''
+        for section in self.results:
+            if section['submodule_section_header'] == 'PDFiD Information':
+                for subsection in section['submodule_section_content']:
+                    if subsection['pdfid']:
+                        pdfid_version = subsection['pdfid']['version']
+                        for keyword in subsection['pdfid']['keywords']['keyword']:
+                            if keyword['name'] in ['/JS', '/JavaScript', '/OpenAction'] and keyword['count'] > 0:
+                                level = 'suspicious'
+                                taxonomies.append(self.build_taxonomy(level, namespace, predicate, keyword['name']))
+
+        return {'taxonomies': taxonomies,
+                'pdfid': pdfid_version}
+
     def pdfid_cmd(self, path):
         try:
             j = json.loads(
-                PDFiD2JSON(PDFiD(path, allNames=True, extraData=True, disarm=True, force=True), force=True))
+                PDFiD2JSON(PDFiD(path, allNames=True, extraData=True, disarm=False, force=True), force=True))
         except Exception as e:
             return e
         return j
+
 
     def analyze_file(self, path):
         self.add_result_subsection('PDFiD Information', self.pdfid_cmd(path))

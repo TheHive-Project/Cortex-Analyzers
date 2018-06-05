@@ -58,6 +58,12 @@ class SubmoduleBaseclass(object):
 
 
     def module_summary(self):
+        """
+        Build summary info for a submodule from its reports. Should be defined in each submodule that needs to show minireports
+
+        :return:
+        :rtype: dict
+        """
         pass
 
     def add_result_subsection(self, subsection_header, results):

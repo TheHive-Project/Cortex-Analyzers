@@ -56,7 +56,7 @@
                                 <dl class="dl-horizontal">
                                         <dt>Oletools scanner</dt>
                                         <dd class="wrap">
-                                            <span class="label" ng-repeat="t in result['summary']['taxonomies']" ng-class="{'info': 'label-info', 'safe': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[t.level]">
+                                            <span class="label mr-xxxs" ng-repeat="t in result['summary']['taxonomies']" ng-class="{'info': 'label-info', 'safe': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[t.level]">
                                                 {{t.namespace}}:{{t.predicate}}={{t.value}}
                                             </span>
                                         </dd>
@@ -195,6 +195,35 @@
             <!-- PDF Information (PDFiD)-->
             <div ng-if="result.submodule_name=='PDF Information'">
                 <div class="panel-body">
+
+                    <!-- summary -->
+
+                    <div class="panel panel-primary">
+                        <div class="panel-heading" ng-if="result.summary">
+                            <h4 class="panel-title">
+                               Summary
+                            </h4>
+                        </div>
+                        <div class="panel panel-body">
+
+                            <dl class="dl-horizontal" ng-if="result.summary.pdfid">
+                                <dt>PDFiD</dt>
+                                <dd class="wrap">{{result.summary.pdfid}}</dd>
+                            </dl>
+
+                            <dl class="dl-horizontal" ng-if="result.summary.taxonomies != []">
+                                <dt>PDFiD report</dt>
+                                <dd class="wrap">
+                                    <span class="label mr-xxxs" ng-repeat="t in result['summary']['taxonomies']" ng-class="{'info': 'label-info', 'safe': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[t.level]">
+                                        {{t.namespace}}:{{t.predicate}}={{t.value}}
+                                    </span>
+                                </dd>
+                            </dl>
+
+                        </div>
+                    </div>
+
+                    <!-- PDFiD -->
                     <div ng-repeat="r in result.results" class="panel panel-primary">
                         <div class="panel-heading" ng-if="r.submodule_section_header=='PDFiD Information'">
                             <h4 class="panel-title">
