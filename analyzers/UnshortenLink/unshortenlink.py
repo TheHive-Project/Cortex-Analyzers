@@ -17,6 +17,20 @@ class UnshortenlinkAnalyzer(Analyzer):
         else:
             return []
 
+    def summary(self, raw):
+        taxonomies = []
+        level = 'info'
+        namespace = 'UnshortenLink'
+        predicate = 'Result'
+        value = ''
+
+        if raw['found'] == True:
+            value='success'
+        else:
+            value='failure'
+        taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        return {'taxonomies': taxonomies}
+
     def run(self):
         Analyzer.run(self)
 
