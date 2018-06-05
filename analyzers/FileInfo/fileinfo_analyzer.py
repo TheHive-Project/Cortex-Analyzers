@@ -46,7 +46,6 @@ class FileInfoAnalyzer(Analyzer):
                     'summary': module_summaries
                 })
 
-
         self.report({'results': results})
 
 

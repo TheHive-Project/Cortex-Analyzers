@@ -41,8 +41,6 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
 
         return self.results
 
-
-
     def module_summary(self):
         taxonomies = []
         level = 'info'
@@ -76,9 +74,11 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
                     level = 'suspicious'
                     taxonomies.append(self.build_taxonomy(level, namespace, predicate, 'URL found'))
 
-        return {'taxonomies': taxonomies,
-                'Olevba': olevba_version,
-                'Msodde': msodde_version}
+        self.summary['taxonomies'] = taxonomies
+        self.summary['Olevba'] = olevba_version
+        self.summary['Msodde'] = msodde_version
+
+        return self.summary
 
     def analyze_vba(self, path):
         """Analyze a given sample for malicious vba."""

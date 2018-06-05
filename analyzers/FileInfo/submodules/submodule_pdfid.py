@@ -36,8 +36,9 @@ class PDFIDSubmodule(SubmoduleBaseclass):
                                 level = 'suspicious'
                                 taxonomies.append(self.build_taxonomy(level, namespace, predicate, keyword['name']))
 
-        return {'taxonomies': taxonomies,
-                'pdfid': pdfid_version}
+        self.summary['taxonomies'] = taxonomies
+        self.summary['pdfid'] = pdfid_version
+        return self.summary
 
     def pdfid_cmd(self, path):
         try:

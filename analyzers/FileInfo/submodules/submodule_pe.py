@@ -118,7 +118,8 @@ class PESubmodule(SubmoduleBaseclass):
 
 
     def module_summary(self):
-        return {'pefile': pefile_version}
+        self.summary['pefile'] = pefile_version
+        return self.summary
 
     def analyze_file(self, path):
         try:

@@ -39,8 +39,9 @@ class MetadataSubmodule(SubmoduleBaseclass):
                 taxonomies.append(t)
             else:
                 pass
-        return {'taxonomies': taxonomies}
 
+        self.summary['taxonomies'] = taxonomies
+        return self.summary
 
     def analyze_file(self, path):
         # Hash the file

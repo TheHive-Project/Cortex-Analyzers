@@ -2,7 +2,7 @@ class SubmoduleBaseclass(object):
     def __init__(self):
         self.name = 'This is where the module name should go.'
         self.results = []
-        self.summary = []
+        self.summary = {'taxonomies': []}
 
     def get_name(self):
         """
@@ -64,7 +64,7 @@ class SubmoduleBaseclass(object):
         :return:
         :rtype: dict
         """
-        pass
+        return self.summary
 
     def add_result_subsection(self, subsection_header, results):
         """
