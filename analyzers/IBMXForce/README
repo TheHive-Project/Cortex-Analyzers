@@ -1,0 +1,23 @@
+
+Add the following to application.conf to enable analyzer
+
+```
+IBMXForce {
+        service="query",
+        url="https://api.xforce.ibmcloud.com",
+        usr=<insert your username>,
+        pwd=<insert your password>
+       }
+```
+
+To test the analyzer from cmdline
+
+python IBMXForce_lookup.py < input
+
+Testing
+--------
+cd /opt/thehive
+
+bin/thehive -Dconfig.file=conf/application.conf
+
+bin/cortex -Dconfig.file=/opt/cortex/conf/application.conf

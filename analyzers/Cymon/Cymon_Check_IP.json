@@ -1,10 +1,10 @@
 {
     "name": "Cymon_Check_IP",
-    "version": "2.0",
+    "version": "2.1",
     "author": "Julian Gonzalez",
     "url": "https://github.com/ST2labs/Analyzers",
     "license": "AGPL-V3",
-    "description": "Cymon.io Database Search / Report for IP",
+    "description": "Check an IP addr against Cymon.io.",
     "dataTypeList": ["ip"],
     "command": "Cymon/cymon_analyzer.py",
     "baseConfig": "Cymon",

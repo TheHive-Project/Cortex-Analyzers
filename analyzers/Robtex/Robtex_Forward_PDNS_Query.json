@@ -4,7 +4,7 @@
   "author": "Nils Kuhnert",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Check domains/fqdns using the Robtex passive dns API",
+  "description": "Check domains and FQDNs using the Robtex passive DNS API.",
   "dataTypeList": ["domain", "fqdn"],
   "baseConfig": "Robtex",
   "command": "Robtex/robtex.py",
