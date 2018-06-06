@@ -1,4 +1,0 @@
-cortexutils
-diskcache
-requests
-requests-html
