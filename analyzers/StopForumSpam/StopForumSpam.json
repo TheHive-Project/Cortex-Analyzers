@@ -1,0 +1,33 @@
+{
+    "name": "StopForumSpam",
+    "author": "Marc-Andre Doll, STARC by EXAPROBE",
+    "license": "AGPL-V3",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "version": "1.0",
+    "baseConfig": "StopForumSpam",
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 2
+    },
+    "configurationItems": [
+      {
+        "name": "suspicious_confidence_level",
+        "description": "Confidence threshold above which the artifact should be marked as suspicious",
+        "type": "number",
+        "multi": false,
+        "required": false,
+        "defaultValue": 0.0
+      },
+      {
+        "name": "malicious_confidence_level",
+        "description": "Confidence threshold above which the artifact should be marked as malicious",
+        "type": "number",
+        "multi": false,
+        "required": false,
+        "defaultValue": 90.0
+      }
+    ],
+    "description": "Query http://www.stopforumspam.com to check if an IP or email address is a known spammer.",
+    "dataTypeList": ["ip", "mail"],
+    "command": "StopForumSpam/stopforumspam_analyzer.py"
+}

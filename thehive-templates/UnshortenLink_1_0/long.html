@@ -1,0 +1,25 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        Unshorten Link for <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <div ng-if="content.found">
+            <dl class="dl-horizontal" ng-if="content.found">
+                    <dt>Unshortened URL</dt>
+                    <dd>{{content.url | fang}}</dd>
+                </dl>
+        </div>
+        <div ng-if="!content.found">
+            <span>The link could not be unshortened.</span>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

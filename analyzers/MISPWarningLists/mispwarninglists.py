@@ -2,6 +2,7 @@
 import io
 import json
 import requests
+import ipaddress
 
 from cortexutils.analyzer import Analyzer
 from cortexutils.extractor import Extractor
@@ -63,14 +64,30 @@ class MISPWarninglistsAnalyzer(Analyzer):
 
     def run(self):
         results = []
+        data = self.data
+        if self.data_type == 'ip':
+            try:
+                data = ipaddress.ip_address(self.data)
+            except ValueError:
+                return self.error("{} is said to be an IP address but it isn't".format(self.data))
         for list in self.warninglists:
             if self.data_type not in list.get('dataTypes'):
                 continue
 
-            if self.data.lower() in list.get('values', []):
-                results.append({
-                    "name": list.get('name')
-                })
+            if self.data_type == 'ip':
+                for net in list.get('values', []):
+                    try:
+                        if data in ipaddress.ip_network(net):
+                            results.append({"name": list.get('name')})
+                            break
+                    except ValueError:
+                        # Ignoring if net is not a valid IP network since we want to compare ip addresses
+                        pass
+            else:
+                if data.lower() in list.get('values', []):
+                    results.append({
+                        "name": list.get('name')
+                    })
 
         self.report({
             "results": results,

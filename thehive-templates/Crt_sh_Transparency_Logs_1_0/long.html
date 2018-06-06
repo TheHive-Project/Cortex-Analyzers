@@ -1,0 +1,43 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        crt.sh data of <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+		<!-- Domain details -->
+        <p ng-if="content.certobj.result.length == 0">
+            No result found.
+        </p>
+        <table class="table" ng-if="content.certobj.result.length">
+            <thead>
+                <th>name</th>
+                <th>not before</th>
+                <th>not after</th>
+                <th>min cert id</th>
+                <th>issuer name</th>                
+                <th>issuer ca id</th>
+                <th>min entry timestamp</th>
+            </thead>
+            <tbody ng-repeat="r in content.certobj.result | orderBy:['+not_before','-not_after']">
+                <tr>
+                    <td>{{r.name_value}}</td>
+                    <td>{{r.not_before}}</td>
+                    <td>{{r.not_after}}</td>
+                    <td>{{r.min_cert_id}}</td>                    
+                    <td>{{r.issuer_name}}</td>
+                    <td>{{r.issuer_ca_id}}</td>
+                    <td>{{r.min_entry_timestamp}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
