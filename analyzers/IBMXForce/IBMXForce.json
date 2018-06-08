@@ -13,8 +13,6 @@
   ],
   "baseConfig": "IBMXForce",
   "config": {
-    "check_tlp": true,
-    "max_tlp": 1,
     "service": "query"
   },
   "command": "IBMXForce/ibmxforce_lookup.py",
