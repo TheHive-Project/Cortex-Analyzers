@@ -97,6 +97,9 @@ class DomainToolsAnalyzer(Analyzer):
             r["name_server"] = raw["name_server"]["hostname"]
             r["domain_count"] = raw["name_server"]["total"]
 
+        if "risk_score" in raw and raw["risk_score"] >= 0:
+            r["risk_score"] = raw["risk_score"]
+
         taxonomies = []
 
         # Prepare predicate and value for each service
@@ -125,6 +128,16 @@ class DomainToolsAnalyzer(Analyzer):
             if r["registrant"]:
                 taxonomies.append(
                     self.build_taxonomy("info", "DT", "Whois", "\"REGISTRANT:{}\"".format(r["registrant"])))
+
+        if r["risk_score"]:
+            if r["risk_score"] == 0:
+                level = "safe"
+            elif 0 < r["risk_score"] <= 50:
+                level = "suspicious"
+            elif r["risk_score"] > 50:
+                level = "malicious"
+            taxonomies.append(
+                self.build_taxonomy(level, "DT", "Risk", "\"{}\"".format(r["risk_score"])))
 
         result = {'taxonomies': taxonomies}
         return result

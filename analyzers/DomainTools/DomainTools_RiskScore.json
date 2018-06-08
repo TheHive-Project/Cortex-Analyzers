@@ -4,8 +4,8 @@
     "author": "CERT-BDF",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "description": "Use DomainTools to get a list of domain names sharing the same IP address.",
-    "dataTypeList": ["domain"],
+    "description": "Use DomainTools to get a risk score ",
+    "dataTypeList": ["domain","fqdn"],
     "command": "DomainTools/domaintools_analyzer.py",
     "baseConfig": "DomainTools",
     "config": {
