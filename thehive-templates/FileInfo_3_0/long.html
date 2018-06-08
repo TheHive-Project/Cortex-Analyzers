@@ -168,17 +168,23 @@
                             <dl class="dl-horizontal">
                                 <dt>Attachments</dt>
                                 <dd class="wrap">
-                                    <table class="table">
+                                    <table class="table table-striped table-bordered">
                                         <thead>
                                             <tr>
-                                                <th >Filename</th>
-                                                <th >SHA256</th>
+                                                <th class="col-md-2" >Filename</th>
+                                                <th >File information</th>
+
                                             </tr>
                                         </thead>
                                         <tbody ng-repeat="a in r.submodule_section_content.attachments">
                                             <tr>
-                                                <td>{{a.name}}</td>
-                                                <td>{{a.sha256}}</td>
+                                                <td rowspan=2>{{a.name}}</td>
+                                                <td>[SHA256]: {{a.sha256}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    {{a.mimeinfo}}
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
