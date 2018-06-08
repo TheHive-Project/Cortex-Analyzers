@@ -17,9 +17,14 @@ class VMRayAnalyzer(Analyzer):
             reanalyze = False
         else:
             reanalyze = True
+
+        verify = self.get_param('config.certverify', None, 'Certificate verification parameter is missing.')
+        certpath = self.get_param('config.certpath', None)
+        if verify and certpath:
+            verify = certpath
         self.vmrc = VMRayClient(url=self.url,
                                 key=self.get_param('config.key', None, 'No VMRay API key given.'),
-                                cert=self.get_param('config.certpath', True),
+                                cert=verify,
                                 reanalyze=reanalyze)
 
     def run(self):

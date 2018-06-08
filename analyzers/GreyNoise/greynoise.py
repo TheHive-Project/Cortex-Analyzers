@@ -111,20 +111,24 @@ class GreyNoiseAnalyzer(Analyzer):
         """
 
         try:
-            final_level = None
-            taxonomy_data = defaultdict(int)
-            for record in raw.get('records', []):
-                name = record.get('name', 'unknown')
-                intention = record.get('intention', 'unknown')
-                taxonomy_data[name] += 1
-                final_level = self._get_level(final_level, intention)
-
             taxonomies = []
-            if len(taxonomy_data) > 1:  # Multiple tags have been found
-                taxonomies.append(self.build_taxonomy(final_level, 'GreyNoise', 'entries', len(taxonomy_data)))
-            else:  # There is only one tag found, possibly multiple times
-                for name, count in taxonomy_data.iteritems():
-                    taxonomies.append(self.build_taxonomy(final_level, 'GreyNoise', name, count))
+            if raw.get('records'):
+                final_level = None
+                taxonomy_data = defaultdict(int)
+                for record in raw.get('records', []):
+                    name = record.get('name', 'unknown')
+                    intention = record.get('intention', 'unknown')
+                    taxonomy_data[name] += 1
+                    final_level = self._get_level(final_level, intention)
+
+                if len(taxonomy_data) > 1:  # Multiple tags have been found
+                    taxonomies.append(self.build_taxonomy(final_level, 'GreyNoise', 'entries', len(taxonomy_data)))
+                else:  # There is only one tag found, possibly multiple times
+                    for name, count in taxonomy_data.iteritems():
+                        taxonomies.append(self.build_taxonomy(final_level, 'GreyNoise', name, count))
+
+            else:
+                taxonomies.append(self.build_taxonomy('info', 'GreyNoise', 'Records', 'None'))
 
             return {"taxonomies": taxonomies}
 
