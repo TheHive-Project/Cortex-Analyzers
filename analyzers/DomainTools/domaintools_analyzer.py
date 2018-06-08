@@ -45,6 +45,12 @@ class DomainToolsAnalyzer(Analyzer):
         elif self.service == 'whois/parsed' and self.data_type == 'domain':
             response = api.parsed_whois(data).response()
 
+        elif self.service == 'risk_score' and self.data_type == 'domain':
+            response = api.risk(data).response()
+
+        elif self.service == 'risk_evidence_score' and self.data_type == 'domain':
+            response = api.risk_evidence(data).response()
+
         elif self.service == 'reverse-whois':
             response = api.reverse_whois(data, mode='purchase').response()
 
