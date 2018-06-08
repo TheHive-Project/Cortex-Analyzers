@@ -1,0 +1,24 @@
+{
+    "name": "Hashdd",
+    "version": "1.0",
+    "author": "iosonogio",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPLv3",
+    "description": "Determine whether a hash is good or bad.",
+    "dataTypeList": ["hash"],
+    "baseConfig": "Hashdd",
+    "config": {
+        "check_tlp": false,
+        "max_tlp": 2,
+    },
+    "command": "Hashdd/Hashdd.py",
+    "configurationItems": [
+      {
+        "name": "api_key",
+        "description": "API key for hashdd",
+        "type": "string",
+        "multi": false,
+        "required": true
+      }
+    ]
+}
