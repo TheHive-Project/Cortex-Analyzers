@@ -24,7 +24,7 @@
       "required": true
     },
     {
-      "name": "certpath",
+      "name": "certverify",
       "description": "Verify certificates",
       "type": "boolean",
       "multi": false,
@@ -32,8 +32,15 @@
       "defaultValue": true
     },
     {
+      "name": "certpath",
+      "description": "Path to certificate file, in case of self-signed etc.",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
       "name": "disablereanalyze",
-      "description": "Define if reanalyze is required or not",
+      "description": "If set to true, samples won't get re-analyzed.",
       "type": "boolean",
       "multi": false,
       "required": false,
