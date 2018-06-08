@@ -1,4 +1,5 @@
 import hashlib
+import magic
 from .submodule_base import SubmoduleBaseclass
 
 from ExtractMsg import Message, Attachment
@@ -33,7 +34,10 @@ class OutlookSubmodule(SubmoduleBaseclass):
             sha256 = hashlib.sha256()
             sha256.update(attachment.data)
             a.append({'name': attachment.longFilename,
-                      'sha256': sha256.hexdigest()})
+                      'sha256': sha256.hexdigest(),
+                      'mimeinfo':  magic.Magic(uncompress=True).from_buffer(attachment.data)
+                      })
+
 
         email = {'header': xstr(m.header),
                     'from': xstr(m.sender),
