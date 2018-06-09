@@ -14,7 +14,7 @@
       "type": "number",
       "multi": false,
       "required": true,
-      "defaultValue": 3600
+      "defaultValue": 300
     },
     {
       "name": "cache.root",
