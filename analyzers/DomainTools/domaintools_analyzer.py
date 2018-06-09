@@ -45,6 +45,12 @@ class DomainToolsAnalyzer(Analyzer):
         elif self.service == 'whois/parsed' and self.data_type == 'domain':
             response = api.parsed_whois(data).response()
 
+        elif self.service == 'risk_evidence_score' and self.data_type == 'domain':
+            response = api.risk_evidence(data).response()
+
+        elif self.service == 'reputation' and self.data_type == 'domain':
+            response = api.reputation(data).response()
+
         elif self.service == 'reverse-whois':
             response = api.reverse_whois(data, mode='purchase').response()
 
@@ -91,6 +97,9 @@ class DomainToolsAnalyzer(Analyzer):
             r["name_server"] = raw["name_server"]["hostname"]
             r["domain_count"] = raw["name_server"]["total"]
 
+        if "risk_score" in raw:
+            r["risk_score"] = raw["risk_score"]
+
         taxonomies = []
 
         # Prepare predicate and value for each service
@@ -119,6 +128,19 @@ class DomainToolsAnalyzer(Analyzer):
             if r["registrant"]:
                 taxonomies.append(
                     self.build_taxonomy("info", "DT", "Whois", "\"REGISTRANT:{}\"".format(r["registrant"])))
+
+        if "risk_score" in r:
+            risk_service = "Risk"
+            if "reasons" in r:
+                risk_service = "Reputation"
+            if r["risk_score"] == 0:
+                level = "safe"
+            elif 0 < r["risk_score"] <= 50:
+                level = "suspicious"
+            elif r["risk_score"] > 50:
+                level = "malicious"
+            taxonomies.append(
+                self.build_taxonomy(level, "DT", risk_service, "\"{}\"".format(r["risk_score"])))
 
         result = {'taxonomies': taxonomies}
         return result
