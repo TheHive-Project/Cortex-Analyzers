@@ -1,15 +1,15 @@
 {
-    "name": "DomainTools_RiskEvidenceScore",
+    "name": "DomainTools_Reputation",
     "version": "2.0",
     "author": "CERT-BDF",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "description": "Use DomainTools to get a risk score and evidence details on a domain or fqdn",
+    "description": "Use DomainTools to get a reputation score on a domain or fqdn",
     "dataTypeList": ["domain","fqdn"],
     "command": "DomainTools/domaintools_analyzer.py",
     "baseConfig": "DomainTools",
     "config": {
-        "service": "risk_evidence_score"
+        "service": "reputation"
     },
     "configurationItems": [
     {
