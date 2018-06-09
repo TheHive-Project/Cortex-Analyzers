@@ -132,7 +132,7 @@ class DomainToolsAnalyzer(Analyzer):
         if "risk_score" in r:
             risk_service = "Risk"
             if "reasons" in r:
-                risk_service = r["reasons"]
+                risk_service = "Reputation"
             if r["risk_score"] == 0:
                 level = "safe"
             elif 0 < r["risk_score"] <= 50:
