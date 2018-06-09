@@ -9,7 +9,7 @@
     "baseConfig": "Hashdd",
     "config": {
         "check_tlp": false,
-        "max_tlp": 2,
+        "max_tlp": 2
     },
     "command": "Hashdd/Hashdd.py",
     "configurationItems": [
