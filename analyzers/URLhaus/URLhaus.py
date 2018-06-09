@@ -1,5 +1,5 @@
+from bs4 import BeautifulSoup
 from diskcache import Cache
-from requests_html import HTML
 import requests
 
 
@@ -16,7 +16,7 @@ class URLhaus:
 
     def __init__(self,
                  query,
-                 cache_duration=3600,
+                 cache_duration=300,
                  cache_root="/tmp/cortex/URLhaus"):
         self.URL = "https://urlhaus.abuse.ch/browse.php"
         self.query = query
@@ -47,15 +47,15 @@ class URLhaus:
 
     def parse(self, doc):
         results = []
-        html = HTML(html=doc)
-        table = html.find("table.table", first=True)
-        rows = table.find("tr")[1:]
+        soup = BeautifulSoup(doc, "html.parser")
+        table = soup.find("table", class_="table")
+        rows = table.find_all("tr")[1:]
         for row in rows:
-            cols = row.find("td")
+            cols = row.find_all("td")
             results.append({
                 "dateadded": cols[0].text,
                 "malware_url": cols[1].text,
-                "link": cols[1].find("a", first=True).attrs.get("href"),
+                "link": cols[1].find("a").attrs.get("href"),
                 "status": cols[2].text,
                 "tags": cols[3].text.split(),
                 "gsb": cols[4].text,
