@@ -49,7 +49,7 @@ class MISPClient:
                     elif isinstance(ssl[idx], bool):
                         verify = ssl[idx]
                     else:
-                        raise TypeError('SSL parameter is a not expected type.')
+                        raise TypeError('SSL parameter is a not expected type: {}'.format(type(ssl[idx])))
                 # Do the same checks again, for the non-list type
                 elif isinstance(ssl, str):
                     if os.path.isfile(ssl):
@@ -57,16 +57,17 @@ class MISPClient:
                 elif isinstance(ssl, bool):
                     verify = ssl
                 else:
-                    raise TypeError('SSL parameter is a not expected type.')
+                    raise TypeError('SSL parameter is a not expected type: {}'.format(type(ssl)))
                 self.misp_connections.append(pymisp.PyMISP(url=server,
                                                            key=key[idx],
                                                            ssl=verify,
                                                            proxies=proxies))
         else:
             verify = True
-            if isinstance(ssl, str):
-                if os.path.isfile(ssl):
-                    verify = ssl
+            if isinstance(ssl, str) and os.path.isfile(ssl):
+                verify = ssl
+            elif isinstance(ssl, str):
+                raise CertificateNotFoundError('Certificate not found under {}.'.format(ssl))
             elif isinstance(ssl, bool):
                 verify = ssl
             self.misp_connections.append(pymisp.PyMISP(url=url,
