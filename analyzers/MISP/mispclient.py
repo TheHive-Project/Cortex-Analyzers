@@ -51,9 +51,10 @@ class MISPClient:
                     else:
                         raise TypeError('SSL parameter is a not expected type: {}'.format(type(ssl[idx])))
                 # Do the same checks again, for the non-list type
-                elif isinstance(ssl, str):
-                    if os.path.isfile(ssl):
-                        verify = ssl
+                elif isinstance(ssl, str) and os.path.isfile(ssl):
+                    verify = ssl
+                elif isinstance(ssl, str) and not os.path.isfile(ssl):
+                    raise CertificateNotFoundError('Certificate not found under {}.'.format(ssl))
                 elif isinstance(ssl, bool):
                     verify = ssl
                 else:
@@ -66,7 +67,7 @@ class MISPClient:
             verify = True
             if isinstance(ssl, str) and os.path.isfile(ssl):
                 verify = ssl
-            elif isinstance(ssl, str):
+            elif isinstance(ssl, str)and not os.path.isfile(ssl):
                 raise CertificateNotFoundError('Certificate not found under {}.'.format(ssl))
             elif isinstance(ssl, bool):
                 verify = ssl
