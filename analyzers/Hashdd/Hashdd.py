@@ -25,7 +25,7 @@ class HashddAnalyzer(Analyzer):
         predicate = 'known_level'
         value = "\0\""
 
-        level = 'info' # Default level
+        level = 'info' # Default level: this assigned when known_level is unknown
 
         if 'known_level' in raw:
             known_level = raw['known_level']
@@ -34,7 +34,7 @@ class HashddAnalyzer(Analyzer):
             elif known_level == 'Bad':
                 level = "malicious"
             # else:
-            #     level = "suspicious"
+            #     level = "suspicious" # this one is not used
 
             value = "\"{}\"".format(known_level) # Value must be enclosed with double quotes
 
