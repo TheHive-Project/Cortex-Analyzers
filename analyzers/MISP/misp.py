@@ -12,7 +12,11 @@ class MISPAnalyzer(Analyzer):
         # Fixes #94. Instead of None, the string Unnamed should be passed to MISPClient constructor
         name = self.get_param('config.name', 'Unnamed')
         if self.get_param('config.cert_check', True):
-            ssl = self.get_param('config.cert_path', True)
+            ssl_path = self.get_param('config.cert_path', None)
+            if not ssl_path or ssl_path == '':
+                ssl = True
+            else:
+                ssl = ssl_path
         else:
             ssl = False
         try:
