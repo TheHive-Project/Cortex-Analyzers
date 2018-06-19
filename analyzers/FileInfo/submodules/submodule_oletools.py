@@ -51,24 +51,39 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
         for section in self.results:
             if section['submodule_section_header'] == 'Olevba':
                 predicate = 'Olevba'
-                type_list = []
-                for a in section['submodule_section_content']['analysis']:
-                    if a["type"] not in type_list:
-                        type_list.append(a["type"])
+                if len(section['submodule_section_content']['macros']) > 0:
+                    type_list = ['VBA']
+                    add_VBA = True
+                else:
+                    type_list = []
+                try:
+                    for a in section['submodule_section_content']['analysis']:
+                        if a["type"] not in type_list:
+                            type_list.append(a["type"])
+                except:
+                    type_list.append("None")
+
 
                 if "Suspicious" in type_list:
                     level = 'suspicious'
                 if "VBA string" in type_list:
                     taxonomies.append(self.build_taxonomy(level, namespace, predicate, "VBA string"))
+                    add_VBA = False
                 if "Base64 String" in type_list:
                     taxonomies.append(self.build_taxonomy(level, namespace, predicate, "Base64 string"))
+                    add_VBA = False
                 if "Hex String" in type_list:
                     taxonomies.append(self.build_taxonomy(level, namespace, predicate, "Hex string"))
+                    add_VBA = False
+                if "VBA" in type_list and add_VBA:
+                    taxonomies.append(self.build_taxonomy(level, namespace, predicate, "Macro found"))
+                if "None" in type_list:
+                    taxonomies.append(self.build_taxonomy("safe", namespace, predicate, "None"))
 
             if section['submodule_section_header'] == 'DDE Analysis':
                 predicate = 'DDE'
-                if section['submodule_section_content']['Info']:
-                    level = 'info'
+                if section['submodule_section_content'].get('Info'):
+                    level = 'safe'
                     taxonomies.append(self.build_taxonomy(level, namespace, predicate, 'None'))
                 else:
                     level = 'suspicious'

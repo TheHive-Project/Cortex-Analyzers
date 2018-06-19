@@ -90,11 +90,14 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <div  ng-if="!r.submodule_section_content.analysis">
+                                    No VBA analysis found
+                                </div>
                             </div>
 
                             <!-- Macros -->
-                            <div uib-accordion-group  class="panel-primary" heading="Macros" is-open="false">
-                                <div ng-if="r.submodule_section_content.macros != ''" ng-repeat="m in r.submodule_section_content.macros">
+                            <div  ng-if="r.submodule_section_content.macros.length > 0" uib-accordion-group  class="panel-primary" heading="Macros" is-open="false">
+                                <div  ng-repeat="m in r.submodule_section_content.macros">
                                     <dl class="dl-horizontal">
                                         <dt>vba_filename</dt>
                                         <dd class="wrap">{{m.vba_filename}}</dd>
@@ -111,13 +114,13 @@
                             </div>
 
                             <!--Deobfuscated code -->
-                            <div uib-accordion-group ng-if="r.submodule_section_content.code_deobfuscated != ''" class="panel-primary" heading="Deobfuscated code" is-open="false">
+                            <div uib-accordion-group ng-if="r.submodule_section_content.code_deobfuscated" class="panel-primary" heading="Deobfuscated code" is-open="false">
                                 <pre>
                                     {{r.submodule_section_content.code_deobfuscated}}
                                 </pre>
                             </div>
                         </uib-accordion>
-                        <div class="panel panel-primary" ng-if="r.submodule_section_header=='Oletools DDE Analysis'">
+                        <div class="panel panel-primary" ng-if="r.submodule_section_header=='DDE Analysis'">
                             <div class="panel-heading">
                                 <h4 class="panel-title">{{r.submodule_section_header}}</h4>
                             </div>
