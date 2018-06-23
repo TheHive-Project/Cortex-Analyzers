@@ -8,7 +8,7 @@
 </div>
 
 
-<div class="panel panel-info" ng-if="success">
+<div class="panel panel-primary" ng-if="success">
     <div class="panel-heading">
         <strong>{{artifact.data | fang}}</strong>
     </div>
@@ -24,7 +24,7 @@
             </dd>
 		</dl>
         <br><br>
-        <h4 class="panel-title">Compoments</h4>
+        <h4 class="panel-title">Components</h4>
         <br>
 		<table class="table table-striped table-bordered">
             <thead>
@@ -34,16 +34,16 @@
                     <th>Evidence</th>
                 </tr>
             </thead>
-            <tbody ng-repeat="r in content.components">
-                <tr>
+            <tbody>
+                <tr  ng-repeat="r in content.components">
                     <td>{{r.name}}</td>
                     <td>
                         <span class="label" ng-class="{'label-success' : content.risk_score == 0,  'label-warning' :  content.risk_score > 0 && content.risk_score <= 50,
                             'label-danger': content.risk_score > 50}">
                         {{r.risk_score}}
-                </span>
+                        </span>
                     </td>
-                    <td >
+                    <td>
                         <ul class="list-unstyled">
                             <li ng-repeat="e in r.evidence">{{e}}</li>
                         </ul>
