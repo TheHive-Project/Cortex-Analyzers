@@ -9,7 +9,7 @@
     "command": "DomainTools/domaintools_analyzer.py",
     "baseConfig": "DomainTools",
     "config": {
-        "service": "risk_evidence_score"
+        "service": "risk_evidence"
     },
     "configurationItems": [
     {

@@ -45,10 +45,10 @@ class DomainToolsAnalyzer(Analyzer):
         elif self.service == 'whois/parsed' and self.data_type == 'domain':
             response = api.parsed_whois(data).response()
 
-        elif self.service == 'risk_evidence_score' and self.data_type == 'domain':
+        elif self.service == 'risk_evidence' and self.data_type in ['domain', 'fqdn']:
             response = api.risk_evidence(data).response()
 
-        elif self.service == 'reputation' and self.data_type == 'domain':
+        elif self.service == 'reputation' and self.data_type in ['domain', 'fqdn']:
             response = api.reputation(data).response()
 
         elif self.service == 'reverse-whois':
