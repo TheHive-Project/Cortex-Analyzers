@@ -1,4 +1,4 @@
+beautifulsoup4
 cortexutils
 diskcache
 requests
-requests-html
