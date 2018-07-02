@@ -28,8 +28,8 @@
           <td>
             <span ng-repeat="tag in r.tags"> <span class="label label-info">{{tag}}</span></span>
           </td>
-          <td>{{r.gsb}}</td>
-          <td>{{r.reporter}}</td>
+          <td><span class="label" ng-class="{'label-success': r.gsb === 'Clean', 'label-danger': r.gsb !== 'Clean'}">{{r.gsb}}</span></td>
+          <td><a target="_blank" href="https://twitter.com/{{r.reporter.substring(1)}}">{{r.reporter}}</a></td>
         </tr>
       </tbody>
     </table>
