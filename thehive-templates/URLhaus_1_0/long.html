@@ -24,9 +24,9 @@
               {{r.malware_url}}
             </a>
           </td>
-          <td>{{r.status}}</td>
+          <td><span class="label" ng-class="{'label-danger': r.status==='Online', 'label-success': r.status!=='Online'}">{{r.status}}</span></td>
           <td>
-            <span ng-repeat="tag in r.tags"> {{tag}} </span>
+            <span ng-repeat="tag in r.tags"> <span class="label label-info">{{tag}}</span></span>
           </td>
           <td>{{r.gsb}}</td>
           <td>{{r.reporter}}</td>
