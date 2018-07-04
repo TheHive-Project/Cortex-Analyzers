@@ -32,8 +32,22 @@ class Hunterio(Analyzer):
 
         if self.service == 'domainsearch' and (self.data_type == 'domain' or self.data_type == 'fqdn'):
             try:
-                response = requests.get("{}domain-search?domain={}&api_key={}".format(self.URI, self.get_data(), self.key))
-                self.report(response.json())
+                offset = 0
+                firstResponse = requests.get("{}domain-search?domain={}&api_key={}&limit=100&offset={}".format(self.URI, self.get_data(), self.key, offset))
+                firstResponse = firstResponse.json()
+
+                if firstResponse.get('meta'):
+                    meta = firstResponse.get('meta')
+
+                    while meta.get('results') > offset:
+                        offset = meta.get('limit') + meta.get('offset')
+                        additionalResponse = requests.get("{}domain-search?domain={}&api_key={}&limit=100&offset={}".format(
+                            self.URI, self.get_data(), self.key, offset))
+                        additionalResponse = additionalResponse.json()
+                        meta = additionalResponse.get('meta')
+                        firstResponse['data']['emails'] += additionalResponse['data']['emails']
+
+                self.report(firstResponse)
             except Exception as e:
                 self.unexpectedError(e)
         else:
