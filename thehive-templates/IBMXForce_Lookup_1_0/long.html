@@ -10,7 +10,7 @@
 
 			<dl class="dl-horizontal">
 				<dt>Score</dt>
-				<dd><span class="label">{{content.score_value}}</span></dd>
+				<dd><span class="label label-primary">{{content.score_value}}</span></dd>
 			</dl>
 			<dl class="dl-horizontal" ng-if="content.families.length > 0">
 				<dt>Families</dt>
@@ -24,22 +24,23 @@
 	</div>
 
 
-	<div class="panel panel-info" ng-if="content.subjects_info.length > 0" ng-init="subjects_info_limit = 5">
+	<div class="panel panel-info" ng-if="content.subjects_info.length > 0" ng-init="content.subjects_info_limit = 5">
 		<div class="panel-heading">
 			<strong>Subjects Info</strong>
 			<span class="pull-right" ng-if="::content.subjects_info.length > 5">
-				<a ng-click="subjects_info_limit = content.subjects_info.length">View All ({{::content.subjects_info.length}})</a>
+				<a ng-if="content.subjects_info_limit == 5" href="" ng-click="content.subjects_info_limit = content.subjects_info.length">View All ({{::content.subjects_info.length}})</a>
+				<a ng-if="content.subjects_info_limit > 5"  href="" ng-click="content.subjects_info_limit = 5">View All ({{::content.subjects_info.length}})</a>
 			</span>
 		</div>
 		<div class="panel-body">
 			<table class="table table-hover">
-				<tr>
+				<tr>show all
 					<th>Subject</th>
 					<th>Count</th>
 					<th>Sender IPs</th>
 					<th>Date</th>
 				</tr>
-				<tr ng-repeat="obj in content.subjects_info | limitTo:subjects_info_limit">
+				<tr ng-repeat="obj in content.subjects_info | limitTo:content.subjects_info_limit">
 					<td>{{obj[0]}}</td>
 					<td>{{obj[1]}}</td>
 					<td><span ng-repeat="ip in obj[2]">{{ip}}<br/></span></td>
@@ -50,12 +51,13 @@
 	</div>
 
 	
-	<div class="panel panel-info" ng-if="content.emails_info.length > 0" ng-init="emails_info_limit = 5">
+	<div class="panel panel-info" ng-if="content.emails_info.length > 0" ng-init="content.emails_info_limit = 5">
 		<div class="panel-heading">
 			<strong>Emails Info</strong>
 			
 			<span class="pull-right" ng-if="::content.emails_info.length > 5">
-				<a  href="#/" ng-click="emails_info_limit = content.emails_info.length">View All ({{::content.emails_info.length}})</a>
+				<a  ng-if="content.emails_info_limit == 5" href="" ng-click="emails_info_limit = content.emails_info.length">View All ({{::content.emails_info.length}})</a>
+				<a  ng-if="content.emails_info_limit > 5" href="" ng-click="emails_info_limit = 5">View All ({{::content.emails_info.length}})</a>
 			</span>
 		</div>
 		<div class="panel-body">
@@ -66,7 +68,7 @@
 					<th>Sender domain</th>
 					<th>Date</th>
 				</tr>
-				<tr ng-repeat="obj in content.emails_info | limitTo:emails_info_limit">
+				<tr ng-repeat="obj in content.emails_info | limitTo:content.emails_info_limit">
 					<td>{{obj[2]}}</td>
 					<td>{{obj[1]}}</td>
 					<td>{{obj[0]}}</td>
@@ -76,11 +78,12 @@
 		</div>
 	</div>
 	
-	<div class="panel panel-info" ng-if="content.dns.length > 0" ng-init="dns_limit = 5">
+	<div class="panel panel-info" ng-if="content.dns.length > 0" ng-init="content.dns_limit = 5">
 		<div class="panel-heading">
 			<strong>DNS Info</strong>
 			<span class="pull-right" ng-if="::content.dns.length > 5">
-				<a ng-click="dns_limit = content.dns.length">View All ({{::content.dns.length}})</a>
+				<a ng-if="content.dns_limit == 5" href="" ng-click="content.dns_limit = content.dns.length">View All ({{::content.dns.length}})</a>
+				<a ng-if="content.dns_limit > 5" href="" ng-click="content.dns_limit = 5">View All ({{::content.dns.length}})</a>
 			</span>
 		</div>
 		<div class="panel-body">
@@ -90,7 +93,7 @@
 					<th>Last</th>
 					<th>Value</th>
 				</tr>
-				<tr ng-repeat="obj in content.dns | limitTo:dns_limit">
+				<tr ng-repeat="obj in content.dns | limitTo:content.dns_limit">
 					<td>{{obj[0]}}</td>
 					<td>{{obj[1]}}</td>
 					<td>{{obj[2]}}</td>
@@ -99,11 +102,12 @@
 		</div>
 	</div>
 
-	<div class="panel panel-info" ng-if="content.malware.length > 0" ng-init="malware_limit = 5">
+	<div class="panel panel-info" ng-if="content.malware.length > 0" ng-init="content.malware_limit = 5">
 		<div class="panel-heading">
 			<strong>Malware Info</strong>
 			<span class="pull-right" ng-if="::content.malware.length > 5">
-				<a ng-click="malware_limit = content.malware.length">View All ({{::content.malware.length}})</a>
+				<a ng-if="content.malware_limit == 5" href="" ng-click="content.malware_limit = content.malware.length">View All ({{::content.malware.length}})</a>
+				<a ng-if="content.malware_limit > 5" href="" ng-click="content.malware_limit = 5">View All ({{::content.malware.length}})</a>
 			</span>
 		</div>
 		<div class="panel-body">
@@ -117,7 +121,7 @@
 					<th>Origin</th>
 					<th>Families</th>
 				</tr>
-				<tr ng-repeat="obj in content.malware | limitTo:malware_limit">
+				<tr ng-repeat="obj in content.malware | limitTo:content.malware_limit">
 					<td>{{obj.type}}</td>
 					<td>{{obj.count}}</td>
 					<td>{{obj.firstseen}} - {{obj.lastseen}}</td>
@@ -130,11 +134,12 @@
 		</div>
 	</div>
 
-	<div class="panel panel-info" ng-if="content.history.length > 0" ng-init="history_limit = 5">
+	<div class="panel panel-info" ng-if="content.history.length > 0" ng-init="content.history_limit = 5">
 		<div class="panel-heading">
 			<strong>History Info</strong>
 			<span class="pull-right" ng-if="::content.history.length > 5">
-				<a ng-click="history_limit = content.history.length">View All ({{::content.history.length}})</a>
+				<a ng-if="content.history_limit == 5" href="" ng-click="content.history_limit = content.history.length">View All ({{::content.history.length}})</a>
+				<a ng-if="content.history_limit > 5" href="" ng-click="content.history_limit = 5">View All ({{::content.history.length}})</a>
 			</span>
 		</div>
 		<div class="panel-body">
@@ -148,7 +153,7 @@
 					<th>Categories</th>
 					<th>Deleted</th>
 				</tr>
-				<tr ng-repeat="obj in content.history | limitTo:history_limit">
+				<tr ng-repeat="obj in content.history | limitTo:content.history_limit">
 					<td><h4><span class="label" ng-class="obj.score < 4 ? 'label-success' : obj.score < 7 ? 'label-warning' : 'label-danger'">{{obj.score}}</span><h4></td>
 					<td>{{obj.day}}</td>
 					<td>{{obj.country}}</td>
