@@ -152,7 +152,6 @@ class VirusTotalAnalyzer(Analyzer):
                 data = self.get_param('data', None, 'Data is missing')
                 self.report(self.check_response(self.vt.get_ip_report(data)))
             elif self.data_type == 'file':
-
                 hashes = self.get_param('attachment.hashes', None)
                 if hashes is None:
                     filepath = self.get_param('file', None, 'File is missing')
@@ -162,10 +161,12 @@ class VirusTotalAnalyzer(Analyzer):
                     hash = next(h for h in hashes if len(h) == 64)
 
                 self.report(self.check_response(self.vt.get_file_report(hash)))
-
             elif self.data_type == 'hash':
                 data = self.get_param('data', None, 'Data is missing')
                 self.report(self.check_response(self.vt.get_file_report(data)))
+            elif self.data_type == 'url':
+                data = self.get_param('data', None, 'Data is missing')
+                self.report(self.check_response(self.vt.get_url_report(data)))
             else:
                 self.error('Invalid data type')
         else:
