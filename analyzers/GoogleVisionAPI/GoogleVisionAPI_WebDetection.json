@@ -7,7 +7,7 @@
   "description": "Find look alike image via Google Cloud Vision API using the Web_Detection service ",
   "dataTypeList": ["file", "url"],
   "command": "GoogleVisionAPI/GoogleVisionAPI_WebDetection.py",
-  "baseConfig": "Vision",
+  "baseConfig": "GoogleVisionAPI",
   "config": {
     "service": "get"
   },
