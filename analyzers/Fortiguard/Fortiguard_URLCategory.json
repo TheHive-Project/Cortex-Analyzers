@@ -5,7 +5,25 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "dataTypeList": ["domain", "url"],
-  "description": "Check the Fortiguard category of a URL or a domain.",
+  "description": "Check the Fortiguard category of a URL or a domain. Check the full available list at https://fortiguard.com/webfilter/categories",
   "baseConfig": "Fortiguard",
-  "command": "Fortiguard/urlcategory.py"
+  "command": "Fortiguard/urlcategory.py",
+  "configurationItems": [
+    {
+      "name": "malicious_categories",
+      "description": "List of FortiGuard categories to be considered as malicious",
+      "type": "string",
+      "multi": true,
+      "required": true,
+      "defaultValue": ["Malicious Websites", "Phishing", "Spam URLs"]
+    },
+    {
+      "name": "suspicious_categories",
+      "description": "List of FortiGuard categories to be considered as suspicious",
+      "type": "string",
+      "multi": true,
+      "required": true,
+      "defaultValue": ["Newly Observed Domain", "Newly Registered Domain", "Dynamic DNS", "Proxy Avoidance", "Hacking"]
+    }
+  ]
 }
