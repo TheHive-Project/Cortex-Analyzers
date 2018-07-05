@@ -38,9 +38,13 @@
                 <tr  ng-repeat="r in content.components">
                     <td>{{r.name}}</td>
                     <td>
-                        <span class="label" ng-class="{'label-success' : content.risk_score == 0,  'label-warning' :  content.risk_score > 0 && content.risk_score <= 50,
-                            'label-danger': content.risk_score > 50}">
+                        <span class="label" ng-class="{'label-success' : r.risk_score == 0,  'label-warning' :  r.risk_score > 0 && r.risk_score <= 50,
+                            'label-danger': r.risk_score > 50}">
                         {{r.risk_score}}
+
+                        </span>
+                        <span ng-init="">
+                            <uib-progress max=100 value="{{r.risk_score}}"></uib-progress>
                         </span>
                     </td>
                     <td>
