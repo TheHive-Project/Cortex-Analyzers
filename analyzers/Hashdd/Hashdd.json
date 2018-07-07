@@ -14,7 +14,7 @@
         "description": "API key for hashdd",
         "type": "string",
         "multi": false,
-        "required": true
+        "required": false
       }
     ]
 }
