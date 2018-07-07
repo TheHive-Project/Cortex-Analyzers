@@ -5,14 +5,27 @@ from cortexutils.analyzer import Analyzer
 
 class HashddAnalyzer(Analyzer):
 
+    service = 'Status'
+    url = 'https://api.hashdd.com/'
+    hashdd_key = None
+
     def __init__(self):
         Analyzer.__init__(self)
-        self.hashdd_key = self.get_param('config.api_key', None, 'Missing hashdd API key')
-        self.url = 'https://api.hashdd.com/detail'
+        self.service = self.get_param('config.service', None, 'Service parameter is missing')
+
+        if self.service == "status":
+            self.url = 'https://api.hashdd.com/'
+        elif self.service == "detail":
+            self.hashdd_key = self.get_param('config.api_key', None, 'Missing hashdd API key')
+            self.url = 'https://api.hashdd.com/detail'
 
 
     def hashdd_check(self, data):
-        postdata = {'hash': self.get_data(), 'api_key': self.hashdd_key}
+        if self.hashdd_key is None:
+            postdata = {'hash': self.get_data()}
+        else:
+            postdata = {'hash': self.get_data(), 'api_key': self.hashdd_key}
+
         r = requests.post(self.url, data=postdata)
         r.raise_for_status() # Raise exception on HTTP errors
         return r.json()
@@ -54,7 +67,13 @@ class HashddAnalyzer(Analyzer):
         response = self.hashdd_check(data)
 
         if response['result'] == 'SUCCESS':
-            self.report({
+
+            if self.service == "status":
+                self.report({
+                    'known_level': response[hash]['known_level']
+                })
+            elif self.service == "detail":
+                self.report({
                 'known_level': response[hash]['summary']['hashdd_known_level'],
                 'file_name': response[hash]['summary']['hashdd_file_name'],
                 'file_absolute_path': response[hash]['summary']['hashdd_file_absolute_path'],
@@ -67,7 +86,7 @@ class HashddAnalyzer(Analyzer):
                 'sha1': response[hash]['summary']['hashdd_sha1'],
                 'sha256': response[hash]['summary']['hashdd_sha256'],
                 'ssdeep': response[hash]['summary']['hashdd_ssdeep']
-            })
+                })
         else:
             self.error('{}'.format(response['result']))
 
