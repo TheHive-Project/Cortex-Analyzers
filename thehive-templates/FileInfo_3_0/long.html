@@ -57,7 +57,7 @@
                                         <dt>Oletools scanner</dt>
                                         <dd class="wrap">
                                             <span class="label mr-xxxs" ng-repeat="t in result['summary']['taxonomies']" ng-class="{'info': 'label-info', 'safe': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[t.level]">
-                                                {{t.namespace}}:{{t.predicate}}={{t.value}}
+                                                {{t.namespace}}:{{t.predicate}}="{{t.value}}"
                                             </span>
                                         </dd>
                                     </dl>
@@ -224,7 +224,7 @@
                                 <dt>PDFiD report</dt>
                                 <dd class="wrap">
                                     <span class="label mr-xxxs" ng-repeat="t in result['summary']['taxonomies']" ng-class="{'info': 'label-info', 'safe': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[t.level]">
-                                        {{t.namespace}}:{{t.predicate}}={{t.value}}
+                                        {{t.namespace}}:{{t.predicate}}="{{t.value}}"
                                     </span>
                                 </dd>
                             </dl>

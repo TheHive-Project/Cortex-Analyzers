@@ -117,15 +117,15 @@ class FireholBlocklistsAnalyzer(Analyzer):
         taxonomies = []
         namespace = "Firehol"
         predicate = "Blocklists"
-        value = "\"0 hit\""
+        value = "0 hit"
 
         if 'count' in raw:
             r = raw.get('count', 0)
 
             if r == 0 or r == 1:
-                value = "\"{} hit\"".format(r)
+                value = "{} hit".format(r)
             else:
-                value = "\"{} hits\"".format(r)
+                value = "{} hits".format(r)
 
             if r > 0:
                 level = "suspicious"

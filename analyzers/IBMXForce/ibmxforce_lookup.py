@@ -189,7 +189,7 @@ class IBMXForceAnalyzer(Analyzer):
         elif score_value >= 7 or score_value == 'high':
             level = "malicious"
 
-        #taxonomies.append(self.build_taxonomy(level, namespace, predicate, "\"{}\"".format(score)))
+        #taxonomies.append(self.build_taxonomy(level, namespace, predicate, "{}".format(score)))
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, "{}".format(score)))
 
 

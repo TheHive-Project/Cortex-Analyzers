@@ -47,12 +47,12 @@ class StaxxAnalyzer(Analyzer):
         taxonomies = []
         namespace = "Staxx"
         predicate = " Hits"
-        value = "\0\""
+        value = "\0"
 
         if 'count' in raw:
             r = raw.get('count', 0)
 
-            value = "\"{}\"".format(r)
+            value = "{}".format(r)
 
             if r > 0:
                 level = "suspicious"

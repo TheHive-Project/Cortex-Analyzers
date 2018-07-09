@@ -62,7 +62,7 @@ class MaxMindAnalyzer(Analyzer):
         predicate = "Location"
 
         if "continent" in raw:
-            value = "\"{}/{}\"".format(raw["country"]["name"], raw["continent"]["name"])
+            value = "{}/{}".format(raw["country"]["name"], raw["continent"]["name"])
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         return {"taxonomies": taxonomies}

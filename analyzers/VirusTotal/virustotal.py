@@ -67,7 +67,7 @@ class VirusTotalAnalyzer(Analyzer):
         level = "info"
         namespace = "VT"
         predicate = "Score"
-        value = "\"0\""
+        value = "0"
 
         result = {
             "has_result": True
@@ -85,7 +85,7 @@ class VirusTotalAnalyzer(Analyzer):
         if self.service == "get":
             if "scans" in raw:
                 result["scans"] = len(raw["scans"])
-                value = "\"{}/{}\"".format(result["positives"], result["total"])
+                value = "{}/{}".format(result["positives"], result["total"])
                 if result["positives"] == 0:
                     level = "safe"
                 elif result["positives"] < 5:
@@ -95,7 +95,7 @@ class VirusTotalAnalyzer(Analyzer):
 
             if "resolutions" in raw:
                 result["resolutions"] = len(raw["resolutions"])
-                value = "\"{} resolution(s)\"".format(result["resolutions"])
+                value = "{} resolution(s)".format(result["resolutions"])
                 if result["resolutions"] == 0:
                     level = "safe"
                 elif result["resolutions"] < 5:
@@ -104,7 +104,7 @@ class VirusTotalAnalyzer(Analyzer):
                     level = "malicious"
             if "detected_urls" in raw:
                 result["detected_urls"] = len(raw["detected_urls"])
-                value = "\"{} detected_url(s)\"".format(result["detected_urls"])
+                value = "{} detected_url(s)".format(result["detected_urls"])
                 if result["detected_urls"] == 0:
                     level = "safe"
                 elif result["detected_urls"] < 5:
@@ -119,7 +119,7 @@ class VirusTotalAnalyzer(Analyzer):
         if self.service == "scan":
             if "scans" in raw:
                 result["scans"] = len(raw["scans"])
-                value = "\"{}/{}\"".format(result["positives"], result["total"])
+                value = "{}/{}".format(result["positives"], result["total"])
                 if result["positives"] == 0:
                     level = "safe"
                 elif result["positives"] < 5:
