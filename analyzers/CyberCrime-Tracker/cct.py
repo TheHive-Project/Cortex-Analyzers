@@ -20,9 +20,9 @@ class CyberCrimeTrackerAnalyzer(Analyzer):
         predicate = 'C2 Search'
 
         hit_count = len(raw.get('results', []))
-        value = "\"{} hits\"".format(hit_count)
+        value = "{} hits".format(hit_count)
         if hit_count == 1:
-            value = value[:-2] + "\""
+            value = value[:-2] + ""
 
         if hit_count > 0:
             level = 'malicious'

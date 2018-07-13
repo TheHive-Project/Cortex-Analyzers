@@ -46,7 +46,7 @@ class HippoAnalyzer(Analyzer):
             value = self.more_summary(raw)[self.get_data()]
             if value > 0:
                 level = "malicious"
-            taxonomies.append(self.build_taxonomy(level, namespace, predicate, "\"{} record(s)\"".format(value)))
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, "{} record(s)".format(value)))
 
         return {"taxonomies": taxonomies}
 

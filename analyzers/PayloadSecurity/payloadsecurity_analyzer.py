@@ -25,7 +25,7 @@ class PayloadSecurityAnalyzer(Analyzer):
         level = "safe"
         namespace = "PayloadSecurity"
         predicate = "ThreatScore"
-        value = "\"0/100\""
+        value = "0/100"
 
         result = {
             'service': self.data_type + '_analysis',
@@ -43,7 +43,7 @@ class PayloadSecurityAnalyzer(Analyzer):
             level = 'safe'
 
         if result.get('threatscore'):
-            value = '\"{}/100\"'.format(result['threatscore'])
+            value = '{}/100'.format(result['threatscore'])
 
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 

@@ -18,7 +18,7 @@ class MsgParserAnalyzer(Analyzer):
         level = "info"
         namespace = "MsgParser"
         predicate = "Attachments"
-        value = "\"0\""
+        value = "0"
 
         if "attachments" in raw:
             value = len(raw["attachments"])

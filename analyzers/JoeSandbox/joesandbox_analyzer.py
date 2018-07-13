@@ -33,7 +33,7 @@ class JoeSandboxAnalyzer(Analyzer):
 
         r = raw['detection']
 
-        value = "\"{}/{}\"".format(r["score"], r["maxscore"])
+        value = "{}/{}".format(r["score"], r["maxscore"])
 
         if r["clean"]:
             level = "safe"

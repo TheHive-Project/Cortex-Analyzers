@@ -44,29 +44,28 @@ class MISPClient:
                 if isinstance(ssl, list):
                     if isinstance(ssl[idx], str) and os.path.isfile(ssl[idx]):
                         verify = ssl[idx]
-                    elif isinstance(ssl[idx], str) and not os.path.isfile(ssl[idx]):
+                    elif isinstance(ssl[idx], str) and not os.path.isfile(ssl[idx]) and ssl[idx] != "":
                         raise CertificateNotFoundError('Certificate not found under {}.'.format(ssl[idx]))
                     elif isinstance(ssl[idx], bool):
                         verify = ssl[idx]
-                    else:
-                        raise TypeError('SSL parameter is a not expected type.')
+
                 # Do the same checks again, for the non-list type
-                elif isinstance(ssl, str):
-                    if os.path.isfile(ssl):
-                        verify = ssl
+                elif isinstance(ssl, str) and os.path.isfile(ssl):
+                    verify = ssl
+                elif isinstance(ssl, str) and not os.path.isfile(ssl) and ssl != "":
+                    raise CertificateNotFoundError('Certificate not found under {}.'.format(ssl))
                 elif isinstance(ssl, bool):
                     verify = ssl
-                else:
-                    raise TypeError('SSL parameter is a not expected type.')
                 self.misp_connections.append(pymisp.PyMISP(url=server,
                                                            key=key[idx],
                                                            ssl=verify,
                                                            proxies=proxies))
         else:
             verify = True
-            if isinstance(ssl, str):
-                if os.path.isfile(ssl):
-                    verify = ssl
+            if isinstance(ssl, str) and os.path.isfile(ssl):
+                verify = ssl
+            elif isinstance(ssl, str) and not os.path.isfile(ssl) and ssl != "":
+                raise CertificateNotFoundError('Certificate not found under {}.'.format(ssl))
             elif isinstance(ssl, bool):
                 verify = ssl
             self.misp_connections.append(pymisp.PyMISP(url=url,

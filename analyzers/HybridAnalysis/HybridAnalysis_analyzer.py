@@ -35,7 +35,7 @@ class VxStreamSandboxAnalyzer(Analyzer):
         level = "info"
         namespace = "HybridAnalysis"
         predicate = "Threat level"
-        value = "\"No verdict\""
+        value = "No verdict"
 
         # define json keys to loop
         if self.data_type in ['hash', 'file']:
@@ -53,19 +53,19 @@ class VxStreamSandboxAnalyzer(Analyzer):
             # create shield badge for short.html
             if report_verdict == 'malicious':
                 level = 'malicious'
-                value = "\"Malicious\""
+                value = "Malicious"
             elif report_verdict == 'suspicious':
                 level = 'suspicious'
-                value = "\"Suspicious\""
+                value = "Suspicious"
             elif report_verdict == 'whitelisted':
                 level = 'safe'
-                value = "\"Whitelisted\""
+                value = "Whitelisted"
             elif report_verdict == 'no specific threat':
                 level = 'info'
-                value = "\"No Specific Threat\""
+                value = "No Specific Threat"
         else:
             level = 'info'
-            value = "\"Unknown\""
+            value = "Unknown"
 
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         return {"taxonomies": taxonomies}

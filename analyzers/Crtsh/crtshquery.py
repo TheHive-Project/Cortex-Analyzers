@@ -60,10 +60,10 @@ class CrtshAnalyzer(Analyzer):
         level = "info"
         namespace = "crt.sh"
         predicate = "Certificates"
-        value = "\"\""
+        value = ""
 
         if "certobj" in raw:
-            value = "\"{}\"".format(len(raw["certobj"]["result"]))
+            value = "{}".format(len(raw["certobj"]["result"]))
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         return {"taxonomies": taxonomies}
