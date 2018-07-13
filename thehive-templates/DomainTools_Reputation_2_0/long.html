@@ -14,7 +14,7 @@
     </div>
     <div class="panel-body">
 		<dl class="dl-horizontal">
-			<dt>Domaintools Risk Score</dt>
+			<dt>Domaintools Reputation</dt>
 			<dd>
                 <span class="label" ng-class="{'label-success' : content.risk_score == 0,  'label-warning' :  content.risk_score > 0 && content.risk_score <= 50,
                             'label-danger': content.risk_score > 50}">
@@ -27,7 +27,7 @@
 			<dt>Reasons</dt>
 			<dd>
                 <span ng-repeat="r in content.reasons " class="label label-primary mr-xxxs">
-                    {{content.risk_score}}
+                    {{r}}
                 </span>
 
             </dd>

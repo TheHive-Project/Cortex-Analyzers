@@ -49,7 +49,7 @@ class DomainToolsAnalyzer(Analyzer):
             response = api.risk_evidence(data).response()
 
         elif self.service == 'reputation' and self.data_type in ['domain', 'fqdn']:
-            response = api.reputation(data).response()
+            response = api.reputation(data, include_reasons=True).response()
 
         elif self.service == 'reverse-whois':
             response = api.reverse_whois(data, mode='purchase').response()
@@ -99,6 +99,8 @@ class DomainToolsAnalyzer(Analyzer):
 
         if "risk_score" in raw:
             r["risk_score"] = raw["risk_score"]
+            if "reasons" in raw:
+                r["reputation"] = True
 
         taxonomies = []
 
@@ -129,9 +131,10 @@ class DomainToolsAnalyzer(Analyzer):
                 taxonomies.append(
                     self.build_taxonomy("info", "DT", "Whois", "REGISTRANT:{}".format(r["registrant"])))
 
+
         if "risk_score" in r:
             risk_service = "Risk"
-            if "reasons" in r:
+            if "reputation" in r:
                 risk_service = "Reputation"
             if r["risk_score"] == 0:
                 level = "safe"
