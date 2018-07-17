@@ -52,7 +52,7 @@ class GoogleDNS_resolve(Analyzer):
 			self.answer["Status"] = CODE[int(data["Status"])] # replace DNS response code by name
 				
 	def run(self):
-		if self.data_type not in ["ip", "domain", "url", "fqdn"]:
+		if self.data_type not in ["ip", "domain", "fqdn"]:
 			self.error("Wrong data type")
 
 		target = self.getData()
