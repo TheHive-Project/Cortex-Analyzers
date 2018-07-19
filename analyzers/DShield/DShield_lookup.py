@@ -3,6 +3,7 @@
 import json
 import requests
 import datetime
+import math
 from cortexutils.analyzer import Analyzer
 
 class DShieldAnalyzer(Analyzer):
@@ -16,7 +17,7 @@ class DShieldAnalyzer(Analyzer):
 
     def summary(self, raw):
         taxonomies = []
-        value = '-'
+        value = "-"
         level = 'safe'
 
         categories = raw.get("Categories", None)
@@ -57,13 +58,12 @@ class DShieldAnalyzer(Analyzer):
                 info = r[self.data_type]
                 results = {}
                 results['ip'] = info['number']
-                results['count'] = info['count'] if isinstance(info['count'], str) else '0'
-                results['attacks'] = info['attacks'] if isinstance(info['attacks'], str) else '0'
+                results['count'] = info['count'] if isinstance(info['count'], int) else 0
+                results['attacks'] = info['attacks'] if isinstance(info['attacks'], int) else 0
                 results['lastseen'] = info['maxdate'] if isinstance(info['maxdate'], str) else 'None'
                 results['firstseen'] = info['mindate'] if isinstance(info['mindate'], str) else 'None'
                 results['updated'] = info['updated'] if isinstance(info['updated'], str) else 'None'
                 results['comment'] = info['comment'] if isinstance(info['comment'], str) else 'None'
-                results['maxrisk'] = info['maxrisk'] if isinstance(info['maxrisk'], str) else '0'
                 results['asabusecontact'] = info['asabusecontact'] if isinstance(info['asabusecontact'], str) else 'Unknown'
                 results['as'] = info['as']
                 results['asname'] = info['asname']
@@ -76,6 +76,12 @@ class DShieldAnalyzer(Analyzer):
                 else:
                     results['threatfeedscount'] = len(json.loads(json.dumps(info['threatfeeds'])))
                     results['threatfeeds'] = info['threatfeeds'] 
+                # Compute a risk level based on collected information
+                results['maxrisk'] = 0
+                maxrisk = 10
+                if results['attacks'] > 0:
+                    results['maxrisk'] = round(min(math.log10(results['attacks']) * 2, maxrisk))
+
                 # We add the number of threat feeds to the maxrisk to increase the detection rate
                 results['reputation'] = self.get_reputation(int(results['maxrisk']) + results['threatfeedscount'])
                 self.report(results)
