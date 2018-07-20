@@ -1,0 +1,23 @@
+{
+  "name": "Investigate_Categorization",
+  "version": "1.0",
+  "author": "Cisco Umbrella Research @opendns",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Investigate",
+  "license": "AGPL-V3",
+  "description": "Retrieve Investigate categorization and security features for a domain.",
+  "dataTypeList": ["domain", "fqdn"],
+  "command": "Investigate/investigate_analyzer.py",
+  "baseConfig": "Investigate",
+  "config": {
+      "service": "categorization"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the Investigate API Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}
