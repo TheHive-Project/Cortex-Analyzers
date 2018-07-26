@@ -1,3 +1,2 @@
-cortexutils-1.2.4;python_version>='3.5'
-eml_parser-1.8;python_version>='3.5'
-python-magic-0.4.15;python_version>='3.5'
+cortexutils;python_version>='3.5'
+git+https://github.com/jeromeleonard/eml_parser.git
