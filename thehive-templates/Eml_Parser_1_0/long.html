@@ -42,20 +42,24 @@
                 <div class="bm10">This message file includes
                     <ng-pluralize count="content.attachments.length" when="{'1': '1 attachment', 'other': '{} attachments'}"></ng-pluralize>
                 </div>
-                <table class="table table-hover">
+                <table class="table table-striped table-bordered">
                     <thead>
-                    <tr>
-                        <th>Filename</th>
-                        <th>Mime Type</th>
-                        <th>Extension</th>
-                    </tr>
+                        <tr>
+                            <th class="col-md-2" >Filename</th>
+                            <th >File information</th>
+
+                        </tr>
                     </thead>
-                    <tbody>
-                    <tr ng-repeat="a in content.attachments">
-                        <td class="wrap">{{a.filename}}</td>
-                        <td class="wrap">{{a.mime}}</td>
-                        <td>{{a.extension}}</td>
-                    </tr>
+                    <tbody ng-repeat="a in content.attachments">
+                        <tr>
+                            <td rowspan=2>{{a.filename}}</td>
+                            <td>[SHA256]: {{a.sha256}}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{a.mime}}
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </dd>
