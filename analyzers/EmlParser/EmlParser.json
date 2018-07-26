@@ -4,7 +4,7 @@
     "author": "ninsmith",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "baseconfig": "Eml_Parser",
+    "baseconfig": "EmlParser",
     "config": {
         "check_tlp": false,
         "max_tlp": 3,
