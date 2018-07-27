@@ -1,0 +1,11 @@
+{
+  "name": "File_Strings",
+  "version": "1.0",
+  "author": "https://github.com/j-i-m-b-o",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "View printable strings within a file.",
+  "dataTypeList": ["file"],
+  "baseConfig": "File_Strings",
+  "command": "File_Strings/filestrings_analyzer.py"
+}

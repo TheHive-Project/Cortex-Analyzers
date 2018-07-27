@@ -1,0 +1,31 @@
+<div class="report-FILEStrings" ng-if="success">
+    <style>
+        .report-FILEStrings dl {
+            margin-bottom: 3px;
+        }
+
+    </style>
+
+<!-- Strings -->
+<div class="panel panel-info">
+    <div class="panel heading">
+        <strong>File Strings</strong> 
+    </div>
+    <div class="panel-body">
+       <dl class="dl-horizontal" ng-repeat="str in content.Strings">
+       <dd>
+           {{str}}
+      </dd>
+    </dl>
+  </div>
+</div> 
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
