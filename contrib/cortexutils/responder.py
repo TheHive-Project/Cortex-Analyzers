@@ -44,10 +44,16 @@ class Responder(Worker):
         :param full_report: Responsder results as dict.
         :param ensure_ascii: Force ascii output. Default: False"""
 
+        operation_list = []
+        try:
+            operation_list = self.operations(full_report)
+        except Exception:
+            pass
+
         report = {
             'success': True,
             'full': full_report,
-            'operations':
+            'operations': operation_list
         }
         json.dump(report, self.fpoutput, ensure_ascii=ensure_ascii)
 
