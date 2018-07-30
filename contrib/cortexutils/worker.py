@@ -112,30 +112,6 @@ class Worker:
 
         return self.__get_param(self._input, name, default, message)
 
-    def build_taxonomy(self, level, namespace, predicate, value):
-        """
-        :param level: info, safe, suspicious or malicious
-        :param namespace: Name of analyzer
-        :param predicate: Name of service
-        :param value: value
-        :return: dict
-        """
-        # Set info level if something not expected is set
-        if level not in ['info', 'safe', 'suspicious', 'malicious']:
-            level = 'info'
-        return {
-                'level': level,
-                'namespace': namespace,
-                'predicate': predicate,
-                'value': value
-                }
-
-    def summary(self, raw):
-        """Returns a summary, needed for 'short.html' template. Overwrite it for your needs!
-
-        :returns: by default return an empty dict"""
-        return {}
-
     def error(self, message, ensure_ascii=False):
         """Stop analyzer with an error message. Changing ensure_ascii can be helpful when stucking
         with ascii <-> utf-8 issues. Additionally, the input as returned, too. Maybe helpful when dealing with errors.
