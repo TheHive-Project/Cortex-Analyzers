@@ -8,25 +8,26 @@ from cortexutils.worker import Worker
 class Responder(Worker):
 
     def __init__(self):
-        Worker.__init__(self)        
+        Worker.__init__(self)
 
         # Not breaking compatibility
-        self.artifact = self._input          
+        self.artifact = self._input
 
     def get_data(self):
         """Wrapper for getting data from input dict.
 
         :return: Data (observable value) given through Cortex"""
-        return self.get_param('data', None, 'Missing data field')  
+        return self.get_param('data', None, 'Missing data field')
 
-    def build_operation(self, op_type, parameters={}):
+    @staticmethod
+    def build_operation(op_type, **parameters):
         """
         :param op_type: an operation type as a string
-        :param parameters: a dict including the operation's params        
+        :param parameters: a dict including the operation's params
         :return: dict
         """
         operation = {
-            'type': op_type                
+            'type': op_type
         }
         operation.update(parameters)
 
