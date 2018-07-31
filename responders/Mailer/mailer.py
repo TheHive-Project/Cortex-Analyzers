@@ -24,7 +24,7 @@ class Mailer(Responder):
         if self.data_type == 'thehive:case':
             # Search recipient address in tags
             tags = self.get_param('data.tags', None, 'recipient address not found in tags')
-            mail_tags = [t[5:] for t in tags if t.startswith("mail:")]
+            mail_tags = [t[5:] for t in tags if t.startswith('mail:')]
             if mail_tags:
                 mail_to = mail_tags.pop()
             else:
@@ -32,7 +32,7 @@ class Mailer(Responder):
         elif self.data_type == 'thehive:alert':
             # Search recipient address in artifacts
             artifacts = self.get_param('data.artifacts', None, 'recipient address not found in observables')
-            mail_artifacts = [a for a in artifacts if a.get("dataType") == "mail"]
+            mail_artifacts = [a['data'] for a in artifacts if a.get('dataType') == 'mail' and 'data' in a]
             if mail_artifacts:
                 mail_to = mail_artifacts.pop()
             else:
@@ -49,10 +49,10 @@ class Mailer(Responder):
         s = smtplib.SMTP(self.smtp_host)
         s.sendmail(self.mail_from, [mail_to], msg.as_string())
         s.quit()
-        self.report({"message": "message sent"})
+        self.report({'message': 'message sent'})
 
     def operations(self, raw):
-        return [self.build_operation('AddTagToCase', {'tag': 'mail sent'})]
+        return [self.build_operation('AddTagToCase', tag='mail sent')]
 
 
 if __name__ == '__main__':
