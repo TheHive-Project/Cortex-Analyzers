@@ -42,9 +42,12 @@ class DomainToolsAnalyzer(Analyzer):
         elif self.service == 'whois/history' and self.data_type == 'domain':
             response = api.whois_history(data).response()
 
-        elif self.service == 'whois/parsed' and self.data_type == 'domain':
+        elif self.service == 'whois/parsed' and self.data_type in ['domain','ip']:
             response = api.parsed_whois(data).response()
 
+        elif self.service == 'hosting-history' and self.data_type == 'domain':
+            response = api.hosting_history(data).response()
+        
         elif self.service == 'risk_evidence' and self.data_type in ['domain', 'fqdn']:
             response = api.risk_evidence(data).response()
 
@@ -52,20 +55,25 @@ class DomainToolsAnalyzer(Analyzer):
             response = api.reputation(data, include_reasons=True).response()
 
         elif self.service == 'reverse-whois':
-            response = api.reverse_whois(data, mode='purchase').response()
+            scope = self.getParam('parameters.scope', 'current', None)
+            response = api.reverse_whois(data, mode='purchase', scope=scope).response()
 
-        elif self.service == 'whois' and self.data_type == 'ip':
+        elif self.service == 'reverse-ip-whois':
+            response = api.reverse_ip_whois(data).response()
+
+        elif self.service == 'whois' and self.data_type in ['domain', 'ip']:
             response = api.whois(data).response()
 
         return response
 
 
     def summary(self, raw):
+
         r = {
             "service": self.service,
             "dataType": self.data_type
         }
-
+        
         if "ip_addresses" in raw:
             if type(raw["ip_addresses"]) == dict:
                 r["ip"] = {

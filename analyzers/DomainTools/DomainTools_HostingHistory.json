@@ -1,15 +1,15 @@
 {
-  "name": "DomainTools_WhoisLookup",
+  "name": "DomainTools_HostingHistory",
   "version": "2.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Use DomainTools to get the ownership record for a domain or an IP address with basic registration details parsed.",
-  "dataTypeList": ["domain", "ip"],
+  "description": "Use DomainTools to get a list of historical registrant, name servers and IP addresses for a domain name.",
+  "dataTypeList": ["domain"],
   "command": "DomainTools/domaintools_analyzer.py",
   "baseConfig": "DomainTools",
   "config": {
-      "service": "whois/parsed"
+      "service": "hosting-history"
   },
   "configurationItems": [
     {

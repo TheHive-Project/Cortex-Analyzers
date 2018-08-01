@@ -1,15 +1,15 @@
 {
-  "name": "DomainTools_WhoisLookup",
+  "name": "DomainTools_WhoisLookupUnparsed",
   "version": "2.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Use DomainTools to get the ownership record for a domain or an IP address with basic registration details parsed.",
-  "dataTypeList": ["domain", "ip"],
+  "description": "Use DomainTools to get the ownership record for an IP address or a domain without parsing.",
+  "dataTypeList": ["ip", "domain"],
   "command": "DomainTools/domaintools_analyzer.py",
   "baseConfig": "DomainTools",
   "config": {
-      "service": "whois/parsed"
+      "service": "whois"
   },
   "configurationItems": [
     {
