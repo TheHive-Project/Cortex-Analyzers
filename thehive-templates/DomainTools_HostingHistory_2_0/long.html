@@ -1,0 +1,83 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <p>
+            Registrar History
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>domain</th>
+                    <th>registrar</th>
+                    <th>date_created</th>
+                    <th>date_updated</th>
+                    <th>date_expires</th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="row in content.registrar_history">
+                <td>{{row.domain}}</td>
+                <td>{{row.registrar}}</td>
+                <td>{{row.date_created | shortDate}}</td>
+                <td>{{row.date_updated | shortDate}}</td>
+                <td>{{row.date_expires | shortDate}}</td>
+            </tbody>
+        </table>
+    </div>
+    <div class="panel-body">
+        <p>
+            IP History
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>domain</th>
+                    <th>actiondate</th>
+                    <th>action</th>
+                    <th>pre_ip</th>
+                    <th>post_ip</th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="row in content.ip_history">
+                <td>{{row.domain}}</td>
+                <td>{{row.actiondate | shortDate}}</td>
+                <td>{{row.action_in_words}}</td>
+                <td>{{row.pre_ip}}</td>
+                <td>{{row.post_ip}}</td>
+            </tbody>
+        </table>
+    </div>
+    <div class="panel-body">
+        <p>
+            IP History
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>domain</th>
+                    <th>actiondate</th>
+                    <th>action</th>
+                    <th>pre_mns</th>
+                    <th>post_mns</th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="row in content.nameserver_history">
+                <td>{{row.domain}}</td>
+                <td>{{row.actiondate | shortDate}}</td>
+                <td>{{row.action_in_words}}</td>
+                <td>{{row.pre_mns}}</td>
+                <td>{{row.post_mns}}</td>
+            </tbody>
+        </table>
+    </div>
+</div>
