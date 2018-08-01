@@ -1,6 +1,6 @@
 <div class="panel panel-info" ng-if="success">
 	<div class="panel-heading">
-		Onyphe Ports - <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+		Onyphe Datascan - <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
 	</div>
 	<div class="panel-body">
         <dl class="dl-horizontal">
@@ -8,7 +8,7 @@
                 My IP
             </dt>
             <dd>
-                {{content.ports.myip}}
+                {{content.inetnum.myip}}
             </dd>
         </dl>
         <dl class="dl-horizontal">
@@ -16,7 +16,7 @@
                 Number of results
             </dt>
             <dd>
-                {{content.ports.count}}
+                {{content.inetnum.count}}
             </dd>
         </dl>
         <dl class="dl-horizontal">
@@ -24,35 +24,35 @@
                 Error(s)
             </dt>
             <dd>
-                {{content.ports.error}}
+                {{content.inetnum.error}}
             </dd>
         </dl>
 
-		<table class="table" ng-if="content.ports.results.length !== 0 ">
+		<table class="table" ng-if="content.inetnum.results.length !== 0 ">
             <thead>
                 <th>Category</th>
                 <th>Type</th>
                 <th>ASN</th>
                 <th>Country</th>
-                <th>IPv4</th>
+                <th>Subnet</th>
                 <th>Organisation</th>
                 <th>Location</th>
-                <th>OS</th>
-                <th>Port</th>
-                <th>Seen date</th>
+                <th>Netname</th>
+                <th>Seen Date</th>
+                <th>Source</th>
             </thead>
-            <tbody ng-repeat="r in content.ports.results | orderBy:'-seen_date'">
+            <tbody ng-repeat="r in content.inetnum.results | orderBy:'-seen_date'">
                 <tr>
                     <td>{{r["@category"]}}</td>
                     <td>{{r["@type"]}}</td>
                     <td>{{r.asn}}</td>
                     <td>{{r.country}}</td>
-                    <td>{{r.ip}}</td>
+                    <td>{{r.subnet}}</td>
                     <td>{{r.organization}}</td>
                     <td>{{r.location}}</td>
-                    <td>{{r.os}}</td>
-                    <td>{{r.port}}</td>
+                    <td>{{r.netname}}</td>
                     <td>{{r.seen_date}}</td>
+                    <td>{{r.source}}</td>
                 </tr>
             </tbody>
         </table>
