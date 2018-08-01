@@ -92,6 +92,16 @@ class DomainToolsAnalyzer(Analyzer):
                 "historic": raw["domain_count"]["historic"]
             }
 
+        if "registrar_history" in raw:
+            r["registrar_history"] = len(raw["registrar_history"])
+        if "ip_history" in raw:
+            r["ip_history"] = len(raw["ip_history"])
+        if "nameserver_history" in raw:
+            r["ns_history"] = len(raw["nameserver_history"])
+
+        if "record_count" in raw:
+            r["record_count"] = raw["record_count"]
+
         if "registrant" in raw:
             r["registrant"] = raw["registrant"]
         elif "response" in raw and "registrant" in raw["response"]:
@@ -99,7 +109,6 @@ class DomainToolsAnalyzer(Analyzer):
 
         if "parsed_whois" in raw:
             r["registrar"] = raw["parsed_whois"]["registrar"]["name"]
-            #
 
         if "name_server" in raw:
             r["name_server"] = raw["name_server"]["hostname"]
@@ -127,6 +136,16 @@ class DomainToolsAnalyzer(Analyzer):
                                                   "curr:{} / hist:{} domains".format(r["domain_count"]["current"],
                                                                                          r["domain_count"][
                                                                                              "historic"])))
+
+        if r["service"] == "reverse-ip-whois":
+            taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_IP_Whois",
+                                                  "records:{}".format(r["record_count"])))
+
+        if r["service"] == "hosting-history":
+            taxonomies.append(self.build_taxonomy("info", "DT", "Hosting_History",
+                                                  "registrars:{} / ips:{} / ns:{}".format(r["registrar_history"],
+                                                                                              r["ip_history"],
+                                                                                                  r["ns_history"])))
 
         if r["service"] == "whois/history":
             taxonomies.append(self.build_taxonomy("info", "DT", "Whois_History",
