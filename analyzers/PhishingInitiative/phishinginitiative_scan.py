@@ -18,9 +18,9 @@ class PhishingInitiativeAnalyzer(Analyzer):
         predicate = "Status"
         value = "\"Clean\""
 
-        if raw["tag_label"] == "phishing":
+        if raw["status"] == "phishing":
             level = "malicious"
-            value = "\"{}\"".format(raw["tag_label"])
+            value = "\"{}\"".format(raw["status"])
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         return {"taxonomies": taxonomies}
 
@@ -35,13 +35,13 @@ class PhishingInitiativeAnalyzer(Analyzer):
             api_response_url = "".join(api_response["url"])
 
             if "Elle a été marquée comme étant du phishing" in api_response_url:
-                self.report("phishing")
+                self.report({"status":"phishing"})
             elif "Elle est en cours d'analyse" in api_response_url:
-                self.report("analyzing")
+                self.report({"status":"analyzing"})
             elif "Elle n'est pas considérée comme étant du phishing" in api_response_url:
-                self.report("clean")
+                self.report({"status":"clean"})
             else:
-                self.report("report")
+                self.report({"status":"report"})
         except Exception:
             self.unexpectedError("Service unavailable")
 
