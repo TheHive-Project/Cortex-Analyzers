@@ -41,9 +41,7 @@ class VMRayAnalyzer(Analyzer):
             if self.disable_reanalyze:
                 if len(submit_report['data']['errors']) > 0:
                     if submit_report['result'] == 'ok':
-                        self.error('Sample was already submitted before and reanalization is disabled. Find it '
-                                   '<a href="{}">here</a>.'
-                                   .format(submit_report['data']['samples'][0]['sample_webif_url']))
+                        self.report({'submitreport': {'link': submit_report['data']['samples'][0]['sample_webif_url']}})
                     else:
                         self.error('Error while submitting sample to VMRay: {}.'
                                    .format([error_msg for error_msg in submit_report['data']['errors']]))
