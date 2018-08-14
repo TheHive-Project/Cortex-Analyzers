@@ -12,8 +12,8 @@ class IntelmqFodyAnalyzer(Analyzer):
         self._password = self.get_param('config.password', None, 'No password given.')
         cert_check = self.get_param('config.cert_check', True)
         cert_path = self.get_param('config.cert_path', None)
-        ssl_verify = cert_path if cert_path and cert_check else cert_check
-        if not ssl_verify:
+        self.ssl_verify = cert_path if cert_path and cert_check else cert_check
+        if not self.ssl_verify:
             with catch_warnings():
                 simplefilter('ignore')
                 self._client = IMQFody(
@@ -79,14 +79,19 @@ class IntelmqFodyAnalyzer(Analyzer):
         })
 
     def run(self):
-        if self._service == 'eventSourceSearch':
-            self._search_event_source()
-        elif self._service == 'eventDestinationSearch':
-            self._search_event_destination()
-        elif self._service == 'contactDBSearch':
-            self._search_contact_db()
-        else:
-            self.error('Service {} not supported by analyzer.'.format(self._service))
+        with catch_warnings():
+            if not self.ssl_verify:
+                simplefilter('ignore')
+            else:
+                simplefilter('error')
+            if self._service == 'eventSourceSearch':
+                self._search_event_source()
+            elif self._service == 'eventDestinationSearch':
+                self._search_event_destination()
+            elif self._service == 'contactDBSearch':
+                self._search_contact_db()
+            else:
+                self.error('Service {} not supported by analyzer.'.format(self._service))
 
 
 if __name__ == '__main__':
