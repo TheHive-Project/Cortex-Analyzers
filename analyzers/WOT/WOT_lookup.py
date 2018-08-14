@@ -77,7 +77,7 @@ class WOTAnalyzer(Analyzer):
             else:
                 level = "malicious"
 
-        taxonomies.append(self.build_taxonomy(level, "WOT", "Category", "\"{}\"".format(value)))
+        taxonomies.append(self.build_taxonomy(level, "WOT", "Category", "{}".format(value)))
         return {"taxonomies": taxonomies}
 
     def run(self):

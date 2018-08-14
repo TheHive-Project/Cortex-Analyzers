@@ -5,7 +5,7 @@
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
   "version": "2.0",
   "description": "Checks CERT.at Passive DNS for a given domain.",
-  "dataTypeList": ["domain", "fqdn"],
+  "dataTypeList": ["domain", "fqdn", "ip"],
   "baseConfig": "CERTatPassiveDNS",
   "command": "CERTatPassiveDNS/certat_passivedns.py",
   "configurationItems": [

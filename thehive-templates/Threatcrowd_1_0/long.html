@@ -1,0 +1,73 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        Threatcrowd analysis for 
+        <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body" ng-if="content.permalink">
+        <h4 class="dl-horizontal">
+            Votes :  <strong>{{content.votes}}</strong>
+            <br/>
+            <a href="{{content.permalink}}">View report on threatcrowd.org</a>
+        </h4>
+        <table class="table table-bordered" ng-if="content.references">
+            <tr>
+                <th>References</th>
+            </tr>
+            <tr ng-repeat="ref in ::content.references">
+				<td>{{ref}}</td>
+			</tr>
+        </table>
+        <table class="table table-bordered" ng-if="content.domains">
+            <tr>
+                <th>Domains</th>
+            </tr>
+            <tr ng-repeat="dom in ::content.domains">
+                <td>{{dom}}</td>
+			</tr>
+        </table>
+        <table class="table table-bordered"  ng-if="content.subdomains">
+            <tr>
+                <th>Subdomains</th>
+            </tr>
+            <tr ng-repeat="dom in ::content.subdomains">
+                <td>{{dom}}</td>
+			</tr>
+        </table>
+        <table class="table table-bordered" ng-if="content.emails">
+            <tr>
+                <th>Emails</th>
+            </tr>
+            <tr ng-repeat="email in ::content.emails">
+                <td>{{email}}</td>
+			</tr>
+        </table>
+        <table class="table table-bordered"  ng-if="content.resolutions">
+            <tr>
+                <th colspan="3">Resolutions</th>
+            </tr>
+            <tr>
+                <th>Last resolved</th>
+                <th>Domain</th>
+                <th>Ip</th>
+            </tr>
+            <tr ng-repeat="res in ::content.resolutions">
+                <td>{{res.last_resolved}}</td>
+                <td>{{res.domain}}</td>
+                <td>{{res.ip_address}}</td>
+			</tr>
+        </table>
+    </div>
+
+    <div class="panel-body" ng-if="!content.permalink">
+        No result found
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

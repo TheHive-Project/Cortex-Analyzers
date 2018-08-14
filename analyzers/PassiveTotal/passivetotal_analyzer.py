@@ -31,7 +31,7 @@ class PassiveTotalAnalyzer(Analyzer):
             else:
                 result['malware'] = False
                 level = "safe"
-            value = "\"{}\"".format(result['malware'])
+            value = "{}".format(result['malware'])
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         # osint service
@@ -41,7 +41,7 @@ class PassiveTotalAnalyzer(Analyzer):
                 result['osint'] = True
             else:
                 result['osint'] = False
-            value = "\"{}\"".format(result['osint'])
+            value = "{}".format(result['osint'])
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         # passive dns service
@@ -53,9 +53,9 @@ class PassiveTotalAnalyzer(Analyzer):
                 result['total'] = 0
 
             if result['total'] < 2:
-                value = "\"{} record\"".format(result['total'])
+                value = "{} record".format(result['total'])
             else:
-                value = "\"{} records\"".format(result['total'])
+                value = "{} records".format(result['total'])
 
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
@@ -66,7 +66,7 @@ class PassiveTotalAnalyzer(Analyzer):
                 result['ssl'] = True
             else:
                 result['ssl'] = False
-            value = "\"{}\"".format(result['ssl'])
+            value = "{}".format(result['ssl'])
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         # ssl certificate history service
@@ -75,7 +75,7 @@ class PassiveTotalAnalyzer(Analyzer):
             if 'results' in raw and raw['results']:
                 result['ssl'] = True
                 result['total'] = len(raw['results'])
-                value = "\"{} record(s)\"".format(result['total'])
+                value = "{} record(s)".format(result['total'])
                 taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         # unique resolutions service
@@ -83,7 +83,7 @@ class PassiveTotalAnalyzer(Analyzer):
             predicate = "UniqueResolution"
             if 'total' in raw:
                 result['total'] = raw['total']
-                value = "\"{} record(s)\"".format(result['total'])
+                value = "{} record(s)".format(result['total'])
                 taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         # whois details service
@@ -91,11 +91,11 @@ class PassiveTotalAnalyzer(Analyzer):
             predicate = "Whois"
             if 'registrant' in raw and 'organization' in raw['registrant'] and raw['registrant']['organization']:
                 result['registrant'] = raw['registrant']['organization']
-                value = "\"REGISTRANT: {}\"".format(result['registrant'])
+                value = "REGISTRANT: {}".format(result['registrant'])
                 taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
             if 'registrar' in raw and raw['registrar']:
                 result['registrar'] = raw['registrar']
-                value = "\"REGISTRAR: {}\"".format(result['registrar'])
+                value = "REGISTRAR: {}".format(result['registrar'])
                 taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         return {"taxonomies": taxonomies}

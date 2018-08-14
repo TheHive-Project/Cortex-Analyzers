@@ -1,0 +1,17 @@
+{
+    "name": "Mnemonic_pDNS_Public",
+    "version": "3.0",
+    "author": "Michael Stensrud, Nordic Financial CERT",
+    "url": "https://passivedns.mnemonic.no/search",
+    "license" : "AGPL-V3",
+    "description": "Query IP addresses and domains against Mnemonic pDNS public service.",
+    "dataTypeList": ["ip", "domain"],
+    "command": "MnemonicPDNS/pdns.py",
+    "baseConfig": "Mnemonic_pDNS",
+    "config": {
+        "check_tlp": true,
+        "service": "public"
+    },
+    "configurationItems": [
+    ]
+}

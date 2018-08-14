@@ -1,0 +1,37 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+
+<div class="panel panel-primary" ng-if="success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+		<dl class="dl-horizontal">
+			<dt>Domaintools Reputation</dt>
+			<dd>
+                <span class="label" ng-class="{'label-success' : content.risk_score == 0,  'label-warning' :  content.risk_score > 0 && content.risk_score <= 50,
+                            'label-danger': content.risk_score > 50}">
+                    {{content.risk_score}}
+                </span>
+
+            </dd>
+		</dl>
+        <dl ng-if="content.reasons" class="dl-horizontal">
+			<dt>Reasons</dt>
+			<dd>
+                <span ng-repeat="r in content.reasons " class="label label-primary mr-xxxs">
+                    {{r}}
+                </span>
+
+            </dd>
+		</dl>
+
+    </div>
+</div>

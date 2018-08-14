@@ -67,6 +67,10 @@
                             <a ng-href="https://www.virustotal.com/#/file/{{artifact.data}}/detection" target="_blank">
                                 View Full Report</a>
                         </span>
+                        <span ng-if="artifact.dataType === 'url'">
+                            <i class="fa fa-search"></i>
+                            <a ng-href="{{content.permalink}}" target="_blank">View Full Report</a>
+                        </span>
                     </dd>
                 </dl>
             </div>

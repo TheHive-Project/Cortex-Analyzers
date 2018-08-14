@@ -1,0 +1,2 @@
+cortexutils;python_version>='3.5'
+git+https://github.com/jeromeleonard/eml_parser.git

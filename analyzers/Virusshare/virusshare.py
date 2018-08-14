@@ -28,13 +28,13 @@ class VirusshareAnalyzer(Analyzer):
 
         if raw["isonvs"]:
             if raw["isonvs"] == "unknown":
-                value = "\"Not MD5\""
+                value = "Not MD5"
                 level = "suspicious"
             else:
-                value = "\"Found\""
+                value = "Found"
                 level = "malicious"
         else:
-            value = "\"Not Found\""
+            value = "Not Found"
 
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         return {'taxonomies': taxonomies}
