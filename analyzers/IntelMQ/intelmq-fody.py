@@ -20,14 +20,14 @@ class IntelmqFodyAnalyzer(Analyzer):
                     url=self._url,
                     username=self._username,
                     password=self._password,
-                    sslverify=ssl_verify
+                    sslverify=self.ssl_verify
                 )
         else:
             self._client = IMQFody(
                 url=self._url,
                 username=self._username,
                 password=self._password,
-                sslverify=ssl_verify
+                sslverify=self.ssl_verify
             )
         self._service = self.get_param('config.service', None, 'No service given.')
 
