@@ -1,0 +1,10 @@
+cortexutils
+python-magic
+ssdeep
+pyexifinfo
+pefile
+git+https://github.com/AnyMaster/pehashng
+git+https://github.com/Rafiot/pdfid.git
+oletools>=0.52
+git+https://github.com/mattgwwalker/msg-extractor.git
+IMAPClient

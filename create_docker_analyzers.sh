@@ -2,10 +2,6 @@
 for analyzer in $(ls -1 analyzers); do
 
     # Skip currently not supported analyzers or analyzers that need some kind of custom image
-    if [ ${analyzer} = 'File_Info' ]; then
-        echo "[-] Skipping File_Info."
-        continue
-    fi
     if [ ${analyzer} = 'Yara' ]; then
         echo "[-] Skipping Yara."
         continue

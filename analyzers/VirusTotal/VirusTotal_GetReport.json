@@ -9,7 +9,8 @@
     "file",
     "hash",
     "domain",
-    "ip"
+    "ip",
+    "url"
   ],
   "command": "VirusTotal/virustotal.py",
   "baseConfig": "VirusTotal",

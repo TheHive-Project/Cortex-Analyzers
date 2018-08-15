@@ -12,7 +12,7 @@ class YetiAnalyzer(Analyzer):
 
     def summary(self, raw):
         count = len(raw.get('findings', []))
-        value = "\"{} hit{}\"".format(count, "(s)" if count > 1 else "")
+        value = "{} hit{}".format(count, "(s)" if count > 1 else "")
 
         result = {
             "taxonomies": [{

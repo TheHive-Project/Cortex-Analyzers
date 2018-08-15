@@ -4,12 +4,12 @@
   "author": "Nils Kuhnert",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Check IPs using the Robtex reverse passive dns API",
+  "description": "Check IPs using the Robtex reverse passive DNS API.",
   "dataTypeList": [
     "ip"
   ],
-  "command": "Robtex/robtex.py",
   "baseConfig": "Robtex",
+  "command": "Robtex/robtex.py",
   "config": {
     "service": "rpdnsquery"
   },

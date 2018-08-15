@@ -3,6 +3,7 @@
 
 from cortexutils.analyzer import Analyzer
 
+import hashlib
 import requests
 import time
 
@@ -59,8 +60,10 @@ class EmergingThreatsAnalyzer(Analyzer):
         Analyzer.run(self)
         info = {}
         try:
-            object_name = self.get_data()
-            if self.data_type == 'domain':
+            if self.data_type != 'file':
+                object_name = self.get_data()
+
+            if self.data_type in ['domain', 'fqdn']:
                 url = "https://api.emergingthreats.net/v1/domains/"
                 features = {'reputation', 'urls', 'samples', 'ips', 'events', 'nameservers', 'whois', 'geoloc'}
 
@@ -68,9 +71,21 @@ class EmergingThreatsAnalyzer(Analyzer):
                 url = "https://api.emergingthreats.net/v1/ips/"
                 features = {'reputation', 'urls', 'samples', 'domains', 'events', 'geoloc'}
 
-            elif self.data_type == 'malware':
+            elif self.data_type == 'hash':
                 url = "https://api.emergingthreats.net/v1/samples/"
-                features = {'', 'connections', 'dns', 'events'}
+                features = {'', 'connections', 'dns', 'http', 'events'}
+
+            elif self.data_type == 'file':
+                url = "https://api.emergingthreats.net/v1/samples/"
+                features = {'', 'connections', 'dns', 'http', 'events'}
+                hashes = self.get_param('attachment.hashes', None)
+                if hashes is None:
+                    filepath = self.get_param('file', None, 'File is missing')
+                    object_name = hashlib.md5(open(filepath, 'r').read()).hexdigest()
+                else:
+                    # find MD5 hash
+                    object_name = next(h for h in hashes if len(h) == 32)
+
             else:
                 self.error('Invalid data type !')
 

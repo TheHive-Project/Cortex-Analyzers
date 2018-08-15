@@ -51,7 +51,7 @@ class YaraAnalyzer(Analyzer):
         namespace = "Yara"
         predicate = "Match"
 
-        value = "\"{} rule(s)\"".format(len(raw["results"]))
+        value = "{} rule(s)".format(len(raw["results"]))
         if len(raw["results"]) == 0:
             level = "safe"
         else:

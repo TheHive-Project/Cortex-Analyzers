@@ -23,7 +23,7 @@ class PhishtankAnalyzer(Analyzer):
         level = "info"
 
         if 'in_database' in raw and raw['in_database'] is True:
-            value = "\"{}\"".format(raw['in_database'])
+            value = "{}".format(raw['in_database'])
             if raw.get('verified') and raw.get('valid'):
                 level = "malicious"
             elif raw.get('verified') and raw.get('valid') is False:
@@ -31,7 +31,7 @@ class PhishtankAnalyzer(Analyzer):
             else:
                 level = "suspicious"
         else:
-            value = "\"False\""
+            value = "False"
 
         taxonomies.append(self.build_taxonomy(level, "PhishTank", "In_Database", value))
 

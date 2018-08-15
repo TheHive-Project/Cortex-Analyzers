@@ -13,7 +13,7 @@ class PayloadSecurityAnalyzer(Analyzer):
         self.url = self.get_param('config.url', None, 'PayloadSecurity url is missing')
         self.apikey = self.get_param('config.key', None, 'PayloadSecurity apikey is missing')
         self.secret = self.get_param('config.secret', None, 'PayloadSecurity secret is missing')
-        self.environmentid = self.get_param('config.environmentid', None, 'PayloadSecurity environmentid is missing')
+        self.environmentid = self.get_param('config.environmentId', None, 'PayloadSecurity environmentId is missing')
         self.timeout = self.get_param('config.timeout', 15, None)
         self.verify = self.get_param('config.verifyssl', True, None)
         if not self.verify:
@@ -25,7 +25,7 @@ class PayloadSecurityAnalyzer(Analyzer):
         level = "safe"
         namespace = "PayloadSecurity"
         predicate = "ThreatScore"
-        value = "\"0/100\""
+        value = "0/100"
 
         result = {
             'service': self.data_type + '_analysis',
@@ -43,7 +43,7 @@ class PayloadSecurityAnalyzer(Analyzer):
             level = 'safe'
 
         if result.get('threatscore'):
-            value = '\"{}/100\"'.format(result['threatscore'])
+            value = '{}/100'.format(result['threatscore'])
 
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 

@@ -7,3 +7,11 @@ thehive-templates/*.sh
 .DS_Store
 
 Cortex-analyzers.iml
+
+# python-venv
+bin
+lib
+lib64
+pyvenv.cfg
+share
+

@@ -159,7 +159,7 @@ class CymonAnalyzer(Analyzer):
         level = "malicious"
         namespace = "Cymon.io"
         predicate = "Report"
-        value = "\"\""
+        value = ""
 
         for elm in raw_report["Founds"]:
             if raw_report["Founds"][elm]:

@@ -96,7 +96,7 @@ class MalpediaAnalyzer(Analyzer):
         namespace = "Malpedia"
         predicate = "Match"
 
-        value = "\"{} rule(s)\"".format(len(raw["results"]))
+        value = "{} rule(s)".format(len(raw["results"]))
         if len(raw["results"]) == 0:
             level = "safe"
         else:

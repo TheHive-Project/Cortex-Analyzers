@@ -15,7 +15,7 @@ class URLCategoryAnalyzer(Analyzer):
 
         if 'category' in raw:
             r = raw.get('category')
-            value = "\"{}\"".format(r)
+            value = "{}".format(r)
             if r == "Malicious Websites":
                 level = "malicious"
             elif r == "Suspicious Websites":

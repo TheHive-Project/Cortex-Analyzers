@@ -2,8 +2,8 @@
   "name": "VMRay",
   "license": "AGPL-V3",
   "author": "Nils Kuhnert, CERT-Bund",
-  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-  "version": "2.0",
+  "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+  "version": "3.0",
   "description": "VMRay Sandbox file analysis.",
   "dataTypeList": [
     "hash",
@@ -46,7 +46,7 @@
       "required": true
     },
     {
-      "name": "certpath",
+      "name": "certverify",
       "description": "Verify certificates",
       "type": "boolean",
       "multi": false,
@@ -54,8 +54,15 @@
       "defaultValue": true
     },
     {
+      "name": "certpath",
+      "description": "Path to certificate file, in case of self-signed etc.",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
       "name": "disablereanalyze",
-      "description": "Define if reanalyze is required or not",
+      "description": "If set to true, samples won't get re-analyzed.",
       "type": "boolean",
       "multi": false,
       "required": false,

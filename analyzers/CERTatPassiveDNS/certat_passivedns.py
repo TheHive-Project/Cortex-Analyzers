@@ -26,9 +26,9 @@ class CERTatPassiveDNSAnalyzer(Analyzer):
         results = raw.get('results')
         r = len(results)
         if r == 0 or r == 1:
-            value = "\"{} hit\"".format(r)
+            value = "{} hit".format(r)
         else:
-            value = "\"{} hits\"".format(r)
+            value = "{} hits".format(r)
 
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         return {"taxonomies": taxonomies}

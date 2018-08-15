@@ -45,6 +45,12 @@ class DomainToolsAnalyzer(Analyzer):
         elif self.service == 'whois/parsed' and self.data_type == 'domain':
             response = api.parsed_whois(data).response()
 
+        elif self.service == 'risk_evidence' and self.data_type in ['domain', 'fqdn']:
+            response = api.risk_evidence(data).response()
+
+        elif self.service == 'reputation' and self.data_type in ['domain', 'fqdn']:
+            response = api.reputation(data, include_reasons=True).response()
+
         elif self.service == 'reverse-whois':
             response = api.reverse_whois(data, mode='purchase').response()
 
@@ -91,34 +97,53 @@ class DomainToolsAnalyzer(Analyzer):
             r["name_server"] = raw["name_server"]["hostname"]
             r["domain_count"] = raw["name_server"]["total"]
 
+        if "risk_score" in raw:
+            r["risk_score"] = raw["risk_score"]
+            if "reasons" in raw:
+                r["reputation"] = True
+
         taxonomies = []
 
         # Prepare predicate and value for each service
         if r["service"] in ["reverse-ip", "host-domains"]:
             taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_IP",
-                                                  "\"{}, {} domains\"".format(r["ip"]["address"],
+                                                  "{}, {} domains".format(r["ip"]["address"],
                                                                               r["ip"]["domain_count"])))
 
         if r["service"] == "name-server-domains":
             taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_Name_Server",
-                                                  "\"{}, {} domains\"".format(r["name_server"], r["domain_count"])))
+                                                  "{}, {} domains".format(r["name_server"], r["domain_count"])))
 
         if r["service"] == "reverse-whois":
             taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_Whois",
-                                                  "\"curr:{} / hist:{} domains\"".format(r["domain_count"]["current"],
+                                                  "curr:{} / hist:{} domains".format(r["domain_count"]["current"],
                                                                                          r["domain_count"][
                                                                                              "historic"])))
 
         if r["service"] == "whois/history":
             taxonomies.append(self.build_taxonomy("info", "DT", "Whois_History",
-                                                  "\"{}, {} domains \"".format(r["name_server"], r["domain_count"])))
+                                                  "{}, {} domains ".format(r["name_server"], r["domain_count"])))
 
         if r["service"] == "whois/parsed" or r['service'] == "whois":
             if r["registrar"]:
-                taxonomies.append(self.build_taxonomy("info", "DT", "Whois", "\"REGISTRAR:{}\"".format(r["registrar"])))
+                taxonomies.append(self.build_taxonomy("info", "DT", "Whois", "REGISTRAR:{}".format(r["registrar"])))
             if r["registrant"]:
                 taxonomies.append(
-                    self.build_taxonomy("info", "DT", "Whois", "\"REGISTRANT:{}\"".format(r["registrant"])))
+                    self.build_taxonomy("info", "DT", "Whois", "REGISTRANT:{}".format(r["registrant"])))
+
+
+        if "risk_score" in r:
+            risk_service = "Risk"
+            if "reputation" in r:
+                risk_service = "Reputation"
+            if r["risk_score"] == 0:
+                level = "safe"
+            elif 0 < r["risk_score"] <= 50:
+                level = "suspicious"
+            elif r["risk_score"] > 50:
+                level = "malicious"
+            taxonomies.append(
+                self.build_taxonomy(level, "DT", risk_service, "{}".format(r["risk_score"])))
 
         result = {'taxonomies': taxonomies}
         return result

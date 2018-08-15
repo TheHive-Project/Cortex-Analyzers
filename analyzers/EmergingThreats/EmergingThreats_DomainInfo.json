@@ -6,7 +6,8 @@
   "license": "AGPL-V3",
   "description": "Retrieve ET reputation, related malware, and IDS requests for a given domain.",
   "dataTypeList": [
-    "domain"
+    "domain",
+    "fqdn"
   ],
   "command": "EmergingThreats/emergingthreats_analyzer.py",
   "baseConfig": "EmergingThreats",

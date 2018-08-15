@@ -79,9 +79,9 @@ class CIRCLPassiveSSLAnalyzer(Analyzer):
             r = len(raw['certificates'])
 
         if r == 0 or r == 1:
-            value = "\"{} record\"".format(r)
+            value = "{} record".format(r)
         else:
-            value = "\"{} records\"".format(r)
+            value = "{} records".format(r)
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         return {"taxonomies": taxonomies}

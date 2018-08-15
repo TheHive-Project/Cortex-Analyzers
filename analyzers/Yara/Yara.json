@@ -32,7 +32,7 @@
       "name": "rules",
       "description": "Define the path rules folder",
       "type": "string",
-      "multi": false,
+      "multi": true,
       "required": true
     }
   ]

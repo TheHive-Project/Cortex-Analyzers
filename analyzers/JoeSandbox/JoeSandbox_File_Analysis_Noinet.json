@@ -50,7 +50,15 @@
       "type": "number",
       "multi": false,
       "required": true,
-      "defaultValue": 240
+      "defaultValue": 1800
+    },
+    {
+      "name": "networktimeout",
+      "description": "Network timeout (second)",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 30
     }
   ]
 }

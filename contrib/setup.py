@@ -2,8 +2,8 @@ from setuptools import setup
 
 setup(
     name='cortexutils',
-    version='1.2.4',
-    description='A Python library for including utility classes for Cortex analyzers',
+    version='1.3.0',
+    description='A Python library for including utility classes for Cortex analyzers and responders',
     long_description=open('README').read(),
     author='TheHive-Project',
     author_email='support@thehive-project.org',
@@ -22,7 +22,9 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules'],
     py_modules=[
         'future',
+        'cortexutils.worker',
         'cortexutils.analyzer',
+        'cortexutils.responder',
         'cortexutils.extractor'
     ],
     install_requires=[],

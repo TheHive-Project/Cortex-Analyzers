@@ -15,11 +15,11 @@ class PhishingInitiativeAnalyzer(Analyzer):
         level = "safe"
         namespace = "PhishingInitiative"
         predicate = "Status"
-        value = "\"Clean\""
+        value = "Clean"
 
         if raw["tag_label"] == "phishing":
             level = "malicious"
-            value = "\"{}\"".format(raw["tag_label"])
+            value = "{}".format(raw["tag_label"])
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         return {"taxonomies": taxonomies}
 

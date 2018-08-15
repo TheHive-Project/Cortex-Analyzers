@@ -27,16 +27,16 @@ class ShodanAnalyzer(Analyzer):
                 taxonomies.append(self.build_taxonomy(level, namespace, 'ASN', raw['host']['asn']))
         elif self.data_type == 'domain':
             if 'ips' in raw['infos_domain']:
-                value = "\"{}\"".format(len(raw['infos_domain']['ips']))
+                value = "{}".format(len(raw['infos_domain']['ips']))
                 taxonomies.append(self.build_taxonomy(level, namespace, 'IPs', value))
             if 'all_domains' in raw['infos_domain']:
-                value = "\"{}\"".format(len(raw['infos_domain']['all_domains']))
+                value = "{}".format(len(raw['infos_domain']['all_domains']))
                 taxonomies.append(self.build_taxonomy(level, namespace, 'Domains', value))
             if 'asn' in raw['infos_domain']:
-                value = "\"{}\"".format(len(raw['infos_domain']['asn']))
+                value = "{}".format(len(raw['infos_domain']['asn']))
                 taxonomies.append(self.build_taxonomy(level, namespace, 'ASNs', value))
             if 'isp' in raw['infos_domain']:
-                value = "\"{}\"".format(len(raw['infos_domain']['isp']))
+                value = "{}".format(len(raw['infos_domain']['isp']))
                 taxonomies.append(self.build_taxonomy(level, namespace, 'ISPs', value))
 
         return {'taxonomies': taxonomies}
