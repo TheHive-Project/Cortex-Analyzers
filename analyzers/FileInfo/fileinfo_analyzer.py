@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 import pyexifinfo
 import magic
+import os
 
 from cortexutils.analyzer import Analyzer
 from submodules import available_submodules
 from submodules.submodule_metadata import MetadataSubmodule
+from submodules.submodule_manalyze import ManalyzeSubmodule
 
 
 class FileInfoAnalyzer(Analyzer):
@@ -14,6 +16,23 @@ class FileInfoAnalyzer(Analyzer):
         self.filename = self.get_param('filename', None, 'Filename is missing.')
         self.filetype = pyexifinfo.fileType(self.filepath)
         self.mimetype = magic.Magic(mime=True).from_file(self.filepath)
+
+        # Check if manalyze submodule is enabled
+        if self.get_param('manalyze_enable', False):
+            if self.get_param('manalyze_enable_docker', False):
+                available_submodules.append(
+                    ManalyzeSubmodule(
+                        use_docker=True
+                    )
+                )
+            elif self.get_param('manalyze_enable_binary', False) and self.get_param('manalyze_binary_path', None) \
+                    and os.path.isfile(self.get_param('manalyze_binary_path')):
+                available_submodules.append(
+                    ManalyzeSubmodule(
+                        use_binary=True,
+                        binary_path=self.get_param('manalyze_binary_path')
+                    )
+                )
 
     def summary(self, raw):
         taxonomies = []

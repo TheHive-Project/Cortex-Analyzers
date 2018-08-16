@@ -1,6 +1,6 @@
 {
   "name": "FileInfo",
-  "version": "3.0",
+  "version": "4.0",
   "author": "TheHive-Project",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -18,7 +18,28 @@
       "default": false
     },
     {
-      "name": "manalyze_enable_docker"
+      "name": "manalyze_enable_docker",
+      "description": "Use docker to run Manalyze.",
+      "type": "boolean",
+      "required": false,
+      "multi": false,
+      "default": false
+    },
+    {
+      "name": "manalyze_enable_binary",
+      "description": "Use local binary to run Manalyze. Need to compile it before!",
+      "type": "boolean",
+      "required": false,
+      "multi": false,
+      "default": true
+    },
+    {
+      "name": "manalyze_binary_path",
+      "description": "Path to the Manalyze binary that was compiled before",
+      "type": "string",
+      "required": false,
+      "multi": false,
+      "default": "/opt/Cortex-Analyzers/utils/manalyze/bin/manalyze"
     }
   ]
 }
