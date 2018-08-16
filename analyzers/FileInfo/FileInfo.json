@@ -9,6 +9,17 @@
   "baseConfig": "FileInfo",
   "command": "FileInfo/fileinfo_analyzer.py",
   "configurationItems": [
+    {
+      "name": "manalyze_enable",
+      "description": "Wether to enable manalyze submodule or not.",
+      "type": "boolean",
+      "required": false,
+      "multi": false,
+      "default": false
+    },
+    {
+      "name": "manalyze_enable_docker"
+    }
   ]
 }
 

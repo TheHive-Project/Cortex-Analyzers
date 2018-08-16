@@ -21,8 +21,6 @@ class FileInfoAnalyzer(Analyzer):
             taxonomies += submodule['summary']['taxonomies']
         return {'taxonomies': taxonomies}
 
-
-
     def run(self):
         results = []
 
@@ -41,8 +39,8 @@ class FileInfoAnalyzer(Analyzer):
                 module_results = module.analyze_file(self.filepath)
                 module_summaries = module.module_summary()
                 results.append({
-                   'submodule_name': module.name,
-                   'results': module_results,
+                    'submodule_name': module.name,
+                    'results': module_results,
                     'summary': module_summaries
                 })
 
