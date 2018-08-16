@@ -34,7 +34,7 @@ class ManalyzeSubmodule(SubmoduleBaseclass):
             '--pe {}'.format(filepath),
             '--plugins=clamav,compilers,peid,strings,findcrypt,btcaddress,packer,imports,resources,mitigation,authenticode',
             '--output json'
-        ], subprocess.PIPE)
+        ], subprocess.PIPE, cwd=os.path.split(self.binary_path)[0])
         result = sp.communicate()
         result = json.loads(result)
         return result[0]
