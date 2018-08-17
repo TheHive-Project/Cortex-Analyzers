@@ -18,15 +18,16 @@ class FileInfoAnalyzer(Analyzer):
         self.mimetype = magic.Magic(mime=True).from_file(self.filepath)
 
         # Check if manalyze submodule is enabled
-        if self.get_param('manalyze_enable', False, 'Parameter manalyze_enable not given.'
-                                                    'Please enable or disable manalyze submodule explicitly.'):
-            if self.get_param('manalyze_enable_docker', False):
+        if self.get_param('config.manalyze_enable', False, 'Parameter manalyze_enable not given.'
+                                                           'Please enable or disable manalyze submodule explicitly.'):
+            if self.get_param('config.manalyze_enable_docker', False):
                 available_submodules.append(
                     ManalyzeSubmodule(
                         use_docker=True
                     )
                 )
-            elif self.get_param('manalyze_enable_binary', False) and self.get_param('manalyze_binary_path', None) \
+            elif self.get_param('config.manalyze_enable_binary', False) \
+                    and self.get_param('manalyze_binary_path', None) \
                     and os.path.isfile(self.get_param('manalyze_binary_path')):
                 available_submodules.append(
                     ManalyzeSubmodule(
