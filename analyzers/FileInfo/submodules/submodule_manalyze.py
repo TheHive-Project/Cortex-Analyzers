@@ -70,6 +70,7 @@ class ManalyzeSubmodule(SubmoduleBaseclass):
             'Exploit mitigation techniques',
             results.get('Plugins', {}).get('mitigation', {}).get('plugin_output', None)
         )
+        self.add_result_subsection('Manalyze raw output', json.dumps(results, indent=4))
 
     def analyze_file(self, path):
         results = {}
