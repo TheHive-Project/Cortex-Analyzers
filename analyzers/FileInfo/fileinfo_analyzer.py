@@ -18,7 +18,8 @@ class FileInfoAnalyzer(Analyzer):
         self.mimetype = magic.Magic(mime=True).from_file(self.filepath)
 
         # Check if manalyze submodule is enabled
-        if self.get_param('manalyze_enable', False):
+        if self.get_param('manalyze_enable', False, 'Parameter manalyze_enable not given.'
+                                                    'Please enable or disable manalyze submodule explicitly.'):
             if self.get_param('manalyze_enable_docker', False):
                 available_submodules.append(
                     ManalyzeSubmodule(
@@ -33,6 +34,9 @@ class FileInfoAnalyzer(Analyzer):
                         binary_path=self.get_param('manalyze_binary_path')
                     )
                 )
+            else:
+                self.error('Manalyze submodule is enabled, but either there is no method allowed (docker or binary)'
+                           'or the path to binary is not correct.')
 
     def summary(self, raw):
         taxonomies = []
