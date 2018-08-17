@@ -40,7 +40,7 @@ class ManalyzeSubmodule(SubmoduleBaseclass):
         ], stdout=subprocess.PIPE, cwd=os.path.split(self.binary_path)[0])
         result = sp.stdout
         result = json.loads(result.decode('utf-8'))
-        return result[result.keys()[0]]
+        return result[filepath]
 
     def run_docker_manalyze(self, filepath):
         filepath, filename = os.path.split(filepath)
@@ -60,7 +60,7 @@ class ManalyzeSubmodule(SubmoduleBaseclass):
         ], stdout=subprocess.PIPE)
         result = sp.stdout
         result = json.loads(result.decode('utf-8'))
-        return result[os.path.join(filepath, filename)]
+        return result[result.keys()[0]]
 
     def build_results(self, results):
         """Properly format the results"""
