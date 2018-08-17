@@ -16,9 +16,7 @@ class ManalyzeSubmodule(SubmoduleBaseclass):
         self.use_binary = kwargs.get('use_binary', False)
         self.binary_path = kwargs.get('binary_path', None)
 
-        self.name = 'Manalyze ({})'.format(
-            'Binary' if self.use_binary else 'Docker'
-        )
+        self.name = 'Manalyze'
 
     def check_file(self, **kwargs):
         """
@@ -68,7 +66,27 @@ class ManalyzeSubmodule(SubmoduleBaseclass):
         """Properly format the results"""
         self.add_result_subsection(
             'Exploit mitigation techniques',
-            results.get('Plugins', {}).get('mitigation', {}).get('plugin_output', None)
+            {
+                'level': results.get('Plugins', {}).get('mitigation', {}).get('level', None),
+                'summary': results.get('Plugins', {}).get('mitigation', {}).get('summary', None),
+                'content': results.get('Plugins', {}).get('mitigation', {}).get('plugin_output', None)
+            }
+        )
+        self.add_result_subsection(
+            'Suspicious strings',
+            {
+                'level': results.get('Plugins', {}).get('strings', {}).get('level', None),
+                'summary': results.get('Plugins', {}).get('strings', {}).get('summary', None),
+                'content': results.get('Plugins', {}).get('strings', {}).get('plugin_output', None)
+            }
+        )
+        self.add_result_subsection(
+            'Suspicious imports',
+            {
+                'level': results.get('Plugins', {}).get('imports', {}).get('level', None),
+                'summary': results.get('Plugins', {}).get('imports', {}).get('summary', None),
+                'content': results.get('Plugins', {}).get('imports', {}).get('plugin_output', None)
+            }
         )
         self.add_result_subsection('Manalyze raw output', json.dumps(results, indent=4))
 
