@@ -16,6 +16,10 @@ class ManalyzeSubmodule(SubmoduleBaseclass):
         self.use_binary = kwargs.get('use_binary', False)
         self.binary_path = kwargs.get('binary_path', None)
 
+        self.name = 'Manalyze ({})'.format(
+            'Binary' if self.use_binary else 'Docker'
+        )
+
     def check_file(self, **kwargs):
         """
         Manalyze is for PE files.
@@ -60,9 +64,18 @@ class ManalyzeSubmodule(SubmoduleBaseclass):
         result = json.loads(result.decode('utf-8'))
         return result[os.path.join(filepath, filename)]
 
+    def build_results(self, results):
+        """Properly format the results"""
+        self.add_result_subsection(
+            'Exploit mitigation techniques',
+            results.get('Plugins', {}).get('mitigation', {}).get('plugin_output', None)
+        )
+
     def analyze_file(self, path):
+        results = {}
         if self.use_docker:
-            self.add_result_subsection('Manalyze (Docker)', self.run_docker_manalyze(path))
+            results = self.run_docker_manalyze(path)
         elif self.use_binary and self.binary_path and self.binary_path != '':
-            self.add_result_subsection('Manalyze (Binary)', self.run_local_manalyze(path))
+            results = self.run_local_manalyze(path)
+        self.build_results(results)
         return self.results
