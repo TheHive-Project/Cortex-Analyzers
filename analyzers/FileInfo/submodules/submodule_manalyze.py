@@ -28,21 +28,21 @@ class ManalyzeSubmodule(SubmoduleBaseclass):
         return False
 
     def run_local_manalyze(self, filepath):
-        sp = subprocess.Popen([
+        sp = subprocess.run([
             self.binary_path,
             '--dump=imports,exports,sections',
             '--hashes',
-            '--pe {}'.format(filepath),
+            '--pe={}'.format(filepath),
             '--plugins=clamav,compilers,peid,strings,findcrypt,btcaddress,packer,imports,resources,mitigation,authenticode',
-            '--output json'
-        ], subprocess.PIPE, cwd=os.path.split(self.binary_path)[0])
-        result = sp.communicate()
-        result = json.loads(result)
-        return result[0]
+            '--output=json'
+        ], stdout=subprocess.PIPE, cwd=os.path.split(self.binary_path)[0])
+        result = sp.stdout
+        result = json.loads(result.decode('utf-8'))
+        return result[filepath]
 
     def run_docker_manalyze(self, filepath):
         filepath, filename = os.path.split(filepath)
-        sp = subprocess.Popen([
+        sp = subprocess.run([
             'docker',
             'run',
             '--rm',
@@ -52,13 +52,13 @@ class ManalyzeSubmodule(SubmoduleBaseclass):
             '/Manalyze/bin/manalyze',
             '--dump=imports,exports,sections',
             '--hashes',
-            '--pe /data/{}'.format(filename),
+            '--pe=/data/{}'.format(filename),
             '--plugins=clamav,compilers,peid,strings,findcrypt,btcaddress,packer,imports,resources,mitigation,authenticode',
-            '--output json'
-        ], subprocess.PIPE)
-        result = sp.communicate()
-        result = json.loads(result)
-        return result[0]
+            '--output=json'
+        ], stdout=subprocess.PIPE)
+        result = sp.stdout
+        result = json.loads(result.decode('utf-8'))
+        return result[os.path.join(filepath, filename)]
 
     def analyze_file(self, path):
         if self.use_docker:
