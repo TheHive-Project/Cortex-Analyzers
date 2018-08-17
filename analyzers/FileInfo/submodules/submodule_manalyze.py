@@ -60,7 +60,7 @@ class ManalyzeSubmodule(SubmoduleBaseclass):
         ], stdout=subprocess.PIPE)
         result = sp.stdout
         result = json.loads(result.decode('utf-8'))
-        return result[result.keys()[0]]
+        return result[list(result)[0]]
 
     def build_results(self, results):
         """Properly format the results"""
