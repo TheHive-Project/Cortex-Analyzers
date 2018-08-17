@@ -40,7 +40,7 @@ class ManalyzeSubmodule(SubmoduleBaseclass):
         ], stdout=subprocess.PIPE, cwd=os.path.split(self.binary_path)[0])
         result = sp.stdout
         result = json.loads(result.decode('utf-8'))
-        return result[filepath]
+        return result[result.keys()[0]]
 
     def run_docker_manalyze(self, filepath):
         filepath, filename = os.path.split(filepath)
