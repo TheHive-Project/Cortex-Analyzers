@@ -21,9 +21,9 @@ class URLCategoryAnalyzer(Analyzer):
             elif r in self.get_param('config.suspicious_categories', []):
                 level = "suspicious"
             elif r == "Not Rated":
-                level = "info"
-            else:
                 level = "safe"
+            else:
+                level = "info"
 
             taxonomies.append(self.build_taxonomy(level, "Fortiguard", "URLCat", value))
 
