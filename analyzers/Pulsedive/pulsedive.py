@@ -10,6 +10,11 @@ class PulsediveAnalyzer(Analyzer):
 
         self.url = 'https://pulsedive.com/api/'
         self.key = self.get_param('config.key', None, 'API-Key not given.')
+        self.mapping = {
+            'high': 'malicious',
+            'medium': 'suspicious',
+            'low': 'info'
+        }
 
     def _query(self, observable):
         request = self.url + 'info.php'
@@ -24,6 +29,26 @@ class PulsediveAnalyzer(Analyzer):
 
     def run(self):
         self.report(self._query(self.get_data()))
+
+    def summary(self, raw):
+        taxonomies = []
+        for threat in raw.get('threats', []):
+            taxonomies.append(self.build_taxonomy(
+                'malicious' if threat.get('risk', '') == 'high' else 'suspicious',
+                'Pulsedive',
+                'Threat',
+                threat.get('name')
+            ))
+
+        if raw.get('risk', None):
+            taxonomies.append(self.build_taxonomy(
+                self.mapping[raw['risk']],
+                'Pulsedive',
+                'Risk',
+                raw['risk']
+            ))
+
+        return {'taxonomies': taxonomies}
 
 
 if __name__ == '__main__':
