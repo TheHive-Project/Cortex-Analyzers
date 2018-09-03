@@ -22,9 +22,16 @@ class Hunterio(Analyzer):
             found = 0
             if(raw.get('meta') and raw['meta'].get('results')):
                 found = raw['meta'].get('results')
-            taxonomies.append(self.build_taxonomy('info', namespace, "Emails found", found))
+            taxonomies.append(self.build_taxonomy('info', namespace, "Emails found", str(found)))
 
         return {"taxonomies": taxonomies}
+
+    def artifacts(self, raw):
+        artifacts = []
+        if(raw.get('meta') and raw['meta'].get('results') > 0 ):
+            for email in raw.get('data').get('emails'):
+                artifacts.append({'type':'email', 'value':email.get('value')})
+        return artifacts
 
 
     def run(self):
