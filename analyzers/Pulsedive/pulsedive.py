@@ -23,7 +23,7 @@ class PulsediveAnalyzer(Analyzer):
         return result
 
     def run(self):
-        return self._query(self.get_data())
+        self.report(self._query(self.get_data()))
 
 
 if __name__ == '__main__':
