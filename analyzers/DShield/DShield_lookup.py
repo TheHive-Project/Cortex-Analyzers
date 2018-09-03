@@ -15,6 +15,15 @@ class DShieldAnalyzer(Analyzer):
         r = requests.get(url)
         return json.loads(r.text)
 
+    def artifacts(self, raw):
+        artifacts = []
+        if 'as' in raw:
+            artifacts.append({'type':'autonomous-system','value':str(raw['as'])})
+
+        if 'asabusecontact' in raw:
+            artifacts.append({'type': 'email', 'value':str(raw['asabusecontact'])})
+        return artifacts
+
     def summary(self, raw):
         taxonomies = []
         value = "-"
