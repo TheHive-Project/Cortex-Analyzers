@@ -9,7 +9,7 @@ class PulsediveAnalyzer(Analyzer):
         Analyzer.__init__(self)
 
         self.url = 'https://pulsedive.com/api/'
-        self.key = self.get_param('key', None, 'API-Key not given.')
+        self.key = self.get_param('config.key', None, 'API-Key not given.')
 
     def _query(self, observable):
         request = self.url + 'info.php'
