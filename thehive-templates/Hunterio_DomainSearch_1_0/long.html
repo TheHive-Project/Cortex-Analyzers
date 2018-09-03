@@ -9,7 +9,7 @@
         <h4 class="dl-horizontal">{{content.meta.results}} addresses found.</h4>
 
 
-        <div ng-if="content.data">
+        <div ng-if="content.data && content.data.emails.length > 0">
 
             <h5>
                 Pattern : {{content.data.pattern}}
