@@ -36,7 +36,7 @@ class DShieldAnalyzer(Analyzer):
             else:
                 level = 'malicious'
 
-        value = "\"{} count(s) / {} attack(s) / {} threatfeed(s)\"".format(raw['count'], raw['attacks'], raw['threatfeedscount'])
+        value = "{} count(s) / {} attack(s) / {} threatfeed(s)".format(raw['count'], raw['attacks'], raw['threatfeedscount'])
 
         taxonomies.append(self.build_taxonomy(level, "DShield", "Score", value))
         return {"taxonomies": taxonomies}
