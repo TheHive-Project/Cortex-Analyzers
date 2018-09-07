@@ -170,9 +170,6 @@ class DomainToolsAnalyzer(Analyzer):
         except Exception as e:
             self.unexpectedError(e)
 
-        else:
-            self.error('Unknown DomainTools service or invalid data type')
-
 
 if __name__ == '__main__':
     DomainToolsAnalyzer().run()
