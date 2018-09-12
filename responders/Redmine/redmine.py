@@ -7,8 +7,10 @@ import redmine_client
 class Redmine(Responder):
     def __init__(self):
         Responder.__init__(self)
+        self.instance_name = self.get_param('config.instance_name', 'redmine')
+        self.instance_url = self.get_param('config.url', None, 'Missing Redmine URL')
         self.client = redmine_client.RedmineClient(
-            baseurl=self.get_param('config.url', None, 'Missing Redmine URL'),
+            baseurl=self.instance_url,
             username=self.get_param('config.username', None, 'Missing username'),
             password=self.get_param('config.password', None, 'Missing password'))
         self.project_field = self.get_param('config.project_field', None, 'Missing custom field for Redmine project')
@@ -33,7 +35,11 @@ class Redmine(Responder):
                     title=title, body=description, project=project, tracker=tracker,
                     status=self.get_param('config.opening_status'), priority=self.get_param('data.severity'),
                     assignee=assignee)
-                self.report({'message': 'issue {} created'.format(issue['issue']['id']), 'issue': issue})
+                self.report({
+                    'message': 'issue {} created'.format(issue['issue']['id']),
+                    'instance': {'name': self.instance_name, "url": self.instance_url}, 
+                    'issue': issue
+                })
             except Exception as e:
                 self.error(str(e))
         else:

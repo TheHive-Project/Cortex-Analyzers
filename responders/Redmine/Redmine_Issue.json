@@ -12,6 +12,14 @@
   "baseConfig": "Redmine",
   "configurationItems": [
     {
+      "name": "instance_name",
+      "description": "Name of the Redmine instance",
+      "multi": false,
+      "required": false,
+      "type": "string",
+      "defaultValue": "redmine"
+    },
+    {
       "name": "url",
       "description": "URL where to find the Redmine API",
       "type": "string",
