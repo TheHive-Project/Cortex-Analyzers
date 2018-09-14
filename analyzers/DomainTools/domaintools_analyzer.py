@@ -78,6 +78,9 @@ class DomainToolsAnalyzer(Analyzer):
                     "domain_count": sum(d["domain_count"] for d in raw["ip_addresses"])
                 }
 
+        if "record_count" in raw:
+            r["record_count"] = raw.get('record_count')
+
         if "domain_count" in raw:
             r["domain_count"] = {
                 "current": raw["domain_count"]["current"],
@@ -122,7 +125,7 @@ class DomainToolsAnalyzer(Analyzer):
 
         if r["service"] == "whois/history":
             taxonomies.append(self.build_taxonomy("info", "DT", "Whois_History",
-                                                  "{}, {} domains ".format(r["name_server"], r["domain_count"])))
+                                                  "{} {}".format(r["record_count"], "records" if r["record_count"] > 1 else "record")))
 
         if r["service"] == "whois/parsed" or r['service'] == "whois":
             if r["registrar"]:
