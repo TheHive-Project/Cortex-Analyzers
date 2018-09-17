@@ -429,29 +429,42 @@
                                  ng-class="{'panel-danger': r.submodule_section_content.level === 3, 'panel-warning': r.submodule_section_content.level === 2, 'panel-info': r.submodule_section_content.level === 1}"
                                  heading="{{r.submodule_section_header}}" is-open="true"
                                  is-disabled="status.isFirstDisabled">
-                                <p>Summary: {{r.submodule_section_content.summary}}</p>
+                                <p><b>Summary</b>: {{r.submodule_section_content.summary}}</p>
                                 <dl class="dl-horizontal" ng-repeat="(k, v) in r.submodule_section_content.content">
                                     <dt>{{k}}</dt>
                                     <dd>{{v}}</dd>
                                 </dl>
                             </div>
                             <div uib-accordion-group
-                                 ng-if="r.submodule_section_header!=='Manalyze raw output' && r.submodule_section_header!=='Exploit mitigation techniques' "
-                                 ng-class="{'panel-danger': r.submodule_section_content.level === 3, 'panel-warning': r.submodule_section_content.level === 2, 'panel-info': r.submodule_section_content.level === 1}"
+                                 ng-if="r.submodule_section_header!=='Manalyze raw output'  && r.submodule_section_header!=='Exploit mitigation techniques' && r.submodule_section_header!=='Packer' "
+                                 ng-class="{'panel-danger': r.submodule_section_content.level === 3, 'panel-warning': r.submodule_section_content.level === 2, 'panel-info': r.submodule_section_content.level <= 1}"
                                  heading="{{r.submodule_section_header}}" is-open="true"
                                  is-disabled="status.isFirstDisabled">
-                                <p>Summary: {{r.submodule_section_content.summary}}</p>
+                                <p><b>Summary</b>: {{r.submodule_section_content.summary || "None" }}</p>
                                 <table class="table">
                                     <tr ng-repeat="(k, v) in r.submodule_section_content.content">
                                         <td>{{k}}</td>
                                         <td>
                                             <ul>
-                                                <li ng-repeat="value in v">{{value}}</li>
+                                                <li ng-repeat="value in v">{{value || "None" }} </li>
                                             </ul>
                                         </td>
                                     </tr>
                                 </table>
                             </div>
+
+                            <div uib-accordion-group
+                                 ng-if="r.submodule_section_header== 'Packer' "
+                                 ng-class="{'panel-danger': r.submodule_section_content.level === 3, 'panel-warning': r.submodule_section_content.level === 2, 'panel-info': r.submodule_section_content.level <= 1}"
+                                 heading="{{r.submodule_section_header}}" is-open="true"
+                                 is-disabled="status.isFirstDisabled">
+                                <p><b>Summary</b>: {{r.submodule_section_content.summary || "None" }}</p>
+                                <dl class="dl-horizontal" ng-repeat="(k, v) in r.submodule_section_content.content">
+                                    <dt>{{k}}</dt>
+                                    <dd>{{v}}</dd>
+                                </dl>
+                            </div>
+
                             <div uib-accordion-group ng-if="r.submodule_section_header=='Manalyze raw output'"
                                  class="panel-primary" heading="Manalyze raw output" is-open="false"
                                  is-disabled="status.isFirstDisabled">
