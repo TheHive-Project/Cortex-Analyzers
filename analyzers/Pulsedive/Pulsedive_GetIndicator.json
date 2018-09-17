@@ -4,7 +4,7 @@
     "author": "Nils Kuhnert",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "description": "Search Pulsedive for a given indicator",
+    "description": "Search Pulsedive.com for a giver domain name, hash, ip or url",
     "dataTypeList": ["url", "domain", "ip", "hash"],
     "baseConfig": "Pulsedive",
     "command": "Pulsedive/pulsedive.py",
