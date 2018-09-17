@@ -88,6 +88,14 @@ class ManalyzeSubmodule(SubmoduleBaseclass):
                 'content': results.get('Plugins', {}).get('imports', {}).get('plugin_output', None)
             }
         )
+        self.add_result_subsection(
+            'Packer',
+            {
+                'level': results.get('Plugins', {}).get('packer', {}).get('level', None),
+                'summary': results.get('Plugins', {}).get('packer', {}).get('summary', None),
+                'content': results.get('Plugins', {}).get('packer', {}).get('plugin_output', None)
+            }
+        )
         self.add_result_subsection('Manalyze raw output', json.dumps(results, indent=4))
 
     def analyze_file(self, path):
