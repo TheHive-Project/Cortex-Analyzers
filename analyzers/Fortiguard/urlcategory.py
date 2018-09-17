@@ -16,14 +16,14 @@ class URLCategoryAnalyzer(Analyzer):
         if 'category' in raw:
             r = raw.get('category')
             value = "{}".format(r)
-            if r == "Malicious Websites":
+            if r in self.get_param('config.malicious_categories', []):
                 level = "malicious"
-            elif r == "Suspicious Websites":
+            elif r in self.get_param('config.suspicious_categories', []):
                 level = "suspicious"
             elif r == "Not Rated":
-                level = "info"
-            else:
                 level = "safe"
+            else:
+                level = "info"
 
             taxonomies.append(self.build_taxonomy(level, "Fortiguard", "URLCat", value))
 
