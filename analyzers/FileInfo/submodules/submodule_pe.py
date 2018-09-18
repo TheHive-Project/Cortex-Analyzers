@@ -67,17 +67,18 @@ class PESubmodule(SubmoduleBaseclass):
     def pe_info(self, pe):
         pedict = pe.dump_dict()
         table = []
-        for fileinfo in pe.FileInfo:
-            if hasattr(fileinfo, 'Key') and fileinfo.Key.decode() == 'StringFileInfo':
-                for stringtable in fileinfo.StringTable:
-                    for entry in stringtable.entries.items():
-                        table.append({'Info': entry[0].decode(), 'Value': entry[1].decode()})
+        if hasattr(pe, 'FileInfo'):
+            for fileinfo in pe.FileInfo:
+                if hasattr(fileinfo, 'Key') and fileinfo.Key.decode() == 'StringFileInfo':
+                    for stringtable in fileinfo.StringTable:
+                        for entry in stringtable.entries.items():
+                            table.append({'Info': entry[0].decode(), 'Value': entry[1].decode()})
 
-        table.append({'Info': 'Compilation Timestamp',
-                      'Value': self.compilation_timestamp(pedict)})
-        table.append({'Info': 'Target machine', 'Value': self.pe_machine(pedict)}),
-        table.append({'Info': 'Entry Point', 'Value': self.pe_entrypoint(pedict)})
-        return table
+            table.append({'Info': 'Compilation Timestamp',
+                        'Value': self.compilation_timestamp(pedict)})
+            table.append({'Info': 'Target machine', 'Value': self.pe_machine(pedict)}),
+            table.append({'Info': 'Entry Point', 'Value': self.pe_entrypoint(pedict)})
+            return table
 
 
     @staticmethod
