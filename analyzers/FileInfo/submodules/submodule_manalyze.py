@@ -96,7 +96,40 @@ class ManalyzeSubmodule(SubmoduleBaseclass):
                 'content': results.get('Plugins', {}).get('packer', {}).get('plugin_output', None)
             }
         )
+        self.add_result_subsection(
+            'Clamav',
+            {
+                'level': results.get('Plugins', {}).get('clamav', {}).get('level', None),
+                'summary': results.get('Plugins', {}).get('clamav', {}).get('summary', None),
+                'content': results.get('Plugins', {}).get('clamav', {}).get('plugin_output', None)
+            }
+        )
         self.add_result_subsection('Manalyze raw output', json.dumps(results, indent=4))
+
+    def module_summary(self):
+        taxonomies = []
+        taxonomy = {'level': 'info', 'namespace': 'FileInfo', 'predicate': 'Manalyze', 'value': 'Nothing to report'}
+
+        # return self.results
+        
+        l = 0
+        
+        for section in self.results:
+            content = section['submodule_section_content']
+            if type(content) == dict and 'level' in content and content['level'] != None :
+                # print("type: {}/{}".format(type(c['level']), c['level']))
+                if l < content['level']:
+                    l = content['level']
+            
+        if l == 2:
+            taxonomy['value'] = 'Suspicious'
+            taxonomy['level'] = 'suspicious'   
+        elif l==3:
+            taxonomy['value'] = 'Malicious'
+            taxonomy['level'] = 'malicious'   
+        taxonomies.append(taxonomy)
+        self.summary['taxonomies'] = taxonomies
+        return self.summary
 
     def analyze_file(self, path):
         results = {}
