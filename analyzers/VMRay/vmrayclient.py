@@ -92,7 +92,7 @@ class VMRayClient:
             raise BadResponseError('Response from VMRay was not HTTP 200.'
                                    ' Responsecode: {}; Text: {}'.format(res.status_code, res.text))
 
-    def submit_sample(self, filepath, filename, tags=['JAMIE_Import', 'TheHive_Import']):
+    def submit_sample(self, filepath, filename, tags=['TheHive']):
         """
         Uploads a new sample to VMRay api. Filename gets sent base64 encoded.
 

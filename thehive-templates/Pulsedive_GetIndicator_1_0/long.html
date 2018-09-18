@@ -1,0 +1,141 @@
+<div class="panel panel-info" ng-if="success && !content.error">
+    <div class="panel-heading">
+        Pulsedive Report for <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+        <!-- THREATS -->
+        <div class="panel" ng-repeat="threat in content.threats" ng-class="{'panel-warning': threat.risk !== 'high', 'panel-danger': threat.risk === 'high'}">
+            <div class="panel-heading">
+                Threat
+            </div>
+            <div class="panel-body">
+                <dl class="dl-horizontal">
+                    <dt>Name</dt>
+                    <dd>{{threat.name}}</dd>
+                    <dt>Risk</dt>
+                    <dd><span class="label"
+                              ng-class="{'label-warning': threat.risk !== 'high', 'label-danger': threat.risk === 'high'}">
+                            {{threat.risk}}
+                        </span>
+                    </dd>
+                    <dt>Category</dt>
+                    <dd>{{threat.category}}</dd>
+                </dl>
+            </div>
+        </div>
+        <!-- //THREATS -->
+        <!-- RISKFACTORS -->
+        <div class="panel panel-warning" ng-if="content.riskfactors">
+            <div class="panel-heading">Risk factors</div>
+            <div class="panel-body">
+                <ul style="list-style: none" ng-repeat="(k, v) in content.riskfactors">
+                    <li>
+                        <span class="label"
+                              ng-class="{'label-success': v.risk === 'none', 'label-primary': v.risk === 'low', 'label-warning': v.risk === 'medium', 'label-danger': v.risk === 'high'}">
+                            {{v.risk}}
+                        </span>&nbsp;
+                        {{v.description}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- //RISKFACTORS -->
+        <!-- GENERAL -->
+        <div class="panel panel-primary">
+            <div class="panel-heading">General information</div>
+            <div class="panel-body">
+                <dl class="dl-horizontal">
+                    <dt>Indicator</dt>
+                    <dd>{{content.indicator}}</dd>
+                    <dt>Risk</dt>
+                    <dd>
+                        <span class="label"
+                              ng-class="{'label-warning': content.risk !== 'high', 'label-danger': content.risk === 'high'}">
+                            {{content.risk}}
+                        </span>
+                    </dd>
+                    <dt>Added</dt>
+                    <dd>{{content.stamp_added | date}}</dd>
+                    <dt>Seen</dt>
+                    <dd>{{content.stamp_seen | date}}</dd>
+                    <dt>Probed</dt>
+                    <dd>{{content.stamp_probed | date}}</dd>
+                    <dt>Updated</dt>
+                    <dd>{{content.stamp_updated | date}}</dd>
+                    <dt>Retired</dt>
+                    <dd><span class="label label-secondary" ng-if="content.retired">Retired on {{content.stamp_retired | date}}</span></dd>
+                </dl>
+            </div>
+        </div>
+        <uib-accordion>
+            <div uib-accordion-group class="panel panel-info" heading="Attributes" ng-if="content.attributes" is-open="true">
+                <div class="panel-body">
+                    <dl class="dl-horizontal" ng-repeat="(a, c) in content.attributes">
+                        <dt>{{a}}</dt>
+                        <dd><ul style="list-style: none"><li ng-repeat="item in c">{{item}}</li></ul></dd>
+                    </dl>
+                </div>
+            </div>
+            <div uib-accordion-group class="panel panel-info" heading="Feeds" ng-if="content.feeds">
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td>Feed name</td>
+                                <td>Feed organization</td>
+                                <td>Feed category</td>
+                                <td>Feed linked</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="(key, feed) in content.feeds">
+                                <td>{{feed.name}}</td>
+                                <td>{{feed.organization}}</td>
+                                <td>{{feed.category}}</td>
+                                <td>{{feed.stamp_linked | date}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div uib-accordion-group class="panel panel-info" heading="Properties">
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <td>Property</td>
+                            <td>Property content</td>
+                        </tr>
+                        </thead>
+                        <tr ng-repeat="(property, value) in content.properties">
+                            <td><b>{{property}}</b></td>
+                            <td>
+                                <dl class="dl-horizontal" ng-repeat="(k, v) in value">
+                                    <dt>{{k}}</dt>
+                                    <dd>{{v}}</dd>
+                                </dl>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div uib-accordion-group class="panel panel-info" heading="Raw">
+                <div class="panel-body"><pre><code>{{content | json}}</code></pre></div>
+            </div>
+        </uib-accordion>
+    </div>
+</div>
+
+<div class="panel panel-warning" ng-if="success && content.error">
+    <div class="panel-heading"><strong>{{artifact.data | fang}}</strong></div>
+    <div class="panel-body">{{content.error}}</div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

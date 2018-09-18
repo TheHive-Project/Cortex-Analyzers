@@ -12,8 +12,10 @@ class VMRayAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
         self.url = self.get_param('config.url', None, 'No VMRay url given.').rstrip('/ ')
-        disable_reanalyze = self.get_param('config.disablereanalyze', False)
-        if disable_reanalyze == 'true' or disable_reanalyze:
+        self.disable_reanalyze = self.get_param('config.disablereanalyze', False)
+
+        # Check for string and boolean True
+        if self.disable_reanalyze == 'true' or self.disable_reanalyze:
             reanalyze = False
         else:
             reanalyze = True
@@ -35,6 +37,15 @@ class VMRayAnalyzer(Analyzer):
             filename = self.get_param('filename')
             submit_report = self.vmrc.submit_sample(filepath=filepath,
                                                     filename=filename)
+            # Ref: #332: check if job was submitted
+            if self.disable_reanalyze:
+                if len(submit_report['data']['errors']) > 0:
+                    if submit_report['result'] == 'ok':
+                        # Sample is already there, get the report
+                        self.report({'scanreport': self.vmrc.get_sample(samplehash=submit_report['data']['samples'][0]['sample_sha256hash'])})
+                    else:
+                        self.error('Error while submitting sample to VMRay: {}.'
+                                   .format([error_msg for error_msg in submit_report['data']['errors']]))
             # Check for completion
             while not self.vmrc.query_job_status(submissionid=submit_report['data']['submissions'][0]['submission_id']):
                 sleep(10)

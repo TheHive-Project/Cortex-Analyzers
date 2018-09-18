@@ -1,6 +1,7 @@
 import pefile
 import pehashng
 from pefile import __version__ as pefile_version
+import sys
 
 from .submodule_base import SubmoduleBaseclass
 
@@ -66,20 +67,19 @@ class PESubmodule(SubmoduleBaseclass):
     def pe_info(self, pe):
         pedict = pe.dump_dict()
         table = []
-        try:
+        if hasattr(pe, 'FileInfo'):
             for fileinfo in pe.FileInfo:
-                if fileinfo.Key.decode() == 'StringFileInfo':
+                if hasattr(fileinfo, 'Key') and fileinfo.Key.decode() == 'StringFileInfo':
                     for stringtable in fileinfo.StringTable:
                         for entry in stringtable.entries.items():
                             table.append({'Info': entry[0].decode(), 'Value': entry[1].decode()})
 
             table.append({'Info': 'Compilation Timestamp',
-                          'Value': self.compilation_timestamp(pedict)})
+                        'Value': self.compilation_timestamp(pedict)})
             table.append({'Info': 'Target machine', 'Value': self.pe_machine(pedict)}),
             table.append({'Info': 'Entry Point', 'Value': self.pe_entrypoint(pedict)})
             return table
-        except Exception as excp:
-            return 'None'
+
 
     @staticmethod
     def pe_iat(pe):
