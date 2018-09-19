@@ -39,6 +39,12 @@ class Redmine(Responder):
         except Exception as e:
             self.error(str(e))
 
+    def operations(self, raw):
+        ops = []
+        if self.data_type == 'thehive:case_task':
+            ops.append(self.build_operation('CloseTask'))
+        return ops
+
     def extract_case_data(self, data_root='data'):
         issue_data = {}
         issue_data['title'] = self.get_param('{}.title'.format(data_root), None, 'Case title is missing')
