@@ -6,7 +6,7 @@
   "license": "AGPL-V3",
   "description": "Create a redmine issue from a case",
   "dataTypeList": [
-    "thehive:case"
+    "thehive:case", "thehive:case_task"
   ],
   "command": "Redmine/redmine.py",
   "baseConfig": "Redmine",

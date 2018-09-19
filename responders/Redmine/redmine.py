@@ -18,32 +18,40 @@ class Redmine(Responder):
         self.assignee_field = self.get_param('config.assignee_field', None, 'Missing custom field for Redmine assignee')
 
     def run(self):
+        issue_data = {}
         if self.data_type == 'thehive:case':
-            title = self.get_param('data.title', None, 'title is missing')
-            description = self.get_param('data.description', None, 'description is missing')
-            project = None
-            tracker = None
-            assignee = None
-            if self.project_field:
-                project = self.get_param('data.customFields.{}.string'.format(self.project_field), None, 'Project not defined in case')
-            if self.tracker_field:
-                tracker = self.get_param('data.customFields.{}.string'.format(self.tracker_field), None, 'Tracker not defined in case')
-            if self.assignee_field:
-                assignee = self.get_param('data.customFields.{}.string'.format(self.assignee_field), None)
-            try:
-                issue = self.client.create_issue(
-                    title=title, body=description, project=project, tracker=tracker,
-                    status=self.get_param('config.opening_status'), priority=self.get_param('data.severity'),
-                    assignee=assignee)
-                self.report({
-                    'message': 'issue {} created'.format(issue['issue']['id']),
-                    'instance': {'name': self.instance_name, "url": self.instance_url}, 
-                    'issue': issue
-                })
-            except Exception as e:
-                self.error(str(e))
+            issue_data = self.extract_case_data()
+        elif self.data_type == 'thehive:case_task':
+            issue_data = self.extract_case_data('data.case')
         else:
             self.error('Invalid dataType')
+        try:
+            issue = self.client.create_issue(
+                title=issue_data['title'], body=issue_data['description'],
+                project=issue_data['project'], tracker=issue_data['tracker'],
+                status=issue_data['status'], priority=issue_data['severity'],
+                assignee=issue_data['assignee'])
+            self.report({
+                'message': 'issue {} created'.format(issue['issue']['id']),
+                'instance': {'name': self.instance_name, "url": self.instance_url},
+                'issue': issue
+            })
+        except Exception as e:
+            self.error(str(e))
+
+    def extract_case_data(self, data_root='data'):
+        issue_data = {}
+        issue_data['title'] = self.get_param('{}.title'.format(data_root), None, 'Case title is missing')
+        issue_data['description'] = self.get_param('{}.description'.format(data_root), None, 'Case description is missing')
+        issue_data['severity'] = self.get_param('{}.severity'.format(data_root))
+        if self.project_field:
+            issue_data['project'] = self.get_param('{}.customFields.{}.string'.format(data_root, self.project_field), None, 'Project not defined in case')
+        if self.tracker_field:
+            issue_data['tracker'] = self.get_param('{}.customFields.{}.string'.format(data_root, self.tracker_field), None, 'Tracker not defined in case')
+        if self.assignee_field:
+            issue_data['assignee'] = self.get_param('{}.customFields.{}.string'.format(data_root, self.assignee_field), None)
+        issue_data['status'] = self.get_param('config.opening_status')
+        return issue_data
 
 if __name__ == '__main__':
     Redmine().run()
