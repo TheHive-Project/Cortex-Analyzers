@@ -75,6 +75,14 @@
       "type": "string",
       "multi": false,
       "required": false
+    },
+    {
+      "name": "closing_task",
+      "description": "Closing the task after successfully creating the Redmine issue",
+      "type": "boolean",
+      "multi": false,
+      "defaultValue": false,
+      "required": false
     }
   ]
 }

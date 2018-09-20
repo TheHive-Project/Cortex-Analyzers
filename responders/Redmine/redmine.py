@@ -17,6 +17,7 @@ class Redmine(Responder):
         self.tracker_field = self.get_param('config.tracker_field', None, 'Missing custom field for Redmine tracker')
         self.assignee_field = self.get_param('config.assignee_field', None, 'Missing custom field for Redmine assignee')
         self.reference_field = self.get_param('config.reference_field', None)
+        self.closing_task = self.get_param('config.closing_task', False)
 
     def run(self):
         issue_data = {}
@@ -44,7 +45,7 @@ class Redmine(Responder):
         ops = []
         if self.reference_field:
             ops.append(self.build_operation('AddCustomFields', name=self.reference_field, tpe='string', value='{}#{}'.format(self.instance_name, raw['issue']['issue']['id'])))
-        if self.data_type == 'thehive:case_task':
+        if self.data_type == 'thehive:case_task' and self.closing_task:
             ops.append(self.build_operation('CloseTask'))
         return ops
 
