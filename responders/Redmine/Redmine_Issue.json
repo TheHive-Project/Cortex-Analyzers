@@ -6,7 +6,8 @@
   "license": "AGPL-V3",
   "description": "Create a redmine issue from a case",
   "dataTypeList": [
-    "thehive:case", "thehive:case_task"
+    "thehive:case",
+    "thehive:case_task"
   ],
   "command": "Redmine/redmine.py",
   "baseConfig": "Redmine",
@@ -42,24 +43,31 @@
     },
     {
       "name": "project_field",
-      "description": "Name of the custom field containing the Redmine project to use when craeting the issue",
+      "description": "Name of the custom field containing the Redmine project to use when creating the issue",
       "multi": false,
       "required": true,
       "type": "string"
     },
     {
       "name": "tracker_field",
-      "description": "Name of the custom field containing the Redmine tracker to use when craeting the issue",
+      "description": "Name of the custom field containing the Redmine tracker to use when creating the issue",
       "multi": false,
       "required": true,
       "type": "string"
     },
     {
       "name": "assignee_field",
-      "description": "Name of the custom field containing the Redmine assignee to use when craeting the issue",
+      "description": "Name of the custom field containing the Redmine assignee to use when creating the issue",
       "multi": false,
       "required": false,
       "type": "string"
+    },
+    {
+      "name": "reference_field",
+      "description": "Name of the case custom field in which to store the opened issue. If not defined, this information will not be stored",
+      "type": "string",
+      "required": false,
+      "multi": false
     },
     {
       "name": "opening_status",
