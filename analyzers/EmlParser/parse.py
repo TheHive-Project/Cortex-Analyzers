@@ -85,7 +85,6 @@ def parseEml(filepath):
     #attachments
     try:
         for attachment in parsed_eml['attachment']:
-            sha256 = hashlib.sha256()
             attachmentSumUp = dict()
             attachmentSumUp['filename'] = attachment.get('filename', '')
 
@@ -94,8 +93,9 @@ def parseEml(filepath):
             #it has to be calculated, the attachment is in base64
             attachmentSumUp['mime'] = magic.from_buffer(binascii.a2b_base64(attachment['raw']))
             attachmentSumUp['extension'] = attachment.get('extension', '')
-            sha256.update(attachment['raw'])
-            attachmentSumUp['sha256'] = sha256.hexdigest()
+            attachmentSumUp['md5'] = attachment['hash']['md5']
+            attachmentSumUp['sha1'] = attachment['hash']['sha1']
+            attachmentSumUp['sha256'] = attachment['hash']['sha256']
             result['attachments'].append(attachmentSumUp)
 
     except KeyError as e:
