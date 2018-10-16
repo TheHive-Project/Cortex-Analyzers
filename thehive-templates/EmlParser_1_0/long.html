@@ -52,7 +52,13 @@
                     </thead>
                     <tbody ng-repeat="a in content.attachments">
                         <tr>
-                            <td rowspan=2>{{a.filename}}</td>
+                            <td rowspan=3>{{a.filename}}</td>
+                            <td>[MD5]: {{a.md5}}</td>
+                        </tr>
+                        <tr>
+                            <td>[SHA1]: {{a.sha1}}</td>
+                        </tr>
+                        <tr>
                             <td>[SHA256]: {{a.sha256}}</td>
                         </tr>
                         <tr>
