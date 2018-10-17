@@ -11,11 +11,11 @@ class ProofPointForensicsAnalyzer(Analyzer):
 
 	def __init__(self):
 		Analyzer.__init__(self)
-		self.service = self.getParam('config.service', None, 'ProofPoint service is missing')
-		self.url = self.getParam('config.url', 'https://tap-api-v2.proofpoint.com', None)
-		self.apikey = self.getParam('config.apikey', None, 'ProofPoint apikey is missing')
-		self.secret = self.getParam('config.secret', None, 'ProofPoint secret is missing')
-		self.verify = self.getParam('config.verifyssl', True, None)
+		self.service = self.get_param('config.service', None, 'ProofPoint service is missing')
+		self.url = self.get_param('config.url', 'https://tap-api-v2.proofpoint.com', None)
+		self.apikey = self.get_param('config.apikey', None, 'ProofPoint apikey is missing')
+		self.secret = self.get_param('config.secret', None, 'ProofPoint secret is missing')
+		self.verify = self.get_param('config.verifyssl', True, None)
 		if not self.verify:
 			from requests.packages.urllib3.exceptions import InsecureRequestWarning
 			requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -61,13 +61,13 @@ class ProofPointForensicsAnalyzer(Analyzer):
 			report = {}
 			if self.service in ['query']:
 				if self.data_type == 'file':
-					filename = self.getParam('attachment.name', 'noname.ext')
-					filepath = self.getParam('file', None, 'File is missing')
+					filename = self.get_param('attachment.name', 'noname.ext')
+					filepath = self.get_param('file', None, 'File is missing')
 					sha256 = hashlib.sha256(open(filepath, 'r').read()).hexdigest()
-				elif self.data_type == 'hash' and len(self.getData()) == 64:
-					sha256 = self.getData()
+				elif self.data_type == 'hash' and len(self.get_data()) == 64:
+					sha256 = self.get_data()
 				else:
-					sha256 = hashlib.sha256(self.getData()).hexdigest()
+					sha256 = hashlib.sha256(self.get_data()).hexdigest()
 			else:
 				self.error('unknown service')
 			if sha256 != None:
