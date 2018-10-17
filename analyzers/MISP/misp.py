@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from cortexutils.analyzer import Analyzer
 from mispclient import MISPClient, MISPClientError
 
