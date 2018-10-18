@@ -10,7 +10,7 @@ class RTFObjectSubmodule(SubmoduleBaseclass):
 
     def __init__(self):
         SubmoduleBaseclass.__init__(self)
-        self.name = 'RTFObj Submodule'
+        self.name = 'rtfobj'
 
     def check_file(self, **kwargs):
         if kwargs.get('mimetype') == 'text/rtf':

@@ -486,6 +486,47 @@
                     </div>
                 </div>
             </div>
+
+
+            <!-- rtfobj submodule -->
+            <div ng-if="result.submodule_name=='rtfobj'">
+                <div class="panel-body">
+                    <div ng-repeat="r in result.results">
+                        <uib-accordion>
+                            <div uib-accordion-group
+                                 ng-class="{'panel-danger': r.submodule_section_content.class === 'malicious', 'panel-warning': r.submodule_section_content.class === 'suspicious', 'panel-info': r.submodule_section_content.class === 'info'}"
+                                 heading="{{r.submodule_section_header}}" is-open="true"
+                                 is-disabled="status.isFirstDisabled">
+                                <table>
+                                    <thead>
+                                    <tr><td>Address</td><td>OLE Object</td><td>OLE Package</td></tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>{{r.submodule_section_content.index}}</td>
+                                        <td>
+                                            <dl class="dl-horizontal">
+                                                <dt>Type</dt>
+                                                <dd>{{r.submodule_section_content.type}}</dd>
+                                                <dt>Class</dt>
+                                                <dd>{{r.submodule_section_content.class}}</dd>
+                                                <dt>Classname</dt>
+                                                <dd>{{r.submodule_section_content.classname}}</dd>
+                                                <dt>Filename</dt>
+                                                <dd>{{r.submodule_section_content.filename}}</dd>
+                                                <dt>Size</dt>
+                                                <dd>{{r.submodule_section_content.size}}</dd>
+                                            </dl>
+                                        </td>
+                                        <td>Not implemented yet</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </uib-accordion>
+                    </div>
+                </div>
+            </div>
         </uib-tab>
     </uib-tabset>
 </div>
