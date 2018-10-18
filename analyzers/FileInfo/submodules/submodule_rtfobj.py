@@ -40,7 +40,7 @@ class RTFObjectSubmodule(SubmoduleBaseclass):
             else:
                 obj_html_class = 'info'
 
-            if 'Equation' in str(rtfobj.class_name):
+            if 'equation' in str(rtfobj.class_name).lower():
                 obj_html_class = 'malicious'
 
             self.add_result_subsection(
