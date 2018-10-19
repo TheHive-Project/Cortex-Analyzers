@@ -48,14 +48,14 @@ class RTFObjectSubmodule(SubmoduleBaseclass):
                         if 'CVE' in obj_clsid_desc:
                             obj_html_class = 'malicious'
                 else:
-                    obj_clsid = 'Not available'
-                    obj_clsid_desc = 'Not available'
+                    obj_clsid = 'CLSID is not well-known in Oletools.'
+                    obj_clsid_desc = 'No CLSID related description available.'
             except AttributeError:
-                obj_clsid = 'clsid not available in Oletools version installed.'
+                obj_clsid = 'clsid attribute is not available in Oletools version installed.'
                 obj_clsid_desc = ''
 
             if 'equation' in str(rtfobj.class_name).lower():
-                obj_clsid_desc += '\nThe class name suggests an Equation Editor referencing OLE object.'
+                obj_clsid_desc += '<br />The class name suggests an Equation Editor referencing OLE object.'
                 obj_html_class = 'malicious'
 
             self.add_result_subsection(
