@@ -24,9 +24,9 @@ class RTFObjectSubmodule(SubmoduleBaseclass):
         taxonomies = []
 
         for section in self.results:
-            if section['content']['obj_html_class'] == 'malicious':
+            if section['submodule_section_content']['class'] == 'malicious':
                 malicious += 1
-            elif section['content']['obj_html_class'] == 'suspicious':
+            elif section['submodule_section_content']['class'] == 'suspicious':
                 suspicious += 1
             count += 1
 
