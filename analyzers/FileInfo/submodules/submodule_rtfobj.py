@@ -40,7 +40,22 @@ class RTFObjectSubmodule(SubmoduleBaseclass):
             else:
                 obj_html_class = 'info'
 
+            try:
+                if rtfobj.clsid:
+                    obj_clsid = rtfobj.clsid
+                    if rtfobj.clsid_desc:
+                        obj_clsid_desc = rtfobj.clsid_desc
+                        if 'CVE' in obj_clsid_desc:
+                            obj_html_class = 'malicious'
+                else:
+                    obj_clsid = 'Not available'
+                    obj_clsid_desc = 'Not available'
+            except AttributeError:
+                obj_clsid = 'clsid not available in Oletools version installed.'
+                obj_clsid_desc = ''
+
             if 'equation' in str(rtfobj.class_name).lower():
+                obj_clsid_desc += '\nThe class name suggests an Equation Editor referencing OLE object.'
                 obj_html_class = 'malicious'
 
             self.add_result_subsection(
@@ -49,9 +64,11 @@ class RTFObjectSubmodule(SubmoduleBaseclass):
                     'index': '0x{:8}'.format(rtfobj.start),
                     'class': obj_html_class,
                     'type': obj_type,
-                    'filename': rtfobj.filename,
-                    'classname': str(rtfobj.class_name) if rtfobj.class_name else None,
-                    'size': rtfobj.oledata_size
+                    'filename': rtfobj.filename if rtfobj.filename else 'Not available' ,
+                    'classname': str(rtfobj.class_name) if rtfobj.class_name else 'Not available',
+                    'size': rtfobj.oledata_size,
+                    'clsid': obj_clsid,
+                    'clsid_description': obj_clsid_desc
                 }
             )
 
