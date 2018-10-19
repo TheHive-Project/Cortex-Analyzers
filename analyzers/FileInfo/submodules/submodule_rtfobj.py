@@ -17,6 +17,29 @@ class RTFObjectSubmodule(SubmoduleBaseclass):
             return True
         return False
 
+    def module_summary(self):
+        suspicious = 0
+        malicious = 0
+        count = 0
+        taxonomies = []
+
+        for section in self.results:
+            if section['content']['obj_html_class'] == 'malicious':
+                malicious += 1
+            elif section['content']['obj_html_class'] == 'suspicious':
+                suspicious += 1
+            count += 1
+
+        if malicious > 0:
+            taxonomies.append(self.build_taxonomy('malicious', 'FileInfo', 'MaliciousRTFObjects', malicious))
+
+        if suspicious > 0:
+            taxonomies.append(self.build_taxonomy('suspicious', 'FileInfo', 'SuspiciousRTFObjects', suspicious))
+
+        taxonomies.append(self.build_taxonomy('info', 'FileInfo', 'RTFObjects', count))
+
+        self.summary['taxonomies'] = taxonomies
+
     def analyze_objects(self, path):
         data = None
         with io.open(path, 'rb') as fh:
