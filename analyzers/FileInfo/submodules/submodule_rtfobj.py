@@ -39,6 +39,7 @@ class RTFObjectSubmodule(SubmoduleBaseclass):
         taxonomies.append(self.build_taxonomy('info', 'FileInfo', 'RTFObjects', count))
 
         self.summary['taxonomies'] = taxonomies
+        return self.summary
 
     def analyze_objects(self, path):
         data = None
