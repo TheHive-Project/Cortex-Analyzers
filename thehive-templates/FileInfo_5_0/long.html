@@ -446,7 +446,7 @@
                                         <td>{{k}}</td>
                                         <td>
                                             <ul>
-                                                <li ng-repeat="value in v">{{value || "None" }} </li>
+                                                <li ng-repeat="value in v">{{value || "None" }}</li>
                                             </ul>
                                         </td>
                                     </tr>
@@ -491,6 +491,22 @@
             <!-- rtfobj submodule -->
             <div ng-if="result.submodule_name=='rtfobj'">
                 <div class="panel-body">
+                    <div ng-if="result['summary']" class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Summary</h4>
+                        </div>
+                        <div class="panel-body">
+                            <dl class="dl-horizontal">
+                                <dt>Objects found</dt>
+                                <dd class="wrap">
+                                            <span class="label mr-xxxs" ng-repeat="t in result['summary']['taxonomies']"
+                                                  ng-class="{'info': 'label-info', 'safe': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[t.level]">
+                                                {{t.namespace}}:{{t.predicate}}="{{t.value}}"
+                                            </span>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
                     <div ng-repeat="r in result.results">
                         <uib-accordion>
                             <div uib-accordion-group
@@ -499,11 +515,14 @@
                                  is-disabled="status.isFirstDisabled">
                                 <table class="table">
                                     <thead>
-                                    <tr><td>Address</td><td>OLE Object</td><td>OLE Package</td></tr>
+                                    <tr>
+                                        <td>Address</td>
+                                        <td>OLE Object</td>
+                                    </tr>
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td>{{r.submodule_section_content.index}}</td>
+                                        <td>{{r.submodule_section_content.address}}</td>
                                         <td>
                                             <dl class="dl-horizontal">
                                                 <dt>Type</dt>
@@ -512,15 +531,18 @@
                                                 <dd>{{r.submodule_section_content.classname}}</dd>
                                                 <dt>Filename</dt>
                                                 <dd>{{r.submodule_section_content.filename}}</dd>
+                                                <dd>Source path</dd>
+                                                <dt>{{r.submodule_section_content.source_path}}</dt>
+                                                <dd>Temp path</dd>
+                                                <dt>{{r.submodule_section_content.temp_path}}</dt>
                                                 <dt>Size</dt>
                                                 <dd>{{r.submodule_section_content.size}}</dd>
                                                 <dt>CLSID</dt>
                                                 <dd>{{r.submodule_section_content.clsid}}</dd>
-                                                <dt>Description</dt>
+                                                <dt>CLSID description</dt>
                                                 <dd>{{r.submodule_section_content.clsid_description}}</dd>
                                             </dl>
                                         </td>
-                                        <td>Not implemented yet</td>
                                     </tr>
                                     </tbody>
                                 </table>
