@@ -10,12 +10,20 @@ def strings(filename, min=5):
     with open(filename, "rb") as f:
         res = ""
         for c in f.read():
-            if c in string.printable:
-                res += c
-                continue
-            if len(res) >= min:
-                yield res
-            res = ""
+            if sys.version[0] == '2':
+                if c in string.printable:
+                    res += c
+                    continue
+                if len(res) >= min:
+                    yield res
+                res = ""
+            else:
+                if chr(c) in string.printable:
+                    res += chr(c)
+                    continue
+                if len(res) >= min:
+                    yield res
+                res = ""
         if len(res) >= min: 
             yield res
 
