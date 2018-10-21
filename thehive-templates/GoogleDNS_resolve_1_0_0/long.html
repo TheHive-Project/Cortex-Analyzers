@@ -1,0 +1,54 @@
+<!-- Success !--> <div class="panel panel-info" ng-if="content.Status == 'No Error'" >
+    <div class="panel-heading" >
+        <strong> Answer </strong>
+     </div>
+    <div class="panel-body">
+        <p><strong>Question : </strong>{{content.Question[0].name}} IN {{content.Question[0].type}}</p>
+        <p><strong>Comment : </strong>{{content.Comment}}</p>
+        <table class="table table-hover">
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Data</th>
+                <th>TTL</th>
+            </tr>
+            <tr ng-repeat="row in content.Answer">
+                <td>
+                    {{row.name}}
+                </td>
+                <td>
+                    <strong>{{row.type}}</strong>
+                </td>
+                 <td>
+                    {{row.data}}
+                </td>
+                 <td>
+                    {{row.TTL}}
+                </td>
+            </tr>
+        </table>
+    </div>
+</div> 
+
+<!-- Success but bad answer !--> 
+<div class="panel panel-danger" ng-if="content.Error" >
+    <div class="panel-heading" >
+        <strong> Answer with error </strong>
+     </div>
+     <div class="panel-body">
+        <p><strong>Question : </strong>{{content.Question[0].name}} IN {{content.Question[0].type}}</p>
+        <p> <strong> Google DNS service indicate the following error : </strong> {{ content.Error }} </p>
+     </div>
+</div>
+
+<!-- Error !-->
+<div class="panel panel-danger" ng-if="!success" >
+    <div class="panel-heading" >
+        <strong> Error while running the service </strong>
+     </div>
+     <div class="panel-body">
+        <pre>
+        {{content.errorMessage}}
+        </pre>
+     </div>
+</div>
