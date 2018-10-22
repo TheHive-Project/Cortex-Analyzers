@@ -14,7 +14,7 @@ def __query(domain, limit=100):
     :returns: str -- Console output from whois call.
     :rtype: str
     """
-    s = check_output(['{}/whois.sh'.format(os.getcwd()), '--limit {} {}'.format(limit, domain)], universal_newlines=True)
+    s = check_output(['{}'.format(os.path.join(os.path.dirname(__file__), 'whois.sh')), '--limit {} {}'.format(limit, domain)], universal_newlines=True)
     return s
 
 
