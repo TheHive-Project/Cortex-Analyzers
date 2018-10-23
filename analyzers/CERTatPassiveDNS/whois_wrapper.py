@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 from subprocess import check_output
 
 
@@ -13,7 +14,7 @@ def __query(domain, limit=100):
     :returns: str -- Console output from whois call.
     :rtype: str
     """
-    s = check_output(['./whois.sh', '--limit {} {}'.format(limit, domain)], universal_newlines=True)
+    s = check_output(['{}'.format(os.path.join(os.path.dirname(__file__), 'whois.sh')), '--limit {} {}'.format(limit, domain)], universal_newlines=True)
     return s
 
 
@@ -25,6 +26,9 @@ def __process_results(results):
     :returns: python list of dictionaries containing the relevant results.
     :rtype: list
     """
+    if 'no match' in results and 'returning 0 elements' in results:
+        return []
+
     result_list = []
 
     # Splts the result and cuts first and last dataset which are comments
