@@ -446,7 +446,7 @@
                                         <td>{{k}}</td>
                                         <td>
                                             <ul>
-                                                <li ng-repeat="value in v">{{value || "None" }} </li>
+                                                <li ng-repeat="value in v">{{value || "None" }}</li>
                                             </ul>
                                         </td>
                                     </tr>
@@ -481,6 +481,78 @@
                             <pre>
                                 {{r.submodule_section_content}}
                             </pre>
+                            </div>
+                        </uib-accordion>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- rtfobj submodule -->
+            <div ng-if="result.submodule_name=='rtfobj'">
+                <div class="panel-body">
+                    <div ng-if="result['summary']" class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Summary</h4>
+                        </div>
+                        <div class="panel-body">
+                            <dl class="dl-horizontal">
+                                <dt>Objects found</dt>
+                                <dd class="wrap">
+                                            <span class="label mr-xxxs" ng-repeat="t in result['summary']['taxonomies']"
+                                                  ng-class="{'info': 'label-info', 'safe': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[t.level]">
+                                                {{t.namespace}}:{{t.predicate}}="{{t.value}}"
+                                            </span>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div ng-repeat="r in result.results">
+                        <uib-accordion>
+                            <div uib-accordion-group
+                                 ng-class="{'panel-danger': r.submodule_section_content.class === 'malicious', 'panel-warning': r.submodule_section_content.class === 'suspicious', 'panel-info': r.submodule_section_content.class === 'info'}"
+                                 heading="{{r.submodule_section_header}}" is-open="true"
+                                 is-disabled="status.isFirstDisabled">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <td>Address</td>
+                                        <td>OLE Object</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>{{r.submodule_section_content.address}}</td>
+                                        <td>
+                                            <dl class="dl-horizontal">
+                                                <dt>Format_id</dt>
+                                                <dd>{{r.submodule_section_content.type}}</dd>
+
+                                                <dt>Class name</dt>
+                                                <dd>{{r.submodule_section_content.classname}}</dd>
+
+                                                <dt>Filename</dt>
+                                                <dd>{{r.submodule_section_content.filename}}</dd>
+
+                                                <dt>Source path</dt>
+                                                <dd>{{r.submodule_section_content.source_path}}</dd>
+
+                                                <dt>Temp path</dt>
+                                                <dd>{{r.submodule_section_content.temp_path}}</dd>
+
+                                                <dt>Data size</dt>
+                                                <dd>{{r.submodule_section_content.size}}</dd>
+
+                                                <dt>CLSID</dt>
+                                                <dd>{{r.submodule_section_content.clsid}}</dd>
+
+                                                <dt>Description</dt>
+                                                <dd>{{r.submodule_section_content.clsid_description}}</dd>
+                                            </dl>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </uib-accordion>
                     </div>
