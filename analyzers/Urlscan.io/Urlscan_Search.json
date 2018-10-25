@@ -6,5 +6,5 @@
   "version": "0.1.0",
   "description": "Search IPs, domains, hashes or URLs on urlscan.io",
   "dataTypeList": ["ip", "domain", "hash", "url"],
-  "command": "urlscan/urlscan_analyzer.py"
+  "command": "Urlscan.io/urlscan_analyzer.py"
 }
