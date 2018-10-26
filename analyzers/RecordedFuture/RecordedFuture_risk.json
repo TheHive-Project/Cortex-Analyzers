@@ -1,0 +1,20 @@
+{
+  "name": "RecordedFuture_risk",
+  "version": "1.0",
+  "author": "KAPSCH-CDC",
+  "url": "https://github.com/kapschcdc/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get the latest risk data from RecordedFuture for a hash, domain or an IP address.",
+  "dataTypeList": ["domain", "ip", "hash"],
+  "command": "RecordedFuture/recordedfuture.py",
+  "baseConfig": "RecordedFuture",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for RecordedFuture",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}
