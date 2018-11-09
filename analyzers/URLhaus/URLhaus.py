@@ -58,7 +58,7 @@ class URLhaus:
                 "link": cols[1].find("a").attrs.get("href"),
                 "status": cols[2].text,
                 "tags": cols[3].text.split(),
-                "gsb": cols[4].text,
-                "reporter": cols[5].text
+                "gsb": cols[4].text if len(cols) > 5 else None,
+                "reporter": cols[5].text if len(cols) > 5 else cols[4].text
             })
         return results

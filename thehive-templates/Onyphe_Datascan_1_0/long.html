@@ -47,20 +47,20 @@
             </thead>
             <tbody ng-repeat="r in content.datascan.results | orderBy:'-seen_date'">
                 <tr>
-                    <td>{{r["@category"]}}</td>
-                    <td>{{r["@type"]}}</td>
-                    <td>{{r.asn}}</td>
-                    <td>{{r.country}}</td>
-                    <td>{{r.ip}}</td>
-                    <td>{{r.organization}}</td>
-                    <td>{{r.location}}</td>
-                    <td>{{r.port}}</td>
-                    <td>{{r.protocol}}</td>
-                    <td>{{r.os}}</td>
-                    <td>{{r.product}}</td>
-                    <td>{{r.productversion}}</td>
-                    <td>{{r.seen_date}}</td>
-                    <td>{{r.datamd5}}</td>
+                    <td class="wrap">{{r["@category"]}}</td>
+                    <td class="wrap">{{r["@type"]}}</td>
+                    <td class="wrap">{{r.asn}}</td>
+                    <td class="wrap">{{r.country}}</td>
+                    <td class="wrap">{{r.ip}}</td>
+                    <td class="wrap">{{r.organization}}</td>
+                    <td class="wrap">{{r.location}}</td>
+                    <td class="wrap">{{r.port}}</td>
+                    <td class="wrap">{{r.protocol}}</td>
+                    <td class="wrap">{{r.os}}</td>
+                    <td class="wrap">{{r.product}}</td>
+                    <td class="wrap">{{r.productversion}}</td>
+                    <td class="wrap">{{r.seen_date}}</td>
+                    <td class="wrap">{{r.datamd5}}</td>
                 </tr>
             </tbody>
         </table>
