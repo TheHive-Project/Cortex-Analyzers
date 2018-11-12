@@ -16,7 +16,6 @@ class CyberprotectAnalyzer(Analyzer):
         taxonomies = []
         namespace = "Cyberprotect"
         if self.service == 'ThreatScore':
-
             level = 'info';
             value = 'not in database'
             if(raw.get('data') and raw.get('scores') and len(raw.get('scores')) > 0):
@@ -28,9 +27,7 @@ class CyberprotectAnalyzer(Analyzer):
                         level = 'danger'
                     elif value >= 0.25 and value < 0.5:
                         level = 'warning'
-
             taxonomies.append(self.build_taxonomy(level, namespace, self.service, value))
-
         return {"taxonomies": taxonomies}
 
     def run(self):
