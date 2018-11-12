@@ -1,0 +1,33 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        <a href="https://threatscore.cyberprotect.fr" target="_blank">threatscore.cyberprotect.fr</a> Cyberprotect threat scoring system
+        <br/> Report for
+        <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body" ng-if="content.scores.length > 0">
+        <h4 class="dl-horizontal">{{content.scores.length}} scores found.</h4>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Date</th>
+                    <th>Score</th>
+                </tr>
+                <tr ng-repeat="score in ::content.scores">
+                    <td>{{score.date}}</td>
+                    <td>{{score.score}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="panel-body" ng-if="content.scores.length < 1">
+            No results found
+        </div>
+    </div>
+
+    <div class="panel panel-danger" ng-if="!success">
+        <div class="panel-heading">
+            <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+        </div>
+        <div class="panel-body">
+            {{content.errorMessage}}
+        </div>
+    </div>
