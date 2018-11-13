@@ -24,9 +24,9 @@ class CyberprotectAnalyzer(Analyzer):
                     level = 'safe';
                     value = raw['scores'][0]['score']
                     if value >= 0.5:
-                        level = 'danger'
+                        level = 'malicious'
                     elif value >= 0.25 and value < 0.5:
-                        level = 'warning'
+                        level = 'suspicious'
             taxonomies.append(self.build_taxonomy(level, namespace, self.service, value))
         return {"taxonomies": taxonomies}
 
