@@ -30,7 +30,7 @@
       "type": "number",
       "multi": false,
       "required": true,
-      "defaultValue": "26"
+      "defaultValue": "25"
     }
   ]
 }
