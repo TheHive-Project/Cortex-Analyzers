@@ -23,6 +23,14 @@
       "multi": false,
       "required": true,
       "defaultValue": "localhost"
+    },
+    {
+      "name": "smtp_port",
+      "description": "SMTP server port",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": "26"
     }
   ]
 }
