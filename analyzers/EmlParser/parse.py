@@ -6,6 +6,7 @@ from cortexutils.analyzer import Analyzer
 import magic
 import binascii
 import hashlib
+import base64
 from pprint import pprint
 
 class EmlParserAnalyzer(Analyzer):
@@ -80,7 +81,21 @@ def parseEml(filepath):
     result['topic'] = ', '.join(parsed_eml.get('header', '').get('header', '').get('thread-topic', ''))
     result['bcc'] = parsed_eml.get('header', '').get('header', '').get('bcc', '')
     result['displayto'] = ', '.join(parsed_eml.get('header', '').get('header', '').get('to', ''))
-    result['body'] = parsed_eml['body'][0]['content']
+
+    #for some emails, the body field is empty because the email body is
+    #identified as an attachment
+    if parsed_eml['body']:
+        #normal case
+        result['body'] = parsed_eml['body'][0]['content']
+    else:
+        #email body is in attachment
+        #from what I've seen, there are 2 attachments
+        #one with the email body as text
+        #and one with the email body as text but wrapped in html
+        #let's arbitrary take the one wrapped in html as body
+        for attachment in parsed_eml['attachment']:
+            if 'HTML text' in attachment['content_header']['content-description']:
+                result['body'] = base64.b64decode(attachment['raw']).decode('utf-8')
 
     #attachments
     try:
