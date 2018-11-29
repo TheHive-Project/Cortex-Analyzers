@@ -42,7 +42,7 @@ class HIBPQueryAnalyzer(Analyzer):
                 unverified = ''
 	    hibpurl = self.api_url + data + unverified
 	    headers = {
-                'User-Agent': 'curl/7.38.0'
+                'User-Agent': 'HIBP-Cortex-Analyzer'
 	    }
 
             _query = requests.get(hibpurl, headers=headers)
