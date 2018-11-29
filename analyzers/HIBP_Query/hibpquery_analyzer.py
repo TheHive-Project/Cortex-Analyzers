@@ -14,6 +14,7 @@ class HIBPQueryAnalyzer(Analyzer):
         self.service = self.getParam(
             'config.service', None, 'Service parameter is missing')
         self.api_url = self.getParam('config.url', None, 'Missing API URL')
+	self.unverified = self.getParam('config.unverified', None, 'Missing Unverified option')
 
     @staticmethod
     def cleanup(return_data):
@@ -35,7 +36,11 @@ class HIBPQueryAnalyzer(Analyzer):
         results = dict()
 
         try:
-            hibpurl = self.api_url + data
+	    if self.unverified == True:
+                unverified = '?includeUnverified=true'
+            else:
+                unverified = ''
+	    hibpurl = self.api_url + data + unverified
 	    headers = {
                 'User-Agent': 'curl/7.38.0'
 	    }

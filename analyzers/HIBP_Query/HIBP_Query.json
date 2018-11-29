@@ -11,5 +11,15 @@
       "service": "query",
       "url": "https://haveibeenpwned.com/api/v2/breachedaccount/"
     },
-    "command": "HIBP_Query/hibpquery_analyzer.py"
+    "command": "HIBP_Query/hibpquery_analyzer.py",
+    "configurationItems": [
+    {
+      "name": "unverified",
+      "description": "Include unverified breaches",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    }
+]
 }
