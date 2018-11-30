@@ -13,7 +13,7 @@ class UmbrellaBlacklister(Responder):
     def run(self):
         Responder.run(self)
 
-        if self.data_type == 'thehive:case_artifact':
+        if self.get_param('data.dataType') == 'domain':
 
             domain = self.get_param('data.data', None, 'No artifacts available')
 
@@ -40,7 +40,9 @@ class UmbrellaBlacklister(Responder):
             if r.status_code == 200 | 202:
                 self.report({'message': 'Blacklisted in Umbrella.'})
             else:
-                self.error({'Failed to add to blacklist.'})
+                self.error('Failed to add to blacklist.')
+	else:
+	    self.error('Incorrect dataType. "Domain" expexted.')
 
 if __name__ == '__main__':
         UmbrellaBlacklister().run()
