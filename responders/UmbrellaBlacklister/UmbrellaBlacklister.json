@@ -5,7 +5,7 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Add domain to Umbrella blacklist via Enforcement API.",
-  "dataType": "domain",
+  "dataTypeList": ["thehive:case_artifact"],
   "command": "UmbrellaBlacklister/UmbrellaBlacklister.py",
   "baseConfig": "UmbrellaBlacklister",
   "configurationItems": [

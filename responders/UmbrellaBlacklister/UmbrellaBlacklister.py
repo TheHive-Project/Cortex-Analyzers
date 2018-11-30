@@ -3,7 +3,7 @@
 
 from cortexutils.responder import Responder
 import requests
-
+from datetime import datetime
 
 class UmbrellaBlacklister(Responder):
     def __init__(self):
@@ -13,9 +13,10 @@ class UmbrellaBlacklister(Responder):
     def run(self):
         Responder.run(self)
 
-        if self.data_type == 'domain':
+        if self.data_type == 'thehive:case_artifact':
 
-            domain = self.get_data()
+            domain = self.get_param('data.data', None, 'No artifacts available')
+
             dstUrl = "http://" + domain
             date = datetime.now().strftime("%Y-%m-%dT%XZ")
 
@@ -35,18 +36,11 @@ class UmbrellaBlacklister(Responder):
                 "providerName": "Security Platform"
             }
 
-            try:
-                r = requests.post(self.integration_url, json=payload, headers=headers)
-                if r.status_code == 200 | 202:
-                    self.report({'message': 'Blacklisted in Umbrella.'})
-                else:
-                    self.report({'message': 'Failed to add to blacklist.'})
-                except Exception as e:
-                    self.unexpectedError(e)
-
-    def operations(self, raw):
-        return [self.build_operation('AddTagToArtifact', tag='umbrella:blacklisted')]
-
+            r = requests.post(self.integration_url, json=payload, headers=headers)
+            if r.status_code == 200 | 202:
+                self.report({'message': 'Blacklisted in Umbrella.'})
+            else:
+                self.error({'Failed to add to blacklist.'})
 
 if __name__ == '__main__':
-UmbrellaBlacklister().run()
+        UmbrellaBlacklister().run()
