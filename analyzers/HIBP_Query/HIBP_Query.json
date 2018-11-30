@@ -13,13 +13,13 @@
     },
     "command": "HIBP_Query/hibpquery_analyzer.py",
     "configurationItems": [
-    {
-      "name": "unverified",
-      "description": "Include unverified breaches",
-      "type": "boolean",
-      "multi": false,
-      "required": true,
-      "defaultValue": true
-    }
-]
+        {
+          "name": "unverified",
+          "description": "Include unverified breaches",
+          "type": "boolean",
+          "multi": false,
+          "required": true,
+          "defaultValue": true
+        }
+    ]
 }
