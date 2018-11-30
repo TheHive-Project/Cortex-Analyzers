@@ -1,7 +1,7 @@
 {
-  "name": "SecurityTrails_Whois_DNS",
+  "name": "SecurityTrails_Whois",
   "version": "1.0",
-  "author": "ninoseki",
+  "author": "Manabu Niseki, @ninoseki",
   "url": "https://github.com/ninoseki/cortex-securitytrails",
   "license": "MIT",
   "description": "SecurityTrails Whois Lookup.",
