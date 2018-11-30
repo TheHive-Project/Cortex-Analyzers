@@ -16,12 +16,12 @@ class CyberprotectAnalyzer(Analyzer):
         taxonomies = []
         namespace = "Cyberprotect"
         if self.service == 'ThreatScore':
-            level = 'info';
+            level = 'info'
             value = 'not in database'
-            if(raw.get('data') and raw.get('scores') and len(raw.get('scores')) > 0):
+            if raw.get('data') and raw.get('scores') and len(raw.get('scores')) > 0:
                 value = 'not analyzed yet'
-                if(raw['scores'][0].get('score')):
-                    level = 'safe';
+                if raw['scores'][0].get('score'):
+                    level = 'safe'
                     value = raw['scores'][0]['score']
                     if value >= 0.5:
                         level = 'malicious'
@@ -35,7 +35,7 @@ class CyberprotectAnalyzer(Analyzer):
         if self.service == 'ThreatScore' and (self.data_type == 'domain' or self.data_type == 'ip'):
             try:
                 response = requests.get("{}{}".format(self.URI, self.get_data()))
-                self.report(response.json())
+                self.report({'result': response.json()})
             except Exception as e:
                 self.unexpectedError(e)
         else:
