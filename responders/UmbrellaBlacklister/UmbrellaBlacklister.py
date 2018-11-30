@@ -44,5 +44,8 @@ class UmbrellaBlacklister(Responder):
 	else:
 	    self.error('Incorrect dataType. "Domain" expexted.')
 
+    def operations(self, raw):
+        return [self.build_operation('AddTagToArtifact', tag='Umbrella:blocked')]
+
 if __name__ == '__main__':
         UmbrellaBlacklister().run()
