@@ -35,7 +35,8 @@ class CyberprotectAnalyzer(Analyzer):
         if self.service == 'ThreatScore' and (self.data_type == 'domain' or self.data_type == 'ip'):
             try:
                 response = requests.get("{}{}".format(self.URI, self.get_data()))
-                self.report({'result': response.json()})
+                result = response.json()
+                self.report(result if len(result) > 0 else {})
             except Exception as e:
                 self.unexpectedError(e)
         else:
