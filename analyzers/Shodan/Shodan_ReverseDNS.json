@@ -1,7 +1,7 @@
 {
   "name": "Shodan_ReverseDNS",
   "version": "1.0",
-  "author": "TheHive Project",
+  "author": "ANSSI",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
   "license": "AGPL-V3",
   "description": "Retrieve ip reverse DNS resolutions on Shodan.",
