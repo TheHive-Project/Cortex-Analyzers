@@ -1,7 +1,7 @@
 {
   "name": "Shodan_Host_History",
   "version": "1.0",
-  "author": "Sebastien Larinier @Sebdraven",
+  "author": "TheHive Project",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
   "license": "AGPL-V3",
   "description": "Retrieve Shodan history scan results  for an IP address.",
