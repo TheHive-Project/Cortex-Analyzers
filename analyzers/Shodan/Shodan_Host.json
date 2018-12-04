@@ -18,14 +18,6 @@
       "type": "string",
       "multi": false,
       "required": true
-    },
-    {
-      "name": "polling_interval",
-      "description": "Define the polling interval",
-      "type": "number",
-      "multi": false,
-      "required": false,
-      "defaultValue": 60
     }
   ]
 }
