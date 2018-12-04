@@ -1,15 +1,15 @@
 {
-  "name": "Shodan_Search",
-  "version": "2.0",
+  "name": "Shodan_InfoDomain",
+  "version": "1.0",
   "author": "Sebastien Larinier @Sebdraven",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
   "license": "AGPL-V3",
-  "description": "Search query on Shodan",
-  "dataTypeList": ["other"],
+  "description": "Retrieve key Shodan information on a domain.",
+  "dataTypeList": ["domain"],
   "command": "Shodan/shodan_analyzer.py",
   "baseConfig": "Shodan",
   "config": {
-      "service": "search"
+      "service": "info_domain"
   },
   "configurationItems": [
     {
