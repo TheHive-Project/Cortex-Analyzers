@@ -1,15 +1,15 @@
 {
-  "name": "DomainTools_ReverseIP",
+  "name": "DomainTools_HostingHistory",
   "version": "2.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Use DomainTools to get a list of domain names sharing the same IP address.",
-  "dataTypeList": ["ip", "domain","fqdn"],
+  "description": "Use DomainTools to get a list of historical registrant, name servers and IP addresses for a domain name.",
+  "dataTypeList": ["domain"],
   "command": "DomainTools/domaintools_analyzer.py",
   "baseConfig": "DomainTools",
   "config": {
-      "service": "reverse-ip"
+      "service": "hosting-history"
   },
   "configurationItems": [
     {
