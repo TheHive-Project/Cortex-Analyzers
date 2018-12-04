@@ -9,7 +9,7 @@ class ShodanAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
         self.shodan_key = self.get_param('config.key', None, 'Missing Shodan API key')
-        self.service = self.getParam('config.service', None, 'Service parameter is missing')
+        self.service = self.get_param('config.service', None, 'Service parameter is missing')
         self.shodan_client = None
 
     def execute_shodan_service(self, data):
@@ -23,7 +23,7 @@ class ShodanAnalyzer(Analyzer):
             results = {'records': self.shodan_client.reverse_dns(data)}
             return results
         elif self.service == 'search':
-            page = self.getParam('parameters.page', 1, None)
+            page = self.get_param('parameters.page', 1, None)
             results = {'records': self.shodan_client.search(data, page)}
             return results
         elif self.service == 'info_domain':
@@ -73,8 +73,6 @@ class ShodanAnalyzer(Analyzer):
         return {'taxonomies': taxonomies}
 
     def run(self):
-        Analyzer.run(self)
-
         try:
             self.shodan_client = ShodanAPIPublic(self.shodan_key)
             data = self.get_param('data', None, 'Data is missing')
