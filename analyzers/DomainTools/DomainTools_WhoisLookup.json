@@ -4,8 +4,8 @@
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Use DomainTools to get the ownership record for a domain with basic registration details.",
-  "dataTypeList": ["domain"],
+  "description": "Use DomainTools to get the ownership record for a domain or an IP address with basic registration details parsed.",
+  "dataTypeList": ["domain", "ip"],
   "command": "DomainTools/domaintools_analyzer.py",
   "baseConfig": "DomainTools",
   "config": {
