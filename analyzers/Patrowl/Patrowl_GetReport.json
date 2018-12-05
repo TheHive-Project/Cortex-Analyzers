@@ -1,0 +1,26 @@
+{
+    "name": "Patrowl_GetReport",
+    "version": "1.0",
+    "author": "Nicolas Mattiocco",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Get the current Patrowl report for a fdqn, a domain or an IP address.",
+    "dataTypeList": ["fqdn", "domain", "ip"],
+    "baseConfig": "Patrowl",
+    "config": {
+      "url": "http://my.patrowl.io:8000",
+      "service": "getreport",
+      "username": "cortex",
+      "password": "Bonjour1!"
+    },
+    "configurationItems": [
+      {
+        "name": "url",
+        "description": "Define the PatrOwl url",
+        "type": "string",
+        "multi": false,
+        "required": true
+      }
+    ],
+    "command": "Patrowl/patrowl.py"
+}
