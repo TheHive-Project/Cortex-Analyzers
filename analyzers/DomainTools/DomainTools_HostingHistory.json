@@ -1,7 +1,7 @@
 {
   "name": "DomainTools_HostingHistory",
   "version": "2.0",
-  "author": "CERT-BDF",
+  "author": "ANSSI",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Use DomainTools to get a list of historical registrant, name servers and IP addresses for a domain name.",
