@@ -8,15 +8,26 @@
     "dataTypeList": ["fqdn", "domain", "ip"],
     "baseConfig": "Patrowl",
     "config": {
-      "url": "http://my.patrowl.io:8000",
-      "service": "getreport",
-      "username": "cortex",
-      "password": "Bonjour1!"
+      "service": "getreport"
     },
     "configurationItems": [
       {
         "name": "url",
         "description": "Define the PatrOwl url",
+        "type": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "name": "username",
+        "description": "Define the PatrOwl username",
+        "type": "string",
+        "multi": false,
+        "required": true
+      }, 
+      {
+        "name": "password",
+        "description": "Define the PatrOwl password",
         "type": "string",
         "multi": false,
         "required": true
