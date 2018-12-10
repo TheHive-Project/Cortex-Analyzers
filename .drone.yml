@@ -1,0 +1,23 @@
+---
+kind: pipeline
+name: default
+
+steps:
+  - name: build workers for release
+    image: thehiveproject/cortex-worker-builder
+    settings:
+      namespace: tooom
+      user: {from_secret: docker_username}
+      password: {from_secret: docker_password}
+      latest: true
+    when:
+      event: [tag]
+
+  - name: build snapshot workers
+    image: thehiveproject/cortex-worker-builder
+    settings:
+      namespace: tooom
+      user: {from_secret: docker_username}
+      password: {from_secret: docker_password}
+    when:
+      event: {exclude: [tag]}
