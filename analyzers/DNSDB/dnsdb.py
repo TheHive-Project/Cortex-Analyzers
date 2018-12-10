@@ -19,10 +19,10 @@ class DnsDbAnalyzer(Analyzer):
 
     def execute_dnsdb_service(self, client):
         data = self.get_data()
-        rrtype = self.getParam('parameters.rrtype', None, None)
-        bailiwick = self.getParam('parameters.bailiwick', None, None)
-        before = self.getParam('parameters.before', None, None)
-        after = self.getParam('parameters.after', None, None)
+        rrtype = self.get_param('parameters.rrtype', None, None)
+        bailiwick = self.get_param('parameters.bailiwick', None, None)
+        before = self.get_param('parameters.before', None, None)
+        after = self.get_param('parameters.after', None, None)
 
         if self.service == 'domain_name' and self.data_type in ['domain', 'fqdn']:
             return client.query_rrset(data, rrtype=rrtype, bailiwick=bailiwick, before=before, after=after)
