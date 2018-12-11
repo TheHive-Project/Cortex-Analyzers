@@ -6,7 +6,7 @@ steps:
   - name: build workers for release
     image: thehiveproject/cortex-worker-builder
     settings:
-      namespace: tooom
+      namespace: cortexengine
       user: {from_secret: docker_username}
       password: {from_secret: docker_password}
       latest: true
@@ -16,7 +16,7 @@ steps:
   - name: build snapshot workers
     image: thehiveproject/cortex-worker-builder
     settings:
-      namespace: tooom
+      namespace: cortexengine
       user: {from_secret: docker_username}
       password: {from_secret: docker_password}
     when:
