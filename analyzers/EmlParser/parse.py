@@ -67,7 +67,7 @@ def parseEml(filepath):
     #cause eml_parser does not provide raw headers (as far as I know)
     hParser = email.parser.HeaderParser()
     h = hParser.parsestr(raw_eml)
-    result['headers'] = (str(h).split('\n\n')[0])
+    result['headers'] = dict(h)
 
     parsed_eml = eml_parser.eml_parser.decode_email(filepath, include_raw_body=True, include_attachment_data=True)
     #parsed_eml['header'].keys() gives:
