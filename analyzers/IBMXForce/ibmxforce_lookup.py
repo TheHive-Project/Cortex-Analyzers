@@ -2,6 +2,7 @@
 # encoding: utf-8
 import requests
 from datetime import datetime
+from urllib3.exceptions import InsecureRequestWarning
 
 from cortexutils.analyzer import Analyzer
 
@@ -15,6 +16,16 @@ class IBMXForceAnalyzer(Analyzer):
         self.url = self.get_param('config.url', None, 'Missing API url')
         self.key = self.get_param('config.key', None, 'Missing API key')
         self.pwd = self.get_param('config.pwd', None, 'Missing API password')
+        self.verify = self.str2bool(self.get_param('config.verify', True))
+        if not self.verify:
+            requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
+        self.proxies = self.get_param('config.proxy', None)
+
+    def str2bool(self, v):
+        if isinstance(v, str) or isinstance(v, int) or isinstance(v, unicode) :
+            return v.lower() in ("yes", "true", "t", "1")
+        if isinstance(v, bool):
+            return v
 
     def parse_data(self, date):
         try:
@@ -111,10 +122,10 @@ class IBMXForceAnalyzer(Analyzer):
             _session = requests.Session()
             _session.auth = (self.key, self.pwd)
 
-            _query_ip = _session.get('%s/ipr/%s' % (self.url, data))
+            _query_ip = _session.get('%s/ipr/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
             _query_malware = _session.get(
-                '%s/ipr/malware/%s' % (self.url, data))
-            _query_info = _session.get('%s/resolve/%s' % (self.url, data))
+                '%s/ipr/malware/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
+            _query_info = _session.get('%s/resolve/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
 
             ip_data = _query_ip.json() if _query_ip.status_code == 200 else {}
             malware_data = _query_malware.json() if _query_malware.status_code == 200 else {}
@@ -136,10 +147,10 @@ class IBMXForceAnalyzer(Analyzer):
             _session = requests.Session()
             _session.auth = (self.key, self.pwd)
 
-            _query_url = _session.get('%s/url/%s' % (self.url, data))
+            _query_url = _session.get('%s/url/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
             _query_malware = _session.get(
-                '%s/url/malware/%s' % (self.url, data))
-            _query_info = _session.get('%s/resolve/%s' % (self.url, data))
+                '%s/url/malware/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
+            _query_info = _session.get('%s/resolve/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
 
             url_data = _query_url.json() if _query_url.status_code == 200 else {}
             malware_data = _query_malware.json() if _query_malware.status_code == 200 else {}
@@ -162,7 +173,7 @@ class IBMXForceAnalyzer(Analyzer):
             _session.auth = (self.key, self.pwd)
 
             _query_malware = _session.get(
-                '%s/malware/%s' % (self.url, data))
+                '%s/malware/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
 
             if _query_malware.status_code == 200:
                 return self.cleanup(malware_data=_query_malware.json())
