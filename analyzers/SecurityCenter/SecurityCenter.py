@@ -33,44 +33,6 @@ class SCAnalyzer(Analyzer):
         self.email_on_complete = self.get_param(
             base + 'emailOnComplete', False, None)
 
-#    def summary(self, raw):
-#        summary = {}
-#        if "vulnerabilities" in raw:
-#            count = [0, 0, 0, 0, 0]
-#            for vuln in raw["vulnerabilities"]:
-#                count[vuln["severity"]] += 1
-#            summary["info"]     = count[0]
-#            summary["low"]      = count[1]
-#            summary["medium"]   = count[2]
-#            summary["high"]     = count[3]
-#            summary["critical"] = count[4]
-#
-#        taxonomies = []
-#        level = "info"
-#        namespace = "Nessus"
-#        predicate = "Info"
-#
-#        if summary["info"] > 0:
-#            value = summary["info"]
-#            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-#        if summary["low"] > 0:
-#            value = summary["low"]
-#            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-#        if summary["medium"] > 0:
-#            value = summary["medium"]
-#            level = "suspicious"
-#            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-#        if summary["high"] > 0:
-#            value = summary["high"]
-#            level = "suspicious"
-#            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-#        if summary["critical"] > 0:
-#            value = summary["critical"]
-#            level = "malicious"
-#            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-#
-#        return {"taxonomies": taxonomies}
-
     def run(self):
         Analyzer.run(self)
 
@@ -136,10 +98,6 @@ class SCAnalyzer(Analyzer):
                 self.error("Error: " + results['errorDetails'])
             time.sleep(60)
         return results
-
-#    def _delete_scan(self, scanner):
-#        scanner.action(
-#            "scans/" + str(scanner.scan_id), method="DELETE")
 
 if __name__ == '__main__':
     SCAnalyzer().run()
