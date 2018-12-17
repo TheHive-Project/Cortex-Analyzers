@@ -2,7 +2,7 @@
   "name": "SecurityCenter",
   "version": "1.0",
   "author": "Tommy Bohde",
-  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "url": "https://github.com/InsanesTheName/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Launch a scan through Tenable SecurityCenter",
   "dataTypeList": ["ip", "fqdn"],
