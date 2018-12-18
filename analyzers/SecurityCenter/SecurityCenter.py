@@ -96,7 +96,7 @@ class SCAnalyzer(Analyzer):
                 break
             elif (status == 'error'):
                 self.error("Error: " + results['errorDetails'])
-            time.sleep(60)
+            time.sleep(5)
         return results
 
 if __name__ == '__main__':
