@@ -8,14 +8,13 @@ import socket
 from cortexutils.analyzer import Analyzer
 from tenable.sc import TenableSC 
 
-
 class SCAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
         base = 'config.'
 
-		# using getParam(name, default=None, message=None)
+        # using getParam(name, default=None, message=None)
         self.ip = self.get_param(
             base + 'host', None, 'Missing SecurityCenter IP')
         self.login = self.get_param(
@@ -59,6 +58,7 @@ class SCAnalyzer(Analyzer):
             if (self.data_type == 'ip'):
                 try:
                     hostname = socket.gethostbyaddr(h)[0].split('.')[0].upper()
+                    # \u00A0 is &nbsp; (to make the report look nicer)
                     name += hostname + '\u00A0(' + h + ')'
                 except Exception:
                     name += h
