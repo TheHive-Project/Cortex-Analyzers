@@ -12,6 +12,8 @@ class Mailer(Responder):
         Responder.__init__(self)
         self.smtp_host = self.get_param(
             'config.smtp_host', 'localhost')
+        self.smtp_port = self.get_param(
+            'config.smtp_port', '25')
         self.mail_from = self.get_param(
             'config.from', None, 'Missing sender email address')
 
@@ -46,7 +48,7 @@ class Mailer(Responder):
         msg['To'] = mail_to
         msg.attach(MIMEText(description, 'plain'))
 
-        s = smtplib.SMTP(self.smtp_host)
+        s = smtplib.SMTP(self.smtp_host, self.smtp_port)
         s.sendmail(self.mail_from, [mail_to], msg.as_string())
         s.quit()
         self.report({'message': 'message sent'})

@@ -1,0 +1,23 @@
+{
+  "name": "Shodan_Host_History",
+  "version": "1.0",
+  "author": "ANSSI",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
+  "license": "AGPL-V3",
+  "description": "Retrieve Shodan history scan results  for an IP address.",
+  "dataTypeList": ["ip"],
+  "command": "Shodan/shodan_analyzer.py",
+  "baseConfig": "Shodan",
+  "config": {
+      "service": "host_history"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}

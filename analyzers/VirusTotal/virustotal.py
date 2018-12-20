@@ -68,8 +68,11 @@ class VirusTotalAnalyzer(Analyzer):
         taxonomies = []
         level = "info"
         namespace = "VT"
-        predicate = "Score"
+        predicate = "GetReport"
         value = "0"
+
+        if self.service == "scan":
+            predicate = "Scan"
 
         result = {
             "has_result": True
