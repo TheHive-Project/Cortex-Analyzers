@@ -12,8 +12,7 @@ class PatrowlAnalyzer(Analyzer):
         Analyzer.__init__(self)
         self.service = self.get_param('config.service', None, 'Patrowl service is missing')
         self.url = self.get_param('config.url', None, 'Patrowl URL is missing').rstrip('/')
-        self.username = self.get_param('config.username', None, 'Patrowl Username is missing')
-        self.password = self.get_param('config.password', None, 'Patrowl Password is missing')
+        self.api_key = self.get_param('config.api_key', None, 'Patrowl API Key is missing')        
 
     def summary(self, raw):
         """Parse, format and return scan summary."""
@@ -59,8 +58,12 @@ class PatrowlAnalyzer(Analyzer):
             if self.service == 'getreport':                
                 service_url = '{}/assets/api/v1/details/{}'.format(
                     self.url, self.get_data())
+
+                headers = {
+                    'Authorization': 'token {}'.format(self.api_key)
+                }
                 
-                response = requests.get(service_url, auth=requests.auth.HTTPBasicAuth(self.username, self.password))
+                response = requests.get(service_url, headers=headers)
 
                 self.report(response.json())
             else:
