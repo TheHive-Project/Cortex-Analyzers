@@ -19,15 +19,8 @@
         "required": true
       },
       {
-        "name": "username",
-        "description": "Define the PatrOwl username",
-        "type": "string",
-        "multi": false,
-        "required": true
-      }, 
-      {
-        "name": "password",
-        "description": "Define the PatrOwl password",
+        "name": "api_key",
+        "description": "Define the PatrOwl API Key",
         "type": "string",
         "multi": false,
         "required": true
