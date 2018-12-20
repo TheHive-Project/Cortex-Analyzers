@@ -6,7 +6,7 @@
     "license": "AGPL-V3",
     "description": "Query haveibeenpwned.com for a compromised email address",
     "dataTypeList": ["mail"],
-    "baseConfig": "HIBP_Query",
+    "baseConfig": "HIBP",
     "config": {
       "service": "query",
       "url": "https://haveibeenpwned.com/api/v2/breachedaccount/"
