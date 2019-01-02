@@ -1,0 +1,48 @@
+<!-- Success -->
+<div class="panel panel-info" ng-if="success && content.requests.length > 0">
+    <div class="panel-heading">
+        Umbrella Report
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <th>Internal IP</th>
+                <th>Device/User</th>
+                <th>Action</th>
+                <th>Category</th>
+                <th>Destination</th>
+                <th>Date</th>
+            </tr>
+            <tr ng-repeat="r in content.requests">
+                <td><strong>{{r.internalIp}}</strong></td>
+                <td>{{r.originLabel}}</td>
+                <td>{{r.actionTaken}}</td>
+                <td>{{r.categories}}</td>
+                <td>{{r.destination}}</td>
+                <td>{{r.datetime}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.requests.length == 0">
+    <div class="panel-heading">
+        Umbrella Report
+    </div>
+    <div class="panel-body">
+        <b>No recent hits.</b>
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> Umbrella Report: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

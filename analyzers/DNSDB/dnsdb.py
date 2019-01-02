@@ -19,13 +19,17 @@ class DnsDbAnalyzer(Analyzer):
 
     def execute_dnsdb_service(self, client):
         data = self.get_data()
+        rrtype = self.get_param('parameters.rrtype', None, None)
+        bailiwick = self.get_param('parameters.bailiwick', None, None)
+        before = self.get_param('parameters.before', None, None)
+        after = self.get_param('parameters.after', None, None)
 
         if self.service == 'domain_name' and self.data_type in ['domain', 'fqdn']:
-            return client.query_rrset(data)
+            return client.query_rrset(data, rrtype=rrtype, bailiwick=bailiwick, before=before, after=after)
         elif self.service == 'ip_history' and self.data_type == 'ip':
-            return client.query_rdata_ip(data)
+            return client.query_rdata_ip(data, before=before, after=after)
         elif self.service == 'name_history' and self.data_type in ['domain', 'fqdn']:
-            return client.query_rdata_name(data)
+            return client.query_rdata_name(data, rrtype=rrtype, before=before, after=after)
         else:
             self.error('Unknown DNSDB service or invalid data type')
 

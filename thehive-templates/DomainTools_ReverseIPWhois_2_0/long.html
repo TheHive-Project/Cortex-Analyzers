@@ -1,0 +1,40 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>-
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Number of records</dt>
+            <dd>{{content.record_count}}</dd>
+        </dl>
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>range</th>
+                    <th>organization</th>
+                    <th>country</th>
+                    <th>server</th>
+                    <th>record_date</th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="row in content.records">
+                <td>{{row.range}}</td>
+                <td>{{row.organization}}</td>
+                <td>{{row.country}}</td>
+                <td>{{row.server}}</td>
+                <td>{{row.record_date | shortDate}}</td>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

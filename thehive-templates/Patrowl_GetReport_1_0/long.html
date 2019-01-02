@@ -1,0 +1,89 @@
+<div class="report-Patrowl" ng-if="success">
+    <style>
+        .report-Patrowl dl {
+            margin-bottom: 2px;
+        }
+        .report-Patrowl .patrowl-info {
+            background-color: #3B4CA1;
+        }
+        .report-Patrowl .patrowl-low {
+            background-color: #79AB3D;
+        }
+        .report-Patrowl .patrowl-medium {
+            background-color: #D5C920;
+        }
+        .report-Patrowl .patrowl-high {
+            background-color: #D39F27;
+        }
+        .report-Patrowl .patrowl-critical {
+            background-color: #C61010;
+        }
+    </style>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Patrowl Report</strong>
+        </div>
+        <div class="panel-body">
+            <h4>Asset Information for {{content.value}}</h4>
+            <dl class="dl-horizontal">
+                <dt>Name</dt>
+                <dd>{{content.name}}</dd>
+                <dt>Criticity</dt>
+                <dd><label class="label patrowl-{{content.criticity}}">{{content.criticity}}</label></dd>
+                <dt>DataType</dt>
+                <dd>{{content.type}}</dd>
+                <dt>Description</dt>
+                <dd>{{content.description}}</dd>
+                <dt>Findings summary</dt>
+                <dd>
+                    <div class="progress">
+                        <div class="progress-bar patrowl-info" ng-style="{width:(content.risk_level.info *100)/(content.risk_level.total)+'%'}">
+                            <span>{{content.risk_level.info}}</span>
+                        </div>
+                        <div class="progress-bar patrowl-low" ng-style="{width:(content.risk_level.low *100)/(content.risk_level.total)+'%'}">
+                            <span>{{content.risk_level.low}}</span>
+                        </div>
+                        <div class="progress-bar patrowl-medium" ng-style="{width:(content.risk_level.medium *100)/(content.risk_level.total)+'%'}">
+                            <span>{{content.risk_level.medium}}</span>
+                        </div>
+                        <div class="progress-bar patrowl-high" ng-style="{width:(content.risk_level.high *100)/(content.risk_level.total)+'%'}">
+                            <span>{{content.risk_level.high}}</span>
+                        </div>
+                    </div>
+                </dd>
+            </dl>
+            <br>
+            <hr>
+            <h4>Findings Reports</h4>
+            <div ng-if="content.findings" ng-repeat="finding in content.findings">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>{{finding.title}}</strong>
+                    </div>
+                    <div class="panel-body">
+                        <dl class="dl-horizontal" nf-if="finding.severity" >
+                            <dt>Severity</dt>
+                            <dd><label class="label patrowl-{{finding.severity}}">{{finding.severity}}</label></dd>
+                            <dt>Description</dt>
+                            <dd>{{finding.description}}</dd>
+                            <dt>From engine</dt>
+                            <dd>{{finding.engine_type}}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

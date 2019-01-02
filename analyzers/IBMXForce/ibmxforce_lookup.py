@@ -16,16 +16,10 @@ class IBMXForceAnalyzer(Analyzer):
         self.url = self.get_param('config.url', None, 'Missing API url')
         self.key = self.get_param('config.key', None, 'Missing API key')
         self.pwd = self.get_param('config.pwd', None, 'Missing API password')
-        self.verify = self.str2bool(self.get_param('config.verify', True))
+        self.verify = self.get_param('config.verify', True)
         if not self.verify:
             requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
         self.proxies = self.get_param('config.proxy', None)
-
-    def str2bool(self, v):
-        if isinstance(v, str) or isinstance(v, int) or isinstance(v, unicode) :
-            return v.lower() in ("yes", "true", "t", "1")
-        if isinstance(v, bool):
-            return v
 
     def parse_data(self, date):
         try:
