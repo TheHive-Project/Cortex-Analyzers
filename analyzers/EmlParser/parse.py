@@ -37,7 +37,7 @@ class CustomExtractor(Extractor):
         # IPv4
         regex = [{
             'types': ['ip'],
-            'regex': re.compile(r'[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}', re.MULTILINE)
+            'regex': re.compile(r'(?:^|\D)((?:25[0-5]|2[0-4]\d|[1]\d\d|[1-9]\d|[0-9])\.(?:25[0-5]|2[0-4]\d|[1]\d\d|[1-9]\d|[0-9])\.(?:25[0-5]|2[0-4]\d|[1]\d\d|[1-9]\d|[0-9])\.(?:25[0-5]|2[0-4]\d|[1]\d\d|[1-9]\d|[0-9]))(?:\D|$)', re.MULTILINE)
         }]
 
         # URL
@@ -49,7 +49,7 @@ class CustomExtractor(Extractor):
         # mail
         regex.append({
             'types': ['mail','domain'],
-            'regex': re.compile(r'((?:[a-zA-Z0-9\/\-\_\.]+)@{1}([a-zA-Z0-9\-\_]+\.[a-zA-Z0-9\-\_\.]+)+)', re.MULTILINE)
+            'regex': re.compile(r'((?:[a-zA-Z0-9\/\-\_\.\+]+)@{1}([a-zA-Z0-9\-\_]+\.[a-zA-Z0-9\-\_\.]+)+)', re.MULTILINE)
         })
         
         ### Mail Specific regexes
