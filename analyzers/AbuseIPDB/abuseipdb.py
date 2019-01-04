@@ -63,7 +63,7 @@ class AbuseIPDBAnalyzer(Analyzer):
             else:
                 self.notSupported()
         except Exception as e:
-            self.error('Run failed\n Error:{}'.format(e))
+            self.unexpectedError(e)
 
     def summary(self, raw):
 
@@ -77,7 +77,7 @@ class AbuseIPDBAnalyzer(Analyzer):
             return {"taxonomies": taxonomies}
 
         except Exception as e:
-            self.error('Summary failed\n Error:{}'.format(e))
+            self.unexpectedError(e)
 
 
 if __name__ == '__main__':
