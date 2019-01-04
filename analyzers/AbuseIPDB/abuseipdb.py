@@ -40,27 +40,30 @@ class AbuseIPDBAnalyzer(Analyzer):
 
     def run(self):
 
-        if self.data_type == "ip":
-            api_key = self.get_param('config.key', None, 'Missing AbuseIPDB API key')
-            days_to_check = self.get_param('config.days', 30)
-            ip = self.get_data()
-            url = 'https://www.abuseipdb.com/check/{}/json?key={}&days={}' \
-                  ''.format(ip, api_key, days_to_check)
-            response = requests.get(url)
-            if not (200 <= response.status_code < 300):
-                self.error('Unable to query AbuseIPDB API\n{}'.format(response.text))
-            json_response = response.json()
-            # this is because in case there's only one result, the api gives back a list instead of a dict
-            response_list = json_response if isinstance(json_response, list) else [json_response]
-            for found in response_list:
-                if 'category' in found:
-                    categories_strings = []
-                    for category in found['category']:
-                        categories_strings.append(self.extract_abuse_ipdb_category(category))
-                    found['categories_strings'] = categories_strings
-            self.report({'values': response_list})
-        else:
-            self.notSupported()
+        try:
+            if self.data_type == "ip":
+                api_key = self.get_param('config.key', None, 'Missing AbuseIPDB API key')
+                days_to_check = self.get_param('config.days', 30)
+                ip = self.get_data()
+                url = 'https://www.abuseipdb.com/check/{}/json?key={}&days={}' \
+                      ''.format(ip, api_key, days_to_check)
+                response = requests.get(url)
+                if not (200 <= response.status_code < 300):
+                    self.error('Unable to query AbuseIPDB API\n{}'.format(response.text))
+                json_response = response.json()
+                # this is because in case there's only one result, the api gives back a list instead of a dict
+                response_list = json_response if isinstance(json_response, list) else [json_response]
+                for found in response_list:
+                    if 'category' in found:
+                        categories_strings = []
+                        for category in found['category']:
+                            categories_strings.append(self.extract_abuse_ipdb_category(category))
+                        found['categories_strings'] = categories_strings
+                self.report({'values': response_list})
+            else:
+                self.notSupported()
+        except Exception as e:
+            self.error('Run failed\n Error:{}'.format(e))
 
     def summary(self, raw):
 
@@ -74,7 +77,7 @@ class AbuseIPDBAnalyzer(Analyzer):
             return {"taxonomies": taxonomies}
 
         except Exception as e:
-            self.error('Summary failed\n{}'.format(e.message))
+            self.error('Summary failed\n Error:{}'.format(e))
 
 
 if __name__ == '__main__':
