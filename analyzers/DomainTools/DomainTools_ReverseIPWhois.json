@@ -1,0 +1,30 @@
+{
+  "name": "DomainTools_ReverseIPWhois",
+  "version": "2.0",
+  "author": "ANSSI",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use DomainTools to get a list of IP addresses which share the same registrant information.",
+  "dataTypeList": ["mail", "ip", "domain", "other"],
+  "command": "DomainTools/domaintools_analyzer.py",
+  "baseConfig": "DomainTools",
+  "config": {
+      "service": "reverse-ip-whois"
+  },
+  "configurationItems": [
+    {
+      "name": "username",
+      "description": "DomainTools API credentials",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "key",
+      "description": "DomainTools API credentials",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}

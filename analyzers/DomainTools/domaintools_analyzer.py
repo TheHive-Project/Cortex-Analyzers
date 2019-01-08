@@ -42,9 +42,12 @@ class DomainToolsAnalyzer(Analyzer):
         elif self.service == 'whois/history' and self.data_type == 'domain':
             response = api.whois_history(data).response()
 
-        elif self.service == 'whois/parsed' and self.data_type == 'domain':
+        elif self.service == 'whois/parsed' and self.data_type in ['domain','ip']:
             response = api.parsed_whois(data).response()
 
+        elif self.service == 'hosting-history' and self.data_type == 'domain':
+            response = api.hosting_history(data).response()
+        
         elif self.service == 'risk_evidence' and self.data_type in ['domain', 'fqdn']:
             response = api.risk_evidence(data).response()
 
@@ -52,20 +55,25 @@ class DomainToolsAnalyzer(Analyzer):
             response = api.reputation(data, include_reasons=True).response()
 
         elif self.service == 'reverse-whois':
-            response = api.reverse_whois(data, mode='purchase').response()
+            scope = self.getParam('parameters.scope', 'current', None)
+            response = api.reverse_whois(data, mode='purchase', scope=scope).response()
 
-        elif self.service == 'whois' and self.data_type == 'ip':
+        elif self.service == 'reverse-ip-whois':
+            response = api.reverse_ip_whois(data).response()
+
+        elif self.service == 'whois' and self.data_type in ['domain', 'ip']:
             response = api.whois(data).response()
 
         return response
 
 
     def summary(self, raw):
+
         r = {
             "service": self.service,
             "dataType": self.data_type
         }
-
+        
         if "ip_addresses" in raw:
             if type(raw["ip_addresses"]) == dict:
                 r["ip"] = {
@@ -87,6 +95,16 @@ class DomainToolsAnalyzer(Analyzer):
                 "historic": raw["domain_count"]["historic"]
             }
 
+        if "registrar_history" in raw:
+            r["registrar_history"] = len(raw["registrar_history"])
+        if "ip_history" in raw:
+            r["ip_history"] = len(raw["ip_history"])
+        if "nameserver_history" in raw:
+            r["ns_history"] = len(raw["nameserver_history"])
+
+        if "record_count" in raw:
+            r["record_count"] = raw["record_count"]
+
         if "registrant" in raw:
             r["registrant"] = raw["registrant"]
         elif "response" in raw and "registrant" in raw["response"]:
@@ -94,7 +112,6 @@ class DomainToolsAnalyzer(Analyzer):
 
         if "parsed_whois" in raw:
             r["registrar"] = raw["parsed_whois"]["registrar"]["name"]
-            #
 
         if "name_server" in raw:
             r["name_server"] = raw["name_server"]["hostname"]
@@ -122,6 +139,16 @@ class DomainToolsAnalyzer(Analyzer):
                                                   "curr:{} / hist:{} domains".format(r["domain_count"]["current"],
                                                                                          r["domain_count"][
                                                                                              "historic"])))
+
+        if r["service"] == "reverse-ip-whois":
+            taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_IP_Whois",
+                                                  "records:{}".format(r["record_count"])))
+
+        if r["service"] == "hosting-history":
+            taxonomies.append(self.build_taxonomy("info", "DT", "Hosting_History",
+                                                  "registrars:{} / ips:{} / ns:{}".format(r["registrar_history"],
+                                                                                              r["ip_history"],
+                                                                                                  r["ns_history"])))
 
         if r["service"] == "whois/history":
             taxonomies.append(self.build_taxonomy("info", "DT", "Whois_History",

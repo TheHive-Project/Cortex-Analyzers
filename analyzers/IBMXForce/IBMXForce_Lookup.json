@@ -37,6 +37,14 @@
       "required": true,
       "multi": false,
       "type": "string"
+    },
+    {
+      "name": "verify",
+      "description": "Enable/Disable certificate verification",
+      "required": false,
+      "multi": false,
+      "type": "boolean",
+      "default": true
     }
   ]
 }

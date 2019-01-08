@@ -1,7 +1,7 @@
 {
   "name": "Onyphe_Datascan",
   "version": "1.0",
-  "author": "Pierre Baudry, Adrien Barchapt",
+  "author": "ANSSI",
   "url": "https://github.com/cybernardo/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Retrieve datascan information Onyphe has for the given IPv{4,6} address with history of changes or search a string.",

@@ -1,0 +1,20 @@
+{
+  "name": "Umbrella Blacklister",
+  "version": "1.0",
+  "author": "Kyle Parrish",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Add domain to Umbrella blacklist via Enforcement API.",
+  "dataTypeList": ["thehive:case_artifact"],
+  "command": "UmbrellaBlacklister/UmbrellaBlacklister.py",
+  "baseConfig": "UmbrellaBlacklister",
+  "configurationItems": [
+    {
+      "name": "integration_url",
+      "description": "Custom integration url",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}
