@@ -40,7 +40,7 @@ class CrtshAnalyzer(Analyzer):
         if req.ok:
             try:
                 content = req.content.decode('utf-8')
-                data = json.loads("[{}]".format(content.replace('}{', '},{')))
+                data = json.loads(content.replace('}{', '},{'))
                 return data
             except Exception:
                 self.error("Error retrieving information.")
