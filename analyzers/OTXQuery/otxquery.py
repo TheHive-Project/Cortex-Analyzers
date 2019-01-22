@@ -4,6 +4,7 @@ import json
 import requests
 import urllib
 import hashlib
+import io
 from cortexutils.analyzer import Analyzer
 
 
@@ -169,7 +170,14 @@ class OTXQueryAnalyzer(Analyzer):
             hashes = self.get_param('attachment.hashes', None)
             if hashes is None:
                 filepath = self.get_param('file', None, 'File is missing')
-                hash = hashlib.sha256(open(filepath, 'r').read()).hexdigest();
+                sha256 = hashlib.sha256()
+                with io.open(filepath, 'rb') as fh:
+                    while True:
+                        data = fh.read(4096)
+                        if not data:
+                            break
+                        sha256.update(data)
+                hash = sha256.hexdigest()
             else:
                 # find SHA256 hash
                 hash = next(h for h in hashes if len(h) == 64)
