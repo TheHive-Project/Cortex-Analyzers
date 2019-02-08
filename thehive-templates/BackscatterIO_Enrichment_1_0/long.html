@@ -1,0 +1,21 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        Backscatter.io results for <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+        <div ng-repeat="(k,v) in content.results">
+            <span><strong>{{k}}:</strong> {{v}}</spam>
+        </div>
+        <p ng-if="!content.results">No records found for {{artifact.data}}.</p>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
