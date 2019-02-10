@@ -19,7 +19,6 @@ class Mailer(Responder):
 
     def run(self):
         Responder.run(self)
-
         title = self.get_param('data.title', None, 'title is missing')
         description = self.get_param('data.description', None, 'description is missing')
         mail_to = None
