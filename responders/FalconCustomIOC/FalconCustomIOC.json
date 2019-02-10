@@ -2,7 +2,7 @@
   "name": "Crowdstrike Falcon Custom IOC API",
   "version": "1.0",
   "author": "Michael",
-  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "url": "https://www.crowdstrike.com/blog/tech-center/import-iocs-crowdstrike-falcon-host-platform-via-api/",
   "license": "MIT",
   "description": "Submit observables to the Crowdstrike Falcon Custom IOC api",
   "dataTypeList": ["thehive:alert","thehive:case_artifact"],
