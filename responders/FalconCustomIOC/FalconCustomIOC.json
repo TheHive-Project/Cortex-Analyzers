@@ -4,8 +4,8 @@
   "author": "Michael",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "MIT",
-  "description": "Submit observables to the Falcon Custom IOC api",
-  "dataTypeList": ["thehive:case","thehive:alert","thehive:case_artifact"],
+  "description": "Submit observables to the Crowdstrike Falcon Custom IOC api",
+  "dataTypeList": ["thehive:alert","thehive:case_artifact"],
   "command": "FalconCustomIOC/FalconCustomIOC.py",
   "baseConfig": "FalconCustomIOC",
   "configurationItems": [
