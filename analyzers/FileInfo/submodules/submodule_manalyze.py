@@ -35,7 +35,7 @@ class ManalyzeSubmodule(SubmoduleBaseclass):
             '--dump=imports,exports,sections',
             '--hashes',
             '--pe={}'.format(filepath),
-            '--plugins=clamav,compilers,peid,strings,findcrypt,btcaddress,packer,imports,resources,mitigation,authenticode',
+            '--plugins=clamav,compilers,peid,strings,findcrypt,cryptoaddress,packer,imports,resources,mitigation,authenticode',
             '--output=json'
         ], stdout=subprocess.PIPE, cwd=os.path.split(self.binary_path)[0])
         result = sp.stdout
@@ -55,7 +55,7 @@ class ManalyzeSubmodule(SubmoduleBaseclass):
             '--dump=imports,exports,sections',
             '--hashes',
             '--pe=/data/{}'.format(filename),
-            '--plugins=clamav,compilers,peid,strings,findcrypt,btcaddress,packer,imports,resources,mitigation,authenticode',
+            '--plugins=clamav,compilers,peid,strings,findcrypt,cryptoaddress,packer,imports,resources,mitigation,authenticode',
             '--output=json'
         ], stdout=subprocess.PIPE)
         result = sp.stdout
