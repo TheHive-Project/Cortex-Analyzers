@@ -7,31 +7,31 @@
             <tbody>
                 <tr>
                     <th>Observation Count</th>
-                    <td>{{content.results.summary['observations_count']}}</td>
+                    <td>{{content.results.summary['observations_count'] || 0}}</td>
                 </tr>
                 <tr>
                     <th>IP Address Count</th>
-                    <td>{{content.results.summary['ip_address_count']}}</td>
+                    <td>{{content.results.summary['ip_address_count'] || 0}}</td>
                 </tr>
                 <tr>
                     <th>Network Count</th>
-                    <td>{{content.results.summary['network_count']}}</td>
+                    <td>{{content.results.summary['network_count'] || 0}}</td>
                 </tr>
                 <tr>
                     <th>AS Count</th>
-                    <td>{{content.results.summary['autonomous_system_count']}}</td>
+                    <td>{{content.results.summary['autonomous_system_count'] || 0}}</td>
                 </tr>
                 <tr>
                     <th>Port Count</th>
-                    <td>{{content.results.summary['port_count']}}</td>
+                    <td>{{content.results.summary['port_count'] || 0}}</td>
                 </tr>
                 <tr>
                     <th>Protocol Count</th>
-                    <td>{{content.results.summary['protocol_count']}}</td>
+                    <td>{{content.results.summary['protocol_count'] || 0}}</td>
                 </tr>
             </tbody>
         </table>
-        <table class="table" ng-if="content.results.observations">
+        <table ng-if="content.results.observations.length > 0" class="table" ng-if="content.results.observations">
             <thead>
                 <th>Observed</th>
                 <th>Protocol</th>
@@ -47,7 +47,8 @@
                 </tr>
             </tbody>
         </table>
-        <p ng-if="!content.results.observations">No records found for {{artifact.data}}.</p>
+        <div class="empty-message" 
+            ng-if="!content.results.observations || content.results.observations.length === 0">No records found for {{artifact.data}}</d>
     </div>
 </div>
 
