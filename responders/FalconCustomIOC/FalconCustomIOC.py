@@ -9,7 +9,6 @@ import traceback
 from cortexutils.responder import Responder
 from requests.auth import HTTPBasicAuth
 
-
 class FalconCustomIOC(Responder):
     def __init__(self):
         Responder.__init__(self)
@@ -31,12 +30,12 @@ class FalconCustomIOC(Responder):
                     return
 		ioc = self.get_param('data.data', None, 'No IOC provided')
                 if data_type == "url":
-                        match = re.match(r"\w*:\/\/([\w\d\-\.]*).*", ioc)
-                        if match is None or match.group(1) is None:
+                        match = re.match(r"(http:\/\/|https:\/\/)?([\w\d\-\.]{0,256}).*", ioc)
+                        if match is None or match.group(2) is None:
                             self.error("Could not parse domain from URL")
                             return
                         else:
-            			ioc=match.group(1)
+            			ioc=match.group(2)
 		description = self.get_param('data.case.title',None,"Can't get case title")
 		postdata=json.dumps([{"type": ioctypes[data_type], "value": ioc.strip(), "policy": "detect", "description": description, "share_level": "red", "source": "Cortex Responder - FalconCustomIOC", "expiration_days": 30}])
 		response=requests.post(self.falconapi_url,data=postdata,headers={"Content-Type":"application/json"},auth=HTTPBasicAuth(self.apiuser,self.apikey))
@@ -49,6 +48,9 @@ class FalconCustomIOC(Responder):
 	except Exception as ex:
 		self.error(traceback.format_exc())
 
+
+    def operations(self, raw):
+        return [self.build_operation('AddTagToArtifact', tag='CrowdStrike:Custom IOC Uploaded')]
 if __name__ == '__main__':
     FalconCustomIOC().run()
 
