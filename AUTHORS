@@ -5,37 +5,41 @@ Authors
 * Thomas Franco <toom@thehive-project.org>
 * Saâd Kadhi <saad@thehive-project.org> (project leader)
 * Jérôme Leonard <jerome@thehive-project.org>
+* Danni Co <danni@thehive-project.org>
+* Nils Kuhnert <nils@thehive-project.org>
 
 Contributors
 ------------
 
-* Danni Co <danni@thehive-project.org>
-* Nils Kuhnert <nils@thehive-project.org>
-* CERT Banque de France (CERT-BDF)
-
+* ANSSI
 * Rémi Allain
 * Mehdy Aschy
-* Davide Arcuri (LDO-CERT)
+* Davide Arcuri
 * Adrien Barchapt
 * Pierre Baudry
 * Antoine Brodin
 * Eric Capuano
-* crackytsi
-* Marc-André Doll (Starc, by EXAPROBE)
+* CERT Banque de France (CERT-BDF)
+* Chris Racky
+* Marc-André Doll
 * etz69
-* Andrea Garavaglia (LDO-CERT)
+* Andrea Garavaglia
 * Julian Gonzalez
+* iosonogio (https://github.com/iosonogio)
 * Sébastien Larinier
+* Nicolas Mattiocco
 * Nclose
+* Manabu Niseki
 * Robert Nixon
 * ph34tur3
+* Kyle Parrish
 * Rémi Pointel
 * Guillaume Rousse
 * Michael Stensrud
 * Emmanuel Torquato
 * Daniil Yugoslavskiy
 
-Copyright (C) 2017-2018 Nabil Adouani
-Copyright (C) 2014-2018 Thomas Franco
-Copyright (C) 2014-2018 Saâd Kadhi
-Copyright (C) 2014-2018 Jérôme Leonard
+Copyright (C) 2017-2019 Nabil Adouani
+Copyright (C) 2014-2019 Thomas Franco
+Copyright (C) 2014-2019 Saâd Kadhi
+Copyright (C) 2014-2019 Jérôme Leonard
