@@ -37,7 +37,8 @@ class FalconCustomIOC(Responder):
                         else:
             			ioc=match.group(2)
 		description = self.get_param('data.case.title',None,"Can't get case title")
-		postdata=json.dumps([{"type": ioctypes[data_type], "value": ioc.strip(), "policy": "detect", "description": description, "share_level": "red", "source": "Cortex Responder - FalconCustomIOC", "expiration_days": 30}])
+		description = str(description).encode('utf-8')[:128]
+		postdata=json.dumps([{"type": ioctypes[data_type], "value": ioc.strip(), "policy": "detect", "description": description, "share_level": "red", "source": "Cortex - FalconCustomIOC ["+description+"]", "expiration_days": 30}])
 		response=requests.post(self.falconapi_url,data=postdata,headers={"Content-Type":"application/json"},auth=HTTPBasicAuth(self.apiuser,self.apikey))
 		json_response = json.loads(response.text)
 		if json_response["errors"]:
