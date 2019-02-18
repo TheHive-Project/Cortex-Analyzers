@@ -3,6 +3,7 @@
 
 import requests
 import json
+import re
 from cortexutils.analyzer import Analyzer
 
 
@@ -29,6 +30,7 @@ class CrtshAnalyzer(Analyzer):
         XML notation would also include the base64 cert:
         https://crt.sh/atom?q={}
         """
+        rex = '\<TH\sclass="outer">SHA-1\(Certificate\)\</TH\>\s+\<TD\sclass="outer"\>([^\<]+)\</TD\>'
         base_url = "https://crt.sh/?q={}&output=json"
         if wildcard:
             domain = "%25.{}".format(domain)
@@ -41,9 +43,18 @@ class CrtshAnalyzer(Analyzer):
             try:
                 content = req.content.decode('utf-8')
                 data = json.loads(content.replace('}{', '},{'))
+		for c in data:
+                    det_url = 'https://crt.sh/?q={}&output=json'.format(c['min_cert_id'])
+                    det_req = requests.get(det_url, headers={'User-Agent': ua})
+                    if det_req.status_code == requests.codes.ok:
+                        det_con = det_req.content.decode('utf-8')
+                        sha1 = re.findall(rex, det_con)[0]
+                        c['sha1'] = sha1
+                    else:
+                        c['sha1'] = ''
                 return data
-            except Exception:
-                self.error("Error retrieving information.")
+            except Exception as e:
+                self.error("Error retrieving information. {}".format(e))
         return None
 
     def __init__(self):
