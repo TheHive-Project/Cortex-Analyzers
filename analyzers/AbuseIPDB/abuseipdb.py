@@ -45,9 +45,8 @@ class AbuseIPDBAnalyzer(Analyzer):
                 api_key = self.get_param('config.key', None, 'Missing AbuseIPDB API key')
                 days_to_check = self.get_param('config.days', 30)
                 ip = self.get_data()
-                url = 'https://www.abuseipdb.com/check/{}/json?key={}&days={}' \
-                      ''.format(ip, api_key, days_to_check)
-                response = requests.get(url)
+                url = 'https://www.abuseipdb.com/check/{}/json?days={}'.format(ip, days_to_check)
+                response = requests.post(url, data = {'key': api_key})
                 if not (200 <= response.status_code < 300):
                     self.error('Unable to query AbuseIPDB API\n{}'.format(response.text))
                 json_response = response.json()
@@ -66,18 +65,14 @@ class AbuseIPDBAnalyzer(Analyzer):
             self.unexpectedError(e)
 
     def summary(self, raw):
+        taxonomies = []
 
-        try:
-            taxonomies = []
-            if raw:
-                taxonomies.append(self.build_taxonomy('malicious', 'AbuseIPDB', 'Records found', 'None'))
-            else:
-                taxonomies.append(self.build_taxonomy('safe', 'AbuseIPDB', 'Records not found', 'None'))
+        if raw and 'values' in raw:
+            taxonomies.append(self.build_taxonomy('malicious', 'AbuseIPDB', 'Records', len(raw['values'])))
+        else:
+            taxonomies.append(self.build_taxonomy('safe', 'AbuseIPDB', 'Records', 0))
 
-            return {"taxonomies": taxonomies}
-
-        except Exception as e:
-            self.unexpectedError(e)
+        return {"taxonomies": taxonomies}
 
 
 if __name__ == '__main__':
