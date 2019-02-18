@@ -4,8 +4,8 @@
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Send an email with information from a TheHive case, task or alert",
-  "dataTypeList": ["thehive:case", "thehive:alert", "thehive:case_task"],
+  "description": "Send an email with information from a TheHive case or alert",
+  "dataTypeList": ["thehive:case", "thehive:alert"],
   "command": "Mailer/mailer.py",
   "baseConfig": "Mailer",
   "configurationItems": [

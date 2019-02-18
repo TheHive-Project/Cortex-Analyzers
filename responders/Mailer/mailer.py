@@ -30,17 +30,7 @@ class Mailer(Responder):
             if mail_tags:
                 mail_to = mail_tags.pop()
             else:
-                self.error('recipient address not found in tags')
-        elif self.data_type == 'thehive:case_task':
-            # Search recipient address in tags
-            descr_array = description.splitlines()
-            if 'mailto:' in descr_array[0]:
-                mail_to = descr_array[0].replace("mailto\:", "")
-            else:
-                self.error('recipient address not found in description')
-            #Set rest of description as body
-            del descr_array[0]
-            description = '\n'.join(descr_array)
+                self.error('recipient address not found in observables')
         elif self.data_type == 'thehive:alert':
             # Search recipient address in artifacts
             artifacts = self.get_param('data.artifacts', None, 'recipient address not found in observables')
