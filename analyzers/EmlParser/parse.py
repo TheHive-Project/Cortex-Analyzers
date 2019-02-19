@@ -9,34 +9,34 @@ import hashlib
 import base64
 from pprint import pprint
 
-#Observables imports
+#Required for analyzer specific observable auto extraction
 from cortexutils.extractor import Extractor
-from builtins import str as unicode
 import re
 
 class EnhancedExtractor(Extractor):
-    
+
+    def __init__(self, ignore=None):
+        Extractor.__init__(self)
+        self.asregex = self.__init_analyzer_regex()
+
     @staticmethod
     def __init_analyzer_regex():
-        
-        logging.info("Preparing mail specific regex statements")
-        
+
         """
         Returns compiled regex list specifically for mail.
 
         :return: List of {type, regex} dicts
         :rtype: list
         """
-        
+
         ### Mail Specific regexes
+        # Received from
+        as_regex = [{
+            'types': ['fqdn','fqdn'],
+            'regex': re.compile(r'from\s\[?([A-Za-z0-9\.\-]*)\]?.*?\sby\s\[?([A-Za-z0-9\.\-]*)\]?', re.MULTILINE)
+        }]
 
-        # Received from by header
-        regex.append({
-            'types': ['fqdn'],
-            'regex': re.compile(r'Received: from \[?([A-Za-z0-9\.\-]*)\]?', re.MULTILINE)
-        })
-
-        return regex
+        return as_regex
 
 class EmlParserAnalyzer(Analyzer):
 
@@ -65,12 +65,21 @@ class EmlParserAnalyzer(Analyzer):
         namespace = "EmlParser"
         predicate = "Attachments"
         value = "\"0\""
-        
+
         if "attachments" in raw:
             value = len(raw["attachments"])
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
-        return {"taxonomies": taxonomies} 
+        return {"taxonomies": taxonomies}
+
+    def artifacts(self, raw):
+        # Use the regex extractor, if auto_extract setting is not False
+        if self.auto_extract:
+            extractor = EnhancedExtractor(ignore=self.get_data())
+            return extractor.check_iterable(raw)
+
+        # Return empty list
+        return []
 
 def parseEml(filepath):
 
