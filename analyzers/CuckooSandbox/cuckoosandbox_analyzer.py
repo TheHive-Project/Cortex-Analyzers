@@ -105,17 +105,17 @@ class CuckooSandboxAnalyzer(Analyzer):
             else:
                 snort_alerts = []
             try:
-                hosts = [(x['ip'], x['hostname'], x['country_name']) for x in
-                         resp_json['network']['hosts']] if 'hosts' in resp_json['network'].keys() else None
+                domains = [(x['ip'], x['domain']) for x in
+                         resp_json['network']['domains']] if 'domains' in resp_json['network'].keys() else None
             except TypeError as e:
-                hosts = [x for x in resp_json['network']['hosts']] if 'hosts' in resp_json['network'].keys() else []
+                domains = [x for x in resp_json['network']['domains']] if 'domains' in resp_json['network'].keys() else []
             uri = [(x['uri']) for x in resp_json['network']['http']] if 'http' in resp_json['network'].keys() else []
             if self.data_type == 'url':
                 self.report({
                     'signatures': list_description,
                     'suricata_alerts': suri_alerts,
                     'snort_alerts': snort_alerts,
-                    'hosts': hosts,
+                    'domains': domains,
                     'uri': uri,
                     'malscore': resp_json['malscore'] if 'malscore' in resp_json.keys() else resp_json['info'].get(
                         'score', None),
@@ -129,7 +129,7 @@ class CuckooSandboxAnalyzer(Analyzer):
                     'signatures': list_description,
                     'suricata_alerts': suri_alerts,
                     'snort_alerts': snort_alerts,
-                    'hosts': hosts,
+                    'domains': domains,
                     'uri': uri,
                     'malscore': resp_json['malscore'] if 'malscore' in resp_json.keys() else resp_json['info'].get(
                         'score', None),
