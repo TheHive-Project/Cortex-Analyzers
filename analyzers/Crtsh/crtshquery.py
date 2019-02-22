@@ -93,6 +93,19 @@ class CrtshAnalyzer(Analyzer):
 
         return {"taxonomies": taxonomies}
 
+    def artifacts(self, raw):
+        artifacts = []
+        results = raw.get('certobj', {}).get('result', [])
+        for cert in results:
+            if 'sha1' in cert:
+                artifacts.append({'type':'certificate_hash', 'value':cert.get('sha1')})
+            if 'name_value' in cert:
+                artifacts.append({'type': 'fqdn', 'value': cert.get('name_value')})
+
+        #dedup
+        artifacts = [dict(t) for t in {tuple(d.items()) for d in artifacts}]
+        return artifacts
+
     def run(self):
         Analyzer.run(self)
 
