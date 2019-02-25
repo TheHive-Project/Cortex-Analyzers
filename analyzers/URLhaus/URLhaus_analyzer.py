@@ -32,24 +32,41 @@ class URLhausAnalyzer(Analyzer):
 
     def summary(self, raw):
         taxonomies = []
-        level = "info"
         namespace = "URLhaus"
-        predicate = "Search"
-        value = "0 result"
 
-        results = raw["results"]
-        if len(results) >= 1:
-            level = "malicious"
-
-        if len(results) <= 1:
-            value = "{} result".format(len(results))
+        if raw['query_status'] == 'no_results':
+            taxonomies.append(self.build_taxonomy(
+                'info',
+                namespace,
+                'Search',
+                'No results'
+            ))
         else:
-            value = "{} results".format(len(results))
-
-        taxonomies.append(
-            self.build_taxonomy(level, namespace, predicate, value)
-        )
-
+            if self.data_type == 'url':
+                taxonomies.append(self.build_taxonomy(
+                    'malicious',
+                    namespace,
+                    'Threat',
+                    raw['threat']
+                ))
+            elif self.data_type in ['domain', 'ip']:
+                threat_types = []
+                for url in raw['urls']:
+                    if url['threat'] not in threat_types:
+                        threat_types.append(url['threat'])
+                taxonomies.append(self.build_taxonomy(
+                    'malicious',
+                    namespace,
+                    'Threat' if len(threat_types) == 1 else 'Threats',
+                    ','.join(threat_types)
+                ))
+            elif self.data_type == 'hash':
+                taxonomies.append(self.build_taxonomy(
+                    'malicious',
+                    namespace,
+                    'Signature',
+                    raw['signature'] if raw['signature'] and raw['signature'] != 'null' else 'Unknown'
+                ))
         return {"taxonomies": taxonomies}
 
 
