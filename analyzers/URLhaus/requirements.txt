@@ -1,4 +1,2 @@
-beautifulsoup4
 cortexutils
-diskcache
 requests
