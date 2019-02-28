@@ -7,8 +7,8 @@ class TorBlutmagieAnalyzer(Analyzer):
     """Cortex analyzer to query TorBlutmagie for exit nodes IP addresses and/or names"""
     def __init__(self):
         Analyzer.__init__(self)
-        self.cache_duration = self.getParam('config.cache.duration', 3600)
-        self.cache_root = self.getParam(
+        self.cache_duration = self.get_param('config.cache.duration', 3600)
+        self.cache_root = self.get_param(
             'config.cache.root', '/tmp/cortex/tor_project'
         )
 

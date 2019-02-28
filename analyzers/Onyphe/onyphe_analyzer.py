@@ -7,12 +7,12 @@ from onyphe_api import Onyphe
 class OnypheAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
-        self.service = self.getParam(
+        self.service = self.get_param(
             'config.service', None, 'Service parameter is missing')
-        self.onyphe_key = self.getParam(
+        self.onyphe_key = self.get_param(
             'config.key', None, 'Missing Onyphe API key')
         self.onyphe_client = None
-        self.polling_interval = self.getParam('config.polling_interval', 60)
+        self.polling_interval = self.get_param('config.polling_interval', 60)
 
     def summary(self, raw):
         taxonomies = []
@@ -44,9 +44,39 @@ class OnypheAnalyzer(Analyzer):
                 'info', namespace, "Geolocate", "country: {}, city: {}".format(
                     location["country_name"], location["city"])))
 
+        if self.service == 'inetnum':
+            output_data = {}
+            for r in raw['inetnum']['results']:
+                subnet = r['subnet']
+                if subnet not in output_data:
+                    output_data[subnet] = {
+                        "dates": []
+                    }
+                if r['seen_date'] not in output_data[subnet]['dates']:
+                    output_data[subnet]['dates'].append(r['seen_date'])
+            for subnet, subnet_data in output_data.items():
+                taxonomies.append(self.build_taxonomy(
+                    'info', namespace, "Subnet", "subnet {} last seen {}".format(
+                        subnet, subnet_data['dates'][0])))
+
         if self.service == 'ports':
             output_data = {}
             for r in raw['ports']['results']:
+                port = r['port']
+                if port not in output_data:
+                    output_data[port] = {
+                        "dates": []
+                    }
+                if r['seen_date'] not in output_data[port]['dates']:
+                    output_data[port]['dates'].append(r['seen_date'])
+            for port_number, port_data in output_data.items():
+                taxonomies.append(self.build_taxonomy(
+                    'info', namespace, "Port", "port {} last seen {}".format(
+                        port_number, port_data['dates'][0])))
+
+        if self.service == 'datascan':
+            output_data = {}
+            for r in raw['datascan']['results']:
                 port = r['port']
                 if port not in output_data:
                     output_data[port] = {
@@ -98,24 +128,32 @@ class OnypheAnalyzer(Analyzer):
         try:
             self.onyphe_client = Onyphe(self.onyphe_key)
             if self.service == 'threats':
-                ip = self.getParam('data', None, 'Data is missing')
+                ip = self.get_param('data', None, 'Data is missing')
                 results = {'threats': self.onyphe_client.threatlist(ip)}
                 self.report(results)
             if self.service == 'ports':
-                ip = self.getParam('data', None, 'Data is missing')
+                ip = self.get_param('data', None, 'Data is missing')
                 results = {'ports': self.onyphe_client.synscan(ip)}
                 self.report(results)
             if self.service == 'geolocate':
-                ip = self.getParam('data', None, 'Data is missing')
+                ip = self.get_param('data', None, 'Data is missing')
                 results = {'location': self.onyphe_client.geolocate(ip)}
                 self.report(results)
             if self.service == 'reverse':
-                ip = self.getParam('data', None, 'Data is missing')
+                ip = self.get_param('data', None, 'Data is missing')
                 results = {'reverses': self.onyphe_client.reverse(ip)}
                 self.report(results)
             if self.service == 'forward':
-                ip = self.getParam('data', None, 'Data is missing')
+                ip = self.get_param('data', None, 'Data is missing')
                 results = {'forwards': self.onyphe_client.forward(ip)}
+                self.report(results)
+            if self.service == 'inetnum':
+                ip = self.get_param('data', None, 'Data is missing')
+                results = {'inetnum': self.onyphe_client.inetnum(ip)}
+                self.report(results)
+            if self.service == 'datascan':
+                ip = self.get_param('data', None, 'Data is missing')
+                results = {'datascan': self.onyphe_client.datascan(ip)}
                 self.report(results)
         except Exception:
             pass

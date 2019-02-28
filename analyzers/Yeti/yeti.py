@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 import pyeti
 from cortexutils.analyzer import Analyzer
 
@@ -9,11 +8,11 @@ class YetiAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.url = self.getParam('config.url', None, 'Missing URL for Yeti API')
+        self.url = self.get_param('config.url', None, 'Missing URL for Yeti API')
 
     def summary(self, raw):
         count = len(raw.get('findings', []))
-        value = "\"{} hit{}\"".format(count, "(s)" if count > 1 else "")
+        value = "{} hit{}".format(count, "(s)" if count > 1 else "")
 
         result = {
             "taxonomies": [{
@@ -27,7 +26,7 @@ class YetiAnalyzer(Analyzer):
 
     def run(self):
         api = pyeti.YetiApi("{}/api/".format(self.url))
-        data = self.getData()
+        data = self.get_data()
 
         try:
             result = api.observable_search(value=data)
@@ -38,8 +37,9 @@ class YetiAnalyzer(Analyzer):
             self.report({
                 'findings': result
             })
-        except:
+        except Exception:
             self.error('An issue occurred while calling Yeti API')
+
 
 if __name__ == '__main__':
     YetiAnalyzer().run()

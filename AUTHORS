@@ -1,27 +1,41 @@
 Authors
 -------
 
-* Thomas Franco <toom@thehive-project.org> (lead developer, back-end)
-* Saâd Kadhi <saad@thehive-project.org> (project leader, product management & design)
-* Jérôme Leonard <jerome@thehive-project.org> (developer, analyzers)
+* Nabil Adouani <nabil@thehive-project.org>
+* Thomas Franco <toom@thehive-project.org>
+* Saâd Kadhi <saad@thehive-project.org> (project leader)
+* Jérôme Leonard <jerome@thehive-project.org>
 
 Contributors
 ------------
 
-* Nabil Adouani
+* Danni Co <danni@thehive-project.org>
+* Nils Kuhnert <nils@thehive-project.org>
 * CERT Banque de France (CERT-BDF)
 
-Contributed Analyzers
----------------------
+* Rémi Allain
+* Mehdy Aschy
+* Davide Arcuri (LDO-CERT)
+* Adrien Barchapt
+* Pierre Baudry
+* Antoine Brodin
+* Eric Capuano
+* crackytsi
+* Marc-André Doll (Starc, by EXAPROBE)
+* etz69
+* Andrea Garavaglia (LDO-CERT)
+* Julian Gonzalez
+* Sébastien Larinier
+* Nclose
+* Robert Nixon
+* ph34tur3
+* Rémi Pointel
+* Guillaume Rousse
+* Michael Stensrud
+* Emmanuel Torquato
+* Daniil Yugoslavskiy
 
-* Fortiguard : Eric Capuano
-* Hippocampe : Danni Co
-* MsgParser : Mehdi Aschy
-* OTXQuery : Eric Capuano
-* PassiveTotal : Antoine Brodin
-* PhishingInitiative : Rémi Pointel
-* PhishTank : Eric Capuano
-
-Copyright (C) 2016-2017 Thomas Franco
-Copyright (C) 2016-2017 Saâd Kadhi
-Copyright (C) 2016-2017 Jérôme Leonard
+Copyright (C) 2017-2018 Nabil Adouani
+Copyright (C) 2014-2018 Thomas Franco
+Copyright (C) 2014-2018 Saâd Kadhi
+Copyright (C) 2014-2018 Jérôme Leonard

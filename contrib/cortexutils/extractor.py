@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 from builtins import str as unicode
+
 import re
+
+
+class ExtractionError(Exception):
+    pass
 
 
 class Extractor:
@@ -11,9 +16,13 @@ class Extractor:
 
     Currently, this is not a fulltext search, so the the ioc's must be isolated strings, to get found.
     This can be iterated for ioc's.
+
+    :param ignore: List of strings or a single string to ignore when matching artifacts to type
+    :type ignore: list, str
     """
 
-    def __init__(self):
+    def __init__(self, ignore=None):
+        self.ignore = ignore
         self.regex = self.__init_regex()
 
     @staticmethod
@@ -59,13 +68,13 @@ class Extractor:
         # URL
         regex.append({
             'type': 'url',
-            'regex': re.compile(r'^(http\:\/\/|https:\/\/)')
+            'regex': re.compile(r'^(http://|https://)')
         })
 
         # domain
         regex.append({
             'type': 'domain',
-            'regex': re.compile(r'^(?!http\:\/\/|https\:\/\/)^[\w\-]+\.\w+$')
+            'regex': re.compile(r'^(?!http://|https://)^[\w\-]+\.[a-zA-Z]+$')
         })
 
         # hash
@@ -77,14 +86,14 @@ class Extractor:
         # user-agent
         regex.append({
             'type': 'user-agent',
-            'regex': re.compile(r'^(Mozilla\/[45]\.0 |AppleWebKit\/[0-9]{3}\.[0-9]{2} |Chrome\/[0-9]{2}\.[0-9]\.'
-                                r'[0-9]{4}\.[0-9]{3} |Safari\/[0-9]{3}\.[0-9]{2} ).*?$')
+            'regex': re.compile(r'^(Mozilla/[45]\.0 |AppleWebKit/[0-9]{3}\.[0-9]{2} |Chrome/[0-9]{2}\.[0-9]\.'
+                                r'[0-9]{4}\.[0-9]{3} |Safari/[0-9]{3}\.[0-9]{2} ).*?$')
         })
 
         # uri_path
         regex.append({
             'type': 'uri_path',
-            'regex': re.compile(r'^(?!http\:\/\/|https\:\/\/)[A-Za-z]*\:\/\/')
+            'regex': re.compile(r'^(?!http://|https://)[A-Za-z]*://')
         })
 
         # regkey
@@ -97,13 +106,13 @@ class Extractor:
         # mail
         regex.append({
             'type': 'mail',
-            'regex': re.compile(r'[\w\.\-]+@\w+\.[\w\.]+')
+            'regex': re.compile(r'[\w.\-]+@\w+\.[\w.]+')
         })
 
         # fqdn
         regex.append({
             'type': 'fqdn',
-            'regex': re.compile(r'^(?!http\:\/\/|https\:\/\/)^[\w\-\.]+\.[\w\-]+\.\w+$')
+            'regex': re.compile(r'^(?!http://|https://)^[\w\-.]+\.[\w\-]+\.[a-zA-Z]+$')
         })
 
         return regex
@@ -112,10 +121,15 @@ class Extractor:
         """Checks if the given value is a known datatype
 
         :param value: The value to check
-        :type value: str        
+        :type value: str or number
         :return: Data type of value, if known, else empty string
         :rtype: str
         """
+        if self.ignore:
+            if isinstance(value, str) and self.ignore in value:
+                return ''
+            if self.ignore == value:
+                return ''
 
         if isinstance(value, (str, unicode)):
             for r in self.regex:

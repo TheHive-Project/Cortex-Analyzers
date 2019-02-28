@@ -1,0 +1,34 @@
+{
+  "name": "Malpedia",
+  "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
+  "license": "AGPL-V3",
+  "url": "https://github.com/LDO-CERT/cortex-analyzers",
+  "version": "1.0",
+  "description": "Check files against Malpedia YARA rules.",
+  "dataTypeList": ["file"],
+  "baseConfig": "Malpedia",
+  "command": "Malpedia/malpedia_analyzer.py",
+  "configurationItems": [
+    {
+      "name": "path",
+      "description": "Rulepath",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "username",
+      "description": "Username",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "password",
+      "description": "Password",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}

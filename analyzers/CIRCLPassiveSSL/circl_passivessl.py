@@ -9,8 +9,8 @@ class CIRCLPassiveSSLAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.user = self.getParam('config.user', None, 'PassiveSSL username is missing!')
-        self.password = self.getParam('config.password', None, 'PassiveSSL password is missing!')
+        self.user = self.get_param('config.user', None, 'PassiveSSL username is missing!')
+        self.password = self.get_param('config.password', None, 'PassiveSSL password is missing!')
         self.pssl = pypssl.PyPSSL(basic_auth=(self.user, self.password))
 
     def query_ip(self, ip):
@@ -53,19 +53,19 @@ class CIRCLPassiveSSLAnalyzer(Analyzer):
         """
         try:
             cquery = self.pssl.query_cert(cert_hash)
-        except:
+        except Exception:
             self.error('Exception during processing with passiveSSL. '
-                       'Please check the format of certificate_hash, no colons or dashed in the hash.')
+                       'This happens if the given hash is not sha1 or contains dashes/colons etc. '
+                       'Please make sure to submit a clean formatted sha1 hash.')
 
         # fetch_cert raises an error if no certificate was found.
         try:
             cfetch = self.pssl.fetch_cert(cert_hash, make_datetime=False)
-        except:
+        except Exception:
             cfetch = {}
 
         return {'query': cquery,
                 'cert': cfetch}
-
 
     def summary(self, raw):
         taxonomies = []
@@ -79,25 +79,27 @@ class CIRCLPassiveSSLAnalyzer(Analyzer):
             r = len(raw['certificates'])
 
         if r == 0 or r == 1:
-            value = "\"{} record\"".format(r)
+            value = "{} record".format(r)
         else:
-            value = "\"{} records\"".format(r)
+            value = "{} records".format(r)
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         return {"taxonomies": taxonomies}
 
-
-
     def run(self):
         if self.data_type == 'certificate_hash' or self.data_type == 'hash':
-            self.report(self.query_certificate(self.getData()))
+            data = self.get_data()
+            if len(data) != 40:
+                self.error('CIRCL Passive SSL expects a sha1 hash, given hash has more or less than 40 characters.')
+            self.report(self.query_certificate(self.get_data()))
         elif self.data_type == 'ip':
-            ip = self.getData()
+            ip = self.get_data()
             if '/' in ip:
                 self.error('CIDRs currently not supported. Please use an IP.')
             self.report(self.query_ip(ip))
         else:
             self.error('Invalid data type!')
+
 
 if __name__ == '__main__':
     CIRCLPassiveSSLAnalyzer().run()

@@ -4,9 +4,17 @@
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/misp-warninglists-analyzer",
   "version": "1.0",
-  "baseConfig": "MISPWarningLists",
-  "config": {},
   "description": "Check IoCs/Observables against MISP Warninglists to filter false positives.",
   "dataTypeList": ["ip", "hash", "domain", "fqdn", "url"],
-  "command": "MISPWarningLists/mispwarninglists.py"
+  "baseConfig": "MISPWarningLists",
+  "command": "MISPWarningLists/mispwarninglists.py",
+  "configurationItems": [
+    {
+      "name": "path",
+      "description": "path to Warninglists folder",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
 }

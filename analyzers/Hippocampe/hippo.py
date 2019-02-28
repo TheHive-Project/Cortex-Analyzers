@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 import sys
-import os
 import json
-import codecs
 import urllib2
 from cortexutils.analyzer import Analyzer
 
@@ -12,13 +10,14 @@ class HippoAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.url = self.getParam('config.url', None, 'Missing URL for Hippocampe API')
-        self.service = self.getParam('config.service', None, 'Service parameter is missing')
+        self.url = self.get_param('config.url', None, 'Missing URL for Hippocampe API')
+        self.service = self.get_param('config.service', None, 'Service parameter is missing')
 
     def more_summary(self, raw):
-        data = self.getData()
-        result = {}
-        result[data] = 0
+        data = self.get_data()
+        result = {
+            data: 0
+        }
 
         if data in raw:
             result[data] = len(raw.get(data))
@@ -26,7 +25,7 @@ class HippoAnalyzer(Analyzer):
         return result
 
     def score_summary(self, raw):
-        data = self.getData()
+        data = self.get_data()
         result = {}
         if data in raw:
             result[data] = raw.get(data).get("hipposcore")
@@ -39,20 +38,20 @@ class HippoAnalyzer(Analyzer):
         predicate = "Score"
 
         if self.service == 'hipposcore':
-            value = self.score_summary(raw)[self.getData()]
+            value = self.score_summary(raw)[self.get_data()]
             if value > 0:
                 level = "malicious"
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         elif self.service == 'more':
-            value = self.more_summary(raw)[self.getData()]
+            value = self.more_summary(raw)[self.get_data()]
             if value > 0:
                 level = "malicious"
-            taxonomies.append(self.build_taxonomy(level, namespace, predicate, "\"{} record(s)\"".format(value)))
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, "{} record(s)".format(value)))
 
         return {"taxonomies": taxonomies}
 
     def run(self):
-        data = self.getData()
+        data = self.get_data()
 
         value = {
             data: {

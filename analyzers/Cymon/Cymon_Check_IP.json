@@ -1,0 +1,24 @@
+{
+    "name": "Cymon_Check_IP",
+    "version": "2.1",
+    "author": "Julian Gonzalez",
+    "url": "https://github.com/ST2labs/Analyzers",
+    "license": "AGPL-V3",
+    "description": "Check an IP addr against Cymon.io.",
+    "dataTypeList": ["ip"],
+    "command": "Cymon/cymon_analyzer.py",
+    "baseConfig": "Cymon",
+    "config": {
+        "service": "Check_IP"
+    },
+    "configurationItems": [
+        {
+            "name": "key",
+            "description": "API key for Cymon.io",
+            "type": "string",
+            "multi": false,
+            "required": true
+        }]
+}
+
+

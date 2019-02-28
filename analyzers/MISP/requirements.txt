@@ -1,3 +1,4 @@
 cortexutils
 pymisp
+enum;python_version<'3.4'
 future;python_version<='2.7'

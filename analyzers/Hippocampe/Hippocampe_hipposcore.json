@@ -1,16 +1,23 @@
 {
-    "name": "Hipposcore",
-    "version": "2.0",
-    "author": "CERT-BDF",
-    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "Get the Hippocampe Score report associated with an IP address, a domain or a URL.",
-    "dataTypeList": ["ip", "domain", "fqdn", "url"],
-    "baseConfig": "Hippocampe",
-    "config": {
-        "check_tlp": false,
-        "max_tlp":3,
-        "service": "hipposcore"
-    },
-    "command": "Hippocampe/hippo.py"
+  "name": "Hipposcore",
+  "version": "2.0",
+  "author": "CERT-BDF",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get the Hippocampe Score report associated with an IP address, a domain or a URL.",
+  "dataTypeList": ["ip", "domain", "fqdn", "url"],
+  "command": "Hippocampe/hippo.py",
+  "baseConfig": "Hippocampe",
+  "config": {
+      "service": "hipposcore"
+  },
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "URL of the service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
 }

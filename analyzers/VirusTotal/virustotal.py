@@ -1,14 +1,10 @@
 #!/usr/bin/env python
 # encoding: utf-8
 import sys
-import os
-import json
-import codecs
 import time
 import hashlib
 
 from virustotal_api import PublicApi as VirusTotalPublicApi
-#from virus_total_apis import PublicApi as VirusTotalPublicApi
 from cortexutils.analyzer import Analyzer
 
 
@@ -16,11 +12,11 @@ class VirusTotalAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.service = self.getParam('config.service', None, 'Service parameter is missing')
-        self.virustotal_key = self.getParam('config.key', None, 'Missing VirusTotal API key')
-        self.polling_interval = self.getParam('config.polling_interval', 60)
-        self.proxies = self.getParam('config.proxy', None)
-
+        self.service = self.get_param('config.service', None, 'Service parameter is missing')
+        self.virustotal_key = self.get_param('config.key', None, 'Missing VirusTotal API key')
+        self.polling_interval = self.get_param('config.polling_interval', 60)
+        self.proxies = self.get_param('config.proxy', None)
+        self.vt = VirusTotalPublicApi(self.virustotal_key, self.proxies)
 
     def wait_file_report(self, id):
         results = self.check_response(self.vt.get_file_report(id))
@@ -51,6 +47,8 @@ class VirusTotalAnalyzer(Analyzer):
         results = response.get('results', {})
         if 'verbose_msg' in results:
             print >> sys.stderr, str(results.get('verbose_msg'))
+        if 'Missing IP address' in results.get('verbose_msg', ''):
+            results['verbose_msg'] = 'IP address not available in VirusTotal'
         return results
 
         # 0 => not found
@@ -70,26 +68,29 @@ class VirusTotalAnalyzer(Analyzer):
         taxonomies = []
         level = "info"
         namespace = "VT"
-        predicate = "Score"
-        value = "\"0\""
+        predicate = "GetReport"
+        value = "0"
+
+        if self.service == "scan":
+            predicate = "Scan"
 
         result = {
             "has_result": True
         }
 
-        if(raw["response_code"] != 1):
+        if raw["response_code"] != 1:
             result["has_result"] = False
 
         result["positives"] = raw.get("positives", 0)
         result["total"] = raw.get("total", 0)
 
-        if("scan_date" in raw):
+        if "scan_date" in raw:
             result["scan_date"] = raw["scan_date"]
 
         if self.service == "get":
-            if("scans" in raw):
+            if "scans" in raw:
                 result["scans"] = len(raw["scans"])
-                value = "\"{}/{}\"".format(result["positives"], result["total"])
+                value = "{}/{}".format(result["positives"], result["total"])
                 if result["positives"] == 0:
                     level = "safe"
                 elif result["positives"] < 5:
@@ -97,18 +98,18 @@ class VirusTotalAnalyzer(Analyzer):
                 else:
                     level = "malicious"
 
-            if("resolutions" in raw):
+            if "resolutions" in raw:
                 result["resolutions"] = len(raw["resolutions"])
-                value = "\"{} resolution(s)\"".format(result["resolutions"])
+                value = "{} resolution(s)".format(result["resolutions"])
                 if result["resolutions"] == 0:
                     level = "safe"
                 elif result["resolutions"] < 5:
                     level = "suspicious"
                 else:
                     level = "malicious"
-            if("detected_urls" in raw):
+            if "detected_urls" in raw:
                 result["detected_urls"] = len(raw["detected_urls"])
-                value = "\"{} detected_url(s)\"".format(result["detected_urls"])
+                value = "{} detected_url(s)".format(result["detected_urls"])
                 if result["detected_urls"] == 0:
                     level = "safe"
                 elif result["detected_urls"] < 5:
@@ -116,14 +117,14 @@ class VirusTotalAnalyzer(Analyzer):
                 else:
                     level = "malicious"
 
-            if("detected_downloaded_samples" in raw):
+            if "detected_downloaded_samples" in raw:
                 result["detected_downloaded_samples"] = len(
                     raw["detected_downloaded_samples"])
 
         if self.service == "scan":
-            if("scans" in raw):
+            if "scans" in raw:
                 result["scans"] = len(raw["scans"])
-                value = "\"{}/{}\"".format(result["positives"], result["total"])
+                value = "{}/{}".format(result["positives"], result["total"])
                 if result["positives"] == 0:
                     level = "safe"
                 elif result["positives"] < 5:
@@ -135,45 +136,42 @@ class VirusTotalAnalyzer(Analyzer):
         return {"taxonomies": taxonomies}
 
     def run(self):
-        Analyzer.run(self)
-        self.vt = VirusTotalPublicApi(self.virustotal_key, self.proxies)
-
         if self.service == 'scan':
             if self.data_type == 'file':
-                filename = self.getParam('filename', 'noname.ext')
-                filepath = self.getParam('file', None, 'File is missing')
+                filename = self.get_param('filename', 'noname.ext')
+                filepath = self.get_param('file', None, 'File is missing')
                 self.read_scan_response(self.vt.scan_file(
                     (filename, open(filepath, 'rb'))), self.wait_file_report)
             elif self.data_type == 'url':
-                data = self.getParam('data', None, 'Data is missing')
+                data = self.get_param('data', None, 'Data is missing')
                 self.read_scan_response(
                     self.vt.scan_url(data), self.wait_url_report)
             else:
                 self.error('Invalid data type')
         elif self.service == 'get':
             if self.data_type == 'domain':
-                data = self.getParam('data', None, 'Data is missing')
+                data = self.get_param('data', None, 'Data is missing')
                 self.report(self.check_response(
                     self.vt.get_domain_report(data)))
             elif self.data_type == 'ip':
-                data = self.getParam('data', None, 'Data is missing')
+                data = self.get_param('data', None, 'Data is missing')
                 self.report(self.check_response(self.vt.get_ip_report(data)))
             elif self.data_type == 'file':
-
-                hashes = self.getParam('attachment.hashes',
-                                    None)
+                hashes = self.get_param('attachment.hashes', None)
                 if hashes is None:
-                    filepath = self.getParam('file', None, 'File is missing')
-                    hash = hashlib.sha256(open(filepath, 'r').read()).hexdigest();
+                    filepath = self.get_param('file', None, 'File is missing')
+                    hash = hashlib.sha256(open(filepath, 'r').read()).hexdigest()
                 else:
-                # find SHA256 hash
+                    # find SHA256 hash
                     hash = next(h for h in hashes if len(h) == 64)
 
                 self.report(self.check_response(self.vt.get_file_report(hash)))
-
             elif self.data_type == 'hash':
-                data = self.getParam('data', None, 'Data is missing')
+                data = self.get_param('data', None, 'Data is missing')
                 self.report(self.check_response(self.vt.get_file_report(data)))
+            elif self.data_type == 'url':
+                data = self.get_param('data', None, 'Data is missing')
+                self.report(self.check_response(self.vt.get_url_report(data)))
             else:
                 self.error('Invalid data type')
         else:

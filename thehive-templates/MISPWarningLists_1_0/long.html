@@ -5,7 +5,7 @@
     <div class="panel-body">
         <dl class="dl-horizontal" ng-if="content.results">
             <dt>Results:</dt>
-            <dd ng-if="content.results.results">
+            <dd ng-if="content.results.length > 0">
                 <p>
                     Observable was found in following MISP warning lists:
                 </p>
@@ -13,7 +13,7 @@
                     <li>{{list.name}}</li>
                 </ul>
             </dd>
-            <dd ng-if="!content.results.results">
+            <dd ng-if="content.results.length == 0">
                 <p>
                     Observable was not found in warning lists.
                 </p>

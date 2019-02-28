@@ -4,9 +4,24 @@
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/censys-analyzer",
   "version": "1.0",
-  "baseConfig": "Censys",
-  "config": {},
   "description": "Check IPs, certificate hashes or domains against censys.io.",
   "dataTypeList": ["ip", "hash", "domain"],
-  "command": "Censys/censys_analyzer.py"
+  "baseConfig": "Censys",
+  "command": "Censys/censys_analyzer.py",
+  "configurationItems": [
+    {
+      "name": "uid",
+      "description": "UID for Censys",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "key",
+      "description": "API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
 }

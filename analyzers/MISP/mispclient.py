@@ -30,9 +30,11 @@ class MISPClient:
     :type ssl: [bool, list, str]
     :param name: Name of the MISP instance, is sent back in the report for matching the results.
     :type name: [str, list]
+    :param proxies: Proxy to use for pymisp instances
+    :type proxies: dict
     """
 
-    def __init__(self, url, key, ssl=True, name='Unnamed'):
+    def __init__(self, url, key, ssl=True, name='Unnamed', proxies=None):
         self.misp_connections = []
         if type(url) is list:
             for idx, server in enumerate(url):
@@ -42,33 +44,34 @@ class MISPClient:
                 if isinstance(ssl, list):
                     if isinstance(ssl[idx], str) and os.path.isfile(ssl[idx]):
                         verify = ssl[idx]
-                    elif isinstance(ssl[idx], str) and not os.path.isfile(ssl[idx]):
+                    elif isinstance(ssl[idx], str) and not os.path.isfile(ssl[idx]) and ssl[idx] != "":
                         raise CertificateNotFoundError('Certificate not found under {}.'.format(ssl[idx]))
                     elif isinstance(ssl[idx], bool):
                         verify = ssl[idx]
-                    else:
-                        raise TypeError('SSL parameter is a not expected type.')
+
                 # Do the same checks again, for the non-list type
-                elif isinstance(ssl, str):
-                    if os.path.isfile(ssl):
-                        verify = ssl
+                elif isinstance(ssl, str) and os.path.isfile(ssl):
+                    verify = ssl
+                elif isinstance(ssl, str) and not os.path.isfile(ssl) and ssl != "":
+                    raise CertificateNotFoundError('Certificate not found under {}.'.format(ssl))
                 elif isinstance(ssl, bool):
                     verify = ssl
-                else:
-                    raise TypeError('SSL parameter is a not expected type.')
                 self.misp_connections.append(pymisp.PyMISP(url=server,
                                                            key=key[idx],
-                                                           ssl=verify))
+                                                           ssl=verify,
+                                                           proxies=proxies))
         else:
             verify = True
-            if isinstance(ssl, str):
-                if os.path.isfile(ssl):
-                    verify = ssl
+            if isinstance(ssl, str) and os.path.isfile(ssl):
+                verify = ssl
+            elif isinstance(ssl, str) and not os.path.isfile(ssl) and ssl != "":
+                raise CertificateNotFoundError('Certificate not found under {}.'.format(ssl))
             elif isinstance(ssl, bool):
                 verify = ssl
             self.misp_connections.append(pymisp.PyMISP(url=url,
                                                        key=key,
-                                                       ssl=verify))
+                                                       ssl=verify,
+                                                       proxies=proxies))
         self.misp_name = name
 
     @staticmethod
@@ -131,7 +134,7 @@ class MISPClient:
         :rtype: list
         """
         return ['regkey', 'regkey|value']
-    
+
     @staticmethod
     def __mispfilenametypes():
         """Just for better readability, all __misp*type methods return just a list of misp data types
@@ -279,7 +282,7 @@ class MISPClient:
         :rtype: list
         """
         return self.__search(type_attribute=self.__mispregistrytypes(), value=searchterm)
-    
+
     def search_filename(self, searchterm):
         """Search for filenames
         

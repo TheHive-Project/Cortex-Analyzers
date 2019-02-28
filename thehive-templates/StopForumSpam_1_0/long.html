@@ -1,0 +1,53 @@
+<div class="panel panel-warning" ng-if="success">
+	<div class="panel-heading">
+		StopForumSpam - {{artifact.data | fang}}
+	</div>
+	<div class="panel-body">
+		<div class="panel panel-default">
+      <div class="panel-heading">
+        {{(content.normalized || artifact.data) | fang}} - {{content.frequency}} occurrences
+      </div>
+      <div class="panel-body" ng-if="content.appears && artifact.dataType == 'ip'">
+        <dl class="dl-horizontal">
+					<dt>Last seen</dt>
+					<dd>{{content.lastseen * 1000 | date:'medium'}}</dd>
+          <dt>SPAM scoring</dt>
+          <dd>{{content.confidence}}</dd>
+          <dt>ASN</dt>
+          <dd>{{content.asn}}</dd>
+          <dt>Country</dt>
+          <dd>{{content.country}}</dd>
+        </dl>
+        <span>
+          <i class="fa fa-search"></i>
+          <a ng-href="http://stopforumspam.com/ipcheck/{{artifact.data}}" target="_blank">StopForumSpam IP check</a>
+        </span>
+      </div>
+			<div class="panel-body" ng-if="content.appears && artifact.dataType == 'mail'">
+        <dl class="dl-horizontal">
+					<dt>Last seen</dt>
+					<dd>{{content.lastseen * 1000 | date:'medium'}}</dd>
+          <dt>SPAM scoring</dt>
+          <dd>{{content.confidence}}</dd>
+        </dl>
+        <span>
+          <i class="fa fa-search"></i>
+          <a ng-href="http://stopforumspam.com/search" target="_blank">Search in StopForumSpam</a>
+        </span>
+      </div>
+			<div class="panel-body" ng-if="!content.appears">
+				Data not found in StopForumSpam database.
+			</div>
+    </div>
+	</div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

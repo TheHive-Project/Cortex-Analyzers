@@ -15,7 +15,7 @@ class CERTatPassiveDNSAnalyzer(Analyzer):
         self.limit = self.get_param('config.limit', '100')
 
     def run(self):
-        self.report({'results': query(self.getData(), int(self.limit))})
+        self.report({'results': query(self.get_data(), int(self.limit))})
 
     def summary(self, raw):
         taxonomies = []
@@ -26,12 +26,13 @@ class CERTatPassiveDNSAnalyzer(Analyzer):
         results = raw.get('results')
         r = len(results)
         if r == 0 or r == 1:
-            value = "\"{} hit\"".format(r)
+            value = "{} hit".format(r)
         else:
-            value = "\"{} hits\"".format(r)
+            value = "{} hits".format(r)
 
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         return {"taxonomies": taxonomies}
+
 
 if __name__ == '__main__':
     CERTatPassiveDNSAnalyzer().run()

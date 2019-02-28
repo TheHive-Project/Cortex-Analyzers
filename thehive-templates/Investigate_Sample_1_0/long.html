@@ -1,0 +1,42 @@
+<!-- Success -->
+<div class="panel panel-primary" ng-if="success">
+    <div class="panel-heading">
+        Investigate Sample Lookup for <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.error">
+            <dt>Hash not found</dt>
+        </dl>    
+        <dl class="dl-horizontal" ng-if="!content.error">
+            
+            <dt>ThreatScore</dt>
+            <dd>
+                <span class="label" ng-class="{'label-danger': content.threatScore >= 80, 
+                                               'label-warning': content.threatScore >= 50  && content.threatScore <80,
+                                               'label-safe': content.threatScore < 50}">
+                    {{content.threatScore}}
+                </span>
+            </dd>
+            <dt>Magic Type</dt>
+            <dd>
+                <div>
+                    {{content.magicType}}
+                </div>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> Investigate Categorization: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
+

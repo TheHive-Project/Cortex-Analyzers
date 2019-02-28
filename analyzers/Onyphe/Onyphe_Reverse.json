@@ -4,13 +4,20 @@
   "author": "Pierre Baudry, Adrien Barchapt",
   "url": "https://github.com/cybernardo/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Retrieve reverse DNS lookup information we have for the given IPv{4,6} address with history of changes.",
+  "description": "Retrieve reverse DNS lookup information Onyphe has for the given IPv{4,6} address with history of changes.",
   "dataTypeList": ["ip"],
+  "command": "Onyphe/onyphe_analyzer.py",
   "baseConfig": "Onyphe",
   "config": {
-    "check_tlp": true,
-    "max_tlp": 1,
     "service": "reverse"
   },
-  "command": "Onyphe/onyphe_analyzer.py"
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API key to use to connect the service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
 }

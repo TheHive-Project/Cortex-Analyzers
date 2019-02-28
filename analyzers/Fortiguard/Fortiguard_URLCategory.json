@@ -1,17 +1,29 @@
 {
-    "name": "Fortiguard_URLCategory",
-    "version": "2.0",
-    "author": "Eric Capuano",
-    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "dataTypeList": ["domain", "url"],
-    "description": "Check the Fortiguard category of a URL or a domain.",
-    "baseConfig": "Fortiguard",
-    "config": {
-        "check_tlp": true,
-        "max_tlp": 1,
-        "service": "query"
-
+  "name": "Fortiguard_URLCategory",
+  "version": "2.1",
+  "author": "Eric Capuano",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "dataTypeList": ["domain", "url", "fqdn"],
+  "description": "Check the Fortiguard category of a URL, FQDN or a domain. Check the full available list at https://fortiguard.com/webfilter/categories",
+  "baseConfig": "Fortiguard",
+  "command": "Fortiguard/urlcategory.py",
+  "configurationItems": [
+    {
+      "name": "malicious_categories",
+      "description": "List of FortiGuard categories to be considered as malicious",
+      "type": "string",
+      "multi": true,
+      "required": true,
+      "defaultValue": ["Malicious Websites", "Phishing", "Spam URLs"]
     },
-    "command": "Fortiguard/urlcategory.py"
+    {
+      "name": "suspicious_categories",
+      "description": "List of FortiGuard categories to be considered as suspicious",
+      "type": "string",
+      "multi": true,
+      "required": true,
+      "defaultValue": ["Newly Observed Domain", "Newly Registered Domain", "Dynamic DNS", "Proxy Avoidance", "Hacking"]
+    }
+  ]
 }

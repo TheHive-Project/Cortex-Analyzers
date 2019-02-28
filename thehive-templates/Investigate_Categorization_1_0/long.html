@@ -1,0 +1,42 @@
+<!-- Success -->
+<div class="panel panel-primary" ng-if="success">
+    <div class="panel-heading">
+        Investigate Categorization for <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Categorization</dt>
+            <dd>
+                <span class="label" ng-class="{'-1': 'label-danger', '0': 'label-warning', '1': 'label-success'}[content.status]">
+                    {{ {'-1': 'Blocked', '0': 'Unknown', '1': 'Whitelisted'}[content.status] }}
+                </span>
+            </dd>
+            <dt>Security Categories</dt>
+            <dd>
+                <div ng-repeat="c in content.security_categories">
+                    {{c}}
+                </div>
+            </dd>
+            <dt>Content Categories</dt>
+            <dd>
+                <div ng-repeat="c in content.content_categories">
+                    {{c}}
+                </div>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> Investigate Categorization: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
+

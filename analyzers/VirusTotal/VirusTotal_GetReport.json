@@ -1,16 +1,31 @@
 {
-    "name": "VirusTotal_GetReport",
-    "version": "3.0",
-    "author": "CERT-BDF",
-    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "Get the latest VirusTotal report for a file, hash, domain or an IP address.",
-    "dataTypeList": ["file", "hash", "domain", "ip"],
-    "baseConfig": "VirusTotal",
-    "config": {
-        "check_tlp": true,
-        "max_tlp": 3,
-        "service": "get"
+  "name": "VirusTotal_GetReport",
+  "version": "3.0",
+  "author": "CERT-BDF",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get the latest VirusTotal report for a file, hash, domain or an IP address.",
+  "dataTypeList": ["file", "hash", "domain", "ip", "url"],
+  "command": "VirusTotal/virustotal.py",
+  "baseConfig": "VirusTotal",
+  "config": {
+    "service": "get"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for Virustotal",
+      "type": "string",
+      "multi": false,
+      "required": true
     },
-    "command": "VirusTotal/virustotal.py"
+    {
+      "name": "polling_interval",
+      "description": "Define time interval between two requests attempts for the report",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 60
+    }
+  ]
 }

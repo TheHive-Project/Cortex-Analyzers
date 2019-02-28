@@ -1,0 +1,159 @@
+<div class="report-CuckooSandbox" ng-if="success">
+    <style>
+        .report-CuckooSandbox dl {
+            margin-bottom: 2px;
+        }
+    </style>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>General Information</strong>
+        </div>
+        <div class="panel-body">
+
+            <h4>File information</h4>
+                <br>
+                <dl class="dl-horizontal">
+                    <dt>FileType</dt>
+                    <dd>{{content.file_type}}</dd>
+                </dl>
+
+                <dl class="dl-horizontal">
+                    <dt>Malfamily</dt>
+                    <dd>{{content.malfamily}}</dd>
+                </dl>
+
+                <dl class="dl-horizontal">
+                    <dt>Malscore</dt>
+                    <dd>
+                        <span ng-class="{'label-info': content.malscore<=2, 'label-warning': content.malscore>2 && content.malscore<=6.5, 'label-danger': content.malscore >6.5}">
+                            {{content.malscore}}
+                        </span>
+                    </dd>
+                </dl>
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Analysis</strong>
+        </div>
+        <div class="panel-body">
+
+            <div ng-if="content.signatures">
+                <h4>Signatures</h4>
+                <br>
+                <dl class="dl-horizontal" ng-repeat="signature in content.signatures track by $index">
+                    <dd>{{ signature }}<dd>
+                </dl>
+            </div>
+            <div ng-if="!content.signatures">
+                No suspicious signature reported
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Analysis</strong>
+        </div>
+        <div class="panel-body">
+
+            <div ng-if="content.domains">
+                <h4>Remote connections</h4>
+                <br>
+                <div>
+                    <table class="table table-hover">
+                        <tr>
+                            <th>IP</th>
+                            <th>Domain</th>
+                        </tr>
+                        <tr ng-repeat="domains in content.domains track by $index">
+                            <td>{{domains[0]}}</td>
+                            <td>{{domains[1]}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <br/>
+            <hr>
+            <br/>
+
+            <div ng-if="content.uri">
+                <h4>URI</h4>
+                <br>
+                <dl class="dl-horizontal" ng-repeat="uri in content.uri track by $index">
+                    <dd>{{ uri }}<dd>
+                </dl>
+            </div>
+            <div ng-if="!content.uri">
+                No suspicious uri reported
+            </div>
+
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Yara</strong>
+        </div>
+        <div class="panel-body">
+
+            <div ng-if="content.yara">
+                <h4>Yara</h4>
+                <br>
+                <dl class="dl-horizontal">
+                    <dd>{{ content.yara }}<dd>
+                </dl>
+            </div>
+            <div ng-if="!content.yara">
+                No suspicious activity reported
+            </div>
+
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.suricata_alerts">
+        <div class="panel-heading">
+            <strong>Suricata</strong>
+        </div>
+        <div class="panel-body">
+            <div>
+                <h4>Suricata Alerts</h4>
+                <br>
+                <dl class="dl-horizontal" ng-repeat="suri in content.suricata_alerts track by $index">
+                    <dd>{{ suri }}<dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+	
+    <div class="panel panel-info" ng-if="content.snort_alerts">
+        <div class="panel-heading">
+            <strong>Snort</strong>
+        </div>
+        <div class="panel-body">
+
+            <div>
+                <h4>Snort Alerts</h4>
+                <br>
+                <dl class="dl-horizontal" ng-repeat="snort in content.snort_alerts track by $index">
+                    <dd>{{ snort }}<dd>
+                </dl>
+            </div>
+			
+        </div>
+    </div>	
+</div>
+
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
