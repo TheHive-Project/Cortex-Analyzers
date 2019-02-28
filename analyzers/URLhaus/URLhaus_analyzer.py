@@ -1,48 +1,72 @@
 #!/usr/bin/env python3
 from cortexutils.analyzer import Analyzer
-from URLhaus import URLhaus
+from URLhaus_client import URLhausClient
 
 
 class URLhausAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
 
-    def search(self, indicator):
-        """
-        Searches for a website using the indicator
-        :param indicator: domain, url, hash
-        :type indicator: str
-        :return: dict
-        """
-        return URLhaus(indicator).search()
-
     def run(self):
-        targets = ["domain", "url", "hash"]
-        if self.get_data() is not None and self.data_type in targets:
-            self.report({
-                'results': self.search(self.get_data())
-            })
+        data = self.get_data()
+        if not data:
+            self.error('No observable or file given.')
+
+        results = {}
+        if self.data_type == 'url':
+            results = URLhausClient.search_url(data)
+        elif self.data_type in ['domain', 'ip']:
+            results = URLhausClient.search_host(data)
+        elif self.data_type == 'hash':
+            if len(data) in [32, 64]:
+                results = URLhausClient.search_payload(data)
+            else:
+                self.error('Only sha256 and md5 supported by URLhaus.')
+        else:
+            self.error('Datatype not supported.')
+
+        results.update({
+            'data_type': self.data_type
+        })
+        self.report(results)
 
     def summary(self, raw):
         taxonomies = []
-        level = "info"
         namespace = "URLhaus"
-        predicate = "Search"
-        value = "0 result"
 
-        results = raw["results"]
-        if len(results) >= 1:
-            level = "malicious"
-
-        if len(results) <= 1:
-            value = "{} result".format(len(results))
+        if raw['query_status'] == 'no_results':
+            taxonomies.append(self.build_taxonomy(
+                'info',
+                namespace,
+                'Search',
+                'No results'
+            ))
         else:
-            value = "{} results".format(len(results))
-
-        taxonomies.append(
-            self.build_taxonomy(level, namespace, predicate, value)
-        )
-
+            if self.data_type == 'url':
+                taxonomies.append(self.build_taxonomy(
+                    'malicious',
+                    namespace,
+                    'Threat',
+                    raw['threat']
+                ))
+            elif self.data_type in ['domain', 'ip']:
+                threat_types = []
+                for url in raw['urls']:
+                    if url['threat'] not in threat_types:
+                        threat_types.append(url['threat'])
+                taxonomies.append(self.build_taxonomy(
+                    'malicious',
+                    namespace,
+                    'Threat' if len(threat_types) == 1 else 'Threats',
+                    ','.join(threat_types)
+                ))
+            elif self.data_type == 'hash':
+                taxonomies.append(self.build_taxonomy(
+                    'malicious',
+                    namespace,
+                    'Signature',
+                    raw['signature'] if raw['signature'] and raw['signature'] != 'null' else 'Unknown'
+                ))
         return {"taxonomies": taxonomies}
 
 
