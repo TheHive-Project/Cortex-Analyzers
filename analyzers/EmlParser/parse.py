@@ -94,7 +94,7 @@ def parseEml(filepath):
         #and one with the email body as text but wrapped in html
         #let's arbitrary take the one wrapped in html as body
         for attachment in parsed_eml['attachment']:
-            if 'HTML text' in attachment['content_header']['content-description']:
+            if 'content-description' in attachment['content_header'] and 'HTML text' in attachment['content_header']['content-description']:
                 result['body'] = base64.b64decode(attachment['raw']).decode('utf-8')
 
     #attachments
