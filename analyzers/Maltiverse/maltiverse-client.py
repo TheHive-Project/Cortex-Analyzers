@@ -85,7 +85,7 @@ class MaltiverseAnalyzer(Analyzer):
                 'tag': result.get("tag","-"),
                 'blacklist': result.get("blacklist","-"),
                 'creation_time': result.get("creation_time","-"),
-                'modification_time' result.get("modification_time","-")
+                'modification_time': result.get("modification_time","-")
             })
         except:
             self.error('API Error! Please verify data type is correct.')
