@@ -94,8 +94,18 @@ class MaltiverseAnalyzer(Analyzer):
         taxonomies = []
         level = "info"
         namespace = "Maltiverse"
-        predicate = "Result"
-        value = "{}".format(raw["pulse_count"])
+        predicate = "GetReport"
+        value = "0"
+        if "classification" in raw:
+            if raw["classification"] == "malicious":
+                level = "malicious"
+            elif raw["classification"] == "suspicious":
+                level = "suspicious"
+            else:
+                level = "safe"
+            value = "{}".format(raw["classification"])
+
+        
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         return {"taxonomies": taxonomies}
