@@ -95,7 +95,7 @@ class MaltiverseAnalyzer(Analyzer):
         level = "info"
         namespace = "Maltiverse"
         predicate = "GetReport"
-        value = "0"
+        value = "{}".format("n/a")
         if "classification" in raw:
             if raw["classification"] == "malicious":
                 level = "malicious"
