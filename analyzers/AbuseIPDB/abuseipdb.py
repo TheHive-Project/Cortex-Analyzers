@@ -67,7 +67,7 @@ class AbuseIPDBAnalyzer(Analyzer):
     def summary(self, raw):
         taxonomies = []
 
-        if raw and 'values' in raw:
+        if raw and 'values' in raw and len(raw['values']) > 0 :
             taxonomies.append(self.build_taxonomy('malicious', 'AbuseIPDB', 'Records', len(raw['values'])))
         else:
             taxonomies.append(self.build_taxonomy('safe', 'AbuseIPDB', 'Records', 0))
