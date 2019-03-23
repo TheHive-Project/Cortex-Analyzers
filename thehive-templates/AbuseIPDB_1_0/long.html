@@ -1,4 +1,4 @@
-	<div class="panel panel-info" ng-if="success && content.values.length > 0">
+	<div class="panel panel-danger" ng-if="success && content.values.length > 0">
 		<div class="panel-heading">
 			AbuseIPDB Report for {{artifact.data | fang}}
 		</div>
@@ -20,8 +20,8 @@
 						<td>{{r.created}}</td>
 						<td><span class="text" 
 							ng-class="{ 'text-danger': r.abuseConfidenceScore >=70 ,'text-warning': r.abuseConfidenceScore < 70, 'text-success': r.abuseConfidenceScore == 0}">{{r.abuseConfidenceScore}}</span></td>
-						<td>{{r.country}}</td>
 						<td>{{r.isoCode}}</td>
+						<td>{{r.country}}</td>
 						<td>{{r.isWhitelisted}}</td>
 						<td>
 							<span ng-repeat="c in r.categories_strings"><span class="label label-primary">{{c}}</span> </span>
