@@ -3,6 +3,7 @@
 import sys
 import time
 import hashlib
+import urllib
 
 from cortexutils.analyzer import Analyzer
 from maltiverse import Maltiverse
@@ -75,10 +76,12 @@ class MaltiverseAnalyzer(Analyzer):
 
     def maltiverse_query_url(self, data):
         # urlencode the URL that we are searching for
-        data = urllib.quote_plus(data)
+        #data = urllib.quote_plus(data)
         try:
             result = self.m.url_get(data)
             self.report({
+                'original': data,
+                'hash': hash,
                 'url': result.get("url","-"),
                 'type': result.get("type","-"),
                 'classification': result.get("classification","-"),
@@ -94,7 +97,7 @@ class MaltiverseAnalyzer(Analyzer):
         taxonomies = []
         level = "info"
         namespace = "Maltiverse"
-        predicate = "GetReport"
+        predicate = "Report"
         value = "{}".format("n/a")
         if "classification" in raw:
             if raw["classification"] == "malicious":
