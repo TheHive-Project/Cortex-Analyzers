@@ -1,0 +1,24 @@
+{
+  "name": "Maltiverse_Report",
+  "version": "1.0",
+  "author": "ottimo",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get the latest Maltiverse report for an hash, domain or an IP address.",
+  "dataTypeList": ["hash", "domain", "ip", "url"],
+  "command": "Maltiverse/maltiverse-client.py",
+  "baseConfig": "Maltiverse",
+  "config": {
+    "service": "get"
+  },
+  "configurationItems": [
+    {
+      "name": "polling_interval",
+      "description": "Define time interval between two requests attempts for the report",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 60
+    }
+  ]
+}
