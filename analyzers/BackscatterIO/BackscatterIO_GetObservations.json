@@ -1,0 +1,26 @@
+{
+    "name": "BackscatterIO_GetObservations",
+    "version": "1.0",
+    "author": "brandon@backscatter.io",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "APLv2",
+    "description": "Determine whether a value has known scanning activity using Backscatter.io data.",
+    "dataTypeList": ["ip", "network", "autonomous-system"],
+    "baseConfig": "BackscatterIO",
+    "command": "BackscatterIO/backscatter-io.py",
+    "configurationItems": [
+      {
+        "name": "key",
+        "description": "API key for Backscatter.io",
+        "type": "string",
+        "multi": false,
+        "required": true
+      }
+    ],
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 2,
+        "auto_extract": true,
+        "service": "observations"
+    }
+}

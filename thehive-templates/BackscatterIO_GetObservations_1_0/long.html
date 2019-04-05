@@ -1,0 +1,63 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        Backscatter.io results for <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table" ng-if="content.results.summary">
+            <tbody>
+                <tr>
+                    <th>Observation Count</th>
+                    <td>{{content.results.summary['observations_count'] || 0}}</td>
+                </tr>
+                <tr>
+                    <th>IP Address Count</th>
+                    <td>{{content.results.summary['ip_address_count'] || 0}}</td>
+                </tr>
+                <tr>
+                    <th>Network Count</th>
+                    <td>{{content.results.summary['network_count'] || 0}}</td>
+                </tr>
+                <tr>
+                    <th>AS Count</th>
+                    <td>{{content.results.summary['autonomous_system_count'] || 0}}</td>
+                </tr>
+                <tr>
+                    <th>Port Count</th>
+                    <td>{{content.results.summary['port_count'] || 0}}</td>
+                </tr>
+                <tr>
+                    <th>Protocol Count</th>
+                    <td>{{content.results.summary['protocol_count'] || 0}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table ng-if="content.results.observations.length > 0" class="table" ng-if="content.results.observations">
+            <thead>
+                <th>Observed</th>
+                <th>Protocol</th>
+                <th>Destination Port</th>
+                <th>Length</th>
+            </thead>
+            <tbody ng-repeat="record in content.results.observations">
+                <tr>
+                    <td>{{record['observed']}}</td>
+                    <td>{{record['protocol']}}</td>
+                    <td>{{record['dst_port']}}</td>
+                    <td>{{record['length']}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="empty-message" 
+            ng-if="!content.results.observations || content.results.observations.length === 0">No records found for {{artifact.data}}</d>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
