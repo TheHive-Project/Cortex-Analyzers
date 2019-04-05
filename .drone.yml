@@ -3,20 +3,43 @@ kind: pipeline
 name: default
 
 steps:
-  - name: build workers for release
+  - name: build analyzers for release
     image: thehiveproject/cortex-worker-builder
     settings:
-      namespace: cortexengine
+      worker_path: analyzers
+      namespace: cortexneurons
       user: {from_secret: docker_username}
       password: {from_secret: docker_password}
       latest: true
     when:
       event: [tag]
 
-  - name: build snapshot workers
+  - name: build responders for release
     image: thehiveproject/cortex-worker-builder
     settings:
-      namespace: cortexengine
+      worker_path: responders
+      namespace: cortexneurons
+      user: {from_secret: docker_username}
+      password: {from_secret: docker_password}
+      latest: true
+    when:
+      event: [tag]
+
+  - name: build snapshot analyzers
+    image: thehiveproject/cortex-worker-builder
+    settings:
+      worker_path: analyzers
+      namespace: cortexneurons
+      user: {from_secret: docker_username}
+      password: {from_secret: docker_password}
+    when:
+      event: {exclude: [tag]}
+
+  - name: build snapshot responders
+    image: thehiveproject/cortex-worker-builder
+    settings:
+      worker_path: responders
+      namespace: cortexneurons
       user: {from_secret: docker_username}
       password: {from_secret: docker_password}
     when:
