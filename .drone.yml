@@ -10,7 +10,7 @@ steps:
       namespace: cortexneurons
       user: {from_secret: docker_username}
       password: {from_secret: docker_password}
-      latest: true
+      stable: true
     when:
       event: [tag]
 
@@ -21,7 +21,7 @@ steps:
       namespace: cortexneurons
       user: {from_secret: docker_username}
       password: {from_secret: docker_password}
-      latest: true
+      stable: true
     when:
       event: [tag]
 
