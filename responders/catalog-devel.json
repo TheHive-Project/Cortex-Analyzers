@@ -1,0 +1,102 @@
+[
+{
+  "name": "Crowdstrike Falcon Custom IOC API",
+  "version": "1.0",
+  "author": "Michael",
+  "url": "https://www.crowdstrike.com/blog/tech-center/import-iocs-crowdstrike-falcon-host-platform-via-api/",
+  "license": "MIT",
+  "description": "Submit observables to the Crowdstrike Falcon Custom IOC api",
+  "dataTypeList": [
+    "thehive:alert",
+    "thehive:case_artifact"
+  ],
+  "baseConfig": "FalconCustomIOC",
+  "configurationItems": [
+    {
+      "name": "falconapi_url",
+      "description": "Crowdstrike Falcon host url",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "falconapi_user",
+      "description": "Crowdstrike Falcon query api user",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "falconapi_key",
+      "description": "Crowdstrike Falcon query api key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "dockerImage": "cortexneurons/crowdstrike falcon custom ioc api:devel"
+}
+,
+{
+  "name": "Mailer",
+  "version": "1.0",
+  "author": "CERT-BDF",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Send an email with information from a TheHive case or alert",
+  "dataTypeList": [
+    "thehive:case",
+    "thehive:alert"
+  ],
+  "baseConfig": "Mailer",
+  "configurationItems": [
+    {
+      "name": "from",
+      "description": "email address from which the mail is send",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "smtp_host",
+      "description": "SMTP server used to send mail",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "localhost"
+    },
+    {
+      "name": "smtp_port",
+      "description": "SMTP server port",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 25
+    }
+  ],
+  "dockerImage": "cortexneurons/mailer:devel"
+}
+,
+{
+  "name": "Umbrella Blacklister",
+  "version": "1.0",
+  "author": "Kyle Parrish",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Add domain to Umbrella blacklist via Enforcement API.",
+  "dataTypeList": [
+    "thehive:case_artifact"
+  ],
+  "baseConfig": "UmbrellaBlacklister",
+  "configurationItems": [
+    {
+      "name": "integration_url",
+      "description": "Custom integration url",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "dockerImage": "cortexneurons/umbrella blacklister:devel"
+}
+]
