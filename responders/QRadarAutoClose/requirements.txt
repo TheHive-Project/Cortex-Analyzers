@@ -1,4 +1,2 @@
-reponders/QRadarAutoClose
-|--QRadarAutoClose.json
-|--requirements.txt
-`--QradarAutoClose.py
+cortexutils.responder
+requests
