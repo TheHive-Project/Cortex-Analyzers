@@ -1,0 +1,4 @@
+reponders/QRadarAutoClose
+|--QRadarAutoClose.json
+|--requirements.txt
+`--QradarAutoClose.py
