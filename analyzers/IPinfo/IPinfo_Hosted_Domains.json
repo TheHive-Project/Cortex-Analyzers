@@ -1,0 +1,21 @@
+{
+  "name": "IPinfo_Hosted_Domains",
+  "version": "1.0",
+  "author": "Manabu Niseki",
+  "url": "https://github.com/ninoseki/ipinfo-analyzers",
+  "license": "MIT",
+  "description": "IPinfo hosted domains lookup.",
+  "dataTypeList": ["ip"],
+  "command": "IPinfo/ipinfo_analyzer.py",
+  "baseConfig": "IPinfo",
+  "config": {
+    "service": "hosted_domains"
+  },
+  "configurationItems": [{
+    "name": "api_key",
+    "description": "Define the API key to use to connect the service",
+    "type": "string",
+    "multi": false,
+    "required": true
+  }]
+}
