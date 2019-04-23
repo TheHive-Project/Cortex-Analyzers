@@ -71,22 +71,23 @@ class AnalyzerRunlocal():
 
         timer_start = time.time()
         stdout, stderr, returncode = self.shell_command(command_line)
-        if returncode > 0 or stderr:
-            self.stderr(stderr)
-            exit(returncode)
         timer_end = time.time()
-
         self.stderr('runtime:  {}'.format(timer_end - timer_start))
+        self.stderr()
 
         output_filename = os.path.join(job_path,'output' ,'output.json')
         if not os.path.isfile(output_filename):
             self.stderr('\nERROR: Unable to locate expected output file {}\n'.format(output_filename))
             exit(1)
 
-        self.stderr()
-
         with open(output_filename, 'r') as f:
             output = f.read()
+
+        if returncode > 0 or stderr:
+            self.stderr(stderr)
+            self.stdout(output)
+            exit(returncode)
+
         self.stdout(output)
 
     def check_job_definition(self, job_definition):
