@@ -3,6 +3,7 @@
 
 import requests
 from cortexutils.analyzer import Analyzer
+import json
 
 class TalosReputation(Analyzer):
 
@@ -31,8 +32,10 @@ class TalosReputation(Analyzer):
                 data = self.get_data()
 
                 headers={
+                    'Host':'talosintelligence.com',
                     'Referer':'https://talosintelligence.com/reputation_center/lookup?search={}'.format(data),
-                    'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0'
+                    'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0',
+                    'Accept':'*/*'
                 }
 
                 response_details = requests.get('https://talosintelligence.com/sb_api/query_lookup',
@@ -57,9 +60,9 @@ class TalosReputation(Analyzer):
                         result['country'] = response_location.json()['country']
                         self.report(result if len(result) > 0 else {})
                     else:
-                        self.error('Failed to query Talos. Status_code {}'.format(response_location.status_code))
+                        self.error('Failed to query Talos location. Status_code {}'.format(response_location.status_code))
                 else:
-                    self.error('Failed to query Talos. Status_code {}'.format(response_details.status_code))
+                    self.error('Failed to query Talos details. Status_code {}'.format(response_details.status_code))
             except Exception as e:
                 self.unexpectedError(e)
         else:
