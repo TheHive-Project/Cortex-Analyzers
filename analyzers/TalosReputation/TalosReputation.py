@@ -57,7 +57,7 @@ class TalosReputation(Analyzer):
                 if response_details.status_code == 200 | 201:
                     if response_location.status_code == 200 | 201:
                         result = response_details.json()
-                        result['country'] = response_location.json()['country']
+                        result['country'] = response_location.json().get('country', None)
                         self.report(result if len(result) > 0 else {})
                     else:
                         self.error('Failed to query Talos location. Status_code {}'.format(response_location.status_code))
