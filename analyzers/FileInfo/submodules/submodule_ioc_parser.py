@@ -28,10 +28,8 @@ class IOCPSubmodule(SubmoduleBaseclass):
         namespace = 'FileInfo'
         predicate = 'IOC Parser'
         value = ''
-        #pdfid_version = ''
         for section in self.results:
             if section['submodule_section_header'] == 'IOC Parser Information':
-                #if section.get('submodule_section_content').get('iocp_result'):  
                 iocp_len = len(section.get('submodule_section_content').get('iocp_result')) 
                 taxonomies.append(self.build_taxonomy(level, namespace, predicate, iocp_len))
         self.summary['taxonomies'] = taxonomies
@@ -39,6 +37,10 @@ class IOCPSubmodule(SubmoduleBaseclass):
 
     def iocparser(self, path):
         """
+        Use ioc_parser to extract IOCs
+
+
+        :return: json 
         """
         out = StringIO()
         results = {'iocp_result': []}
