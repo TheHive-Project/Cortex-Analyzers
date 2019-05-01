@@ -59,7 +59,7 @@ class Mailer(Responder):
         msg.attach(MIMEText(description, 'plain'))
 
         s = smtplib.SMTP(self.smtp_host, self.smtp_port)
-        s.sendmail(self.mail_from, [mail_to], msg.as_string())
+        s.sendmail(self.mail_from, mail_to.split(','), msg.as_string())
         s.quit()
         self.report({'message': 'message sent'})
 
