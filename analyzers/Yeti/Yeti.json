@@ -15,6 +15,13 @@
       "type": "string",
       "multi": false,
       "required": true
+    },
+    {
+      "name": "api_key",
+      "description": "Define the api key of the service",
+      "type": "string",
+      "multi": false,
+      "required": false
     }
   ]
 }
