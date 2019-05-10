@@ -28,7 +28,7 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
                 'PPT',
                 'PPTM',
                 'PPTX'
-            ]:
+            ] or kwargs.get('mimetype').startswith("application/vnd.openxmlformats-officedocument"):
                 return True
         except KeyError:
             return False
