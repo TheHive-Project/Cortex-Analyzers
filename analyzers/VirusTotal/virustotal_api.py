@@ -22,10 +22,11 @@ print json.dumps(response, sort_keys=False, indent=4)
 """
 
 import os
-import StringIO
 try:
     import requests
+    import StringIO
 except ImportError:
+    from io import StringIO
     pass
 
 

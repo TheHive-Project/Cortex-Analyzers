@@ -46,7 +46,7 @@ class VirusTotalAnalyzer(Analyzer):
             self.error('Bad status : ' + str(status))
         results = response.get('results', {})
         if 'verbose_msg' in results:
-            print >> sys.stderr, str(results.get('verbose_msg'))
+            print (str(results.get('verbose_msg')), sys.stderr)
         if 'Missing IP address' in results.get('verbose_msg', ''):
             results['verbose_msg'] = 'IP address not available in VirusTotal'
         return results
