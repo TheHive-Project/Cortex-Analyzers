@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # encoding: utf-8
-import sys
+
 import time
 import hashlib
 
-from virustotal_api import PublicApi as VirusTotalPublicApi
+from virus_total_apis import PublicApi as VirusTotalPublicApi
 from cortexutils.analyzer import Analyzer
 
 
@@ -45,8 +45,6 @@ class VirusTotalAnalyzer(Analyzer):
         if status != 200:
             self.error('Bad status : ' + str(status))
         results = response.get('results', {})
-        if 'verbose_msg' in results:
-            print (str(results.get('verbose_msg')), sys.stderr)
         if 'Missing IP address' in results.get('verbose_msg', ''):
             results['verbose_msg'] = 'IP address not available in VirusTotal'
         return results
@@ -140,8 +138,10 @@ class VirusTotalAnalyzer(Analyzer):
             if self.data_type == 'file':
                 filename = self.get_param('filename', 'noname.ext')
                 filepath = self.get_param('file', None, 'File is missing')
-                self.read_scan_response(self.vt.scan_file(
-                    (filename, open(filepath, 'rb'))), self.wait_file_report)
+                self.read_scan_response(
+                    self.vt.scan_file(filepath, from_disk=True, filename=filename),
+                    self.wait_file_report
+                )
             elif self.data_type == 'url':
                 data = self.get_param('data', None, 'Data is missing')
                 self.read_scan_response(
@@ -160,7 +160,7 @@ class VirusTotalAnalyzer(Analyzer):
                 hashes = self.get_param('attachment.hashes', None)
                 if hashes is None:
                     filepath = self.get_param('file', None, 'File is missing')
-                    hash = hashlib.sha256(open(filepath, 'r').read()).hexdigest()
+                    hash = hashlib.sha256(open(filepath, 'rb').read()).hexdigest()
                 else:
                     # find SHA256 hash
                     hash = next(h for h in hashes if len(h) == 64)
