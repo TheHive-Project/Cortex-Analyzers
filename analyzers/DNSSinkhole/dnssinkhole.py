@@ -20,7 +20,7 @@ class DNSSinkholeAnalyzer(Analyzer):
             dns_records = [ip.address for ip in out]
         except dns.exception.DNSException as e :
             dns_records = []
-        if '127.0.0.2' in dns_records:
+        if self.get_param('config.sink_ip', '127.0.0.2') in dns_records:
             return True
         return False
 
