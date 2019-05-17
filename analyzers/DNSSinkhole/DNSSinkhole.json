@@ -1,0 +1,27 @@
+{
+  "name": "DNSSinkhole",
+  "author": "Andrea Garavaglia, LDO-CERT",
+  "license": "AGPL-V3",
+  "url": "https://github.com/LDO-CERT/cortex-analyzer",
+  "version": "1.0",
+  "description": "Check if a  domain is sinkholed via DNS Sinkhole server",
+  "dataTypeList": ["domain"],
+  "command": "DNSSinkhole/dnssinkhole.py",
+  "baseConfig": "DNSSinkhole",
+  "configurationItems": [
+    {
+      "name": "ip",
+      "description": "Define the DNS Sinkhole Server IP",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "sink_ip",
+      "description": "Define the sinkholed response address IP",
+      "required": true,
+      "multi": false,
+      "type": "string"
+    }
+  ]
+}
