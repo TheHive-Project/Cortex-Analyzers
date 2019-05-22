@@ -1,52 +1,77 @@
 #!/usr/bin/env python
-import subprocess
+import json, requests, traceback
 
 from cortexutils.analyzer import Analyzer
 
 
 class SinkDBAnalyzer(Analyzer):
-    def __init__(self):
-        Analyzer.__init__(self)
+	def __init__(self):
+		Analyzer.__init__(self)
 
-        if self.data_type != 'ip':
-            self.error('SinkDB Analyzer only usable with ip data type.')
+		if self.data_type not in ['ip', 'domain', 'mail']:
+			self.error('SinkDB Analyzer only usable with the ip, domain, and mail data types.')
 
-        self.apikey = self.get_param('config.key', None, 'API Key needed for querying SinkDB.')
-        self.data = self.get_data().split('.')
-        self.data.reverse()
-        self.data = '.'.join(self.data)
+		self.apikey = self.get_param('config.key', None, 'HTTPS API Key needed for querying SinkDB.')
+		self.data = self.get_data()
 
-    def dig(self, ip):
-        proc = subprocess.Popen(['dig', '+short', '{}.{}.sinkdb-api.abuse.ch'.format(ip, self.apikey)],
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE)
-        out, err = proc.communicate()
-        out = out.decode('utf-8').strip('\n')
+	def query_db(self, indicator):
 
-        if err:
-            self.error('Error while calling dig: {}.'.format(err))
+		if self.data_type == 'ip':
+			return self.parse_entries(json.loads(self.do_post("api_key={}&ipv4={}".format(self.apikey, self.data)).text))
 
-        if out == '127.0.0.2':
-            return True
+		elif self.data_type == 'domain':
+			return self.parse_entries(json.loads(self.do_post("api_key={}&domain={}".format(self.apikey, self.data)).text))
 
-        return False
+		elif self.data_type == 'mail':
+			return self.parse_entries(json.loads(self.do_post("api_key={}&email={}".format(self.apikey, self.data)).text))
 
-    def run(self):
-        self.report({
-            "is_sinkhole": self.dig(self.data)
-        })
+		else:
+			raise TypeError('Error in query_db function. This error should not occur.')
 
-    def summary(self, raw):
-        taxonomies = []
+	def parse_entries(self, entries):
+		ret = {
+				"Sinkhole": [],
+				"Phishing": [],
+				"Scanner": []
+			}
+		if entries['query_status'] == 'ok':
+			for entry in entries['results']:
+				if entry['source'] == 'sinkhole':
+					ret['Sinkhole'].append(entry)
+				elif entry['source'] == 'awareness':
+					ret['Phishing'].append(entry)
+				elif entry['source'] == 'scanner':
+					ret['Scanner'].append(entry)
+			return ret
+		elif entries['query_status'] == 'no_results':
+			return ret
+		elif entries['query_status'] == 'invalid_ipaddress':
+			self.error("SinkDB did not recognize the IP as valid. Here is the full response:\n{}".format(json.dumps(entries)))					
+		else:
+			self.error("There was an unknown error communicating with the SinkDB API. Here is the full response:\n{}".format(json.dumps(entries)))
 
-        if raw.get('is_sinkhole'):
-            taxonomies.append(self.build_taxonomy('safe', 'SinkDB', 'IsSinkhole', 'True'))
-        else:
-            taxonomies.append(self.build_taxonomy('suspicious', 'SinkDB', 'IsSinkhole', 'False'))
-        return {
-            "taxonomies": taxonomies
-        }
+	def do_post(self, data):
+		return requests.post('https://sinkdb-api.abuse.ch/api/v1/', headers={"Content-Type": "application/x-www-form-urlencoded"}, data=data)
+
+	def run(self):
+		try:
+			self.report(self.query_db(self.data))
+		except:
+			self.error("Error when attempting to retrieve data:\n{}".format(traceback.format_exc()))
+
+	def summary(self, raw):
+		taxonomies = []
+
+		for k, v in raw.iteritems():
+			if v:
+				taxonomies.append(self.build_taxonomy('suspicious', 'SinkDB', k, 'True'))
+			else:
+				taxonomies.append(self.build_taxonomy('safe', 'SinkDB', k, 'False'))
+
+		return {
+			"taxonomies": taxonomies
+		}
 
 
 if __name__ == '__main__':
-    SinkDBAnalyzer().run()
+	SinkDBAnalyzer().run()
