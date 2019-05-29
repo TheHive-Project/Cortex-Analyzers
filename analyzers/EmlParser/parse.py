@@ -54,7 +54,7 @@ def parseEml(filepath):
     result['sender'] = str()
     result['topic'] = str()
     result['bcc'] = str()
-    result['displayto'] = str()
+    result['displayTo'] = str()
     result['headers'] = str()
     result['body'] = str()
     result['attachments'] = list()
