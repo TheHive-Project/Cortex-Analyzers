@@ -65,9 +65,10 @@ def parseEml(filepath):
 
     #parsing the headers with the email library
     #cause eml_parser does not provide raw headers (as far as I know)
+    #splited string because it was returning the body inside 'Content-Type'
     hParser = email.parser.HeaderParser()
-    h = hParser.parsestr(raw_eml)
-    result['headers'] = dict(h)
+    h = str(hParser.parsestr(raw_eml))
+    result['headers'] = h[:h.index('Content-Type:')]
 
     parsed_eml = eml_parser.eml_parser.decode_email(filepath, include_raw_body=True, include_attachment_data=True)
     #parsed_eml['header'].keys() gives:
@@ -80,7 +81,7 @@ def parseEml(filepath):
     result['sender'] = ', '.join(parsed_eml.get('header', '').get('header', '').get('x-env-sender', ''))
     result['topic'] = ', '.join(parsed_eml.get('header', '').get('header', '').get('thread-topic', ''))
     result['bcc'] = parsed_eml.get('header', '').get('header', '').get('bcc', '')
-    result['displayto'] = ', '.join(parsed_eml.get('header', '').get('header', '').get('to', ''))
+    result['displayTo'] = ', '.join(parsed_eml.get('header', '').get('header', '').get('to', ''))
 
     #for some emails, the body field is empty because the email body is
     #identified as an attachment
