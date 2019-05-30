@@ -119,7 +119,7 @@ class IBMXForceAnalyzer(Analyzer):
             _query_ip = _session.get('%s/ipr/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
             _query_malware = _session.get(
                 '%s/ipr/malware/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
-            _query_info = _session.get('%s/resolve/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
+            _query_info = _session.get('%/sresolve/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
 
             ip_data = _query_ip.json() if _query_ip.status_code == 200 else {}
             malware_data = _query_malware.json() if _query_malware.status_code == 200 else {}
@@ -141,10 +141,10 @@ class IBMXForceAnalyzer(Analyzer):
             _session = requests.Session()
             _session.auth = (self.key, self.pwd)
 
-            _query_url = _session.get('%s/url/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
+            _query_url = _session.get('%surl/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
             _query_malware = _session.get(
-                '%s/url/malware/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
-            _query_info = _session.get('%s/resolve/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
+                '%surl/malware/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
+            _query_info = _session.get('%sresolve/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
 
             url_data = _query_url.json() if _query_url.status_code == 200 else {}
             malware_data = _query_malware.json() if _query_malware.status_code == 200 else {}
@@ -167,7 +167,7 @@ class IBMXForceAnalyzer(Analyzer):
             _session.auth = (self.key, self.pwd)
 
             _query_malware = _session.get(
-                '%s/malware/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
+                '%smalware/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
 
             if _query_malware.status_code == 200:
                 return self.cleanup(malware_data=_query_malware.json())
