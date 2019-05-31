@@ -10,9 +10,6 @@ IBMXForce {
        }
 ```
 
-To test the analyzer from cmdline
-
-python IBMXForce_lookup.py < input
 
 Testing
 --------
