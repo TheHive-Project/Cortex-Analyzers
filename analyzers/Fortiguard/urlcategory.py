@@ -35,7 +35,7 @@ class URLCategoryAnalyzer(Analyzer):
 
         if self.data_type == 'domain' or self.data_type == 'url' or self.data_type == 'fqdn':
             try:
-                pattern = re.compile("(?:Category: )([\w\s]+)")
+                pattern = re.compile("(?:Category: )([-\w\s]+)")
                 baseurl = 'https://www.fortiguard.com/webfilter?q='
                 url = baseurl + self.get_data()
                 req = requests.get(url)
