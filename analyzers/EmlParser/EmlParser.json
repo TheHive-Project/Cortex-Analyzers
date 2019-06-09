@@ -1,10 +1,10 @@
 {
     "name": "EmlParser",
-    "version": "1.1",
+    "version": "1.2",
     "author": "ninsmith",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "baseconfig": "EmlParser",
+    "baseConfig": "EmlParser",
     "config": {
         "check_tlp": false,
         "max_tlp": 3,

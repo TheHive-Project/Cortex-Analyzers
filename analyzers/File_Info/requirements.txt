@@ -1,8 +1,0 @@
-python-magic
-pefile2;python_version<='2.7'
-pydeep
-pyexifinfo
-oletools
-olefile
-git+https://github.com/AnyMaster/pehashng
-cortexutils

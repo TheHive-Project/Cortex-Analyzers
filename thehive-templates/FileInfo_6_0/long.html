@@ -558,6 +558,46 @@
                     </div>
                 </div>
             </div>
+
+            <!-- IOCParser submodule -->
+            <div ng-if="result.submodule_name=='IOC Parser'">
+                <div class="panel-body">  
+                    <div ng-repeat="r in result.results" class="panel panel-primary">
+                        <div class="panel-heading" ng-if="r.submodule_section_header=='IOC Parser Information'">
+                            <h4 class="panel-title">IOC Parser Information</h4>
+                        </div>
+                        <div class="panel panel-body">    
+                            <div>
+                                <h4>Summary</h4>
+                                <br>
+                                <p><b>Number of IOC found in the file: </b> <span class="label label-default">{{r.submodule_section_content.iocp_result.length}}</span>
+                                </p>
+                            </div>
+                            <br>
+                            <br>
+                            <div ng-if="r.submodule_section_content.iocp_result.length > 0">
+                                <h4>List of IOC</h4>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Data Type</th>
+                                            <th>Data</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="o in r.submodule_section_content.iocp_result">
+                                            <th>{{$index}}</th>
+                                            <td>{{o.type}}</td>
+                                            <td>{{o.match}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </uib-tab>
     </uib-tabset>
 </div>
