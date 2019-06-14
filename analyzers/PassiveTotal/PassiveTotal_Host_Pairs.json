@@ -1,15 +1,15 @@
 {
-  "name": "PassiveTotal_Ssl_Certificate_Details",
+  "name": "PassiveTotal_Host_Pairs",
   "version": "2.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "PassiveTotal SSL Certificate Details Lookup.",
-  "dataTypeList": ["hash", "ip"],
+  "description": "PassiveTotal Host Pairs Lookup.",
+  "dataTypeList": ["domain", "fqdn", "ip"],
   "command": "PassiveTotal/passivetotal_analyzer.py",
   "baseConfig": "PassiveTotal",
   "config": {
-    "service": "ssl_certificate_details",
+    "service": "host_pairs",
     "auto_extract": true
   },
   "configurationItems": [
