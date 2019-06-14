@@ -1,7 +1,7 @@
 {
   "name": "PassiveTotal_Components",
   "version": "2.0",
-  "author": "CERT-BDF",
+  "author": "Brandon Dixon (9bplus)",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "PassiveTotal Components Lookup.",
