@@ -29,11 +29,11 @@ class SinkDBAnalyzer(Analyzer):
         answers = []
         for ip in out:
             if ip == '127.0.1.0':
-                answers.append("\"Known Sinkhole\"")
+                answers.append('Known Sinkhole')
             elif ip == '127.0.2.0':
-                answers.append("\"Phishing Awareness Campaign\"")
+                answers.append('Phishing Awareness Campaign')
             elif ip == '127.0.3.0':
-                answers.append("\"Known Scanner\"")
+                answers.append('Known Scanner')
             else:
                 continue
 
@@ -47,9 +47,11 @@ class SinkDBAnalyzer(Analyzer):
     def summary(self, raw):
         taxonomies = []
 
-        if len(raw.get('answers')) > 0:
-            for answer in raw.get('answers'):
-                taxonomies.append(self.build_taxonomy('safe', 'SinkDB', 'Category', answer))
+        answers = raw.get('answers')
+        if len(answers) > 0:
+            taxonomies.append(
+                self.build_taxonomy('safe', 'SinkDB', 'Categories', '"{}"'.format(','.join(answers)))
+            )
         else:
             taxonomies.append(self.build_taxonomy('suspicious', 'SinkDB', 'IsSinkhole', 'False'))
         return {
