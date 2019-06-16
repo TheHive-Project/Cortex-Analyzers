@@ -968,11 +968,11 @@
 ,
 {
   "name": "EmlParser",
-  "version": "1.1",
+  "version": "1.2",
   "author": "ninsmith",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "baseconfig": "EmlParser",
+  "baseConfig": "EmlParser",
   "config": {
     "check_tlp": false,
     "max_tlp": 3,
@@ -982,7 +982,7 @@
   "dataTypeList": [
     "file"
   ],
-  "dockerImage": "cortexneurons/emlparser:1.1"
+  "dockerImage": "cortexneurons/emlparser:1.2"
 }
 ,
 {
@@ -3259,7 +3259,7 @@
   "author": "Gabriel Antonio da Silva",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Get the Talos e-mail reputation",
+  "description": "Get the Talos IP reputation",
   "dataTypeList": [
     "ip"
   ],
