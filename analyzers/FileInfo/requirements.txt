@@ -8,4 +8,4 @@ git+https://github.com/Rafiot/pdfid.git
 oletools>=0.52
 extract-msg
 IMAPClient
-iocp
+git+https://github.com/SteveClement/ioc_parser.git
