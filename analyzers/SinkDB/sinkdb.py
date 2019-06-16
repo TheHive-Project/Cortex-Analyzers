@@ -17,30 +17,39 @@ class SinkDBAnalyzer(Analyzer):
         self.data = '.'.join(self.data)
 
     def dig(self, ip):
-        proc = subprocess.Popen(['dig', '+short', '{}.{}.sinkdb-api.abuse.ch'.format(ip, self.apikey)],
+        proc = subprocess.Popen(['dig', '+short', '{}.{}.sinkdb-dnsapi.abuse.ch'.format(ip, self.apikey)],
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
         out, err = proc.communicate()
-        out = out.decode('utf-8').strip('\n')
+        out = out.decode('utf-8').split('\n')
 
         if err:
             self.error('Error while calling dig: {}.'.format(err))
 
-        if out == '127.0.0.2':
-            return True
+        answers = []
+        for ip in out:
+            if ip == '127.0.1.0':
+                answers.append("\"Known Sinkhole\"")
+            elif ip == '127.0.2.0':
+                answers.append("\"Phishing Awareness Campaign\"")
+            elif ip == '127.0.3.0':
+                answers.append("\"Known Scanner\"")
+            else:
+                continue
 
-        return False
+        return answers
 
     def run(self):
         self.report({
-            "is_sinkhole": self.dig(self.data)
+            'answers': self.dig(self.data)
         })
 
     def summary(self, raw):
         taxonomies = []
 
-        if raw.get('is_sinkhole'):
-            taxonomies.append(self.build_taxonomy('safe', 'SinkDB', 'IsSinkhole', 'True'))
+        if len(raw.get('answers')) > 0:
+            for answer in raw.get('answers'):
+                taxonomies.append(self.build_taxonomy('safe', 'SinkDB', 'Category', answer))
         else:
             taxonomies.append(self.build_taxonomy('suspicious', 'SinkDB', 'IsSinkhole', 'False'))
         return {
