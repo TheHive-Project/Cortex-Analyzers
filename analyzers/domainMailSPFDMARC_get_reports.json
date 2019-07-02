@@ -1,0 +1,16 @@
+{
+  "name": "DomainMailSPFDMARC_Analyzer",
+  "version": "1.1",
+  "url":"https://thehive-project.org",
+  "author": "torsolaso",
+  "license": "AGPL-V3",
+  "description": "DomainMailSPFDMARC",
+  "dataTypeList": ["domain", "fqdn"],
+  "command": "DomainMailSPFDMARC/domainMailSPFDMARC.py",
+  "baseConfig": "DomainMailSPFDMARC",
+  "config": {
+    "service": "get"
+  },
+  "configurationItems": [
+  ]
+}
