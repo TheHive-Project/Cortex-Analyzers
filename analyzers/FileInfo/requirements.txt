@@ -6,5 +6,6 @@ pefile
 git+https://github.com/AnyMaster/pehashng
 git+https://github.com/Rafiot/pdfid.git
 oletools>=0.52
-git+https://github.com/mattgwwalker/msg-extractor.git@v0.19
+extract-msg
 IMAPClient
+git+https://github.com/SteveClement/ioc_parser.git

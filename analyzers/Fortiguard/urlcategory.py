@@ -39,7 +39,7 @@ class URLCategoryAnalyzer(Analyzer):
                 baseurl = 'https://www.fortiguard.com/webfilter?q='
                 url = baseurl + self.get_data()
                 req = requests.get(url)
-                category_match = re.search(pattern, req.content, flags=0)
+                category_match = re.search(pattern, req.text, flags=0)
                 self.report({
                     'category': category_match.group(1)
                 })

@@ -1,0 +1,119 @@
+
+
+<div class="panel panel-info">
+    <style>
+        table {
+            table-layout:fixed;
+            width:100%;
+            word-break: break-all;
+        }
+    </style>
+
+
+    <div class="panel panel-info" ng-if="content.findings.count !== 0">
+        <div class="panel-heading">
+            <strong>Soltra Edge</strong>
+        </div>
+        <div class="panel-body">
+
+            <table class="table table-hover">
+
+                <tr>
+                    <th style="width:10%;">Source</th>
+                    <th style="width:8%;">TLP</th>
+                    <th style="width:30%;">Soltra ID</th>
+                    <th style="width:10%;">Relations</th>
+                    <th style="width:42%;">Description</th>
+
+                </tr>
+
+                <tr ng-repeat="(key, res) in content.findings.hits">
+                    <td>{{res.id.split(":")[0]}}</td>
+                    <td>
+                        <span class="label" ng-class="{'WHITE': 'label-info', 'GREEN': 'label-success', 'AMBER': 'label-warning', 'RED':'label-danger'}[res.tlpColor]">
+                            {{res.tlpColor}}
+                        </span>
+                    </td>
+                    <td>
+                        <span>
+                            <i class="fa fa-search"></i>
+                            <a ng-href="{{content.findings.soltra_host}}/object/{{res.id}}/" target="_blank"></a>
+                                {{res.id}}
+                            </a>
+                        </span>
+                    </td>
+                    <td>
+                        <div ng-if="res.object_related.length !== 0">
+
+                            <button id=relationsButton{{key}} class="btn btn-info" onClick="open_modal(this.id)">Show relations</button>
+
+                            <div class="modal fade" id="relationsModal{{key}}" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h3 class="modal-title" id="modalLabel">{{res.id}}</h3>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                
+                                                <div class="panel panel-info">
+                                                    <div class="panel-heading">
+                                                        <strong>Relations Found</strong>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <table class="table table-hover">
+
+                                                            <tr ng-repeat="relation in res.object_related">
+                                                                <td>
+                                                                    <span>
+                                                                        <i class="fa fa-search"></i>
+                                                                        <a ng-href="{{content.findings.soltra_host}}/object/{{relation.id}}/" target="_blank">
+                                                                            {{relation.id}}
+                                                                        </a>
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                        </div>
+                        <div ng-if="res.object_related.length === 0">
+                            <p>None</p>
+                        </div>
+                    </td>
+                    <td colspan="2">
+                        {{res.description}}
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    function open_modal(button_id){
+        
+
+        var modalID = '#relationsModal'+button_id.split("relationsButton")[1];
+        
+        console.log(modalID);
+        $(modalID).modal('show');
+    }
+
+</script>
