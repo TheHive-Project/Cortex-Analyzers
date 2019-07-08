@@ -75,8 +75,8 @@ class APIRequestHandler(object):
         )
         if r.status_code == 200:
             data = json.loads(r.text)
-            #if data.get("success", None) == False:
-            #    return {}
+            if data.get("success", False) == False:
+                return {}
             return data
         return {}
 
