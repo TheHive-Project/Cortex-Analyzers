@@ -98,9 +98,12 @@ class OPSWATMetadefender(Analyzer):
     def summary(self, raw):
         taxonomies = []
         level = "info"
-        namespace = "OPSWATMetadefender"
-        predicate = "Report"
+        if self.service in ("scan_cloud", "query_cloud", "reputation_cloud"): 
+            namespace = "OPSWATMetadefender-Cloud"
+        else:
+            namespace = "OPSWATMetadefender-Core"
         if self.service in ("scan_cloud", "scan_core", "query_cloud", "query_core"):
+            predicate = "Report"
             score = raw.get("scan_results", {}).get("scan_all_result_a", "No Info")
             score_no = raw.get("scan_results", {}).get("scan_all_result_i", 0)
             if score_no == 1:
@@ -112,6 +115,7 @@ class OPSWATMetadefender(Analyzer):
             elif score_no in (0, 5):
                 level = "safe"
         elif self.service == 'reputation_cloud':
+            predicate = "Reputation"
             score_no = raw.get("lookup_results", {}).get("detected_by", 0)
             score_total = len(raw.get("lookup_results", {}).get("sources", []))
             if score_no == 0:
