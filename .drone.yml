@@ -45,20 +45,8 @@ steps:
     when:
       event: {exclude: [tag]}
 
-  - name: build stable catalogs
+  - name: build catalogs
     image: thehiveproject/neurons-build-catalogs
-    settings:
-      branch: master
-    when:
-      event: [tag]
-  
-  - name: build develop catalog
-    image: thehiveproject/neurons-build-catalogs
-    when:
-      branch:
-      - develop
-      event:
-      - push
   
   - name: upload catalogs to bintray
     image: thehiveproject/drone-bintray
@@ -73,23 +61,18 @@ steps:
         export PLUGIN_KEY
         export PLUGIN_SUBJECT
         export PLUGIN_PACKAGE
-
         upload \
         --file analyzers/analyzers.json \
         --repo cortexneurons
-
         upload \
         --file analyzers/analyzers-stable.json \
         --repo cortexneurons
-
         upload \
         --file responders/responders.json \
         --repo cortexneurons
-
         upload \
         --file responders/responders-stable.json \
         --repo cortexneurons
-
     when:
       event: [tag]
 
@@ -114,8 +97,6 @@ steps:
         upload \
         --file responders/responders-devel.json \
         --repo cortexneurons
-
-
     when:
       event:
         branch:
