@@ -55,24 +55,24 @@ steps:
       key: {from_secret: bintray_key}
       subject: thehive-project
       package: cortexneurons
-      commands:
-      - |
-        export PLUGIN_USER
-        export PLUGIN_KEY
-        export PLUGIN_SUBJECT
-        export PLUGIN_PACKAGE
-        upload \
-        --file analyzers/analyzers.json \
-        --repo cortexneurons
-        upload \
-        --file analyzers/analyzers-stable.json \
-        --repo cortexneurons
-        upload \
-        --file responders/responders.json \
-        --repo cortexneurons
-        upload \
-        --file responders/responders-stable.json \
-        --repo cortexneurons
+    commands:
+    - |
+      export PLUGIN_USER
+      export PLUGIN_KEY
+      export PLUGIN_SUBJECT
+      export PLUGIN_PACKAGE
+      upload \
+      --file analyzers/analyzers.json \
+      --repo cortexneurons
+      upload \
+      --file analyzers/analyzers-stable.json \
+      --repo cortexneurons
+      upload \
+      --file responders/responders.json \
+      --repo cortexneurons
+      upload \
+      --file responders/responders-stable.json \
+      --repo cortexneurons
     when:
       event: [tag]
 
@@ -83,20 +83,20 @@ steps:
       key: {from_secret: bintray_key}
       subject: thehive-project
       package: cortexneurons
-      commands:
-      - |
-        export PLUGIN_USER
-        export PLUGIN_KEY
-        export PLUGIN_SUBJECT
-        export PLUGIN_PACKAGE
+    commands:
+    - |
+      export PLUGIN_USER
+      export PLUGIN_KEY
+      export PLUGIN_SUBJECT
+      export PLUGIN_PACKAGE
 
-        upload \
-        --file analyzers/analyzers-devel.json \
-        --repo cortexneurons
+      upload \
+      --file analyzers/analyzers-devel.json \
+      --repo cortexneurons
 
-        upload \
-        --file responders/responders-devel.json \
-        --repo cortexneurons
+      upload \
+      --file responders/responders-devel.json \
+      --repo cortexneurons
     when:
       event:
         branch:
