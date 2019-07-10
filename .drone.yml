@@ -55,12 +55,14 @@ steps:
       key: {from_secret: bintray_key}
       subject: thehive-project
       package: cortexneurons
+      version: latest
     commands:
     - |
       export PLUGIN_USER
       export PLUGIN_KEY
       export PLUGIN_SUBJECT
       export PLUGIN_PACKAGE
+      export PLUGIN_VERSION
       upload \
       --file analyzers/analyzers.json \
       --repo cortexneurons
@@ -83,13 +85,14 @@ steps:
       key: {from_secret: bintray_key}
       subject: thehive-project
       package: cortexneurons
+      version: latest
     commands:
     - |
       export PLUGIN_USER
       export PLUGIN_KEY
       export PLUGIN_SUBJECT
       export PLUGIN_PACKAGE
-
+      export PLUGIN_VERSION
       upload \
       --file analyzers/analyzers-devel.json \
       --repo cortexneurons
