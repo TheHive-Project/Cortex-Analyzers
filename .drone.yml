@@ -76,7 +76,7 @@ steps:
     when:
       event: [tag]
 
-  - name: upload catalogs to bintray
+  - name: upload devel catalogs to bintray
     image: thehiveproject/drone-bintray
     settings:
       user: {from_secret: bintray_user}
