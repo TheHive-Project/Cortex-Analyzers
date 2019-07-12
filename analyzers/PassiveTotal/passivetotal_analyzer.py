@@ -138,7 +138,12 @@ class PassiveTotalAnalyzer(Analyzer):
             elif self.service == 'ssl_certificate_history':
                 ssl_request = SslRequest(username=self.username, api_key=self.api_key)
                 result = ssl_request.get_ssl_certificate_history(query=data)
-                self.report(result)
+                print(len(result['results']))
+                if len(result['results']) == 1 and result['results'][0]['ipAddresses'] == 'N/A':
+                    print("ok")
+                    self.report({'results': []})
+                else:
+                    self.report(result)
 
             # unique resolutions service
             elif self.service == 'unique_resolutions':
