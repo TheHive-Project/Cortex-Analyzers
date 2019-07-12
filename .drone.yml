@@ -56,6 +56,8 @@ steps:
       subject: thehive-project
       package: catalogs
       version: latest
+      override: 1
+      publish: 1
     commands:
     - |
       export PLUGIN_USER
@@ -63,6 +65,8 @@ steps:
       export PLUGIN_SUBJECT
       export PLUGIN_PACKAGE
       export PLUGIN_VERSION
+      export PLUGIN_OVERRIDE
+      export PLUGIN_PUBLISH
       upload \
       --file analyzers/analyzers.json \
       --repo cortexneurons
@@ -86,6 +90,8 @@ steps:
       subject: thehive-project
       package: catalogs
       version: latest
+      override: 1
+      publish: 1
     commands:
     - |
       export PLUGIN_USER
@@ -93,6 +99,8 @@ steps:
       export PLUGIN_SUBJECT
       export PLUGIN_PACKAGE
       export PLUGIN_VERSION
+      export PLUGIN_OVERRIDE
+      export PLUGIN_PUBLISH
       upload \
       --file analyzers/analyzers-devel.json \
       --repo cortexneurons
