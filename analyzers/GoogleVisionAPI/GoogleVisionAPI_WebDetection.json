@@ -20,7 +20,7 @@
       "required": true
     },
     {
-      "name": "max_Result",
+      "name": "max_result",
       "description": "Maximum number of url to fetch",
       "type": "string",
       "multi": false,
