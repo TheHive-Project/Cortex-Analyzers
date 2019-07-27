@@ -42,7 +42,7 @@ class Threatcrowd(Analyzer):
             threatcrowd_data_type = self.data_type if self.data_type != 'mail' else 'email'
             try:
                 response = requests.get("{}/{}/report/".format(self.URI, threatcrowd_data_type),
-                                        {threatcrowd_data_type: self.get_data()})
+                                        params = {threatcrowd_data_type: self.get_data()})
                 self.report(response.json())
             except Exception as e:
                 self.unexpectedError(e)
