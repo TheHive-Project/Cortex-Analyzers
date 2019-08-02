@@ -54,7 +54,10 @@ class IPVoid(Analyzer):
             return({'taxonomies':taxonomies})
 
         except Exception as e:
-            self.unexpectedError(e)
+            if 'error' in raw:
+                self.unexpectedError(raw['error'])
+            else:
+                self.unexpectedError(e)
 
 if __name__ == '__main__':
     IPVoid().run()
