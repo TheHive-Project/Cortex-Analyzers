@@ -31,14 +31,17 @@ class TalosReputation(Analyzer):
             try:
                 data = self.get_data()
 
+                s = requests.Session()
+                s.get('https://talosintelligence.com/reputation_center/lookup?search={}'.format(data))
+
                 headers={
                     'Host':'talosintelligence.com',
                     'Referer':'https://talosintelligence.com/reputation_center/lookup?search={}'.format(data),
-                    'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0',
-                    'Accept':'*/*'
+                    'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36',
+                    'Accept':'application/json'
                 }
 
-                response_details = requests.get('https://talosintelligence.com/sb_api/query_lookup',
+                response_details = s.get('https://talosintelligence.com/sb_api/query_lookup',
                     headers = headers,
                     params = {
                         'query':'/api/v2/details/ip/',
@@ -46,13 +49,13 @@ class TalosReputation(Analyzer):
                         }
                     )
 
-                response_location = requests.get('https://talosintelligence.com/sb_api/query_lookup',
+                response_location = s.get('https://talosintelligence.com/sb_api/query_lookup',
                     headers = headers,
                     params = {
                         'query':'/api/v2/location/ip/',
                         'query_entry':data
                         }
-                    ) 
+                    )
 
                 if response_details.status_code == 200 | 201:
                     if response_location.status_code == 200 | 201:
