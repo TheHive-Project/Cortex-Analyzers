@@ -1,25 +1,51 @@
 {
-    "name": "HIBP_Query",
-    "version": "1.0",
-    "author": "Matt Erasmus",
-    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "Query haveibeenpwned.com for a compromised email address",
-    "dataTypeList": ["mail"],
-    "baseConfig": "HIBP",
-    "config": {
-      "service": "query",
-      "url": "https://haveibeenpwned.com/api/v2/breachedaccount/"
+  "name": "HIBP_Query",
+  "version": "2.0",
+  "author": "Matt Erasmus, Jonas Hergenhahn",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Query haveibeenpwned.com for a compromised email address",
+  "dataTypeList": [
+    "mail"
+  ],
+  "baseConfig": "HIBP",
+  "config": {
+    "service": "query",
+    "url": "https://haveibeenpwned.com/api/v3/breachedaccount/"
+  },
+  "command": "HIBP/hibpquery_analyzer.py",
+  "configurationItems": [
+    {
+      "name": "unverified",
+      "description": "Include unverified breaches",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
     },
-    "command": "HIBP/hibpquery_analyzer.py",
-    "configurationItems": [
-        {
-          "name": "unverified",
-          "description": "Include unverified breaches",
-          "type": "boolean",
-          "multi": false,
-          "required": true,
-          "defaultValue": true
-        }
-    ]
+    {
+      "name": "truncate",
+      "description": "Truncated response means only the name of data breaches",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": false
+    },
+    {
+      "name": "api_key",
+      "description": "Api key for hibp",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": ""
+    },
+    {
+      "name": "retries",
+      "description": "Retries to request api while getting status code 429",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 5
+    }
+  ]
 }

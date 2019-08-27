@@ -1,6 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding: utf-8
-import json
+import time
 import requests
 import ast
 
@@ -14,17 +14,17 @@ class HIBPQueryAnalyzer(Analyzer):
         self.service = self.get_param('config.service', None, 'Service parameter is missing')
         self.api_url = self.get_param('config.url', None, 'Missing API URL')
         self.unverified = self.get_param('config.unverified', None, 'Missing Unverified option')
+        self.truncate = self.get_param('config.truncate', None, 'Missing Truncate option')
+        self.api_key = self.get_param('config.api_key', None, 'Missing Api Key')
+        self.retries = self.get_param('config.retries', 5, 'Missing Retries option')
 
     @staticmethod
     def cleanup(return_data):
 
         response = dict()
         matches = []
-        found = False
-        count = 0
 
         for entry in return_data:
-            found = True
             x = ast.literal_eval(str(entry))
             matches.append(x)
 
@@ -36,14 +36,14 @@ class HIBPQueryAnalyzer(Analyzer):
         results = dict()
 
         try:
-            if self.unverified == True:
-                unverified = '?includeUnverified=true'
-            else:
-                unverified = ''
 
-            hibpurl = self.api_url + data + unverified
+            hibpurl = '{}{}?includeUnverified={}&truncateResponse={}'.format(
+                self.api_url, data, self.unverified, self.truncate
+            )
+
             headers = {
-                'User-Agent': 'HIBP-Cortex-Analyzer'
+                'User-Agent': 'HIBP-Cortex-Analyzer',
+                'hibp-api-key': self.api_key
             }
 
             _query = requests.get(hibpurl, headers=headers)
@@ -54,6 +54,20 @@ class HIBPQueryAnalyzer(Analyzer):
                     return self.cleanup(_query.json())
             elif _query.status_code == 404:
                 return dict()
+            elif _query.status_code == 429:
+                retry_after = _query.headers.get('retry-after')
+
+                # if header retry-after is missing
+                if retry_after is None:
+                    retry_after = 0
+
+                self.retries = self.retries - 1
+                if self.retries < 0:
+                    self.error('API Access error: %s' % _query.text)
+
+                # recursive call after waiting
+                time.sleep(retry_after)
+                return self.hibp_query(data)
             else:
                 self.error('API Access error: %s' % _query.text)
 
