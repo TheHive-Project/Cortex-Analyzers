@@ -11,7 +11,7 @@
         <p ng-if="content.CompromisedAccounts.length > 0">
           Compromised Accounts: {{content.CompromisedAccounts.length}}
         </p>
-        <table class="table" ng-if="content.CompromisedAccounts && content.CompromisedAccounts.length > 0">
+        <table class="table" ng-if="content.CompromisedAccounts && content.CompromisedAccounts.length > 0 && content.CompromisedAccounts[0].hasOwnProperty('IsVerified')">
             <thead>
                 <th width="120px">IsVerified</th>
                 <th>PwnCNT</th>
@@ -37,6 +37,16 @@
                 </tr>
                 <tr>
                     <td colspan="8"><p>{{r.Description}}</p></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table" ng-if="content.CompromisedAccounts && content.CompromisedAccounts.length > 0 && !content.CompromisedAccounts[0].hasOwnProperty('IsVerified')">
+            <thead>
+                <th>Name</th>
+            </thead>
+            <tbody ng-repeat="r in content.CompromisedAccounts">
+                <tr>
+                    <td>{{r.Name}}</td>
                 </tr>
             </tbody>
         </table>
