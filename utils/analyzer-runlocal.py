@@ -6,117 +6,123 @@ import uuid
 import json
 import time
 import subprocess
+from shutil import copy2
 from datetime import datetime
 from argparse import ArgumentParser
 
 
 class AnalyzerRunlocalException(Exception):
-    pass
+	pass
 
 
 class AnalyzerRunlocal():
 
-    args = None
+	args = None
 
-    def __init__(self):
-        self.args = self.__parse_args__()
+	def __init__(self):
+		self.args = self.__parse_args__()
 
-    def __parse_args__(self):
-        argparse = ArgumentParser(description='Cortex Analyzer Runlocal')
+	def __parse_args__(self):
+		argparse = ArgumentParser(description='Cortex Analyzer Runlocal')
 
-        argparse.add_argument('-a', required=True, metavar="<analyzer>",
-                              help="Path to the Analyzer file to be executed.")
-        argparse.add_argument('-j', required=True, metavar="<jobfile>",
-                              help="Path to the job definition file used to execute this Analyzer with.")
-        argparse.add_argument('-p', required=False, metavar="<path>", default="/tmp/analyzer-runlocal",
-                              help="Alternative path for job files (default: /tmp/analyzer-runlocal)")
+		argparse.add_argument('-a', required=True, metavar="<analyzer>",
+							  help="Path to the Analyzer file to be executed.")
+		argparse.add_argument('-j', required=True, metavar="<jobfile>",
+							  help="Path to the job definition file used to execute this Analyzer with.")
+		argparse.add_argument('-p', required=False, metavar="<path>", default="/tmp/analyzer-runlocal",
+							  help="Alternative path for job files (default: /tmp/analyzer-runlocal)")
 
-        args = argparse.parse_args()
-        if not args.a or not os.path.isfile(args.a) or not args.j or not os.path.isfile(args.j):
-            argparse.print_help()
-            print()
-            exit(1)
-        return args
+		args = argparse.parse_args()
+		if not args.a or not os.path.isfile(args.a) or not args.j or not os.path.isfile(args.j):
+			argparse.print_help()
+			print()
+			exit(1)
+		return args
 
-    def main(self):
-        self.stderr()
+	def main(self):
+		self.stderr()
 
-        analyzer = self.args.a.split('/')[-1]
-        self.stderr('analyzer: {}'.format(analyzer))
+		analyzer = self.args.a.split('/')[-1]
+		self.stderr('analyzer: {}'.format(analyzer))
 
-        job_id = '{}-{}'.format(self.timestamp(), str(uuid.uuid4())[0:8])
-        self.stderr('job_id:   {}'.format(job_id))
+		job_id = '{}-{}'.format(self.timestamp(), str(uuid.uuid4())[0:8])
+		self.stderr('job_id:   {}'.format(job_id))
 
-        job_path = os.path.join(self.args.p, job_id)
-        self.stderr('job_path: {}'.format(job_path))
+		job_path = os.path.join(self.args.p, job_id)
+		self.stderr('job_path: {}'.format(job_path))
 
-        input_path = os.path.join(job_path, 'input')
-        os.makedirs(input_path)
+		input_path = os.path.join(job_path, 'input')
+		os.makedirs(input_path)
 
-        input_filename = os.path.join(input_path, 'input.json')
-        with open(self.args.j, 'r') as f:
-            job_definition = json.load(f)
+		input_filename = os.path.join(input_path, 'input.json')
+		with open(self.args.j, 'r') as f:
+			job_definition = json.load(f)
 
-        try:
-            self.check_job_definition(job_definition)
-        except Exception as e:
-            self.stderr('\nERROR: {}\n'.format(e))
-            exit(1)
+		try:
+			self.check_job_definition(job_definition)
+		except Exception as e:
+			self.stderr('\nERROR: {}\n'.format(e))
+			exit(1)
 
-        with open(input_filename, 'w') as f:
-            json.dump(job_definition, f)
+		copy2(job_definition['file'], '{}/input/'.format(job_path)) # Copy file specified in job definition to the current job path input
+		job_definition['file'] = os.path.basename(job_definition['file']) # Change "file" filepath in job definiton to comply with cortexutils
 
-        command_line = '{} {}'.format(self.args.a, job_path)
-        self.stderr('command:  {}'.format(command_line))
+		with open(input_filename, 'w') as f:
+			json.dump(job_definition, f)
 
-        timer_start = time.time()
-        stdout, stderr, returncode = self.shell_command(command_line)
-        timer_end = time.time()
-        self.stderr('runtime:  {}'.format(timer_end - timer_start))
-        self.stderr()
+		command_line = '{} {}'.format(self.args.a, job_path)
+		self.stderr('command:  {}'.format(command_line))
 
-        output_filename = os.path.join(job_path,'output' ,'output.json')
-        if not os.path.isfile(output_filename):
-            self.stderr('\nERROR: Unable to locate expected output file {}\n'.format(output_filename))
-            exit(1)
+		timer_start = time.time()
+		stdout, stderr, returncode = self.shell_command(command_line)
+		timer_end = time.time()
+		self.stderr('runtime:  {}'.format(timer_end - timer_start))
+		self.stderr()
 
-        with open(output_filename, 'r') as f:
-            output = f.read()
+		output_filename = os.path.join(job_path,'output' ,'output.json')
+		if not os.path.isfile(output_filename):
+			self.stderr('\nERROR: Unable to locate expected output file {}\n'.format(output_filename))
+			exit(1)
 
-        if returncode > 0 or stderr:
-            self.stderr(stderr)
-            self.stdout(output)
-            exit(returncode)
+		with open(output_filename, 'r') as f:
+			output = f.read()
 
-        self.stdout(output)
+		if returncode > 0 or stderr:
+			self.stderr(stderr)
+			self.stdout(output)
+			exit(returncode)
 
-    def check_job_definition(self, job_definition):
-        if type(job_definition) is not dict:
-            raise AnalyzerRunlocalException('job_definition is not a dict as expected')
-        if 'dataType' not in job_definition:
-            raise AnalyzerRunlocalException('job_definition is missing a "dataType" dict key value')
-        if 'data' not in job_definition:
-            raise AnalyzerRunlocalException('job_definition is missing a "data" dict key value')
+		self.stdout(output)
 
-    def stdout(self, message=''):
-        print(message)
+	def check_job_definition(self, job_definition):
+		if type(job_definition) is not dict:
+			raise AnalyzerRunlocalException('job_definition is not a dict as expected')
+		if 'dataType' not in job_definition:
+			raise AnalyzerRunlocalException('job_definition is missing a "dataType" dict key value')
+		if 'data' not in job_definition and 'file' not in job_definition:
+			raise AnalyzerRunlocalException('job_definition is missing a "data" or "file" dict key value')
+		if not os.path.isfile(job_definition['file']):
+			raise AnalyzerRunlocalException('the "file" path specified in the job_definition does not exist: {}'.format(job_definition['file']))
 
-    def stderr(self, message=''):
-        print(message, file=sys.stderr)
+	def stdout(self, message=''):
+		print(message)
 
-    def timestamp(self):
-        return datetime.utcnow().strftime("%Y%m%dZ%H%M%S")
+	def stderr(self, message=''):
+		print(message, file=sys.stderr)
 
-    def shell_command(self, command_line, timeout_seconds=300, encoding='utf8'):
-        process = subprocess.Popen(command_line, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        process.wait(timeout_seconds)
-        stdout, stderr = process.communicate()
-        if encoding is None or len(encoding) == 0:
-            return stdout, stderr, process.returncode
-        return (None if stdout is None else stdout.decode(encoding)), \
-               (None if stderr is None else stderr.decode(encoding)), \
-               process.returncode
+	def timestamp(self):
+		return datetime.utcnow().strftime("%Y%m%dZ%H%M%S")
+
+	def shell_command(self, command_line, timeout_seconds=300, encoding='utf8'):
+		process = subprocess.Popen(command_line, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		process.wait(timeout_seconds)
+		stdout, stderr = process.communicate()
+		if encoding is None or len(encoding) == 0:
+			return stdout, stderr, process.returncode
+		return (None if stdout is None else stdout.decode(encoding)), \
+			   (None if stderr is None else stderr.decode(encoding)), \
+			   process.returncode
 
 
 if __name__ == '__main__':
-    AnalyzerRunlocal().main()
+	AnalyzerRunlocal().main()
