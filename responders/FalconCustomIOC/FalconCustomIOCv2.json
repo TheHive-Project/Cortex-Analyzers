@@ -1,0 +1,27 @@
+{
+    "name": "Crowdstrike Falcon Custom IOC API OAUTH2",
+    "version": "2.0",
+    "author": "Michael G. (github.com/ag-michael)",
+    "url": "https://www.crowdstrike.com/blog/tech-center/import-iocs-crowdstrike-falcon-host-platform-via-api/",
+    "license": "MIT",
+    "description": "Submit observables to the Crowdstrike Falcon Custom IOC api",
+    "dataTypeList": ["thehive:alert", "thehive:case_artifact"],
+    "command": "FalconCustomIOC/FalconCustomIOCv2.py",
+    "baseConfig": "FalconCustomIOCv2",
+    "configurationItems": [
+        {
+            "name": "clientid",
+            "description": "Crowdstrike Falcon API oauth2 client id",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "clientsecret",
+            "description": "Crowdstrike Falcon API oauth2 secret",
+            "type": "string",
+            "multi": false,
+            "required": true
+        }
+    ]
+}
