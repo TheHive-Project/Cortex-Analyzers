@@ -13,8 +13,6 @@ from requests.auth import HTTPBasicAuth
 class FalconCustomIOC(Responder):
     def __init__(self):
         Responder.__init__(self)
-        with open("/tmp/dbx", "w+") as f:
-            f.write(json.dumps(self._input, sort_keys=True, indent=4))
         self.falconapi_url = "https://falconapi.crowdstrike.com/indicators/entities/iocs/v1"
         self.apiuser = self.get_param(
             'config.falconapi_user', None, "Falcon query api key missing")
