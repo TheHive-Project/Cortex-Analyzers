@@ -7,7 +7,7 @@
   "description": "Close alert in Zerofox",
   "dataTypeList": ["thehive:case"],
   "command": "ZEROFOX_Close_alert/ZEROFOX_Close_alert.py",
-  "baseConfig": "ZEROFOX_Close_alert",
+  "baseConfig": "ZEROFOX",
   "configurationItems": [
     {
       "name": "url",
