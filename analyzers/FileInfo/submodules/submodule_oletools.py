@@ -1,10 +1,10 @@
 """FileInfo oletools submodule; WIP"""
 from .submodule_base import SubmoduleBaseclass
-from oletools.olevba3 import VBA_Parser_CLI
+from oletools.olevba import VBA_Parser_CLI
 from oletools.msodde import process_file
-from oletools.olevba3 import __version__ as olevba_version
+from oletools.olevba import __version__ as olevba_version
 from oletools.msodde import __version__ as msodde_version
-
+from oletools.crypto import is_encrypted, decrypt
 
 
 class OLEToolsSubmodule(SubmoduleBaseclass):
@@ -28,7 +28,12 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
                 'PPT',
                 'PPTM',
                 'PPTX'
-            ] or kwargs.get('mimetype').startswith("application/vnd.openxmlformats-officedocument"):
+            ] or (kwargs.get('mimetype').startswith("application/vnd.openxmlformats-officedocument") or
+                 kwargs.get('mimetype').startswith("application/encrypted") or
+                 kwargs.get('mimetype').startswith("application/vnd.ms-")
+            ):
+                if kwargs.get('mimetype').startswith("application/encrypted") and not is_encrypted(kwargs.get('file')):
+                    return False
                 return True
         except KeyError:
             return False
@@ -36,6 +41,7 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
 
     def analyze_file(self, path):
         # Run the analyze functions
+        self.encypted = is_encrypted(path)
         self.analyze_vba(path)
         self.analyze_dde(path)
 
@@ -92,6 +98,7 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
         self.summary['taxonomies'] = taxonomies
         self.summary['Olevba'] = olevba_version
         self.summary['Msodde'] = msodde_version
+        self.summary['encrypted_file'] = self.encypted
 
         return self.summary
 
@@ -99,7 +106,8 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
         """Analyze a given sample for malicious vba."""
 
         try:
-
+            if is_encrypted(path):
+                path = decrypt(path)
             vba_parser = VBA_Parser_CLI(path, relaxed=True)
             vbaparser_result = vba_parser.process_file_json(show_decoded_strings=True,
                                                             display_code=True,
@@ -107,7 +115,6 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
                                                             vba_code_only=False,
                                                             show_deobfuscated_code=True,
                                                             deobfuscate=True)
-
             self.add_result_subsection('Olevba', vbaparser_result)
         except TypeError:
             self.add_result_subsection('Oletools VBA Analysis failed', 'Analysis failed due to an filetype error.'
@@ -115,7 +122,7 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
                                                                        'file.')
 
     def analyze_dde(self, path):
-        version = {'Msodde version': msodde_version}
+        # version = {'Msodde version': msodde_version}
         results = process_file(path)
         if len(results) > 0:
             self.add_result_subsection('DDE Analysis', {'DDEUrl': results})
