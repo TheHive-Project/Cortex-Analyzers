@@ -161,7 +161,7 @@ class Splunk(Analyzer):
         taxonomies = []
         value = 0
         namespace = "Splunk"
-        taxonomyResults = {"level": "info", "namespace": namespace, "predicate": "Results", "value": 0}
+        taxonomyResults = {"level": "safe", "namespace": namespace, "predicate": "Results", "value": 0}
 
         # (Optional) These taxonomies will be added only if a field "level" is found
         taxonomyInfo = {"level": "info", "namespace": namespace, "predicate": "Info", "value": 0}
@@ -181,6 +181,11 @@ class Splunk(Analyzer):
                 taxonomyMalicious["value"] += levels["malicious"]    
 
         # Add results taxonomy anyway
+        # Change the level if there is any result
+        if taxonomyResults["value"]>0:
+            taxonomyResults["level"] = "suspicious"
+        else:
+            taxonomyResults["value"] = "None"
         taxonomies.append(self.build_taxonomy(taxonomyResults["level"], taxonomyResults["namespace"], taxonomyResults["predicate"], taxonomyResults["value"]))
 
         # Only add optional taxonomies if they are not null
