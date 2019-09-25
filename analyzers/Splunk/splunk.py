@@ -46,7 +46,7 @@ class Splunk(Analyzer):
         for saved_search in saved_searches:
             # Execute every savedsearch with the needed arguments
             job = self.service.saved_searches[saved_search].dispatch(**kwargs_savedsearch)
-            jobs[saved_search] = job
+            jobs[saved_search] = {"job": job, "search": "", "results": {}, "eventCount": 0, "resultCount": 0}
 
         jobs_running = len(jobs)
 
@@ -57,8 +57,12 @@ class Splunk(Analyzer):
             sleep(4)
             jobs_running = len(jobs)
             for saved_search in jobs:
-                job = jobs[saved_search]
+                job = jobs[saved_search]["job"]
                 if job.is_done():
+                   jobs[saved_search]["results"] = results.ResultsReader(job.results(count=self.MAX_COUNT))
+                   jobs[saved_search]["eventCount"] = int(job["eventCount"])
+                   jobs[saved_search]["resultCount"] = int(job["resultCount"])
+                   jobs[saved_search]["search"] = job["search"]
                    jobs_running -= 1 
 
         # Get the results and display them
@@ -69,41 +73,48 @@ class Splunk(Analyzer):
         for saved_search in jobs:
             jobResult = {}
             dataResults = {}
-            job = jobs[saved_search]
+            job_infos = jobs[saved_search]
             index = 0
             fieldLevelInfo = 0
             fieldLevelSafe = 0
             fieldLevelSuspicious = 0
             fieldLevelMalicious = 0
 
-            for result in results.ResultsReader(job.results(count=self.MAX_COUNT)):
-                dataResults[index] = result
-                # Check if a field "level" exists
-                if "level" in result:
-                    # if so, count the values if it's info,safe,suspicious,malicious
-                    if result["level"] == "info":
-                        fieldLevelInfo += 1
-                    if result["level"] == "safe":
-                        fieldLevelSafe += 1
-                    if result["level"] == "suspicious":
-                        fieldLevelSuspicious += 1
-                    if result["level"] == "malicious":
-                        fieldLevelMalicious += 1
+            try:
+              for result in job_infos["results"]:
+                  dataResults[index] = result
+                  # Check if a field "level" exists
+                  if "level" in result:
+                      # if so, count the values if it's info,safe,suspicious,malicious
+                      if result["level"] == "info":
+                          fieldLevelInfo += 1
+                      if result["level"] == "safe":
+                          fieldLevelSafe += 1
+                      if result["level"] == "suspicious":
+                          fieldLevelSuspicious += 1
+                      if result["level"] == "malicious":
+                          fieldLevelMalicious += 1
 
-                index += 1
-            if fieldLevelInfo+fieldLevelSafe+fieldLevelSuspicious+fieldLevelMalicious > 0 :
-                jobResult["levels"] = {"info": fieldLevelInfo, "safe": fieldLevelSafe, "suspicious": fieldLevelSuspicious, "malicious": fieldLevelMalicious}
-            jobResult["results"] = dataResults
-            jobResult["length"] = index
-            jobResult["eventCount"] = int(job["eventCount"])
-            jobResult["resultCount"] = int(job["resultCount"])
-            
-            if jobResult["resultCount"] > self.MAX_COUNT:
-                jobResult["note"] = "Only the first "+str(self.MAX_COUNT)+" results were recovered over "+job["resultCount"]+" to avoid any trouble on TheHive/Cortex. This parameter (max_count) can be changed in the analyzer configuration."
+                  index += 1
+              if fieldLevelInfo+fieldLevelSafe+fieldLevelSuspicious+fieldLevelMalicious > 0 :
+                  jobResult["levels"] = {"info": fieldLevelInfo, "safe": fieldLevelSafe, "suspicious": fieldLevelSuspicious, "malicious": fieldLevelMalicious}
+              jobResult["results"] = dataResults
 
-            jobResult["search"] = job["search"]
-            jobResult["savedsearch"] = saved_search
-            savedSearchResults.append(jobResult)
+            except Exception as e:
+              jobResult["error"] = "Parsing results error for this search, special character ? : "+str(e)
+
+            finally:
+              jobResult["length"] = index
+              jobResult["eventCount"] = job_infos["eventCount"]
+              jobResult["resultCount"] = job_infos["resultCount"]
+              
+              if jobResult["resultCount"] > self.MAX_COUNT:
+                  jobResult["note"] = "Only the first "+str(self.MAX_COUNT)+" results were recovered over "+job["resultCount"]+" to avoid any trouble on TheHive/Cortex. This parameter (max_count) can be changed in the analyzer configuration."
+
+              jobResult["search"] = job_infos["search"]
+              jobResult["savedsearch"] = saved_search
+
+              savedSearchResults.append(jobResult)
         
         finalResult = {"savedsearches": savedSearchResults}
 
