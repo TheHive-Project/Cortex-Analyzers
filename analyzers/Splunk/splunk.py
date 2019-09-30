@@ -7,6 +7,7 @@ from cortexutils.analyzer import Analyzer
 import splunklib.results as results
 import urllib
 import re
+from datetime import datetime
 
 
 class Splunk(Analyzer):
@@ -20,7 +21,9 @@ class Splunk(Analyzer):
         self.OWNER = self.getParam('config.owner', None, 'Owner parameter is missing')
         self.APP = self.getParam('config.application', None, 'Application parameter is missing')
         self.SAVEDSEARCHES = self.getParam('config.saved_searches', None, 'At least one Splunk savedsearch name is required')
-        self.MAX_COUNT = self.getParam('config.max_count', 1000)
+        self.EARLIEST = self.getParam('config.earliest_time', "-6mon@mon")
+        self.LATEST = self.getParam('config.latest_time', None)
+        self.MAX_COUNT = self.getParam('config.max_count', None)
 
     # Create a Service instance and log in
     def SplunkConnect(self):
@@ -42,6 +45,13 @@ class Splunk(Analyzer):
         # Get all saved searches
         saved_searches = self.SAVEDSEARCHES
 
+        # Set time search if mentionned
+        if (self.EARLIEST is not None):
+            kwargs_savedsearch["dispatch.earliest_time"] = self.EARLIEST
+        if (self.LATEST is not None):
+            kwargs_savedsearch["dispatch.latest_time"] = self.LATEST
+
+
         jobs = {}
         for saved_search in saved_searches:
             # Execute every savedsearch with the needed arguments
@@ -62,6 +72,8 @@ class Splunk(Analyzer):
                    jobs[saved_search]["results"] = results.ResultsReader(job.results(count=self.MAX_COUNT))
                    jobs[saved_search]["eventCount"] = int(job["eventCount"])
                    jobs[saved_search]["resultCount"] = int(job["resultCount"])
+                   jobs[saved_search]["searchEarliestTime"] = datetime.utcfromtimestamp(round(float(job["searchEarliestTime"]))).strftime("%c")
+                   jobs[saved_search]["searchLatestTime"] = datetime.utcfromtimestamp(round(float(job["searchLatestTime"]))).strftime("%c")
                    jobs[saved_search]["search"] = job["search"]
                    jobs_running -= 1 
 
@@ -107,6 +119,9 @@ class Splunk(Analyzer):
               jobResult["length"] = index
               jobResult["eventCount"] = job_infos["eventCount"]
               jobResult["resultCount"] = job_infos["resultCount"]
+              jobResult["searchEarliestTime"] = job_infos["searchEarliestTime"]
+              jobResult["searchLatestTime"] = job_infos["searchLatestTime"]
+
               
               if jobResult["resultCount"] > self.MAX_COUNT:
                   jobResult["note"] = "Only the first "+str(self.MAX_COUNT)+" results were recovered over "+job["resultCount"]+" to avoid any trouble on TheHive/Cortex. This parameter (max_count) can be changed in the analyzer configuration."
