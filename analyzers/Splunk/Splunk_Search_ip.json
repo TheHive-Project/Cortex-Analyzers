@@ -63,6 +63,20 @@
       "required": true
     },
     {
+      "name": "earliest_time",
+      "description": "If not empty, this will set the earliest time of the searches",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "latest_time",
+      "description": "If not empty, this will set the latest time of the searches",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
       "name": "max_count",
       "description": "Maximum number of results to return for a search",
       "type": "number",

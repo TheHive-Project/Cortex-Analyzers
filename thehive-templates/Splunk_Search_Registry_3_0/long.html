@@ -27,8 +27,12 @@
                 <dt>Results : </dt>
                 <dd><div ng-class="{'text-warning': res.length<res.resultCount, 'text-success': res.length==res.resultCount}"><strong>{{res.length}}/{{res.resultCount}}</strong></div><div ng-if="res.note">Note: {{res.note}}</div></dd>
                 <dd><div class="text-danger" ng-if="res.error"><strong>Error: {{res.error}}</strong</div></dd>
-                <dt>Events : </dt>
+                <dt>Events: </dt>
                 <dd>{{res.eventCount}}</dd>
+                <dt>Earliest time:</dt>
+                <dd>{{res.searchEarliestTime}} UTC</dd>
+                <dt>Latest time:</dt>
+                <dd>{{res.searchLatestTime}} UTC</dd>
                 <dt ng-if="res.levels">Levels :</dt>
                 <dd ng-if="res.levels.info>0" class='text-info'><div class='fa fa-question-circle wrap'> Info: {{res.levels.info}}</div></dd>
                 <dd ng-if="res.levels.safe>0" class='text-success'><div class='fa fa-check-circle wrap'> Safe: {{res.levels.safe}}</div></dd>
