@@ -12,6 +12,17 @@ class ShodanAnalyzer(Analyzer):
         self.service = self.get_param('config.service', None, 'Service parameter is missing')
         self.shodan_client = None
 
+
+    def encode(self, x):
+            if isinstance(x, str):
+                return x.encode('utf-8', 'ignore').decode('utf-8', 'ignore')
+            elif isinstance(x, dict):
+                return {k: self.encode(v) for k, v in x.items()}
+            elif isinstance(x, list):
+                return [self.encode(k) for k in x]
+            else:
+                return x
+
     def execute_shodan_service(self, data):
         if self.service in ['host', 'host_history']:
             results = {'host': self.shodan_client.host(data, history=True if self.service == 'host_history' else False)}
@@ -77,7 +88,7 @@ class ShodanAnalyzer(Analyzer):
             self.shodan_client = ShodanAPIPublic(self.shodan_key)
             data = self.get_param('data', None, 'Data is missing')
             results = self.execute_shodan_service(data)
-            self.report(results)
+            self.report(self.encode(results))
                 
         except APIError as e:
             self.error(str(e))
