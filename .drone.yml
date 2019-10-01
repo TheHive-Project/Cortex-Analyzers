@@ -44,3 +44,73 @@ steps:
       password: {from_secret: docker_password}
     when:
       event: {exclude: [tag]}
+
+  - name: build catalogs
+    image: thehiveproject/neurons-build-catalogs
+  
+  - name: upload catalogs to bintray
+    image: thehiveproject/drone-bintray
+    settings:
+      user: {from_secret: bintray_user}
+      key: {from_secret: bintray_key}
+      subject: thehive-project
+      package: catalogs
+      version: latest
+      override: 1
+      publish: 1
+    commands:
+    - |
+      export PLUGIN_USER
+      export PLUGIN_KEY
+      export PLUGIN_SUBJECT
+      export PLUGIN_PACKAGE
+      export PLUGIN_VERSION
+      export PLUGIN_OVERRIDE
+      export PLUGIN_PUBLISH
+      upload \
+      --file analyzers/analyzers.json \
+      --repo cortexneurons
+      upload \
+      --file analyzers/analyzers-stable.json \
+      --repo cortexneurons
+      upload \
+      --file responders/responders.json \
+      --repo cortexneurons
+      upload \
+      --file responders/responders-stable.json \
+      --repo cortexneurons
+    when:
+      event: [tag]
+
+  - name: upload devel catalogs to bintray
+    image: thehiveproject/drone-bintray
+    settings:
+      user: {from_secret: bintray_user}
+      key: {from_secret: bintray_key}
+      subject: thehive-project
+      package: catalogs
+      version: latest
+      override: 1
+      publish: 1
+    commands:
+    - |
+      export PLUGIN_USER
+      export PLUGIN_KEY
+      export PLUGIN_SUBJECT
+      export PLUGIN_PACKAGE
+      export PLUGIN_VERSION
+      export PLUGIN_OVERRIDE
+      export PLUGIN_PUBLISH
+      upload \
+      --file analyzers/analyzers-devel.json \
+      --repo cortexneurons
+
+      upload \
+      --file responders/responders-devel.json \
+      --repo cortexneurons
+    when:
+      event:
+        branch:
+        - develop
+        event:
+        - push
