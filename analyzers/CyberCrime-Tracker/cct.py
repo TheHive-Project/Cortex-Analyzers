@@ -55,7 +55,7 @@ class CyberCrimeTrackerAnalyzer(Analyzer):
                 'results': results
             })
         except Exception:
-            self.error('An error occured while scraping cybercrime-tracker.')
+            self.error('An error occurred while scraping cybercrime-tracker.')
 
 
 if __name__ == '__main__':

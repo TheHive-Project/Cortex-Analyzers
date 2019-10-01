@@ -35,7 +35,7 @@ class SubmoduleBaseclass(object):
         method.
         If this returns true, the analyze_file() function gets called.
 
-        :param file: used for checking compatiblity for a file directly.
+        :param file: used for checking compatibility for a file directly.
         :type file: str
         :param filetype: used for checking compatibility for a file using the filetype string of pyexiftool.fileType().
         :type filetype: str
