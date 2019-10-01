@@ -48,15 +48,9 @@ class CuckooSandboxAnalyzer(Analyzer):
         try:
 
             # file analysis
-<<<<<<< HEAD
-            if self.service in ['file_analysis']:
-                filepath = self.getParam('file', None, 'File is missing')
-                filename = self.getParam('filename', None, 'File is missing')
-=======
             if self.data_type == 'file':
                 filepath = self.get_param('file', None, 'File is missing')
                 filename = self.get_param('filename', basename(filepath))
->>>>>>> upstream/master
                 with open(filepath, "rb") as sample:
                     files = {"file": (filename, sample)}
                     response = requests.post(self.url + 'tasks/create/file', files=files)
