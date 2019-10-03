@@ -1,0 +1,21 @@
+{
+  "name": "SecurityTrails_Whois",
+  "version": "1.0",
+  "author": "Manabu Niseki, @ninoseki",
+  "url": "https://github.com/ninoseki/cortex-securitytrails",
+  "license": "MIT",
+  "description": "SecurityTrails Whois Lookup.",
+  "dataTypeList": ["domain"],
+  "command": "SecurityTrails/securitytrails_analyzer.py",
+  "baseConfig": "SecurityTrails",
+  "config": {
+    "service": "whois"
+  },
+  "configurationItems": [{
+    "name": "api_key",
+    "description": "Define the API key to use to connect the service",
+    "type": "string",
+    "multi": false,
+    "required": true
+  }]
+}

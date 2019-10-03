@@ -83,14 +83,14 @@ class VxStreamSandboxAnalyzer(Analyzer):
 
                 if hashes is None:
                     filepath = self.get_param('file', None, 'File is missing')
-                    query_data = hashlib.sha256(open(filepath, 'r').read()).hexdigest()
+                    query_data = hashlib.sha256(open(filepath, 'rb').read()).hexdigest()
                 else:
                     # find SHA256 hash
                     query_data = next(h for h in hashes if len(h) == 64)
 
             elif self.data_type == 'filename':
                 query_url = 'search?query=filename:'
-                query_data = self.get_param('data', None, 'Filename is missing')
+                query_data = '"{}"'.format(self.get_param('data', None, 'Filename is missing'))
             else:
                 self.notSupported()
 
@@ -98,7 +98,7 @@ class VxStreamSandboxAnalyzer(Analyzer):
 
             error = True
             while error:
-                r = requests.get(url, headers=self.headers, auth=HTTPBasicAuth(self.api_key, self.secret), verify=False)
+                r = requests.get(url, headers=self.headers, auth=HTTPBasicAuth(self.api_key, self.secret), verify=True)
                 if "error" in r.json().get('response'):
                     if "Exceeded maximum API requests per minute(5)" in r.json().get('response').get('error'):
                         time.sleep(60)

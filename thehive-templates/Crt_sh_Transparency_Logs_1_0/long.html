@@ -7,28 +7,19 @@
         <p ng-if="content.certobj.result.length == 0">
             No result found.
         </p>
-        <table class="table" ng-if="content.certobj.result.length">
-            <thead>
-                <th>name</th>
-                <th>not before</th>
-                <th>not after</th>
-                <th>min cert id</th>
-                <th>issuer name</th>                
-                <th>issuer ca id</th>
-                <th>min entry timestamp</th>
-            </thead>
-            <tbody ng-repeat="r in content.certobj.result | orderBy:['+not_before','-not_after']">
-                <tr>
-                    <td>{{r.name_value}}</td>
-                    <td>{{r.not_before}}</td>
-                    <td>{{r.not_after}}</td>
-                    <td>{{r.min_cert_id}}</td>                    
-                    <td>{{r.issuer_name}}</td>
-                    <td>{{r.issuer_ca_id}}</td>
-                    <td>{{r.min_entry_timestamp}}</td>
-                </tr>
-            </tbody>
-        </table>
+        <dl class="dl-horizontal" ng-repeat="r in content.certobj.result | orderBy:['+not_before','-not_after']">
+            <dt>Name:</dt>
+            <dd class="wrap">{{r.name_value}}</dd>
+            <dt>SHA1:</dt>
+            <dd class="wrap"><a href="https://crt.sh/?id={{r.min_cert_id}}">{{r.sha1}}</a></dd>
+            <dt>Issuer:</dt>
+            <dd class="wrap">{{r.issuer_name}}</dd>
+            <dt>Not Before:</dt>
+            <dd class="wrap">{{r.not_before}}</dd>
+            <dt>Not After:</dt>
+			<dd class="wrap">{{r.not_after}}</dd>
+        <hr>
+        </dl>
     </div>
 </div>
 

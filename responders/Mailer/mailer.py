@@ -10,16 +10,19 @@ from email.mime.text import MIMEText
 class Mailer(Responder):
     def __init__(self):
         Responder.__init__(self)
-        self.smtp_host = self.get_param(
-            'config.smtp_host', 'localhost')
-        self.mail_from = self.get_param(
-            'config.from', None, 'Missing sender email address')
+        self.smtp_host = self.get_param('config.smtp_host', 'localhost')
+        self.smtp_port = self.get_param('config.smtp_port', '25')
+        self.mail_from = self.get_param('config.from', None, 'Missing sender email address')
 
     def run(self):
         Responder.run(self)
 
         title = self.get_param('data.title', None, 'title is missing')
+        title = title.encode('utf-8')
+
         description = self.get_param('data.description', None, 'description is missing')
+        description = description.encode('utf-8')
+
         mail_to = None
         if self.data_type == 'thehive:case':
             # Search recipient address in tags
@@ -46,7 +49,7 @@ class Mailer(Responder):
         msg['To'] = mail_to
         msg.attach(MIMEText(description, 'plain'))
 
-        s = smtplib.SMTP(self.smtp_host)
+        s = smtplib.SMTP(self.smtp_host, self.smtp_port)
         s.sendmail(self.mail_from, [mail_to], msg.as_string())
         s.quit()
         self.report({'message': 'message sent'})

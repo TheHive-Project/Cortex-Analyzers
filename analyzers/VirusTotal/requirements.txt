@@ -1,1 +1,4 @@
 cortexutils
+future
+requests
+virustotal-api

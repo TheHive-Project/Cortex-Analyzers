@@ -8,9 +8,9 @@ class ShodanAPIPublic(Shodan):
     def __init__(self, api_key):
         Shodan.__init__(self, api_key)
 
-    def host(self, ips):
+    def host(self, ips, history=False, minify=False):
 
-        host = Shodan.host(self, ips)
+        host = Shodan.host(self, ips, history=history, minify=minify)
         if host:
             return host
 
@@ -29,6 +29,10 @@ class ShodanAPIPublic(Shodan):
             return {'all_domains': all_domains, 'ips': ips, 'ports': ports, 'transports': transports,
                     'isp': isp, 'asn': asn, 'orgs': orgs
                     }
+
+    def search(self, query, page=1):
+        results = Shodan.search(self, query, page=page)
+        return results
 
     def dns_resolve(self, domain):
         payload = {'hostnames': [domain], 'key': self.api_key}

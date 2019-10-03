@@ -1,27 +1,13 @@
 {
   "name": "URLhaus",
-  "author": "ninoseki",
+  "author": "ninoseki, Nils Kuhnert",
   "license": "MIT",
   "url": "https://github.com/ninoseki/cortex_URLhaus_analyzer",
-  "version": "1.0",
-  "description": "Search domains, URLs or hashes on URLhaus.",
-  "dataTypeList": ["domain", "url", "hash"],
+  "version": "2.0",
+  "baseConfig": "URLhaus",
+  "description": "Search domains, IPs, URLs or hashes on URLhaus.",
+  "dataTypeList": ["domain", "url", "hash", "ip"],
   "command": "URLhaus/URLhaus_analyzer.py",
   "configurationItems": [
-    {
-      "name": "cache.duration",
-      "description": "Define the cache duration",
-      "type": "number",
-      "multi": false,
-      "required": true,
-      "defaultValue": 300
-    },
-    {
-      "name": "cache.root",
-      "description": "Define the path to the stored data",
-      "type": "string",
-      "multi": false,
-      "required": false
-    }
   ]
 }

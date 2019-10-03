@@ -12,7 +12,7 @@ class PDFIDSubmodule(SubmoduleBaseclass):
 
     def check_file(self, **kwargs):
         """
-        PE submodule will analyze every PE like EXE, DLL or DRIVER, therefore it will always return true.
+        PDFiD submodule will analyze every PDF file and deliver useful information about its structure
 
         :return: True
         """

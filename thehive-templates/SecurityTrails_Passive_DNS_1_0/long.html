@@ -1,0 +1,63 @@
+<div class="panel panel-info" ng-if="success" ng-init="results_limit = 20">
+  <div class="panel-heading">
+    SecurityTrails PassiveDNS report ({{content.meta.query}})
+    <span class="pull-right" ng-show="content.records.length > 20">
+      <a href ng-show="results_limit===20" ng-click="results_limit = undefined">Show All
+        ({{content.records.length}})</a>
+      <a href ng-show="!results_limit" ng-click="results_limit = 20">Show less</a>
+    </span>
+  </div>
+  <div class="panel-body">
+    <div ng-if="content.records.length === 0">
+      No records found
+    </div>
+    <div ng-if="content.records.length !== 0">
+      <table class="table table-hover">
+        <tr>
+          <th>hostname</th>
+          <th>whois expires date</th>
+          <th>whois created date</th>
+          <th>whois registrar</th>
+          <th>host provider</th>
+          <th>mail provider</th>
+        </tr>
+        <tr ng-repeat="r in content.records | limitTo:results_limit | orderBy:'-task.time'">
+          <td>{{r.hostname}}</td>
+          <td>
+            <span ng-if="r.whois.expiresDate">
+              {{r.whois.expiresDate | date:'yyyy-MM-dd'}}
+            </span>
+            <span ng-if="!r.whois.expiresDate">-</span>
+          </td>
+          <td>
+            <span ng-if="r.whois.expiresDate">
+              {{r.whois.createdDate | date:'yyyy-MM-dd'}}
+            </span>
+            <span ng-if="!r.whois.expiresDate">-</span>
+          </td>
+          <td>{{r.whois.registrar || "-"}}</td>
+          <td>
+            <span ng-repeat="host_provider in r.host_provider"> <span class="label label-info">{{host_provider}}</span></span>
+          </td>
+          <td>
+            <span ng-repeat="mail_provider in r.mail_provider"> <span class="label label-info">{{mail_provider}}</span></span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+  <div class="panel-heading">
+    <strong>{{artifact.data | fang}}</strong>
+  </div>
+  <div class="panel-body">
+    <dl class="dl-horizontal" ng-if="content.errorMessage">
+      <dt>
+        <i class="fa fa-warning"></i></dt>
+      <dd class="wrap">{{content.errorMessage}}</dd>
+    </dl>
+  </div>
+</div>

@@ -10,14 +10,40 @@ IBMXForce {
        }
 ```
 
-To test the analyzer from cmdline
-
-python IBMXForce_lookup.py < input
 
 Testing
 --------
-cd /opt/thehive
 
-bin/thehive -Dconfig.file=conf/application.conf
 
-bin/cortex -Dconfig.file=/opt/cortex/conf/application.conf
+import requests
+from urllib3.exceptions import InsecureRequestWarning
+requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
+url = "https://api.xforce.ibmcloud.com"
+key = "31231231-b3e4-1111-aaaa-3231312321312"
+pwd = "adasdada-00e5-2222-bbbb-3213123123131"
+verify = False
+proxies = {'http': 'http://proxy.lab:3128', 'https': 'http://proxy.lab:3128'}
+_session = requests.Session()
+_session.auth = (key, pwd)
+
+####### malware_query ################
+data = "d1d984bda0a88e4e3c53880eb9a48ed2f1973b094bb789c548c1d442720c0525"
+_query_malware = _session.get('%s/malware/%s' % (url, data), proxies=proxies, verify=False)
+print(_query_malware.text)
+
+####### domain_query ################
+data = "alibuf.com"
+_query_url = _session.get('%s/url/%s' % (url, data), proxies=proxies, verify=verify)
+_query_malware = _session.get('%s/url/malware/%s' % (url, data), proxies=proxies, verify=verify)
+_query_info = _session.get('%s/resolve/%s' % (url, data), proxies=proxies, verify=verify)
+print(_query_url.text, _query_malware.text, _query_info.text )
+
+
+####### ip_query ################
+data = "122.252.241.122" 
+_query_ip = _session.get('%s/ipr/%s' % (url, data), proxies=proxies, verify=verify)
+_query_malware = _session.get('%s/ipr/malware/%s' % (url, data), proxies=proxies, verify=verify)
+_query_info = _session.get('%s/resolve/%s' % (url, data), proxies=proxies, verify=verify)
+
+print(_query_ip.text, _query_malware.text, _query_info.text )
+

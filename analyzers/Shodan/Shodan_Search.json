@@ -1,11 +1,11 @@
 {
   "name": "Shodan_Search",
-  "version": "1.0",
+  "version": "2.0",
   "author": "Sebastien Larinier @Sebdraven",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
   "license": "AGPL-V3",
-  "description": "Retrieve key Shodan information on a domain.",
-  "dataTypeList": ["domain"],
+  "description": "Search query on Shodan",
+  "dataTypeList": ["other"],
   "command": "Shodan/shodan_analyzer.py",
   "baseConfig": "Shodan",
   "config": {
@@ -18,14 +18,6 @@
       "type": "string",
       "multi": false,
       "required": true
-    },
-    {
-      "name": "polling_interval",
-      "description": "Define the polling interval",
-      "type": "number",
-      "multi": false,
-      "required": false,
-      "defaultValue": 60
     }
   ]
 }

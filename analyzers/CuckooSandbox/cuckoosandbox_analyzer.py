@@ -15,6 +15,10 @@ class CuckooSandboxAnalyzer(Analyzer):
         self.url = self.url + "/" if not self.url.endswith("/") else self.url
         # self.analysistimeout = self.get_param('config.analysistimeout', 30*60, None)
         # self.networktimeout = self.get_param('config.networktimeout', 30, None)
+        self.verify = self.get_param('config.verifyssl', True, None)
+        if not self.verify:
+            from requests.packages.urllib3.exceptions import InsecureRequestWarning
+            requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
     def summary(self, raw):
         taxonomies = []
@@ -53,14 +57,15 @@ class CuckooSandboxAnalyzer(Analyzer):
                 filename = self.get_param('filename', basename(filepath))
                 with open(filepath, "rb") as sample:
                     files = {"file": (filename, sample)}
-                    response = requests.post(self.url + 'tasks/create/file', files=files)
+                    response = requests.post(self.url + 'tasks/create/file', files=files, verify=self.verify)
                 task_id = response.json()['task_ids'][0] if 'task_ids' in response.json().keys() \
                     else response.json()['task_id']
 
             # url analysis
             elif self.data_type == 'url':
                 data = {"url": self.get_data()}
-                response = requests.post(self.url + 'tasks/create/url', data=data)
+                response = requests.post(
+                    self.url + 'tasks/create/url', data=data, verify=self.verify)
                 task_id = response.json()['task_id']
 
             else:
@@ -70,7 +75,8 @@ class CuckooSandboxAnalyzer(Analyzer):
             tries = 0
             while not finished and tries <= 15:  # wait max 15 mins
                 time.sleep(60)
-                response = requests.get(self.url + 'tasks/view/' + str(task_id))
+                response = requests.get(
+                    self.url + 'tasks/view/' + str(task_id), verify=self.verify)
                 content = response.json()['task']['status']
                 if content == 'reported':
                     finished = True
@@ -79,7 +85,8 @@ class CuckooSandboxAnalyzer(Analyzer):
                 self.error('CuckooSandbox analysis timed out')
 
             # Download the report
-            response = requests.get(self.url + 'tasks/report/' + str(task_id) + '/json')
+            response = requests.get(
+                self.url + 'tasks/report/' + str(task_id) + '/json', verify=self.verify)
             resp_json = response.json()
             list_description = [x['description'] for x in resp_json['signatures']]
             if 'suricata' in resp_json.keys() and 'alerts' in resp_json['suricata'].keys():
@@ -105,17 +112,17 @@ class CuckooSandboxAnalyzer(Analyzer):
             else:
                 snort_alerts = []
             try:
-                hosts = [(x['ip'], x['hostname'], x['country_name']) for x in
-                         resp_json['network']['hosts']] if 'hosts' in resp_json['network'].keys() else None
+                domains = [(x['ip'], x['domain']) for x in
+                         resp_json['network']['domains']] if 'domains' in resp_json['network'].keys() else None
             except TypeError as e:
-                hosts = [x for x in resp_json['network']['hosts']] if 'hosts' in resp_json['network'].keys() else []
+                domains = [x for x in resp_json['network']['domains']] if 'domains' in resp_json['network'].keys() else []
             uri = [(x['uri']) for x in resp_json['network']['http']] if 'http' in resp_json['network'].keys() else []
             if self.data_type == 'url':
                 self.report({
                     'signatures': list_description,
                     'suricata_alerts': suri_alerts,
                     'snort_alerts': snort_alerts,
-                    'hosts': hosts,
+                    'domains': domains,
                     'uri': uri,
                     'malscore': resp_json['malscore'] if 'malscore' in resp_json.keys() else resp_json['info'].get(
                         'score', None),
@@ -129,7 +136,7 @@ class CuckooSandboxAnalyzer(Analyzer):
                     'signatures': list_description,
                     'suricata_alerts': suri_alerts,
                     'snort_alerts': snort_alerts,
-                    'hosts': hosts,
+                    'domains': domains,
                     'uri': uri,
                     'malscore': resp_json['malscore'] if 'malscore' in resp_json.keys() else resp_json['info'].get(
                         'score', None),
