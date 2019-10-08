@@ -42,7 +42,7 @@ Any observable with a `phishing` tag would be assigned the template named `phish
 
 1. Set [Initial Responder Configuration](#Initial-Responder-Configuration)
 2. [Create Template(s)](#Templates)
-3. As new observables arrive, appropriately [tag](#Alert/Observable-Tags-to-Modify-RT4-Responder-Behavior) them
+3. As new observables arrive, appropriately [tag](#Tags-to-Modify-RT4-Responder-Behavior) them
 4. Run the RT4-CreateTicket responder
 5. When complete, the ticket(s) should be created and the `thehive_cf_rtticket` custom field on TheHive cases (if present) should be populated with the URL to any created ticket
 
@@ -86,7 +86,7 @@ Inside the jinja2 template, all block names are passed at RT ticket variables wi
 
 Every ticket created from that template will have the RT custom field CF_Classification set to "Phishing" upon ticket creation.
 
-## Alert/Observable Tags to Modify RT4 Responder Behavior
+## Tags to Modify RT4 Responder Behavior
 
 Set any of the following tags to modify behavior of the created ticket:
 
