@@ -45,6 +45,7 @@ class C1fQueryAnalyzer(Analyzer):
             asn_descs.append(entry.get('asn_desc'))
             countries.append(entry.get('country'))
             domains.append(entry.get('domain'))
+            domains.append(entry.get('fqdn'))
             dga_indication = entry.get('dga')
 
             if len(list(entry.get('ip_address'))) > 0:
