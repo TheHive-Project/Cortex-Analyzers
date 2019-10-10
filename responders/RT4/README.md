@@ -1,7 +1,7 @@
 # Request Tracker 4 Cortex Responder
 Summary: Creates RT tickets from TheHive
 
-Applies To: Case Observables (Artifacts)
+Applies To: Case Observables (Artifacts), Alerts, Cases
 
 ## Initial Responder Configuration
 
