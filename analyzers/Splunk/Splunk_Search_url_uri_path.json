@@ -28,6 +28,13 @@
       "required": true
     },
     {
+      "name": "port_gui",
+      "description": "Splunk GUI port",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
       "name": "username",
       "description": "User account used for searches",
       "type": "string",
