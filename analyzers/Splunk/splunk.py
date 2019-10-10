@@ -16,6 +16,7 @@ class Splunk(Analyzer):
         Analyzer.__init__(self)
         self.HOST = self.getParam('config.host', None, 'Host parameter is missing')
         self.PORT = self.getParam('config.port', None, 'Port parameter is missing')
+        self.PORT_GUI = self.getParam('config.port_gui', None, 'GUI port parameter is missing')
         self.USERNAME = self.getParam('config.username', None, 'Username parameter is missing')
         self.PASSWORD = self.getParam('config.password', None, 'Password parameter is missing')
         self.OWNER = self.getParam('config.owner', None, 'Owner parameter is missing')
@@ -70,6 +71,7 @@ class Splunk(Analyzer):
                 job = jobs[saved_search]["job"]
                 if job.is_done():
                    jobs[saved_search]["results"] = results.ResultsReader(job.results(count=self.MAX_COUNT))
+                   jobs[saved_search]["link"] = "http://"+self.HOST+":"+self.PORT_GUI+"/fr-FR/app/"+self.APP+"/search?sid="+job["sid"]
                    jobs[saved_search]["eventCount"] = int(job["eventCount"])
                    jobs[saved_search]["resultCount"] = int(job["resultCount"])
                    jobs[saved_search]["searchEarliestTime"] = datetime.utcfromtimestamp(round(float(job["searchEarliestTime"]))).strftime("%c")
@@ -117,6 +119,7 @@ class Splunk(Analyzer):
 
             finally:
               jobResult["length"] = index
+              jobResult["link"] = job_infos["link"]
               jobResult["eventCount"] = job_infos["eventCount"]
               jobResult["resultCount"] = job_infos["resultCount"]
               jobResult["searchEarliestTime"] = job_infos["searchEarliestTime"]

@@ -1,4 +1,4 @@
-<div class="panel panel-danger" ng-if="!success">
+ass="panel panel-danger" ng-if="!success">
     <div class="panel-heading">
         <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
     </div>
@@ -24,11 +24,13 @@
     	</div>
     	<div class="panel-body" ng-if="res.length != 0">
     	    <dl class="dl-horizontal">
-                <dt>Results : </dt>
+                <dt>Results: </dt>
                 <dd><div ng-class="{'text-warning': res.length<res.resultCount, 'text-success': res.length==res.resultCount}"><strong>{{res.length}}/{{res.resultCount}}</strong></div><div ng-if="res.note">Note: {{res.note}}</div></dd>
                 <dd><div class="text-danger" ng-if="res.error"><strong>Error: {{res.error}}</strong</div></dd>
                 <dt>Events: </dt>
                 <dd>{{res.eventCount}}</dd>
+                <dt>Job: </dt>
+                <dd><a href={{res.link}} target="_blank">Go to Splunk</a></dd>
                 <dt>Earliest time:</dt>
                 <dd>{{res.searchEarliestTime}} UTC</dd>
                 <dt>Latest time:</dt>
