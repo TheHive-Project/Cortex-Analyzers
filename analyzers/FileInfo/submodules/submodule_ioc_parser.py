@@ -48,7 +48,10 @@ class IOCPSubmodule(SubmoduleBaseclass):
         oformat = 'json'
         try:
             with redirect_stdout(out):
-                P.Parser(output_format=oformat).parse(path)
+                try:
+                    P.Parser(output_format=oformat).parse(path)
+                except TypeError:
+                    pass
             oo = out.getvalue().split('\n')
             if oo[-1] == '':
                 oo.pop()

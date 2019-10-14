@@ -64,6 +64,27 @@
                                     </dd>
                                 </dl>
 
+                                <dl class="dl-horizontal">
+                                    <dt>Encrypted document</dt>
+                                    <dd class="wrap">
+                                        <span class="label mr-xxxs"
+                                                  ng-class="{false: 'label-info', true: 'label-warning'}[result['summary']['encrypted_file']['encrypted']]">
+                                                {{result['summary']['encrypted_file']['encrypted']}}
+                                        </span>
+                                    </dd>
+                                    <dt ng-if="result['summary']['encrypted_file']['encrypted']"></dt>
+                                    <dd ng-if="result['summary']['encrypted_file']['encrypted']">
+                                        <b>Decrypted file information</b>
+                                        <dl>
+                                            <dt>SHA256</dt>
+                                            <dd>{{result['summary']['encrypted_file']['sha256']}}</dd>
+                                            <dt>SHA1</dt>
+                                            <dd>{{result['summary']['encrypted_file']['sha1']}}</dd>
+                                            <dt>MD5</dt>
+                                            <dd>{{result['summary']['encrypted_file']['md5']}}</dd>
+                                        </dl>
+                                    </dd>
+                                </dl>
                             </div>
 
                         </div>

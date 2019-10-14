@@ -14,16 +14,12 @@ class CuckooSandboxAnalyzer(Analyzer):
         self.url = self.get_param('config.url', None, 'CuckooSandbox url is missing')
         self.url = self.url + "/" if not self.url.endswith("/") else self.url
         self.token = self.get_param('config.token', None, None)
-        if self.get_param('config.cert_check', True):
-            ssl_path = self.get_param('config.cert_path', None)
-            if not ssl_path or ssl_path == '':
-                self.ssl = True
-            else:
-                self.ssl = ssl_path
-        else:
-            self.ssl = False
         # self.analysistimeout = self.get_param('config.analysistimeout', 30*60, None)
         # self.networktimeout = self.get_param('config.networktimeout', 30, None)
+        self.verify_ssl = self.get_param('config.verifyssl', True, None)
+        if not self.verify_ssl:
+            from requests.packages.urllib3.exceptions import InsecureRequestWarning
+            requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
     def summary(self, raw):
         taxonomies = []
@@ -65,7 +61,7 @@ class CuckooSandboxAnalyzer(Analyzer):
                 filename = self.get_param('filename', basename(filepath))
                 with open(filepath, "rb") as sample:
                     files = {"file": (filename, sample)}
-                    response = requests.post(self.url + 'tasks/create/file', files=files, headers=headers, verify=self.ssl)
+                    response = requests.post(self.url + 'tasks/create/file', files=files, headers=headers, verify=self.verify_ssl)
                 if 'task_ids' in response.json().keys():
                     task_id = response.json()['task_ids'][0]
                 elif 'task_id' in response.json().keys():
@@ -78,7 +74,7 @@ class CuckooSandboxAnalyzer(Analyzer):
             # url analysis
             elif self.data_type == 'url':
                 data = {"url": self.get_data()}
-                response = requests.post(self.url + 'tasks/create/url', data=data, headers=headers, verify=self.ssl)
+                response = requests.post(self.url + 'tasks/create/url', data=data, headers=headers, verify=self.verify_ssl)
                 if 'task_id' in response.json().keys():
                     task_id = response.json()['task_id']
                 elif response.status_code == 401:
@@ -93,7 +89,7 @@ class CuckooSandboxAnalyzer(Analyzer):
             tries = 0
             while not finished and tries <= 15:  # wait max 15 mins
                 time.sleep(60)
-                response = requests.get(self.url + 'tasks/view/' + str(task_id), headers=headers, verify=self.ssl)
+                response = requests.get(self.url + 'tasks/view/' + str(task_id), headers=headers, verify=self.verify_ssl)
                 content = response.json()['task']['status']
                 if content == 'reported':
                     finished = True
@@ -102,7 +98,7 @@ class CuckooSandboxAnalyzer(Analyzer):
                 self.error('CuckooSandbox analysis timed out')
 
             # Download the report
-            response = requests.get(self.url + 'tasks/report/' + str(task_id) + '/json', headers=headers, verify=self.ssl)
+            response = requests.get(self.url + 'tasks/report/' + str(task_id) + '/json', headers=headers, verify=self.verify_ssl)
             resp_json = response.json()
             list_description = [x['description'] for x in resp_json['signatures']]
             if 'suricata' in resp_json.keys() and 'alerts' in resp_json['suricata'].keys():

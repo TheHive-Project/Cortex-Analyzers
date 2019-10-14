@@ -1,0 +1,72 @@
+<!-- Success -->
+<div class="panel panel-primary" ng-if="content.api_full_report.responses[0].webDetection.pagesWithMatchingImages.length > 0">
+    <div class="panel-heading">
+        Pages with matching images
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" >
+            <strong>Number of pages found : </strong> {{ content.api_full_report.responses[0].webDetection.pagesWithMatchingImages.length }}
+            <dd>
+                <div ng-repeat="pages in content.api_full_report.responses[0].webDetection.pagesWithMatchingImages | limitTo:50">
+                    <span class="wrap"><a ng-href="{{ pages.url }}" target="_blank">{{pages.pageTitle }}</a></span>
+                </div>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="panel panel-primary" ng-if="content.api_full_report.responses[0].webDetection.visuallySimilarImages.length > 0">
+    <div class="panel-heading">
+        Visually Similar Images
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" >
+            <strong>Number of similar image found : </strong> {{ content.api_full_report.responses[0].webDetection.visuallySimilarImages.length }}
+            <dd>
+                <div ng-repeat="similar in content.api_full_report.responses[0].webDetection.visuallySimilarImages | limitTo:50">
+                    <span class="wrap"><a ng-href="{{ similar.url }}" target="_blank">{{similar.url }}</a></span>
+                </div>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="panel panel-primary" ng-if="content.api_full_report.responses[0].webDetection.webEntities.length > 0">
+    <div class="panel-heading">
+        Web Entities
+    </div>
+    <div class="panel-body">
+        <dd>
+            <div ng-repeat="entities in content.api_full_report.responses[0].webDetection.webEntities | limitTo:50">
+                <span class="wrap" ng-if="entities.description.length >0"><strong>{{ entities.description }} : </strong>{{ entities.score }}</span>
+            </div>
+        </dd>
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="content.api_full_report.error">
+    <div class="panel-heading">
+        <strong>An error occured</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt><i class="fa fa-warning"></i> {{ content.api_full_report.error.status }} :</dt>
+            <dd class="wrap">{{content.api_full_report.error.message}}</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!content.success">
+    <div class="panel-heading">
+        <strong>An error occured</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt><i class="fa fa-warning"></i> {{ content.errorMessage }} :</dt>
+            <dd class="wrap">{{content.input}}</dd>
+        </dl>
+    </div>
+</div>
+
+
