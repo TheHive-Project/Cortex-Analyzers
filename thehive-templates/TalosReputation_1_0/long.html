@@ -1,0 +1,76 @@
+<!-- Success case -->
+<div ng-if="success">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Owner Details</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>Location</dt>
+                <dd>{{content.country}}</dd>
+            </dl>
+
+            <dl class="dl-horizontal">
+                <dt>IP Address</dt>
+                <dd>{{content.ip}}</dd>
+            </dl>
+
+            <dl class="dl-horizontal">
+                <dt>Fwd/Rev DNS Match</dt>
+                <dd>{{content.dnsmatch == 1 && 'Yes' || 'No'}}</dd>
+            </dl>
+
+            <dl class="dl-horizontal">
+                <dt>Hostname</dt>
+                <dd>{{content.hostname}}</dd>
+            </dl>
+
+            <dl class="dl-horizontal">
+                <dt>Domain</dt>
+                <dd>{{content.domain}}</dd>
+            </dl>
+
+            <dl class="dl-horizontal">
+                <dt>Network Owner</dt>
+                <dd>{{content.organization}}</dd>
+            </dl>
+        </div>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Reputation Details</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>Email Reputation</dt>
+                <dd>{{content.email_score_name}}</dd>
+            </dl>
+
+            <dl class="dl-horizontal">
+                <dt>Web Reputation</dt>
+                <dd>{{content.web_score_name}}</dd>
+            </dl>
+        </div>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Blacklists</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal" ng-repeat="(key,value) in content.blacklists">
+                <dt>{{key}}</dt>
+                <dd>{{value.rules.length > 0 && 'Listed' || 'Not Listed'}}</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<!-- Failure case -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

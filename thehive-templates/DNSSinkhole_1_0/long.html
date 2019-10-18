@@ -1,0 +1,30 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        DNSSinkhole information for <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+      <dl class="dl-horizontal">
+        <dt>Status</dt>
+        <dd>
+            <p style="font-size: 1.5em;">
+                <span class="label label-danger" ng-if="content.is_sinkhole">
+                    IP is sinkholed.
+                </span>
+                <span class="label label-info" ng-if="!content.is_sinkhole">
+                    IP is <strong>not</strong> sinkholed.
+                </span>
+            </p>
+        </dd>
+      </dl>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
