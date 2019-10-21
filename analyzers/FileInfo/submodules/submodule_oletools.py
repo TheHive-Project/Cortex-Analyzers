@@ -30,7 +30,8 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
                 'PPTX'
             ] or (kwargs.get('mimetype').startswith("application/vnd.openxmlformats-officedocument") or
                  kwargs.get('mimetype').startswith("application/encrypted") or
-                 kwargs.get('mimetype').startswith("application/vnd.ms-")
+                 kwargs.get('mimetype').startswith("application/vnd.ms-") or
+                 kwargs.get('mimetype').startswith("application/msword")
             ):
                 if kwargs.get('mimetype').startswith("application/encrypted") and not is_encrypted(kwargs.get('file')):
                     return False
