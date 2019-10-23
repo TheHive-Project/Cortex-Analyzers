@@ -48,6 +48,8 @@ class KnowBe4(Responder):
                     'target_user': target_user,
                     'event_type': self.event_type,
                     'description': description,
+                    'external_id': self.get_param('data.case._routing'),
+                    'source': 'TheHive',
                     'risk_level': 10
                 }
 
