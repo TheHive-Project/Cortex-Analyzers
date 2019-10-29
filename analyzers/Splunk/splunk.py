@@ -127,7 +127,7 @@ class Splunk(Analyzer):
 
               
               if jobResult["resultCount"] > self.MAX_COUNT:
-                  jobResult["note"] = "Only the first "+str(self.MAX_COUNT)+" results were recovered over "+job["resultCount"]+" to avoid any trouble on TheHive/Cortex. This parameter (max_count) can be changed in the analyzer configuration."
+                  jobResult["note"] = "Only the first "+str(self.MAX_COUNT)+" results were recovered over "+jobResult["resultCount"]+" to avoid any trouble on TheHive/Cortex. This parameter (max_count) can be changed in the analyzer configuration."
 
               jobResult["search"] = job_infos["search"]
               jobResult["savedsearch"] = saved_search
