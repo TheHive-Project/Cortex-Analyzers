@@ -5,6 +5,7 @@ import splunklib.client as client
 from time import sleep
 from cortexutils.analyzer import Analyzer
 import splunklib.results as results
+import splunklib
 import urllib
 import re
 from datetime import datetime
@@ -70,14 +71,23 @@ class Splunk(Analyzer):
             for saved_search in jobs:
                 job = jobs[saved_search]["job"]
                 if job.is_done():
-                   jobs[saved_search]["results"] = results.ResultsReader(job.results(count=self.MAX_COUNT))
-                   jobs[saved_search]["link"] = "http://"+self.HOST+":"+self.PORT_GUI+"/fr-FR/app/"+self.APP+"/search?sid="+job["sid"]
-                   jobs[saved_search]["eventCount"] = int(job["eventCount"])
-                   jobs[saved_search]["resultCount"] = int(job["resultCount"])
-                   jobs[saved_search]["searchEarliestTime"] = datetime.utcfromtimestamp(round(float(job["searchEarliestTime"]))).strftime("%c")
-                   jobs[saved_search]["searchLatestTime"] = datetime.utcfromtimestamp(round(float(job["searchLatestTime"]))).strftime("%c")
-                   jobs[saved_search]["search"] = job["search"]
-                   jobs_running -= 1 
+                   try:
+                       jobs[saved_search]["results"] = results.ResultsReader(job.results(count=self.MAX_COUNT))
+                       jobs[saved_search]["is_failed"] = False
+
+                   except splunklib.binding.HTTPError as e:
+                       jobs[saved_search]["results"] = [str(e)]
+                       jobs[saved_search]["is_failed"] = True
+
+
+                   finally:
+                       jobs[saved_search]["link"] = "http://"+self.HOST+":"+self.PORT_GUI+"/fr-FR/app/"+self.APP+"/search?sid="+job["sid"]
+                       jobs[saved_search]["eventCount"] = int(job["eventCount"])
+                       jobs[saved_search]["resultCount"] = int(job["resultCount"])
+                       jobs[saved_search]["searchEarliestTime"] = datetime.utcfromtimestamp(round(float(job["searchEarliestTime"]))).strftime("%c")
+                       jobs[saved_search]["searchLatestTime"] = datetime.utcfromtimestamp(round(float(job["searchLatestTime"]))).strftime("%c")
+                       jobs[saved_search]["search"] = job["search"]
+                       jobs_running -= 1 
 
         # Get the results and display them
         savedSearchResults = []
@@ -119,6 +129,7 @@ class Splunk(Analyzer):
 
             finally:
               jobResult["length"] = index
+              jobResult["failed"] = job_infos["is_failed"]
               jobResult["link"] = job_infos["link"]
               jobResult["eventCount"] = job_infos["eventCount"]
               jobResult["resultCount"] = job_infos["resultCount"]
