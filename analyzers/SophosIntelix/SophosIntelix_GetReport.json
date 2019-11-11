@@ -1,0 +1,38 @@
+{
+  "name": "SophosIntelix_GetReport",
+  "version": "0.1",
+  "author": "SOL",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get the latest info from Sophos Labs for a filehash or domain",
+  "dataTypeList": ["hash", "domain"],
+  "command": "SophosIntelix/intelix.py",
+  "baseConfig": "SophosIntelix",
+  "config": {
+    "service": "get"
+  },
+  "configurationItems": [
+    {
+      "name": "clientID",
+      "description": "Client ID for Sophos Labs Intelix",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "clientSecret",
+      "description": "Client Secret for Sophos Labs Intelix",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "polling_interval",
+      "description": "Define time interval between two requests attempts for the report",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 60
+    }
+  ]
+}
