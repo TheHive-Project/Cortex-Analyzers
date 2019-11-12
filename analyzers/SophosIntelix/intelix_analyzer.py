@@ -12,14 +12,13 @@ class SophosIntelixAnalyzer(Analyzer):
         self.clientId = self.get_param('config.clientID', None, 'ClientId is Missing')
         self.clientSecret = self.get_param('config.clientSecret', None, 'Client Secret is Missing')
         self.polling_interval = self.get_param('config.polling_interval', 60)
-
-    def run(self):
         try:
-            self.ic = intelix.client(self.clientId,self.clientSecret)
+            self.ic = intelix.client(self.clientId, self.clientSecret)
         except Exception as e:
             error = str(e)
             self.error('Error: {}'.format(error))
-            
+
+    def run(self):
         if self.service == 'get':
             if self.data_type == 'hash':
                 try:
