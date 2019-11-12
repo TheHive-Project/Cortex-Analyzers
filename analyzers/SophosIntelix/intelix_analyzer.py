@@ -4,6 +4,7 @@
 import intelix
 from cortexutils.analyzer import Analyzer
 
+
 class SophosIntelixAnalyzer(Analyzer):
 
     def __init__(self):
@@ -24,7 +25,11 @@ class SophosIntelixAnalyzer(Analyzer):
                 try:
                     data = self.get_data()
                     self.ic.file_lookup(data)
-                    self.report({"classification": self.ic.classification})
+                    self.report({
+                        "file_hash": data,
+                        "reputation_score": self.ic.reputationScore,
+                        "classification": self.ic.classification
+                    })
                 except Exception as e:
                     error = str(e)
                     self.error('Error: {}'.format(error))
@@ -32,7 +37,11 @@ class SophosIntelixAnalyzer(Analyzer):
                 try:
                     data = self.get_data()
                     self.ic.url_lookup(data)
-                    self.report({"riskLevel": self.ic.riskLevel})
+                    self.report({
+                        "prod_category": self.ic.productivityCategory,
+                        "sec_category": self.ic.securityCategory,
+                        "risk_level": self.ic.riskLevel
+                    })
                 except:
                     self.error('Error running URL lookup on {}'.format(data))
             else:
@@ -59,17 +68,17 @@ class SophosIntelixAnalyzer(Analyzer):
                     level = "malicious"
                 else:
                     level = "info"
-                
+
                 result = {
                     "has_result": True
                 }
 
-                predicate = "Categories"
-                value = "SEC_CATEGORY:{}|PROD_CATEGORY:{}".format(self.ic.securityCategory, self.ic.productivityCategory)
+                predicate = "RiskLevel"
+                value = "{}".format(self.ic.riskLevel)
 
                 taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
                 return {"taxonomies": taxonomies}
-        
+
             elif self.data_type == 'hash':
                 if (self.ic.reputationScore <= 19):
                     level = "malicious"
@@ -85,12 +94,13 @@ class SophosIntelixAnalyzer(Analyzer):
                 result = {
                     "has_result": True
                 }
-            
+
                 predicate = "Score"
                 value = "{} - {}".format(self.ic.reputationScore, self.ic.classification)
 
                 taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
                 return {"taxonomies": taxonomies}
+
 
 if __name__ == '__main__':
     SophosIntelixAnalyzer().run()
