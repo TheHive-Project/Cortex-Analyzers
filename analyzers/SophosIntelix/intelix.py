@@ -5,6 +5,7 @@ import intelix
 import logging
 from cortexutils.analyzer import Analyzer
 
+
 class SophosIntelixAnalyzer(Analyzer):
 
     def __init__(self):
@@ -13,14 +14,9 @@ class SophosIntelixAnalyzer(Analyzer):
         self.clientId = self.get_param('config.clientID', None, 'ClientId is Missing')
         self.clientSecret = self.get_param('config.clientSecret', None, 'Client Secret is Missing')
         self.polling_interval = self.get_param('config.polling_interval', 60)
+        self.ic = intelix.client(self.clientId, self.clientSecret)
 
     def run(self):
-        try:
-            self.ic = intelix.client(self.clientId,self.clientSecret)
-        except Exception as e:
-            error = str(e)
-            self.error('Error: {}'.format(error))
-            
         if self.service == 'get':
             if self.data_type == 'hash':
                 try:
@@ -59,17 +55,18 @@ class SophosIntelixAnalyzer(Analyzer):
                     level = "malicious"
                 else:
                     level = "info"
-                
+
                 result = {
                     "has_result": True
                 }
 
                 predicate = "Categories"
-                value = "SEC_CATEGORY:{}|PROD_CATEGORY:{}".format(self.ic.securityCategory, self.ic.productivityCategory)
+                value = "SEC_CATEGORY:{}|PROD_CATEGORY:{}".format(self.ic.securityCategory,
+                                                                  self.ic.productivityCategory)
 
                 taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
                 return {"taxonomies": taxonomies}
-        
+
             elif self.data_type == 'hash':
                 if (self.ic.reputationScore <= 19):
                     level = "malicious"
@@ -85,12 +82,13 @@ class SophosIntelixAnalyzer(Analyzer):
                 result = {
                     "has_result": True
                 }
-            
+
                 predicate = "Score"
                 value = "{} - {}".format(self.ic.reputationScore, self.ic.classification)
 
                 taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
                 return {"taxonomies": taxonomies}
+
 
 if __name__ == '__main__':
     SophosIntelixAnalyzer().run()
