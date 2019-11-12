@@ -25,27 +25,22 @@ class SophosIntelixAnalyzer(Analyzer):
                     data = self.get_data()
                     self.ic.file_lookup(data)
                 except:
-                    Exception
+                    self.error('Error running file lookup')
             elif self.data_type == 'domain':
                 try:
                     data = self.get_data()
                     self.ic.url_lookup(data)
                 except:
-                    Exception
+                    self.error('Error running URL lookup')
             else:
                 self.error('Unsupported Data Type')
         else:
             self.error('Invalid Service Type')
 
     def summary(self, raw):
-        result = {
-            'service': self.service,
-            'dataType': self.data_type
-        }
 
         taxonomies = []
         namespace = "Intelix"
-        
 
         if self.service == 'get':
             if self.data_type == 'domain':
@@ -59,14 +54,18 @@ class SophosIntelixAnalyzer(Analyzer):
                     level = "suspicious"
                 elif self.ic.riskLevel == "HIGH":
                     level = "malicious"
+                else:
+                    level = "info"
+                
+                result = {
+                    "has_result": True
+                }
 
                 predicate = "Categories"
                 value = "SEC_CATEGORY:{}|PROD_CATEGORY:{}".format(self.ic.securityCategory, self.ic.productivityCategory)
 
                 taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-                result.update({"taxonomies": taxonomies})
-
-                return result
+                return {"taxonomies": taxonomies}
         
             elif self.data_type == 'hash':
                 if (self.ic.reputationScore <= 19):
@@ -79,14 +78,16 @@ class SophosIntelixAnalyzer(Analyzer):
                     level = "safe"
                 else:
                     level = "info"
+
+                result = {
+                    "has_result": True
+                }
             
                 predicate = "Score"
                 value = "{} - {}".format(self.ic.reputationScore, self.ic.classification)
 
                 taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-                result.update({"taxonomies": taxonomies})
-
-                return result
+                return {"taxonomies": taxonomies}
 
 if __name__ == '__main__':
     SophosIntelixAnalyzer().run()
