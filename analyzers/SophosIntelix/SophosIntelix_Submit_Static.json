@@ -4,7 +4,7 @@
   "author": "SOL",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Submits a file to Sophos Intelix for Static Analysis",
+  "description": "Submits a file to Sophos Intelix for Dynamic Analysis",
   "dataTypeList": ["file"],
   "command": "SophosIntelix/intelix_analyzer.py",
   "baseConfig": "SophosIntelix",
