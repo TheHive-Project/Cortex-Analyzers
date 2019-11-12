@@ -25,13 +25,13 @@ class SophosIntelixAnalyzer(Analyzer):
                     data = self.get_data()
                     self.ic.file_lookup(data)
                 except:
-                    self.error('Error running file lookup')
+                    self.error('Error running file lookup on {}'.format(data))
             elif self.data_type == 'domain':
                 try:
                     data = self.get_data()
                     self.ic.url_lookup(data)
                 except:
-                    self.error('Error running URL lookup')
+                    self.error('Error running URL lookup on {}'.format(data))
             else:
                 self.error('Unsupported Data Type')
         else:
