@@ -24,6 +24,7 @@ class SophosIntelixAnalyzer(Analyzer):
                 try:
                     data = self.get_data()
                     self.ic.file_lookup(data)
+                    self.report({"classification": self.ic.classification})
                 except Exception as e:
                     error = str(e)
                     self.error('Error: {}'.format(error))
