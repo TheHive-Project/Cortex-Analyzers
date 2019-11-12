@@ -10,7 +10,7 @@ class SophosIntelixAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
         self.service = self.get_param('config.service', None, 'Service parameter is missing')
-        self.clientId = self.get_param('config.clientId', None, 'ClientId is Missing')
+        self.clientId = self.get_param('config.clientID', None, 'ClientId is Missing')
         self.clientSecret = self.get_param('config.clientSecret', None, 'Client Secret is Missing')
         self.polling_interval = self.get_param('config.polling_interval', 60)
         try:
