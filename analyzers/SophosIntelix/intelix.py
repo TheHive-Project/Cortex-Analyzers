@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 import intelix
+import logging
 from cortexutils.analyzer import Analyzer
 
 class SophosIntelixAnalyzer(Analyzer):
@@ -15,9 +16,11 @@ class SophosIntelixAnalyzer(Analyzer):
         self.ic = intelix.client(self.clientId,self.clientSecret)
 
     def run(self):
+        logging.basicConfig(filename='/var/log/sophosIntelix.log',level=logging.DEBUG)
         if self.service == 'get':
             if self.data_type == 'hash':
                 data = self.get_data()
+                logging.debug('hash = {}'.format(data))
                 self.ic.file_lookup(data)
             elif self.data_type == 'domain':
                 data = self.get_data()
