@@ -6,7 +6,7 @@
   "license": "AGPL-V3",
   "description": "Get the latest info from Sophos Labs for a filehash or domain",
   "dataTypeList": ["hash", "domain"],
-  "command": "SophosIntelix/intelix.py",
+  "command": "SophosIntelix/intelix_analyzer.py",
   "baseConfig": "SophosIntelix",
   "config": {
     "service": "get"
