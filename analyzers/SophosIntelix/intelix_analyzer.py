@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 import intelix
+import time
 from cortexutils.analyzer import Analyzer
 
 
@@ -46,6 +47,28 @@ class SophosIntelixAnalyzer(Analyzer):
                     self.error('Error running URL lookup on {}'.format(data))
             else:
                 self.error('Unsupported Data Type')
+        elif self.service == "submit_static":
+            filename = self.get_param('filename', 'noname.ext')
+            filepath = self.get_param('file', None, 'File is missing')
+            self.ic.submit_file(filepath, "static")
+            self.ic.file_report_by_jobid(self.ic.jobId, "static")
+
+            while self.ic.report is None:
+                time.sleep(self.polling_interval)
+                self.ic.file_report_by_jobid(self.ic.jobId, "static")
+            else:
+                self.report(self.ic.report)
+        elif self.service == "submit_dynamic":
+            filename = self.get_param('filename', 'noname.ext')
+            filepath = self.get_param('file', None, 'File is missing')
+            self.ic.submit_file(filepath, "dynamic")
+            self.ic.file_report_by_jobid(self.ic.jobId, "dynamic")
+
+            while self.ic.report is None:
+                time.sleep(self.polling_interval)
+                self.ic.file_report_by_jobid(self.ic.jobId, "static")
+            else:
+                self.report(self.ic.report)
         else:
             self.error('Invalid Service Type')
 
