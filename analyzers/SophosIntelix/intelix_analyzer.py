@@ -32,6 +32,7 @@ class SophosIntelixAnalyzer(Analyzer):
                 try:
                     data = self.get_data()
                     self.ic.url_lookup(data)
+                    self.report({"riskLevel": self.ic.riskLevel})
                 except:
                     self.error('Error running URL lookup on {}'.format(data))
             else:
