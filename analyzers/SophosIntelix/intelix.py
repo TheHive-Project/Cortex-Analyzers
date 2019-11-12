@@ -24,8 +24,9 @@ class SophosIntelixAnalyzer(Analyzer):
                 try:
                     data = self.get_data()
                     self.ic.file_lookup(data)
-                except:
-                    self.error('Error running file lookup on {}'.format(data))
+                except Exception as e:
+                    error = str(e)
+                    self.error('Error: {}'.format(error))
             elif self.data_type == 'domain':
                 try:
                     data = self.get_data()
