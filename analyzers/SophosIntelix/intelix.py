@@ -13,18 +13,25 @@ class SophosIntelixAnalyzer(Analyzer):
         self.clientId = self.get_param('config.clientId', None, 'ClientId is Missing')
         self.clientSecret = self.get_param('config.clientSecret', None, 'Client Secret is Missing')
         self.polling_interval = self.get_param('config.polling_interval', 60)
-        self.ic = intelix.client(self.clientId,self.clientSecret)
+        try:
+            self.ic = intelix.client(self.clientId,self.clientSecret)
+        except: 
+            Exception
 
     def run(self):
-        logging.basicConfig(filename='/var/log/sophosIntelix.log',level=logging.DEBUG)
         if self.service == 'get':
             if self.data_type == 'hash':
-                data = self.get_data()
-                logging.debug('hash = {}'.format(data))
-                self.ic.file_lookup(data)
+                try:
+                    data = self.get_data()
+                    self.ic.file_lookup(data)
+                except:
+                    Exception
             elif self.data_type == 'domain':
-                data = self.get_data()
-                self.ic.url_lookup(data)
+                try:
+                    data = self.get_data()
+                    self.ic.url_lookup(data)
+                except:
+                    Exception
             else:
                 self.error('Unsupported Data Type')
         else:
