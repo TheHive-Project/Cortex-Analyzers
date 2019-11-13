@@ -34,6 +34,7 @@ class SophosIntelixAnalyzer(Analyzer):
                 except Exception as e:
                     error = str(e)
                     self.error('Error: {}'.format(error))
+
             elif self.data_type == 'domain':
                 try:
                     data = self.get_data()
@@ -48,7 +49,6 @@ class SophosIntelixAnalyzer(Analyzer):
             else:
                 self.error('Unsupported Data Type')
         elif self.service == "submit_static":
-            filename = self.get_param('filename', 'noname.ext')
             filepath = self.get_param('file', None, 'File is missing')
             self.ic.submit_file(filepath, "static")
             self.ic.file_report_by_jobid(self.ic.jobId, "static")
@@ -58,15 +58,15 @@ class SophosIntelixAnalyzer(Analyzer):
                 self.ic.file_report_by_jobid(self.ic.jobId, "static")
             else:
                 self.report(self.ic.report)
+
         elif self.service == "submit_dynamic":
-            filename = self.get_param('filename', 'noname.ext')
             filepath = self.get_param('file', None, 'File is missing')
             self.ic.submit_file(filepath, "dynamic")
             self.ic.file_report_by_jobid(self.ic.jobId, "dynamic")
 
             while self.ic.report is None:
                 time.sleep(self.polling_interval)
-                self.ic.file_report_by_jobid(self.ic.jobId, "static")
+                self.ic.file_report_by_jobid(self.ic.jobId, "dynamic")
             else:
                 self.report(self.ic.report)
         else:
@@ -123,6 +123,29 @@ class SophosIntelixAnalyzer(Analyzer):
 
                 taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
                 return {"taxonomies": taxonomies}
+
+        elif (self.service == "submit_static") or (self.service == "submit_dynamic"):
+
+            result = {
+                "has_result": True
+            }
+
+            predicate = "Score"
+            value = "{}".format(self.ic.report.get("score"))
+
+            if (self.ic.report.get("score") <= 19):
+                level = "malicious"
+            elif (self.ic.report.get("score") > 19 and self.ic.report.get("score") <= 29):
+                level = "suspicious"
+            elif (self.ic.report.get("score") > 29 and self.ic.report.get("score") <= 69):
+                level = "suspicious"
+            elif (self.ic.report.get("score") > 69 and self.ic.report.get("score") <= 100):
+                level = "safe"
+            else:
+                level = "info"
+
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+            return {"taxonomies": taxonomies}
 
 
 if __name__ == '__main__':
