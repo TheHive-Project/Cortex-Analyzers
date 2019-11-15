@@ -20,7 +20,7 @@ class GreyNoiseAnalyzer(Analyzer):
 
         :param current_level: A Cortex maliciousness level
             https://github.com/TheHive-Project/CortexDocs/blob/master/api/how-to-create-an-analyzer.md#output
-        :param new_classification: An classification field value from a GreyNoise record
+        :param new_classification: A classification field value from a GreyNoise record
             https://github.com/GreyNoise-Intelligence/api.greynoise.io#v1queryip
         :return: The more malicious of the 2 submitted values as a Cortex maliciousness level
         """
