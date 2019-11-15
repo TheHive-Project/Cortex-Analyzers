@@ -13,27 +13,27 @@ class GreyNoiseAnalyzer(Analyzer):
     """
 
     @staticmethod
-    def _get_level(current_level, new_intention):
+    def _get_level(current_level, new_classification):
         """
-        Map GreyNoise intentions to Cortex maliciousness levels.
-        Accept a Cortex level and a GreyNoise intention, the return the more malicious of the two.
+        Map GreyNoise classifications to Cortex maliciousness levels.
+        Accept a Cortex level and a GreyNoise classification, the return the more malicious of the two.
 
         :param current_level: A Cortex maliciousness level
             https://github.com/TheHive-Project/CortexDocs/blob/master/api/how-to-create-an-analyzer.md#output
-        :param new_intention: An intention field value from a GreyNoise record
+        :param new_classification: An classification field value from a GreyNoise record
             https://github.com/GreyNoise-Intelligence/api.greynoise.io#v1queryip
         :return: The more malicious of the 2 submitted values as a Cortex maliciousness level
         """
 
-        intention_level_map = OrderedDict([
+        classification_level_map = OrderedDict([
             ('info', 'info'),
             ('benign', 'safe'),
             ('suspicious', 'suspicious'),
             ('malicious', 'malicious')
         ])
-        levels = intention_level_map.values()
+        levels = classification_level_map.values()
 
-        new_level = intention_level_map.get(new_intention, 'info')
+        new_level = classification_level_map.get(new_classification, 'info')
         new_index = levels.index(new_level)
 
         try:
@@ -47,15 +47,18 @@ class GreyNoiseAnalyzer(Analyzer):
 
         if self.data_type == "ip":
             api_key = self.get_param('config.key', None)
-            url = 'https://api.greynoise.io/v1/query/ip'
-            headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-            data = {'ip': self.get_data()}
+            url = 'https://api.greynoise.io/v2/experimental/gnql?query=ip:%s' % self.get_data()
+
             if api_key:
-                data['key'] = api_key
-            response = requests.post(url, data=data, headers=headers)
+                headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Key': '%s' % api_key }
+            else:
+                headers = {'Content-Type': 'application/x-www-form-urlencoded' }
+
+            response = requests.get(url, headers=headers)
             if not (200 <= response.status_code < 300):
                 self.error('Unable to query GreyNoise API\n{}'.format(response.text))
             self.report(response.json())
+
         else:
             self.notSupported()
 
@@ -73,8 +76,8 @@ class GreyNoiseAnalyzer(Analyzer):
 
         Input
         {
-            "name": SCANNER1,
-            "intention": ""
+            "actor": SCANNER1,
+            "classification": ""
         }
         Output
         GreyNoise:SCANNER1 = 1 (info)
@@ -82,12 +85,11 @@ class GreyNoiseAnalyzer(Analyzer):
 
         Input
         {
-            "name": SCANNER1,
-            "intention": "malicious"
+            "actor": SCANNER1,
+            "classification": "malicious"
         },
         {
-            "name": SCANNER1,
-            "intention": "benign"
+            "classification": "benign"
         }
         Output
         GreyNoise:SCANNER1 = 2 (malicious)
@@ -95,16 +97,16 @@ class GreyNoiseAnalyzer(Analyzer):
 
         Input
         {
-            "name": SCANNER1,
-            "intention": ""
+            "actor": SCANNER1,
+            "classification": ""
         },
         {
-            "name": SCANNER1,
-            "intention": "safe"
+            "actor": SCANNER1,
+            "classification": "safe"
         },
         {
-            "name": SCANNER2,
-            "intention": ""
+            "actor": SCANNER2,
+            "classification": ""
         }
         Output
         GreyNoise:entries = 3 (safe)
@@ -112,20 +114,20 @@ class GreyNoiseAnalyzer(Analyzer):
 
         try:
             taxonomies = []
-            if raw.get('records'):
+            if raw.get('data'):
                 final_level = None
                 taxonomy_data = defaultdict(int)
-                for record in raw.get('records', []):
-                    name = record.get('name', 'unknown')
-                    intention = record.get('intention', 'unknown')
-                    taxonomy_data[name] += 1
-                    final_level = self._get_level(final_level, intention)
+                for record in raw.get('data', []):
+                    actor = record.get('actor', 'unknown')
+                    classification = record.get('classification', 'unknown')
+                    taxonomy_data[actor] += 1
+                    final_level = self._get_level(final_level, classification)
 
                 if len(taxonomy_data) > 1:  # Multiple tags have been found
                     taxonomies.append(self.build_taxonomy(final_level, 'GreyNoise', 'entries', len(taxonomy_data)))
                 else:  # There is only one tag found, possibly multiple times
-                    for name, count in taxonomy_data.iteritems():
-                        taxonomies.append(self.build_taxonomy(final_level, 'GreyNoise', name, count))
+                    for actor, count in taxonomy_data.iteritems():
+                        taxonomies.append(self.build_taxonomy(final_level, 'GreyNoise', actor, count))
 
             else:
                 taxonomies.append(self.build_taxonomy('info', 'GreyNoise', 'Records', 'None'))
