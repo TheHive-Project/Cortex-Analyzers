@@ -1,0 +1,30 @@
+{
+  "name": "MetaDefenderCloud_Reputation",
+  "version": "1.0",
+  "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get the latest MetaDefender Cloud reputation report .",
+  "dataTypeList": ["ip", "url", "domain"],
+  "command": "MetaDefender/metadefender_lookup.py",
+  "baseConfig": "MetaDefender",
+  "config": {
+    "service": "reputation_cloud"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for MetaDefender",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "url",
+      "description": "url address for MetaDefender server",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}
