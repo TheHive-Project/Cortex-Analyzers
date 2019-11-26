@@ -7,22 +7,13 @@
 **Fixed bugs:**
 
 - \[Bug\] Missing module dependencies on responders [\#561](https://github.com/TheHive-Project/Cortex-Analyzers/issues/561)
-- Old non-existent analysers showing in Cortex \[Bug\] [\#553](https://github.com/TheHive-Project/Cortex-Analyzers/issues/553)
 - \[Bug\] [\#552](https://github.com/TheHive-Project/Cortex-Analyzers/issues/552)
 - \[Bug\] Requests module is missing in PhishTank checkurl analyzer docker image [\#551](https://github.com/TheHive-Project/Cortex-Analyzers/issues/551)
 - Add mime types of encrypted documents [\#550](https://github.com/TheHive-Project/Cortex-Analyzers/issues/550)
 - \[Bug\] Cuckoo Sandbox 2.0.7 [\#544](https://github.com/TheHive-Project/Cortex-Analyzers/issues/544)
-- \[Bug\] Custom responder not working after upgrade to cortex 3 [\#542](https://github.com/TheHive-Project/Cortex-Analyzers/issues/542)
 - \[Bug\] Docker build fails due to spaces in some responders [\#540](https://github.com/TheHive-Project/Cortex-Analyzers/issues/540)
-- \[Bug\] ThreatCrowd analyzer not respecting Max TLP value [\#527](https://github.com/TheHive-Project/Cortex-Analyzers/issues/527)
 - Talos Analyzer No Longer Works [\#521](https://github.com/TheHive-Project/Cortex-Analyzers/issues/521)
-- \[Bug\]Missing baseConfig in two Analyzsers [\#508](https://github.com/TheHive-Project/Cortex-Analyzers/issues/508)
 - \[Bug\] Fortiguard: Category parsing does not handle "-" [\#493](https://github.com/TheHive-Project/Cortex-Analyzers/issues/493)
-- \[Bug\] MISP analyzer does not connect to MISP [\#480](https://github.com/TheHive-Project/Cortex-Analyzers/issues/480)
-
-**Closed issues:**
-
-- MaxMind Analyzer: Use commercial databases with geoipupdate [\#474](https://github.com/TheHive-Project/Cortex-Analyzers/issues/474)
 
 ## [2.2.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.2.0) (2019-10-01)
 
