@@ -19,13 +19,13 @@
 						<tr>
 							<td>{{r.page.url | ellipsis:40}}</td>
 							<td>
-								<a href="https://urlscan.io/result/{{r._id}}" target="_blank">https://urlscan.io/result/{{r._id}}</a>
+								<a href="https://urlscan.io/result/{{r._id}}" referrerpolicy="no-referrer" target="_blank">https://urlscan.io/result/{{r._id}}</a>
 							</td>
 							<td>{{r.task.time}}</td>
 						</tr>
 						<tr>
 							<td colspan="3" style=text-align:center>
-								<a href="https://urlscan.io/screenshots/{{r._id}}.png"><img src="https://urlscan.io/thumbs/{{r._id}}.png"></a>
+								<a href="https://urlscan.io/screenshots/{{r._id}}.png" referrerpolicy="no-referrer"><img referrerpolicy="no-referrer" src="https://urlscan.io/thumbs/{{r._id}}.png"></a>
 							</td>
 						</tr>
 					</table>
