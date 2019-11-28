@@ -30,12 +30,13 @@ class TalosReputation(Analyzer):
         if self.data_type == 'ip':
             try:
                 data = self.get_data()
-
+                
                 headers={
                     'Host':'talosintelligence.com',
                     'Referer':'https://talosintelligence.com/reputation_center/lookup?search={}'.format(data),
-                    'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0',
-                    'Accept':'*/*'
+                    'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:69.0) Gecko/20100101 Firefox/69.0',
+                    'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                    'Accept-Encoding': 'gzip, deflate'
                 }
 
                 response_details = requests.get('https://talosintelligence.com/sb_api/query_lookup',

@@ -11,7 +11,7 @@ class UmbrellaAnalyzer(Analyzer):
         self.api_key = self.get_param('config.api_key', None, 'api_key is missing')
         self.api_secret = self.get_param('config.api_secret', None, 'api_secret is missing')
         self.organization_id = self.get_param('config.organization_id', None, 'organization_id is missing')
-        self.query_limit = str(self.get_param('config.query_limit', None, 20))
+        self.query_limit = str(self.get_param('config.query_limit', 20))
 
     def umbrella_runreport(self, destination):
         base_url = "https://reports.api.umbrella.com/v1/organizations"
