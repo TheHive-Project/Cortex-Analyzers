@@ -1,8 +1,13 @@
 # Changelog
 
-## [2.2.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.2.1) (2019-11-26)
+## [2.3.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.3.0) (2019-11-28)
 
-[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.2.0...HEAD)
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.2.0...2.3.0)
+
+**Implemented enhancements:**
+
+- Metadefender analyzer [\#510](https://github.com/TheHive-Project/Cortex-Analyzers/issues/510)
+- updated joe sandbox analyzer [\#512](https://github.com/TheHive-Project/Cortex-Analyzers/issues/512)
 
 **Fixed bugs:**
 
@@ -13,7 +18,12 @@
 - \[Bug\] Cuckoo Sandbox 2.0.7 [\#544](https://github.com/TheHive-Project/Cortex-Analyzers/issues/544)
 - \[Bug\] Docker build fails due to spaces in some responders [\#540](https://github.com/TheHive-Project/Cortex-Analyzers/issues/540)
 - Talos Analyzer No Longer Works [\#521](https://github.com/TheHive-Project/Cortex-Analyzers/issues/521)
+- \[Bug\]Missing baseConfig in two Analyzsers [\#508](https://github.com/TheHive-Project/Cortex-Analyzers/issues/508)
 - \[Bug\] Fortiguard: Category parsing does not handle "-" [\#493](https://github.com/TheHive-Project/Cortex-Analyzers/issues/493)
+
+**Closed issues:**
+
+- MaxMind Analyzer: Use commercial databases with geoipupdate [\#474](https://github.com/TheHive-Project/Cortex-Analyzers/issues/474)
 
 ## [2.2.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.2.0) (2019-10-01)
 
@@ -151,7 +161,6 @@
 **Merged pull requests:**
 
 - added custom Dns sinkholed ip [\#482](https://github.com/TheHive-Project/Cortex-Analyzers/pull/482) ([garanews](https://github.com/garanews))
-- Add responder QRadarAutoClose\[FR\#441\] [\#443](https://github.com/TheHive-Project/Cortex-Analyzers/pull/443) ([cyberpescadito](https://github.com/cyberpescadito))
 - yeti api key [\#478](https://github.com/TheHive-Project/Cortex-Analyzers/pull/478) ([siisar](https://github.com/siisar))
 - Possibility to use a Yeti apikey. [\#477](https://github.com/TheHive-Project/Cortex-Analyzers/pull/477) ([siisar](https://github.com/siisar))
 - Utility to make running an Analyzer locally easier, helpful in development [\#471](https://github.com/TheHive-Project/Cortex-Analyzers/pull/471) ([ndejong](https://github.com/ndejong))
@@ -195,6 +204,7 @@
 
 **Merged pull requests:**
 
+- Add responder QRadarAutoClose\[FR\#441\] [\#443](https://github.com/TheHive-Project/Cortex-Analyzers/pull/443) ([cyberpescadito](https://github.com/cyberpescadito))
 - added templates for AbuseIPDB [\#425](https://github.com/TheHive-Project/Cortex-Analyzers/pull/425) ([mlodic](https://github.com/mlodic))
 - A responder for the Crowdstrike Falcon custom IOC api [\#421](https://github.com/TheHive-Project/Cortex-Analyzers/pull/421) ([ag-michael](https://github.com/ag-michael))
 - New analyzer: Backscatter.io [\#420](https://github.com/TheHive-Project/Cortex-Analyzers/pull/420) ([9b](https://github.com/9b))
