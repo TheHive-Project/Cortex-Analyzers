@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.3.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.3.0) (2019-11-28)
+## [2.3.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.3.0) (2019-12-05)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.2.0...2.3.0)
 
