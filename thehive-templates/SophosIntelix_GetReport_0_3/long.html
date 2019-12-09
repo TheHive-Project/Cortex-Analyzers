@@ -1,37 +1,45 @@
 <div class="panel panel-danger" ng-if="!success">
-    <div class="panel-heading">
-        <strong>{{artifact.data | fang}}</strong>
-    </div>
-    <div class="panel-body">
-        {{content.errorMessage}}
-    </div>
+   <div class="panel-heading">
+      <strong>{{artifact.data | fang}}</strong>
+   </div>
+   <div class="panel-body">
+      {{content.errorMessage}}
+   </div>
 </div>
-
-
 <div class="panel panel-primary" ng-if="success">
-    <div class="panel-heading">
-        <strong>{{artifact.data | fang}}</strong>
-    </div>
-    <div class="panel-body">
-		<dl class="dl-horizontal">
-			<dt>Sophos Intelix</dt>
-			<dd>
-                <span class="label" ng-class="{'label-success' : content.risk_level == 'LOW',  'label-warning' :  content.risk_level == 'MEDIUM',
-                            'label-danger': content.risk_level == 'HIGH'}">
-                    {{content.risk_score}}
-                </span>
-
-            </dd>
-		</dl>
-        <dl ng-if="content.reasons" class="dl-horizontal">
-			<dt>Reasons</dt>
-			<dd>
-                <span ng-repeat="r in content.reasons " class="label label-primary mr-xxxs">
-                    {{r}}
-                </span>
-
-            </dd>
-		</dl>
-
-    </div>
+   <div class="panel-info">
+      <div class="panel-heading">
+         <strong>Report for {{artifact.data | fang}} </strong>
+      </div>
+      <div class="panel-body">
+         <dl ng-if="::artifact.dataType === 'domain'">
+            <dt>Productivity Category</dt>
+            <dd>{{content.prod_category || "No Data"}}</dd>
+            <dt>Security Category</dt>
+            <dd>{{content.sec_category || "No Data"}}</dd>
+            <dt>Risk Level</dt>
+            <dd>{{content.risk_level || "No Data"}}</dd>
+         </dl>
+      </div>
+      <div class="panel-body">
+         <dl ng-if="::artifact.dataType === 'hash'">
+            <dt>File Classification</dt>
+            <dd>{{content.classification || "No Data"}}</dd>
+         </dl>
+      </div>
+      <div class="panel panel-info" ng-if="::artifact.dataType === 'file'" ng-init="files_limit = 20">
+         <table class="table table-hover">
+            <tr>
+               <th>Process</th>
+               <th>Path</th>
+               <th>PID</th>
+            </tr>
+            <tr ng-repeat="file in content.files.written | limitTo:files_limit">
+               <td>{{file.process}}</td>
+               <td>{{file.path}}</td>
+               <td>{{file.pid}}</td>
+            </tr>
+         </table>
+      </div>
+   </div>
 </div>
