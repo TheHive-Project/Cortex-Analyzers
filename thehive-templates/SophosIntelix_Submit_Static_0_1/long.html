@@ -1,0 +1,203 @@
+<div class="panel panel-danger" ng-if="!success">
+   <div class="panel-heading">
+      <strong>{{artifact.data | fang}}</strong>
+   </div>
+   <div class="panel-body">
+      {{content.errorMessage}}
+   </div>
+</div>
+<div class="panel panel-primary" ng-if="success" ng-init="table_limit = 50">
+   <div class="panel-heading">
+      <strong>Sample Details - First Submitted: {{content.submission}} - Analysis Type: {{content.analysis_type}}</strong>
+   </div>
+   <table class="table table-hover">
+      <tr>
+         <th>File Name</th>
+         <th>SHA1</th>
+         <th>SHA256</th>
+         <th>MIME Type</th>
+         <th>Score</th>
+      </tr>
+      <tr>
+         <td>{{artifact.attachment.name | fang}}</td>
+         <td>{{content.analysis_subject.sha1}}</td>
+         <td>{{content.analysis_subject.sha256}}</td>
+         <td>{{content.analysis_subject.mime_type}}</td>
+         <td>{{content.score}}</td>
+      </tr>
+   </table>
+   <div class="panel panel-info" ng-if="::content.detection">
+      <div class="panel-heading">
+         <strong>Detections</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Positives</th>
+            <th>VT Link</th>
+            <th>Sophos</th>
+            <th>Sophos ML</th>
+            <th>Total</th>
+         </tr>
+         <tr>
+            <td>{{content.detection.positives || "0"}}</td>
+            <td><a href={{content.detection.permalink}} target="_blank">{{content.analysis_subject.sha256}}</a></td>
+            <td>{{content.detection.sophos || "0"}}</td>
+            <td>{{content.detection.sophos_ml || "0"}}</td>
+            <td>{{content.detection.total || "0"}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.reputation">
+      <div class="panel-heading">
+         <strong>Reputation</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Reputation Classification</th>
+            <th>Reputation Score</th>
+            <th>Prevalence</th>
+            <th>First Seen</th>
+            <th>Last Seen</th>
+         </tr>
+         <tr>
+            <td>{{content.reputation.score_string}}</td>
+            <td>{{content.reputation.score}}</td>
+            <td>{{content.reputation.prevalence}}</td>
+            <td>{{content.reputation.first_seen}}</td>
+            <td>{{content.reputation.last_seen}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.ml_file">
+      <div class="panel-heading">
+         <strong>ML File Analysis - Analyzed Counts</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Category</th>
+            <th>Benign</th>
+            <th>Malware</th>
+         </tr>
+         <tr>
+            <td>Feature Intersections</td>
+            <td>{{content.ml_file.analyzed_counts.feature_intersections.benign}}</td>
+            <td>{{content.ml_file.analyzed_counts.feature_intersections.malware}}</td>
+         </tr>
+         <tr>
+            <td>Feature Maliciousness</td>
+            <td>{{content.ml_file.analyzed_counts.feature_maliciousness.benign}}</td>
+            <td>{{content.ml_file.analyzed_counts.feature_maliciousness.malware}}</td>
+         </tr>
+         <tr>
+            <td>Genetic Analysis</td>
+            <td>{{content.ml_file.analyzed_counts.genetic_analysis.benign}}</td>
+            <td>{{content.ml_file.analyzed_counts.genetic_analysis.malware}}</td>
+         </tr>
+         <tr>
+            <td>Black Box</td>
+            <td>{{content.ml_file.analyzed_counts.black_box.benign}}</td>
+            <td>{{content.ml_file.analyzed_counts.black_box.malware}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.ml_file.analyses.feature_intersections">
+      <div class="panel-heading">
+         <strong>ML File Analysis - Feature Intersections</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Category</th>
+            <th>Indicator</th>
+            <th>Description</th>
+            <th>Probability</th>
+            <th>Malware</th>
+            <th>Benign</th>
+         </tr>
+         <tr ng-repeat="is in content.ml_file.analyses.feature_intersections | limitTo:table_limit">
+            <td>{{is.category}}</td>
+            <td>{{is.indicator}}</td>
+            <td>{{is.description}}</td>
+            <td>{{is.probability}}</td>
+            <td>{{is.malware}}</td>
+            <td>{{is.benign}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.ml_file.analyses.feature_maliciousness">
+      <div class="panel-heading">
+         <strong>ML File Analysis - Feature Maliciousness</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Category</th>
+            <th>Indicator</th>
+            <th>Description</th>
+            <th>Probability</th>
+            <th>Malware</th>
+            <th>Benign</th>
+         </tr>
+         <tr ng-repeat="fm in content.ml_file.analyses.feature_maliciousness | limitTo:table_limit">
+            <td>{{fm.category}}</td>
+            <td>{{fm.indicator}}</td>
+            <td>{{fm.description}}</td>
+            <td>{{fm.probability}}</td>
+            <td>{{fm.malware}}</td>
+            <td>{{fm.benign}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.ml_file.analyses.genetic_analysis.neighbor_info">
+      <div class="panel-heading">
+         <strong>ML File Analysis - Genetic Analysis - Neighbor Info</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>SHA 265</th>
+            <th>Is Malware</th>
+            <th>Score</th>
+            <th>Match Percentage</th>
+            <th>File Path</th>
+         </tr>
+         <tr ng-repeat="(key, neighbor) in content.ml_file.analyses.genetic_analysis.neighbor_info | limitTo:table_limit">
+            <td><a href=https://www.virustotal.com/gui/file/{{key}}/detection target="_blank">{{key}}</a></td>
+            <td>{{neighbor.is_malware}}</td>
+            <td>{{neighbor.score}}</td>
+            <td>{{neighbor.match_percentage}}</td>
+            <td>{{neighbor.filepath}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.ml_file.analyses.black_box">
+      <div class="panel-heading">
+         <strong>ML File Analysis - Black Box</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Model Version</th>
+            <th>Model Name</th>
+         </tr>
+         <tr>
+            <td>{{content.ml_file.analyses.black_box.model_version}}</td>
+            <td>{{content.ml_file.analyses.black_box.model_name}}</td>
+         </tr>
+      </table>
+      </br>
+      <table class="table table-hover">
+         <tr>
+            <th>Type</th>
+            <th>Raw</th>
+            <th>Score</th>
+         </tr>
+         <tr>
+            <td>Benign</td>
+            <td>{{content.ml_file.analyses.black_box.benign.raw}}</td>
+            <td>{{content.ml_file.analyses.black_box.benign.score}}</td>
+         </tr>
+         <tr>
+            <td>PUA</td>
+            <td>{{content.ml_file.analyses.black_box.pua.raw}}</td>
+            <td>{{content.ml_file.analyses.black_box.pua.score}}</td>
+         </tr>
+      </table>
+   </div>
+</div>
