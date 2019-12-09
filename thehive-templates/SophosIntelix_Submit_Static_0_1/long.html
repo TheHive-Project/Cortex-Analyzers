@@ -200,4 +200,28 @@
          </tr>
       </table>
    </div>
+   <div class="panel panel-info" ng-if="::content.ml_file.overall_scores">
+      <div class="panel-heading">
+         <strong>ML File Analysis - Overall Scores</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Feature Intersections</th>
+            <th>Feature Maliciousness</th>
+            <th>Genetic Analysis</th>
+            <th>Black Box</th>
+            <th>Overall Score</th>
+            <th>ML Aggregate Results</th>
+         </tr>
+         <tr>
+            <td>{{content.ml_file.overall_scores.feature_intersections}}</td>
+            <td>{{content.ml_file.overall_scores.feature_maliciousness}}</td>
+            <td>{{content.ml_file.overall_scores.genetic_analysis}}</td>
+            <td>{{content.ml_file.overall_scores.black_box}}</td>
+            <td>{{content.ml_file.overall_score}}</td>
+            <td>{{content.ml_aggregate_results.overall_score}}</td>
+         </tr>
+      </table>
+      </br>
+   </div>
 </div>
