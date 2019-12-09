@@ -27,19 +27,5 @@
             <dd>{{content.classification || "No Data"}}</dd>
          </dl>
       </div>
-      <div class="panel panel-info" ng-if="::artifact.dataType === 'file'" ng-init="files_limit = 20">
-         <table class="table table-hover">
-            <tr>
-               <th>Process</th>
-               <th>Path</th>
-               <th>PID</th>
-            </tr>
-            <tr ng-repeat="file in content.files.written | limitTo:files_limit">
-               <td>{{file.process}}</td>
-               <td>{{file.path}}</td>
-               <td>{{file.pid}}</td>
-            </tr>
-         </table>
-      </div>
    </div>
 </div>
