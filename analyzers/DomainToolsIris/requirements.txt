@@ -1,0 +1,3 @@
+cortexutils
+domaintools_api ; python_version < '3.5'
+git+https://github.com/DomainTools/python_api.git ; python_version >= '3.5'

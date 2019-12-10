@@ -1,0 +1,38 @@
+{
+  "name": "DomainToolsIris_Investigate",
+  "version": "1.0",
+  "author": "DomainTools",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use DomainTools Iris API to investigate a domain or fqdn",
+  "dataTypeList": ["domain","fqdn"],
+  "command": "DomainToolsIris/domaintoolsiris_analyzer.py",
+  "baseConfig": "DomainToolsIris",
+  "config": {
+      "service": "investigate-domain"
+  },
+  "configurationItems": [
+    {
+      "name": "username",
+      "description": "DomainTools Iris API credentials",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "key",
+      "description": "DomainTools Iris API credentials",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "pivot_count_threshold",
+      "description": "Pivot count threshold.",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 500
+    }
+  ]
+}
