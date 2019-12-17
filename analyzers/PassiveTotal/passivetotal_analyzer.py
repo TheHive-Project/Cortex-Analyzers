@@ -7,6 +7,7 @@ from passivetotal.libs.dns import DnsRequest
 from passivetotal.libs.enrichment import EnrichmentRequest
 from passivetotal.libs.ssl import SslRequest
 from passivetotal.libs.whois import WhoisRequest
+from passivetotal.libs.host_attributes import HostAttributeRequest
 
 
 class PassiveTotalAnalyzer(Analyzer):
@@ -98,6 +99,51 @@ class PassiveTotalAnalyzer(Analyzer):
                 value = "REGISTRAR: {}".format(result['registrar'])
                 taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
+        # component service
+        elif self.service == 'component':
+            predicate = "WebComponent"
+            if 'totalRecords' in raw and raw['totalRecords']:
+                result['total'] = raw['totalRecords']
+            else:
+                result['total'] = 0
+
+            if result['total'] < 2:
+                value = "{} record".format(result['total'])
+            else:
+                value = "{} records".format(result['total'])
+
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+
+        # tracker service
+        elif self.service == 'trackers':
+            predicate = "Tracker"
+            if 'totalRecords' in raw and raw['totalRecords']:
+                result['total'] = raw['totalRecords']
+            else:
+                result['total'] = 0
+
+            if result['total'] < 2:
+                value = "{} record".format(result['total'])
+            else:
+                value = "{} records".format(result['total'])
+
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+
+        # host pair service
+        elif self.service == 'host_pairs':
+            predicate = "HostPairs"
+            if 'totalRecords' in raw and raw['totalRecords']:
+                result['total'] = raw['totalRecords']
+            else:
+                result['total'] = 0
+
+            if result['total'] < 2:
+                value = "{} record".format(result['total'])
+            else:
+                value = "{} records".format(result['total'])
+
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+
         return {"taxonomies": taxonomies}
 
     def run(self):
@@ -155,6 +201,27 @@ class PassiveTotalAnalyzer(Analyzer):
             elif self.service == 'whois_details':
                 whois_request = WhoisRequest(username=self.username, api_key=self.api_key)
                 result = whois_request.get_whois_details(query=data)
+                self.report(result)
+
+            # components service
+            elif self.service == 'components':
+                host_attr_request = HostAttributeRequest(username=self.username, api_key=self.api_key)
+                result = host_attr_request.get_components(query=data)
+                self.report(result)
+
+            # trackers service
+            elif self.service == 'trackers':
+                host_attr_request = HostAttributeRequest(username=self.username, api_key=self.api_key)
+                result = host_attr_request.get_trackers(query=data)
+                self.report(result)
+
+            # host pairs service
+            elif self.service == 'host_pairs':
+                host_attr_request = HostAttributeRequest(username=self.username, api_key=self.api_key)
+                result = host_attr_request.get_host_pairs(query=data, direction='parents')
+                children = host_attr_request.get_host_pairs(query=data, direction='children')
+                result['totalRecords'] += children['totalRecords']
+                result['results'] = result['results'] + children['results']
                 self.report(result)
 
             else:
