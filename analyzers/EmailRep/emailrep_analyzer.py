@@ -14,17 +14,17 @@ class EmailRepAnalyzer(Analyzer):
         level = "info"
         namespace = "EmailRep"
 
-        score = raw.get("score")
-        if score is not None:
-            score = int(score)
-            if score < 50:
-                level = "suspicious"
-            else:
-                level = "safe"
+        suspicious = raw.get("suspicious", False)
+        if suspicious:
+            level = "suspicious"
+        else:
+            level = "safe"
 
-            taxonomies.append(
-                self.build_taxonomy(level, namespace, "Reputation", score)
-            )
+        references = raw.get("references", 0)
+
+        taxonomies.append(
+            self.build_taxonomy(level, namespace, "References", references)
+        )
 
         return {"taxonomies": taxonomies}
 
