@@ -153,6 +153,10 @@ class VirusTotalAnalyzer(Analyzer):
                 data = self.get_param('data', None, 'Data is missing')
                 self.report(self.check_response(
                     self.vt.get_domain_report(data)))
+            elif self.data_type == 'fqdn';
+                data = self.get_param('data', None, 'Data is missing')
+                self.report(self.check_response(
+                    self.vt.get_domain_report(data)))
             elif self.data_type == 'ip':
                 data = self.get_param('data', None, 'Data is missing')
                 self.report(self.check_response(self.vt.get_ip_report(data)))
