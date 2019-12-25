@@ -31,6 +31,8 @@ class AbuseFinderAnalyzer(Analyzer):
             return ip_abuse(self.get_data())
         elif self.data_type == "domain":
             return domain_abuse(self.get_data())
+        elif self.data_type == "fqdn":
+            return domain_abuse(self.get_data())
         elif self.data_type == "mail":
             return email_abuse(self.get_data())
         elif self.data_type == "url":
