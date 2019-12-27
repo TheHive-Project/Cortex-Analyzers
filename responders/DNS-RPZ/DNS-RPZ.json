@@ -1,0 +1,67 @@
+{
+  "name": "DNS-RPZ",
+  "version": "1.0",
+  "author": "Michael Hornung; Expeditors International of Washington, Inc.",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Add a dynamic DNS entry to a Response Policy Zone, blackholing or redirecting a FQDN.",
+  "dataTypeList": ["thehive:case_artifact"],
+  "command": "DNS-RPZ/dns-rpz.py",
+  "baseConfig": "DNS-RPZ",
+  "config": {
+    "max_tlp": 3,
+    "check_tlp": false,
+    "max_pap": 3,
+    "check_pap": true
+  },
+  "configurationItems": [
+    {
+      "name": "bind_server",
+      "description": "IP or FQDN of RPZ master BIND server",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "127.0.0.1"
+    },
+    {
+      "name": "tsig_keyname",
+      "description": "Name of TSIG key to access BIND server",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "cortex."
+    },
+    {
+      "name": "tsig_keyval",
+      "description": "TSIG key value to access BIND server",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "updateme"
+    },
+    {
+      "name": "tsig_hashalg",
+      "description": "TSIG hash algorithm to use",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "HMAC-SHA512"
+    },
+    {
+      "name": "rpz_zonename",
+      "description": "Fully qualified RPZ zone name (don't forget the trailing dot)",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "rpz."
+    },
+    {
+      "name": "remediation_ip",
+      "description": "IP to resolve RPZ names to",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "127.0.0.1"
+    }
+  ]
+}

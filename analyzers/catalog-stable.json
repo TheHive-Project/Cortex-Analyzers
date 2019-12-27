@@ -306,6 +306,28 @@
       "type": "string",
       "multi": false,
       "required": true
+    },
+    {
+      "name": "token",
+      "description": "API token",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "cert_check",
+      "description": "Verify server certificate",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "cert_path",
+      "description": "Path to the CA on the system used to check server certificate",
+      "type": "string",
+      "multi": false,
+      "required": false
     }
   ],
   "dockerImage": "cortexneurons/cuckoosandbox_file_analysis_inet:1.1"
@@ -329,6 +351,28 @@
       "type": "string",
       "multi": false,
       "required": true
+    },
+    {
+      "name": "token",
+      "description": "API token",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "cert_check",
+      "description": "Verify server certificate",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "cert_path",
+      "description": "Path to the CA on the system used to check server certificate",
+      "type": "string",
+      "multi": false,
+      "required": false
     }
   ],
   "dockerImage": "cortexneurons/cuckoosandbox_url_analysis:1.1"

@@ -1,6 +1,6 @@
 {
   "name": "CuckooSandbox_Url_Analysis",
-  "version": "1.1",
+  "version": "1.2",
   "author": "Andrea Garavaglia, LDO-CERT",
   "url": "https://github.com/garanews/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -15,6 +15,28 @@
       "type": "string",
       "multi": false,
       "required": true
+    },
+    {
+      "name": "token",
+      "description": "API token",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "verifyssl",
+      "description": "Verify SSL certificate",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "cert_path",
+      "description": "Path to the CA on the system used to check server certificate",
+      "type": "string",
+      "multi": false,
+      "required": false
     }
   ]
 
