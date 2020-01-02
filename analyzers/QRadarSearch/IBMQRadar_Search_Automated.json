@@ -1,0 +1,149 @@
+{
+  "name": "IBMQRadar_Search_Automated",
+  "version": "0.1",
+  "author": "Jeffrey Everling",
+  "url": "https://github.com/LDO-CERT/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Check if observables are present in QRadar data.",
+  "dataTypeList": [
+    "ip",
+    "domain",
+    "fqdn",
+    "url",
+    "mail",
+    "hash"
+  ],
+  "baseConfig": "IBMQRadar",
+  "config": {
+    "service": "automated"
+  },
+  "command": "QRadarSearch/IBMQRadar_Search.py",
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "QRadar API URL",
+      "required": true,
+      "multi": false,
+      "type": "string"
+    },
+    {
+      "name": "key",
+      "description": "QRadar API Key",
+      "required": true,
+      "multi": false,
+      "type": "string"
+    },
+    {
+      "name": "verify",
+      "description": "Enable/Disable certificate Verification",
+      "required": false,
+      "multi": false,
+      "type": "boolean"
+    },
+    {
+      "name": "search_timeout",
+      "description": "Provide the search timeout in seconds (Default to 1 hour)",
+      "required": false,
+      "multi": false,
+      "type": "number"
+    },
+    {
+      "name": "search_limit",
+      "description": "The amount of days QRadar looks back to find the observable (Defaults to 1)",
+      "required": false,
+      "multi": false,
+      "type": "number"
+    },
+    {
+      "name": "rs_switchover",
+      "description": "The amount of hours QRadar waits until starting to use reference sets (Defaults to 24)",
+      "required": false,
+      "multi": false,
+      "type": "number"
+    },
+	{
+      "name": "http_method_field",
+      "description": "The field that contains the HTTP method for a web request",
+      "required": false,
+      "multi": false,
+      "type": "string"
+    },
+    {
+      "name": "url_root_domain_field",
+      "description": "The field that contains the root domain for a web request",
+      "required": false,
+      "multi": false,
+      "type": "string"
+    },
+	{
+      "name": "url_fqdn_field",
+      "description": "The field that contains the fqdn for a web request",
+      "required": false,
+      "multi": false,
+      "type": "string"
+    },
+	{
+      "name": "url_field",
+      "description": "The field that contains the url for a web request",
+      "required": false,
+      "multi": false,
+      "type": "string"
+    },
+    {
+      "name": "mail_recipient_field",
+      "description": "The Mail recipient field",
+      "required": false,
+      "multi": false,
+      "type": "string"
+    },
+    {
+      "name": "mail_sender_field",
+      "description": "The Mail sender field",
+      "required": false,
+      "multi": false,
+      "type": "string"
+    },
+    {
+      "name": "mail_subject_field",
+      "description": "The Mail subject field",
+      "required": false,
+      "multi": false,
+      "type": "string"
+    },
+    {
+      "name": "computer_field",
+      "description": "The field containing the computer name",
+      "required": false,
+      "multi": false,
+      "type": "string"
+    },
+    {
+      "name": "md5_hash_field",
+      "description": "The md5 hash field",
+      "required": false,
+      "multi": false,
+      "type": "string"
+    },
+    {
+      "name": "sha1_hash_field",
+      "description": "The sha1 hash field",
+      "required": false,
+      "multi": false,
+      "type": "string"
+    },
+    {
+      "name": "sha256_hash_field",
+      "description": "The sha2 hash field",
+      "required": false,
+      "multi": false,
+      "type": "string"
+    },
+    {
+      "name": "image_field",
+      "description": "The Image field from Sysmon",
+      "required": false,
+      "multi": false,
+      "type": "string"
+    }
+  ]
+}
