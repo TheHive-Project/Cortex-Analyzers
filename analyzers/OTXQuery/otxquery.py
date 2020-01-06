@@ -134,7 +134,7 @@ class OTXQueryAnalyzer(Analyzer):
 
     def otx_query_url(self, data):
         # urlencode the URL that we are searching for
-        data = urllib.quote_plus(data)
+        data = urllib.parse.quote_plus(data)
         baseurl = "https://otx.alienvault.com:443/api/v1/indicators/url/%s/" % data
         headers = self._get_headers()
         sections = ['general', 'url_list']
