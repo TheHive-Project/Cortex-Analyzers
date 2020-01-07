@@ -1,0 +1,38 @@
+<div class="report-FILEInfo" ng-if="success">
+    <style>
+        .report-FILEInfo dl {
+            margin-bottom: 2px;
+        }
+    </style>
+
+  <div class="panel panel-info">
+      <div class="panel-heading">
+          <strong>LDAP Query Summary</strong>
+      </div>
+      <div class="panel-body">
+          <div ng-if="content[artifact.data].length === 0">
+              No records found
+          </div>
+          <div>
+              <dl class="dl-horizontal">
+                <dt>cn: </dt>
+                <dd class="wrap">{{content.cn || "-"}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>mail: </dt>
+                <dd class="wrap">{{content.mail || "-"}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>uid: </dt>
+                <dd class="wrap">{{content.uid|| "-"}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>telephoneNumber: </dt>
+                <dd class="wrap">{{content.telephoneNumber}}</dd>
+              </dl>
+
+            </div>
+        </div>
+  </div>
+
+</div>
