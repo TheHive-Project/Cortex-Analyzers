@@ -10,8 +10,7 @@
     ],
     "command": "KnowBe4/KnowBe4.py",
     "baseConfig": "KnowBe4",
-    "configurationItems": [
-        {
+    "configurationItems": [{
             "name": "api_url",
             "description": "Base API url",
             "type": "string",
@@ -20,7 +19,7 @@
             "defaultValue": "https://api.events.knowbe4.com/events"
         },
         {
-            "name": "hive_url",
+            "name": "thehive_url",
             "description": "Specify The Hive Instance URL",
             "type": "string",
             "multi": false,

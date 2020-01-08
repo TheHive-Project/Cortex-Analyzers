@@ -10,8 +10,8 @@ class KnowBe4(Responder):
         Responder.__init__(self)
         self.api_url = self.get_param(
             'config.api_url', None, "Base URL Missing")
-        self.hive_url = self.get_param(
-            'config.hive_url', None, "Hive URL Missing")
+        self.thehive_url = self.get_param(
+            'config.thehive_url', None, "TheHive URL Missing")
         self.api_key = self.get_param(
             'config.api_key', None, "API Key Missing")
         self.event_type = self.get_param(
@@ -39,7 +39,7 @@ class KnowBe4(Responder):
                 }
 
                 thehive_case = '{}/index.html#!/case/{}/details'.format(
-                    self.hive_url, self.get_param('data.case._routing'))
+                    self.thehive_url, self.get_param('data.case._routing'))
 
                 description = 'TheHive Case: {}\n Description: {}\n URL: {}'.format(self.get_param(
                     'data.case.title'), self.get_param('data.case.description'), thehive_case)
