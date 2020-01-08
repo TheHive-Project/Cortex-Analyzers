@@ -26,6 +26,8 @@ Create the following custom fields:
 Configure the required within Cortex Analyzer Configuration for IBM QRadar Search.
 
 ##QRadar configuration:
+NOTE: When searching for observables it is very beneficial to enable indexing for these properties. This will reduce a search to seconds instead of minutes
+
 - Create a authorized service account with a role that has the following rights
 	- Log Activity
 		- Manage Time Series
