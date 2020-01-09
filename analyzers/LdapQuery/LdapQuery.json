@@ -10,28 +10,28 @@
   "baseConfig": "LdapQuery",
   "configurationItems": [
     {
-        "name": "LDAP Server Address",
+        "name": "LDAP_Server_Address",
         "description": "Should contain the protocol. Eg: ldaps://myldap.myorg.com",
         "type": "string",
         "multi": false,
         "required": true
     },
     {
-        "name": "LDAP Username",
+        "name": "LDAP_Username",
         "description": "Usernae of the account that will be used to bind to LDAP server. The Account should have permissions to read ldap objects and attributes.",
         "type": "string",
         "multi": false,
         "required": true
     },
     {
-        "name": "LDAP Password",
+        "name": "LDAP_Password",
         "description": "Password of the account used to bind to LDAP server.",
         "type": "string",
         "multi": false,
         "required": true
     },
     {
-        "name": "base DN",
+        "name": "base_DN",
         "description": "The base DN to use in your LDAP. Eg: dc=myorg,dc=com",
         "type": "string",
         "multi": false,
