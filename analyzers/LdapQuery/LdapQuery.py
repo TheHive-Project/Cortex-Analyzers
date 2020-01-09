@@ -14,12 +14,12 @@ class LdapQuery(Analyzer):
         self.attributes = self.get_param('config.Attributes', None, 'Missing attributes list to report')
         self.payload = self.get_param('data', None, 'username to search in LDAP is missing')
 
-    def summary(self,raw):
+    def summary(self,raw,taxonomies_value):
         taxonomies = []
         level = "info"
         namespace = "LDAP"
         predicate = "Query"
-        value = "Success"
+        value = taxonomies_value
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         return {"taxonomies": taxonomies}
 
@@ -63,6 +63,16 @@ class LdapQuery(Analyzer):
                 strnew=str.replace('-','_')
                 queryResult[strnew]=queryResult.pop(str)
 
+#           Find a value to return in value attribute of taxonomies object
+            if o in queryResult:
+                taxonomies_value = str(queryResult[o])
+            else if cn in queryResult:
+                taxonomies_value = str(queryResult[cn])
+            else if mail in queryResult:
+                taxonomies_value = str(queryResult[mail])
+            else:
+                taxonomies_value = "Success"
+                
             json_data = queryResult
         except ldap.LDAPError, e:
             self.error(e)
