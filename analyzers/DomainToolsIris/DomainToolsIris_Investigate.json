@@ -4,8 +4,8 @@
   "author": "DomainTools",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Use DomainTools Iris API to investigate a domain or fqdn",
-  "dataTypeList": ["domain","fqdn"],
+  "description": "Use DomainTools Iris API to investigate a domain.",
+  "dataTypeList": ["domain"],
   "command": "DomainToolsIris/domaintoolsiris_analyzer.py",
   "baseConfig": "DomainToolsIris",
   "config": {
