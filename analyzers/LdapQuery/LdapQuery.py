@@ -7,7 +7,7 @@ from cortexutils.analyzer import Analyzer
 class LdapQuery(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
-        self.ldap_address = self.get_param('config.LDAP Server_Address', None, 'ldap_address is missing')
+        self.ldap_address = self.get_param('config.LDAP_Server_Address', None, 'ldap_address is missing')
         self.username = self.get_param('config.LDAP_Username', None, 'username is missing')
         self.password = self.get_param('config.LDAP_Password', None, 'password is missing')
         self.base_dn = self.get_param('config.base_DN', None, 'base_dn is missing')
