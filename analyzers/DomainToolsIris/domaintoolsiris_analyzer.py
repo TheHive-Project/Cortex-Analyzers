@@ -240,17 +240,11 @@ class DomainToolsAnalyzer(Analyzer):
 
         APP_PARAMETERS = {"app_partner": "cortex", "app_name": "Iris", "app_version": 1}
 
-        if self.service == "investigate-domain" and self.data_type in [
-            "domain",
-            "fqdn",
-        ]:
+        if self.service == "investigate-domain" and self.data_type in ["domain"]:
             response = api.iris_investigate(data, **APP_PARAMETERS).response()
             if response["results_count"]:
                 response = self.format_single_domain(response.get("results")[0])
-        elif self.service == "threat-profile" and self.data_type in ["domain", "fqdn"]:
-            response = api.iris_investigate(data, **APP_PARAMETERS).response()
-            if response["results_count"]:
-                response = self.format_single_domain(response.get("results")[0])
+
         elif self.service == "pivot" and self.data_type in ["hash", "ip", "mail"]:
             iris_investigate_args_map = {
                 "ip": "ip",
