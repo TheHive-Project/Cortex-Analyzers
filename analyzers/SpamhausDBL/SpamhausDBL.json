@@ -5,7 +5,7 @@
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
     "description": "Perform domain lookup to Spamhaus DBL",
-    "dataTypeList": ["domain"],
+    "dataTypeList": ["domain", "fqdn"],
     "baseConfig": "SpamhausDBL",
     "config": {
        "service": "DBLLookup"
