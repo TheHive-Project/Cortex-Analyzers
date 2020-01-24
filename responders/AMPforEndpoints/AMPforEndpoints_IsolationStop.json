@@ -1,0 +1,37 @@
+{
+  "name": "AMPforEndpoints_IsolationStop",
+  "version": "1.0",
+  "author": "Cisco Security",
+  "url": "https://github.com/CiscoSecurity",
+  "license": "MIT",
+  "description": "Stop host isolation for an AMP for Endpoints connector",
+  "dataTypeList": ["thehive:case_artifact"],
+  "command": "AMPforEndpoints/AMPforEndpoints.py",
+  "baseConfig": "AMPforEndpoints",
+  "config": {
+    "service": "isolationstop"
+  },
+  "configurationItems": [
+    {
+      "name": "amp_cloud",
+      "description": "FQDN of the AMP for Endpoints cloud to interact with",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "client_id",
+      "description": "Client ID for AMP for Endpoints",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "api_key",
+      "description": "API Key for AMP for Endpoints",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}
