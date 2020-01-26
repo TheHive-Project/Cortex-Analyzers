@@ -209,12 +209,12 @@ class AMPforEndpoints(Responder):
             # Start host isolation
             if self.service in ("isolationstart"):
                 # Check if the unlock_code is less than 24 characters
-                if len(self.unlock_code) > 24:
+                if self.unlock_code and self.unlock_code and len(self.unlock_code) > 24:
                     self.error(
                         "Validation failed: Unlock Code is invalid, Unlock Code is too long. (Maximum 24 characters)"
                     )
                 # Check if the unlock_code contains spaces
-                if bool(" " in self.unlock_code):
+                if self.unlock_code and bool(" " in self.unlock_code):
                     self.error(
                         "Validation failed: Unlock Code is invalid, Unlock Code cannot contain spaces"
                     )
