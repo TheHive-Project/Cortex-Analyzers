@@ -107,6 +107,14 @@ class Onyphe:
         url_path = "/api/synscan/{ip}".format(ip=ip)
         return self._request(path=url_path)
 
+    def search(self, search: str, page=1):
+        """Return datascan information we have for the given string with history of changes
+        """
+        param = {}
+        url_path = "/api/search/datascan/{search}".format(search=search)
+        param["page"] = page
+        return self._request(path=url_path, query_params=param)
+
     def datascan(self, search: str):
         """Return datascan information we have for the given IPv{4,6} address or string with history of changes
         """
