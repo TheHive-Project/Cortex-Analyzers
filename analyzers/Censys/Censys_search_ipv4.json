@@ -1,0 +1,27 @@
+{
+  "name": "Censys_search",
+  "author": "Marc Nebout, SEKOIA",
+  "license": "AGPL-V3",
+  "url": "https://github.com/CTIMarc/Cortex-Analyzers/tree/master/analyzers/Censys",
+  "version": "1.0",
+  "description": "Search pattern in Censys",
+  "dataTypeList": ["other"],
+  "baseConfig": "Censys",
+  "command": "Censys/censys_search_ip.py",
+  "configurationItems": [
+    {
+      "name": "uid",
+      "description": "UID for Censys",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "key",
+      "description": "API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}
