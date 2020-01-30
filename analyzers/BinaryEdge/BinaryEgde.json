@@ -1,0 +1,25 @@
+{
+    "name": "BinaryEdge",
+    "version": "1.1",
+    "author": "Joel Snape @ Nettitude, Marc Nebout @ SEKOIA",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-v3",
+    "description": "Get results from BinaryEdge for IP",
+    "dataTypeList": ["ip","other"],
+    "baseConfig": "BinaryEdge",
+    "command": "BinaryEdge/binaryEdge.py",
+    "configurationItems": [
+      {
+        "name": "key",
+        "description": "APIv2 key for BinaryEdge",
+        "type": "string",
+        "multi": false,
+        "required": true
+      }
+    ],
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 2,
+        "auto_extract": false
+    }
+}
