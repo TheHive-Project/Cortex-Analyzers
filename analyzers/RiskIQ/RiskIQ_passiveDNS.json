@@ -1,0 +1,30 @@
+{
+  "name": "RiskIQ_passive_DNS",
+  "version": "1.0",
+  "author": "Marc Nebout, SEKOIA",
+  "url": "https://github.com/CTIMarc/Cortex-Analyzers/",
+  "license": "AGPL-V3",
+  "description": "RiskIQ API.",
+  "dataTypeList": ["ip"],
+  "command": "RiskIQ/riskiq_analyzer.py",
+  "baseConfig": "RiskIQ",
+  "config": {
+    "service": "passive_dns_ip"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API key to use to connect the service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "secret",
+      "description": "Define the API secret to use to connect the service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}
