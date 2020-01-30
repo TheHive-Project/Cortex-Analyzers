@@ -205,7 +205,7 @@ class MISPClient:
         """
         response = []
 
-        for event in misp_response.get('response', []):
+        for event in misp_response:
             response.append(self.__clean_event(event['Event']))
 
         return response
@@ -222,7 +222,7 @@ class MISPClient:
         if not value:
             raise EmptySearchtermError
         for idx, connection in enumerate(self.misp_connections):
-            misp_response = connection.search(type_attribute=type_attribute, values=value)
+            misp_response = connection.search(type_attribute=type_attribute, value=value)
 
             # Fixes #94
             if isinstance(self.misp_name, list):
