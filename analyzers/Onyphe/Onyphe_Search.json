@@ -1,0 +1,23 @@
+{
+  "name": "Onyphe_Search",
+  "version": "1.0",
+  "author": "MNT",
+  "url": "https://github.com/cybernardo/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Search information.",
+  "dataTypeList": ["other"],
+  "command": "Onyphe/onyphe_analyzer.py",
+  "baseConfig": "Onyphe",
+  "config": {
+    "service": "search"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API key to use to connect the service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}

@@ -89,6 +89,10 @@ class OnypheAnalyzer(Analyzer):
                     'info', namespace, "Port", "port {} last seen {}".format(
                         port_number, port_data['dates'][0])))
 
+        if self.service == 'search':
+            value = raw['search']['total']
+            taxonomies.append(self.build_taxonomy('info', namespace, 'Hosts', value))
+
         if self.service == 'reverse':
             output_data = {}
             for r in raw['reverses']['results']:
@@ -154,6 +158,11 @@ class OnypheAnalyzer(Analyzer):
             if self.service == 'datascan':
                 ip = self.get_param('data', None, 'Data is missing')
                 results = {'datascan': self.onyphe_client.datascan(ip)}
+                self.report(results)
+            if self.service == 'search':
+                page = self.get_param('parameters.page', 1, None)
+                data = self.get_param('data', None, 'Data is missing')
+                results = {'search': self.onyphe_client.search(data, page)}
                 self.report(results)
         except Exception:
             pass
