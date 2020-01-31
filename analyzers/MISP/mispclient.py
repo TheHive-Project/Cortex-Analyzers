@@ -57,9 +57,9 @@ class MISPClient:
                 elif isinstance(ssl, bool):
                     verify = ssl
                 self.misp_connections.append(pymisp.ExpandedPyMISP(url=server,
-                                                           key=key[idx],
-                                                           ssl=verify,
-                                                           proxies=proxies))
+                                                                   key=key[idx],
+                                                                   ssl=verify,
+                                                                   proxies=proxies))
         else:
             verify = True
             if isinstance(ssl, str) and os.path.isfile(ssl):
@@ -68,10 +68,10 @@ class MISPClient:
                 raise CertificateNotFoundError('Certificate not found under {}.'.format(ssl))
             elif isinstance(ssl, bool):
                 verify = ssl
-            self.misp_connections.append(pymisp.PyMISP(url=url,
-                                                       key=key,
-                                                       ssl=verify,
-                                                       proxies=proxies))
+            self.misp_connections.append(pymisp.ExpandedPyMISP(url=url,
+                                                               key=key,
+                                                               ssl=verify,
+                                                               proxies=proxies))
         self.misp_name = name
 
     @staticmethod
