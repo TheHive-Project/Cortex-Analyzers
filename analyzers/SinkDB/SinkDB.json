@@ -3,7 +3,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/sinkdb-analyzer",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Check if ip is sinkholed via sinkdb.abuse.ch",
   "dataTypeList": ["ip"],
   "command": "SinkDB/sinkdb.py",

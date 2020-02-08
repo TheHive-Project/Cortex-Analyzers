@@ -1,6 +1,6 @@
 {
   "name": "CuckooSandbox_Url_Analysis",
-  "version": "1.2",
+  "version": "1.2.0",
   "author": "Andrea Garavaglia, LDO-CERT",
   "url": "https://github.com/garanews/Cortex-Analyzers",
   "license": "AGPL-V3",

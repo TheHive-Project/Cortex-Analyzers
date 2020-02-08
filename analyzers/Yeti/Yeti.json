@@ -3,7 +3,7 @@
   "author": "CERT-BDF",
   "license": "AGPL-V3",
   "url": "https://github.com/CERT/cortex-analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Fetch observable details from a YETI instance.",
   "dataTypeList": ["domain", "fqdn", "ip", "url", "hash"],
   "command": "Yeti/yeti.py",

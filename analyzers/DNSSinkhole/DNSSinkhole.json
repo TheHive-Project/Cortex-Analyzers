@@ -3,7 +3,7 @@
   "author": "Andrea Garavaglia, LDO-CERT",
   "license": "AGPL-V3",
   "url": "https://github.com/LDO-CERT/cortex-analyzer",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Check if a  domain is sinkholed via DNS Sinkhole server",
   "dataTypeList": ["domain"],
   "command": "DNSSinkhole/dnssinkhole.py",

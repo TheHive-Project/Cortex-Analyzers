@@ -3,7 +3,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
+  "version": "2.0.0",
   "description": "Use Google Safebrowing to check URLs and domain names.",
   "dataTypeList": ["url", "domain"],
   "baseConfig": "GoogleSafebrowsing",

@@ -3,7 +3,7 @@
     "author": "Rémi Allain, Cyberprotect",
     "license": "AGPL-V3",
     "url": "https://github.com/Cyberprotect/Cortex-Analyzers",
-    "version": "1.0",
+    "version": "1.0.0",
     "description": "hunter.io is a service to find email addresses from a domain.",
     "dataTypeList": ["domain", "fqdn"],
     "command": "Hunterio/hunterio_analyzer.py",

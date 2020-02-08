@@ -3,7 +3,7 @@
     "author": "Marc-Andre Doll, STARC by EXAPROBE",
     "license": "AGPL-V3",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-    "version": "1.0",
+    "version": "1.0.0",
     "baseConfig": "StopForumSpam",
     "config": {
         "check_tlp": true,

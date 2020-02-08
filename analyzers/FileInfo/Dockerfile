@@ -1,9 +1,18 @@
-FROM python:3
+# THIS FILE IS UPDATED BY `utils/dockerfile_builder.py`
+# DO NOT EDIT IT DIRECTLY
+
+
+FROM ubuntu
+
+LABEL name="FileInfo"
+LABEL description="Parse files in several formats such as OLE and OpenXML to detect VBA macros, extract their source code, generate useful information on PE, PDF files..."
+LABEL author="TheHive-Project"
 
 WORKDIR /worker
+
 COPY . FileInfo
-RUN apt update                                                  && \
-    apt install -y -q libfuzzy-dev libimage-exiftool-perl       && \
-    rm -rf /var/lib/apt/lists/*                                 && \
-    pip install --no-cache-dir -r FileInfo/requirements.txt
+
+# Project determined to be Python, installing deps
+RUN pip install --no-cache-dir -r FileInfo/requirements.txt
+
 ENTRYPOINT FileInfo/fileinfo_analyzer.py

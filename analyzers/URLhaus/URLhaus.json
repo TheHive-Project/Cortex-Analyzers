@@ -3,7 +3,7 @@
   "author": "ninoseki, Nils Kuhnert",
   "license": "MIT",
   "url": "https://github.com/ninoseki/cortex_URLhaus_analyzer",
-  "version": "2.0",
+  "version": "2.0.0",
   "baseConfig": "URLhaus",
   "description": "Search domains, IPs, URLs or hashes on URLhaus.",
   "dataTypeList": ["domain", "url", "hash", "ip"],

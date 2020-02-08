@@ -1,6 +1,6 @@
 {
   "name": "SecurityTrails_Passive_DNS",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Manabu Niseki, @ninoseki",
   "url": "https://github.com/ninoseki/cortex-securitytrails",
   "license": "MIT",

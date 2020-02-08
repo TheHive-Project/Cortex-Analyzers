@@ -1,7 +1,7 @@
 [
 {
   "name": "AbuseIPDB",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Matteo Lodi",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-v3",
@@ -37,7 +37,7 @@
 ,
 {
   "name": "Abuse_Finder",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -54,7 +54,7 @@
 ,
 {
   "name": "BackscatterIO_Enrichment",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "brandon@backscatter.io",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "APLv2",
@@ -86,7 +86,7 @@
 ,
 {
   "name": "BackscatterIO_GetObservations",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "brandon@backscatter.io",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "APLv2",
@@ -117,7 +117,7 @@
 ,
 {
   "name": "C1fApp",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "etz69",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -152,7 +152,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
+  "version": "2.0.0",
   "description": "Checks CERT.at Passive DNS for a given domain.",
   "dataTypeList": [
     "domain",
@@ -178,7 +178,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
+  "version": "2.0.0",
   "description": "Check CIRCL's Passive DNS for a given domain or URL.",
   "dataTypeList": [
     "domain",
@@ -210,7 +210,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
+  "version": "2.0.0",
   "description": "Check CIRCL's Passive SSL for a given IP address or a X509 certificate hash.",
   "dataTypeList": [
     "ip",
@@ -242,7 +242,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/censys-analyzer",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Check IPs, certificate hashes or domains against censys.io.",
   "dataTypeList": [
     "ip",
@@ -274,7 +274,7 @@
   "author": "crackytsi",
   "license": "AGPL-V3",
   "url": "https://crt.sh",
-  "version": "1.0",
+  "version": "1.0.0",
   "baseConfig": "Crtsh",
   "config": {
     "check_tlp": false,
@@ -290,7 +290,7 @@
 ,
 {
   "name": "CuckooSandbox_File_Analysis_Inet",
-  "version": "1.1",
+  "version": "1.2.0",
   "author": "Andrea Garavaglia, LDO-CERT",
   "url": "https://github.com/garanews/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -315,8 +315,8 @@
       "required": false
     },
     {
-      "name": "cert_check",
-      "description": "Verify server certificate",
+      "name": "verifyssl",
+      "description": "Verify SSL certificate",
       "type": "boolean",
       "multi": false,
       "required": true,
@@ -335,7 +335,7 @@
 ,
 {
   "name": "CuckooSandbox_Url_Analysis",
-  "version": "1.1",
+  "version": "1.2.0",
   "author": "Andrea Garavaglia, LDO-CERT",
   "url": "https://github.com/garanews/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -360,8 +360,8 @@
       "required": false
     },
     {
-      "name": "cert_check",
-      "description": "Verify server certificate",
+      "name": "verifyssl",
+      "description": "Verify SSL certificate",
       "type": "boolean",
       "multi": false,
       "required": true,
@@ -383,7 +383,7 @@
   "author": "ph34tur3",
   "license": "AGPL-V3",
   "url": "https://github.com/ph34tur3/Cortex-Analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Search cybercrime-tracker.net for C2 servers.",
   "dataTypeList": [
     "domain",
@@ -406,7 +406,7 @@
   "author": "Rémi Allain, Cyberprotect",
   "license": "AGPL-V3",
   "url": "https://github.com/Cyberprotect/Cortex-Analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "ThreatScore is a cyber threat scoring system provided by Cyberprotect",
   "dataTypeList": [
     "domain",
@@ -421,34 +421,8 @@
 }
 ,
 {
-  "name": "Cymon_Check_IP",
-  "version": "2.1",
-  "author": "Julian Gonzalez",
-  "url": "https://github.com/ST2labs/Analyzers",
-  "license": "AGPL-V3",
-  "description": "Check an IP addr against Cymon.io.",
-  "dataTypeList": [
-    "ip"
-  ],
-  "baseConfig": "Cymon",
-  "config": {
-    "service": "Check_IP"
-  },
-  "configurationItems": [
-    {
-      "name": "key",
-      "description": "API key for Cymon.io",
-      "type": "string",
-      "multi": false,
-      "required": true
-    }
-  ],
-  "dockerImage": "cortexneurons/cymon_check_ip:devel"
-}
-,
-{
   "name": "DNSDB_DomainName",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -483,7 +457,7 @@
 ,
 {
   "name": "DNSDB_IPHistory",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -517,7 +491,7 @@
 ,
 {
   "name": "DNSDB_NameHistory",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -555,7 +529,7 @@
   "author": "Andrea Garavaglia, LDO-CERT",
   "license": "AGPL-V3",
   "url": "https://github.com/LDO-CERT/cortex-analyzer",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Check if a  domain is sinkholed via DNS Sinkhole server",
   "dataTypeList": [
     "domain"
@@ -582,7 +556,7 @@
 ,
 {
   "name": "DShield_lookup",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Xavier Xavier, SANS ISC",
   "url": "https://github.com/xme/thehive/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -599,7 +573,7 @@
 ,
 {
   "name": "DomainTools_HostingHistory",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "ANSSI",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -632,7 +606,7 @@
 ,
 {
   "name": "DomainTools_Reputation",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -666,7 +640,7 @@
 ,
 {
   "name": "DomainTools_ReverseIP",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -701,7 +675,7 @@
 ,
 {
   "name": "DomainTools_ReverseIPWhois",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "ANSSI",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -737,7 +711,7 @@
 ,
 {
   "name": "DomainTools_ReverseNameServer",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -770,7 +744,7 @@
 ,
 {
   "name": "DomainTools_ReverseWhois",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -806,7 +780,7 @@
 ,
 {
   "name": "DomainTools_Risk",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -840,7 +814,7 @@
 ,
 {
   "name": "DomainTools_WhoisHistory",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -873,7 +847,7 @@
 ,
 {
   "name": "DomainTools_WhoisLookup",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -907,7 +881,7 @@
 ,
 {
   "name": "DomainTools_WhoisLookupUnparsed",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -941,7 +915,7 @@
 ,
 {
   "name": "EmergingThreats_DomainInfo",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
   "url": "https://github.com/dadokkio/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -965,7 +939,7 @@
 ,
 {
   "name": "EmergingThreats_IPInfo",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
   "url": "https://github.com/dadokkio/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -988,7 +962,7 @@
 ,
 {
   "name": "EmergingThreats_MalwareInfo",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
   "url": "https://github.com/dadokkio/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1012,7 +986,7 @@
 ,
 {
   "name": "EmlParser",
-  "version": "1.2",
+  "version": "1.2.0",
   "author": "ninsmith",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1031,7 +1005,7 @@
 ,
 {
   "name": "FileInfo",
-  "version": "6.0",
+  "version": "7.0.0",
   "author": "TheHive-Project",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1078,7 +1052,7 @@
 ,
 {
   "name": "FireEyeiSight",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
   "url": "https://github.com/LDO-CERT/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1119,7 +1093,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
+  "version": "2.0.0",
   "description": "Check IP addresses against the FireHOL blocklists",
   "dataTypeList": [
     "ip"
@@ -1139,7 +1113,7 @@
 ,
 {
   "name": "Fortiguard_URLCategory",
-  "version": "2.1",
+  "version": "2.1.0",
   "author": "Eric Capuano",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1206,7 +1180,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
+  "version": "2.0.0",
   "description": "Use Google Safebrowing to check URLs and domain names.",
   "dataTypeList": [
     "url",
@@ -1234,8 +1208,42 @@
 }
 ,
 {
+  "name": "GoogleVisionAPI_WebDetection",
+  "version": "1.0.0",
+  "author": "CERT-LaPoste",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Find look alike image via Google Cloud Vision API using the Web_Detection service ",
+  "dataTypeList": [
+    "file",
+    "url"
+  ],
+  "baseConfig": "GoogleVisionAPI",
+  "config": {
+    "service": "get"
+  },
+  "configurationItems": [
+    {
+      "name": "api_key",
+      "description": "API key for this service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "max_result",
+      "description": "Maximum number of url to fetch",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ],
+  "dockerImage": "cortexneurons/googlevisionapi_webdetection:devel"
+}
+,
+{
   "name": "GreyNoise",
-  "version": "2.3",
+  "version": "2.3.0",
   "author": "Nclose",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "APLv2",
@@ -1263,8 +1271,8 @@
 ,
 {
   "name": "HIBP_Query",
-  "version": "1.0",
-  "author": "Matt Erasmus",
+  "version": "2.0.0",
+  "author": "Matt Erasmus, Jonas Hergenhahn",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Query haveibeenpwned.com for a compromised email address",
@@ -1274,7 +1282,7 @@
   "baseConfig": "HIBP",
   "config": {
     "service": "query",
-    "url": "https://haveibeenpwned.com/api/v2/breachedaccount/"
+    "url": "https://haveibeenpwned.com/api/v3/breachedaccount/"
   },
   "configurationItems": [
     {
@@ -1284,6 +1292,30 @@
       "multi": false,
       "required": true,
       "defaultValue": true
+    },
+    {
+      "name": "truncate",
+      "description": "Truncated response means only the name of data breaches",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": false
+    },
+    {
+      "name": "api_key",
+      "description": "Api key for hibp",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": ""
+    },
+    {
+      "name": "retries",
+      "description": "Retries to request api while getting status code 429",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 5
     }
   ],
   "dockerImage": "cortexneurons/hibp_query:devel"
@@ -1291,7 +1323,7 @@
 ,
 {
   "name": "Hashdd_Detail",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "iosonogio",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPLv3",
@@ -1317,7 +1349,7 @@
 ,
 {
   "name": "Hashdd_Status",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "iosonogio",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPLv3",
@@ -1343,7 +1375,7 @@
 ,
 {
   "name": "Hipposcore",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1372,7 +1404,7 @@
 ,
 {
   "name": "HippoMore",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1404,7 +1436,7 @@
   "author": "Rémi Allain, Cyberprotect",
   "license": "AGPL-V3",
   "url": "https://github.com/Cyberprotect/Cortex-Analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "hunter.io is a service to find email addresses from a domain.",
   "dataTypeList": [
     "domain",
@@ -1429,7 +1461,7 @@
 ,
 {
   "name": "HybridAnalysis_GetReport",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Daniil Yugoslavskiy, Tieto",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1461,7 +1493,7 @@
 ,
 {
   "name": "IBMXForce_Lookup",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
   "url": "https://github.com/LDO-CERT/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1512,7 +1544,7 @@
 ,
 {
   "name": "Investigate_Categorization",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Cisco Umbrella Research @opendns",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Investigate",
   "license": "AGPL-V3",
@@ -1539,7 +1571,7 @@
 ,
 {
   "name": "Investigate_Sample",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Cisco Umbrella Research @opendns",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Investigate",
   "license": "AGPL-V3",
@@ -1565,7 +1597,7 @@
 ,
 {
   "name": "JoeSandbox_File_Analysis_Inet",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1614,7 +1646,7 @@
 ,
 {
   "name": "JoeSandbox_File_Analysis_Noinet",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1663,7 +1695,7 @@
 ,
 {
   "name": "JoeSandbox_Url_Analysis",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1715,7 +1747,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
+  "version": "2.0.0",
   "description": "Query multiple MISP instances for events containing an observable.",
   "dataTypeList": [
     "domain",
@@ -1780,7 +1812,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/misp-warninglists-analyzer",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Check IoCs/Observables against MISP Warninglists to filter false positives.",
   "dataTypeList": [
     "ip",
@@ -1807,7 +1839,7 @@
   "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
   "license": "AGPL-V3",
   "url": "https://github.com/LDO-CERT/cortex-analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Check files against Malpedia YARA rules.",
   "dataTypeList": [
     "file"
@@ -1841,7 +1873,7 @@
 ,
 {
   "name": "Malwares_GetReport",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "LDO-CERT",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1872,7 +1904,7 @@
 ,
 {
   "name": "Malwares_Scan",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "LDO-CERT",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1901,7 +1933,7 @@
 ,
 {
   "name": "MaxMind_GeoIP",
-  "version": "3.0",
+  "version": "3.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1914,8 +1946,191 @@
 }
 ,
 {
+  "name": "MetaDefenderCloud_GetReport",
+  "version": "1.0.0",
+  "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get the latest MetaDefender Cloud report for hash.",
+  "dataTypeList": [
+    "hash"
+  ],
+  "baseConfig": "MetaDefender",
+  "config": {
+    "service": "query_cloud"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for MetaDefender",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "url",
+      "description": "url address for MetaDefender server",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "dockerImage": "cortexneurons/metadefendercloud_getreport:devel"
+}
+,
+{
+  "name": "MetaDefenderCloud_Reputation",
+  "version": "1.0.0",
+  "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get the latest MetaDefender Cloud reputation report .",
+  "dataTypeList": [
+    "ip",
+    "url",
+    "domain"
+  ],
+  "baseConfig": "MetaDefender",
+  "config": {
+    "service": "reputation_cloud"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for MetaDefender",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "url",
+      "description": "url address for MetaDefender server",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "dockerImage": "cortexneurons/metadefendercloud_reputation:devel"
+}
+,
+{
+  "name": "MetaDefenderCloud_Scan",
+  "version": "1.0.0",
+  "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Scan a file with MetaDefender Cloud",
+  "dataTypeList": [
+    "file"
+  ],
+  "baseConfig": "MetaDefender",
+  "config": {
+    "service": "scan_cloud"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for MetaDefender",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "url",
+      "description": "url address for MetaDefender server",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "polling",
+      "description": "Define time interval between two requests attempts for the report",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 10
+    }
+  ],
+  "dockerImage": "cortexneurons/metadefendercloud_scan:devel"
+}
+,
+{
+  "name": "MetaDefenderCore_GetReport",
+  "version": "1.0.0",
+  "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get the latest MetaDefender Core report for hash.",
+  "dataTypeList": [
+    "hash"
+  ],
+  "baseConfig": "MetaDefender",
+  "config": {
+    "service": "query_core"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for MetaDefender",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "url",
+      "description": "url address for MetaDefender server",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "dockerImage": "cortexneurons/metadefendercore_getreport:devel"
+}
+,
+{
+  "name": "MetaDefenderCore_Scan",
+  "version": "1.0.0",
+  "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Scan a file with MetaDefender Core",
+  "dataTypeList": [
+    "file"
+  ],
+  "baseConfig": "MetaDefender",
+  "config": {
+    "service": "scan_core"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for MetaDefender",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "url",
+      "description": "url address for MetaDefender server",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "polling",
+      "description": "Define time interval between two requests attempts for the report",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 10
+    }
+  ],
+  "dockerImage": "cortexneurons/metadefendercore_scan:devel"
+}
+,
+{
   "name": "Mnemonic_pDNS_Closed",
-  "version": "3.0",
+  "version": "3.0.0",
   "author": "Michael Stensrud, Nordic Financial CERT",
   "url": "https://passivedns.mnemonic.no/search",
   "license": "AGPL-V3",
@@ -1943,7 +2158,7 @@
 ,
 {
   "name": "Mnemonic_pDNS_Public",
-  "version": "3.0",
+  "version": "3.0.0",
   "author": "Michael Stensrud, Nordic Financial CERT",
   "url": "https://passivedns.mnemonic.no/search",
   "license": "AGPL-V3",
@@ -1963,7 +2178,7 @@
 ,
 {
   "name": "Msg_Parser",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1977,7 +2192,7 @@
 ,
 {
   "name": "Nessus",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "Guillaume Rousse",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2036,7 +2251,7 @@
 ,
 {
   "name": "OTXQuery",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "Eric Capuano",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2063,7 +2278,7 @@
 ,
 {
   "name": "Onyphe_Datascan",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "ANSSI",
   "url": "https://github.com/cybernardo/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2090,7 +2305,7 @@
 ,
 {
   "name": "Onyphe_Forward",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Pierre Baudry, Adrien Barchapt",
   "url": "https://github.com/cybernardo/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2116,7 +2331,7 @@
 ,
 {
   "name": "Onyphe_Geolocate",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Pierre Baudry, Adrien Barchapt",
   "url": "https://github.com/cybernardo/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2142,7 +2357,7 @@
 ,
 {
   "name": "Onyphe_Inetnum",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "ANSSI",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2168,7 +2383,7 @@
 ,
 {
   "name": "Onyphe_Ports",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Pierre Baudry, Adrien Barchapt",
   "url": "https://github.com/cybernardo/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2194,7 +2409,7 @@
 ,
 {
   "name": "Onyphe_Reverse",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Pierre Baudry, Adrien Barchapt",
   "url": "https://github.com/cybernardo/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2220,7 +2435,7 @@
 ,
 {
   "name": "Onyphe_Threats",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Pierre Baudry, Adrien Barchapt",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2246,7 +2461,7 @@
 ,
 {
   "name": "PassiveTotal_Enrichment",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2281,7 +2496,7 @@
 ,
 {
   "name": "PassiveTotal_Malware",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2316,7 +2531,7 @@
 ,
 {
   "name": "PassiveTotal_Osint",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2351,7 +2566,7 @@
 ,
 {
   "name": "PassiveTotal_Passive_Dns",
-  "version": "2.1",
+  "version": "2.1.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2386,7 +2601,7 @@
 ,
 {
   "name": "PassiveTotal_Ssl_Certificate_Details",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2420,7 +2635,7 @@
 ,
 {
   "name": "PassiveTotal_Ssl_Certificate_History",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2454,7 +2669,7 @@
 ,
 {
   "name": "PassiveTotal_Unique_Resolutions",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2489,7 +2704,7 @@
 ,
 {
   "name": "PassiveTotal_Whois_Details",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2524,7 +2739,7 @@
 ,
 {
   "name": "Patrowl_GetReport",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Nicolas Mattiocco",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2559,7 +2774,7 @@
 ,
 {
   "name": "PayloadSecurity_File_Analysis",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Emmanuel Torquato",
   "url": "https://github.com/notset/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2620,7 +2835,7 @@
 ,
 {
   "name": "PayloadSecurity_Url_Analysis",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Emmanuel Torquato",
   "url": "https://github.com/notset/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2681,7 +2896,7 @@
 ,
 {
   "name": "PhishTank_CheckURL",
-  "version": "2.1",
+  "version": "2.1.0",
   "author": "Eric Capuano",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2704,7 +2919,7 @@
 ,
 {
   "name": "PhishingInitiative_Lookup",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2727,7 +2942,7 @@
 ,
 {
   "name": "PhishingInitiative_Scan",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Remi Pointel",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2750,7 +2965,7 @@
 ,
 {
   "name": "ProofPoint_Lookup",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Emmanuel Torquato",
   "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2801,7 +3016,7 @@
 ,
 {
   "name": "Pulsedive_GetIndicator",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Nils Kuhnert",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2827,7 +3042,7 @@
 ,
 {
   "name": "RecordedFuture_risk",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "KAPSCH-CDC",
   "url": "https://github.com/kapschcdc/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2852,7 +3067,7 @@
 ,
 {
   "name": "Robtex_Forward_PDNS_Query",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Nils Kuhnert",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2870,7 +3085,7 @@
 ,
 {
   "name": "Robtex_IP_Query",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Nils Kuhnert",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2887,7 +3102,7 @@
 ,
 {
   "name": "Robtex_Reverse_PDNS_Query",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Nils Kuhnert",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2904,7 +3119,7 @@
 ,
 {
   "name": "SecurityTrails_Passive_DNS",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Manabu Niseki, @ninoseki",
   "url": "https://github.com/ninoseki/cortex-securitytrails",
   "license": "MIT",
@@ -2930,7 +3145,7 @@
 ,
 {
   "name": "SecurityTrails_Whois",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Manabu Niseki, @ninoseki",
   "url": "https://github.com/ninoseki/cortex-securitytrails",
   "license": "MIT",
@@ -2956,13 +3171,14 @@
 ,
 {
   "name": "Shodan_DNSResolve",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "ANSSI",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
   "license": "AGPL-V3",
   "description": "Retrieve domain resolutions on Shodan.",
   "dataTypeList": [
-    "domain"
+    "domain",
+    "fqdn"
   ],
   "baseConfig": "Shodan",
   "config": {
@@ -2982,7 +3198,7 @@
 ,
 {
   "name": "Shodan_Host",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Sebastien Larinier @Sebdraven",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
   "license": "AGPL-V3",
@@ -3008,7 +3224,7 @@
 ,
 {
   "name": "Shodan_Host_History",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "ANSSI",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
   "license": "AGPL-V3",
@@ -3034,13 +3250,14 @@
 ,
 {
   "name": "Shodan_InfoDomain",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "ANSSI",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
   "license": "AGPL-V3",
   "description": "Retrieve key Shodan information on a domain.",
   "dataTypeList": [
-    "domain"
+    "domain",
+    "fqdn"
   ],
   "baseConfig": "Shodan",
   "config": {
@@ -3060,7 +3277,7 @@
 ,
 {
   "name": "Shodan_ReverseDNS",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "ANSSI",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
   "license": "AGPL-V3",
@@ -3086,7 +3303,7 @@
 ,
 {
   "name": "Shodan_Search",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "Sebastien Larinier @Sebdraven",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
   "license": "AGPL-V3",
@@ -3115,7 +3332,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/sinkdb-analyzer",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Check if ip is sinkholed via sinkdb.abuse.ch",
   "dataTypeList": [
     "ip"
@@ -3135,7 +3352,7 @@
 ,
 {
   "name": "SoltraEdge",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Michael Stensrud, Nordic Financial CERT",
   "url": "http://soltra.com/en/",
   "license": "AGPL-V3",
@@ -3201,7 +3418,7 @@
   "author": "Robert Nixon",
   "license": "AGPL-V3",
   "url": "https://github.com/robertnixon2003/Cortex-Analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Fetch observable details from an Anomali STAXX instance.",
   "dataTypeList": [
     "domain",
@@ -3265,7 +3482,7 @@
   "author": "Marc-Andre Doll, STARC by EXAPROBE",
   "license": "AGPL-V3",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "baseConfig": "StopForumSpam",
   "config": {
     "check_tlp": true,
@@ -3299,7 +3516,7 @@
 ,
 {
   "name": "TalosReputation",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Gabriel Antonio da Silva",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -3316,7 +3533,7 @@
   "author": "Rémi Allain, Cyberprotect",
   "license": "AGPL-V3",
   "url": "https://github.com/Cyberprotect/Cortex-Analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Look up domains, mail and IP addresses on ThreatCrowd.",
   "dataTypeList": [
     "mail",
@@ -3336,7 +3553,7 @@
   "author": "Marc-André DOLL, STARC by EXAPROBE",
   "license": "AGPL-V3",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Query http://torstatus.blutmagie.de/query_export.php/Tor_query_EXPORT.csv for TOR exit nodes IP addresses or names.",
   "dataTypeList": [
     "ip",
@@ -3369,7 +3586,7 @@
   "author": "Marc-André DOLL, STARC by EXAPROBE",
   "license": "AGPL-V3",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Query https://check.torproject.org/exit-addresses for TOR exit nodes IP addresses.",
   "dataTypeList": [
     "ip"
@@ -3408,7 +3625,8 @@
   "author": "ninoseki, Nils Kuhnert",
   "license": "MIT",
   "url": "https://github.com/ninoseki/cortex_URLhaus_analyzer",
-  "version": "2.0",
+  "version": "2.0.0",
+  "baseConfig": "URLhaus",
   "description": "Search domains, IPs, URLs or hashes on URLhaus.",
   "dataTypeList": [
     "domain",
@@ -3422,7 +3640,7 @@
 ,
 {
   "name": "Umbrella_Report",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Kyle Parrish",
   "url": "https://github.com/arnydo/thehive/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -3470,7 +3688,7 @@
 ,
 {
   "name": "UnshortenLink",
-  "version": "1.1",
+  "version": "1.2.0",
   "author": "Remi Pointel, CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -3488,6 +3706,7 @@
   "license": "MIT",
   "url": "https://github.com/ninoseki/cortex_urlscan_analyzer",
   "version": "0.1.0",
+  "baseConfig": "Urlscan",
   "description": "Search IPs, domains, hashes or URLs on urlscan.io",
   "dataTypeList": [
     "ip",
@@ -3503,7 +3722,7 @@
   "license": "AGPL-V3",
   "author": "Nils Kuhnert, CERT-Bund",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "3.0",
+  "version": "3.0.0",
   "description": "VMRay Sandbox file analysis.",
   "dataTypeList": [
     "hash",
@@ -3554,7 +3773,7 @@
 ,
 {
   "name": "VirusTotal_GetReport",
-  "version": "3.0",
+  "version": "3.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -3592,7 +3811,7 @@
 ,
 {
   "name": "VirusTotal_Scan",
-  "version": "3.0",
+  "version": "3.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -3630,7 +3849,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
+  "version": "2.0.0",
   "description": "Search for MD5 hashes in Virusshare.com hash list",
   "dataTypeList": [
     "hash",
@@ -3651,7 +3870,7 @@
 ,
 {
   "name": "WOT_Lookup",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Andrea Garavaglia, LDO-CERT",
   "url": "https://github.com/garanews/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -3681,7 +3900,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
+  "version": "2.0.0",
   "description": "Check files against YARA rules.",
   "dataTypeList": [
     "file"
@@ -3704,7 +3923,7 @@
   "author": "CERT-BDF",
   "license": "AGPL-V3",
   "url": "https://github.com/CERT/cortex-analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Fetch observable details from a YETI instance.",
   "dataTypeList": [
     "domain",

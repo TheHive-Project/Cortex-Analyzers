@@ -3,7 +3,7 @@
   "author": "Marc-André DOLL, STARC by EXAPROBE",
   "license": "AGPL-V3",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Query https://check.torproject.org/exit-addresses for TOR exit nodes IP addresses.",
   "dataTypeList": ["ip"],
   "command": "TorProject/tor_project_analyzer.py",

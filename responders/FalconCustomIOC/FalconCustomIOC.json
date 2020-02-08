@@ -1,6 +1,6 @@
 {
   "name": "Crowdstrike Falcon Custom IOC API",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Michael",
   "url": "https://www.crowdstrike.com/blog/tech-center/import-iocs-crowdstrike-falcon-host-platform-via-api/",
   "license": "MIT",

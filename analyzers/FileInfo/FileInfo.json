@@ -1,6 +1,6 @@
 {
   "name": "FileInfo",
-  "version": "7.0",
+  "version": "7.0.0",
   "author": "TheHive-Project",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -8,6 +8,7 @@
   "dataTypeList": ["file"],
   "baseConfig": "FileInfo",
   "command": "FileInfo/fileinfo_analyzer.py",
+  "baseImage": "ubuntu",
   "configurationItems": [
     {
       "name": "manalyze_enable",

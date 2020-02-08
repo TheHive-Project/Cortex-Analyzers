@@ -1,7 +1,7 @@
 [
 {
   "name": "AbuseIPDB",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Matteo Lodi",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-v3",
@@ -32,12 +32,12 @@
     "max_tlp": 2,
     "auto_extract": false
   },
-  "dockerImage": "cortexneurons/abuseipdb:1.0"
+  "dockerImage": "cortexneurons/abuseipdb:1.0.0"
 }
 ,
 {
   "name": "Abuse_Finder",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -49,12 +49,12 @@
     "mail"
   ],
   "baseConfig": "Abuse_Finder",
-  "dockerImage": "cortexneurons/abuse_finder:2.0"
+  "dockerImage": "cortexneurons/abuse_finder:2.0.0"
 }
 ,
 {
   "name": "BackscatterIO_Enrichment",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "brandon@backscatter.io",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "APLv2",
@@ -81,12 +81,12 @@
     "auto_extract": true,
     "service": "enrichment"
   },
-  "dockerImage": "cortexneurons/backscatterio_enrichment:1.0"
+  "dockerImage": "cortexneurons/backscatterio_enrichment:1.0.0"
 }
 ,
 {
   "name": "BackscatterIO_GetObservations",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "brandon@backscatter.io",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "APLv2",
@@ -112,12 +112,12 @@
     "auto_extract": true,
     "service": "observations"
   },
-  "dockerImage": "cortexneurons/backscatterio_getobservations:1.0"
+  "dockerImage": "cortexneurons/backscatterio_getobservations:1.0.0"
 }
 ,
 {
   "name": "C1fApp",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "etz69",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -144,7 +144,7 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/c1fapp:1.0"
+  "dockerImage": "cortexneurons/c1fapp:1.0.0"
 }
 ,
 {
@@ -152,7 +152,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
+  "version": "2.0.0",
   "description": "Checks CERT.at Passive DNS for a given domain.",
   "dataTypeList": [
     "domain",
@@ -170,7 +170,7 @@
       "defaultValue": 100
     }
   ],
-  "dockerImage": "cortexneurons/certatpassivedns:2.0"
+  "dockerImage": "cortexneurons/certatpassivedns:2.0.0"
 }
 ,
 {
@@ -178,7 +178,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
+  "version": "2.0.0",
   "description": "Check CIRCL's Passive DNS for a given domain or URL.",
   "dataTypeList": [
     "domain",
@@ -202,7 +202,7 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/circlpassivedns:2.0"
+  "dockerImage": "cortexneurons/circlpassivedns:2.0.0"
 }
 ,
 {
@@ -210,7 +210,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
+  "version": "2.0.0",
   "description": "Check CIRCL's Passive SSL for a given IP address or a X509 certificate hash.",
   "dataTypeList": [
     "ip",
@@ -234,7 +234,7 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/circlpassivessl:2.0"
+  "dockerImage": "cortexneurons/circlpassivessl:2.0.0"
 }
 ,
 {
@@ -242,7 +242,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/censys-analyzer",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Check IPs, certificate hashes or domains against censys.io.",
   "dataTypeList": [
     "ip",
@@ -266,7 +266,7 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/censys:1.0"
+  "dockerImage": "cortexneurons/censys:1.0.0"
 }
 ,
 {
@@ -274,7 +274,7 @@
   "author": "crackytsi",
   "license": "AGPL-V3",
   "url": "https://crt.sh",
-  "version": "1.0",
+  "version": "1.0.0",
   "baseConfig": "Crtsh",
   "config": {
     "check_tlp": false,
@@ -285,12 +285,12 @@
     "domain"
   ],
   "configurationItems": [],
-  "dockerImage": "cortexneurons/crt_sh_transparency_logs:1.0"
+  "dockerImage": "cortexneurons/crt_sh_transparency_logs:1.0.0"
 }
 ,
 {
   "name": "CuckooSandbox_File_Analysis_Inet",
-  "version": "1.1",
+  "version": "1.2.0",
   "author": "Andrea Garavaglia, LDO-CERT",
   "url": "https://github.com/garanews/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -315,8 +315,8 @@
       "required": false
     },
     {
-      "name": "cert_check",
-      "description": "Verify server certificate",
+      "name": "verifyssl",
+      "description": "Verify SSL certificate",
       "type": "boolean",
       "multi": false,
       "required": true,
@@ -330,12 +330,12 @@
       "required": false
     }
   ],
-  "dockerImage": "cortexneurons/cuckoosandbox_file_analysis_inet:1.1"
+  "dockerImage": "cortexneurons/cuckoosandbox_file_analysis_inet:1.2.0"
 }
 ,
 {
   "name": "CuckooSandbox_Url_Analysis",
-  "version": "1.1",
+  "version": "1.2.0",
   "author": "Andrea Garavaglia, LDO-CERT",
   "url": "https://github.com/garanews/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -360,8 +360,8 @@
       "required": false
     },
     {
-      "name": "cert_check",
-      "description": "Verify server certificate",
+      "name": "verifyssl",
+      "description": "Verify SSL certificate",
       "type": "boolean",
       "multi": false,
       "required": true,
@@ -375,7 +375,7 @@
       "required": false
     }
   ],
-  "dockerImage": "cortexneurons/cuckoosandbox_url_analysis:1.1"
+  "dockerImage": "cortexneurons/cuckoosandbox_url_analysis:1.2.0"
 }
 ,
 {
@@ -383,7 +383,7 @@
   "author": "ph34tur3",
   "license": "AGPL-V3",
   "url": "https://github.com/ph34tur3/Cortex-Analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Search cybercrime-tracker.net for C2 servers.",
   "dataTypeList": [
     "domain",
@@ -398,7 +398,7 @@
     "max_tlp": 2
   },
   "configurationItems": [],
-  "dockerImage": "cortexneurons/cybercrime-tracker:1.0"
+  "dockerImage": "cortexneurons/cybercrime-tracker:1.0.0"
 }
 ,
 {
@@ -406,7 +406,7 @@
   "author": "Rémi Allain, Cyberprotect",
   "license": "AGPL-V3",
   "url": "https://github.com/Cyberprotect/Cortex-Analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "ThreatScore is a cyber threat scoring system provided by Cyberprotect",
   "dataTypeList": [
     "domain",
@@ -417,38 +417,12 @@
     "service": "ThreatScore",
     "check_tlp": true
   },
-  "dockerImage": "cortexneurons/cyberprotect_threatscore:1.0"
-}
-,
-{
-  "name": "Cymon_Check_IP",
-  "version": "2.1",
-  "author": "Julian Gonzalez",
-  "url": "https://github.com/ST2labs/Analyzers",
-  "license": "AGPL-V3",
-  "description": "Check an IP addr against Cymon.io.",
-  "dataTypeList": [
-    "ip"
-  ],
-  "baseConfig": "Cymon",
-  "config": {
-    "service": "Check_IP"
-  },
-  "configurationItems": [
-    {
-      "name": "key",
-      "description": "API key for Cymon.io",
-      "type": "string",
-      "multi": false,
-      "required": true
-    }
-  ],
-  "dockerImage": "cortexneurons/cymon_check_ip:2.1"
+  "dockerImage": "cortexneurons/cyberprotect_threatscore:1.0.0"
 }
 ,
 {
   "name": "DNSDB_DomainName",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -478,12 +452,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/dnsdb_domainname:2.0"
+  "dockerImage": "cortexneurons/dnsdb_domainname:2.0.0"
 }
 ,
 {
   "name": "DNSDB_IPHistory",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -512,12 +486,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/dnsdb_iphistory:2.0"
+  "dockerImage": "cortexneurons/dnsdb_iphistory:2.0.0"
 }
 ,
 {
   "name": "DNSDB_NameHistory",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -547,7 +521,7 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/dnsdb_namehistory:2.0"
+  "dockerImage": "cortexneurons/dnsdb_namehistory:2.0.0"
 }
 ,
 {
@@ -555,7 +529,7 @@
   "author": "Andrea Garavaglia, LDO-CERT",
   "license": "AGPL-V3",
   "url": "https://github.com/LDO-CERT/cortex-analyzer",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Check if a  domain is sinkholed via DNS Sinkhole server",
   "dataTypeList": [
     "domain"
@@ -577,12 +551,12 @@
       "type": "string"
     }
   ],
-  "dockerImage": "cortexneurons/dnssinkhole:1.0"
+  "dockerImage": "cortexneurons/dnssinkhole:1.0.0"
 }
 ,
 {
   "name": "DShield_lookup",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Xavier Xavier, SANS ISC",
   "url": "https://github.com/xme/thehive/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -594,12 +568,12 @@
   "config": {
     "service": "query"
   },
-  "dockerImage": "cortexneurons/dshield_lookup:1.0"
+  "dockerImage": "cortexneurons/dshield_lookup:1.0.0"
 }
 ,
 {
   "name": "DomainTools_HostingHistory",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "ANSSI",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -627,12 +601,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/domaintools_hostinghistory:2.0"
+  "dockerImage": "cortexneurons/domaintools_hostinghistory:2.0.0"
 }
 ,
 {
   "name": "DomainTools_Reputation",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -661,12 +635,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/domaintools_reputation:2.0"
+  "dockerImage": "cortexneurons/domaintools_reputation:2.0.0"
 }
 ,
 {
   "name": "DomainTools_ReverseIP",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -696,12 +670,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/domaintools_reverseip:2.0"
+  "dockerImage": "cortexneurons/domaintools_reverseip:2.0.0"
 }
 ,
 {
   "name": "DomainTools_ReverseIPWhois",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "ANSSI",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -732,12 +706,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/domaintools_reverseipwhois:2.0"
+  "dockerImage": "cortexneurons/domaintools_reverseipwhois:2.0.0"
 }
 ,
 {
   "name": "DomainTools_ReverseNameServer",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -765,12 +739,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/domaintools_reversenameserver:2.0"
+  "dockerImage": "cortexneurons/domaintools_reversenameserver:2.0.0"
 }
 ,
 {
   "name": "DomainTools_ReverseWhois",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -801,12 +775,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/domaintools_reversewhois:2.0"
+  "dockerImage": "cortexneurons/domaintools_reversewhois:2.0.0"
 }
 ,
 {
   "name": "DomainTools_Risk",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -835,12 +809,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/domaintools_risk:2.0"
+  "dockerImage": "cortexneurons/domaintools_risk:2.0.0"
 }
 ,
 {
   "name": "DomainTools_WhoisHistory",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -868,12 +842,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/domaintools_whoishistory:2.0"
+  "dockerImage": "cortexneurons/domaintools_whoishistory:2.0.0"
 }
 ,
 {
   "name": "DomainTools_WhoisLookup",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -902,12 +876,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/domaintools_whoislookup:2.0"
+  "dockerImage": "cortexneurons/domaintools_whoislookup:2.0.0"
 }
 ,
 {
   "name": "DomainTools_WhoisLookupUnparsed",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -936,12 +910,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/domaintools_whoislookupunparsed:2.0"
+  "dockerImage": "cortexneurons/domaintools_whoislookupunparsed:2.0.0"
 }
 ,
 {
   "name": "EmergingThreats_DomainInfo",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
   "url": "https://github.com/dadokkio/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -960,12 +934,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/emergingthreats_domaininfo:1.0"
+  "dockerImage": "cortexneurons/emergingthreats_domaininfo:1.0.0"
 }
 ,
 {
   "name": "EmergingThreats_IPInfo",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
   "url": "https://github.com/dadokkio/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -983,12 +957,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/emergingthreats_ipinfo:1.0"
+  "dockerImage": "cortexneurons/emergingthreats_ipinfo:1.0.0"
 }
 ,
 {
   "name": "EmergingThreats_MalwareInfo",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
   "url": "https://github.com/dadokkio/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1007,12 +981,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/emergingthreats_malwareinfo:1.0"
+  "dockerImage": "cortexneurons/emergingthreats_malwareinfo:1.0.0"
 }
 ,
 {
   "name": "EmlParser",
-  "version": "1.2",
+  "version": "1.2.0",
   "author": "ninsmith",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1026,12 +1000,12 @@
   "dataTypeList": [
     "file"
   ],
-  "dockerImage": "cortexneurons/emlparser:1.2"
+  "dockerImage": "cortexneurons/emlparser:1.2.0"
 }
 ,
 {
   "name": "FileInfo",
-  "version": "6.0",
+  "version": "7.0.0",
   "author": "TheHive-Project",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1073,12 +1047,12 @@
       "default": "/opt/Cortex-Analyzers/utils/manalyze/bin/manalyze"
     }
   ],
-  "dockerImage": "cortexneurons/fileinfo:6.0"
+  "dockerImage": "cortexneurons/fileinfo:7.0.0"
 }
 ,
 {
   "name": "FireEyeiSight",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
   "url": "https://github.com/LDO-CERT/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1111,7 +1085,7 @@
       "multi": false
     }
   ],
-  "dockerImage": "cortexneurons/fireeyeisight:1.0"
+  "dockerImage": "cortexneurons/fireeyeisight:1.0.0"
 }
 ,
 {
@@ -1119,7 +1093,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
+  "version": "2.0.0",
   "description": "Check IP addresses against the FireHOL blocklists",
   "dataTypeList": [
     "ip"
@@ -1134,12 +1108,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/fireholblocklists:2.0"
+  "dockerImage": "cortexneurons/fireholblocklists:2.0.0"
 }
 ,
 {
   "name": "Fortiguard_URLCategory",
-  "version": "2.1",
+  "version": "2.1.0",
   "author": "Eric Capuano",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1178,7 +1152,7 @@
       ]
     }
   ],
-  "dockerImage": "cortexneurons/fortiguard_urlcategory:2.1"
+  "dockerImage": "cortexneurons/fortiguard_urlcategory:2.1.0"
 }
 ,
 {
@@ -1206,7 +1180,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
+  "version": "2.0.0",
   "description": "Use Google Safebrowing to check URLs and domain names.",
   "dataTypeList": [
     "url",
@@ -1230,12 +1204,46 @@
       "required": false
     }
   ],
-  "dockerImage": "cortexneurons/googlesafebrowsing:2.0"
+  "dockerImage": "cortexneurons/googlesafebrowsing:2.0.0"
+}
+,
+{
+  "name": "GoogleVisionAPI_WebDetection",
+  "version": "1.0.0",
+  "author": "CERT-LaPoste",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Find look alike image via Google Cloud Vision API using the Web_Detection service ",
+  "dataTypeList": [
+    "file",
+    "url"
+  ],
+  "baseConfig": "GoogleVisionAPI",
+  "config": {
+    "service": "get"
+  },
+  "configurationItems": [
+    {
+      "name": "api_key",
+      "description": "API key for this service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "max_result",
+      "description": "Maximum number of url to fetch",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ],
+  "dockerImage": "cortexneurons/googlevisionapi_webdetection:1.0.0"
 }
 ,
 {
   "name": "GreyNoise",
-  "version": "2.3",
+  "version": "2.3.0",
   "author": "Nclose",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "APLv2",
@@ -1258,13 +1266,13 @@
     "max_tlp": 2,
     "auto_extract": false
   },
-  "dockerImage": "cortexneurons/greynoise:2.3"
+  "dockerImage": "cortexneurons/greynoise:2.3.0"
 }
 ,
 {
   "name": "HIBP_Query",
-  "version": "1.0",
-  "author": "Matt Erasmus",
+  "version": "2.0.0",
+  "author": "Matt Erasmus, Jonas Hergenhahn",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Query haveibeenpwned.com for a compromised email address",
@@ -1274,7 +1282,7 @@
   "baseConfig": "HIBP",
   "config": {
     "service": "query",
-    "url": "https://haveibeenpwned.com/api/v2/breachedaccount/"
+    "url": "https://haveibeenpwned.com/api/v3/breachedaccount/"
   },
   "configurationItems": [
     {
@@ -1284,14 +1292,38 @@
       "multi": false,
       "required": true,
       "defaultValue": true
+    },
+    {
+      "name": "truncate",
+      "description": "Truncated response means only the name of data breaches",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": false
+    },
+    {
+      "name": "api_key",
+      "description": "Api key for hibp",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": ""
+    },
+    {
+      "name": "retries",
+      "description": "Retries to request api while getting status code 429",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 5
     }
   ],
-  "dockerImage": "cortexneurons/hibp_query:1.0"
+  "dockerImage": "cortexneurons/hibp_query:2.0.0"
 }
 ,
 {
   "name": "Hashdd_Detail",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "iosonogio",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPLv3",
@@ -1312,12 +1344,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/hashdd_detail:1.0"
+  "dockerImage": "cortexneurons/hashdd_detail:1.0.0"
 }
 ,
 {
   "name": "Hashdd_Status",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "iosonogio",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPLv3",
@@ -1338,12 +1370,12 @@
       "required": false
     }
   ],
-  "dockerImage": "cortexneurons/hashdd_status:1.0"
+  "dockerImage": "cortexneurons/hashdd_status:1.0.0"
 }
 ,
 {
   "name": "Hipposcore",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1367,12 +1399,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/hipposcore:2.0"
+  "dockerImage": "cortexneurons/hipposcore:2.0.0"
 }
 ,
 {
   "name": "HippoMore",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1396,7 +1428,7 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/hippomore:2.0"
+  "dockerImage": "cortexneurons/hippomore:2.0.0"
 }
 ,
 {
@@ -1404,7 +1436,7 @@
   "author": "Rémi Allain, Cyberprotect",
   "license": "AGPL-V3",
   "url": "https://github.com/Cyberprotect/Cortex-Analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "hunter.io is a service to find email addresses from a domain.",
   "dataTypeList": [
     "domain",
@@ -1424,12 +1456,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/hunterio_domainsearch:1.0"
+  "dockerImage": "cortexneurons/hunterio_domainsearch:1.0.0"
 }
 ,
 {
   "name": "HybridAnalysis_GetReport",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Daniil Yugoslavskiy, Tieto",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1456,12 +1488,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/hybridanalysis_getreport:1.0"
+  "dockerImage": "cortexneurons/hybridanalysis_getreport:1.0.0"
 }
 ,
 {
   "name": "IBMXForce_Lookup",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
   "url": "https://github.com/LDO-CERT/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1507,12 +1539,12 @@
       "default": true
     }
   ],
-  "dockerImage": "cortexneurons/ibmxforce_lookup:1.0"
+  "dockerImage": "cortexneurons/ibmxforce_lookup:1.0.0"
 }
 ,
 {
   "name": "Investigate_Categorization",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Cisco Umbrella Research @opendns",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Investigate",
   "license": "AGPL-V3",
@@ -1534,12 +1566,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/investigate_categorization:1.0"
+  "dockerImage": "cortexneurons/investigate_categorization:1.0.0"
 }
 ,
 {
   "name": "Investigate_Sample",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Cisco Umbrella Research @opendns",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Investigate",
   "license": "AGPL-V3",
@@ -1560,12 +1592,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/investigate_sample:1.0"
+  "dockerImage": "cortexneurons/investigate_sample:1.0.0"
 }
 ,
 {
   "name": "JoeSandbox_File_Analysis_Inet",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1609,12 +1641,12 @@
       "defaultValue": 30
     }
   ],
-  "dockerImage": "cortexneurons/joesandbox_file_analysis_inet:2.0"
+  "dockerImage": "cortexneurons/joesandbox_file_analysis_inet:2.0.0"
 }
 ,
 {
   "name": "JoeSandbox_File_Analysis_Noinet",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1658,12 +1690,12 @@
       "defaultValue": 30
     }
   ],
-  "dockerImage": "cortexneurons/joesandbox_file_analysis_noinet:2.0"
+  "dockerImage": "cortexneurons/joesandbox_file_analysis_noinet:2.0.0"
 }
 ,
 {
   "name": "JoeSandbox_Url_Analysis",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1707,7 +1739,7 @@
       "defaultValue": 30
     }
   ],
-  "dockerImage": "cortexneurons/joesandbox_url_analysis:2.0"
+  "dockerImage": "cortexneurons/joesandbox_url_analysis:2.0.0"
 }
 ,
 {
@@ -1715,7 +1747,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
+  "version": "2.0.0",
   "description": "Query multiple MISP instances for events containing an observable.",
   "dataTypeList": [
     "domain",
@@ -1772,7 +1804,7 @@
       "required": false
     }
   ],
-  "dockerImage": "cortexneurons/misp:2.0"
+  "dockerImage": "cortexneurons/misp:2.0.0"
 }
 ,
 {
@@ -1780,7 +1812,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/misp-warninglists-analyzer",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Check IoCs/Observables against MISP Warninglists to filter false positives.",
   "dataTypeList": [
     "ip",
@@ -1799,7 +1831,7 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/mispwarninglists:1.0"
+  "dockerImage": "cortexneurons/mispwarninglists:1.0.0"
 }
 ,
 {
@@ -1807,7 +1839,7 @@
   "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
   "license": "AGPL-V3",
   "url": "https://github.com/LDO-CERT/cortex-analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Check files against Malpedia YARA rules.",
   "dataTypeList": [
     "file"
@@ -1836,12 +1868,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/malpedia:1.0"
+  "dockerImage": "cortexneurons/malpedia:1.0.0"
 }
 ,
 {
   "name": "Malwares_GetReport",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "LDO-CERT",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1867,12 +1899,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/malwares_getreport:1.0"
+  "dockerImage": "cortexneurons/malwares_getreport:1.0.0"
 }
 ,
 {
   "name": "Malwares_Scan",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "LDO-CERT",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1896,12 +1928,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/malwares_scan:1.0"
+  "dockerImage": "cortexneurons/malwares_scan:1.0.0"
 }
 ,
 {
   "name": "MaxMind_GeoIP",
-  "version": "3.0",
+  "version": "3.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1910,12 +1942,195 @@
     "ip"
   ],
   "baseConfig": "MaxMind",
-  "dockerImage": "cortexneurons/maxmind_geoip:3.0"
+  "dockerImage": "cortexneurons/maxmind_geoip:3.0.0"
+}
+,
+{
+  "name": "MetaDefenderCloud_GetReport",
+  "version": "1.0.0",
+  "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get the latest MetaDefender Cloud report for hash.",
+  "dataTypeList": [
+    "hash"
+  ],
+  "baseConfig": "MetaDefender",
+  "config": {
+    "service": "query_cloud"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for MetaDefender",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "url",
+      "description": "url address for MetaDefender server",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "dockerImage": "cortexneurons/metadefendercloud_getreport:1.0.0"
+}
+,
+{
+  "name": "MetaDefenderCloud_Reputation",
+  "version": "1.0.0",
+  "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get the latest MetaDefender Cloud reputation report .",
+  "dataTypeList": [
+    "ip",
+    "url",
+    "domain"
+  ],
+  "baseConfig": "MetaDefender",
+  "config": {
+    "service": "reputation_cloud"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for MetaDefender",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "url",
+      "description": "url address for MetaDefender server",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "dockerImage": "cortexneurons/metadefendercloud_reputation:1.0.0"
+}
+,
+{
+  "name": "MetaDefenderCloud_Scan",
+  "version": "1.0.0",
+  "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Scan a file with MetaDefender Cloud",
+  "dataTypeList": [
+    "file"
+  ],
+  "baseConfig": "MetaDefender",
+  "config": {
+    "service": "scan_cloud"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for MetaDefender",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "url",
+      "description": "url address for MetaDefender server",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "polling",
+      "description": "Define time interval between two requests attempts for the report",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 10
+    }
+  ],
+  "dockerImage": "cortexneurons/metadefendercloud_scan:1.0.0"
+}
+,
+{
+  "name": "MetaDefenderCore_GetReport",
+  "version": "1.0.0",
+  "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get the latest MetaDefender Core report for hash.",
+  "dataTypeList": [
+    "hash"
+  ],
+  "baseConfig": "MetaDefender",
+  "config": {
+    "service": "query_core"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for MetaDefender",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "url",
+      "description": "url address for MetaDefender server",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "dockerImage": "cortexneurons/metadefendercore_getreport:1.0.0"
+}
+,
+{
+  "name": "MetaDefenderCore_Scan",
+  "version": "1.0.0",
+  "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Scan a file with MetaDefender Core",
+  "dataTypeList": [
+    "file"
+  ],
+  "baseConfig": "MetaDefender",
+  "config": {
+    "service": "scan_core"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for MetaDefender",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "url",
+      "description": "url address for MetaDefender server",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "polling",
+      "description": "Define time interval between two requests attempts for the report",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 10
+    }
+  ],
+  "dockerImage": "cortexneurons/metadefendercore_scan:1.0.0"
 }
 ,
 {
   "name": "Mnemonic_pDNS_Closed",
-  "version": "3.0",
+  "version": "3.0.0",
   "author": "Michael Stensrud, Nordic Financial CERT",
   "url": "https://passivedns.mnemonic.no/search",
   "license": "AGPL-V3",
@@ -1938,12 +2153,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/mnemonic_pdns_closed:3.0"
+  "dockerImage": "cortexneurons/mnemonic_pdns_closed:3.0.0"
 }
 ,
 {
   "name": "Mnemonic_pDNS_Public",
-  "version": "3.0",
+  "version": "3.0.0",
   "author": "Michael Stensrud, Nordic Financial CERT",
   "url": "https://passivedns.mnemonic.no/search",
   "license": "AGPL-V3",
@@ -1958,12 +2173,12 @@
     "service": "public"
   },
   "configurationItems": [],
-  "dockerImage": "cortexneurons/mnemonic_pdns_public:3.0"
+  "dockerImage": "cortexneurons/mnemonic_pdns_public:3.0.0"
 }
 ,
 {
   "name": "Msg_Parser",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1972,12 +2187,12 @@
     "file"
   ],
   "baseConfig": "MsgParser",
-  "dockerImage": "cortexneurons/msg_parser:2.0"
+  "dockerImage": "cortexneurons/msg_parser:2.0.0"
 }
 ,
 {
   "name": "Nessus",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "Guillaume Rousse",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2031,12 +2246,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/nessus:2.0"
+  "dockerImage": "cortexneurons/nessus:2.0.0"
 }
 ,
 {
   "name": "OTXQuery",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "Eric Capuano",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2058,12 +2273,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/otxquery:2.0"
+  "dockerImage": "cortexneurons/otxquery:2.0.0"
 }
 ,
 {
   "name": "Onyphe_Datascan",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "ANSSI",
   "url": "https://github.com/cybernardo/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2085,12 +2300,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/onyphe_datascan:1.0"
+  "dockerImage": "cortexneurons/onyphe_datascan:1.0.0"
 }
 ,
 {
   "name": "Onyphe_Forward",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Pierre Baudry, Adrien Barchapt",
   "url": "https://github.com/cybernardo/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2111,12 +2326,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/onyphe_forward:1.0"
+  "dockerImage": "cortexneurons/onyphe_forward:1.0.0"
 }
 ,
 {
   "name": "Onyphe_Geolocate",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Pierre Baudry, Adrien Barchapt",
   "url": "https://github.com/cybernardo/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2137,12 +2352,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/onyphe_geolocate:1.0"
+  "dockerImage": "cortexneurons/onyphe_geolocate:1.0.0"
 }
 ,
 {
   "name": "Onyphe_Inetnum",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "ANSSI",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2163,12 +2378,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/onyphe_inetnum:1.0"
+  "dockerImage": "cortexneurons/onyphe_inetnum:1.0.0"
 }
 ,
 {
   "name": "Onyphe_Ports",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Pierre Baudry, Adrien Barchapt",
   "url": "https://github.com/cybernardo/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2189,12 +2404,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/onyphe_ports:1.0"
+  "dockerImage": "cortexneurons/onyphe_ports:1.0.0"
 }
 ,
 {
   "name": "Onyphe_Reverse",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Pierre Baudry, Adrien Barchapt",
   "url": "https://github.com/cybernardo/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2215,12 +2430,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/onyphe_reverse:1.0"
+  "dockerImage": "cortexneurons/onyphe_reverse:1.0.0"
 }
 ,
 {
   "name": "Onyphe_Threats",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Pierre Baudry, Adrien Barchapt",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2241,12 +2456,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/onyphe_threats:1.0"
+  "dockerImage": "cortexneurons/onyphe_threats:1.0.0"
 }
 ,
 {
   "name": "PassiveTotal_Enrichment",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2276,12 +2491,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/passivetotal_enrichment:2.0"
+  "dockerImage": "cortexneurons/passivetotal_enrichment:2.0.0"
 }
 ,
 {
   "name": "PassiveTotal_Malware",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2311,12 +2526,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/passivetotal_malware:2.0"
+  "dockerImage": "cortexneurons/passivetotal_malware:2.0.0"
 }
 ,
 {
   "name": "PassiveTotal_Osint",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2346,12 +2561,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/passivetotal_osint:2.0"
+  "dockerImage": "cortexneurons/passivetotal_osint:2.0.0"
 }
 ,
 {
   "name": "PassiveTotal_Passive_Dns",
-  "version": "2.1",
+  "version": "2.1.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2381,12 +2596,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/passivetotal_passive_dns:2.1"
+  "dockerImage": "cortexneurons/passivetotal_passive_dns:2.1.0"
 }
 ,
 {
   "name": "PassiveTotal_Ssl_Certificate_Details",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2415,12 +2630,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/passivetotal_ssl_certificate_details:2.0"
+  "dockerImage": "cortexneurons/passivetotal_ssl_certificate_details:2.0.0"
 }
 ,
 {
   "name": "PassiveTotal_Ssl_Certificate_History",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2449,12 +2664,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/passivetotal_ssl_certificate_history:2.0"
+  "dockerImage": "cortexneurons/passivetotal_ssl_certificate_history:2.0.0"
 }
 ,
 {
   "name": "PassiveTotal_Unique_Resolutions",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2484,12 +2699,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/passivetotal_unique_resolutions:2.0"
+  "dockerImage": "cortexneurons/passivetotal_unique_resolutions:2.0.0"
 }
 ,
 {
   "name": "PassiveTotal_Whois_Details",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2519,12 +2734,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/passivetotal_whois_details:2.0"
+  "dockerImage": "cortexneurons/passivetotal_whois_details:2.0.0"
 }
 ,
 {
   "name": "Patrowl_GetReport",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Nicolas Mattiocco",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2554,12 +2769,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/patrowl_getreport:1.0"
+  "dockerImage": "cortexneurons/patrowl_getreport:1.0.0"
 }
 ,
 {
   "name": "PayloadSecurity_File_Analysis",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Emmanuel Torquato",
   "url": "https://github.com/notset/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2615,12 +2830,12 @@
       "defaultValue": true
     }
   ],
-  "dockerImage": "cortexneurons/payloadsecurity_file_analysis:1.0"
+  "dockerImage": "cortexneurons/payloadsecurity_file_analysis:1.0.0"
 }
 ,
 {
   "name": "PayloadSecurity_Url_Analysis",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Emmanuel Torquato",
   "url": "https://github.com/notset/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2676,12 +2891,12 @@
       "defaultValue": true
     }
   ],
-  "dockerImage": "cortexneurons/payloadsecurity_url_analysis:1.0"
+  "dockerImage": "cortexneurons/payloadsecurity_url_analysis:1.0.0"
 }
 ,
 {
   "name": "PhishTank_CheckURL",
-  "version": "2.1",
+  "version": "2.1.0",
   "author": "Eric Capuano",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2699,12 +2914,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/phishtank_checkurl:2.1"
+  "dockerImage": "cortexneurons/phishtank_checkurl:2.1.0"
 }
 ,
 {
   "name": "PhishingInitiative_Lookup",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2722,12 +2937,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/phishinginitiative_lookup:2.0"
+  "dockerImage": "cortexneurons/phishinginitiative_lookup:2.0.0"
 }
 ,
 {
   "name": "PhishingInitiative_Scan",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Remi Pointel",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2745,12 +2960,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/phishinginitiative_scan:1.0"
+  "dockerImage": "cortexneurons/phishinginitiative_scan:1.0.0"
 }
 ,
 {
   "name": "ProofPoint_Lookup",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Emmanuel Torquato",
   "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2796,12 +3011,12 @@
       "defaultValue": true
     }
   ],
-  "dockerImage": "cortexneurons/proofpoint_lookup:1.0"
+  "dockerImage": "cortexneurons/proofpoint_lookup:1.0.0"
 }
 ,
 {
   "name": "Pulsedive_GetIndicator",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Nils Kuhnert",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2822,12 +3037,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/pulsedive_getindicator:1.0"
+  "dockerImage": "cortexneurons/pulsedive_getindicator:1.0.0"
 }
 ,
 {
   "name": "RecordedFuture_risk",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "KAPSCH-CDC",
   "url": "https://github.com/kapschcdc/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2847,12 +3062,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/recordedfuture_risk:1.0"
+  "dockerImage": "cortexneurons/recordedfuture_risk:1.0.0"
 }
 ,
 {
   "name": "Robtex_Forward_PDNS_Query",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Nils Kuhnert",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2865,12 +3080,12 @@
   "config": {
     "service": "fpdnsquery"
   },
-  "dockerImage": "cortexneurons/robtex_forward_pdns_query:1.0"
+  "dockerImage": "cortexneurons/robtex_forward_pdns_query:1.0.0"
 }
 ,
 {
   "name": "Robtex_IP_Query",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Nils Kuhnert",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2882,12 +3097,12 @@
   "config": {
     "service": "ipquery"
   },
-  "dockerImage": "cortexneurons/robtex_ip_query:1.0"
+  "dockerImage": "cortexneurons/robtex_ip_query:1.0.0"
 }
 ,
 {
   "name": "Robtex_Reverse_PDNS_Query",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Nils Kuhnert",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -2899,12 +3114,12 @@
   "config": {
     "service": "rpdnsquery"
   },
-  "dockerImage": "cortexneurons/robtex_reverse_pdns_query:1.0"
+  "dockerImage": "cortexneurons/robtex_reverse_pdns_query:1.0.0"
 }
 ,
 {
   "name": "SecurityTrails_Passive_DNS",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Manabu Niseki, @ninoseki",
   "url": "https://github.com/ninoseki/cortex-securitytrails",
   "license": "MIT",
@@ -2925,12 +3140,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/securitytrails_passive_dns:1.0"
+  "dockerImage": "cortexneurons/securitytrails_passive_dns:1.0.0"
 }
 ,
 {
   "name": "SecurityTrails_Whois",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Manabu Niseki, @ninoseki",
   "url": "https://github.com/ninoseki/cortex-securitytrails",
   "license": "MIT",
@@ -2951,18 +3166,19 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/securitytrails_whois:1.0"
+  "dockerImage": "cortexneurons/securitytrails_whois:1.0.0"
 }
 ,
 {
   "name": "Shodan_DNSResolve",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "ANSSI",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
   "license": "AGPL-V3",
   "description": "Retrieve domain resolutions on Shodan.",
   "dataTypeList": [
-    "domain"
+    "domain",
+    "fqdn"
   ],
   "baseConfig": "Shodan",
   "config": {
@@ -2977,12 +3193,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/shodan_dnsresolve:1.0"
+  "dockerImage": "cortexneurons/shodan_dnsresolve:1.0.0"
 }
 ,
 {
   "name": "Shodan_Host",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Sebastien Larinier @Sebdraven",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
   "license": "AGPL-V3",
@@ -3003,12 +3219,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/shodan_host:1.0"
+  "dockerImage": "cortexneurons/shodan_host:1.0.0"
 }
 ,
 {
   "name": "Shodan_Host_History",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "ANSSI",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
   "license": "AGPL-V3",
@@ -3029,18 +3245,19 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/shodan_host_history:1.0"
+  "dockerImage": "cortexneurons/shodan_host_history:1.0.0"
 }
 ,
 {
   "name": "Shodan_InfoDomain",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "ANSSI",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
   "license": "AGPL-V3",
   "description": "Retrieve key Shodan information on a domain.",
   "dataTypeList": [
-    "domain"
+    "domain",
+    "fqdn"
   ],
   "baseConfig": "Shodan",
   "config": {
@@ -3055,12 +3272,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/shodan_infodomain:1.0"
+  "dockerImage": "cortexneurons/shodan_infodomain:1.0.0"
 }
 ,
 {
   "name": "Shodan_ReverseDNS",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "ANSSI",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
   "license": "AGPL-V3",
@@ -3081,12 +3298,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/shodan_reversedns:1.0"
+  "dockerImage": "cortexneurons/shodan_reversedns:1.0.0"
 }
 ,
 {
   "name": "Shodan_Search",
-  "version": "2.0",
+  "version": "2.0.0",
   "author": "Sebastien Larinier @Sebdraven",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
   "license": "AGPL-V3",
@@ -3107,7 +3324,7 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/shodan_search:2.0"
+  "dockerImage": "cortexneurons/shodan_search:2.0.0"
 }
 ,
 {
@@ -3115,7 +3332,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/sinkdb-analyzer",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Check if ip is sinkholed via sinkdb.abuse.ch",
   "dataTypeList": [
     "ip"
@@ -3130,12 +3347,12 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/sinkdb:1.0"
+  "dockerImage": "cortexneurons/sinkdb:1.0.0"
 }
 ,
 {
   "name": "SoltraEdge",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Michael Stensrud, Nordic Financial CERT",
   "url": "http://soltra.com/en/",
   "license": "AGPL-V3",
@@ -3193,7 +3410,7 @@
       "defaultValue": true
     }
   ],
-  "dockerImage": "cortexneurons/soltraedge:1.0"
+  "dockerImage": "cortexneurons/soltraedge:1.0.0"
 }
 ,
 {
@@ -3201,7 +3418,7 @@
   "author": "Robert Nixon",
   "license": "AGPL-V3",
   "url": "https://github.com/robertnixon2003/Cortex-Analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Fetch observable details from an Anomali STAXX instance.",
   "dataTypeList": [
     "domain",
@@ -3257,7 +3474,7 @@
       "required": false
     }
   ],
-  "dockerImage": "cortexneurons/staxxsearch:1.0"
+  "dockerImage": "cortexneurons/staxxsearch:1.0.0"
 }
 ,
 {
@@ -3265,7 +3482,7 @@
   "author": "Marc-Andre Doll, STARC by EXAPROBE",
   "license": "AGPL-V3",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "baseConfig": "StopForumSpam",
   "config": {
     "check_tlp": true,
@@ -3294,12 +3511,12 @@
     "ip",
     "mail"
   ],
-  "dockerImage": "cortexneurons/stopforumspam:1.0"
+  "dockerImage": "cortexneurons/stopforumspam:1.0.0"
 }
 ,
 {
   "name": "TalosReputation",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Gabriel Antonio da Silva",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -3308,7 +3525,7 @@
     "ip"
   ],
   "baseConfig": "TalosReputation",
-  "dockerImage": "cortexneurons/talosreputation:1.0"
+  "dockerImage": "cortexneurons/talosreputation:1.0.0"
 }
 ,
 {
@@ -3316,7 +3533,7 @@
   "author": "Rémi Allain, Cyberprotect",
   "license": "AGPL-V3",
   "url": "https://github.com/Cyberprotect/Cortex-Analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Look up domains, mail and IP addresses on ThreatCrowd.",
   "dataTypeList": [
     "mail",
@@ -3328,7 +3545,7 @@
     "check_tlp": false,
     "service": "get"
   },
-  "dockerImage": "cortexneurons/threatcrowd:1.0"
+  "dockerImage": "cortexneurons/threatcrowd:1.0.0"
 }
 ,
 {
@@ -3336,7 +3553,7 @@
   "author": "Marc-André DOLL, STARC by EXAPROBE",
   "license": "AGPL-V3",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Query http://torstatus.blutmagie.de/query_export.php/Tor_query_EXPORT.csv for TOR exit nodes IP addresses or names.",
   "dataTypeList": [
     "ip",
@@ -3361,7 +3578,7 @@
       "required": false
     }
   ],
-  "dockerImage": "cortexneurons/torblutmagie:1.0"
+  "dockerImage": "cortexneurons/torblutmagie:1.0.0"
 }
 ,
 {
@@ -3369,7 +3586,7 @@
   "author": "Marc-André DOLL, STARC by EXAPROBE",
   "license": "AGPL-V3",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Query https://check.torproject.org/exit-addresses for TOR exit nodes IP addresses.",
   "dataTypeList": [
     "ip"
@@ -3400,7 +3617,7 @@
       "required": false
     }
   ],
-  "dockerImage": "cortexneurons/torproject:1.0"
+  "dockerImage": "cortexneurons/torproject:1.0.0"
 }
 ,
 {
@@ -3408,7 +3625,8 @@
   "author": "ninoseki, Nils Kuhnert",
   "license": "MIT",
   "url": "https://github.com/ninoseki/cortex_URLhaus_analyzer",
-  "version": "2.0",
+  "version": "2.0.0",
+  "baseConfig": "URLhaus",
   "description": "Search domains, IPs, URLs or hashes on URLhaus.",
   "dataTypeList": [
     "domain",
@@ -3417,12 +3635,12 @@
     "ip"
   ],
   "configurationItems": [],
-  "dockerImage": "cortexneurons/urlhaus:2.0"
+  "dockerImage": "cortexneurons/urlhaus:2.0.0"
 }
 ,
 {
   "name": "Umbrella_Report",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Kyle Parrish",
   "url": "https://github.com/arnydo/thehive/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -3465,12 +3683,12 @@
       "default": 20
     }
   ],
-  "dockerImage": "cortexneurons/umbrella_report:1.0"
+  "dockerImage": "cortexneurons/umbrella_report:1.0.0"
 }
 ,
 {
   "name": "UnshortenLink",
-  "version": "1.1",
+  "version": "1.2.0",
   "author": "Remi Pointel, CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -3479,7 +3697,7 @@
     "url"
   ],
   "baseConfig": "UnshortenLink",
-  "dockerImage": "cortexneurons/unshortenlink:1.1"
+  "dockerImage": "cortexneurons/unshortenlink:1.2.0"
 }
 ,
 {
@@ -3488,6 +3706,7 @@
   "license": "MIT",
   "url": "https://github.com/ninoseki/cortex_urlscan_analyzer",
   "version": "0.1.0",
+  "baseConfig": "Urlscan",
   "description": "Search IPs, domains, hashes or URLs on urlscan.io",
   "dataTypeList": [
     "ip",
@@ -3503,7 +3722,7 @@
   "license": "AGPL-V3",
   "author": "Nils Kuhnert, CERT-Bund",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "3.0",
+  "version": "3.0.0",
   "description": "VMRay Sandbox file analysis.",
   "dataTypeList": [
     "hash",
@@ -3549,12 +3768,12 @@
       "defaultValue": false
     }
   ],
-  "dockerImage": "cortexneurons/vmray:3.0"
+  "dockerImage": "cortexneurons/vmray:3.0.0"
 }
 ,
 {
   "name": "VirusTotal_GetReport",
-  "version": "3.0",
+  "version": "3.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -3587,12 +3806,12 @@
       "defaultValue": 60
     }
   ],
-  "dockerImage": "cortexneurons/virustotal_getreport:3.0"
+  "dockerImage": "cortexneurons/virustotal_getreport:3.0.0"
 }
 ,
 {
   "name": "VirusTotal_Scan",
-  "version": "3.0",
+  "version": "3.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -3622,7 +3841,7 @@
       "defaultValue": 60
     }
   ],
-  "dockerImage": "cortexneurons/virustotal_scan:3.0"
+  "dockerImage": "cortexneurons/virustotal_scan:3.0.0"
 }
 ,
 {
@@ -3630,7 +3849,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
+  "version": "2.0.0",
   "description": "Search for MD5 hashes in Virusshare.com hash list",
   "dataTypeList": [
     "hash",
@@ -3646,12 +3865,12 @@
       "required": false
     }
   ],
-  "dockerImage": "cortexneurons/virusshare:2.0"
+  "dockerImage": "cortexneurons/virusshare:2.0.0"
 }
 ,
 {
   "name": "WOT_Lookup",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Andrea Garavaglia, LDO-CERT",
   "url": "https://github.com/garanews/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -3673,7 +3892,7 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/wot_lookup:1.0"
+  "dockerImage": "cortexneurons/wot_lookup:1.0.0"
 }
 ,
 {
@@ -3681,7 +3900,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
+  "version": "2.0.0",
   "description": "Check files against YARA rules.",
   "dataTypeList": [
     "file"
@@ -3696,7 +3915,7 @@
       "required": true
     }
   ],
-  "dockerImage": "cortexneurons/yara:2.0"
+  "dockerImage": "cortexneurons/yara:2.0.0"
 }
 ,
 {
@@ -3704,7 +3923,7 @@
   "author": "CERT-BDF",
   "license": "AGPL-V3",
   "url": "https://github.com/CERT/cortex-analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Fetch observable details from a YETI instance.",
   "dataTypeList": [
     "domain",
@@ -3730,6 +3949,6 @@
       "required": false
     }
   ],
-  "dockerImage": "cortexneurons/yeti:1.0"
+  "dockerImage": "cortexneurons/yeti:1.0.0"
 }
 ]

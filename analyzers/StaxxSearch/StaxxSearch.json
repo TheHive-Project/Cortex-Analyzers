@@ -3,7 +3,7 @@
     "author": "Robert Nixon",
     "license": "AGPL-V3",
     "url": "https://github.com/robertnixon2003/Cortex-Analyzers",
-    "version": "1.0",
+    "version": "1.0.0",
     "description": "Fetch observable details from an Anomali STAXX instance.",
     "dataTypeList": ["domain", "fqdn", "ip", "url", "hash", "mail"],
     "command": "StaxxSearch/staxx-cortex.py",

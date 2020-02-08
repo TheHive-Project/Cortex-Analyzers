@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-#encoding: utf-8
+# -*- coding: utf-8 -*-
 
 from requests import get
 from cortexutils.analyzer import Analyzer

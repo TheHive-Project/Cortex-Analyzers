@@ -1,6 +1,6 @@
 {
     "name": "Mnemonic_pDNS_Public",
-    "version": "3.0",
+    "version": "3.0.0",
     "author": "Michael Stensrud, Nordic Financial CERT",
     "url": "https://passivedns.mnemonic.no/search",
     "license" : "AGPL-V3",

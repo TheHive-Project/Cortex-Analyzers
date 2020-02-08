@@ -1,6 +1,6 @@
 {
   "name": "DNS-RPZ",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Michael Hornung; Expeditors International of Washington, Inc.",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",

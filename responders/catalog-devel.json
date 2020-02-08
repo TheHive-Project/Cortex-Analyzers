@@ -1,7 +1,77 @@
 [
 {
+  "name": "DNS-RPZ",
+  "version": "1.0.0",
+  "author": "Michael Hornung; Expeditors International of Washington, Inc.",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Add a dynamic DNS entry to a Response Policy Zone, blackholing or redirecting a FQDN.",
+  "dataTypeList": [
+    "thehive:case_artifact"
+  ],
+  "baseConfig": "DNS-RPZ",
+  "config": {
+    "max_tlp": 3,
+    "check_tlp": false,
+    "max_pap": 3,
+    "check_pap": true
+  },
+  "configurationItems": [
+    {
+      "name": "bind_server",
+      "description": "IP or FQDN of RPZ master BIND server",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "127.0.0.1"
+    },
+    {
+      "name": "tsig_keyname",
+      "description": "Name of TSIG key to access BIND server",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "cortex."
+    },
+    {
+      "name": "tsig_keyval",
+      "description": "TSIG key value to access BIND server",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "updateme"
+    },
+    {
+      "name": "tsig_hashalg",
+      "description": "TSIG hash algorithm to use",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "HMAC-SHA512"
+    },
+    {
+      "name": "rpz_zonename",
+      "description": "Fully qualified RPZ zone name (don't forget the trailing dot)",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "rpz."
+    },
+    {
+      "name": "remediation_ip",
+      "description": "IP to resolve RPZ names to",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "127.0.0.1"
+    }
+  ],
+  "dockerImage": "cortexneurons/dns-rpz:devel"
+}
+,
+{
   "name": "Crowdstrike Falcon Custom IOC API",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Michael",
   "url": "https://www.crowdstrike.com/blog/tech-center/import-iocs-crowdstrike-falcon-host-platform-via-api/",
   "license": "MIT",
@@ -39,7 +109,7 @@
 ,
 {
   "name": "Mailer",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -78,8 +148,45 @@
 }
 ,
 {
+  "name": "QRadar_Auto_Closing_Offense",
+  "version": "1.0.0",
+  "author": "Florian Perret",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Closing the QRadar Offense associated to your case in one clic !",
+  "dataTypeList": [
+    "thehive:case"
+  ],
+  "baseConfig": "QRadarAutoClose",
+  "configurationItems": [
+    {
+      "name": "QRadar_API_Key",
+      "description": "A QRadar API key with sufficent rights to close an offense",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "QRadar_Url",
+      "description": "URL of your QRadar API, must be accessible from Cortex server. eg: myqradar.myorg.com/api/siem/offenses",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "Cert_Path",
+      "description": "If you need a certificate to authentificate to your QRadar API, please provide the path here",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ],
+  "dockerImage": "cortexneurons/qradar_auto_closing_offense:devel"
+}
+,
+{
   "name": "Umbrella Blacklister",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Kyle Parrish",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -98,5 +205,69 @@
     }
   ],
   "dockerImage": "cortexneurons/umbrella blacklister:devel"
+}
+,
+{
+  "name": "ZEROFOX_Close_alert",
+  "version": "1.0.0",
+  "author": "TheHive-Project",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Close alert in Zerofox",
+  "dataTypeList": [
+    "thehive:case"
+  ],
+  "baseConfig": "ZEROFOX",
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "URL for Zerofox API",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "https://api.zerofox.com/1.0"
+    },
+    {
+      "name": "api",
+      "description": "Key API for Zerofox",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": ""
+    }
+  ],
+  "dockerImage": "cortexneurons/zerofox_close_alert:devel"
+}
+,
+{
+  "name": "ZEROFOX_Takedown_request",
+  "version": "1.0.0",
+  "author": "TheHive-Project",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Request for a takedown regarding the alert in Zerofox",
+  "dataTypeList": [
+    "thehive:case"
+  ],
+  "baseConfig": "ZEROFOX",
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "URL for Zerofox API",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "https://api.zerofox.com/1.0"
+    },
+    {
+      "name": "api",
+      "description": "Key API for Zerofox",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": ""
+    }
+  ],
+  "dockerImage": "cortexneurons/zerofox_takedown_request:devel"
 }
 ]

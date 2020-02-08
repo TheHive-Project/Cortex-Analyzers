@@ -3,7 +3,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/censys-analyzer",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Check IPs, certificate hashes or domains against censys.io.",
   "dataTypeList": ["ip", "hash", "domain"],
   "baseConfig": "Censys",
