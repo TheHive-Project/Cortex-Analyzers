@@ -5,7 +5,7 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-RUN apk add --no-cache libmagic
+RUN apk add --no-cache g++ gcc libmagic musl-dev
 
 LABEL name="EmlParser"
 LABEL description="Parse Eml message"

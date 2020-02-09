@@ -4,7 +4,7 @@
 
 FROM ubuntu
 
-RUN apk add --no-cache libmagic git
+RUN apk add --no-cache git libmagic
 
 LABEL name="FileInfo"
 LABEL description="Parse files in several formats such as OLE and OpenXML to detect VBA macros, extract their source code, generate useful information on PE, PDF files..."

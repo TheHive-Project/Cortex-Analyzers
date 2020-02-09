@@ -9,16 +9,16 @@ analyzers = [x for x in Path('..', 'analyzers').iterdir() if x.is_dir()]
 for analyzer in analyzers:
     try:
         dockerfile_path = analyzer / 'Dockerfile'
-        if dockerfile_path.exists():
 
+        update = dockerfile_path.exists()
+
+        if update:
             with dockerfile_path.open() as dockerfile:
                 dockerfile = dockerfile.read()
 
                 # Dockerfiles with this string will be frozen; skip.
                 if '### MANUAL ###' in dockerfile:
                     continue
-                else:
-                    print('Updating', dockerfile_path)
             
         else:
             dockerfile_path.touch()
@@ -70,12 +70,17 @@ for analyzer in analyzers:
                         alpine_dependencies.add('musl-dev')
                     if 'python-magic' in requirements:
                         alpine_dependencies.add('libmagic')
+                    if 'eml_parser' in requirements:
+                        alpine_dependencies.add('libmagic')
+                        alpine_dependencies.add('gcc')
+                        alpine_dependencies.add('g++')
+                        alpine_dependencies.add('musl-dev')
 
                     # One of the requirements is a git repository-- include git
                     if 'git+https' in requirements:
                         alpine_dependencies.add('git')
                 if alpine_dependencies:
-                    dockerfile_contents.append('RUN apk add --no-cache {}\n'.format(' '.join(alpine_dependencies)))
+                    dockerfile_contents.append('RUN apk add --no-cache {}\n'.format(' '.join(sorted(alpine_dependencies))))
             else:
                 # TODO: Add more language support here
                 pass
@@ -104,7 +109,9 @@ for analyzer in analyzers:
 
             dockerfile_contents.append('\nENTRYPOINT {}'.format(config['command']))
 
-            dockerfile_path.write_text("\n".join(dockerfile_contents))
+            if update and dockerfile != "\n".join(dockerfile_contents):
+                print("Updating", dockerfile_path)
+                dockerfile_path.write_text("\n".join(dockerfile_contents))
 
 
 

@@ -30,13 +30,11 @@ async def build_analyzer(analyzer):
 
             dockerfile_parent_path = str(dockerfile.parent)
             # print('STRT', config['name'])
-            build = docker.images.build(
+            docker.images.build(
                 tag=image_tag,
                 path=dockerfile_parent_path,
                 forcerm=True,
             )
-
-            print (build)
             # print('DONE', config['name'])
 
 
