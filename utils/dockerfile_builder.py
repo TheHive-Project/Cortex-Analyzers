@@ -33,55 +33,61 @@ for analyzer in analyzers:
             config = loads(json_config.open().read())
             process_path = Path('..', 'analyzers', config['command']).resolve()
 
-
+            # Determine baseImage for Dockerfile
             if 'baseImage' in config:
-                dockerfile_contents.append('FROM {image}\n'.format(image=config['baseImage']))
+                baseImage = config['baseImage']
             else:
                 # Analyze source code as determined by config file
                 with process_path.open() as process_src:
                     source_code = process_src.read()
                     dockerfile_contents.append("# Guessing base image from source code shebang")
                     if '#!/usr/bin/env python\n' in source_code:
-                        is_python = True
-                        dockerfile_contents.append('FROM python:2-alpine\n')
+                        # If we're building every image, we should save disk space w/ alpine
+                        baseImage = 'python:2-alpine'
+                        is_python = is_alpine = True
                     elif '#!/usr/bin/env python3\n' in source_code:
-                        is_python = True
-                        # If we're building every image, we should save disk space w/ alpine 
-                        dockerfile_contents.append('FROM python:3-alpine\n')
+                        # If we're building every image, we should save disk space w/ alpine
+                        baseImage = 'python:3-alpine'
+                        is_python = is_alpine = True
                     
                     # TODO: Add more runtime shebangs! ex. go, rust, ruby
 
                     # Default out to ubuntu
                     else:
-                        dockerfile_contents.append('FROM ubuntu\n')
+                        baseImage = 'ubuntu'
+
+            dockerfile_contents.append('FROM {}\n'.format(baseImage))
+
 
             # Include alpine-specific dependencies
-            if is_python:
+            if is_alpine:
 
                 # Using a set to prevent duplicate install operations
                 alpine_dependencies = set()
+                if is_python:
+                    requirements_path = analyzer / 'requirements.txt'
+                    if requirements_path.exists():
+                        requirements = requirements_path.open().read()
+                        
+                        if 'yara-python' in requirements:
+                            alpine_dependencies.add('gcc')
+                            alpine_dependencies.add('musl-dev')
+                        if 'python-magic' in requirements:
+                            alpine_dependencies.add('libmagic')
+                        if 'eml_parser' in requirements:
+                            alpine_dependencies.add('libmagic')
+                            alpine_dependencies.add('g++')
 
-                requirements_path = analyzer / 'requirements.txt'
-                if requirements_path.exists():
-                    requirements = requirements_path.open().read()
-                    
-                    if 'yara-python' in requirements:
-                        alpine_dependencies.add('gcc')
-                        alpine_dependencies.add('musl-dev')
-                    if 'python-magic' in requirements:
-                        alpine_dependencies.add('libmagic')
-                    if 'eml_parser' in requirements:
-                        alpine_dependencies.add('libmagic')
-                        alpine_dependencies.add('g++')
+                        # One of the requirements is a git repository-- include git
+                        if 'git+https' in requirements:
+                            alpine_dependencies.add('git')
+                else:
+                    # TODO: Add more language support here
+                    pass
 
-                    # One of the requirements is a git repository-- include git
-                    if 'git+https' in requirements:
-                        alpine_dependencies.add('git')
+
                 if alpine_dependencies:
                     dockerfile_contents.append('RUN apk add --no-cache {}\n'.format(' '.join(sorted(alpine_dependencies))))
-            else:
-                # TODO: Add more language support here
-                pass
 
 
             if 'name' in config:
