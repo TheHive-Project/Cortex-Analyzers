@@ -67,6 +67,7 @@ for analyzer in analyzers:
                     
                     if 'yara-python' in requirements:
                         alpine_dependencies.add('gcc')
+                        alpine_dependencies.add('musl-dev')
                     if 'python-magic' in requirements:
                         alpine_dependencies.add('libmagic')
 

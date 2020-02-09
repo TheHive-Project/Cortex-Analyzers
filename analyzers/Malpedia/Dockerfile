@@ -5,7 +5,7 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-RUN apk add --no-cache gcc
+RUN apk add --no-cache gcc musl-dev
 
 LABEL name="Malpedia"
 LABEL description="Check files against Malpedia YARA rules."

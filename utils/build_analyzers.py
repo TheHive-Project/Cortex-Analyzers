@@ -19,6 +19,7 @@ async def build_analyzer(analyzer):
         if json_config.exists():
             config = loads(json_config.open().read())
             
+            # If dockerImage is defined in config, use that. Else, generate
             if 'dockerImage' in config:
                 image_tag = config['dockerImage']
             else:
@@ -28,22 +29,27 @@ async def build_analyzer(analyzer):
                 )
 
             dockerfile_parent_path = str(dockerfile.parent)
-
-            docker.images.build(
+            # print('STRT', config['name'])
+            build = docker.images.build(
                 tag=image_tag,
                 path=dockerfile_parent_path,
-                forcerm=True
+                forcerm=True,
             )
-            print(config['name'], ' done!')
+
+            print (build)
+            # print('DONE', config['name'])
 
 
 async def build_all_analyzers(analyzers):
     tasks = []
     for analyzer in analyzers:
-        print('cooking', analyzer)
         task = asyncio.ensure_future(build_analyzer(analyzer))
         tasks.append(task)
-    await asyncio.gather(*tasks, return_exceptions=True)
+    
+    output = await asyncio.gather(*tasks, return_exceptions=True)
+
+    for error in [x for x in output if x]:
+        print(error)
 
 
 if __name__ == "__main__":

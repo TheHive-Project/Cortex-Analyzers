@@ -5,7 +5,7 @@
 # Guessing base image from source code shebang
 FROM python:2-alpine
 
-RUN apk add --no-cache gcc
+RUN apk add --no-cache gcc musl-dev
 
 LABEL name="Yara"
 LABEL description="Check files against YARA rules."
