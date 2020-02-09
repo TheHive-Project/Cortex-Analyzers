@@ -72,9 +72,7 @@ for analyzer in analyzers:
                         alpine_dependencies.add('libmagic')
                     if 'eml_parser' in requirements:
                         alpine_dependencies.add('libmagic')
-                        alpine_dependencies.add('gcc')
                         alpine_dependencies.add('g++')
-                        alpine_dependencies.add('musl-dev')
 
                     # One of the requirements is a git repository-- include git
                     if 'git+https' in requirements:
