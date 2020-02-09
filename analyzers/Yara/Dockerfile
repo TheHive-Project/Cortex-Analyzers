@@ -1,9 +1,11 @@
+### AUTOGEN ###
 # THIS FILE IS UPDATED BY `utils/dockerfile_builder.py`
 # DO NOT EDIT IT DIRECTLY
 
-
 # Guessing base image from source code shebang
 FROM python:2-alpine
+
+RUN apk add --no-cache gcc
 
 LABEL name="Yara"
 LABEL description="Check files against YARA rules."

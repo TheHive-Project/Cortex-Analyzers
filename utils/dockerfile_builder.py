@@ -10,7 +10,16 @@ for analyzer in analyzers:
     try:
         dockerfile_path = analyzer / 'Dockerfile'
         if dockerfile_path.exists():
-            print('Updating', dockerfile_path)
+
+            with dockerfile_path.open() as dockerfile:
+                dockerfile = dockerfile.read()
+
+                # Dockerfiles with this string will be frozen; skip.
+                if '### MANUAL ###' in dockerfile:
+                    continue
+                else:
+                    print('Updating', dockerfile_path)
+            
         else:
             dockerfile_path.touch()
             print('Creating new docker file', dockerfile_path)
@@ -19,7 +28,7 @@ for analyzer in analyzers:
         
         if json_config.exists():
 
-            dockerfile_contents = ["# THIS FILE IS UPDATED BY `utils/dockerfile_builder.py`\n# DO NOT EDIT IT DIRECTLY\n\n"]
+            dockerfile_contents = ["### AUTOGEN ###\n# THIS FILE IS UPDATED BY `utils/dockerfile_builder.py`\n# DO NOT EDIT IT DIRECTLY\n"]
 
             config = loads(json_config.open().read())
             process_path = Path('..', 'analyzers', config['command']).resolve()
@@ -45,6 +54,30 @@ for analyzer in analyzers:
                     # Default out to ubuntu
                     else:
                         dockerfile_contents.append('FROM ubuntu\n')
+
+            # Include alpine-specific dependencies
+            if is_python:
+
+                # Using a set to prevent duplicate install operations
+                alpine_dependencies = set()
+
+                requirements_path = analyzer / 'requirements.txt'
+                if requirements_path.exists():
+                    requirements = requirements_path.open().read()
+                    
+                    if 'yara-python' in requirements:
+                        alpine_dependencies.add('gcc')
+                    if 'python-magic' in requirements:
+                        alpine_dependencies.add('libmagic')
+
+                    # One of the requirements is a git repository-- include git
+                    if 'git+https' in requirements:
+                        alpine_dependencies.add('git')
+                if alpine_dependencies:
+                    dockerfile_contents.append('RUN apk add --no-cache {}\n'.format(' '.join(alpine_dependencies)))
+            else:
+                # TODO: Add more language support here
+                pass
 
 
             if 'name' in config:
