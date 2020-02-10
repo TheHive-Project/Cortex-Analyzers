@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding: utf-8
 
 import requests
@@ -38,7 +38,7 @@ class Threatcrowd(Analyzer):
     def run(self):
         Analyzer.run(self)
 
-        if self.data_type == 'domain' or self.data_type == 'ip' or self.data_type == 'mail':
+        if self.data_type == 'domain' or self.data_type == 'ip' or self.data_type == 'mail' or self.data_type == 'fqdn':
             threatcrowd_data_type = self.data_type if self.data_type != 'mail' else 'email'
             try:
                 response = requests.get("{}/{}/report/".format(self.URI, threatcrowd_data_type),
