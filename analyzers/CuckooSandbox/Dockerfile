@@ -6,7 +6,6 @@
 FROM python:3-alpine
 
 LABEL author="Andrea Garavaglia, LDO-CERT" \
-      description="Cuckoo Sandbox file analysis with Internet access." \
       license="AGPL-V3" \
       title="CuckooSandbox" \
       url="https://github.com/garanews/Cortex-Analyzers" \

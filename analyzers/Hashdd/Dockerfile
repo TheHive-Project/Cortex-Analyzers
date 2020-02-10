@@ -6,7 +6,6 @@
 FROM python:3-alpine
 
 LABEL author="iosonogio" \
-      description="Determine whether a hash is good or bad." \
       license="AGPLv3" \
       title="Hashdd" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \

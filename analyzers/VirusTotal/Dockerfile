@@ -6,7 +6,6 @@
 FROM python:3-alpine
 
 LABEL author="CERT-BDF" \
-      description="Use VirusTotal to scan a file or URL." \
       license="AGPL-V3" \
       title="VirusTotal" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \

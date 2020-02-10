@@ -6,7 +6,6 @@
 FROM python:3-alpine
 
 LABEL author="Manabu Niseki, @ninoseki" \
-      description="SecurityTrails Whois Lookup." \
       license="MIT" \
       title="SecurityTrails" \
       url="https://github.com/ninoseki/cortex-securitytrails" \

@@ -6,7 +6,6 @@
 FROM python:3-alpine
 
 LABEL author="Emmanuel Torquato" \
-      description="PayloadSecurity Sandbox Url Analysis" \
       license="AGPL-V3" \
       title="PayloadSecurity" \
       url="https://github.com/notset/Cortex-Analyzers" \

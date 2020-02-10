@@ -6,7 +6,6 @@
 FROM python:3-alpine
 
 LABEL author="Manabu Niseki" \
-      description="IPinfo details lookup." \
       license="MIT" \
       title="IPinfo" \
       url="https://github.com/ninoseki/ipinfo-analyzers" \

@@ -6,7 +6,6 @@
 FROM python:3-alpine
 
 LABEL author="CERT-BDF" \
-      description="Use DNSDB to fetch historical records for an IP address." \
       license="AGPL-V3" \
       title="DNSDB" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \

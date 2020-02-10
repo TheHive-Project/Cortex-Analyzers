@@ -6,7 +6,6 @@
 FROM python:3-alpine
 
 LABEL author="Nils Kuhnert" \
-      description="Check IPs using the Robtex reverse passive DNS API." \
       license="AGPL-V3" \
       title="Robtex" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \

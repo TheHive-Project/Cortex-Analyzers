@@ -6,7 +6,6 @@
 FROM python:3-alpine
 
 LABEL author="Davide Arcuri and Andrea Garavaglia, LDO-CERT" \
-      description="Retrieve ET details and info related to a malware hash." \
       license="AGPL-V3" \
       title="EmergingThreats" \
       url="https://github.com/dadokkio/Cortex-Analyzers" \

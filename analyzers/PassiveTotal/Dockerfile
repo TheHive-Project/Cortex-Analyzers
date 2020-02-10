@@ -5,8 +5,7 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL authors="Brandon Dixon (9bplus), CERT-BDF" \
-      description="PassiveTotal SSL Certificate Details Lookup." \
+LABEL authors="CERT-BDF, Brandon Dixon (9bplus)" \
       license="AGPL-V3" \
       title="PassiveTotal" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \

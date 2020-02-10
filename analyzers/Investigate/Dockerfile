@@ -6,7 +6,6 @@
 FROM python:3-alpine
 
 LABEL author="Cisco Umbrella Research @opendns" \
-      description="Retrieve Investigate categorization and security features for a domain." \
       license="AGPL-V3" \
       title="Investigate" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers/Investigate" \

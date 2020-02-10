@@ -6,7 +6,6 @@
 FROM python:3-alpine
 
 LABEL author="Davide Arcuri and Andrea Garavaglia, LDO-CERT" \
-      description="Get the latest MetaDefender Core report for hash." \
       license="AGPL-V3" \
       title="MetaDefender" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \

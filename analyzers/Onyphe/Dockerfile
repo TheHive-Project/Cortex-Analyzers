@@ -5,8 +5,7 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL authors="Pierre Baudry, Adrien Barchapt, ANSSI" \
-      description="Retrieve reverse DNS lookup information Onyphe has for the given IPv{4,6} address with history of changes." \
+LABEL authors="ANSSI, Pierre Baudry, Adrien Barchapt" \
       license="AGPL-V3" \
       title="Onyphe" \
       url="https://github.com/cybernardo/Cortex-Analyzers" \

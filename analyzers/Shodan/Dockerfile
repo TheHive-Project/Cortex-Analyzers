@@ -5,8 +5,7 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL authors="Sebastien Larinier @Sebdraven, ANSSI" \
-      description="Retrieve ip reverse DNS resolutions on Shodan." \
+LABEL authors="ANSSI, Sebastien Larinier @Sebdraven" \
       license="AGPL-V3" \
       title="Shodan" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers/Shodan" \

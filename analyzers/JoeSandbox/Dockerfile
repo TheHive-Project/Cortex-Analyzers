@@ -6,7 +6,6 @@
 FROM python:3-alpine
 
 LABEL author="CERT-BDF" \
-      description="Joe Sandbox file analysis with Internet access." \
       license="AGPL-V3" \
       title="JoeSandbox" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \

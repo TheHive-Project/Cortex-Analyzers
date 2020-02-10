@@ -6,7 +6,6 @@
 FROM python:3-alpine
 
 LABEL author="brandon@backscatter.io" \
-      description="Determine whether a value has known scanning activity using Backscatter.io data." \
       license="APLv2" \
       title="BackscatterIO" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \

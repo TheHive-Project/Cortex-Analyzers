@@ -6,7 +6,6 @@
 FROM python:3-alpine
 
 LABEL author="CERT-BDF" \
-      description="Get the Hippocampe detailed report for an IP address, a domain or a URL." \
       license="AGPL-V3" \
       title="Hippocampe" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \

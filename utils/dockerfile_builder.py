@@ -103,10 +103,8 @@ for analyzer in analyzers:
             labels = dict()
 
             if 'name' in config:
+                # Use baseConfig over name as we don't want the service name included
                 labels['title'] = config['baseConfig']
-
-            if 'description' in config:
-                labels['description'] = config['description']
             
             if 'author' in config:
                 labels['author'] = config['author']
@@ -120,7 +118,7 @@ for analyzer in analyzers:
             if 'version' in config:
                 labels['version'] = config['version']
             
-
+            # Many JSON configs
             if len(service_config_paths) > 1:
 
                 configs = [loads(x.open().read()) for x in service_config_paths]
@@ -129,6 +127,11 @@ for analyzer in analyzers:
                 if not labels['author'] == authors:
                     del labels['author']
                     labels['authors'] = authors
+
+            # One JSON config
+            else:
+                if 'description' in config:
+                    labels['description'] = config['description']
 
             labels['vendor'] = 'TheHive'
 
