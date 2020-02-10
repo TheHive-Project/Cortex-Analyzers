@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Shodan_ReverseDNS"
-LABEL description="Retrieve ip reverse DNS resolutions on Shodan."
-LABEL author="ANSSI"
+LABEL name="Shodan" \
+      description="Retrieve ip reverse DNS resolutions on Shodan." \
+      author="ANSSI"
 
 WORKDIR /worker
 

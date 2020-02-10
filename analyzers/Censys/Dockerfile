@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Censys"
-LABEL description="Check IPs, certificate hashes or domains against censys.io."
-LABEL author="Nils Kuhnert, CERT-Bund"
+LABEL name="Censys" \
+      description="Check IPs, certificate hashes or domains against censys.io." \
+      author="Nils Kuhnert, CERT-Bund"
 
 WORKDIR /worker
 

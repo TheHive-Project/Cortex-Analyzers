@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="DNSDB_IPHistory"
-LABEL description="Use DNSDB to fetch historical records for an IP address."
-LABEL author="CERT-BDF"
+LABEL name="DNSDB" \
+      description="Use DNSDB to fetch historical records for an IP address." \
+      author="CERT-BDF"
 
 WORKDIR /worker
 

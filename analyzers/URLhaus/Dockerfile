@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="URLhaus"
-LABEL description="Search domains, IPs, URLs or hashes on URLhaus."
-LABEL author="ninoseki, Nils Kuhnert"
+LABEL name="URLhaus" \
+      description="Search domains, IPs, URLs or hashes on URLhaus." \
+      author="ninoseki, Nils Kuhnert"
 
 WORKDIR /worker
 

@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="UnshortenLink"
-LABEL description="Use UnshortenLink to reveal the real URL."
-LABEL author="Remi Pointel, CERT-BDF"
+LABEL name="UnshortenLink" \
+      description="Use UnshortenLink to reveal the real URL." \
+      author="Remi Pointel, CERT-BDF"
 
 WORKDIR /worker
 

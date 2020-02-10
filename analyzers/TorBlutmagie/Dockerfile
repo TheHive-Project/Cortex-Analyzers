@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="TorBlutmagie"
-LABEL description="Query http://torstatus.blutmagie.de/query_export.php/Tor_query_EXPORT.csv for TOR exit nodes IP addresses or names."
-LABEL author="Marc-André DOLL, STARC by EXAPROBE"
+LABEL name="TorBlutmagie" \
+      description="Query http://torstatus.blutmagie.de/query_export.php/Tor_query_EXPORT.csv for TOR exit nodes IP addresses or names." \
+      author="Marc-André DOLL, STARC by EXAPROBE"
 
 WORKDIR /worker
 

@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="FireEyeiSight"
-LABEL description="Query domains, IPs, hashes and URLs on FireEye's iSIGHT threat intelligence service."
-LABEL author="Davide Arcuri and Andrea Garavaglia, LDO-CERT"
+LABEL name="FireEyeiSight" \
+      description="Query domains, IPs, hashes and URLs on FireEye's iSIGHT threat intelligence service." \
+      author="Davide Arcuri and Andrea Garavaglia, LDO-CERT"
 
 WORKDIR /worker
 

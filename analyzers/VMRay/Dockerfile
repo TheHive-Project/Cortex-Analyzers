@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="VMRay"
-LABEL description="VMRay Sandbox file analysis."
-LABEL author="Nils Kuhnert, CERT-Bund"
+LABEL name="VMRay" \
+      description="VMRay Sandbox file analysis." \
+      author="Nils Kuhnert, CERT-Bund"
 
 WORKDIR /worker
 

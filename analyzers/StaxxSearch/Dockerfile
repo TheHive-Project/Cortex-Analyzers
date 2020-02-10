@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="StaxxSearch"
-LABEL description="Fetch observable details from an Anomali STAXX instance."
-LABEL author="Robert Nixon"
+LABEL name="staxx" \
+      description="Fetch observable details from an Anomali STAXX instance." \
+      author="Robert Nixon"
 
 WORKDIR /worker
 

@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="EmergingThreats_MalwareInfo"
-LABEL description="Retrieve ET details and info related to a malware hash."
-LABEL author="Davide Arcuri and Andrea Garavaglia, LDO-CERT"
+LABEL name="EmergingThreats" \
+      description="Retrieve ET details and info related to a malware hash." \
+      author="Davide Arcuri and Andrea Garavaglia, LDO-CERT"
 
 WORKDIR /worker
 

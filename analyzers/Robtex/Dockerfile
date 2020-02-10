@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Robtex_Reverse_PDNS_Query"
-LABEL description="Check IPs using the Robtex reverse passive DNS API."
-LABEL author="Nils Kuhnert"
+LABEL name="Robtex" \
+      description="Check IPs using the Robtex reverse passive DNS API." \
+      author="Nils Kuhnert"
 
 WORKDIR /worker
 

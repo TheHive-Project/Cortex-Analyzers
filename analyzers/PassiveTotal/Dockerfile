@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="PassiveTotal_Ssl_Certificate_Details"
-LABEL description="PassiveTotal SSL Certificate Details Lookup."
-LABEL author="CERT-BDF"
+LABEL name="PassiveTotal" \
+      description="PassiveTotal SSL Certificate Details Lookup." \
+      author="CERT-BDF"
 
 WORKDIR /worker
 

@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Cyberprotect_ThreatScore"
-LABEL description="ThreatScore is a cyber threat scoring system provided by Cyberprotect"
-LABEL author="Rémi Allain, Cyberprotect"
+LABEL name="Cyberprotect" \
+      description="ThreatScore is a cyber threat scoring system provided by Cyberprotect" \
+      author="Rémi Allain, Cyberprotect"
 
 WORKDIR /worker
 

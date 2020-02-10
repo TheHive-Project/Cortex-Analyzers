@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="PhishTank_CheckURL"
-LABEL description="Use PhishTank to check if a URL is a verified phishing site."
-LABEL author="Eric Capuano"
+LABEL name="PhishTank" \
+      description="Use PhishTank to check if a URL is a verified phishing site." \
+      author="Eric Capuano"
 
 WORKDIR /worker
 

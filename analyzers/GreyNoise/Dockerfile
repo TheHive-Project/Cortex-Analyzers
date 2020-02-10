@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="GreyNoise"
-LABEL description="Determine whether an IP has known scanning activity using GreyNoise."
-LABEL author="Nclose"
+LABEL name="GreyNoise" \
+      description="Determine whether an IP has known scanning activity using GreyNoise." \
+      author="Nclose"
 
 WORKDIR /worker
 

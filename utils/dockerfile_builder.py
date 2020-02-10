@@ -97,14 +97,21 @@ for analyzer in analyzers:
                     dockerfile_contents.append('RUN apk add --no-cache {}\n'.format(' '.join(sorted(alpine_dependencies))))
 
 
+            labels = dict()
+
             if 'name' in config:
-                dockerfile_contents.append('LABEL name="{}"'.format(config['name']))
+                labels['name'] = config['baseConfig']
 
             if 'description' in config:
-                dockerfile_contents.append('LABEL description="{}"'.format(config['description']))
+                labels['description'] = config['description']
             
             if 'author' in config:
-                dockerfile_contents.append('LABEL author="{}"'.format(config['author']))
+                labels['author'] = config['author']
+
+
+            if labels:
+                dockerfile_contents.append('LABEL {}'.format(' \\\n      '.join(['{}="{}"'.format(x,labels[x]) for x in labels])))
+
 
 
 

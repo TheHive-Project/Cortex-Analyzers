@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="C1fApp"
-LABEL description="Query C1fApp OSINT Aggregator for IPs, domains and URLs"
-LABEL author="etz69"
+LABEL name="C1fApp" \
+      description="Query C1fApp OSINT Aggregator for IPs, domains and URLs" \
+      author="etz69"
 
 WORKDIR /worker
 

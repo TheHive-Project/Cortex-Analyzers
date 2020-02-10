@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="IBMXForce_Lookup"
-LABEL description="Query domains, IPs, hashes and URLs against IBM X-Force threat intelligence sharing platform."
-LABEL author="Davide Arcuri and Andrea Garavaglia, LDO-CERT"
+LABEL name="IBMXForce" \
+      description="Query domains, IPs, hashes and URLs against IBM X-Force threat intelligence sharing platform." \
+      author="Davide Arcuri and Andrea Garavaglia, LDO-CERT"
 
 WORKDIR /worker
 

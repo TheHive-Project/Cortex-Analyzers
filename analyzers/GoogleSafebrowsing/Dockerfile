@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="GoogleSafebrowsing"
-LABEL description="Use Google Safebrowing to check URLs and domain names."
-LABEL author="Nils Kuhnert, CERT-Bund"
+LABEL name="GoogleSafebrowsing" \
+      description="Use Google Safebrowing to check URLs and domain names." \
+      author="Nils Kuhnert, CERT-Bund"
 
 WORKDIR /worker
 

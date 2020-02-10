@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="DNSSinkhole"
-LABEL description="Check if a  domain is sinkholed via DNS Sinkhole server"
-LABEL author="Andrea Garavaglia, LDO-CERT"
+LABEL name="DNSSinkhole" \
+      description="Check if a  domain is sinkholed via DNS Sinkhole server" \
+      author="Andrea Garavaglia, LDO-CERT"
 
 WORKDIR /worker
 

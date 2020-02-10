@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="EmailRep"
-LABEL description="emailrep.io lookup."
-LABEL author="Manabu Niseki"
+LABEL name="EmailRep" \
+      description="emailrep.io lookup." \
+      author="Manabu Niseki"
 
 WORKDIR /worker
 

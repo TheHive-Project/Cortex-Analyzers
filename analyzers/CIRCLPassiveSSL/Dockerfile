@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="CIRCLPassiveSSL"
-LABEL description="Check CIRCL's Passive SSL for a given IP address or a X509 certificate hash."
-LABEL author="Nils Kuhnert, CERT-Bund"
+LABEL name="CIRCL" \
+      description="Check CIRCL's Passive SSL for a given IP address or a X509 certificate hash." \
+      author="Nils Kuhnert, CERT-Bund"
 
 WORKDIR /worker
 

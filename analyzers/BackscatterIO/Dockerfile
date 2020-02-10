@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="BackscatterIO_GetObservations"
-LABEL description="Determine whether a value has known scanning activity using Backscatter.io data."
-LABEL author="brandon@backscatter.io"
+LABEL name="BackscatterIO" \
+      description="Determine whether a value has known scanning activity using Backscatter.io data." \
+      author="brandon@backscatter.io"
 
 WORKDIR /worker
 

@@ -7,9 +7,9 @@ FROM python:3-alpine
 
 RUN apk add --no-cache git
 
-LABEL name="DomainToolsIris_Pivot"
-LABEL description="Use DomainTools Iris API to pivot on ssl_hash, ip, or email."
-LABEL author="DomainTools"
+LABEL name="DomainToolsIris" \
+      description="Use DomainTools Iris API to pivot on ssl_hash, ip, or email." \
+      author="DomainTools"
 
 WORKDIR /worker
 

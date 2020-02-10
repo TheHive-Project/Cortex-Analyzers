@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="TalosReputation"
-LABEL description="Get the Talos IP reputation"
-LABEL author="Gabriel Antonio da Silva"
+LABEL name="TalosReputation" \
+      description="Get the Talos IP reputation" \
+      author="Gabriel Antonio da Silva"
 
 WORKDIR /worker
 

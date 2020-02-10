@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Investigate_Categorization"
-LABEL description="Retrieve Investigate categorization and security features for a domain."
-LABEL author="Cisco Umbrella Research @opendns"
+LABEL name="Investigate" \
+      description="Retrieve Investigate categorization and security features for a domain." \
+      author="Cisco Umbrella Research @opendns"
 
 WORKDIR /worker
 

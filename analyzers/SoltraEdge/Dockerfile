@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="SoltraEdge"
-LABEL description="Query against Soltra Edge."
-LABEL author="Michael Stensrud, Nordic Financial CERT"
+LABEL name="Soltra_Edge" \
+      description="Query against Soltra Edge." \
+      author="Michael Stensrud, Nordic Financial CERT"
 
 WORKDIR /worker
 

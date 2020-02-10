@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="StopForumSpam"
-LABEL description="Query http://www.stopforumspam.com to check if an IP or email address is a known spammer."
-LABEL author="Marc-Andre Doll, STARC by EXAPROBE"
+LABEL name="StopForumSpam" \
+      description="Query http://www.stopforumspam.com to check if an IP or email address is a known spammer." \
+      author="Marc-Andre Doll, STARC by EXAPROBE"
 
 WORKDIR /worker
 

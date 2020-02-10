@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="GoogleVisionAPI_WebDetection"
-LABEL description="Find look alike image via Google Cloud Vision API using the Web_Detection service "
-LABEL author="CERT-LaPoste"
+LABEL name="GoogleVisionAPI" \
+      description="Find look alike image via Google Cloud Vision API using the Web_Detection service " \
+      author="CERT-LaPoste"
 
 WORKDIR /worker
 

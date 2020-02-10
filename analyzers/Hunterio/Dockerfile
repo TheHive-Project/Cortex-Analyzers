@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Hunterio_DomainSearch"
-LABEL description="hunter.io is a service to find email addresses from a domain."
-LABEL author="Rémi Allain, Cyberprotect"
+LABEL name="Hunterio" \
+      description="hunter.io is a service to find email addresses from a domain." \
+      author="Rémi Allain, Cyberprotect"
 
 WORKDIR /worker
 

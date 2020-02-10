@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="TorProject"
-LABEL description="Query https://check.torproject.org/exit-addresses for TOR exit nodes IP addresses."
-LABEL author="Marc-André DOLL, STARC by EXAPROBE"
+LABEL name="TorProject" \
+      description="Query https://check.torproject.org/exit-addresses for TOR exit nodes IP addresses." \
+      author="Marc-André DOLL, STARC by EXAPROBE"
 
 WORKDIR /worker
 

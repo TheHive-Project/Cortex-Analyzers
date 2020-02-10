@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="HippoMore"
-LABEL description="Get the Hippocampe detailed report for an IP address, a domain or a URL."
-LABEL author="CERT-BDF"
+LABEL name="Hippocampe" \
+      description="Get the Hippocampe detailed report for an IP address, a domain or a URL." \
+      author="CERT-BDF"
 
 WORKDIR /worker
 

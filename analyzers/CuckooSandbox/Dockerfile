@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="CuckooSandbox_File_Analysis_Inet"
-LABEL description="Cuckoo Sandbox file analysis with Internet access."
-LABEL author="Andrea Garavaglia, LDO-CERT"
+LABEL name="CuckooSandbox" \
+      description="Cuckoo Sandbox file analysis with Internet access." \
+      author="Andrea Garavaglia, LDO-CERT"
 
 WORKDIR /worker
 

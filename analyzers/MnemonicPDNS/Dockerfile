@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Mnemonic_pDNS_Public"
-LABEL description="Query IP addresses and domains against Mnemonic pDNS public service."
-LABEL author="Michael Stensrud, Nordic Financial CERT"
+LABEL name="Mnemonic_pDNS" \
+      description="Query IP addresses and domains against Mnemonic pDNS public service." \
+      author="Michael Stensrud, Nordic Financial CERT"
 
 WORKDIR /worker
 

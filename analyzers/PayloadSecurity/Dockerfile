@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="PayloadSecurity_Url_Analysis"
-LABEL description="PayloadSecurity Sandbox Url Analysis"
-LABEL author="Emmanuel Torquato"
+LABEL name="PayloadSecurity" \
+      description="PayloadSecurity Sandbox Url Analysis" \
+      author="Emmanuel Torquato"
 
 WORKDIR /worker
 

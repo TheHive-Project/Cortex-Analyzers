@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="CERTatPassiveDNS"
-LABEL description="Checks CERT.at Passive DNS for a given domain."
-LABEL author="Nils Kuhnert, CERT-Bund"
+LABEL name="CERTatPassiveDNS" \
+      description="Checks CERT.at Passive DNS for a given domain." \
+      author="Nils Kuhnert, CERT-Bund"
 
 WORKDIR /worker
 

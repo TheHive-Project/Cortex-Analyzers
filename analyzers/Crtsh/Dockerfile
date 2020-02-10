@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Crt_sh_Transparency_Logs"
-LABEL description="Query domains against the certificate transparency lists available at crt.sh."
-LABEL author="crackytsi"
+LABEL name="Crtsh" \
+      description="Query domains against the certificate transparency lists available at crt.sh." \
+      author="crackytsi"
 
 WORKDIR /worker
 

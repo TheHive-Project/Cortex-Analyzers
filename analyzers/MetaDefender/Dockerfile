@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="MetaDefenderCore_GetReport"
-LABEL description="Get the latest MetaDefender Core report for hash."
-LABEL author="Davide Arcuri and Andrea Garavaglia, LDO-CERT"
+LABEL name="MetaDefender" \
+      description="Get the latest MetaDefender Core report for hash." \
+      author="Davide Arcuri and Andrea Garavaglia, LDO-CERT"
 
 WORKDIR /worker
 

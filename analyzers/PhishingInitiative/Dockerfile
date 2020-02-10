@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="PhishingInitiative_Lookup"
-LABEL description="Use Phishing Initiative to check if a URL is a verified phishing site."
-LABEL author="CERT-BDF"
+LABEL name="PhishingInitiative" \
+      description="Use Phishing Initiative to check if a URL is a verified phishing site." \
+      author="CERT-BDF"
 
 WORKDIR /worker
 

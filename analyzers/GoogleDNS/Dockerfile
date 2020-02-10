@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="GoogleDNS_resolve"
-LABEL description="Request Google DNS over HTTPS service"
-LABEL author="CERT-LaPoste"
+LABEL name="GoogleDNS" \
+      description="Request Google DNS over HTTPS service" \
+      author="CERT-LaPoste"
 
 WORKDIR /worker
 

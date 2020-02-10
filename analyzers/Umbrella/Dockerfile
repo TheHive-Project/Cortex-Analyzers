@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Umbrella_Report"
-LABEL description="Query the Umbrella Reporting API for recent DNS queries and their status."
-LABEL author="Kyle Parrish"
+LABEL name="Umbrella" \
+      description="Query the Umbrella Reporting API for recent DNS queries and their status." \
+      author="Kyle Parrish"
 
 WORKDIR /worker
 

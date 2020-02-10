@@ -7,9 +7,9 @@ FROM python:3-alpine
 
 RUN apk add --no-cache git
 
-LABEL name="AutoFocus_GetSampleAnalysis"
-LABEL description="Get full analysis from a sample based on its hash"
-LABEL author="ANSSI"
+LABEL name="AutoFocus" \
+      description="Get full analysis from a sample based on its hash" \
+      author="ANSSI"
 
 WORKDIR /worker
 

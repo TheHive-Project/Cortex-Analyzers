@@ -7,9 +7,9 @@ FROM python:3-alpine
 
 RUN apk add --no-cache g++ libmagic
 
-LABEL name="EmlParser"
-LABEL description="Parse Eml message"
-LABEL author="ninsmith"
+LABEL name="EmlParser" \
+      description="Parse Eml message" \
+      author="ninsmith"
 
 WORKDIR /worker
 

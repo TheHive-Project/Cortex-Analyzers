@@ -7,9 +7,9 @@ FROM python:3-alpine
 
 RUN apk add --no-cache git
 
-LABEL name="DomainTools_WhoisHistory"
-LABEL description="Use DomainTools to get a list of historical Whois records associated with a domain name."
-LABEL author="CERT-BDF"
+LABEL name="DomainTools" \
+      description="Use DomainTools to get a list of historical Whois records associated with a domain name." \
+      author="CERT-BDF"
 
 WORKDIR /worker
 

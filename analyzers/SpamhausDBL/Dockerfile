@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="SpamhausDBL"
-LABEL description="Perform domain lookup to Spamhaus DBL"
-LABEL author="Wes Lambert"
+LABEL name="SpamhausDBL" \
+      description="Perform domain lookup to Spamhaus DBL" \
+      author="Wes Lambert"
 
 WORKDIR /worker
 

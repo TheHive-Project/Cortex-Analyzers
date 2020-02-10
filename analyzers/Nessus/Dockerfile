@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Nessus"
-LABEL description="Use Nessus Professional to scan hosts."
-LABEL author="Guillaume Rousse"
+LABEL name="Nessus" \
+      description="Use Nessus Professional to scan hosts." \
+      author="Guillaume Rousse"
 
 WORKDIR /worker
 

@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Fortiguard_URLCategory"
-LABEL description="Check the Fortiguard category of a URL, FQDN or a domain. Check the full available list at https://fortiguard.com/webfilter/categories"
-LABEL author="Eric Capuano"
+LABEL name="Fortiguard" \
+      description="Check the Fortiguard category of a URL, FQDN or a domain. Check the full available list at https://fortiguard.com/webfilter/categories" \
+      author="Eric Capuano"
 
 WORKDIR /worker
 

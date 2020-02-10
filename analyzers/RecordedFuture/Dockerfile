@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="RecordedFuture_risk"
-LABEL description="Get the latest risk data from RecordedFuture for a hash, domain or an IP address."
-LABEL author="KAPSCH-CDC"
+LABEL name="RecordedFuture" \
+      description="Get the latest risk data from RecordedFuture for a hash, domain or an IP address." \
+      author="KAPSCH-CDC"
 
 WORKDIR /worker
 

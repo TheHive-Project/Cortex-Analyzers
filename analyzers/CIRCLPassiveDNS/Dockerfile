@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="CIRCLPassiveDNS"
-LABEL description="Check CIRCL's Passive DNS for a given domain or URL."
-LABEL author="Nils Kuhnert, CERT-Bund"
+LABEL name="CIRCL" \
+      description="Check CIRCL's Passive DNS for a given domain or URL." \
+      author="Nils Kuhnert, CERT-Bund"
 
 WORKDIR /worker
 

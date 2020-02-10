@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Abuse_Finder"
-LABEL description="Find abuse contacts associated with domain names, URLs, IPs and email addresses."
-LABEL author="CERT-BDF"
+LABEL name="Abuse_Finder" \
+      description="Find abuse contacts associated with domain names, URLs, IPs and email addresses." \
+      author="CERT-BDF"
 
 WORKDIR /worker
 

@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Patrowl_GetReport"
-LABEL description="Get the current Patrowl report for a fdqn, a domain or an IP address."
-LABEL author="Nicolas Mattiocco"
+LABEL name="Patrowl" \
+      description="Get the current Patrowl report for a fdqn, a domain or an IP address." \
+      author="Nicolas Mattiocco"
 
 WORKDIR /worker
 

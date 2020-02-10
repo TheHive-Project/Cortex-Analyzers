@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Onyphe_Reverse"
-LABEL description="Retrieve reverse DNS lookup information Onyphe has for the given IPv{4,6} address with history of changes."
-LABEL author="Pierre Baudry, Adrien Barchapt"
+LABEL name="Onyphe" \
+      description="Retrieve reverse DNS lookup information Onyphe has for the given IPv{4,6} address with history of changes." \
+      author="Pierre Baudry, Adrien Barchapt"
 
 WORKDIR /worker
 

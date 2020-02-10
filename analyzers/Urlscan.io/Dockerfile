@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Urlscan.io_Search"
-LABEL description="Search IPs, domains, hashes or URLs on urlscan.io"
-LABEL author="ninoseki"
+LABEL name="Urlscan" \
+      description="Search IPs, domains, hashes or URLs on urlscan.io" \
+      author="ninoseki"
 
 WORKDIR /worker
 

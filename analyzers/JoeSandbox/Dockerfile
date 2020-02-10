@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="JoeSandbox_File_Analysis_Inet"
-LABEL description="Joe Sandbox file analysis with Internet access."
-LABEL author="CERT-BDF"
+LABEL name="JoeSandbox" \
+      description="Joe Sandbox file analysis with Internet access." \
+      author="CERT-BDF"
 
 WORKDIR /worker
 

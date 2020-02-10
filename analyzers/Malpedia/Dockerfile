@@ -7,9 +7,9 @@ FROM python:3-alpine
 
 RUN apk add --no-cache gcc musl-dev
 
-LABEL name="Malpedia"
-LABEL description="Check files against Malpedia YARA rules."
-LABEL author="Davide Arcuri and Andrea Garavaglia, LDO-CERT"
+LABEL name="Malpedia" \
+      description="Check files against Malpedia YARA rules." \
+      author="Davide Arcuri and Andrea Garavaglia, LDO-CERT"
 
 WORKDIR /worker
 

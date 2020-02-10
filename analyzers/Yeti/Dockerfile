@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Yeti"
-LABEL description="Fetch observable details from a YETI instance."
-LABEL author="CERT-BDF"
+LABEL name="Yeti" \
+      description="Fetch observable details from a YETI instance." \
+      author="CERT-BDF"
 
 WORKDIR /worker
 

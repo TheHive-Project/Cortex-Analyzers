@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Hashdd_Status"
-LABEL description="Determine whether a hash is good or bad."
-LABEL author="iosonogio"
+LABEL name="Hashdd" \
+      description="Determine whether a hash is good or bad." \
+      author="iosonogio"
 
 WORKDIR /worker
 

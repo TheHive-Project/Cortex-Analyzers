@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="WOT_Lookup"
-LABEL description="Use Web of Trust to check a domain's reputation."
-LABEL author="Andrea Garavaglia, LDO-CERT"
+LABEL name="WOT" \
+      description="Use Web of Trust to check a domain's reputation." \
+      author="Andrea Garavaglia, LDO-CERT"
 
 WORKDIR /worker
 

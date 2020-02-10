@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="ProofPoint_Lookup"
-LABEL description="Check URL, file, SHA256 against ProofPoint forensics"
-LABEL author="Emmanuel Torquato"
+LABEL name="ProofPoint" \
+      description="Check URL, file, SHA256 against ProofPoint forensics" \
+      author="Emmanuel Torquato"
 
 WORKDIR /worker
 

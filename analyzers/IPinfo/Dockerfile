@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="IPinfo_Details"
-LABEL description="IPinfo details lookup."
-LABEL author="Manabu Niseki"
+LABEL name="IPinfo" \
+      description="IPinfo details lookup." \
+      author="Manabu Niseki"
 
 WORKDIR /worker
 

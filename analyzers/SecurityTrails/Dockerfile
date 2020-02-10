@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="SecurityTrails_Whois"
-LABEL description="SecurityTrails Whois Lookup."
-LABEL author="Manabu Niseki, @ninoseki"
+LABEL name="SecurityTrails" \
+      description="SecurityTrails Whois Lookup." \
+      author="Manabu Niseki, @ninoseki"
 
 WORKDIR /worker
 

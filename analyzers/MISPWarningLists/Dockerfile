@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="MISPWarningLists"
-LABEL description="Check IoCs/Observables against MISP Warninglists to filter false positives."
-LABEL author="Nils Kuhnert, CERT-Bund"
+LABEL name="MISPWarningLists" \
+      description="Check IoCs/Observables against MISP Warninglists to filter false positives." \
+      author="Nils Kuhnert, CERT-Bund"
 
 WORKDIR /worker
 

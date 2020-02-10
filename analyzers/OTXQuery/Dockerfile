@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="OTXQuery"
-LABEL description="Query AlienVault OTX for IPs, domains, URLs, or file hashes."
-LABEL author="Eric Capuano"
+LABEL name="OTXQuery" \
+      description="Query AlienVault OTX for IPs, domains, URLs, or file hashes." \
+      author="Eric Capuano"
 
 WORKDIR /worker
 

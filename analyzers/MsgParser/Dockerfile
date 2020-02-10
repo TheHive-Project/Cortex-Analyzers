@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Msg_Parser"
-LABEL description="Parse Outlook MSG files and extract the main artifacts."
-LABEL author="CERT-BDF"
+LABEL name="MsgParser" \
+      description="Parse Outlook MSG files and extract the main artifacts." \
+      author="CERT-BDF"
 
 WORKDIR /worker
 

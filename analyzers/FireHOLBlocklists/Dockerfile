@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="FireHOLBlocklists"
-LABEL description="Check IP addresses against the FireHOL blocklists"
-LABEL author="Nils Kuhnert, CERT-Bund"
+LABEL name="FireHOLBlocklists" \
+      description="Check IP addresses against the FireHOL blocklists" \
+      author="Nils Kuhnert, CERT-Bund"
 
 WORKDIR /worker
 

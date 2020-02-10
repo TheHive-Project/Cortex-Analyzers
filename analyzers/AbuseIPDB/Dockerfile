@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="AbuseIPDB"
-LABEL description="Determine whether an IP was reported or not as malicious by AbuseIPDB"
-LABEL author="Matteo Lodi"
+LABEL name="AbuseIPDB" \
+      description="Determine whether an IP was reported or not as malicious by AbuseIPDB" \
+      author="Matteo Lodi"
 
 WORKDIR /worker
 

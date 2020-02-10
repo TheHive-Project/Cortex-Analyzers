@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Pulsedive_GetIndicator"
-LABEL description="Search Pulsedive.com for a giver domain name, hash, ip or url"
-LABEL author="Nils Kuhnert"
+LABEL name="Pulsedive" \
+      description="Search Pulsedive.com for a giver domain name, hash, ip or url" \
+      author="Nils Kuhnert"
 
 WORKDIR /worker
 

@@ -7,9 +7,9 @@ FROM python:3-alpine
 
 RUN apk add --no-cache gcc musl-dev
 
-LABEL name="Yara"
-LABEL description="Check files against YARA rules."
-LABEL author="Nils Kuhnert, CERT-Bund"
+LABEL name="Yara" \
+      description="Check files against YARA rules." \
+      author="Nils Kuhnert, CERT-Bund"
 
 WORKDIR /worker
 

@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="MaxMind_GeoIP"
-LABEL description="Use MaxMind to geolocate an IP address."
-LABEL author="CERT-BDF"
+LABEL name="MaxMind" \
+      description="Use MaxMind to geolocate an IP address." \
+      author="CERT-BDF"
 
 WORKDIR /worker
 

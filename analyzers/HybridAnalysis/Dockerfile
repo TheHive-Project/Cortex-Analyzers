@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="HybridAnalysis_GetReport"
-LABEL description="Fetch Hybrid Analysis reports associated with hashes and filenames."
-LABEL author="Daniil Yugoslavskiy, Tieto"
+LABEL name="HybridAnalysis" \
+      description="Fetch Hybrid Analysis reports associated with hashes and filenames." \
+      author="Daniil Yugoslavskiy, Tieto"
 
 WORKDIR /worker
 

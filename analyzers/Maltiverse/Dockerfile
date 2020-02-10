@@ -7,9 +7,9 @@ FROM python:3-alpine
 
 RUN apk add --no-cache git
 
-LABEL name="Maltiverse_Report"
-LABEL description="Get the latest Maltiverse report for an hash, domain or an IP address."
-LABEL author="ottimo"
+LABEL name="Maltiverse" \
+      description="Get the latest Maltiverse report for an hash, domain or an IP address." \
+      author="ottimo"
 
 WORKDIR /worker
 

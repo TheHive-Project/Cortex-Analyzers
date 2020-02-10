@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="SinkDB"
-LABEL description="Check if ip is sinkholed via sinkdb.abuse.ch"
-LABEL author="Nils Kuhnert, CERT-Bund"
+LABEL name="SinkDB" \
+      description="Check if ip is sinkholed via sinkdb.abuse.ch" \
+      author="Nils Kuhnert, CERT-Bund"
 
 WORKDIR /worker
 

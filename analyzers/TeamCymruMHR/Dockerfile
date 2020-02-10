@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="TeamCymruMHR"
-LABEL description="Submit hash to Team Cymru's Malware Hash Registry"
-LABEL author="Wes Lambert"
+LABEL name="TeamCymruMHR" \
+      description="Submit hash to Team Cymru's Malware Hash Registry" \
+      author="Wes Lambert"
 
 WORKDIR /worker
 

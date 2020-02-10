@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="MISP"
-LABEL description="Query multiple MISP instances for events containing an observable."
-LABEL author="Nils Kuhnert, CERT-Bund"
+LABEL name="MISP" \
+      description="Query multiple MISP instances for events containing an observable." \
+      author="Nils Kuhnert, CERT-Bund"
 
 WORKDIR /worker
 

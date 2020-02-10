@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="DShield_lookup"
-LABEL description="Query the SANS ISC DShield API to check for an IP address reputation."
-LABEL author="Xavier Xavier, SANS ISC"
+LABEL name="DShield" \
+      description="Query the SANS ISC DShield API to check for an IP address reputation." \
+      author="Xavier Xavier, SANS ISC"
 
 WORKDIR /worker
 

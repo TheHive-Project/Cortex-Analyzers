@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="HIBP_Query"
-LABEL description="Query haveibeenpwned.com for a compromised email address"
-LABEL author="Matt Erasmus, Jonas Hergenhahn"
+LABEL name="HIBP" \
+      description="Query haveibeenpwned.com for a compromised email address" \
+      author="Matt Erasmus, Jonas Hergenhahn"
 
 WORKDIR /worker
 

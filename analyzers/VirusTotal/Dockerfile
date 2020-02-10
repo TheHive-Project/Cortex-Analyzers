@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="VirusTotal_Scan"
-LABEL description="Use VirusTotal to scan a file or URL."
-LABEL author="CERT-BDF"
+LABEL name="VirusTotal" \
+      description="Use VirusTotal to scan a file or URL." \
+      author="CERT-BDF"
 
 WORKDIR /worker
 

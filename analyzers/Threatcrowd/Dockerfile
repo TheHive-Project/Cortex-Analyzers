@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Threatcrowd"
-LABEL description="Look up domains, mail and IP addresses on ThreatCrowd."
-LABEL author="Rémi Allain, Cyberprotect"
+LABEL name="Threatcrowd" \
+      description="Look up domains, mail and IP addresses on ThreatCrowd." \
+      author="Rémi Allain, Cyberprotect"
 
 WORKDIR /worker
 

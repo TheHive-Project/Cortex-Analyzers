@@ -5,9 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Virusshare"
-LABEL description="Search for MD5 hashes in Virusshare.com hash list"
-LABEL author="Nils Kuhnert, CERT-Bund"
+LABEL name="Virusshare" \
+      description="Search for MD5 hashes in Virusshare.com hash list" \
+      author="Nils Kuhnert, CERT-Bund"
 
 WORKDIR /worker
 
