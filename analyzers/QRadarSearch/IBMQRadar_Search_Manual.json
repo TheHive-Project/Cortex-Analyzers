@@ -62,7 +62,7 @@
       "type": "number"
     },
 	{
-      "name": "http_method_field",
+      "name": "url_http_method_field",
       "description": "The field that contains the HTTP method for a web request",
       "required": false,
       "multi": false,
