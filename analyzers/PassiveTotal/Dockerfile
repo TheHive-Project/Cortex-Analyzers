@@ -3,7 +3,7 @@
 # DO NOT EDIT IT DIRECTLY
 
 # Guessing base image from source code shebang
-FROM python:2-alpine
+FROM python:3-alpine
 
 LABEL name="PassiveTotal_Ssl_Certificate_Details"
 LABEL description="PassiveTotal SSL Certificate Details Lookup."

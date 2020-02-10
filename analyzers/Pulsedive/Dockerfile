@@ -3,7 +3,7 @@
 # DO NOT EDIT IT DIRECTLY
 
 # Guessing base image from source code shebang
-FROM python:2-alpine
+FROM python:3-alpine
 
 LABEL name="Pulsedive_GetIndicator"
 LABEL description="Search Pulsedive.com for a giver domain name, hash, ip or url"

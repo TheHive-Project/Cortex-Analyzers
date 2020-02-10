@@ -5,15 +5,15 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Nessus"
-LABEL description="Use Nessus Professional to scan hosts."
-LABEL author="Guillaume Rousse"
+LABEL name="SpamhausDBL"
+LABEL description="Perform domain lookup to Spamhaus DBL"
+LABEL author="Wes Lambert"
 
 WORKDIR /worker
 
-COPY . Nessus
+COPY . SpamhausDBL
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r Nessus/requirements.txt
+RUN pip install --no-cache-dir -r SpamhausDBL/requirements.txt
 
-ENTRYPOINT Nessus/nessus.py
+ENTRYPOINT SpamhausDBL/spamhausdbl.py

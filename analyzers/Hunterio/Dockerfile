@@ -3,7 +3,7 @@
 # DO NOT EDIT IT DIRECTLY
 
 # Guessing base image from source code shebang
-FROM python:2-alpine
+FROM python:3-alpine
 
 LABEL name="Hunterio_DomainSearch"
 LABEL description="hunter.io is a service to find email addresses from a domain."

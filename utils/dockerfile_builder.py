@@ -44,17 +44,21 @@ for analyzer in analyzers:
                     if '#!/usr/bin/env python\n' in source_code:
                         # If we're building every image, we should save disk space w/ alpine
                         baseImage = 'python:2-alpine'
-                        is_python = is_alpine = True
+                        is_python = True
                     elif '#!/usr/bin/env python3\n' in source_code:
                         # If we're building every image, we should save disk space w/ alpine
                         baseImage = 'python:3-alpine'
-                        is_python = is_alpine = True
+                        is_python = True
                     
                     # TODO: Add more runtime shebangs! ex. go, rust, ruby
 
                     # Default out to ubuntu
                     else:
                         baseImage = 'ubuntu'
+
+
+            if 'alpine' in baseImage:
+                is_alpine = True
 
             dockerfile_contents.append('FROM {}\n'.format(baseImage))
 
@@ -77,6 +81,9 @@ for analyzer in analyzers:
                         if 'eml_parser' in requirements:
                             alpine_dependencies.add('libmagic')
                             alpine_dependencies.add('g++')
+                        if 'pyimpfuzzy' in requirements:
+                            alpine_dependencies.add('gcc')
+                            alpine_dependencies.add('musl-dev')
 
                         # One of the requirements is a git repository-- include git
                         if 'git+https' in requirements:

@@ -3,7 +3,7 @@
 # DO NOT EDIT IT DIRECTLY
 
 # Guessing base image from source code shebang
-FROM python:2-alpine
+FROM python:3-alpine
 
 LABEL name="HippoMore"
 LABEL description="Get the Hippocampe detailed report for an IP address, a domain or a URL."

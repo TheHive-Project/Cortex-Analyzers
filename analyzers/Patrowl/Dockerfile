@@ -3,7 +3,7 @@
 # DO NOT EDIT IT DIRECTLY
 
 # Guessing base image from source code shebang
-FROM python:2-alpine
+FROM python:3-alpine
 
 LABEL name="Patrowl_GetReport"
 LABEL description="Get the current Patrowl report for a fdqn, a domain or an IP address."

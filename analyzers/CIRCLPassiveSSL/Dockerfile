@@ -3,7 +3,7 @@
 # DO NOT EDIT IT DIRECTLY
 
 # Guessing base image from source code shebang
-FROM python:2-alpine
+FROM python:3-alpine
 
 LABEL name="CIRCLPassiveSSL"
 LABEL description="Check CIRCL's Passive SSL for a given IP address or a X509 certificate hash."
