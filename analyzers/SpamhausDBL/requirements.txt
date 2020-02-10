@@ -1,1 +1,1 @@
-dnyspython
+dnspython

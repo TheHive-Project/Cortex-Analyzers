@@ -19,7 +19,7 @@ class Onyphe:
         self._session = requests.Session()
 
     def _request(self, path: str, query_params: dict={}):
-        """Specialized wrapper arround the requests module to request data from Onyphe
+        """Specialized wrapper around the requests module to request data from Onyphe
         :param path: The URL path after the onyphe FQDN
         :type path: str
         :param query_params: The dictionnary of query parameters that gets appended to the URL
@@ -43,7 +43,7 @@ class Onyphe:
         return response_data
 
     def _request_without_api(self, path: str, query_params: dict={}):
-        """Specialized wrapper arround the requests module to request data from Onyphe without the api_key(geolocate and myip)
+        """Specialized wrapper around the requests module to request data from Onyphe without the api_key(geolocate and myip)
         :param path: The URL path after the onyphe FQDN
         :type path: str
         :param query_params: The dictionnary of query parameters that gets appended to the URL
