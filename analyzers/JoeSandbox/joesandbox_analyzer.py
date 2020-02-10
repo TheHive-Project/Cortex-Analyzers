@@ -25,7 +25,7 @@ class JoeSandboxAnalyzer(Analyzer):
         )
         self.analysistimeout = self.get_param("config.analysistimeout", 30 * 60, None)
         self.networktimeout = self.get_param("config.networktimeout", 30, None)
-        self.joe = JoeSandbox(apikey, self.url, verify_ssl=False)
+        self.joe = JoeSandbox(apikey, self.url, verify_ssl=False, accept_tac=True)
 
     def summary(self, raw):
         taxonomies = []

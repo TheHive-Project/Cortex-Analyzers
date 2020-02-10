@@ -5,7 +5,7 @@
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
     "description": "Query C1fApp OSINT Aggregator for IPs, domains and URLs",
-    "dataTypeList": ["url", "domain", "ip"],
+    "dataTypeList": ["url", "domain", "fqdn", "ip"],
     "baseConfig": "C1fApp",
     "command": "C1fApp/cifquery.py",
     "configurationItems": [

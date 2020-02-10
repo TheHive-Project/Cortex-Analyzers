@@ -1,0 +1,37 @@
+{
+  "name": "Wazuh",
+  "version": "1.0",
+  "author": "Wes Lambert",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Block an IP on a host via Wazuh agent",
+  "dataTypeList": ["thehive:case", "thehive:case_artifact"],
+  "command": "Wazuh/wazuh.py",
+  "baseConfig": "Wazuh",
+  "configurationItems": [
+    {
+      "name": "wazuh_manager",
+      "description": "URL for Wazuh Manager",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "https://localhhost:55000"
+    },
+    {
+      "name": "wazuh_user",
+      "description": "User for Wazuh Manager",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "foo"
+    },
+    {
+      "name": "wazuh_password",
+      "description": "Password for Wazuh Manager",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "bar"
+    }
+  ]
+}

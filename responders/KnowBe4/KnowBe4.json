@@ -1,0 +1,59 @@
+{
+    "name": "KnowBe4",
+    "version": "1.0",
+    "author": "Kyle Parrish",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Add 'Clicked Event' to User via User Events API.",
+    "dataTypeList": [
+        "thehive:case_artifact"
+    ],
+    "command": "KnowBe4/KnowBe4.py",
+    "baseConfig": "KnowBe4",
+    "configurationItems": [
+        {
+            "name": "api_url",
+            "description": "Base API url",
+            "type": "string",
+            "multi": false,
+            "required": true,
+            "defaultValue": "https://api.events.knowbe4.com/events"
+        },
+        {
+            "name": "hive_url",
+            "description": "Specify The Hive Instance URL",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "api_key",
+            "description": "Api Key",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "required_tag",
+            "description": "Specify a tag that must be present for responder to run.",
+            "type": "string",
+            "multi": false,
+            "required": false
+        },
+        {
+            "name": "event_type",
+            "description": "Specify the Event Type for the new event. https://developer.knowbe4.com/events/#tag/Event-Types",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "risk_level",
+            "description": "Specify the desired risk level. https://developer.knowbe4.com/events/#tag/Events/paths/~1events/post",
+            "type": "integer",
+            "multi": false,
+            "required": false,
+            "defaultValue": 10
+        }
+    ]
+}

@@ -9,7 +9,8 @@
   "command": "PassiveTotal/passivetotal_analyzer.py",
   "baseConfig": "PassiveTotal",
   "config": {
-    "service": "unique_resolutions"
+    "service": "unique_resolutions",
+    "auto_extract": true
   },
   "configurationItems": [
     {

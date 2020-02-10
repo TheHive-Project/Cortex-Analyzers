@@ -3,7 +3,7 @@
 # DO NOT EDIT IT DIRECTLY
 
 # Guessing base image from source code shebang
-FROM python:2-alpine
+FROM python:3-alpine
 
 LABEL name="Abuse_Finder"
 LABEL description="Find abuse contacts associated with domain names, URLs, IPs and email addresses."
