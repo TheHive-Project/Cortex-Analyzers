@@ -5,6 +5,7 @@
 from pathlib import Path
 import docker as dockerlib
 from json import loads
+from sys import argv
 
 import asyncio
 
@@ -53,7 +54,10 @@ async def build_all_analyzers(analyzers):
 if __name__ == "__main__":
     import datetime
     start = datetime.datetime.now().isoformat()
-    analyzers = [x for x in Path('..', 'analyzers').iterdir() if x.is_dir()]
+
+    root = Path(argv[0]).absolute().parent.parent
+
+    analyzers = [x for x in Path(root, 'analyzers').iterdir() if x.is_dir()]
 
     asyncio.run(build_all_analyzers(analyzers))
 
