@@ -22,7 +22,7 @@ for analyzer in analyzers:
             
         else:
             dockerfile_path.touch()
-            print('Creating new docker file', dockerfile_path)
+            
         
         service_config_paths = [Path(x) for x in sorted(analyzer.iterdir()) if x.suffix == '.json']
         
@@ -163,6 +163,9 @@ for analyzer in analyzers:
 
             if update and dockerfile != "\n".join(dockerfile_contents):
                 print("Updating", dockerfile_path)
+                dockerfile_path.write_text("\n".join(dockerfile_contents))
+            elif not update:
+                print('Creating new Dockerfile', dockerfile_path)
                 dockerfile_path.write_text("\n".join(dockerfile_contents))
 
 
