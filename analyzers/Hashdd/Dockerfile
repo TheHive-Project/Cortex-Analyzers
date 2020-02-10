@@ -7,6 +7,7 @@ FROM python:3-alpine
 
 LABEL author="iosonogio" \
       license="AGPLv3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="Hashdd" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \
       vendor="TheHive" \

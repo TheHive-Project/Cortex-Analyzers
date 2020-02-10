@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="Nclose" \
       description="Determine whether an IP has known scanning activity using GreyNoise." \
       license="APLv2" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="GreyNoise" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \
       vendor="TheHive" \

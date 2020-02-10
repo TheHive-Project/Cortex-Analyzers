@@ -10,6 +10,7 @@ RUN apk add --no-cache g++ libmagic
 LABEL author="ninsmith" \
       description="Parse Eml message" \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="EmlParser" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \
       vendor="TheHive" \

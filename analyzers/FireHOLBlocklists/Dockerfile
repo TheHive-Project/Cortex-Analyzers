@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="Nils Kuhnert, CERT-Bund" \
       description="Check IP addresses against the FireHOL blocklists" \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="FireHOLBlocklists" \
       url="https://github.com/BSI-CERT-Bund/cortex-analyzers" \
       vendor="TheHive" \

@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="crackytsi" \
       description="Query domains against the certificate transparency lists available at crt.sh." \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="Crtsh" \
       url="https://crt.sh" \
       vendor="TheHive" \

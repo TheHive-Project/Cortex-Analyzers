@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="Nils Kuhnert, CERT-Bund" \
       description="VMRay Sandbox file analysis." \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="VMRay" \
       url="https://github.com/BSI-CERT-Bund/cortex-analyzers" \
       vendor="TheHive" \

@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="Rémi Allain, Cyberprotect" \
       description="hunter.io is a service to find email addresses from a domain." \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="Hunterio" \
       url="https://github.com/Cyberprotect/Cortex-Analyzers" \
       vendor="TheHive" \

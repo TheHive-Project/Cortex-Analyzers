@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="CERT-LaPoste" \
       description="Request Google DNS over HTTPS service" \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="GoogleDNS" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \
       vendor="TheHive" \

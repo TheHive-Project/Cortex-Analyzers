@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="etz69" \
       description="Query C1fApp OSINT Aggregator for IPs, domains and URLs" \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="C1fApp" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \
       vendor="TheHive" \

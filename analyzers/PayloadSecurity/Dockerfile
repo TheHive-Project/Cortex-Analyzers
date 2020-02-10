@@ -7,6 +7,7 @@ FROM python:3-alpine
 
 LABEL author="Emmanuel Torquato" \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="PayloadSecurity" \
       url="https://github.com/notset/Cortex-Analyzers" \
       vendor="TheHive" \

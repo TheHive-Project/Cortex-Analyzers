@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="CERT-BDF" \
       description="Fetch observable details from a YETI instance." \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="Yeti" \
       url="https://github.com/CERT/cortex-analyzers" \
       vendor="TheHive" \

@@ -7,6 +7,7 @@ FROM python:3-alpine
 
 LABEL author="Manabu Niseki, @ninoseki" \
       license="MIT" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="SecurityTrails" \
       url="https://github.com/ninoseki/cortex-securitytrails" \
       vendor="TheHive" \

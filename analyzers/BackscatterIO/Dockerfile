@@ -7,6 +7,7 @@ FROM python:3-alpine
 
 LABEL author="brandon@backscatter.io" \
       license="APLv2" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="BackscatterIO" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \
       vendor="TheHive" \

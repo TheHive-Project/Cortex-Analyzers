@@ -7,6 +7,7 @@ FROM python:3-alpine
 
 LABEL author="Michael Stensrud, Nordic Financial CERT" \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="Mnemonic_pDNS" \
       url="https://passivedns.mnemonic.no/search" \
       vendor="TheHive" \

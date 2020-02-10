@@ -7,6 +7,7 @@ FROM python:3-alpine
 
 LABEL author="Manabu Niseki" \
       license="MIT" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="IPinfo" \
       url="https://github.com/ninoseki/ipinfo-analyzers" \
       vendor="TheHive" \

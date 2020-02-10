@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="Michael Stensrud, Nordic Financial CERT" \
       description="Query against Soltra Edge." \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="Soltra_Edge" \
       url="http://soltra.com/en/" \
       vendor="TheHive" \

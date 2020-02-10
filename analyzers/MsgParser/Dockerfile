@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="CERT-BDF" \
       description="Parse Outlook MSG files and extract the main artifacts." \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="MsgParser" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \
       vendor="TheHive" \

@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="Wes Lambert" \
       description="Perform domain lookup to Spamhaus DBL" \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="SpamhausDBL" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \
       vendor="TheHive" \

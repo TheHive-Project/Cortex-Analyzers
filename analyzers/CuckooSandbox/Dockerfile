@@ -7,6 +7,7 @@ FROM python:3-alpine
 
 LABEL author="Andrea Garavaglia, LDO-CERT" \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="CuckooSandbox" \
       url="https://github.com/garanews/Cortex-Analyzers" \
       vendor="TheHive" \

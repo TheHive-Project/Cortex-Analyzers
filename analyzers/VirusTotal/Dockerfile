@@ -7,6 +7,7 @@ FROM python:3-alpine
 
 LABEL author="CERT-BDF" \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="VirusTotal" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \
       vendor="TheHive" \

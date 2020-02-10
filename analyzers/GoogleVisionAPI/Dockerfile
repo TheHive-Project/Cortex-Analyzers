@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="CERT-LaPoste" \
       description="Find look alike image via Google Cloud Vision API using the Web_Detection service " \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="GoogleVisionAPI" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \
       vendor="TheHive" \

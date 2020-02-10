@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="Marc-Andre Doll, STARC by EXAPROBE" \
       description="Query http://www.stopforumspam.com to check if an IP or email address is a known spammer." \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="StopForumSpam" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \
       vendor="TheHive" \

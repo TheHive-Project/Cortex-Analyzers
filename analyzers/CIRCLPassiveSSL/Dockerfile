@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="Nils Kuhnert, CERT-Bund" \
       description="Check CIRCL's Passive SSL for a given IP address or a X509 certificate hash." \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="CIRCL" \
       url="https://github.com/BSI-CERT-Bund/cortex-analyzers" \
       vendor="TheHive" \

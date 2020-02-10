@@ -5,8 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL authors="CERT-BDF, Remi Pointel" \
+LABEL authors="Remi Pointel, CERT-BDF" \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="PhishingInitiative" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \
       vendor="TheHive" \

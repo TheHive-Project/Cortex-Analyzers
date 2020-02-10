@@ -7,6 +7,7 @@ FROM python:3-alpine
 
 LABEL author="Cisco Umbrella Research @opendns" \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="Investigate" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers/Investigate" \
       vendor="TheHive" \

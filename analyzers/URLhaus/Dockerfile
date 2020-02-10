@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="ninoseki, Nils Kuhnert" \
       description="Search domains, IPs, URLs or hashes on URLhaus." \
       license="MIT" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="URLhaus" \
       url="https://github.com/ninoseki/cortex_URLhaus_analyzer" \
       vendor="TheHive" \

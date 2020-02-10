@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="CERT-BDF" \
       description="Find abuse contacts associated with domain names, URLs, IPs and email addresses." \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="Abuse_Finder" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \
       vendor="TheHive" \

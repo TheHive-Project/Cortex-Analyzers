@@ -5,8 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL authors="ANSSI, Sebastien Larinier @Sebdraven" \
+LABEL authors="Sebastien Larinier @Sebdraven, ANSSI" \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="Shodan" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers/Shodan" \
       vendor="TheHive" \

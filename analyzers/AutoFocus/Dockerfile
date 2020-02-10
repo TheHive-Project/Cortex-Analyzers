@@ -9,6 +9,7 @@ RUN apk add --no-cache git
 
 LABEL author="ANSSI" \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="AutoFocus" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \
       vendor="TheHive" \

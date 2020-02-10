@@ -9,6 +9,7 @@ RUN apk add --no-cache git
 
 LABEL authors="ANSSI, CERT-BDF" \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="DomainTools" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \
       vendor="TheHive" \

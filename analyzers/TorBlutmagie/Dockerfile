@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="Marc-André DOLL, STARC by EXAPROBE" \
       description="Query http://torstatus.blutmagie.de/query_export.php/Tor_query_EXPORT.csv for TOR exit nodes IP addresses or names." \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="TorBlutmagie" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \
       vendor="TheHive" \

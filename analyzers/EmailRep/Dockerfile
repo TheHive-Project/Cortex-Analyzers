@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="Manabu Niseki" \
       description="emailrep.io lookup." \
       license="MIT" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="EmailRep" \
       url="https://github.com/ninoseki/emailrep-analyzer" \
       vendor="TheHive" \

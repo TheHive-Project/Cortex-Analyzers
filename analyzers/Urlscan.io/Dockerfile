@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="ninoseki" \
       description="Search IPs, domains, hashes or URLs on urlscan.io" \
       license="MIT" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="Urlscan" \
       url="https://github.com/ninoseki/cortex_urlscan_analyzer" \
       vendor="TheHive" \

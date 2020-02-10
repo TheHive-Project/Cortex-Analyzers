@@ -7,6 +7,7 @@ FROM python:3-alpine
 
 LABEL authors="ANSSI, Pierre Baudry, Adrien Barchapt" \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="Onyphe" \
       url="https://github.com/cybernardo/Cortex-Analyzers" \
       vendor="TheHive" \

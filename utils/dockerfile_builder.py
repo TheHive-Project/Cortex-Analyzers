@@ -134,6 +134,7 @@ for analyzer in analyzers:
                     labels['description'] = config['description']
 
             labels['vendor'] = 'TheHive'
+            labels['source'] = 'https://github.com/TheHive-Project/Cortex-Analyzers'
 
 
             if labels:

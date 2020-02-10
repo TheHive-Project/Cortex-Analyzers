@@ -10,6 +10,7 @@ RUN apk add --no-cache git
 LABEL author="DomainTools" \
       description="Use DomainTools Iris API to pivot on ssl_hash, ip, or email." \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="DomainToolsIris" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \
       vendor="TheHive" \

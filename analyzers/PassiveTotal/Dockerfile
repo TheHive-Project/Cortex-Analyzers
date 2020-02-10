@@ -5,8 +5,9 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL authors="CERT-BDF, Brandon Dixon (9bplus)" \
+LABEL authors="Brandon Dixon (9bplus), CERT-BDF" \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="PassiveTotal" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \
       vendor="TheHive" \

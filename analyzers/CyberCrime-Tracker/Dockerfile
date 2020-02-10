@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="ph34tur3" \
       description="Search cybercrime-tracker.net for C2 servers." \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="CyberCrimeTracker" \
       url="https://github.com/ph34tur3/Cortex-Analyzers" \
       vendor="TheHive" \

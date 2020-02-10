@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="Matt Erasmus, Jonas Hergenhahn" \
       description="Query haveibeenpwned.com for a compromised email address" \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="HIBP" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \
       vendor="TheHive" \

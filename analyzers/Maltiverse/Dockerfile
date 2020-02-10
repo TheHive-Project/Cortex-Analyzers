@@ -10,6 +10,7 @@ RUN apk add --no-cache git
 LABEL author="ottimo" \
       description="Get the latest Maltiverse report for an hash, domain or an IP address." \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="Maltiverse" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \
       vendor="TheHive" \

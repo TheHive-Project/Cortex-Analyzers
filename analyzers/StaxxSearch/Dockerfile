@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="Robert Nixon" \
       description="Fetch observable details from an Anomali STAXX instance." \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="staxx" \
       url="https://github.com/robertnixon2003/Cortex-Analyzers" \
       vendor="TheHive" \

@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="Remi Pointel, CERT-BDF" \
       description="Use UnshortenLink to reveal the real URL." \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="UnshortenLink" \
       url="https://github.com/TheHive-Project/Cortex-Analyzers" \
       vendor="TheHive" \

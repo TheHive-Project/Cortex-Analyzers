@@ -8,6 +8,7 @@ FROM python:3-alpine
 LABEL author="Nils Kuhnert, CERT-Bund" \
       description="Use Google Safebrowing to check URLs and domain names." \
       license="AGPL-V3" \
+      source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="GoogleSafebrowsing" \
       url="https://github.com/BSI-CERT-Bund/cortex-analyzers" \
       vendor="TheHive" \
