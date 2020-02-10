@@ -128,14 +128,14 @@ class AutoFocusAnalyzer(Analyzer):
             records = self.execute_autofocus_service()
             self.report(records)
 
-        except AFSampleAbsent as e: # Sample not in Autofocus
-            self.error('Unknown sample in Autofocus')
+        except AFSampleAbsent as e: # Sample not in AutoFocus
+            self.error('Unknown sample in AutoFocus')
         except AFServerError as e: # Server error
             self.unexpectedError(e)
         except AFClientError as e: # Client error
             self.unexpectedError(e)
         except Exception: # Unknown error
-            self.unexpectedError("Unknown error while running Autofocus analyzer")
+            self.unexpectedError("Unknown error while running AutoFocus analyzer")
 
 if __name__ == '__main__':
     AutoFocusAnalyzer().run()
