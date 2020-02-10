@@ -23,8 +23,11 @@ for analyzer in analyzers:
         else:
             dockerfile_path.touch()
             print('Creating new docker file', dockerfile_path)
+        
+        service_config_paths = [Path(x) for x in analyzer.iterdir() if x.suffix == '.json']
+        
         # Grab the first JSON file found-- they _should_ have the same relevant properties anyway
-        json_config = Path([x for x in analyzer.iterdir() if x.suffix == '.json'][0])
+        json_config = service_config_paths[0]
         
         if json_config.exists():
 
@@ -100,7 +103,7 @@ for analyzer in analyzers:
             labels = dict()
 
             if 'name' in config:
-                labels['name'] = config['baseConfig']
+                labels['title'] = config['baseConfig']
 
             if 'description' in config:
                 labels['description'] = config['description']
@@ -108,9 +111,33 @@ for analyzer in analyzers:
             if 'author' in config:
                 labels['author'] = config['author']
 
+            if 'url' in config:
+                labels['url'] = config['url']
+            
+            if 'license' in config:
+                labels['license'] = config['license']
+
+            if 'version' in config:
+                labels['version'] = config['version']
+            
+
+            if len(service_config_paths) > 1:
+
+                configs = [loads(x.open().read()) for x in service_config_paths]
+                authors = ", ".join(set([x['author'] for x in configs]))
+
+                if not labels['author'] == authors:
+                    del labels['author']
+                    labels['authors'] = authors
+
+            labels['vendor'] = 'TheHive'
+
 
             if labels:
-                dockerfile_contents.append('LABEL {}'.format(' \\\n      '.join(['{}="{}"'.format(x,labels[x]) for x in labels])))
+                label_strings = ['{}="{}"'.format(x,labels[x]) for x in sorted(labels)]
+
+                # Add tabbed LABEL key to Dockerfiles
+                dockerfile_contents.append('LABEL {}'.format(' \\\n      '.join(label_strings)))
 
 
 

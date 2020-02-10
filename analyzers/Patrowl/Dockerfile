@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Patrowl" \
+LABEL author="Nicolas Mattiocco" \
       description="Get the current Patrowl report for a fdqn, a domain or an IP address." \
-      author="Nicolas Mattiocco"
+      license="AGPL-V3" \
+      title="Patrowl" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="FireEyeiSight" \
+LABEL author="Davide Arcuri and Andrea Garavaglia, LDO-CERT" \
       description="Query domains, IPs, hashes and URLs on FireEye's iSIGHT threat intelligence service." \
-      author="Davide Arcuri and Andrea Garavaglia, LDO-CERT"
+      license="AGPL-V3" \
+      title="FireEyeiSight" \
+      url="https://github.com/LDO-CERT/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

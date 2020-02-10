@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="MISPWarningLists" \
+LABEL author="Nils Kuhnert, CERT-Bund" \
       description="Check IoCs/Observables against MISP Warninglists to filter false positives." \
-      author="Nils Kuhnert, CERT-Bund"
+      license="AGPL-V3" \
+      title="MISPWarningLists" \
+      url="https://github.com/BSI-CERT-Bund/misp-warninglists-analyzer" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

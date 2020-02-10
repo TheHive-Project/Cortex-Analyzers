@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Robtex" \
+LABEL author="Nils Kuhnert" \
       description="Check IPs using the Robtex reverse passive DNS API." \
-      author="Nils Kuhnert"
+      license="AGPL-V3" \
+      title="Robtex" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

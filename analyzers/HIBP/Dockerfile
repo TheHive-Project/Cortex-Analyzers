@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="HIBP" \
+LABEL author="Matt Erasmus, Jonas Hergenhahn" \
       description="Query haveibeenpwned.com for a compromised email address" \
-      author="Matt Erasmus, Jonas Hergenhahn"
+      license="AGPL-V3" \
+      title="HIBP" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="2.0.0"
 
 WORKDIR /worker
 

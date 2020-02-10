@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="MsgParser" \
+LABEL author="CERT-BDF" \
       description="Parse Outlook MSG files and extract the main artifacts." \
-      author="CERT-BDF"
+      license="AGPL-V3" \
+      title="MsgParser" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="3.0.0"
 
 WORKDIR /worker
 

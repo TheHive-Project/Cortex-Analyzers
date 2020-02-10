@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="CIRCL" \
+LABEL author="Nils Kuhnert, CERT-Bund" \
       description="Check CIRCL's Passive SSL for a given IP address or a X509 certificate hash." \
-      author="Nils Kuhnert, CERT-Bund"
+      license="AGPL-V3" \
+      title="CIRCL" \
+      url="https://github.com/BSI-CERT-Bund/cortex-analyzers" \
+      vendor="TheHive" \
+      version="2.0.0"
 
 WORKDIR /worker
 

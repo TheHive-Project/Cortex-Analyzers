@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="DNSSinkhole" \
+LABEL author="Andrea Garavaglia, LDO-CERT" \
       description="Check if a  domain is sinkholed via DNS Sinkhole server" \
-      author="Andrea Garavaglia, LDO-CERT"
+      license="AGPL-V3" \
+      title="DNSSinkhole" \
+      url="https://github.com/LDO-CERT/cortex-analyzer" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

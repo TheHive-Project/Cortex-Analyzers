@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="StopForumSpam" \
+LABEL author="Marc-Andre Doll, STARC by EXAPROBE" \
       description="Query http://www.stopforumspam.com to check if an IP or email address is a known spammer." \
-      author="Marc-Andre Doll, STARC by EXAPROBE"
+      license="AGPL-V3" \
+      title="StopForumSpam" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

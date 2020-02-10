@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="EmergingThreats" \
+LABEL author="Davide Arcuri and Andrea Garavaglia, LDO-CERT" \
       description="Retrieve ET details and info related to a malware hash." \
-      author="Davide Arcuri and Andrea Garavaglia, LDO-CERT"
+      license="AGPL-V3" \
+      title="EmergingThreats" \
+      url="https://github.com/dadokkio/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

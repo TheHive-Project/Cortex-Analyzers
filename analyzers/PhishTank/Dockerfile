@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="PhishTank" \
+LABEL author="Eric Capuano" \
       description="Use PhishTank to check if a URL is a verified phishing site." \
-      author="Eric Capuano"
+      license="AGPL-V3" \
+      title="PhishTank" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="2.1.0"
 
 WORKDIR /worker
 

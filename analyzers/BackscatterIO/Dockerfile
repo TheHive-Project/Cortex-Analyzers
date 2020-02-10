@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="BackscatterIO" \
+LABEL author="brandon@backscatter.io" \
       description="Determine whether a value has known scanning activity using Backscatter.io data." \
-      author="brandon@backscatter.io"
+      license="APLv2" \
+      title="BackscatterIO" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="SecurityTrails" \
+LABEL author="Manabu Niseki, @ninoseki" \
       description="SecurityTrails Whois Lookup." \
-      author="Manabu Niseki, @ninoseki"
+      license="MIT" \
+      title="SecurityTrails" \
+      url="https://github.com/ninoseki/cortex-securitytrails" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="DNSDB" \
+LABEL author="CERT-BDF" \
       description="Use DNSDB to fetch historical records for an IP address." \
-      author="CERT-BDF"
+      license="AGPL-V3" \
+      title="DNSDB" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="2.0.0"
 
 WORKDIR /worker
 

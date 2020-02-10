@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="EmailRep" \
+LABEL author="Manabu Niseki" \
       description="emailrep.io lookup." \
-      author="Manabu Niseki"
+      license="MIT" \
+      title="EmailRep" \
+      url="https://github.com/ninoseki/emailrep-analyzer" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

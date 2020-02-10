@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="TeamCymruMHR" \
+LABEL author="Wes Lambert" \
       description="Submit hash to Team Cymru's Malware Hash Registry" \
-      author="Wes Lambert"
+      license="AGPL-V3" \
+      title="TeamCymruMHR" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="RecordedFuture" \
+LABEL author="KAPSCH-CDC" \
       description="Get the latest risk data from RecordedFuture for a hash, domain or an IP address." \
-      author="KAPSCH-CDC"
+      license="AGPL-V3" \
+      title="RecordedFuture" \
+      url="https://github.com/kapschcdc/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

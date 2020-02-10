@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Soltra_Edge" \
+LABEL author="Michael Stensrud, Nordic Financial CERT" \
       description="Query against Soltra Edge." \
-      author="Michael Stensrud, Nordic Financial CERT"
+      license="AGPL-V3" \
+      title="Soltra_Edge" \
+      url="http://soltra.com/en/" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

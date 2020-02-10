@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="MaxMind" \
+LABEL author="CERT-BDF" \
       description="Use MaxMind to geolocate an IP address." \
-      author="CERT-BDF"
+      license="AGPL-V3" \
+      title="MaxMind" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="4.0.0"
 
 WORKDIR /worker
 

@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="DShield" \
+LABEL author="Xavier Xavier, SANS ISC" \
       description="Query the SANS ISC DShield API to check for an IP address reputation." \
-      author="Xavier Xavier, SANS ISC"
+      license="AGPL-V3" \
+      title="DShield" \
+      url="https://github.com/xme/thehive/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

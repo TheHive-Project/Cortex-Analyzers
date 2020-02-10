@@ -7,9 +7,13 @@ FROM python:3-alpine
 
 RUN apk add --no-cache git
 
-LABEL name="AutoFocus" \
+LABEL author="ANSSI" \
       description="Get full analysis from a sample based on its hash" \
-      author="ANSSI"
+      license="AGPL-V3" \
+      title="AutoFocus" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

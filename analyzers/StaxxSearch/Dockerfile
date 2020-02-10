@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="staxx" \
+LABEL author="Robert Nixon" \
       description="Fetch observable details from an Anomali STAXX instance." \
-      author="Robert Nixon"
+      license="AGPL-V3" \
+      title="staxx" \
+      url="https://github.com/robertnixon2003/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

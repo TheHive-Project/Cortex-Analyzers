@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="GoogleDNS" \
+LABEL author="CERT-LaPoste" \
       description="Request Google DNS over HTTPS service" \
-      author="CERT-LaPoste"
+      license="AGPL-V3" \
+      title="GoogleDNS" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

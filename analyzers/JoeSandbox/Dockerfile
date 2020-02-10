@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="JoeSandbox" \
+LABEL author="CERT-BDF" \
       description="Joe Sandbox file analysis with Internet access." \
-      author="CERT-BDF"
+      license="AGPL-V3" \
+      title="JoeSandbox" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="2.0.0"
 
 WORKDIR /worker
 

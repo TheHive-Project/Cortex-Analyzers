@@ -7,9 +7,13 @@ FROM python:3-alpine
 
 RUN apk add --no-cache git
 
-LABEL name="Maltiverse" \
+LABEL author="ottimo" \
       description="Get the latest Maltiverse report for an hash, domain or an IP address." \
-      author="ottimo"
+      license="AGPL-V3" \
+      title="Maltiverse" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

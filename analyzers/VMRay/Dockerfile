@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="VMRay" \
+LABEL author="Nils Kuhnert, CERT-Bund" \
       description="VMRay Sandbox file analysis." \
-      author="Nils Kuhnert, CERT-Bund"
+      license="AGPL-V3" \
+      title="VMRay" \
+      url="https://github.com/BSI-CERT-Bund/cortex-analyzers" \
+      vendor="TheHive" \
+      version="3.0.0"
 
 WORKDIR /worker
 

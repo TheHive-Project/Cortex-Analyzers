@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Censys" \
+LABEL author="Nils Kuhnert, CERT-Bund" \
       description="Check IPs, certificate hashes or domains against censys.io." \
-      author="Nils Kuhnert, CERT-Bund"
+      license="AGPL-V3" \
+      title="Censys" \
+      url="https://github.com/BSI-CERT-Bund/censys-analyzer" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

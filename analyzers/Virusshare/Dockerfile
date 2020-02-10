@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Virusshare" \
+LABEL author="Nils Kuhnert, CERT-Bund" \
       description="Search for MD5 hashes in Virusshare.com hash list" \
-      author="Nils Kuhnert, CERT-Bund"
+      license="AGPL-V3" \
+      title="Virusshare" \
+      url="https://github.com/BSI-CERT-Bund/cortex-analyzers" \
+      vendor="TheHive" \
+      version="2.0.0"
 
 WORKDIR /worker
 

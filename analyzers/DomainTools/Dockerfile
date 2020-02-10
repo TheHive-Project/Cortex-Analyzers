@@ -7,9 +7,13 @@ FROM python:3-alpine
 
 RUN apk add --no-cache git
 
-LABEL name="DomainTools" \
+LABEL authors="ANSSI, CERT-BDF" \
       description="Use DomainTools to get a list of historical Whois records associated with a domain name." \
-      author="CERT-BDF"
+      license="AGPL-V3" \
+      title="DomainTools" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="2.0.0"
 
 WORKDIR /worker
 

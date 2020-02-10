@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="PayloadSecurity" \
+LABEL author="Emmanuel Torquato" \
       description="PayloadSecurity Sandbox Url Analysis" \
-      author="Emmanuel Torquato"
+      license="AGPL-V3" \
+      title="PayloadSecurity" \
+      url="https://github.com/notset/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

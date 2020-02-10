@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="GreyNoise" \
+LABEL author="Nclose" \
       description="Determine whether an IP has known scanning activity using GreyNoise." \
-      author="Nclose"
+      license="APLv2" \
+      title="GreyNoise" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="2.3.0"
 
 WORKDIR /worker
 

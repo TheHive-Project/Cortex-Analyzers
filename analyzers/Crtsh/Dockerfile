@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Crtsh" \
+LABEL author="crackytsi" \
       description="Query domains against the certificate transparency lists available at crt.sh." \
-      author="crackytsi"
+      license="AGPL-V3" \
+      title="Crtsh" \
+      url="https://crt.sh" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

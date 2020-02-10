@@ -7,9 +7,13 @@ FROM python:3-alpine
 
 RUN apk add --no-cache git
 
-LABEL name="DomainToolsIris" \
+LABEL author="DomainTools" \
       description="Use DomainTools Iris API to pivot on ssl_hash, ip, or email." \
-      author="DomainTools"
+      license="AGPL-V3" \
+      title="DomainToolsIris" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

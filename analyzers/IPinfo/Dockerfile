@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="IPinfo" \
+LABEL author="Manabu Niseki" \
       description="IPinfo details lookup." \
-      author="Manabu Niseki"
+      license="MIT" \
+      title="IPinfo" \
+      url="https://github.com/ninoseki/ipinfo-analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

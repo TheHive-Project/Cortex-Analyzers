@@ -7,9 +7,13 @@ FROM python:3-alpine
 
 RUN apk add --no-cache g++ libmagic
 
-LABEL name="EmlParser" \
+LABEL author="ninsmith" \
       description="Parse Eml message" \
-      author="ninsmith"
+      license="AGPL-V3" \
+      title="EmlParser" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.2.0"
 
 WORKDIR /worker
 

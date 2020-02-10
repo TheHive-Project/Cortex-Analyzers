@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="URLhaus" \
+LABEL author="ninoseki, Nils Kuhnert" \
       description="Search domains, IPs, URLs or hashes on URLhaus." \
-      author="ninoseki, Nils Kuhnert"
+      license="MIT" \
+      title="URLhaus" \
+      url="https://github.com/ninoseki/cortex_URLhaus_analyzer" \
+      vendor="TheHive" \
+      version="2.0.0"
 
 WORKDIR /worker
 

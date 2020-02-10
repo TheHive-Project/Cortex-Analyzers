@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="GoogleVisionAPI" \
+LABEL author="CERT-LaPoste" \
       description="Find look alike image via Google Cloud Vision API using the Web_Detection service " \
-      author="CERT-LaPoste"
+      license="AGPL-V3" \
+      title="GoogleVisionAPI" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

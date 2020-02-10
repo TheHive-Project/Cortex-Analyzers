@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="CERTatPassiveDNS" \
+LABEL author="Nils Kuhnert, CERT-Bund" \
       description="Checks CERT.at Passive DNS for a given domain." \
-      author="Nils Kuhnert, CERT-Bund"
+      license="AGPL-V3" \
+      title="CERTatPassiveDNS" \
+      url="https://github.com/BSI-CERT-Bund/cortex-analyzers" \
+      vendor="TheHive" \
+      version="2.0.0"
 
 WORKDIR /worker
 

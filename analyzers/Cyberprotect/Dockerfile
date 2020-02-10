@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Cyberprotect" \
+LABEL author="Rémi Allain, Cyberprotect" \
       description="ThreatScore is a cyber threat scoring system provided by Cyberprotect" \
-      author="Rémi Allain, Cyberprotect"
+      license="AGPL-V3" \
+      title="Cyberprotect" \
+      url="https://github.com/Cyberprotect/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

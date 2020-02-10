@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Urlscan" \
+LABEL author="ninoseki" \
       description="Search IPs, domains, hashes or URLs on urlscan.io" \
-      author="ninoseki"
+      license="MIT" \
+      title="Urlscan" \
+      url="https://github.com/ninoseki/cortex_urlscan_analyzer" \
+      vendor="TheHive" \
+      version="0.1.0"
 
 WORKDIR /worker
 

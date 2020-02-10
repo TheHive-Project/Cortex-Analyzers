@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="CyberCrimeTracker" \
+LABEL author="ph34tur3" \
       description="Search cybercrime-tracker.net for C2 servers." \
-      author="ph34tur3"
+      license="AGPL-V3" \
+      title="CyberCrimeTracker" \
+      url="https://github.com/ph34tur3/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

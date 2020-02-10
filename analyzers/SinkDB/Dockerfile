@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="SinkDB" \
+LABEL author="Nils Kuhnert, CERT-Bund" \
       description="Check if ip is sinkholed via sinkdb.abuse.ch" \
-      author="Nils Kuhnert, CERT-Bund"
+      license="AGPL-V3" \
+      title="SinkDB" \
+      url="https://github.com/BSI-CERT-Bund/sinkdb-analyzer" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Umbrella" \
+LABEL author="Kyle Parrish" \
       description="Query the Umbrella Reporting API for recent DNS queries and their status." \
-      author="Kyle Parrish"
+      license="AGPL-V3" \
+      title="Umbrella" \
+      url="https://github.com/arnydo/thehive/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

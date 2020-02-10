@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="TorBlutmagie" \
+LABEL author="Marc-André DOLL, STARC by EXAPROBE" \
       description="Query http://torstatus.blutmagie.de/query_export.php/Tor_query_EXPORT.csv for TOR exit nodes IP addresses or names." \
-      author="Marc-André DOLL, STARC by EXAPROBE"
+      license="AGPL-V3" \
+      title="TorBlutmagie" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

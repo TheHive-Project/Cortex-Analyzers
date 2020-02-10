@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="C1fApp" \
+LABEL author="etz69" \
       description="Query C1fApp OSINT Aggregator for IPs, domains and URLs" \
-      author="etz69"
+      license="AGPL-V3" \
+      title="C1fApp" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="FireHOLBlocklists" \
+LABEL author="Nils Kuhnert, CERT-Bund" \
       description="Check IP addresses against the FireHOL blocklists" \
-      author="Nils Kuhnert, CERT-Bund"
+      license="AGPL-V3" \
+      title="FireHOLBlocklists" \
+      url="https://github.com/BSI-CERT-Bund/cortex-analyzers" \
+      vendor="TheHive" \
+      version="2.0.0"
 
 WORKDIR /worker
 

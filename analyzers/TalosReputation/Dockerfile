@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="TalosReputation" \
+LABEL author="Gabriel Antonio da Silva" \
       description="Get the Talos IP reputation" \
-      author="Gabriel Antonio da Silva"
+      license="AGPL-V3" \
+      title="TalosReputation" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

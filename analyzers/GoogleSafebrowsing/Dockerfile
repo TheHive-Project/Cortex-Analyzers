@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="GoogleSafebrowsing" \
+LABEL author="Nils Kuhnert, CERT-Bund" \
       description="Use Google Safebrowing to check URLs and domain names." \
-      author="Nils Kuhnert, CERT-Bund"
+      license="AGPL-V3" \
+      title="GoogleSafebrowsing" \
+      url="https://github.com/BSI-CERT-Bund/cortex-analyzers" \
+      vendor="TheHive" \
+      version="2.0.0"
 
 WORKDIR /worker
 

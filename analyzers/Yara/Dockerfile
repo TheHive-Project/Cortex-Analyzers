@@ -7,9 +7,13 @@ FROM python:3-alpine
 
 RUN apk add --no-cache gcc musl-dev
 
-LABEL name="Yara" \
+LABEL author="Nils Kuhnert, CERT-Bund" \
       description="Check files against YARA rules." \
-      author="Nils Kuhnert, CERT-Bund"
+      license="AGPL-V3" \
+      title="Yara" \
+      url="https://github.com/BSI-CERT-Bund/cortex-analyzers" \
+      vendor="TheHive" \
+      version="2.0.0"
 
 WORKDIR /worker
 

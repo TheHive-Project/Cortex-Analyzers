@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="PhishingInitiative" \
+LABEL authors="Remi Pointel, CERT-BDF" \
       description="Use Phishing Initiative to check if a URL is a verified phishing site." \
-      author="CERT-BDF"
+      license="AGPL-V3" \
+      title="PhishingInitiative" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="2.0.0"
 
 WORKDIR /worker
 

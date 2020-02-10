@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="TorProject" \
+LABEL author="Marc-André DOLL, STARC by EXAPROBE" \
       description="Query https://check.torproject.org/exit-addresses for TOR exit nodes IP addresses." \
-      author="Marc-André DOLL, STARC by EXAPROBE"
+      license="AGPL-V3" \
+      title="TorProject" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

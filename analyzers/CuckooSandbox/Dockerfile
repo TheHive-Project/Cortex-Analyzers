@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="CuckooSandbox" \
+LABEL author="Andrea Garavaglia, LDO-CERT" \
       description="Cuckoo Sandbox file analysis with Internet access." \
-      author="Andrea Garavaglia, LDO-CERT"
+      license="AGPL-V3" \
+      title="CuckooSandbox" \
+      url="https://github.com/garanews/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.2.0"
 
 WORKDIR /worker
 

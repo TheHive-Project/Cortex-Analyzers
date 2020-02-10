@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="UnshortenLink" \
+LABEL author="Remi Pointel, CERT-BDF" \
       description="Use UnshortenLink to reveal the real URL." \
-      author="Remi Pointel, CERT-BDF"
+      license="AGPL-V3" \
+      title="UnshortenLink" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.2.0"
 
 WORKDIR /worker
 

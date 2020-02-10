@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Hunterio" \
+LABEL author="Rémi Allain, Cyberprotect" \
       description="hunter.io is a service to find email addresses from a domain." \
-      author="Rémi Allain, Cyberprotect"
+      license="AGPL-V3" \
+      title="Hunterio" \
+      url="https://github.com/Cyberprotect/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

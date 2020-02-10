@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="SpamhausDBL" \
+LABEL author="Wes Lambert" \
       description="Perform domain lookup to Spamhaus DBL" \
-      author="Wes Lambert"
+      license="AGPL-V3" \
+      title="SpamhausDBL" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

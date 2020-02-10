@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Investigate" \
+LABEL author="Cisco Umbrella Research @opendns" \
       description="Retrieve Investigate categorization and security features for a domain." \
-      author="Cisco Umbrella Research @opendns"
+      license="AGPL-V3" \
+      title="Investigate" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers/Investigate" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

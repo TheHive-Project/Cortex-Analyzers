@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="ProofPoint" \
+LABEL author="Emmanuel Torquato" \
       description="Check URL, file, SHA256 against ProofPoint forensics" \
-      author="Emmanuel Torquato"
+      license="AGPL-V3" \
+      title="ProofPoint" \
+      url="https://github.com/CERT-BDF/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

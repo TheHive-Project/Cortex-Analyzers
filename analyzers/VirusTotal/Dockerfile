@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="VirusTotal" \
+LABEL author="CERT-BDF" \
       description="Use VirusTotal to scan a file or URL." \
-      author="CERT-BDF"
+      license="AGPL-V3" \
+      title="VirusTotal" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="3.0.0"
 
 WORKDIR /worker
 

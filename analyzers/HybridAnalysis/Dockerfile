@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="HybridAnalysis" \
+LABEL author="Daniil Yugoslavskiy, Tieto" \
       description="Fetch Hybrid Analysis reports associated with hashes and filenames." \
-      author="Daniil Yugoslavskiy, Tieto"
+      license="AGPL-V3" \
+      title="HybridAnalysis" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

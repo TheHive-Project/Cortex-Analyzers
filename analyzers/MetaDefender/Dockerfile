@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="MetaDefender" \
+LABEL author="Davide Arcuri and Andrea Garavaglia, LDO-CERT" \
       description="Get the latest MetaDefender Core report for hash." \
-      author="Davide Arcuri and Andrea Garavaglia, LDO-CERT"
+      license="AGPL-V3" \
+      title="MetaDefender" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

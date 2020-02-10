@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Hippocampe" \
+LABEL author="CERT-BDF" \
       description="Get the Hippocampe detailed report for an IP address, a domain or a URL." \
-      author="CERT-BDF"
+      license="AGPL-V3" \
+      title="Hippocampe" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="2.0.0"
 
 WORKDIR /worker
 

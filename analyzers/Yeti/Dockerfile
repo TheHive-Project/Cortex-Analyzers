@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Yeti" \
+LABEL author="CERT-BDF" \
       description="Fetch observable details from a YETI instance." \
-      author="CERT-BDF"
+      license="AGPL-V3" \
+      title="Yeti" \
+      url="https://github.com/CERT/cortex-analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

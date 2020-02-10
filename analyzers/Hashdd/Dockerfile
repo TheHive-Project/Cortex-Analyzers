@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Hashdd" \
+LABEL author="iosonogio" \
       description="Determine whether a hash is good or bad." \
-      author="iosonogio"
+      license="AGPLv3" \
+      title="Hashdd" \
+      url="https://github.com/TheHive-Project/Cortex-Analyzers" \
+      vendor="TheHive" \
+      version="1.0.0"
 
 WORKDIR /worker
 

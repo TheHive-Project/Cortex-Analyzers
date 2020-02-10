@@ -5,9 +5,13 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL name="Mnemonic_pDNS" \
+LABEL author="Michael Stensrud, Nordic Financial CERT" \
       description="Query IP addresses and domains against Mnemonic pDNS public service." \
-      author="Michael Stensrud, Nordic Financial CERT"
+      license="AGPL-V3" \
+      title="Mnemonic_pDNS" \
+      url="https://passivedns.mnemonic.no/search" \
+      vendor="TheHive" \
+      version="3.0.0"
 
 WORKDIR /worker
 
