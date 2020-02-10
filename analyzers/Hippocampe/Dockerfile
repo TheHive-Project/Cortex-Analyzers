@@ -15,9 +15,9 @@ LABEL author="CERT-BDF" \
 
 WORKDIR /worker
 
-COPY . HippoMore
+COPY . Hippocampe
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r HippoMore/requirements.txt
+RUN pip install --no-cache-dir -r Hippocampe/requirements.txt
 
 ENTRYPOINT Hippocampe/hippo.py

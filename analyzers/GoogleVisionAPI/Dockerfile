@@ -16,9 +16,9 @@ LABEL author="CERT-LaPoste" \
 
 WORKDIR /worker
 
-COPY . GoogleVisionAPI_WebDetection
+COPY . GoogleVisionAPI
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r GoogleVisionAPI_WebDetection/requirements.txt
+RUN pip install --no-cache-dir -r GoogleVisionAPI/requirements.txt
 
 ENTRYPOINT GoogleVisionAPI/GoogleVisionAPI_WebDetection.py

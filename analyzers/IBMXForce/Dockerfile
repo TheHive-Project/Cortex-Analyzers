@@ -16,9 +16,9 @@ LABEL author="Davide Arcuri and Andrea Garavaglia, LDO-CERT" \
 
 WORKDIR /worker
 
-COPY . IBMXForce_Lookup
+COPY . IBMXForce
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r IBMXForce_Lookup/requirements.txt
+RUN pip install --no-cache-dir -r IBMXForce/requirements.txt
 
 ENTRYPOINT IBMXForce/ibmxforce_lookup.py

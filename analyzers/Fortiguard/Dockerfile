@@ -16,9 +16,9 @@ LABEL author="Eric Capuano" \
 
 WORKDIR /worker
 
-COPY . Fortiguard_URLCategory
+COPY . Fortiguard
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r Fortiguard_URLCategory/requirements.txt
+RUN pip install --no-cache-dir -r Fortiguard/requirements.txt
 
 ENTRYPOINT Fortiguard/urlcategory.py

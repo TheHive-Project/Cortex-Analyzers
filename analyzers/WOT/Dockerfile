@@ -16,9 +16,9 @@ LABEL author="Andrea Garavaglia, LDO-CERT" \
 
 WORKDIR /worker
 
-COPY . WOT_Lookup
+COPY . WOT
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r WOT_Lookup/requirements.txt
+RUN pip install --no-cache-dir -r WOT/requirements.txt
 
 ENTRYPOINT WOT/WOT_lookup.py

@@ -16,9 +16,9 @@ LABEL author="CERT-BDF" \
 
 WORKDIR /worker
 
-COPY . MaxMind_GeoIP
+COPY . MaxMind
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r MaxMind_GeoIP/requirements.txt
+RUN pip install --no-cache-dir -r MaxMind/requirements.txt
 
 ENTRYPOINT MaxMind/geo.py

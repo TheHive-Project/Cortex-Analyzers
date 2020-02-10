@@ -16,9 +16,9 @@ LABEL author="Rémi Allain, Cyberprotect" \
 
 WORKDIR /worker
 
-COPY . Cyberprotect_ThreatScore
+COPY . Cyberprotect
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r Cyberprotect_ThreatScore/requirements.txt
+RUN pip install --no-cache-dir -r Cyberprotect/requirements.txt
 
 ENTRYPOINT Cyberprotect/CyberprotectAnalyzer.py

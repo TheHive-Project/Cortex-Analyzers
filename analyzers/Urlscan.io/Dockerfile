@@ -16,9 +16,9 @@ LABEL author="ninoseki" \
 
 WORKDIR /worker
 
-COPY . Urlscan.io_Search
+COPY . Urlscan
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r Urlscan.io_Search/requirements.txt
+RUN pip install --no-cache-dir -r Urlscan/requirements.txt
 
 ENTRYPOINT Urlscan.io/urlscan_analyzer.py

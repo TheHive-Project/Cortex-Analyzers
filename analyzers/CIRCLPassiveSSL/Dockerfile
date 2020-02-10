@@ -16,9 +16,9 @@ LABEL author="Nils Kuhnert, CERT-Bund" \
 
 WORKDIR /worker
 
-COPY . CIRCLPassiveSSL
+COPY . CIRCL
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r CIRCLPassiveSSL/requirements.txt
+RUN pip install --no-cache-dir -r CIRCL/requirements.txt
 
 ENTRYPOINT CIRCLPassiveSSL/circl_passivessl.py

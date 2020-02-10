@@ -15,9 +15,9 @@ LABEL author="iosonogio" \
 
 WORKDIR /worker
 
-COPY . Hashdd_Status
+COPY . Hashdd
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r Hashdd_Status/requirements.txt
+RUN pip install --no-cache-dir -r Hashdd/requirements.txt
 
 ENTRYPOINT Hashdd/Hashdd.py

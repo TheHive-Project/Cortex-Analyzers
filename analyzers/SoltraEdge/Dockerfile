@@ -16,9 +16,9 @@ LABEL author="Michael Stensrud, Nordic Financial CERT" \
 
 WORKDIR /worker
 
-COPY . SoltraEdge
+COPY . Soltra_Edge
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r SoltraEdge/requirements.txt
+RUN pip install --no-cache-dir -r Soltra_Edge/requirements.txt
 
 ENTRYPOINT SoltraEdge/soltra.py

@@ -15,9 +15,9 @@ LABEL author="Manabu Niseki" \
 
 WORKDIR /worker
 
-COPY . IPinfo_Details
+COPY . IPinfo
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r IPinfo_Details/requirements.txt
+RUN pip install --no-cache-dir -r IPinfo/requirements.txt
 
 ENTRYPOINT IPinfo/ipinfo_analyzer.py

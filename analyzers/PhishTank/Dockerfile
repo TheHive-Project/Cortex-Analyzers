@@ -16,9 +16,9 @@ LABEL author="Eric Capuano" \
 
 WORKDIR /worker
 
-COPY . PhishTank_CheckURL
+COPY . PhishTank
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r PhishTank_CheckURL/requirements.txt
+RUN pip install --no-cache-dir -r PhishTank/requirements.txt
 
 ENTRYPOINT PhishTank/phishtank_checkurl.py

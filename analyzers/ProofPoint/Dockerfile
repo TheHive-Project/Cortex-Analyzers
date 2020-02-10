@@ -16,9 +16,9 @@ LABEL author="Emmanuel Torquato" \
 
 WORKDIR /worker
 
-COPY . ProofPoint_Lookup
+COPY . ProofPoint
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r ProofPoint_Lookup/requirements.txt
+RUN pip install --no-cache-dir -r ProofPoint/requirements.txt
 
 ENTRYPOINT ProofPoint/proofpoint_lookup.py

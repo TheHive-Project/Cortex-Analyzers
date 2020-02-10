@@ -15,9 +15,9 @@ LABEL author="Cisco Umbrella Research @opendns" \
 
 WORKDIR /worker
 
-COPY . Investigate_Categorization
+COPY . Investigate
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r Investigate_Categorization/requirements.txt
+RUN pip install --no-cache-dir -r Investigate/requirements.txt
 
 ENTRYPOINT Investigate/investigate_analyzer.py

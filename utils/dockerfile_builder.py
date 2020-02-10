@@ -4,7 +4,7 @@ from pathlib import Path
 import os
 from json import loads
 
-analyzers = [x for x in Path('..', 'analyzers').iterdir() if x.is_dir()]
+analyzers = [x for x in sorted(Path('..', 'analyzers').iterdir()) if x.is_dir()]
 
 for analyzer in analyzers:
     try:
@@ -24,7 +24,7 @@ for analyzer in analyzers:
             dockerfile_path.touch()
             print('Creating new docker file', dockerfile_path)
         
-        service_config_paths = [Path(x) for x in analyzer.iterdir() if x.suffix == '.json']
+        service_config_paths = [Path(x) for x in sorted(analyzer.iterdir()) if x.suffix == '.json']
         
         # Grab the first JSON file found-- they _should_ have the same relevant properties anyway
         json_config = service_config_paths[0]
@@ -87,6 +87,9 @@ for analyzer in analyzers:
                         if 'pyimpfuzzy' in requirements:
                             alpine_dependencies.add('gcc')
                             alpine_dependencies.add('musl-dev')
+                        if 'autofocus-client-library' in requirements:
+                            alpine_dependencies.add('gcc')
+                            alpine_dependencies.add('musl-dev')
 
                         # One of the requirements is a git repository-- include git
                         if 'git+https' in requirements:
@@ -122,7 +125,7 @@ for analyzer in analyzers:
             if len(service_config_paths) > 1:
 
                 configs = [loads(x.open().read()) for x in service_config_paths]
-                authors = ", ".join(set([x['author'] for x in configs]))
+                authors = ", ".join(sorted(set([x['author'] for x in configs])))
 
                 if not labels['author'] == authors:
                     del labels['author']
@@ -148,13 +151,13 @@ for analyzer in analyzers:
 
             dockerfile_contents.append('\nWORKDIR /worker')
 
-            dockerfile_contents.append('\nCOPY . {}'.format(config['name']))
+            dockerfile_contents.append('\nCOPY . {}'.format(labels['title']))
 
 
             # if python2/3 => pip install requirements.txt
             if is_python:
                 dockerfile_contents.append('\n# Project determined to be Python, installing deps')
-                dockerfile_contents.append('RUN pip install --no-cache-dir -r {}/requirements.txt'.format(config['name']))
+                dockerfile_contents.append('RUN pip install --no-cache-dir -r {}/requirements.txt'.format(labels['title']))
 
             dockerfile_contents.append('\nENTRYPOINT {}'.format(config['command']))
 

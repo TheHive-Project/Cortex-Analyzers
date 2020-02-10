@@ -15,9 +15,9 @@ LABEL author="Nils Kuhnert" \
 
 WORKDIR /worker
 
-COPY . Robtex_Reverse_PDNS_Query
+COPY . Robtex
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r Robtex_Reverse_PDNS_Query/requirements.txt
+RUN pip install --no-cache-dir -r Robtex/requirements.txt
 
 ENTRYPOINT Robtex/robtex.py

@@ -16,9 +16,9 @@ LABEL author="CERT-LaPoste" \
 
 WORKDIR /worker
 
-COPY . GoogleDNS_resolve
+COPY . GoogleDNS
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r GoogleDNS_resolve/requirements.txt
+RUN pip install --no-cache-dir -r GoogleDNS/requirements.txt
 
 ENTRYPOINT GoogleDNS/GoogleDNS_resolve.py

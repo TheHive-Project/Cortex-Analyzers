@@ -16,9 +16,9 @@ LABEL author="Daniil Yugoslavskiy, Tieto" \
 
 WORKDIR /worker
 
-COPY . HybridAnalysis_GetReport
+COPY . HybridAnalysis
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r HybridAnalysis_GetReport/requirements.txt
+RUN pip install --no-cache-dir -r HybridAnalysis/requirements.txt
 
 ENTRYPOINT HybridAnalysis/HybridAnalysis_analyzer.py

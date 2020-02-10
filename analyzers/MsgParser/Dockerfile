@@ -16,9 +16,9 @@ LABEL author="CERT-BDF" \
 
 WORKDIR /worker
 
-COPY . Msg_Parser
+COPY . MsgParser
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r Msg_Parser/requirements.txt
+RUN pip install --no-cache-dir -r MsgParser/requirements.txt
 
 ENTRYPOINT MsgParser/parse.py

@@ -5,7 +5,7 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL authors="Sebastien Larinier @Sebdraven, ANSSI" \
+LABEL authors="ANSSI, Sebastien Larinier @Sebdraven" \
       license="AGPL-V3" \
       source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="Shodan" \
@@ -15,9 +15,9 @@ LABEL authors="Sebastien Larinier @Sebdraven, ANSSI" \
 
 WORKDIR /worker
 
-COPY . Shodan_ReverseDNS
+COPY . Shodan
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r Shodan_ReverseDNS/requirements.txt
+RUN pip install --no-cache-dir -r Shodan/requirements.txt
 
 ENTRYPOINT Shodan/shodan_analyzer.py

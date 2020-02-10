@@ -16,9 +16,9 @@ LABEL author="Kyle Parrish" \
 
 WORKDIR /worker
 
-COPY . Umbrella_Report
+COPY . Umbrella
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r Umbrella_Report/requirements.txt
+RUN pip install --no-cache-dir -r Umbrella/requirements.txt
 
 ENTRYPOINT Umbrella/Umbrella.py

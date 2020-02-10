@@ -15,9 +15,9 @@ LABEL authors="ANSSI, Pierre Baudry, Adrien Barchapt" \
 
 WORKDIR /worker
 
-COPY . Onyphe_Reverse
+COPY . Onyphe
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r Onyphe_Reverse/requirements.txt
+RUN pip install --no-cache-dir -r Onyphe/requirements.txt
 
 ENTRYPOINT Onyphe/onyphe_analyzer.py

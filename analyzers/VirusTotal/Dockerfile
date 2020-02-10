@@ -15,9 +15,9 @@ LABEL author="CERT-BDF" \
 
 WORKDIR /worker
 
-COPY . VirusTotal_Scan
+COPY . VirusTotal
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r VirusTotal_Scan/requirements.txt
+RUN pip install --no-cache-dir -r VirusTotal/requirements.txt
 
 ENTRYPOINT VirusTotal/virustotal.py

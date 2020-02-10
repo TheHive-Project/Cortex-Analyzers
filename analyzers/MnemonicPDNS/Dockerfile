@@ -15,9 +15,9 @@ LABEL author="Michael Stensrud, Nordic Financial CERT" \
 
 WORKDIR /worker
 
-COPY . Mnemonic_pDNS_Public
+COPY . Mnemonic_pDNS
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r Mnemonic_pDNS_Public/requirements.txt
+RUN pip install --no-cache-dir -r Mnemonic_pDNS/requirements.txt
 
 ENTRYPOINT MnemonicPDNS/pdns.py

@@ -16,9 +16,9 @@ LABEL author="Robert Nixon" \
 
 WORKDIR /worker
 
-COPY . StaxxSearch
+COPY . staxx
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r StaxxSearch/requirements.txt
+RUN pip install --no-cache-dir -r staxx/requirements.txt
 
 ENTRYPOINT StaxxSearch/staxx-cortex.py

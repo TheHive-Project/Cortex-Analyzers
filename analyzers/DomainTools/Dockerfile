@@ -17,9 +17,9 @@ LABEL authors="ANSSI, CERT-BDF" \
 
 WORKDIR /worker
 
-COPY . DomainTools_WhoisHistory
+COPY . DomainTools
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r DomainTools_WhoisHistory/requirements.txt
+RUN pip install --no-cache-dir -r DomainTools/requirements.txt
 
 ENTRYPOINT DomainTools/domaintools_analyzer.py

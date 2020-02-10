@@ -5,7 +5,7 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-RUN apk add --no-cache git
+RUN apk add --no-cache gcc git musl-dev
 
 LABEL author="ANSSI" \
       license="AGPL-V3" \
@@ -17,9 +17,9 @@ LABEL author="ANSSI" \
 
 WORKDIR /worker
 
-COPY . AutoFocus_GetSampleAnalysis
+COPY . AutoFocus
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r AutoFocus_GetSampleAnalysis/requirements.txt
+RUN pip install --no-cache-dir -r AutoFocus/requirements.txt
 
 ENTRYPOINT AutoFocus/analyzer.py

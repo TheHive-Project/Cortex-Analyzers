@@ -16,9 +16,9 @@ LABEL author="Xavier Xavier, SANS ISC" \
 
 WORKDIR /worker
 
-COPY . DShield_lookup
+COPY . DShield
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r DShield_lookup/requirements.txt
+RUN pip install --no-cache-dir -r DShield/requirements.txt
 
 ENTRYPOINT DShield/DShield_lookup.py

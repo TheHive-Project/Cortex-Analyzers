@@ -16,9 +16,9 @@ LABEL author="Nicolas Mattiocco" \
 
 WORKDIR /worker
 
-COPY . Patrowl_GetReport
+COPY . Patrowl
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r Patrowl_GetReport/requirements.txt
+RUN pip install --no-cache-dir -r Patrowl/requirements.txt
 
 ENTRYPOINT Patrowl/patrowl.py

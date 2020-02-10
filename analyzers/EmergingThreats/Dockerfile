@@ -15,9 +15,9 @@ LABEL author="Davide Arcuri and Andrea Garavaglia, LDO-CERT" \
 
 WORKDIR /worker
 
-COPY . EmergingThreats_MalwareInfo
+COPY . EmergingThreats
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r EmergingThreats_MalwareInfo/requirements.txt
+RUN pip install --no-cache-dir -r EmergingThreats/requirements.txt
 
 ENTRYPOINT EmergingThreats/emergingthreats_analyzer.py

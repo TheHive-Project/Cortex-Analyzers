@@ -16,9 +16,9 @@ LABEL author="KAPSCH-CDC" \
 
 WORKDIR /worker
 
-COPY . RecordedFuture_risk
+COPY . RecordedFuture
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r RecordedFuture_risk/requirements.txt
+RUN pip install --no-cache-dir -r RecordedFuture/requirements.txt
 
 ENTRYPOINT RecordedFuture/recordedfuture.py

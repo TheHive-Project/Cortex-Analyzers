@@ -18,9 +18,9 @@ LABEL author="ottimo" \
 
 WORKDIR /worker
 
-COPY . Maltiverse_Report
+COPY . Maltiverse
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r Maltiverse_Report/requirements.txt
+RUN pip install --no-cache-dir -r Maltiverse/requirements.txt
 
 ENTRYPOINT Maltiverse/maltiverse-client.py

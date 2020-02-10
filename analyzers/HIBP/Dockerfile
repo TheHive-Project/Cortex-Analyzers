@@ -16,9 +16,9 @@ LABEL author="Matt Erasmus, Jonas Hergenhahn" \
 
 WORKDIR /worker
 
-COPY . HIBP_Query
+COPY . HIBP
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r HIBP_Query/requirements.txt
+RUN pip install --no-cache-dir -r HIBP/requirements.txt
 
 ENTRYPOINT HIBP/hibpquery_analyzer.py

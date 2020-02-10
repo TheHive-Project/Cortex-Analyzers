@@ -15,9 +15,9 @@ LABEL author="brandon@backscatter.io" \
 
 WORKDIR /worker
 
-COPY . BackscatterIO_GetObservations
+COPY . BackscatterIO
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r BackscatterIO_GetObservations/requirements.txt
+RUN pip install --no-cache-dir -r BackscatterIO/requirements.txt
 
 ENTRYPOINT BackscatterIO/backscatter-io.py

@@ -16,9 +16,9 @@ LABEL author="Rémi Allain, Cyberprotect" \
 
 WORKDIR /worker
 
-COPY . Hunterio_DomainSearch
+COPY . Hunterio
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r Hunterio_DomainSearch/requirements.txt
+RUN pip install --no-cache-dir -r Hunterio/requirements.txt
 
 ENTRYPOINT Hunterio/hunterio_analyzer.py

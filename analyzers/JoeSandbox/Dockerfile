@@ -15,9 +15,9 @@ LABEL author="CERT-BDF" \
 
 WORKDIR /worker
 
-COPY . JoeSandbox_File_Analysis_Inet
+COPY . JoeSandbox
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r JoeSandbox_File_Analysis_Inet/requirements.txt
+RUN pip install --no-cache-dir -r JoeSandbox/requirements.txt
 
 ENTRYPOINT JoeSandbox/joesandbox_analyzer.py

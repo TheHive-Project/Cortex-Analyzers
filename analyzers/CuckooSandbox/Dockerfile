@@ -15,9 +15,9 @@ LABEL author="Andrea Garavaglia, LDO-CERT" \
 
 WORKDIR /worker
 
-COPY . CuckooSandbox_File_Analysis_Inet
+COPY . CuckooSandbox
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r CuckooSandbox_File_Analysis_Inet/requirements.txt
+RUN pip install --no-cache-dir -r CuckooSandbox/requirements.txt
 
 ENTRYPOINT CuckooSandbox/cuckoosandbox_analyzer.py

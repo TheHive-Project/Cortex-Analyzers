@@ -5,7 +5,7 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-LABEL authors="Remi Pointel, CERT-BDF" \
+LABEL authors="CERT-BDF, Remi Pointel" \
       license="AGPL-V3" \
       source="https://github.com/TheHive-Project/Cortex-Analyzers" \
       title="PhishingInitiative" \
@@ -15,9 +15,9 @@ LABEL authors="Remi Pointel, CERT-BDF" \
 
 WORKDIR /worker
 
-COPY . PhishingInitiative_Lookup
+COPY . PhishingInitiative
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r PhishingInitiative_Lookup/requirements.txt
+RUN pip install --no-cache-dir -r PhishingInitiative/requirements.txt
 
 ENTRYPOINT PhishingInitiative/phishinginitiative_lookup.py

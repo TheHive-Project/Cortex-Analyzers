@@ -16,9 +16,9 @@ LABEL author="ph34tur3" \
 
 WORKDIR /worker
 
-COPY . CyberCrime-Tracker
+COPY . CyberCrimeTracker
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r CyberCrime-Tracker/requirements.txt
+RUN pip install --no-cache-dir -r CyberCrimeTracker/requirements.txt
 
 ENTRYPOINT CyberCrime-Tracker/cct.py

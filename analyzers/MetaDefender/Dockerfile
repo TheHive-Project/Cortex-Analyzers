@@ -15,9 +15,9 @@ LABEL author="Davide Arcuri and Andrea Garavaglia, LDO-CERT" \
 
 WORKDIR /worker
 
-COPY . MetaDefenderCore_GetReport
+COPY . MetaDefender
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r MetaDefenderCore_GetReport/requirements.txt
+RUN pip install --no-cache-dir -r MetaDefender/requirements.txt
 
 ENTRYPOINT MetaDefender/metadefender_lookup.py

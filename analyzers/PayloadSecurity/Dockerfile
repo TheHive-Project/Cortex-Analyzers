@@ -15,9 +15,9 @@ LABEL author="Emmanuel Torquato" \
 
 WORKDIR /worker
 
-COPY . PayloadSecurity_Url_Analysis
+COPY . PayloadSecurity
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r PayloadSecurity_Url_Analysis/requirements.txt
+RUN pip install --no-cache-dir -r PayloadSecurity/requirements.txt
 
 ENTRYPOINT PayloadSecurity/payloadsecurity_analyzer.py

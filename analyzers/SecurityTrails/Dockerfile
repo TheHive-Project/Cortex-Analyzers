@@ -15,9 +15,9 @@ LABEL author="Manabu Niseki, @ninoseki" \
 
 WORKDIR /worker
 
-COPY . SecurityTrails_Whois
+COPY . SecurityTrails
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r SecurityTrails_Whois/requirements.txt
+RUN pip install --no-cache-dir -r SecurityTrails/requirements.txt
 
 ENTRYPOINT SecurityTrails/securitytrails_analyzer.py

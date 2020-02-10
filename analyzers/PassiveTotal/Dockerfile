@@ -15,9 +15,9 @@ LABEL authors="Brandon Dixon (9bplus), CERT-BDF" \
 
 WORKDIR /worker
 
-COPY . PassiveTotal_Ssl_Certificate_Details
+COPY . PassiveTotal
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r PassiveTotal_Ssl_Certificate_Details/requirements.txt
+RUN pip install --no-cache-dir -r PassiveTotal/requirements.txt
 
 ENTRYPOINT PassiveTotal/passivetotal_analyzer.py

@@ -16,9 +16,9 @@ LABEL author="crackytsi" \
 
 WORKDIR /worker
 
-COPY . Crt_sh_Transparency_Logs
+COPY . Crtsh
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r Crt_sh_Transparency_Logs/requirements.txt
+RUN pip install --no-cache-dir -r Crtsh/requirements.txt
 
 ENTRYPOINT Crtsh/crtshquery.py

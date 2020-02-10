@@ -16,9 +16,9 @@ LABEL author="Nils Kuhnert" \
 
 WORKDIR /worker
 
-COPY . Pulsedive_GetIndicator
+COPY . Pulsedive
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r Pulsedive_GetIndicator/requirements.txt
+RUN pip install --no-cache-dir -r Pulsedive/requirements.txt
 
 ENTRYPOINT Pulsedive/pulsedive.py

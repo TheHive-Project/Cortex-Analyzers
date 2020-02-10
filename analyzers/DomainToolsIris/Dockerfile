@@ -18,9 +18,9 @@ LABEL author="DomainTools" \
 
 WORKDIR /worker
 
-COPY . DomainToolsIris_Pivot
+COPY . DomainToolsIris
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r DomainToolsIris_Pivot/requirements.txt
+RUN pip install --no-cache-dir -r DomainToolsIris/requirements.txt
 
 ENTRYPOINT DomainToolsIris/domaintoolsiris_analyzer.py

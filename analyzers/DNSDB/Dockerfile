@@ -15,9 +15,9 @@ LABEL author="CERT-BDF" \
 
 WORKDIR /worker
 
-COPY . DNSDB_IPHistory
+COPY . DNSDB
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r DNSDB_IPHistory/requirements.txt
+RUN pip install --no-cache-dir -r DNSDB/requirements.txt
 
 ENTRYPOINT DNSDB/dnsdb.py
