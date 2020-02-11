@@ -12,6 +12,18 @@ class BuildErr(BaseException):
 
 success_msg = '{"success": false, "input": {}, "errorMessage": "Input file doesnt exist"}'
 
+config_required_msg="""  File "/usr/local/lib/python3.8/site-packages/cortexutils/worker.py", line 31, in __init__
+    self._input = json.load(sys.stdin)
+  File "/usr/local/lib/python3.8/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+  File "/usr/local/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/local/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/local/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+"""
 
 if __name__ == "__main__":
 
@@ -39,7 +51,12 @@ if __name__ == "__main__":
                 exec_proc = subprocess.run(["docker", "run", "--rm", "-it", build_hash], capture_output=True)
                 
                 output = exec_proc.stdout.decode('utf-8').rstrip()
+                err = exec_proc.stderr.decode('utf-8').rstrip()
                 # On success, expect all analyzers to output "Input file doesnt exist" errmessage
+                
+                print(output)
+                print(err)
+
                 if exec_proc.returncode == 1:
 
                     if success_msg in output:

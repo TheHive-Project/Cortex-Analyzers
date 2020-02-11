@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 # encoding: utf-8
-import sys
-import time
 import hashlib
-import urllib
 
 from cortexutils.analyzer import Analyzer
 from maltiverse import Maltiverse
@@ -76,7 +73,6 @@ class MaltiverseAnalyzer(Analyzer):
 
     def maltiverse_query_url(self, data):
         # urlencode the URL that we are searching for
-        #data = urllib.quote_plus(data)
         try:
             result = self.m.url_get(data)
             self.report({

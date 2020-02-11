@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 import datetime
-from urllib.error import HTTPError
+from urllib3.exceptions import HTTPError
 from dnsdb_query import DnsdbClient, QueryError
 from cortexutils.analyzer import Analyzer
 
