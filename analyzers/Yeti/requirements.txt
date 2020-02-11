@@ -1,2 +1,2 @@
 cortexutils
-pyeti; python_version<='2.7'
+pyeti

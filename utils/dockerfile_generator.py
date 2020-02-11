@@ -113,7 +113,7 @@ if __name__ == "__main__":
 
                 if 'name' in config:
                     # Use baseConfig over name as we don't want the service name included
-                    labels['title'] = config['baseConfig']
+                    labels['title'] = analyzer.stem
                 
                 if 'author' in config:
                     labels['author'] = config['author']
@@ -157,13 +157,13 @@ if __name__ == "__main__":
 
                 dockerfile_contents.append('\nWORKDIR /worker')
 
-                dockerfile_contents.append('\nCOPY . {}'.format(labels['title']))
+                dockerfile_contents.append('\nCOPY . {}'.format(analyzer.stem))
 
 
                 # if python2/3 => pip install requirements.txt
                 if is_python:
                     dockerfile_contents.append('\n# Project determined to be Python, installing deps')
-                    dockerfile_contents.append('RUN pip install --no-cache-dir -r {}/requirements.txt'.format(labels['title']))
+                    dockerfile_contents.append('RUN pip install --no-cache-dir -r {}/requirements.txt'.format(analyzer.stem))
 
                 dockerfile_contents.append('\nENTRYPOINT {}'.format(config['command']))
 

@@ -7,7 +7,7 @@
     "description": "Query against Soltra Edge.",
     "dataTypeList": ["domain", "ip", "url", "fqdn", "uri_path","user-agent", "hash", "email", "mail", "mail_subject" , "registry", "regexp", "other", "filename"],
     "command": "SoltraEdge/soltra.py",
-    "baseConfig": "Soltra_Edge",
+    "baseConfig": "SoltraEdge",
     "config": {
         "check_tlp": true,
         "service": "search"

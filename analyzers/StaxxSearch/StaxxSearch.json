@@ -7,7 +7,7 @@
     "description": "Fetch observable details from an Anomali STAXX instance.",
     "dataTypeList": ["domain", "fqdn", "ip", "url", "hash", "mail"],
     "command": "StaxxSearch/staxx-cortex.py",
-    "baseConfig": "staxx",
+    "baseConfig": "StaxxSearch",
     "configurationItems": [
       {
         "name": "auth_url",

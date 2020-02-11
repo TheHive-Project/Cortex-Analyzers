@@ -9,16 +9,16 @@ LABEL author="Michael Stensrud, Nordic Financial CERT" \
       description="Query against Soltra Edge." \
       license="AGPL-V3" \
       source="https://github.com/TheHive-Project/Cortex-Analyzers" \
-      title="Soltra_Edge" \
+      title="SoltraEdge" \
       url="http://soltra.com/en/" \
       vendor="TheHive" \
       version="1.0.0"
 
 WORKDIR /worker
 
-COPY . Soltra_Edge
+COPY . SoltraEdge
 
 # Project determined to be Python, installing deps
-RUN pip install --no-cache-dir -r Soltra_Edge/requirements.txt
+RUN pip install --no-cache-dir -r SoltraEdge/requirements.txt
 
 ENTRYPOINT SoltraEdge/soltra.py

@@ -6,7 +6,7 @@
     "license" : "AGPL-V3",
     "description": "Query IP addresses and domains against Mnemonic pDNS public service.",
     "dataTypeList": ["ip", "domain"],
-    "command": "MnemonicPDNS/pdns.py",
+    "command": "Mnemonic_pDNS/pdns.py",
     "baseConfig": "Mnemonic_pDNS",
     "config": {
         "check_tlp": true,
