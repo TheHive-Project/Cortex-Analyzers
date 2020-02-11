@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Copyright (c) 2013 by Farsight Security, Inc.
 #
@@ -14,8 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Python3 compatability by: https://github.com/guyddr/dnsdb-query
+
 import calendar
 import errno
+import json
 import locale
 import optparse
 import os
@@ -23,30 +26,33 @@ import re
 import sys
 import time
 import urllib
-import urllib2
-from cStringIO import StringIO
+from io import StringIO
 
-try:
-    import json
-except ImportError:
-    import simplejson as json
+import urllib3
 
-DEFAULT_CONFIG_FILE = '/etc/dnsdb-query.conf'
+DEFAULT_CONFIG_FILES = filter(os.path.isfile, ('/etc/dnsdb-query.conf', os.path.expanduser('~/.dnsdb-query.conf')))
 DEFAULT_DNSDB_SERVER = 'https://api.dnsdb.info'
+DEFAULT_HTTP_PROXY = ''
+DEFAULT_HTTPS_PROXY = ''
 
 cfg = None
 options = None
+debug = False  # set to True to print raw queries and responses
 
 locale.setlocale(locale.LC_ALL, '')
+
 
 class QueryError(Exception):
     pass
 
+
 class DnsdbClient(object):
-    def __init__(self, server, apikey, limit=None):
+    def __init__(self, server, apikey, limit=None, http_proxy=None, https_proxy=None):
         self.server = server
         self.apikey = apikey
         self.limit = limit
+        self.http_proxy = http_proxy
+        self.https_proxy = https_proxy
 
     def query_rrset(self, oname, rrtype=None, bailiwick=None, before=None, after=None):
         if bailiwick:
@@ -71,6 +77,7 @@ class DnsdbClient(object):
         return self._query(path, before, after)
 
     def _query(self, path, before=None, after=None):
+        res = []
         url = '%s/lookup/%s' % (self.server, path)
 
         params = {}
@@ -85,57 +92,80 @@ class DnsdbClient(object):
             if after:
                 params['time_last_after'] = after
         if params:
-            url += '?{0}'.format(urllib.urlencode(params))
+            url += '?{0}'.format(urllib.parse.urlencode(params))
 
-        req = urllib2.Request(url)
-        req.add_header('Accept', 'application/json')
-        req.add_header('X-Api-Key', self.apikey)
-        http = urllib2.urlopen(req)
-        while True:
-            line = http.readline()
-            if not line:
-                break
-            yield json.loads(line)
+        if self.https_proxy:
+            manager = urllib3.ProxyManager(self.https_proxy)
+        elif self.http_proxy:
+            manager = urllib3.ProxyManager(self.http_proxy)
+        else:
+            manager = urllib3.PoolManager()
+
+        headers = {
+            'Accept': 'application/json',
+            'X-Api-Key': self.apikey
+        }
+
+        if debug:
+            sys.stderr.write(";; query URL =" + url)
+
+        try:
+            r = manager.request(method='GET', url=url, headers=headers)
+
+            json_data = r.data.decode('utf-8')
+            if json_data:
+                json_list = json_data.splitlines()
+                for line in json_list:
+                    yield json.loads(line)
+
+        except (urllib3.exceptions.HTTPError) as e:
+            raise QueryError(str(e))
+
 
 def quote(path):
-    return urllib.quote(path, safe='')
+    return urllib.parse.quote(path, safe='')
+
 
 def sec_to_text(ts):
     return time.strftime('%Y-%m-%d %H:%M:%S -0000', time.gmtime(ts))
 
+
 def rrset_to_text(m):
     s = StringIO()
 
-    if 'bailiwick' in m:
-        s.write(';;  bailiwick: %s\n' % m['bailiwick'])
+    try:
+        if 'bailiwick' in m:
+            s.write(';;  bailiwick: %s\n' % m['bailiwick'])
 
-    if 'count' in m:
-        s.write(';;      count: %s\n' % locale.format('%d', m['count'], True))
+        if 'count' in m:
+            s.write(';;      count: %s\n' % locale.format('%d', m['count'], True))
 
-    if 'time_first' in m:
-        s.write(';; first seen: %s\n' % sec_to_text(m['time_first']))
-    if 'time_last' in m:
-        s.write(';;  last seen: %s\n' % sec_to_text(m['time_last']))
+        if 'time_first' in m:
+            s.write(';; first seen: %s\n' % sec_to_text(m['time_first']))
+        if 'time_last' in m:
+            s.write(';;  last seen: %s\n' % sec_to_text(m['time_last']))
 
-    if 'zone_time_first' in m:
-        s.write(';; first seen in zone file: %s\n' % sec_to_text(m['zone_time_first']))
-    if 'zone_time_last' in m:
-        s.write(';;  last seen in zone file: %s\n' % sec_to_text(m['zone_time_last']))
+        if 'zone_time_first' in m:
+            s.write(';; first seen in zone file: %s\n' % sec_to_text(m['zone_time_first']))
+        if 'zone_time_last' in m:
+            s.write(';;  last seen in zone file: %s\n' % sec_to_text(m['zone_time_last']))
 
-    if 'rdata' in m:
-        for rdata in m['rdata']:
-            s.write('%s IN %s %s\n' % (m['rrname'], m['rrtype'], rdata))
+        if 'rdata' in m:
+            for rdata in m['rdata']:
+                s.write('%s IN %s %s\n' % (m['rrname'], m['rrtype'], rdata))
 
-    s.seek(0)
-    return s.read()
+        s.seek(0)
+        return s.read()
+    finally:
+        s.close()
+
 
 def rdata_to_text(m):
     return '%s IN %s %s' % (m['rrname'], m['rrtype'], m['rdata'])
 
-def parse_config(cfg_fname):
+
+def parse_config(cfg_files):
     config = {}
-    cfg_files = filter(os.path.isfile,
-            (cfg_fname, os.path.expanduser('~/.dnsdb-query.conf')))
 
     if not cfg_files:
         raise IOError(errno.ENOENT, 'dnsdb_query: No config files found')
@@ -147,6 +177,7 @@ def parse_config(cfg_fname):
             config[key] = val
 
     return config
+
 
 def time_parse(s):
     try:
@@ -169,38 +200,56 @@ def time_parse(s):
 
     m = re.match(r'^(?=\d)(?:(\d+)w)?(?:(\d+)d)?(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s?)?$', s, re.I)
     if m:
-        return -1*(int(m.group(1) or 0)*604800 +  \
-                int(m.group(2) or 0)*86400+  \
-                int(m.group(3) or 0)*3600+  \
-                int(m.group(4) or 0)*60+  \
-                int(m.group(5) or 0))
+        return -1 * (int(m.group(1) or 0) * 604800 + \
+                     int(m.group(2) or 0) * 86400 + \
+                     int(m.group(3) or 0) * 3600 + \
+                     int(m.group(4) or 0) * 60 + \
+                     int(m.group(5) or 0))
 
     raise ValueError('Invalid time: "%s"' % s)
 
+
+def epipe_wrapper(func):
+    def f(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except IOError as e:
+            if e.errno == errno.EPIPE:
+                sys.exit(e.errno)
+            raise
+
+    return f
+
+
+@epipe_wrapper
 def main():
     global cfg
     global options
+    global debug
 
-    parser = optparse.OptionParser(epilog='Time formats are: "%Y-%m-%d", "%Y-%m-%d %H:%M:%S", "%d" (UNIX timestamp), "-%d" (Relative time in seconds), BIND format (e.g. 1w1h, (w)eek, (d)ay, (h)our, (m)inute, (s)econd)')
-    parser.add_option('-c', '--config', dest='config', type='string',
-        help='config file', default=DEFAULT_CONFIG_FILE)
+    parser = optparse.OptionParser(
+        epilog='Time formats are: "%Y-%m-%d", "%Y-%m-%d %H:%M:%S", "%d" (UNIX timestamp), "-%d" (Relative time in seconds), BIND format (e.g. 1w1h, (w)eek, (d)ay, (h)our, (m)inute, (s)econd)')
+    parser.add_option('-c', '--config', dest='config',
+                      help='config file', action='append')
     parser.add_option('-r', '--rrset', dest='rrset', type='string',
-        help='rrset <ONAME>[/<RRTYPE>[/BAILIWICK]]')
+                      help='rrset <ONAME>[/<RRTYPE>[/BAILIWICK]]')
     parser.add_option('-n', '--rdataname', dest='rdata_name', type='string',
-        help='rdata name <NAME>[/<RRTYPE>]')
+                      help='rdata name <NAME>[/<RRTYPE>]')
     parser.add_option('-i', '--rdataip', dest='rdata_ip', type='string',
-        help='rdata ip <IPADDRESS|IPRANGE|IPNETWORK>')
+                      help='rdata ip <IPADDRESS|IPRANGE|IPNETWORK>')
     parser.add_option('-t', '--rrtype', dest='rrtype', type='string',
-        help='rrset or rdata rrtype')
+                      help='rrset or rdata rrtype')
     parser.add_option('-b', '--bailiwick', dest='bailiwick', type='string',
-        help='rrset bailiwick')
+                      help='rrset bailiwick')
     parser.add_option('-s', '--sort', dest='sort', type='string', help='sort key')
     parser.add_option('-R', '--reverse', dest='reverse', action='store_true', default=False,
-        help='reverse sort')
+                      help='reverse sort')
     parser.add_option('-j', '--json', dest='json', action='store_true', default=False,
-        help='output in JSON format')
+                      help='output in JSON format')
     parser.add_option('-l', '--limit', dest='limit', type='int', default=0,
-        help='limit number of results')
+                      help='limit number of results')
+    parser.add_option('-d', '--debug', dest='debug', action='store_true', default=False,
+                      help='print debug output')
 
     parser.add_option('', '--before', dest='before', type='string', help='only output results seen before this time')
     parser.add_option('', '--after', dest='after', type='string', help='only output results seen after this time')
@@ -210,32 +259,40 @@ def main():
         parser.print_help()
         sys.exit(1)
 
+    debug = options.debug
+
     try:
         if options.before:
             options.before = time_parse(options.before)
-    except ValueError, e:
-        print 'Could not parse before: {}'.format(options.before)
+    except ValueError as e:
+        print('Could not parse before: {}'.format(options.before))
 
     try:
         if options.after:
             options.after = time_parse(options.after)
-    except ValueError, e:
-        print 'Could not parse after: {}'.format(options.after)
+    except ValueError as e:
+        print('Could not parse after: {}'.format(options.after))
 
     try:
-        cfg = parse_config(options.config)
-    except IOError, e:
-        sys.stderr.write(e.message)
+        cfg = parse_config(options.config or DEFAULT_CONFIG_FILES)
+    except IOError as e:
+        sys.stderr.writable(str(e))
         sys.exit(1)
-
 
     if not 'DNSDB_SERVER' in cfg:
         cfg['DNSDB_SERVER'] = DEFAULT_DNSDB_SERVER
+    if not 'HTTP_PROXY' in cfg:
+        cfg['HTTP_PROXY'] = DEFAULT_HTTP_PROXY
+    if not 'HTTPS_PROXY' in cfg:
+        cfg['HTTPS_PROXY'] = DEFAULT_HTTPS_PROXY
     if not 'APIKEY' in cfg:
         sys.stderr.write('dnsdb_query: APIKEY not defined in config file\n')
         sys.exit(1)
 
-    client = DnsdbClient(cfg['DNSDB_SERVER'], cfg['APIKEY'], options.limit)
+    client = DnsdbClient(cfg['DNSDB_SERVER'], cfg['APIKEY'],
+                         limit=options.limit,
+                         http_proxy=cfg['HTTP_PROXY'],
+                         https_proxy=cfg['HTTPS_PROXY'])
     if options.rrset:
         if options.rrtype or options.bailiwick:
             qargs = (options.rrset, options.rrtype, options.bailiwick)
@@ -246,7 +303,7 @@ def main():
         fmt_func = rrset_to_text
     elif options.rdata_name:
         if options.rrtype:
-            qargs = (options.rdata_name, options.rrtype, options.bailiwick)
+            qargs = (options.rdata_name, options.rrtype)
         else:
             qargs = (options.rdata_name.split('/', 1))
 
@@ -269,13 +326,14 @@ def main():
                 if not options.sort in results[0]:
                     sort_keys = results[0].keys()
                     sort_keys.sort()
-                    sys.stderr.write('dnsdb_query: invalid sort key "%s". valid sort keys are %s\n' % (options.sort, ', '.join(sort_keys)))
+                    sys.stderr.write('dnsdb_query: invalid sort key "%s". valid sort keys are %s\n' % (
+                        options.sort, ', '.join(sort_keys)))
                     sys.exit(1)
                 results.sort(key=lambda r: r[options.sort], reverse=options.reverse)
         for res in results:
             sys.stdout.write('%s\n' % fmt_func(res))
-    except (urllib2.HTTPError, urllib2.URLError), e:
-        print >>sys.stderr, str(e)
+    except QueryError as e:
+        sys.stderr.write(e)
         sys.exit(1)
 
 if __name__ == '__main__':
