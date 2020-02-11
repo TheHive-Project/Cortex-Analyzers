@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 # encoding: utf-8
 import datetime
 from urllib3.exceptions import HTTPError
