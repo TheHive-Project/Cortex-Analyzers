@@ -1,2 +1,4 @@
 cortexutils
+future
 abuse_finder
+pythonwhois==2.2.2
