@@ -5,7 +5,7 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-RUN apk add --no-cache git
+RUN apk add --no-cache gcc git musl-dev
 
 LABEL author="DomainTools" \
       description="Use DomainTools Iris API to pivot on ssl_hash, ip, or email." \

@@ -96,6 +96,9 @@ if __name__ == "__main__":
                             if 'autofocus-client-library' in requirements:
                                 alpine_dependencies.add('gcc')
                                 alpine_dependencies.add('musl-dev')
+                            if 'domaintools_api' in requirements:
+                                alpine_dependencies.add('gcc')
+                                alpine_dependencies.add('musl-dev')
 
                             # One of the requirements is a git repository-- include git
                             if 'git+https' in requirements:

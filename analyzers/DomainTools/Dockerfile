@@ -5,7 +5,7 @@
 # Guessing base image from source code shebang
 FROM python:3-alpine
 
-RUN apk add --no-cache git
+RUN apk add --no-cache gcc git musl-dev
 
 LABEL authors="ANSSI, CERT-BDF" \
       license="AGPL-V3" \
