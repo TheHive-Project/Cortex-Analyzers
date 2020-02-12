@@ -7,7 +7,6 @@ import magic
 import binascii
 import hashlib
 import base64
-from pprint import pprint
 
 class EmlParserAnalyzer(Analyzer):
 
