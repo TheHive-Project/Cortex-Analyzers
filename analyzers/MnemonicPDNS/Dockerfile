@@ -1,8 +1,3 @@
-### AUTOGEN ###
-# THIS FILE IS UPDATED BY `utils/dockerfile_builder.py`
-# DO NOT EDIT IT DIRECTLY
-
-# Guessing base image from source code shebang
 FROM python:3-alpine
 
 LABEL author="Michael Stensrud, Nordic Financial CERT" \
@@ -16,8 +11,6 @@ LABEL author="Michael Stensrud, Nordic Financial CERT" \
 WORKDIR /worker
 
 COPY . MnemonicPDNS
-
-# Project determined to be Python, installing deps
 RUN pip install --no-cache-dir -r MnemonicPDNS/requirements.txt
 
 ENTRYPOINT MnemonicPDNS/pdns.py
