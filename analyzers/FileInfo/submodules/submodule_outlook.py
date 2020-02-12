@@ -16,10 +16,8 @@ class OutlookSubmodule(SubmoduleBaseclass):
 
     def check_file(self, **kwargs):
         try:
-            msg_mimetypes = ['application/vnd.ms-outlook', 'application/CDFV2-unknown']
-            for m in msg_mimetypes:
-                if kwargs.get('mimetype').find(m) == 0:
-                    return True
+            if kwargs.get('mimetype') in ['application/vnd.ms-outlook', 'application/CDFV2-unknown']:
+                return True
         except KeyError:
             return False
         return False
