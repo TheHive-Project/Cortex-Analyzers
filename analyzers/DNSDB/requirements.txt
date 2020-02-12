@@ -1,4 +1,2 @@
-datetime
-simplejson
 cortexutils
-future
+requests
