@@ -1,8 +1,3 @@
-### AUTOGEN ###
-# THIS FILE IS UPDATED BY `utils/dockerfile_builder.py`
-# DO NOT EDIT IT DIRECTLY
-
-# Guessing base image from source code shebang
 FROM python:3-alpine
 
 LABEL author="Davide Arcuri and Andrea Garavaglia, LDO-CERT" \
@@ -17,8 +12,6 @@ LABEL author="Davide Arcuri and Andrea Garavaglia, LDO-CERT" \
 WORKDIR /worker
 
 COPY . IBMXForce
-
-# Project determined to be Python, installing deps
 RUN pip install --no-cache-dir -r IBMXForce/requirements.txt
 
 ENTRYPOINT IBMXForce/ibmxforce_lookup.py
