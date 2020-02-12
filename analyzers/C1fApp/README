@@ -13,7 +13,7 @@ C1fApp {
 
 To test the analyzer from cmdline
 
-python cifquery.py < input
+python3 cifquery.py < input
 
 Testing
 --------
