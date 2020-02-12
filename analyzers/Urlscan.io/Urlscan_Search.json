@@ -4,7 +4,7 @@
   "license": "MIT",
   "url": "https://github.com/ninoseki/cortex_urlscan_analyzer",
   "version": "0.1.0",
-  "baseConfig": "Urlscan",
+  "baseConfig": "Urlscan.io",
   "description": "Search IPs, domains, hashes or URLs on urlscan.io",
   "dataTypeList": ["ip", "domain", "hash", "url"],
   "command": "Urlscan.io/urlscan_analyzer.py"
