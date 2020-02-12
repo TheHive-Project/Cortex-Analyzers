@@ -3,7 +3,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/misp-warninglists-analyzer",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Check IoCs/Observables against MISP Warninglists to filter false positives.",
   "dataTypeList": ["ip", "hash", "domain", "fqdn", "url"],
   "baseConfig": "MISPWarningLists",
