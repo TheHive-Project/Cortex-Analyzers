@@ -1,8 +1,8 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # encoding: utf-8
 import sys
 import json
-import urllib2
+import requests
 from cortexutils.analyzer import Analyzer
 
 
@@ -61,17 +61,16 @@ class HippoAnalyzer(Analyzer):
         json_data = json.dumps(value)
         post_data = json_data.encode('utf-8')
         headers = {'Content-Type': 'application/json'}
+        url = '{}/hippocampe/api/v1.0/{}'.format(self.url, self.service),
 
         try:
-            request = urllib2.Request('{}/hippocampe/api/v1.0/{}'.format(self.url, self.service), post_data, headers)
-            response = urllib2.urlopen(request)
-            report = json.loads(response.read())
+            r = requests.post(url, data=post_data, headers=headers)
+            report = r.json()
 
             self.report(report)
-        except urllib2.HTTPError:
-            self.error("Hippocampe: " + str(sys.exc_info()[1]))
-        except urllib2.URLError:
-            self.error("Hippocampe: service is not available")
+
+        except ValueError as e:
+            self.unexpectedError('Unable to decode to JSON: {}'.format(e))
         except Exception as e:
             self.unexpectedError(e)
 
