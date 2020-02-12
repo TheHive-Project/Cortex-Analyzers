@@ -1,6 +1,6 @@
 {
   "name": "Shodan_Host_History",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "ANSSI",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
   "license": "AGPL-V3",
