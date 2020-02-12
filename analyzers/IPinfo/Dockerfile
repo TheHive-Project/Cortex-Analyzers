@@ -1,8 +1,3 @@
-### AUTOGEN ###
-# THIS FILE IS UPDATED BY `utils/dockerfile_builder.py`
-# DO NOT EDIT IT DIRECTLY
-
-# Guessing base image from source code shebang
 FROM python:3-alpine
 
 LABEL author="Manabu Niseki" \
@@ -16,8 +11,6 @@ LABEL author="Manabu Niseki" \
 WORKDIR /worker
 
 COPY . IPinfo
-
-# Project determined to be Python, installing deps
 RUN pip install --no-cache-dir -r IPinfo/requirements.txt
 
 ENTRYPOINT IPinfo/ipinfo_analyzer.py
