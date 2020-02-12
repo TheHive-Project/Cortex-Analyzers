@@ -3,7 +3,7 @@
   "author": "ph34tur3",
   "license": "AGPL-V3",
   "url": "https://github.com/ph34tur3/Cortex-Analyzers",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Search cybercrime-tracker.net for C2 servers.",
   "dataTypeList": ["domain", "fqdn", "ip", "url", "other"],
   "command": "CyberCrime-Tracker/cct.py",
