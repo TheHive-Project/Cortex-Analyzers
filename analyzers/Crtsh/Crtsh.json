@@ -3,7 +3,7 @@
   "author": "crackytsi",
   "license": "AGPL-V3",
   "url": "https://crt.sh",
-  "version": "1.0",
+  "version": "1.0.0",
   "baseConfig": "Crtsh",
   "config": {
         "check_tlp": false,
