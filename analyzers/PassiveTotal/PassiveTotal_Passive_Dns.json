@@ -1,6 +1,6 @@
 {
   "name": "PassiveTotal_Passive_Dns",
-  "version": "2.1",
+  "version": "2.1.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
