@@ -1,8 +1,3 @@
-### AUTOGEN ###
-# THIS FILE IS UPDATED BY `utils/dockerfile_builder.py`
-# DO NOT EDIT IT DIRECTLY
-
-# Guessing base image from source code shebang
 FROM python:3-alpine
 
 LABEL author="KAPSCH-CDC" \
@@ -17,8 +12,6 @@ LABEL author="KAPSCH-CDC" \
 WORKDIR /worker
 
 COPY . RecordedFuture
-
-# Project determined to be Python, installing deps
 RUN pip install --no-cache-dir -r RecordedFuture/requirements.txt
 
 ENTRYPOINT RecordedFuture/recordedfuture.py
