@@ -1,8 +1,3 @@
-### AUTOGEN ###
-# THIS FILE IS UPDATED BY `utils/dockerfile_builder.py`
-# DO NOT EDIT IT DIRECTLY
-
-# Guessing base image from source code shebang
 FROM python:3-alpine
 
 LABEL author="Andrea Garavaglia, LDO-CERT" \
@@ -16,8 +11,6 @@ LABEL author="Andrea Garavaglia, LDO-CERT" \
 WORKDIR /worker
 
 COPY . CuckooSandbox
-
-# Project determined to be Python, installing deps
 RUN pip install --no-cache-dir -r CuckooSandbox/requirements.txt
 
 ENTRYPOINT CuckooSandbox/cuckoosandbox_analyzer.py
