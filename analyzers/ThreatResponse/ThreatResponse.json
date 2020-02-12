@@ -1,0 +1,42 @@
+{
+  "name": "ThreatResponse",
+  "license": "MIT",
+  "author": "Cisco Security",
+  "url": "https://github.com/CiscoSecurity",
+  "version": "1.0",
+  "description": "Threat Response",
+  "dataTypeList": ["domain", "filename", "fqdn", "hash", "ip", "url"],
+  "command": "ThreatResponse/ThreatResponse.py",
+  "baseConfig": "ThreatResponse",
+  "configurationItems": [
+    {
+      "name": "region",
+      "description": "Threat Response Region (us, eu, or apjc). Will default to 'us' region if left blank",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": ""
+    },
+    {
+      "name": "client_id",
+      "description": "Threat Response Client ID",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "client_password",
+      "description": "Threat Response API Client Password",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "extract_amp_targets",
+      "description": "Would you like to extract AMP connector GUIDs as artifacts?",
+      "type": "boolean",
+      "required": false,
+      "defaultValue": false
+    }
+  ]
+}
