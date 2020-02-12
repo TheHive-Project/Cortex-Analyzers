@@ -1,6 +1,6 @@
 {
     "name": "BackscatterIO_GetObservations",
-    "version": "1.0",
+    "version": "1.0.0",
     "author": "brandon@backscatter.io",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "APLv2",
