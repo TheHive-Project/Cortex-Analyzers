@@ -18,8 +18,8 @@ class CuckooSandboxAnalyzer(Analyzer):
         # self.networktimeout = self.get_param('config.networktimeout', 30, None)
         self.verify_ssl = self.get_param('config.verifyssl', True, None)
         if not self.verify_ssl:
-            import urllib3
-            urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+            from requests.packages.urllib3.exceptions import InsecureRequestWarning
+            requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
     def summary(self, raw):
         taxonomies = []
