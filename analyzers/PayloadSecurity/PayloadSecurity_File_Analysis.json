@@ -1,6 +1,6 @@
 {
   "name": "PayloadSecurity_File_Analysis",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Emmanuel Torquato",
   "url": "https://github.com/notset/Cortex-Analyzers",
   "license": "AGPL-V3",
