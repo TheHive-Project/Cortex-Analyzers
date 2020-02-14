@@ -1,2 +1,2 @@
 cortexutils
-dnyspython
+dnspython
