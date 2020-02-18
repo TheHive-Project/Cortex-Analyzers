@@ -28,14 +28,14 @@ class ClamAnalyzer(Analyzer):
     #    return raw
     def summary(self, raw):
         taxonomies = []
-        namespace = "Clamscan"
+        namespace = "ClamAV"
         predicate = "Match"
 
         if raw["results"]:
-            value = "{} rule matched".format(raw["results"])
+            value = "{}".format(raw["results"])
             level = "malicious"
         else:
-            value = "No matched rules"
+            value = "No matches"
             level = "safe"
 
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
