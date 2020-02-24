@@ -1,0 +1,33 @@
+<div class="panel panel-danger" ng-if="success && content.results.length > 0">
+	<div class="panel-heading">
+		ClamAV Report
+	</div>
+	<div class="panel-body">
+		<dl class="dl-horizontal">
+			<dt>Match</dt>
+			<dd>{{content.results}}</dd>
+		</dl>
+	</div>
+</div>
+<div class="panel panel-success" ng-if="success && content.results.length == 0">
+	<div class="panel-heading">
+		ClamAV Report
+	</div>
+	<div class="panel-body">
+		<span>No matches.</span>
+	</div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+    	<dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> ClamAV : </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
+

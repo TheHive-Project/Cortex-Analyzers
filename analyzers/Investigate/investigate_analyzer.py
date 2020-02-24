@@ -100,9 +100,6 @@ class InvestigateAnalyzer(Analyzer):
         except Exception as e:
             self.unexpectedError(e)
 
-        else:
-            self.error('Unknown Investigate service or invalid data type')
-
 
 if __name__ == '__main__':
     InvestigateAnalyzer().run()
