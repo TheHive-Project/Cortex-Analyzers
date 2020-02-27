@@ -63,7 +63,7 @@ class AbuseIPDBAnalyzer(Analyzer):
                         for item in response["data"]["reports"]:
                             categories_strings = []
                             for category in item["categories"]:
-                                categories_strings.append(extract_abuse_ipdb_category(category))
+                                categories_strings.append(self.extract_abuse_ipdb_category(category))
                         response['categories_strings'] = categories_strings
 
                 self.report({'values': response_list})
