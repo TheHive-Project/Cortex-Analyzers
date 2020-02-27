@@ -64,7 +64,10 @@ class AbuseIPDBAnalyzer(Analyzer):
                             categories_strings = []
                             for category in item["categories"]:
                                 categories_strings.append(self.extract_abuse_ipdb_category(category))
-                        response['categories_strings'] = categories_strings
+                        try:
+                            response['categories_strings'] = categories_strings
+                        except:
+                            pass
 
                 self.report({'values': response_list})
             else:
@@ -75,8 +78,8 @@ class AbuseIPDBAnalyzer(Analyzer):
     def summary(self, raw):
         taxonomies = []
 
-        if raw and 'values' in raw and len(raw['values']) > 0 :
-            taxonomies.append(self.build_taxonomy('malicious', 'AbuseIPDB', 'Records', len(raw['values'])))
+        if raw and 'values' in raw and raw['values'][0]['data']['totalReports'] > 0 :
+            taxonomies.append(self.build_taxonomy('malicious', 'AbuseIPDB', 'Records', raw['values'][0]['data']['totalReports']))
         else:
             taxonomies.append(self.build_taxonomy('safe', 'AbuseIPDB', 'Records', 0))
 
