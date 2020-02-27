@@ -60,14 +60,12 @@ class AbuseIPDBAnalyzer(Analyzer):
                 response_list = json_response if isinstance(json_response, list) else [json_response]
                 for response in response_list:
                     if 'reports' in response["data"]:
+                        categories_strings = []
                         for item in response["data"]["reports"]:
-                            categories_strings = []
                             for category in item["categories"]:
-                                categories_strings.append(self.extract_abuse_ipdb_category(category))
-                        try:
-                            response['categories_strings'] = categories_strings
-                        except:
-                            pass
+                                if self.extract_abuse_ipdb_category(category) not in categories_strings:
+                                    categories_strings.append(self.extract_abuse_ipdb_category(category))
+                        response['categories_strings'] = categories_strings
 
                 self.report({'values': response_list})
             else:
