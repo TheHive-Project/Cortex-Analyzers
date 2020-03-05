@@ -16,7 +16,7 @@ class UmbrellaBlacklister(Responder):
         Responder.run(self)
 
         data_type = self.get_param('data.dataType')
-        ioc_types = {"domain": "domain", "url": "url","fqdn": "fqdn"}
+        ioc_types = ["domain", "url", "fqdn"]
         if data_type in ioc_types:
 
             if data_type == "domain" or data_type == "fqdn":
