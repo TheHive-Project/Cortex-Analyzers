@@ -39,14 +39,15 @@ class FlossSubmodule(SubmoduleBaseclass):
         for line in lines:
             if line[:24] == 'Finished execution after':
                 continue
-            if (line[0:5] == 'FLOSS' and line[-7:] == 'strings') or line[0:12] == 'ERROR:floss:':
-                if line[0:12] == 'ERROR:floss:':
-                    current_section = 'Errors'
-                else:
-                    current_section = line
+            if line[0:5] == 'FLOSS' and line[-7:] == 'strings':
+                current_section = line
                 if current_section not in processed_output.keys():
                     processed_output.update({current_section: []})
                 continue
+            elif line[0:12] == 'ERROR:floss:':
+                current_section = 'Errors'
+                if current_section not in processed_output.keys():
+                    processed_output.update({current_section: []})
 
             if line != '':
                 if line[0:12] == 'ERROR:floss:':
