@@ -7,7 +7,7 @@ class FlossSubmodule(SubmoduleBaseclass):
     def __init__(self, **kwargs):
         SubmoduleBaseclass.__init__(self)
         self.name = 'FLOSS'
-        self.floss_path = kwargs.get('floss_path', None)
+        self.floss_path = kwargs.get('binary_path', None)
         self.string_length = kwargs.get('string_length', 4)
 
     def check_file(self, **kwargs):
@@ -25,7 +25,9 @@ class FlossSubmodule(SubmoduleBaseclass):
             '-n {}'.format(self.string_length),
             filepath
         ], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        return '{}\n{}'.format(sp.stdout.decode('utf-8'), sp.stderr.decode('utf-8'))
+        stdout = sp.stdout.decode('utf-8')
+        stderr = sp.stderr.decode('utf-8')
+        return '{}\n{}'.format(stdout, stderr)
 
     def process_output(self, output: str) -> dict:
         """Processes the output string and return a dictionary with sections to use in the build results method.
@@ -35,19 +37,22 @@ class FlossSubmodule(SubmoduleBaseclass):
         lines = output.split('\n')
         current_section = 'No section set'
         for line in lines:
+            if line[:24] == 'Finished execution after':
+                continue
             if line[0:5] == 'FLOSS' and line[-7:] == 'strings':
                 current_section = line
+                if current_section not in processed_output.keys():
+                    processed_output.update({current_section: []})
                 continue
             elif line[0:12] == 'ERROR:floss:':
                 if 'errors' in processed_output.keys():
                     processed_output['errors'].append(line[12:])
                 else:
                     processed_output.update({'errors': line[12:]})
+
             if line != '':
-                if current_section in processed_output.keys():
-                    processed_output[current_section].append(line)
-                else:
-                    processed_output.update({current_section: [line]})
+                processed_output[current_section].append(line)
+
         return processed_output
 
     def build_results(self, results: dict):
@@ -55,4 +60,5 @@ class FlossSubmodule(SubmoduleBaseclass):
             self.add_result_subsection(section, strings)
 
     def analyze_file(self, path):
-        results = self.build_results(self.process_output(self.run_floss(path)))
+        self.build_results(self.process_output(self.run_floss(path)))
+        return self.results

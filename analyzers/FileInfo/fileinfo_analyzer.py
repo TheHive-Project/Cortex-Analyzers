@@ -42,17 +42,14 @@ class FileInfoAnalyzer(Analyzer):
                            'or the path to binary is not correct.')
 
         # Check if floss submodule is enabled
-        if self.get_param('floss_enable', False):
-            binary_path = self.get_param('floss_binary_path', None)
-            if binary_path:
-                available_submodules.append(
-                    FlossSubmodule(
-                        binary_path=binary_path,
-                        string_length=self.get_param('floss_minimal_string_length', 4)
-                    )
+        if self.get_param('config.floss_enable', False):
+            binary_path = self.get_param('config.floss_binary_path', False, 'Floss binary path not given.')
+            available_submodules.append(
+                FlossSubmodule(
+                    binary_path=binary_path,
+                    string_length=self.get_param('config.floss_minimal_string_length', 4)
                 )
-            else:
-                self.error('FLOSS binary path not set!')
+            )
 
     def summary(self, raw):
         taxonomies = []
