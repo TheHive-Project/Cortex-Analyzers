@@ -39,20 +39,20 @@ class FlossSubmodule(SubmoduleBaseclass):
         for line in lines:
             if line[:24] == 'Finished execution after':
                 continue
-            if line[0:5] == 'FLOSS' and line[-7:] == 'strings':
-                current_section = line
+            if (line[0:5] == 'FLOSS' and line[-7:] == 'strings') or line[0:12] == 'ERROR:floss:':
+                if line[0:12] == 'ERROR:floss:':
+                    current_section = 'Errors'
+                else:
+                    current_section = line
                 if current_section not in processed_output.keys():
                     processed_output.update({current_section: []})
                 continue
-            elif line[0:12] == 'ERROR:floss:':
-                if 'Errors' in processed_output.keys():
-                    processed_output['Errors'].append(line[12:])
-                else:
-                    processed_output.update({'Errors': [line[12:]]})
 
             if line != '':
-                processed_output[current_section].append(line)
-
+                if line[0:12] == 'ERROR:floss:':
+                    processed_output[current_section].append(line[12:])
+                else:
+                    processed_output[current_section].append(line)
         return processed_output
 
     def build_results(self, results: dict):
