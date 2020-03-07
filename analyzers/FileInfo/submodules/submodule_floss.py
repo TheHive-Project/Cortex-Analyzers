@@ -45,10 +45,10 @@ class FlossSubmodule(SubmoduleBaseclass):
                     processed_output.update({current_section: []})
                 continue
             elif line[0:12] == 'ERROR:floss:':
-                if 'errors' in processed_output.keys():
-                    processed_output['errors'].append(line[12:])
+                if 'Errors' in processed_output.keys():
+                    processed_output['Errors'].append(line[12:])
                 else:
-                    processed_output.update({'errors': line[12:]})
+                    processed_output.update({'Errors': line[12:]})
 
             if line != '':
                 processed_output[current_section].append(line)
