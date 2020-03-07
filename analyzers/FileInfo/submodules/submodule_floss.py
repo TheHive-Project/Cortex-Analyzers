@@ -48,7 +48,7 @@ class FlossSubmodule(SubmoduleBaseclass):
                 if 'Errors' in processed_output.keys():
                     processed_output['Errors'].append(line[12:])
                 else:
-                    processed_output.update({'Errors': line[12:]})
+                    processed_output.update({'Errors': [line[12:]]})
 
             if line != '':
                 processed_output[current_section].append(line)
