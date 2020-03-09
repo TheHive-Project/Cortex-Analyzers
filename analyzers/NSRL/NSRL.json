@@ -26,8 +26,8 @@
       "required": false
     },
     {
-      "name": "file_path",
-      "description": "path of NSRL file",
+      "name": "nsrl_folder",
+      "description": "path of NSRL folder",
       "type": "string",
       "multi": false,
       "required": false

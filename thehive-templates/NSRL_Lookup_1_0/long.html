@@ -5,38 +5,32 @@
 		NSRL lookup
 	</div>
 	<div class="panel-body">
-        <dl class="dl-horizontal">
-            <dt>Sha1</dt>
-            <dd>{{content.sha1}}</dd>
-        </dl>
-        <dl class="dl-horizontal">
-            <dt>md5</dt>
-            <dd>{{content.md5}}</dd>
-        </dl>
-        <dl class="dl-horizontal">
-            <dt>crc32</dt>
-            <dd>{{content.crc32}}</dd>
-        </dl>
-        <dl class="dl-horizontal">
-            <dt>File Name</dt>
-            <dd>{{content.filename}}</dd>
-        </dl>
-        <dl class="dl-horizontal">
-            <dt>File Size</dt>
-            <dd>{{content.filesize}}</dd>
-        </dl>
-        <dl class="dl-horizontal">
-            <dt>Product Code</dt>
-            <dd>{{content.productcode}}</dd>
-        </dl>
-        <dl class="dl-horizontal">
-            <dt>Operating System Code</dt>
-            <dd>{{content.opsystemcode}}</dd>
-        </dl>
-        <dl class="dl-horizontal">
-            <dt>Special Code</dt>
-            <dd>{{content.specialcode}}</dd>
-        </dl>                                                
+        <table class="table table-hover">
+            <tr>
+                <th>Sha1</th>
+                <th>md5</th>
+                <th>crc32</th>
+                <th>File Name</th>
+                <th>File Size</th>
+                <th>Product Code</th>
+                <th>Operating System Code</th>
+                <th>Special Code</th>
+                <th>Mode</th>
+                <th>NSRL File Name</th>
+            </tr>
+            <tr ng-repeat="result in content.records">
+                <td><strong>{{result.sha1}}</strong></td>
+                <td><strong>{{result.md5}}</strong></td>
+                <td><strong>{{result.crc32}}</strong></td>
+                <td><strong>{{result.filename}}</strong></td>
+                <td><strong>{{result.filesize}}</strong></td>
+                <td><strong>{{result.productcode}}</strong></td>
+                <td><strong>{{result.opsystemcode}}</strong></td>
+                <td><strong>{{result.specialcode}}</strong></td>
+                <td><strong>{{content.mode}}</strong></td>
+                <td><strong>{{result.dbname}} {{result.release}}</strong></td>
+            </tr>
+        </table>                                           
 	</div>
 </div>
 

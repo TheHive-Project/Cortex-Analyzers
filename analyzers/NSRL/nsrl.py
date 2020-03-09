@@ -30,11 +30,11 @@ class NsrlAnalyzer(Analyzer):
         conn = self.get_param("config.conn", None)
         self.engine = None
         self.grep_path = self.get_param("config.grep_path", None)
-        self.file_path = self.get_param("config.file_path", None)
+        self.nsrl_folder = self.get_param("config.nsrl_folder", None)
 
         if conn and USE_DB:
             self.engine = db.create_engine(conn)
-        elif self.grep_path and self.file_path:
+        elif self.grep_path and self.nsrl_folder:
             pass
         else:
             self.error("No valid configuration found")
@@ -44,7 +44,9 @@ class NsrlAnalyzer(Analyzer):
         if raw["found"]:
             taxonomies.append(self.build_taxonomy("safe", "NSRL", "lookup", "found"))
         else:
-            taxonomies.append(self.build_taxonomy("info", "NSRL", "lookup", "not found"))
+            taxonomies.append(
+                self.build_taxonomy("info", "NSRL", "lookup", "not found")
+            )
         return {"taxonomies": taxonomies}
 
     def run(self):
@@ -67,16 +69,30 @@ class NsrlAnalyzer(Analyzer):
             self.error("Invalid hash type")
 
         results = {}
+        results["records"] = []
         if not self.engine:
-            if not os.path.exists(self.file_path):
-                self.error("NSRL file not found")
+            if not os.path.exists(self.nsrl_folder) and not os.path.isdir(
+                self.nsrl_folder
+            ):
+                self.error("NSRL folder not found or not valid")
             try:
-                output = subprocess.check_output(
-                    [self.grep_path, "-m1", data, self.file_path]
+                output = subprocess.Popen(
+                    [self.grep_path, "-r", data, self.nsrl_folder],
+                    stdout=subprocess.PIPE,
+                    universal_newlines=True,
                 )
-                values = [x.replace('"', "") for x in output.decode().strip().split(",")]
-                for key, value in zip(FIELDS, values):
-                    results[key] = value
+                for line in output.stdout.readlines():
+                    tmp = {}
+                    file_path, values = line.strip().split(":")
+                    values = [
+                        x.replace('"', "") for x in values.split(",")
+                    ]
+                    for key, value in zip(FIELDS, values):
+                        tmp[key] = value
+                    tmp["dbname"], tmp["release"] = (
+                        file_path.split("/")[-1].replace(".txt", "").split("_")
+                    )
+                results["records"].append(tmp)
                 results["found"] = True
             except subprocess.CalledProcessError as e:
                 results["found"] = False
@@ -84,15 +100,20 @@ class NsrlAnalyzer(Analyzer):
 
         else:
             sql = "SELECT %s FROM nsrl WHERE %s='%s'" % (
-                ", ".join(FIELDS),
+                ", ".join(FIELDS + ["dbname", "release"]),
                 variable,
                 data,
             )
-            values = self.engine.execute(sql).fetchone()
+            values = self.engine.execute(sql)
             self.engine.dispose()
             if values:
-                for key, value in zip(FIELDS, values[1:]):
-                    results[key] = value
+                for row in values:
+                    results["records"].append(
+                        {
+                            key: value
+                            for (key, value) in zip(FIELDS + ["dbname", "release"], row)
+                        }
+                    )
                 results["found"] = True
             else:
                 results["found"] = False
