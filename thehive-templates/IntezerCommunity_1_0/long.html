@@ -1,0 +1,42 @@
+	<div class="panel panel-danger" ng-if="success && content.result">
+		<div class="panel-heading">
+			Intezer Analysis Results
+		</div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>Verdict</dt>
+                <dd>{{content.result.verdict}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Sub-verdict</dt>
+                <dd>{{content.result.sub_verdict}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Family</dt>
+                <dd>{{content.result.family_name}}</dd>
+            </dl>
+        </div>
+	</div>
+	<div class="panel panel-success" ng-if="success && !content.result">
+		<div class="panel-heading">
+			Intezer Analysis Results
+		</div>
+		<div class="panel-body">
+			<span>No result</span>
+		</div>
+	</div>
+
+	<!-- General error  -->
+	<div class="panel panel-danger" ng-if="!success">
+		<div class="panel-heading">
+			<strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+		</div>
+		<div class="panel-body">
+			<dl class="dl-horizontal" ng-if="content.errorMessage">
+				<dt><i class="fa fa-warning"></i> Intezer:</dt>
+				<dd class="wrap">{{content.errorMessage}}</dd>
+			</dl>
+		</div>
+	</div>
+
+
