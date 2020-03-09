@@ -1,0 +1,60 @@
+
+<div class="panel panel-success" ng-if="content.found">
+
+    <div class="panel-heading">
+		NSRL lookup
+	</div>
+	<div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Sha1</dt>
+            <dd>{{content.sha1}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>md5</dt>
+            <dd>{{content.md5}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>crc32</dt>
+            <dd>{{content.crc32}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>File Name</dt>
+            <dd>{{content.filename}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>File Size</dt>
+            <dd>{{content.filesize}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Product Code</dt>
+            <dd>{{content.productcode}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Operating System Code</dt>
+            <dd>{{content.opsystemcode}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Special Code</dt>
+            <dd>{{content.specialcode}}</dd>
+        </dl>                                                
+	</div>
+</div>
+
+<div class="panel panel-info" ng-if="content.count == 0">
+	<div class="panel-heading">
+		NSRL lookup: <b>No match found</b>
+	</div>
+</div>
+
+<!-- on error  -->
+<div class="panel panel-danger" ng-if="!success">
+	<div class="panel-heading">
+		FNSRL lookup <b>Error</b>
+	</div>
+	<div class="panel-body">
+		<dl class="dl-horizontal">
+			<dt>Error: </dt>
+			<dd>{{content.errorMessage}}</dd>
+		</dl>
+	</div>
+</div>
