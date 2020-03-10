@@ -6,7 +6,8 @@
   "version": "1.0",
   "description": "Query NSRL",
   "dataTypeList": [
-    "hash"
+    "hash",
+    "filename"
   ],
   "baseConfig": "NSRL",
   "command": "NSRL/nsrl.py",

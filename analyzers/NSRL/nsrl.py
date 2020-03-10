@@ -55,18 +55,23 @@ class NsrlAnalyzer(Analyzer):
         data = self.get_param("data", None, "Data is missing")
         data = data.upper()
 
-        if self.data_type != "hash":
+        if self.data_type not in ['filename', "hash"]:
             self.error("Invalid data type")
 
-        md5_re = re.compile(r"^[a-f0-9]{32}(:.+)?$", re.IGNORECASE)
-        sha1_re = re.compile(r"^[a-f0-9]{40}(:.+)?$", re.IGNORECASE)
+        if self.data_type == 'hash':
 
-        if md5_re.match(data):
-            variable = "md5"
-        elif sha1_re.match(data):
-            variable = "sha1"
+            md5_re = re.compile(r"^[a-f0-9]{32}(:.+)?$", re.IGNORECASE)
+            sha1_re = re.compile(r"^[a-f0-9]{40}(:.+)?$", re.IGNORECASE)
+
+            if md5_re.match(data):
+                variable = "md5"
+            elif sha1_re.match(data):
+                variable = "sha1"
+            else:
+                self.error("Invalid hash type")
+
         else:
-            self.error("Invalid hash type")
+            variable = "filename"
 
         results = {}
         results["records"] = []
@@ -77,7 +82,7 @@ class NsrlAnalyzer(Analyzer):
                 self.error("NSRL folder not found or not valid")
             try:
                 output = subprocess.Popen(
-                    [self.grep_path, "-r", data, self.nsrl_folder],
+                    [self.grep_path, "-r", "-i", data, self.nsrl_folder],
                     stdout=subprocess.PIPE,
                     universal_newlines=True,
                 )
@@ -92,21 +97,28 @@ class NsrlAnalyzer(Analyzer):
                     tmp["dbname"], tmp["release"] = (
                         file_path.split("/")[-1].replace(".txt", "").split("_")
                     )
-                results["records"].append(tmp)
+                    results["records"].append(tmp)
                 results["found"] = True
             except subprocess.CalledProcessError as e:
                 results["found"] = False
             results["mode"] = "file"
 
         else:
-            sql = "SELECT %s FROM nsrl WHERE %s='%s'" % (
-                ", ".join(FIELDS + ["dbname", "release"]),
-                variable,
-                data,
-            )
+            if variable != 'filename':
+                sql = "SELECT %s FROM nsrl WHERE %s='%s'" % (
+                    ", ".join(FIELDS + ["dbname", "release"]),
+                    variable,
+                    data
+                )
+            else:
+                sql = "SELECT %s FROM nsrl WHERE %s ilike '%s'" % (
+                    ", ".join(FIELDS + ["dbname", "release"]),
+                    variable,
+                    "%%{}%%".format(data)
+                )
             values = self.engine.execute(sql)
             self.engine.dispose()
-            if values:
+            if values.rowcount > 0:
                 for row in values:
                     results["records"].append(
                         {
