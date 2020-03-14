@@ -39,6 +39,28 @@
       "required": false,
       "multi": false,
       "default": "/opt/Cortex-Analyzers/utils/manalyze/bin/manalyze"
+    },
+    {
+      "name": "strings_enable",
+      "description": "Wether to enable strings submodules or not.",
+      "type": "boolean",
+      "required": true,
+      "multi": false
+    },  
+    {
+      "name": "floss_enable",
+      "description": "Wether to enable floss submodules or not.",
+      "type": "boolean",
+      "required": true,
+      "multi": false
+    },        
+    {
+      "name": "floss_binary_path",
+      "description": "Path to the Floss binary",
+      "type": "string",
+      "required": false,
+      "multi": false,
+      "default": "/opt/Cortex-Analyzers/utils/floss/bin/floss"      
     }
   ]
 }

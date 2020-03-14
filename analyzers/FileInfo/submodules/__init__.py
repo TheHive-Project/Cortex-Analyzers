@@ -11,5 +11,5 @@ available_submodules = [
     PDFIDSubmodule(),
     IOCPSubmodule(),
     OutlookSubmodule(),
-    RTFObjectSubmodule()
+    RTFObjectSubmodule(),
 ]

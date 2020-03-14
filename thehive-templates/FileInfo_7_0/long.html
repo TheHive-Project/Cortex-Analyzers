@@ -13,6 +13,7 @@
         <uib-tab index="$index" ng-repeat="result in content.results" heading="{{result.submodule_name}}"
                  disable="tab.disabled">
             <br>
+
             <!--  Basic properties -->
             <div ng-if="result.submodule_name=='Basic properties'">
                 <div class="panel-body">
@@ -164,6 +165,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- Outlook message parser -->
             <div ng-if="result.submodule_name=='Outlook mail Information'">
                 <div class="panel-body">
@@ -235,6 +237,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- PDF Information (PDFiD)-->
             <div ng-if="result.submodule_name=='PDF Information'">
                 <div class="panel-body">
@@ -508,7 +511,6 @@
                 </div>
             </div>
 
-
             <!-- rtfobj submodule -->
             <div ng-if="result.submodule_name=='rtfobj'">
                 <div class="panel-body">
@@ -619,6 +621,23 @@
                     </div>
                 </div>
             </div>
+
+            <!--  strings / floss-->
+            <div ng-if="result.submodule_name=='strings' || result.submodule_name=='Floss'">
+                <div class="panel-body">
+                    <div ng-repeat="r in result.results" class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">{{result.submodule_name}}</h4>
+                        </div>
+                        <div class="panel panel-body">  
+                            <p style="white-space: pre-line">
+                                {{r.submodule_section_content.join('\n')}}
+                            </p>
+                        </div>
+                    </p>
+                </div>
+            </div>
+                  
         </uib-tab>
     </uib-tabset>
 </div>

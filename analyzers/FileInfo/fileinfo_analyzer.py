@@ -7,6 +7,8 @@ from cortexutils.analyzer import Analyzer
 from submodules import available_submodules
 from submodules.submodule_metadata import MetadataSubmodule
 from submodules.submodule_manalyze import ManalyzeSubmodule
+from submodules.submodule_floss import FlossSubmodule
+from submodules.submodule_strings import StringsSubmodule
 
 
 class FileInfoAnalyzer(Analyzer):
@@ -39,6 +41,18 @@ class FileInfoAnalyzer(Analyzer):
             else:
                 self.error('Manalyze submodule is enabled, but either there is no method allowed (docker or binary)'
                            'or the path to binary is not correct.')
+
+        # Check if strings submodule is be enabled
+        if self.get_param("config.strings_enable", False):
+
+            available_submodules.append(StringsSubmodule())
+
+        # Check if floss submodule is be enabled
+        if self.get_param("config.floss_enable", False):            
+            floss_path = self.get_param("config.floss_binary_path", None)
+            if floss_path and os.path.isfile(floss_path):
+                available_submodules.append(FlossSubmodule(binary_path=floss_path))
+
 
     def summary(self, raw):
         taxonomies = []
