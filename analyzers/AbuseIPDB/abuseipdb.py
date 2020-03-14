@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import requests
+from collections import Counter
+from itertools import chain
 
 from cortexutils.analyzer import Analyzer
 
@@ -36,29 +38,64 @@ class AbuseIPDBAnalyzer(Analyzer):
             "22": "SSH",
             "23": "IoT Targeted",
         }
-        return mapping.get(str(category_number), 'unknown category')
+        return mapping.get(str(category_number), "unknown category")
 
     def run(self):
 
         try:
             if self.data_type == "ip":
-                api_key = self.get_param('config.key', None, 'Missing AbuseIPDB API key')
-                days_to_check = self.get_param('config.days', 30)
+                api_key = self.get_param(
+                    "config.key", None, "Missing AbuseIPDB API key"
+                )
+                days_to_check = self.get_param("config.days", 30)
                 ip = self.get_data()
-                url = 'https://www.abuseipdb.com/check/{}/json?days={}'.format(ip, days_to_check)
-                response = requests.post(url, data = {'key': api_key})
+
+                headers = {"Accept": "application/json", "key": api_key}
+                querystring = {"ipAddress": ip, "maxAgeInDays": days_to_check}
+                url = "https://www.abuseipdb.com/api/v2/check?verbose"
+                response = requests.get(url, headers=headers, params=querystring)
                 if not (200 <= response.status_code < 300):
-                    self.error('Unable to query AbuseIPDB API\n{}'.format(response.text))
-                json_response = response.json()
-                # this is because in case there's only one result, the api gives back a list instead of a dict
-                response_list = json_response if isinstance(json_response, list) else [json_response]
-                for found in response_list:
-                    if 'category' in found:
-                        categories_strings = []
-                        for category in found['category']:
-                            categories_strings.append(self.extract_abuse_ipdb_category(category))
-                        found['categories_strings'] = categories_strings
-                self.report({'values': response_list})
+                    self.error(
+                        "Unable to query AbuseIPDB API\n{}".format(response.text)
+                    )
+                json_response = response.json()["data"]
+
+                # count reports category
+                categories_count = Counter(
+                    chain.from_iterable(
+                        [
+                            report.get("categories", [])
+                            for report in json_response.get("reports", [])
+                        ]
+                    )
+                ).most_common()
+
+                json_response["categories"] = []
+                for category, count in categories_count:
+                    json_response["categories"].append(
+                        {
+                            "category": self.extract_abuse_ipdb_category(category),
+                            "count": count,
+                        }
+                    )
+
+                # count reports nationality
+                nationalities_count = Counter(
+                    [
+                        report.get("reporterCountryCode", [])
+                        for report in json_response.get("reports", [])
+                    ]
+                ).most_common()
+
+                json_response["nationalities"] = []
+                for nationality, count in nationalities_count:
+                    json_response["nationalities"].append(
+                        {"nationality": nationality, "count": count,}
+                    )
+
+                del json_response["reports"]
+
+                self.report({"values": json_response})
             else:
                 self.notSupported()
         except Exception as e:
@@ -66,14 +103,20 @@ class AbuseIPDBAnalyzer(Analyzer):
 
     def summary(self, raw):
         taxonomies = []
-
-        if raw and 'values' in raw and len(raw['values']) > 0 :
-            taxonomies.append(self.build_taxonomy('malicious', 'AbuseIPDB', 'Records', len(raw['values'])))
+        if raw.get("values", {}).get("totalReports", 0) > 0:
+            taxonomies.append(
+                self.build_taxonomy(
+                    "malicious",
+                    "AbuseIPDB",
+                    "Records",
+                    raw["values"]["totalReports"],
+                )
+            )
         else:
-            taxonomies.append(self.build_taxonomy('safe', 'AbuseIPDB', 'Records', 0))
+            taxonomies.append(self.build_taxonomy("safe", "AbuseIPDB", "Records", 0))
 
         return {"taxonomies": taxonomies}
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     AbuseIPDBAnalyzer().run()

@@ -1,0 +1,64 @@
+	<div class="panel panel-danger" ng-if="success && content.values">
+		<div class="panel-heading">
+			AbuseIPDB INFO for {{artifact.data | fang}}
+		</div>
+		<div class="panel-body">
+			<table class="table table-striped" ng-if="content.values">
+				<thead>
+					<tr>
+						<th>Abuse Confidence Score</th>
+						<th>ISO Code</th>
+						<th>Country</th>
+						<th>Withelisted</th>
+						<th>Usage Type</th>
+						<th>Domain</th>
+						<th>Isp</th>
+						<th>Last Report Date</th>
+						<th>Total Reports</th>
+						<th>Categories</th>
+						<th>Reporter Nationalities</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr">
+						<td><span class="text" 
+							ng-class="{ 'text-danger': content.values.abuseConfidenceScore >= 70 ,'text-warning': content.values.abuseConfidenceScore < 70, 'text-success': content.values.abuseConfidenceScore == 0}">{{content.values.abuseConfidenceScore}}</span></td>
+						<td>{{content.values.countryCode}}</td>
+						<td>{{content.values.countryName}}</td>
+						<td>{{content.values.isWhitelisted}}</td>
+						<td>{{content.values.usageType}}</td>
+						<td>{{content.values.domain}}</td>
+						<td>{{content.values.isp}}</td>
+						<td>{{content.values.lastReportedAt}}</td>
+						<td>{{content.values.totalReports}}</td>
+						<td><span ng-repeat="c in content.values.categories">{{c.category}} => {{c.count}}<br/></span></td>
+						<td><span ng-repeat="c in content.values.nationalities">{{c.nationality}} => {{c.count}}<br/></span></td>
+					</tr>					
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="panel panel-success" ng-if="success && content.values.length == 0">
+		<div class="panel-heading">
+			AbuseIPDB Report
+		</div>
+		<div class="panel-body">
+			<span>No matches.</span>
+		</div>
+	</div>
+
+	<!-- General error  -->
+	<div class="panel panel-danger" ng-if="!success">
+		<div class="panel-heading">
+			<strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+		</div>
+		<div class="panel-body">
+			<dl class="dl-horizontal" ng-if="content.errorMessage">
+				<dt><i class="fa fa-warning"></i> AbuseIPDB:</dt>
+				<dd class="wrap">{{content.errorMessage}}</dd>
+			</dl>
+		</div>
+	</div>
+
+
