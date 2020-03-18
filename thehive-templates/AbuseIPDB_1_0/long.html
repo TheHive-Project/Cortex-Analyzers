@@ -12,7 +12,6 @@
 						<th>Country</th>
 						<th>Whitelisted</th>
 						<th>Categories</th>
-
 					</tr>
 				</thead>
 				<tbody>
@@ -24,9 +23,8 @@
 						<td>{{r.reporterCountryName}}</td>
 						<td>{{content.values[0].data.isWhitelisted}}</td>
 						<td>
-							<span ng-repeat="c in r.categories"><span class="label label-primary">{{c}}</span> </span>
+							<span ng-repeat="c in r.categories_strings"><span class="label label-primary">{{c}}</span> </span>
 						</td>
-
 					</tr>					
 				</tbody>
 			</table>

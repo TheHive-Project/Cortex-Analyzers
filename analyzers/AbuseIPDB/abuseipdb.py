@@ -62,9 +62,12 @@ class AbuseIPDBAnalyzer(Analyzer):
                     if 'reports' in response["data"]:
                         categories_strings = []
                         for item in response["data"]["reports"]:
+                            item['categories_strings'] = []
                             for category in item["categories"]:
-                                if self.extract_abuse_ipdb_category(category) not in categories_strings:
-                                    categories_strings.append(self.extract_abuse_ipdb_category(category))
+                                category_as_str = self.extract_abuse_ipdb_category(category)
+                                item['categories_strings'].append(category_as_str)
+                                if category_as_str not in categories_strings:
+                                    categories_strings.append(category_as_str)
                         response['categories_strings'] = categories_strings
 
                 self.report({'values': response_list})
