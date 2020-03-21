@@ -40,11 +40,7 @@ class CyberchefAnalyzer(Analyzer):
                 data = { "input": observable, "recipe":[{"op":"Regular expression","args":["User defined","([0-9]{2,3}(,\\s|))+",True,True,False,False,False,False,"List matches"]},{"op":"From Charcode","args":["Comma",10]},{"op":"Regular expression","args":["User defined","([0-9]{2,3}(,\\s|))+",True,True,False,False,False,False,"List matches"]},{"op":"From Charcode","args":["Space",10]}]}
             headers = { 'Content-Type': 'application/json' }
             r = requests.post(url.strip('/') + '/bake', headers=headers, data=json.dumps(data))
-            response_bytes = r.text
-            clean_bytes = response_bytes.strip('[').strip(']').split(',')
-            output_data = ""
-            for i in clean_bytes:
-                output_data = str(output_data + str(chr(int(i))))
+            output_data = "".join([chr(x) for x in r.json().get('value', [])])
             self.report({ 'input_data': observable, 'output_data': output_data })
         except:
             self.error("Could not convert provided data.")
