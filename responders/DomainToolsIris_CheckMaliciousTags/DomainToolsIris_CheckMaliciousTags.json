@@ -10,14 +10,6 @@
   "baseConfig": "DomainToolsIris",
   "configurationItems": [
     {
-      "name": "high_risk_threshold",
-      "description": "Risk score threshold to be considered high risk.",
-      "type": "number",
-      "multi": false,
-      "required": false,
-      "defaultValue": 70
-    },
-    {
       "name": "monitored_iris_tags",
       "description": "Monitored Iris tags.",
       "type": "string",

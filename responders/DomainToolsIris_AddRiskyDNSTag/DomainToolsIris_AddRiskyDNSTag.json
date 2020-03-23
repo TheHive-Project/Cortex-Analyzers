@@ -16,13 +16,6 @@
       "multi": false,
       "required": false,
       "defaultValue": 70
-    },
-    {
-      "name": "monitored_iris_tags",
-      "description": "Monitored Iris tags.",
-      "type": "string",
-      "multi": true,
-      "required": false
     }
   ]
 }
