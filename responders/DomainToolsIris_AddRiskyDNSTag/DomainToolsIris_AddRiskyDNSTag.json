@@ -1,0 +1,21 @@
+{
+  "name": "DomainToolsIris_AddRiskyDNSTag",
+  "version": "1.0",
+  "author": "DomainTools",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Add Tag saying that the case contains a risky DNS.",
+  "dataTypeList": ["thehive:case_artifact"],
+  "command": "DomainToolsIris_AddRiskyDNSTag/domaintoolsiris_responder.py",
+  "baseConfig": "DomainToolsIris",
+  "configurationItems": [
+    {
+      "name": "high_risk_threshold",
+      "description": "Risk score threshold to be considered high risk.",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 70
+    }
+  ]
+}
