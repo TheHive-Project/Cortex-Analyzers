@@ -153,12 +153,12 @@ class DomainToolsAnalyzer(Analyzer):
                 ] = DomainToolsAnalyzer.get_threat_level_class(
                     domain_risk["tpm"]["value"]
                 )
-            threat_profile_phshing_data = DomainToolsAnalyzer.get_threat_component(
+            threat_profile_phishing_data = DomainToolsAnalyzer.get_threat_component(
                 risk_components, "threat_profile_phishing"
             )
-            if threat_profile_phshing_data:
+            if threat_profile_phishing_data:
                 domain_risk["tpp"] = {}
-                domain_risk["tpp"]["value"] = threat_profile_malware_data.get(
+                domain_risk["tpp"]["value"] = threat_profile_phishing_data.get(
                     "risk_score", 0
                 )
                 domain_risk["tpp"][
@@ -171,7 +171,7 @@ class DomainToolsAnalyzer(Analyzer):
             )
             if threat_profile_spam_data:
                 domain_risk["tps"] = {}
-                domain_risk["tps"]["value"] = threat_profile_malware_data.get(
+                domain_risk["tps"]["value"] = threat_profile_spam_data.get(
                     "risk_score", 0
                 )
                 domain_risk["tps"][

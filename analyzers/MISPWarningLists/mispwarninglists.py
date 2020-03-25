@@ -40,8 +40,8 @@ class MISPWarninglistsAnalyzer(Analyzer):
                 values = Extractor().check_iterable(content.get('list', []))
                 obj = {
                     "name": content.get('name', 'Unknown'),
-                    "values": [value['value'] for value in values],
-                    "dataTypes": [value['type'] for value in values]
+                    "values": [value['data'] for value in values],
+                    "dataTypes": [value['dataType'] for value in values]
                 }
                 listcontent.append(obj)
         return listcontent

@@ -1,15 +1,15 @@
 {
-  "name": "DomainToolsIris_Pivot",
+  "name": "DomainToolsIris_Investigate",
   "version": "1.0",
   "author": "DomainTools",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Use DomainTools Iris API to pivot on ssl_hash, ip, or email.",
-  "dataTypeList": ["hash", "ip", "mail"],
+  "description": "Use DomainTools Iris API to investigate a domain.",
+  "dataTypeList": ["domain"],
   "command": "DomainToolsIris/domaintoolsiris_analyzer.py",
   "baseConfig": "DomainToolsIris",
   "config": {
-      "service": "pivot"
+      "service": "investigate-domain"
   },
   "configurationItems": [
     {
@@ -25,6 +25,14 @@
       "type": "string",
       "multi": false,
       "required": true
+    },
+    {
+      "name": "pivot_count_threshold",
+      "description": "Pivot count threshold.",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 500
     }
   ]
 }
