@@ -65,7 +65,7 @@ class Mailer(Responder):
         msg.attach(MIMEText(description, 'plain'))
 
         s = smtplib.SMTP(self.smtp_host, self.smtp_port)
-        if self.smtpauth:
+        if self.smtp_auth:
             s.ehlo()
             s.starttls()
             s.login(self.username, self.password)
