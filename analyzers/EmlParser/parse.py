@@ -9,34 +9,154 @@ import hashlib
 import base64
 from pprint import pprint
 
-#Required for analyzer specific observable auto extraction
+#Observables imports
 from cortexutils.extractor import Extractor
+from builtins import str as unicode
 import re
 
-class EnhancedExtractor(Extractor):
-
+class CustomExtractor(Extractor):
     def __init__(self, ignore=None):
-        Extractor.__init__(self)
-        self.asregex = self.__init_analyzer_regex()
-
+        #Extractor.__init__(self)
+        self.ignore = ignore
+        self.regex = self.__init_regex()
+    
     @staticmethod
-    def __init_analyzer_regex():
-
+    def __init_regex():
+        
+        logging.info("Preparing regex statements")
+        
         """
-        Returns compiled regex list specifically for mail.
+        Returns compiled regex list.
 
         :return: List of {type, regex} dicts
         :rtype: list
         """
 
-        ### Mail Specific regexes
-        # Received from
-        as_regex = [{
-            'types': ['fqdn','fqdn'],
-            'regex': re.compile(r'from\s\[?([A-Za-z0-9\.\-]*)\]?.*?\sby\s\[?([A-Za-z0-9\.\-]*)\]?', re.MULTILINE)
+        #### Generic regexes
+        
+        # IPv4
+        regex = [{
+            'types': ['ip'],
+            'regex': re.compile(r'(?:^|\D)((?:25[0-5]|2[0-4]\d|[1]\d\d|[1-9]\d|[0-9])\.(?:25[0-5]|2[0-4]\d|[1]\d\d|[1-9]\d|[0-9])\.(?:25[0-5]|2[0-4]\d|[1]\d\d|[1-9]\d|[0-9])\.(?:25[0-5]|2[0-4]\d|[1]\d\d|[1-9]\d|[0-9]))(?:\D|$)', re.MULTILINE)
         }]
 
-        return as_regex
+        # URL
+        regex.append({
+            'types': ['url','fqdn','domain','uri_path'],
+            'regex': re.compile(r'((?:http|https):\/\/((?:(?:.*?)\.)?(.*?(?:\.\w+)+))\/?([a-zA-Z0-9\/\-\_\.\~\=\?]+\??)?)', re.MULTILINE)
+        })
+
+        # mail
+        regex.append({
+            'types': ['mail','domain'],
+            'regex': re.compile(r'((?:[a-zA-Z0-9\/\-\_\.\+]+)@{1}([a-zA-Z0-9\-\_]+\.[a-zA-Z0-9\-\_\.]+)+)', re.MULTILINE)
+        })
+        
+        ### Mail Specific regexes
+
+        return regex
+    
+    def __findmatch(self, value):
+        """Checks if the given value is contains regexes
+
+        :param value: The value to check
+        :type value: str or number
+        :return: Data type of value, if known, else empty string
+        :rtype: str
+        """
+        found_observables = []
+        if isinstance(value, (str, unicode)):
+            for r in self.regex:
+                #content = value
+                #logging.info("Checking regex: {}".format(r.get('regex')))
+                #logging.info("Checking value: {}".format(value))
+                matches = re.findall(r.get('regex'), value)
+                #logging.info("Matches: {}".format(str(matches)))
+                if len(matches) > 0:
+                    
+                    for found_observable in matches:
+                        if isinstance(found_observable, tuple):
+                            i = 0
+                            for groups in found_observable:
+                                found_observables.append({
+                                    'type': r.get('types')[i],
+                                    'value': found_observable[i]
+                                    })
+                                i += 1
+                        else:
+                            found_observables.append({
+                                'type': r.get('types')[0],
+                                'value': found_observable
+                                })
+            if len(found_observables) > 0:
+                return found_observables
+            else:
+                return ''
+
+        # if self.ignore:
+            # if isinstance(value, str) and self.ignore in value:
+                # return ''
+            # if self.ignore == value:
+                # return ''
+        # return ''
+        
+    def check_iterable(self, iterable):
+        """
+        Checks values of a list or a dict on ioc's. Returns a list of dict {type, value}. Raises TypeError, if iterable
+        is not an expected type.
+
+        :param iterable: List or dict of values
+        :type iterable: list dict str
+        :return: List of ioc's matching the regex
+        :rtype: list
+        """
+        results = []
+        # Only the string left
+        logging.info("Checking content of variable")
+        if isinstance(iterable, (str, unicode)):
+            #logging.info("Content is a string")
+            dt = self.__findmatch(iterable)
+            logging.info("dt = {}".format(str(dt)))
+            if len(dt) > 0:
+                results.extend(dt)
+        elif isinstance(iterable, list):
+            #logging.info("Content is a list")
+            for item in iterable:
+                if isinstance(item, list) or isinstance(item, dict):
+                    results.extend(self.check_iterable(item))
+                else:
+                    dt = self.__findmatch(item)
+                    #logging.info("dt = {}".format(str(dt)))
+                    if len(dt) > 0:
+                        results.extend(dt)
+        elif isinstance(iterable, dict):
+            #logging.info("Content is a dict")
+            for _, item in iterable.items():
+                if isinstance(item, list) or isinstance(item, dict):
+                    results.extend(self.check_iterable(item))
+                else:
+                    dt = self.__findmatch(item)
+                    logging.info("dt = {}".format(str(dt)))
+                    if len(dt) > 0:
+                        results.extend(dt)
+        else:
+            raise TypeError('Not supported type.')
+
+        logging.info('results: {}'.format(str(results)))
+        results_dedup = self.deduplicate(results)
+        return results_dedup
+        
+    def deduplicate(self, list_of_objects):
+        dedup_list = []
+        for object in list_of_objects:
+            present = False
+            for new_object in dedup_list:
+                if object['type'] == new_object['type'] and object['value'] == new_object['value']:
+                    present = True
+            if not present:
+                dedup_list.append(object)
+        return dedup_list
+
 
 class EmlParserAnalyzer(Analyzer):
 
@@ -65,21 +185,25 @@ class EmlParserAnalyzer(Analyzer):
         namespace = "EmlParser"
         predicate = "Attachments"
         value = "\"0\""
-
+        
         if "attachments" in raw:
             value = len(raw["attachments"])
             taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         return {"taxonomies": taxonomies}
-
+        
     def artifacts(self, raw):
         # Use the regex extractor, if auto_extract setting is not False
+        logging.info("Looking for artifacts")
         if self.auto_extract:
-            extractor = EnhancedExtractor(ignore=self.get_data())
+            logging.info("Looking for artifacts2")
+            extractor = CustomExtractor(ignore=self.get_data())
             return extractor.check_iterable(raw)
 
         # Return empty list
         return []
+    
+
 
 def parseEml(filepath):
 
