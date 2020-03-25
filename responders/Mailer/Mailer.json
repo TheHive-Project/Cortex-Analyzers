@@ -31,6 +31,28 @@
       "multi": false,
       "required": true,
       "defaultValue": "25"
+    },
+    {
+      "name": "smtp_auth",
+      "description": "Enable SMTP",
+      "type": "boolean",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "username",
+      "description": "Username for authentication",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "false"
+    },
+    {
+      "name": "password",
+      "description": "Password for authentication",
+      "type": "string",
+      "multi": false,
+      "required": false
     }
   ]
 }
