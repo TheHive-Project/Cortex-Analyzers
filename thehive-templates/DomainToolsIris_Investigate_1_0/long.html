@@ -1,0 +1,567 @@
+<div class="panel panel-danger" ng-if="!success">
+  <div class="panel-heading">
+    <strong>{{artifact.data | fang}}</strong>
+  </div>
+  <div class="panel-body">
+    {{content.errorMessage}}
+  </div>
+</div>
+
+<div class="panel panel-primary" ng-if="success">
+  <div class="panel-heading">
+    <strong>{{artifact.data | fang}}</strong>
+  </div>
+  <div class="panel-body">
+    <div style="display:flex; justify-content:center; position:relative;">
+      <h1><b>Investigate with DomainTools Iris</b></h1>
+      <h3 style="position:absolute; right:2%; bottom:0">
+        <b>Investigate Date:</b> {{content.last_enriched}}
+      </h3>
+    </div>
+
+    <h3 style="position:absolute; right:2%;">
+      <b>Iris Investigation:</b>
+      <a
+        href="https://research.domaintools.com/{{content.domain}}"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {{content.domain}}
+      </a>
+    </h3>
+    <br /><br /><br />
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th colspan="2">
+            Analytics
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="width: 50%">Overall Risk Score</td>
+          <td style="width: 50%">
+            <span class="label {{content.domain_risk.overall.class}}">
+              {{content.domain_risk.overall.value}}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>Proximity Risk Score</td>
+          <td>
+            <span class="label {{content.domain_risk.proximity.class}}">
+              {{ content.domain_risk.proximity.value }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>Threat Profile Risk Score</td>
+          <td>
+            <span class="label {{content.domain_risk.tp.class}}">
+              {{ content.domain_risk.tp.value }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>Threat Profile Phishing Risk Score</td>
+          <td>
+            <span class="label {{content.domain_risk.tpp.class}}">
+              {{ content.domain_risk.tpp.value }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>Threat Profile Spam Risk Score</td>
+          <td>
+            <span class="label {{content.domain_risk.tps.class}}">
+              {{ content.domain_risk.tps.value }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>Threat Profile Malware Risk Score</td>
+          <td>
+            <span class="label {{content.domain_risk.tpm.class}}">
+              {{ content.domain_risk.tpm.value }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>Threat Profile Evidence</td>
+          <td>
+            <table>
+              <tr ng-repeat="e in content.domain_risk.tp.evidence">
+                <td>{{e}}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>Threat Profile Threats</td>
+          <td>
+            <table>
+              <tr ng-repeat="t in content.domain_risk.tp.threats">
+                <td>{{t}}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>Website Response Code</td>
+          <td>
+            {{ content.website_response }}
+          </td>
+        </tr>
+        <tr>
+          <td>Alexa Rank</td>
+          <td>
+            {{ content.alexa }}
+          </td>
+        </tr>
+        <tr>
+          <td>Google Adsense Tracking Code</td>
+          <td>
+            {{ content.adsense.value}}
+          </td>
+        </tr>
+        <tr>
+          <td>Google Analytics Tracking Code</td>
+          <td>
+            {{ content.google_analytics.value}}
+          </td>
+        </tr>
+        <tr>
+          <td>Iris Tags</td>
+          <td>
+            <table>
+              <tr ng-repeat="t in content.tags">
+                <td>{{t.label}}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table table-striped table-bordered" #element>
+      <thead>
+        <tr>
+          <th colspan="3">
+            Identity
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="c in content.contacts">
+          <td>{{c.type}}</td>
+          <td>
+            <table class="table table-bordered">
+              <tr>
+                <th>Name</th>
+                <td style="width: 50%">{{c.name.value}}</td>
+                <td style="width: 50%">
+                  <span class="label {{c.name.class}}">
+                    {{c.name.count}}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <th>Org</th>
+                <td>{{c.org.value}}</td>
+                <td>
+                  <span class="label {{c.org.class}}">
+                    {{c.org.count}}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <th>Street</th>
+                <td>{{c.street.value}}</td>
+                <td>
+                  <span class="label {{c.street.class}}">
+                    {{c.street.count}}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <th>City</th>
+                <td>{{c.city.value}}</td>
+                <td>
+                  <span class="label {{c.city.class}}">
+                    {{c.city.count}}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <th>State</th>
+                <td>{{c.state.value}}</td>
+                <td>
+                  <span class="label {{c.state.class}}">
+                    {{c.state.count}}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <th>Postal</th>
+                <td>{{c.postal.value}}</td>
+                <td>
+                  <span class="label {{c.postal.class}}">
+                    {{c.postal.count}}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <th>Country</th>
+                <td>{{c.country.value}}</td>
+                <td>
+                  <span class="label {{c.country.class}}">
+                    {{c.country.count}}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <th>Phone</th>
+                <td>{{c.phone.value}}</td>
+                <td>
+                  <span class="label {{c.phone.class}}">
+                    {{c.phone.count}}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <th>Fax</th>
+                <td>{{c.fax.value}}</td>
+                <td>
+                  <span class="label {{c.fax.class}}">
+                    {{c.fax.count}}
+                  </span>
+                </td>
+              </tr>
+              <tr ng-repeat="e in c.email">
+                <th>Email</th>
+                <td>{{e.value}}</td>
+                <td>
+                  <span class="label {{e.class}}">
+                    {{e.count}}
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>SOA Email</td>
+          <td>
+            <table class="table table-bordered">
+              <tr ng-repeat="e in content.soa_email">
+                <td style="width: 50%">{{e.value}}</td>
+                <td style="width: 50%">
+                  <span class="label {{e.class}}">
+                    {{e.count}}
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>SSL Certificate Email</td>
+          <td>
+            <table class="table table-bordered">
+              <tr ng-repeat="e in content.ssl_email">
+                <td style="width: 50%">{{e.value}}</td>
+                <td style="width: 50%">
+                  <span class="label {{e.class}}">
+                    {{e.count}}
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>Email Domains</td>
+          <td>
+            <table class="table table-bordered">
+              <tr ng-repeat="e in content.email_domain">
+                <td style="width: 50%">{{e.value}}</td>
+                <td style="width: 50%">
+                  <span class="label {{e.class}}">
+                    {{e.count}}
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>Whois Emails</td>
+          <td>
+            <table class="table table-bordered">
+              <tr ng-repeat="e in content.additional_whois_email">
+                <td style="width: 50%">{{e.value}}</td>
+                <td style="width: 50%">
+                  <span class="label {{e.class}}">
+                    {{e.count}}
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th colspan="2">
+            Registration
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="width: 50%">Domain Registrar</td>
+          <td style="width: 50%">
+            {{ content.registrar.value}}
+          </td>
+        </tr>
+        <tr>
+          <td>Domain Status</td>
+          <td>
+            {{ content.registrar_status[0]}}
+          </td>
+        </tr>
+        <tr>
+          <td>Create Date</td>
+          <td>
+            {{ content.create_date.value}}
+          </td>
+        </tr>
+        <tr>
+          <td>Expiration Date</td>
+          <td>
+            {{ content.expiration_date.value}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th colspan="3">
+            Hosting
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>IP Addresses</td>
+          <td>
+            <table class="table table-bordered">
+              <tr ng-repeat="i in content.ip">
+                <td>
+                  <table class="table table-bordered">
+                    <tr>
+                      <td style="width: 33.33%">ISP</td>
+                      <td style="width: 33.33%">{{i.isp.value}}</td>
+                      <td style="width: 33.33%">
+                        <span class="label {{i.isp.class}}">
+                          {{i.isp.count}}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr ng-repeat="a in i.asn">
+                      <td>ASN</td>
+                      <td>{{a.value}}</td>
+                      <td>
+                        <span class="label {{a.class}}">
+                          {{a.count}}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Country Code</td>
+                      <td>{{i.country_code.value}}</td>
+                      <td>
+                        <span class="label {{i.country_code.class}}">
+                          {{i.country_code.count}}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Address</td>
+                      <td>{{i.address.value}}</td>
+                      <td>
+                        <span class="label {{i.address.class}}">
+                          {{i.address.count}}
+                        </span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>Mail Servers</td>
+          <td>
+            <table class="table table-bordered">
+              <tr ng-repeat="m in content.mx">
+                <td>
+                  <table class="table table-bordered">
+                    <tr>
+                      <td style="width: 33.33%">Domain</td>
+                      <td style="width: 33.33%">{{m.domain.value}}</td>
+                      <td style="width: 33.33%">
+                        <span class="label {{m.domain.class}}">
+                          {{m.domain.count}}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr ng-repeat="i in m.ip">
+                      <td>IP Address</td>
+                      <td>{{i.value}}</td>
+                      <td>
+                        <span class="label {{i.class}}">
+                          {{i.count}}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Host</td>
+                      <td>{{m.host.value}}</td>
+                      <td>
+                        <span class="label {{m.host.class}}">
+                          {{m.host.count}}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Priority</td>
+                      <td>{{m.priority}}</td>
+                      <td></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>SPF Record</td>
+          <td>
+            {{ content.spf_info}}
+          </td>
+        </tr>
+        <tr>
+          <td>Name Servers</td>
+          <td>
+            <table class="table table-bordered">
+              <tr ng-repeat="n in content.name_server">
+                <td>
+                  <table class="table table-bordered">
+                    <tr>
+                      <td style="width: 33.33%">Domain</td>
+                      <td style="width: 33.33%">{{n.domain.value}}</td>
+                      <td style="width: 33.33%">
+                        <span class="label {{n.domain.class}}">
+                          {{n.domain.count}}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr ng-repeat="i in n.ip">
+                      <td>IP Address</td>
+                      <td>{{i.value}}</td>
+                      <td>
+                        <span class="label {{i.class}}">
+                          {{i.count}}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Host</td>
+                      <td>{{n.host.value}}</td>
+                      <td>
+                        <span class="label {{n.host.class}}">
+                          {{n.host.count}}
+                        </span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>SSL Certificate</td>
+          <td>
+            <table class="table table-bordered">
+              <tr ng-repeat="s in content.ssl_info">
+                <td>
+                  <table class="table table-bordered">
+                    <tr>
+                      <td style="width: 33.33%">Organization</td>
+                      <td style="width: 33.33%">{{s.organization.value}}</td>
+                      <td style="width: 33.33%">
+                        <span class="label {{s.organization.class}}">
+                          {{s.organization.count}}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr ng-repeat="e in s.email">
+                      <td>Email</td>
+                      <td>{{e.value}}</td>
+                      <td>
+                        <span class="label {{e.class}}">
+                          {{e.count}}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Hash</td>
+                      <td>{{s.hash.value}}</td>
+                      <td>
+                        <span class="label {{s.hash.class}}">
+                          {{s.hash.count}}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Subject</td>
+                      <td>{{s.subject.value}}</td>
+                      <td>
+                        <span class="label {{s.subject.class}}">
+                          {{s.subject.count}}
+                        </span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>Redirects To</td>
+          <td>
+            <table class="table table-bordered">
+              <tr>
+                <td style="width: 50%">
+                  {{ content.redirect.value}}
+                </td>
+                <td style="width: 50%">
+                  <span class="label {{content.redirect.class}}">
+                    {{ content.redirect.count}}
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

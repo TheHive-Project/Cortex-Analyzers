@@ -31,7 +31,8 @@ class OLEToolsSubmodule(SubmoduleBaseclass):
             ] or (kwargs.get('mimetype').startswith("application/vnd.openxmlformats-officedocument") or
                  kwargs.get('mimetype').startswith("application/encrypted") or
                  kwargs.get('mimetype').startswith("application/vnd.ms-") or
-                 kwargs.get('mimetype').startswith("application/msword")
+                 kwargs.get('mimetype').startswith("application/msword") or
+                 kwargs.get('mimetype').startswith("Composite Document File V2 Document")
             ):
                 if kwargs.get('mimetype').startswith("application/encrypted") and not is_encrypted(kwargs.get('file')):
                     return False
