@@ -16,6 +16,12 @@ class Mailer(Responder):
             'config.smtp_port', '25')
         self.mail_from = self.get_param(
             'config.from', None, 'Missing sender email address')
+        self.smtp_auth = self.get_param(
+            'config.smtpauth', False)
+        self.username = self.get_param(
+            'config.username', None)
+        self.password = self.get_param(
+            'config.password', None)
 
     def run(self):
         Responder.run(self)
@@ -59,6 +65,10 @@ class Mailer(Responder):
         msg.attach(MIMEText(description, 'plain'))
 
         s = smtplib.SMTP(self.smtp_host, self.smtp_port)
+        if self.smtpauth:
+            s.ehlo()
+            s.starttls()
+            s.login(self.username, self.password)
         s.sendmail(self.mail_from, mail_to.split(','), msg.as_string())
         s.quit()
         self.report({'message': 'message sent'})
