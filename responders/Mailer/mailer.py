@@ -17,7 +17,7 @@ class Mailer(Responder):
         self.mail_from = self.get_param(
             'config.from', None, 'Missing sender email address')
         self.smtp_auth = self.get_param(
-            'config.smtpauth', False)
+            'config.smtp_auth', False)
         self.username = self.get_param(
             'config.username', None)
         self.password = self.get_param(
