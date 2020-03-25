@@ -59,7 +59,7 @@ class Mailer(Responder):
             s.ehlo()
             s.starttls()
             s.login(self.username, self.password)
-        s.sendmail(self.mail_from, [mail_to], msg.as_string())
+        s.sendmail(self.mail_from, mail_to.split(','), msg.as_string())
         s.quit()
         self.report({'message': 'message sent'})
 
