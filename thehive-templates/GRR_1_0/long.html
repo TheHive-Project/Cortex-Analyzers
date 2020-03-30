@@ -1,0 +1,46 @@
+<div class="panel panel-info" ng-if="success && content.results.length > 0">
+    <div class="panel-heading">
+        GRR search results for
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <div>
+            <dl class="dl-horizontal">
+                <dt>GRR uids:</dt>
+                <dd class="wrap">
+                    <ul>
+                        <li ng-repeat="list in content.results">
+                            {{list}}
+                        </li>
+                    </ul>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<!-- No results -->
+<div class="panel panel-danger" ng-if="success && content.results.length == 0">
+    <div class="panel-heading">
+        GRR search results for
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <p>No results</p>
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt>
+                <i class="fa fa-warning"></i> GRR:
+            </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

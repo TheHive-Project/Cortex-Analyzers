@@ -20,9 +20,11 @@ class GRRAnalyzer(Analyzer):
         namespace = 'GRR'
         predicate = 'Client id'
         
-        for client_id in raw['results']:
-            taxonomies.append(self.build_taxonomy(level, namespace, predicate, client_id))
-
+        if len(raw['results']) > 0:
+            for client_id in raw['results']:
+                taxonomies.append(self.build_taxonomy(level, namespace, predicate, client_id))
+        else:
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, "NotFound"))
         return {"taxonomies": taxonomies}
 
     def run(self):
