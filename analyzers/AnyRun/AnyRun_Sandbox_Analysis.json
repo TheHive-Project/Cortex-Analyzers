@@ -1,0 +1,28 @@
+{
+  "name": "AnyRun_Sandbox_Analysis",
+  "version": "1.0",
+  "author": "Andrea Garavaglia, Davide Arcuri, LDO-CERT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Any.Run Sandbox file analysis",
+  "dataTypeList": ["file", "url"],
+  "command": "AnyRun/anyrun_analyzer.py",
+  "baseConfig": "AnyRun",
+  "configurationItems": [
+    {
+      "name": "token",
+      "description": "API token",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "verify_ssl",
+      "description": "Verify SSL certificate",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    }
+  ]
+}
