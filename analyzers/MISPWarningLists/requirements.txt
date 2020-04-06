@@ -2,3 +2,4 @@ cortexutils
 requests
 ipaddress
 tld
+sqlalchemy
