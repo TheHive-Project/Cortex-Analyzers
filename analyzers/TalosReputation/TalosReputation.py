@@ -30,16 +30,18 @@ class TalosReputation(Analyzer):
         if self.data_type == 'ip':
             try:
                 data = self.get_data()
-                
+
+                s = requests.Session()
+                s.get('https://talosintelligence.com/reputation_center/lookup?search={}'.format(data))
+
                 headers={
                     'Host':'talosintelligence.com',
                     'Referer':'https://talosintelligence.com/reputation_center/lookup?search={}'.format(data),
-                    'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:69.0) Gecko/20100101 Firefox/69.0',
-                    'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                    'Accept-Encoding': 'gzip, deflate'
+                    'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36',
+                    'Accept':'application/json'
                 }
 
-                response_details = requests.get('https://talosintelligence.com/sb_api/query_lookup',
+                response_details = s.get('https://talosintelligence.com/sb_api/query_lookup',
                     headers = headers,
                     params = {
                         'query':'/api/v2/details/ip/',
@@ -47,13 +49,13 @@ class TalosReputation(Analyzer):
                         }
                     )
 
-                response_location = requests.get('https://talosintelligence.com/sb_api/query_lookup',
+                response_location = s.get('https://talosintelligence.com/sb_api/query_lookup',
                     headers = headers,
                     params = {
                         'query':'/api/v2/location/ip/',
                         'query_entry':data
                         }
-                    ) 
+                    )
 
                 if response_details.status_code == 200 | 201:
                     if response_location.status_code == 200 | 201:

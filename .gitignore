@@ -5,6 +5,7 @@ thehive-templates/*.sh
 
 .idea
 .DS_Store
+.vscode
 
 Cortex-analyzers.iml
 

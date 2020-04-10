@@ -1,0 +1,53 @@
+<div class="panel panel-success" ng-if="content.found">
+
+    <div class="panel-heading">
+		NSRL lookup
+	</div>
+	<div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <th>Sha1</th>
+                <th>md5</th>
+                <th>crc32</th>
+                <th>File Name</th>
+                <th>File Size</th>
+                <th>Product Code</th>
+                <th>Operating System Code</th>
+                <th>Special Code</th>
+                <th>Mode</th>
+                <th>NSRL File Name</th>
+            </tr>
+            <tr ng-repeat="result in content.records">
+                <td><strong>{{result.sha1}}</strong></td>
+                <td><strong>{{result.md5}}</strong></td>
+                <td><strong>{{result.crc32}}</strong></td>
+                <td><strong>{{result.filename}}</strong></td>
+                <td><strong>{{result.filesize}}</strong></td>
+                <td><strong>{{result.productcode}}</strong></td>
+                <td><strong>{{result.opsystemcode}}</strong></td>
+                <td><strong>{{result.specialcode}}</strong></td>
+                <td><strong>{{content.mode}}</strong></td>
+                <td><strong>{{result.dbname}} {{result.release}}</strong></td>
+            </tr>
+        </table>                                           
+	</div>
+</div>
+
+<div class="panel panel-info" ng-if="content.count == 0">
+	<div class="panel-heading">
+		NSRL lookup: <b>No match found</b>
+	</div>
+</div>
+
+<!-- on error  -->
+<div class="panel panel-danger" ng-if="!success">
+	<div class="panel-heading">
+		FNSRL lookup <b>Error</b>
+	</div>
+	<div class="panel-body">
+		<dl class="dl-horizontal">
+			<dt>Error: </dt>
+			<dd>{{content.errorMessage}}</dd>
+		</dl>
+	</div>
+</div>

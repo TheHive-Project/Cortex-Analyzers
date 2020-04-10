@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding: utf-8
 
 from cortexutils.responder import Responder
@@ -18,10 +18,10 @@ class Mailer(Responder):
         Responder.run(self)
 
         title = self.get_param('data.title', None, 'title is missing')
-        title = title.encode('utf-8')
+        #title = title.encode('utf-8')
 
         description = self.get_param('data.description', None, 'description is missing')
-        description = description.encode('utf-8')
+        #description = description.encode('utf-8')
 
         mail_to = None
         if self.data_type == 'thehive:case':
@@ -50,7 +50,8 @@ class Mailer(Responder):
         msg.attach(MIMEText(description, 'plain'))
 
         s = smtplib.SMTP(self.smtp_host, self.smtp_port)
-        s.sendmail(self.mail_from, [mail_to], msg.as_string())
+        #s.sendmail(self.mail_from, [mail_to], msg.as_string())
+        s.send_message(msg, self.mail_from, [mail_to])
         s.quit()
         self.report({'message': 'message sent'})
 

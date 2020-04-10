@@ -1,0 +1,49 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+<div class="panel panel-primary" ng-if="success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <div style="display:flex; justify-content:center; position:relative;">
+            <h1><b>Pivot with DomainTools Iris</b></h1>
+            <h3 style="position:absolute; right:2%;">
+                <b>Pivot Date:</b> {{content.last_enriched}}
+            </h3>
+        </div>
+        <h3><b>Pivot Artifact:</b> {{content.pivot_artifact}}</h3>
+        <h3><b>Average Risk Score (Domains):</b> {{content.average_risk_score}}</h3>
+        <br><br>
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>Domain Name</th>
+                <th>Age</th>
+                <th>Risk Score</th>
+                <th>Iris Link</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="d in content.results">
+                <td>{{d.domain}}</td>
+                <td>{{d.domain_age}}</td>
+                <td><span class="label {{d.domain_risk.class}}">{{d.domain_risk.risk_score}}</span></td>
+                <td>
+                    <a href="https://research.domaintools.com/{{d.domain}}" target="_blank" rel="noopener noreferrer">
+                        https://research.domaintools.com/{{d.domain}}
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
