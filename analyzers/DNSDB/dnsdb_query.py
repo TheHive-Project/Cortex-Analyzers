@@ -111,12 +111,14 @@ class DnsdbClient(object):
 
         try:
             r = manager.request(method='GET', url=url, headers=headers)
-
-            json_data = r.data.decode('utf-8')
-            if json_data:
-                json_list = json_data.splitlines()
-                for line in json_list:
-                    yield json.loads(line)
+            if r.status == 200:
+                json_data = r.data.decode('utf-8')
+                if json_data:
+                    json_list = json_data.splitlines()
+                    for line in json_list:
+                        yield json.loads(line)
+            else:
+                raise QueryError(r.text)
 
         except (urllib3.exceptions.HTTPError) as e:
             raise QueryError(str(e))
