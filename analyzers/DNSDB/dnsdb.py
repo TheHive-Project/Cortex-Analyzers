@@ -62,8 +62,8 @@ class DnsDbAnalyzer(Analyzer):
         try:
             client = DnsdbClient(self.dnsdb_server, self.dnsdb_key)
             self.report({
-                "records": map(lambda r: self.update_date('time_first', self.update_date('time_last', r)),
-                               self.execute_dnsdb_service(client))
+                "records": list(map(lambda r: self.update_date('time_first', self.update_date('time_last', r)),
+                               self.execute_dnsdb_service(client)))
             })
         except Exception as e:
             self.unexpectedError(e)
