@@ -1,10 +1,10 @@
 {
   "name": "Onyphe_Summary",
   "version": "1.0",
-  "author": "Andrea Garavaglia, Davide Arcuri - LDO-CERT",
+  "author": "Pierre Baudry, Adrien Barchapt, Andrea Garavaglia, Davide Arcuri",
   "license": "AGPL-V3",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-  "description": "Retrieve summary information Onyphe has for the given IPv{4,6} address.",
+  "description": "Retrieve summary information Onyphe has for given ip, domain or fqdn.",
   "dataTypeList": ["ip", "domain", "fqdn"],
   "command": "Onyphe/onyphe_analyzer.py",
   "baseConfig": "Onyphe",
