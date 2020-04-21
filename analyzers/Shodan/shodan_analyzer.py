@@ -57,17 +57,17 @@ class ShodanAnalyzer(Analyzer):
             if 'asn' in raw['host']:
                 taxonomies.append(self.build_taxonomy(level, namespace, 'ASN', raw['host']['asn']))
         elif self.service == 'info_domain':
-            if 'ips' in raw['infos_domain']:
-                value = "{}".format(len(raw['infos_domain']['ips']))
+            if 'ips' in raw['info_domain']:
+                value = "{}".format(len(raw['info_domain']['ips']))
                 taxonomies.append(self.build_taxonomy(level, namespace, 'IPs', value))
-            if 'all_domains' in raw['infos_domain']:
-                value = "{}".format(len(raw['infos_domain']['all_domains']))
+            if 'all_domains' in raw['info_domain']:
+                value = "{}".format(len(raw['info_domain']['all_domains']))
                 taxonomies.append(self.build_taxonomy(level, namespace, 'Domains', value))
-            if 'asn' in raw['infos_domain']:
-                value = "{}".format(len(raw['infos_domain']['asn']))
+            if 'asn' in raw['info_domain']:
+                value = "{}".format(len(raw['info_domain']['asn']))
                 taxonomies.append(self.build_taxonomy(level, namespace, 'ASNs', value))
-            if 'isp' in raw['infos_domain']:
-                value = "{}".format(len(raw['infos_domain']['isp']))
+            if 'isp' in raw['info_domain']:
+                value = "{}".format(len(raw['info_domain']['isp']))
                 taxonomies.append(self.build_taxonomy(level, namespace, 'ISPs', value))
         elif self.service == 'dns_resolve':
             value = "{}".format(len(raw['records']))
