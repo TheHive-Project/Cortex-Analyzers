@@ -2,12 +2,14 @@
 # encoding: utf-8
 
 from cortexutils.analyzer import Analyzer
-from emailrep import EmailRepException, EmailRep
+from emailrep import EmailRep
 
 
 class EmailRepAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
+        self.key = self.get_param('config.key', None)
+
 
     def summary(self, raw):
         taxonomies = []
@@ -32,10 +34,10 @@ class EmailRepAnalyzer(Analyzer):
         data = self.get_data()
 
         try:
-            emailRep = EmailRep()
-            result = emailRep.get(data)
+            emailRep = EmailRep(self.key)
+            result = emailRep.query(data)
             self.report(result)
-        except EmailRepException as e:
+        except Exception as e:
             self.error(str(e))
 
 
