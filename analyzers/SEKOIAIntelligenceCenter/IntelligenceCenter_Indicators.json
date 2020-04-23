@@ -1,0 +1,30 @@
+{
+  "name": "SEKOIAIntelligenceCenter_Indicators",
+  "version": "1.0",
+  "author": "SEKOIA",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Query the Intelligence Center to retrieve indicators",
+  "dataTypeList": ["domain","fqdn", "url", "hash", "ip"],
+  "command": "SEKOIAIntelligenceCenter/sekoia_intelligence_center_analyzer.py",
+  "baseConfig": "SEKOIAIntelligenceCenter",
+  "config": {
+      "service": "indicators"
+  },
+  "configurationItems": [
+    {
+      "name": "api_key",
+      "description": "Intelligence center API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "url",
+      "description": "Intelligence center URL",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ]
+}
