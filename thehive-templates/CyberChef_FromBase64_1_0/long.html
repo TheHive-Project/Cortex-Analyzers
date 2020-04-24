@@ -1,0 +1,37 @@
+<style>
+pre.input {
+  color: #a94442;
+  border: none;
+  font-size: 10px;
+  //word-wrap: break-word;
+  //word-break: break-all;
+  white-space: pre-wrap;
+  background-color: #f9f1f1;
+}
+pre.output {
+  //color: #367fa9;
+  border: none;
+  font-size: 10px;
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: pre-wrap;
+  background-color: black;
+}
+</style>
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        CyberChef Data Conversion
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <tr>
+                <th>Input</th>
+                <th>Output</th>
+            </tr>
+                <td width="40%"><pre class="input">{{content.input_data }}</pre></td>
+                <td><pre class="output">{{content.output_data}}</pre></td>
+            </tr>
+        </table>
+    </div>
+</div>
