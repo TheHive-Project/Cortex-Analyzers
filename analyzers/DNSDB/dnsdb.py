@@ -1,7 +1,7 @@
-#!/usr/bin/env python2
-# encoding: utf-8
+#!/usr/bin/env python3
+
 import datetime
-from urllib2 import HTTPError
+from urllib3.exceptions import HTTPError
 from dnsdb_query import DnsdbClient, QueryError
 from cortexutils.analyzer import Analyzer
 
@@ -62,14 +62,12 @@ class DnsDbAnalyzer(Analyzer):
         try:
             client = DnsdbClient(self.dnsdb_server, self.dnsdb_key)
             self.report({
-                "records": map(lambda r: self.update_date('time_first', self.update_date('time_last', r)),
-                               self.execute_dnsdb_service(client))
+                "records": list(map(lambda r: self.update_date('time_first', self.update_date('time_last', r)),
+                               self.execute_dnsdb_service(client)))
             })
-        except HTTPError, e:
-            if e.code != 404:
-                self.unexpectedError(e)
-            else:
-                self.report({"records": []})
+        except Exception as e:
+            self.unexpectedError(e)
+            self.report({"records": []})
 
 
 if __name__ == '__main__':
