@@ -16,14 +16,10 @@ class CyberchefAnalyzer(Analyzer):
         taxonomies = []
         level = 'info'
         namespace = 'CyberChef'
-      
-        # Set predicate for input
-        predicate = 'input_data'
-        taxonomies.append(self.build_taxonomy(level, namespace, predicate, raw['input_data']))
  
         # Set predicate for output_data
-        predicate = 'output_data'
-        taxonomies.append(self.build_taxonomy(level, namespace, predicate, raw['output_data']))
+        predicate = self.service
+        taxonomies.append(self.build_taxonomy(level, namespace, predicate, "baked!"))
  
         return {"taxonomies": taxonomies}
    
