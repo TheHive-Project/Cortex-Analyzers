@@ -1,0 +1,24 @@
+{
+    "name": "CyberChef_FromCharCode",
+    "version": "1.0",
+    "author": "Wes Lambert",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Convert Char Code with CyberChef Server",
+    "dataTypeList": ["other"],
+    "baseConfig": "CyberChef",
+    "config": {
+       "service": "FromCharCode"
+    },
+    "command": "CyberChef/cyberchef.py",
+    "configurationItems": [
+      {
+        "name": "url",
+        "description": "CyberChef Server URL",
+        "type": "string",
+        "multi": false,
+        "required": true,
+        "defaultValue": "http://192.168.1.178:3000/"
+      }
+    ]
+}
