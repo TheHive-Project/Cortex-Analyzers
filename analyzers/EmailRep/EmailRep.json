@@ -7,5 +7,14 @@
   "description": "emailrep.io lookup.",
   "dataTypeList": ["mail"],
   "command": "EmailRep/emailrep_analyzer.py",
-  "baseConfig": "EmailRep"
+  "baseConfig": "EmailRep",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API Key",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ]  
 }
