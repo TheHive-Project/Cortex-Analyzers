@@ -1,0 +1,23 @@
+{
+  "name": "LIS Get Report",
+  "version": "1.0",
+  "author": "LastInfoSec",
+  "url": "https://www.lastinfosec.com",
+  "license": "AGPL-3.0",
+  "description": "Get LastInfoSec Report",
+  "dataTypeList": ["hash", "domain"],
+  "command": "LIS_GetReport/LIS_GetReport.py",
+  "baseConfig": "LastInfoSec",
+  "config": {
+    "service": "get_report"
+  },
+  "configurationItems": [
+    {
+      "name": "apiKey",
+      "description": "LastInfoSec Api Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}
