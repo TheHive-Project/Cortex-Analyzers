@@ -1,11 +1,11 @@
 {
   "name": "Urlscan.io_Search",
-  "author": "ninoseki",
+  "author": "ninoseki, CTI_Marc",
   "license": "MIT",
   "url": "https://github.com/ninoseki/cortex_urlscan_analyzer",
   "version": "0.1.0",
   "baseConfig": "Urlscan",
   "description": "Search IPs, domains, hashes or URLs on urlscan.io",
-  "dataTypeList": ["ip", "domain", "hash", "url"],
+  "dataTypeList": ["ip", "domain", "hash", "url", "other"],
   "command": "Urlscan.io/urlscan_analyzer.py"
 }

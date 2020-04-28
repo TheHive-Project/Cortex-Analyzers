@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import requests
 import json
 
@@ -13,7 +14,7 @@ class Urlscan:
 
     def search(self):
         payload = {"q": self.query}
-        r = requests.get("https://urlscan.io/api/v1/search/", params=payload)
+        r = requests.get("https://urlscan.io/api/v1/search/", params=payload, verify=False)
         if r.status_code == 200:
             return r.json()
         else:

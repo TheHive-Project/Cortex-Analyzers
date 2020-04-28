@@ -18,7 +18,7 @@ class UrlscanAnalyzer(Analyzer):
         return res
 
     def run(self):
-        targets = ['ip', 'domain', 'hash', 'url']
+        targets = ['ip', 'domain', 'hash', 'url','other']
         if self.data_type == 'url':
             query = '"{}"'.format(self.get_data())
         else:

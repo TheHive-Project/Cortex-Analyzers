@@ -118,7 +118,7 @@ class Onyphe:
     def datascan(self, search: str):
         """Return datascan information we have for the given IPv{4,6} address or string with history of changes
         """
-        url_path = "/api/datascan/{search}".format(search=search)
+        url_path = "/api/v2/category:datascan%20{search}".format(search=search)
         return self._request(path=url_path)
 
     def reverse(self, search: str):
