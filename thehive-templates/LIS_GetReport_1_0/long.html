@@ -1,0 +1,60 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+<div ng-if="success">
+  <div ng-repeat="(msg, result) in content.message">
+    <div class="panel panel-info" ng-repeat="(ioc, content) in result.IOCs">
+      <div class="panel-heading">
+          <strong>LastInfoSec Report for {{content.Type}}: {{content.Value}}</strong>
+      </div>
+      <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.IocId">
+            <dt>IocId</dt>
+            <dd class="wrap">{{content.IocId}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.CreationDate">
+            <dt>Creation Date</dt>
+            <dd class="wrap">{{content.CreationDate}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.Risk">
+            <dt>Risk</dt>
+            <dd class="wrap">{{content.Risk}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.MetaData">
+            <dt>Metadata</dt>
+            <dd class="wrap">{{content.MetaData}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.Categories">
+            <dt>Categories</dt>
+            <dd class="wrap">{{content.Categories}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.Families">
+            <dt>Families</dt>
+            <dd class="wrap">{{content.Families}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.TTP">
+            <dt>TTP</dt>
+            <dd class="wrap">{{content.TTP}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.TLP">
+            <dt>TLP</dt>
+            <dd class="wrap">{{content.TLP}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.Relations">
+            <dt>Relations</dt>
+            <dd class="wrap">{{content.Relations}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.Tags">
+            <dt>Tags</dt>
+            <dd class="wrap">{{content.Tags}}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
