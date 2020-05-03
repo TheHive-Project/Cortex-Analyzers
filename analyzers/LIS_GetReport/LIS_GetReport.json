@@ -2,7 +2,7 @@
   "name": "LIS Get Report",
   "version": "1.0",
   "author": "LastInfoSec",
-  "url": "https://www.lastinfosec.com",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-3.0",
   "description": "Get LastInfoSec Report",
   "dataTypeList": ["hash", "domain"],
