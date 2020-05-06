@@ -12,10 +12,10 @@ class LIS_GetReport(Analyzer):
 
 
     def run(self):
-        url = "https://api.client.lastinfosec.com/v2/lis/search_hash/{0}?key={1}".format(self.observable_value,
+        url = "https://api.client.lastinfosec.com/v2/lis/search_hash/{0}?api_key={1}".format(self.observable_value,
                                                                                          self.api_key)
         if self.data_type == 'domain':
-            url = "https://api.client.lastinfosec.com/v2/lis/search_hash/{0}?key={1}".format(self.observable_value,
+            url = "https://api.client.lastinfosec.com/v2/lis/search_hash/{0}?api_key={1}".format(self.observable_value,
                                                                                              self.api_key)
 
         useragent = {
@@ -25,7 +25,15 @@ class LIS_GetReport(Analyzer):
 
     def check_response(self, response):
         if response.status_code != 200:
-            self.error('Bad status: {0}'.format(response.status_code))
+            try:
+                result = response.json()
+                if "detail" in result and "details" in result["detail"] and "error" in result["detail"]["details"][0]:
+                    self.error(
+                        'Bad status: {0}. {1}'.format(response.status_code, result["detail"]["details"][0]["error"]))
+                else:
+                    self.error('Bad status: {0}'.format(response.status_code))
+            except Exception as ex:
+                self.error('Bad status: {0}'.format(response.status_code))
         else:
             try:
                 result = response.json()
