@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.7.0) (2020-05-14)
+## [2.7.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.7.0) (2020-05-14)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.6.0...2.7.0)
 
