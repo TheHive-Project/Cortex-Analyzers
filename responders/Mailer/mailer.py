@@ -38,7 +38,7 @@ class Mailer(Responder):
             tags = self.get_param(
                 "data.tags", None, "recipient address not found in tags"
             )
-            mail_tags = [t[7:] for t in tags if t.startswith("mailto:")]
+            mail_tags = [t[5:] for t in tags if t.startswith("mail:")]
             if mail_tags:
                 mail_to = mail_tags.pop()
             else:
