@@ -22,6 +22,14 @@
       "type": "string",
       "multi": false,
       "required": false
+    },
+    {
+      "name": "verify_ssl",
+      "description": "Verify SSL certificate",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
     }
   ]
 }
