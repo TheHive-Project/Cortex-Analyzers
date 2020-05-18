@@ -82,7 +82,6 @@ class ThreatResponseAnalyzer(Analyzer):
             result = []
             for module in response_json.get("data", []):
                 module_name = module["module"]
-                module_type = module["module-type"]
                 targets = []
 
                 for doc in module.get("data", {}).get("sightings", {}).get("docs", []):
@@ -97,7 +96,6 @@ class ThreatResponseAnalyzer(Analyzer):
                     result.append(
                         {
                             "module": module_name,
-                            "module_type": module_type,
                             "targets": targets,
                         }
                     )
@@ -208,21 +206,20 @@ class ThreatResponseAnalyzer(Analyzer):
 
         if self.extract_amp_targets:
             for module in raw.get("targets", []):
-                if module.get("module_type") == "AMPInvestigateModule":
-                    for target in module.get("targets", []):
-                        for observable in target.get("observables", []):
-                            if observable.get("type") == "hostname":
-                                hostname = observable.get("value")
-                            if observable.get("type") == "amp_computer_guid":
-                                guid = observable.get("value")
-                                if guid:
-                                    tags = []
-                                    if hostname:
-                                        tags.append("AMP Hostname:{}".format(hostname))
-                                        tags.append("AMP GUID")
-                                    artifacts.append(
-                                        self.build_artifact("other", guid, tags=tags)
-                                    )
+                for target in module.get("targets", []):
+                    for observable in target.get("observables", []):
+                        if observable.get("type") == "hostname":
+                            hostname = observable.get("value")
+                        if observable.get("type") == "amp_computer_guid":
+                            guid = observable.get("value")
+                            if guid:
+                                tags = []
+                                if hostname:
+                                    tags.append("AMP Hostname:{}".format(hostname))
+                                    tags.append("AMP GUID")
+                                artifacts.append(
+                                    self.build_artifact("other", guid, tags=tags)
+                                )
 
         return artifacts
 
