@@ -16,7 +16,7 @@ class PhishtankAnalyzer(Analyzer):
         url = 'https://checkurl.phishtank.com/checkurl/'
         postdata = {'url': data, 'format': 'json', 'app_key': self.phishtank_key}
         r = requests.post(url, data=postdata)
-        return json.loads(r.content)
+        return json.loads(r.text)
 
     def summary(self, raw):
         taxonomies = []
