@@ -25,6 +25,14 @@
       "type": "string",
       "multi": false,
       "required": true
+    },
+    {
+      "name": "pivot_count_threshold",
+      "description": "Pivot count threshold.",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 500
     }
   ]
 }
