@@ -34,7 +34,7 @@ class OTXQueryAnalyzer(Analyzer):
         try:
             for section in sections:
                 queryurl = baseurl + section
-                ip_[section] = json.loads(requests.get(queryurl, headers=headers).content)
+                ip_[section] = requests.get(queryurl, headers=headers).json()
 
             ip_general = ip_['general']
             ip_geo = ip_['geo']
@@ -64,7 +64,7 @@ class OTXQueryAnalyzer(Analyzer):
         try:
             for section in sections:
                 queryurl = baseurl + section
-                ip_[section] = json.loads(requests.get(queryurl, headers=headers).content)
+                ip_[section] = requests.get(queryurl, headers=headers).json()
 
             result = {
                 'pulse_count': ip_.get('general', {}).get('pulse_info', {}).get('count', "0"),
@@ -98,7 +98,7 @@ class OTXQueryAnalyzer(Analyzer):
         try:
             for section in sections:
                 queryurl = baseurl + section
-                ip_[section] = json.loads(requests.get(queryurl, headers=headers).content)
+                ip_[section] = requests.get(queryurl, headers=headers).json()
 
             if ip_['analysis']['analysis']:
                 # file has been analyzed before
@@ -142,7 +142,7 @@ class OTXQueryAnalyzer(Analyzer):
         try:
             for section in sections:
                 queryurl = baseurl + section
-                IP_[section] = json.loads(requests.get(queryurl, headers=headers).content)
+                IP_[section] = requests.get(queryurl, headers=headers).json()
 
             self.report({
                 'pulse_count': IP_.get('general', {}).get('pulse_info', {}).get('count', "0"),
