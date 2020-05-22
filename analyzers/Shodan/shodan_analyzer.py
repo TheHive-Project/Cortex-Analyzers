@@ -46,6 +46,7 @@ class ShodanAnalyzer(Analyzer):
     def summary(self, raw):
         taxonomies = []
         level = "info"
+        levelorange = "suspicious"
         namespace = "Shodan"
         predicate = "Location"
         if self.service in ['host', 'host_history']:
@@ -56,6 +57,9 @@ class ShodanAnalyzer(Analyzer):
                 taxonomies.append(self.build_taxonomy(level, namespace, 'Org', raw['host']['org']))
             if 'asn' in raw['host']:
                 taxonomies.append(self.build_taxonomy(level, namespace, 'ASN', raw['host']['asn']))
+            if 'vulns' in raw['host']:
+                taxonomies.append(self.build_taxonomy(levelorange, namespace, 'VULNS', raw['host']['vulns']))
+
         elif self.service == 'info_domain':
             if 'ips' in raw['infos_domain']:
                 value = "{}".format(len(raw['infos_domain']['ips']))
