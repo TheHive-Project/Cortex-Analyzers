@@ -15,7 +15,7 @@ class LIS_GetReport(Analyzer):
         url = "https://api.client.lastinfosec.com/v2/lis/search_hash/{0}?api_key={1}".format(self.observable_value,
                                                                                          self.api_key)
         if self.data_type == 'domain':
-            url = "https://api.client.lastinfosec.com/v2/lis/search_hash/{0}?api_key={1}".format(self.observable_value,
+            url = "https://api.client.lastinfosec.com/v2/lis/search_host/{0}?api_key={1}".format(self.observable_value,
                                                                                              self.api_key)
 
         useragent = {
