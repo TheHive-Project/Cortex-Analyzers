@@ -38,6 +38,20 @@
     </div>
 </div>
 
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        CVE summary of  <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <span ng-repeat="data in content.host.data" ng-if="content.host.vulns">
+            <dl class="dl-horizontal">
+                <dt ng-repeat-start="(vuln, info) in data.vulns"><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name={{vuln}}" target="_blank">{{vuln}}</a></dt>
+                <dd ng-repeat-end=>{{info.summary}}</dd>
+            </dl>
+        </span>
+    </div>
+</div>
+
 <div class="panel panel-danger" ng-if="!success">
     <div class="panel-heading">
         <strong>{{artifact.data | fang}}</strong>
