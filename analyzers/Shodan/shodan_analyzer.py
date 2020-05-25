@@ -58,8 +58,11 @@ class ShodanAnalyzer(Analyzer):
             if 'asn' in raw['host']:
                 taxonomies.append(self.build_taxonomy(level, namespace, 'ASN', raw['host']['asn']))
             if 'vulns' in raw['host']:
-                taxonomies.append(self.build_taxonomy(levelorange, namespace, 'VULNS', raw['host']['vulns']))
-
+                totalcve = len(raw['host']['vulns'])
+                if totalcve < 3: 
+                  taxonomies.append(self.build_taxonomy(levelorange, namespace, 'VULNS', raw['host']['vulns']))
+                else:
+                  taxonomies.append(self.build_taxonomy(levelorange, namespace, 'VULNS', totalcve))
         elif self.service == 'info_domain':
             if 'ips' in raw['info_domain']:
                 value = "{}".format(len(raw['info_domain']['ips']))
