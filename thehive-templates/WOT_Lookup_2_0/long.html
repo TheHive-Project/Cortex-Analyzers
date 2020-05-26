@@ -7,48 +7,49 @@
 
     <div class="panel panel-info">
         <div class="panel-heading">
-            <strong>General Information</strong>
+            <strong>General Information for {{content.target}}</strong>
         </div>
         <div class="panel-body">
 
-            <div ng-if="content.Trustworthiness">
-                <h4>Trustworthiness</h4>
+            <div ng-if="content.safety">
+                <h4>Safety</h4>
                 <dl class="dl-horizontal">
-                    <dt>Reputation</dt>
-                    <dd>{{content.Trustworthiness.Reputation}}</dd>
+                    <dt>Status</dt>
+                    <dd>{{content.safety.status}}</dd>
                 </dl>
                 <dl class="dl-horizontal">
-                    <dt>Confidence</dt>
-                    <dd>{{content.Trustworthiness.Confidence}}</dd>
+                    <dt>Reputations</dt>
+                    <dd>{{content.safety.reputations}}</dd>
                 </dl>   
+                <dl class="dl-horizontal">
+                    <dt>Confidence</dt>
+                    <dd>{{content.safety.confidence}}</dd>
+                </dl>                   
             </div>
 
-            <div ng-if="content.Child_Safety">
+            <div ng-if="content.childSafety">
                 <h4>Child Safety</h4>
                 <dl class="dl-horizontal">
                     <dt>Reputation</dt>
-                    <dd>{{content.Child_Safety.Reputation}}</dd>
+                    <dd>{{content.childSafety.reputations}}</dd>
                 </dl>
                 <dl class="dl-horizontal">
                     <dt>Confidence</dt>
-                    <dd>{{content.Child_Safety.Confidence}}</dd>
+                    <dd>{{content.childSafety.confidence}}</dd>
                 </dl>   
             </div>
 
-            <div ng-if="content.Blacklists">
+            <div ng-if="content.blackList">
                 <h4>Blacklists</h4>
-                <br>
-                <dl class="dl-horizontal" ng-repeat="blk in content.Blacklists track by $index">
-                    <dt>{{ blk[0] }}</dt>
-                    <dd>{{ blk[1] }}</dd>
-                </dl>
+                <p><span class="label label-primary" ng-repeat="blk in content.blackList">{{blk}}</span></p>
             </div>           
 
-            <div ng-if="content.Categories">
+            <div ng-if="content.categories">
                 <h4>Categories</h4>
                 <br>
-                <dl class="dl-horizontal" ng-repeat="ctg in content.Categories track by $index">
-                    <dd>{{ ctg }}</dd>
+                <dl class="dl-horizontal" ng-repeat="ctg in content.categories">
+                    <dt>{{ctg.name}}</dt>
+                    <dd>Confidence: {{ctg.confidence}}</dd>
                 </dl>
             </div>  
 
