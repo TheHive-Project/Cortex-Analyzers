@@ -126,7 +126,7 @@ steps:
   - name: Publish documentation 
     image: thehiveproject/mkdocs
     settings:
-      - token: { from_secret: github_token }
+      token: { from_secret: github_token }
     when:
       branch:
       - mkdocs
