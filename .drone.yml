@@ -114,3 +114,19 @@ steps:
         - develop
         event:
         - push
+
+  - name: Prepare documentation files
+    image: thehiveproject/doc-builder
+    settings:
+      - type: <type>
+    when:
+      branch:
+      - mkdocs
+
+  - name: Publish documentation 
+    image: thehiveproject/mkdocs
+    settings:
+      - token: { from_secret: github_token }
+    when:
+      branch:
+      - mkdocs
