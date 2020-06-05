@@ -118,7 +118,7 @@ steps:
   - name: Prepare documentation files
     image: thehiveproject/doc-builder
     settings:
-      type: <type>
+      type: Cortex-Neurons
     when:
       branch:
       - mkdocs
