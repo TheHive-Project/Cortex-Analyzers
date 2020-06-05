@@ -51,6 +51,11 @@ steps:
 
   - name: build catalogs
     image: thehiveproject/neurons-build-catalogs
+    when:
+      branch:
+      - develop
+      - master
+
   
   - name: upload catalogs to bintray
     image: thehiveproject/drone-bintray
@@ -116,8 +121,6 @@ steps:
       event:
         branch:
         - develop
-        event:
-        - push
 
   - name: Prepare documentation files
     image: thehiveproject/doc-builder
