@@ -89,7 +89,7 @@ class VMRayAnalyzer(Analyzer):
                 else:
                     level = "info"
 
-                if r["reports"] > 1:
+                if len(r["reports"]) > 1:
                     value = "{}( from scan {})".format(s["score"], i)
                 else:
                     value = "{}".format(s["score"])
