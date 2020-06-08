@@ -43,6 +43,7 @@ class VMRayAnalyzer(Analyzer):
                     if submit_report['result'] == 'ok':
                         # Sample is already there, get the report
                         self.report({'scanreport': self.vmrc.get_sample(samplehash=submit_report['data']['samples'][0]['sample_sha256hash'])})
+                        return
                     else:
                         self.error('Error while submitting sample to VMRay: {}.'
                                    .format([error_msg for error_msg in submit_report['data']['errors']]))
