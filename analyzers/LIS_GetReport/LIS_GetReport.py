@@ -94,7 +94,6 @@ class LIS_GetReport(Analyzer):
                 self.error("Bad Response: {0}".format(ex))
 
     def summary(self, raw):
-        raw = raw["message"][0]
         taxonomies = []
         level = "info"
         namespace = "LastInfoSec"
