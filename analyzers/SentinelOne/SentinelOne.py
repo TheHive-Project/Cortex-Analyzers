@@ -20,9 +20,9 @@ S1_API_ENDPOINTS: Dict[str, str] = {
     "check-query-status": "/web/api/v2.1/dv/query-status",
     "get-events": "/web/api/v2.1/dv/events",
 }
-SERVICES = ("dns-lookups",)
+SERVICES: Tuple[str] = ("dns-lookups",)
 URL_RE: Pattern = re.compile(r"^[^:]+:\/{2}([\w\d\-\.]+).+$")
-USER_AGENT = "Cortex/SentinelOne-Analyzer-v1.0"
+USER_AGENT: str = "Cortex/SentinelOne-Analyzer-v1.0"
 
 
 class SentinelOne(Analyzer):
