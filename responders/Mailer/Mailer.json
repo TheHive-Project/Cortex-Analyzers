@@ -5,7 +5,7 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Send an email with information from a TheHive case or alert",
-  "dataTypeList": ["thehive:case", "thehive:alert"],
+  "dataTypeList": ["thehive:case", "thehive:alert", "thehive:case_task"],
   "command": "Mailer/mailer.py",
   "baseConfig": "Mailer",
   "configurationItems": [
@@ -31,6 +31,22 @@
       "multi": false,
       "required": true,
       "defaultValue": 25
+    },
+    {
+      "name": "smtp_user",
+      "description": "SMTP server user",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "user"
+    },
+    {
+      "name": "smtp_pwd",
+      "description": "SMTP server password",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "pwd"
     }
   ]
 }
