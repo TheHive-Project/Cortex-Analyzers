@@ -1,8 +1,8 @@
 {
   "name": "WOT_Lookup",
-  "version": "1.0",
-  "author": "Andrea Garavaglia, LDO-CERT",
-  "url": "https://github.com/garanews/Cortex-Analyzers",
+  "version": "2.0",
+  "author": "Andrea Garavaglia, Davide Arcuri, LDO-CERT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Use Web of Trust to check a domain's reputation.",
   "dataTypeList": ["domain", "fqdn"],
@@ -12,6 +12,13 @@
       "service": "query"
   },
   "configurationItems": [
+    {
+      "name": "user",
+      "description": "Define the API user",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },    
     {
       "name": "key",
       "description": "Define the API key",
