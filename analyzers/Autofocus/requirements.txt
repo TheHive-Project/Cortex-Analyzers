@@ -1,0 +1,2 @@
+cortexutils
+git+https://github.com/PaloAltoNetworks/autofocus-client-library

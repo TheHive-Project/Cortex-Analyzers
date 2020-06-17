@@ -5,7 +5,7 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Get the latest VirusTotal report for a file, hash, domain or an IP address.",
-  "dataTypeList": ["file", "hash", "domain", "ip", "url"],
+  "dataTypeList": ["file", "hash", "domain","fqdn", "ip", "url"],
   "command": "VirusTotal/virustotal.py",
   "baseConfig": "VirusTotal",
   "config": {

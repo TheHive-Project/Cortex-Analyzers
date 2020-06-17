@@ -1,0 +1,131 @@
+<style>
+    .dg-relation-wrapper {
+      margin: 2px 0;
+      display: flex !important;
+      flex-wrap: wrap;
+    }
+
+    .dg-observable-wrapper {
+        display: flex;
+        white-space: nowrap;
+    }
+    
+    .dg-observable-token {
+        background: #dedede;
+        border-radius: 5px;
+        margin: 0 2px 5px;
+        padding: 2px 8px;
+    }
+
+    .dg-observable-type {
+        color: #888;
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 600;
+        margin-right: 4px;
+        text-transform: uppercase;
+        margin-top: auto;
+    }
+
+    .dg-observable-value {
+        color: #222;
+        font-size: 12px;
+    }
+</style>
+
+<!-- Success -->
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        <strong>Summary</strong>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6">
+              <dl class="dl-horizontal">
+                  <dt>Threat Response</dt>
+                  <dd>
+                      <i class="fa fa-search"></i>
+                      <a ng-href="https://{{content.host}}/investigate?q={{content.observable}}" target="_blank">
+                          Investigate
+                      </a>
+                  </dd>
+              </dl>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="content.verdicts.length > 0">
+    <div class="panel-heading">
+        <strong>Verdicts</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <th>Module</th>
+                <th>Observable</th>
+                <th>Observable Type</th>
+                <th>Disposition</th>
+                <th>Expiration</th>
+            </tr>
+            <tr ng-repeat="verdict in content.verdicts | orderBy:'observable_value'">
+                <td>{{verdict.module}}</td>
+                <td>
+                    <i class="fa fa-search"></i>
+                    <a ng-href="https://{{content.host}}/investigate?q={{verdict.observable_value}}" target="_blank">
+                        {{verdict.observable_value}}
+                    </a>
+                </td>
+                <td>{{verdict.observable_type}}</td>
+                <td>{{verdict.disposition_name}}</td>
+                <td>{{verdict.expiration}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="content.targets.length > 0">
+    <div class="panel-heading">
+        <strong>Targets</strong>
+    </div>
+
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <th>Module</th>
+                <th>Sensor</th>
+                <th>Targets</th>
+            </tr>
+            <tbody ng-repeat="module in content.targets">
+                <tr ng-repeat="target in module.targets">
+                    <td>
+                        {{module.module}}
+                    </td>
+                    <td>
+                        {{target.type}}
+                    </td>
+                    <td>
+                        <div ng-class="'dg-relation-wrapper'">
+                            <div ng-class="['dg-observable-wrapper', 'dg-observable-token']" data-ng-repeat="observable in target.observables">
+                                <span ng-class="'dg-observable-type'">{{observable.type}}</span>
+                                <span ng-class="'dg-observable-value'">{{observable.value}}</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> Threat Response: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

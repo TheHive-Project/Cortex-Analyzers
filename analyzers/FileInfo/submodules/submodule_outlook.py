@@ -2,7 +2,8 @@ import hashlib
 import magic
 from .submodule_base import SubmoduleBaseclass
 
-from ExtractMsg import Message, Attachment
+#  from ExtractMsg import Message, Attachment
+from extract_msg import Message, Attachment
 from imapclient.imapclient import decode_utf7
 
 
@@ -15,8 +16,10 @@ class OutlookSubmodule(SubmoduleBaseclass):
 
     def check_file(self, **kwargs):
         try:
-            if kwargs.get('mimetype') in ['application/vnd.ms-outlook', 'application/CDFV2-unknown']:
-                return True
+            msg_mimetypes = ['application/vnd.ms-outlook', 'application/CDFV2-unknown']
+            for m in msg_mimetypes:
+                if kwargs.get('mimetype').find(m) == 0:
+                    return True
         except KeyError:
             return False
         return False
@@ -32,10 +35,12 @@ class OutlookSubmodule(SubmoduleBaseclass):
         a = []
         for attachment in attachments:
             sha256 = hashlib.sha256()
-            sha256.update(attachment.data)
-            a.append({'name': attachment.longFilename,
+            if type(attachment.data) is not Message:
+                sha256.update(attachment.data)
+                minfo = magic.Magic(uncompress=True).from_buffer(attachment.data)
+                a.append({'name': attachment.longFilename,
                       'sha256': sha256.hexdigest(),
-                      'mimeinfo':  magic.Magic(uncompress=True).from_buffer(attachment.data)
+                      'mimeinfo': minfo
                       })
 
 

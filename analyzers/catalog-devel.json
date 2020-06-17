@@ -1,22 +1,5 @@
 [
 {
-  "name": "Abuse_Finder",
-  "version": "2.0",
-  "author": "CERT-BDF",
-  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-  "license": "AGPL-V3",
-  "description": "Find abuse contacts associated with domain names, URLs, IPs and email addresses.",
-  "dataTypeList": [
-    "ip",
-    "domain",
-    "url",
-    "mail"
-  ],
-  "baseConfig": "Abuse_Finder",
-  "dockerImage": "cortexneurons/abuse_finder:devel"
-}
-,
-{
   "name": "AbuseIPDB",
   "version": "1.0",
   "author": "Matteo Lodi",
@@ -50,6 +33,23 @@
     "auto_extract": false
   },
   "dockerImage": "cortexneurons/abuseipdb:devel"
+}
+,
+{
+  "name": "Abuse_Finder",
+  "version": "2.0",
+  "author": "CERT-BDF",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Find abuse contacts associated with domain names, URLs, IPs and email addresses.",
+  "dataTypeList": [
+    "ip",
+    "domain",
+    "url",
+    "mail"
+  ],
+  "baseConfig": "Abuse_Finder",
+  "dockerImage": "cortexneurons/abuse_finder:devel"
 }
 ,
 {
@@ -148,38 +148,6 @@
 }
 ,
 {
-  "name": "Censys",
-  "author": "Nils Kuhnert, CERT-Bund",
-  "license": "AGPL-V3",
-  "url": "https://github.com/BSI-CERT-Bund/censys-analyzer",
-  "version": "1.0",
-  "description": "Check IPs, certificate hashes or domains against censys.io.",
-  "dataTypeList": [
-    "ip",
-    "hash",
-    "domain"
-  ],
-  "baseConfig": "Censys",
-  "configurationItems": [
-    {
-      "name": "uid",
-      "description": "UID for Censys",
-      "type": "string",
-      "multi": false,
-      "required": true
-    },
-    {
-      "name": "key",
-      "description": "API key",
-      "type": "string",
-      "multi": false,
-      "required": true
-    }
-  ],
-  "dockerImage": "cortexneurons/censys:devel"
-}
-,
-{
   "name": "CERTatPassiveDNS",
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
@@ -270,6 +238,38 @@
 }
 ,
 {
+  "name": "Censys",
+  "author": "Nils Kuhnert, CERT-Bund",
+  "license": "AGPL-V3",
+  "url": "https://github.com/BSI-CERT-Bund/censys-analyzer",
+  "version": "1.0",
+  "description": "Check IPs, certificate hashes or domains against censys.io.",
+  "dataTypeList": [
+    "ip",
+    "hash",
+    "domain"
+  ],
+  "baseConfig": "Censys",
+  "configurationItems": [
+    {
+      "name": "uid",
+      "description": "UID for Censys",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "key",
+      "description": "API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "dockerImage": "cortexneurons/censys:devel"
+}
+,
+{
   "name": "Crt_sh_Transparency_Logs",
   "author": "crackytsi",
   "license": "AGPL-V3",
@@ -306,6 +306,28 @@
       "type": "string",
       "multi": false,
       "required": true
+    },
+    {
+      "name": "token",
+      "description": "API token",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "cert_check",
+      "description": "Verify server certificate",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "cert_path",
+      "description": "Path to the CA on the system used to check server certificate",
+      "type": "string",
+      "multi": false,
+      "required": false
     }
   ],
   "dockerImage": "cortexneurons/cuckoosandbox_file_analysis_inet:devel"
@@ -329,6 +351,28 @@
       "type": "string",
       "multi": false,
       "required": true
+    },
+    {
+      "name": "token",
+      "description": "API token",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "cert_check",
+      "description": "Verify server certificate",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "cert_path",
+      "description": "Path to the CA on the system used to check server certificate",
+      "type": "string",
+      "multi": false,
+      "required": false
     }
   ],
   "dockerImage": "cortexneurons/cuckoosandbox_url_analysis:devel"
@@ -504,6 +548,53 @@
     }
   ],
   "dockerImage": "cortexneurons/dnsdb_namehistory:devel"
+}
+,
+{
+  "name": "DNSSinkhole",
+  "author": "Andrea Garavaglia, LDO-CERT",
+  "license": "AGPL-V3",
+  "url": "https://github.com/LDO-CERT/cortex-analyzer",
+  "version": "1.0",
+  "description": "Check if a  domain is sinkholed via DNS Sinkhole server",
+  "dataTypeList": [
+    "domain"
+  ],
+  "baseConfig": "DNSSinkhole",
+  "configurationItems": [
+    {
+      "name": "ip",
+      "description": "Define the DNS Sinkhole Server IP",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "sink_ip",
+      "description": "Define the sinkholed response address IP",
+      "required": true,
+      "multi": false,
+      "type": "string"
+    }
+  ],
+  "dockerImage": "cortexneurons/dnssinkhole:devel"
+}
+,
+{
+  "name": "DShield_lookup",
+  "version": "1.0",
+  "author": "Xavier Xavier, SANS ISC",
+  "url": "https://github.com/xme/thehive/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Query the SANS ISC DShield API to check for an IP address reputation.",
+  "dataTypeList": [
+    "ip"
+  ],
+  "baseConfig": "DShield",
+  "config": {
+    "service": "query"
+  },
+  "dockerImage": "cortexneurons/dshield_lookup:devel"
 }
 ,
 {
@@ -849,23 +940,6 @@
 }
 ,
 {
-  "name": "DShield_lookup",
-  "version": "1.0",
-  "author": "Xavier Xavier, SANS ISC",
-  "url": "https://github.com/xme/thehive/Cortex-Analyzers",
-  "license": "AGPL-V3",
-  "description": "Query the SANS ISC DShield API to check for an IP address reputation.",
-  "dataTypeList": [
-    "ip"
-  ],
-  "baseConfig": "DShield",
-  "config": {
-    "service": "query"
-  },
-  "dockerImage": "cortexneurons/dshield_lookup:devel"
-}
-,
-{
   "name": "EmergingThreats_DomainInfo",
   "version": "1.0",
   "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
@@ -938,11 +1012,11 @@
 ,
 {
   "name": "EmlParser",
-  "version": "1.1",
+  "version": "1.2",
   "author": "ninsmith",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "baseconfig": "EmlParser",
+  "baseConfig": "EmlParser",
   "config": {
     "check_tlp": false,
     "max_tlp": 3,
@@ -957,7 +1031,7 @@
 ,
 {
   "name": "FileInfo",
-  "version": "5.0",
+  "version": "6.0",
   "author": "TheHive-Project",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -1188,6 +1262,34 @@
 }
 ,
 {
+  "name": "HIBP_Query",
+  "version": "1.0",
+  "author": "Matt Erasmus",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Query haveibeenpwned.com for a compromised email address",
+  "dataTypeList": [
+    "mail"
+  ],
+  "baseConfig": "HIBP",
+  "config": {
+    "service": "query",
+    "url": "https://haveibeenpwned.com/api/v2/breachedaccount/"
+  },
+  "configurationItems": [
+    {
+      "name": "unverified",
+      "description": "Include unverified breaches",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    }
+  ],
+  "dockerImage": "cortexneurons/hibp_query:devel"
+}
+,
+{
   "name": "Hashdd_Detail",
   "version": "1.0",
   "author": "iosonogio",
@@ -1237,34 +1339,6 @@
     }
   ],
   "dockerImage": "cortexneurons/hashdd_status:devel"
-}
-,
-{
-  "name": "HIBP_Query",
-  "version": "1.0",
-  "author": "Matt Erasmus",
-  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-  "license": "AGPL-V3",
-  "description": "Query haveibeenpwned.com for a compromised email address",
-  "dataTypeList": [
-    "mail"
-  ],
-  "baseConfig": "HIBP",
-  "config": {
-    "service": "query",
-    "url": "https://haveibeenpwned.com/api/v2/breachedaccount/"
-  },
-  "configurationItems": [
-    {
-      "name": "unverified",
-      "description": "Include unverified breaches",
-      "type": "boolean",
-      "multi": false,
-      "required": true,
-      "defaultValue": true
-    }
-  ],
-  "dockerImage": "cortexneurons/hibp_query:devel"
 }
 ,
 {
@@ -1637,6 +1711,98 @@
 }
 ,
 {
+  "name": "MISP",
+  "author": "Nils Kuhnert, CERT-Bund",
+  "license": "AGPL-V3",
+  "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+  "version": "2.0",
+  "description": "Query multiple MISP instances for events containing an observable.",
+  "dataTypeList": [
+    "domain",
+    "ip",
+    "url",
+    "fqdn",
+    "uri_path",
+    "user-agent",
+    "hash",
+    "email",
+    "mail",
+    "mail_subject",
+    "registry",
+    "regexp",
+    "other",
+    "filename"
+  ],
+  "baseConfig": "MISP",
+  "configurationItems": [
+    {
+      "name": "name",
+      "description": "Name of MISP servers",
+      "multi": true,
+      "required": false,
+      "type": "string"
+    },
+    {
+      "name": "url",
+      "description": "URL of MISP servers",
+      "type": "string",
+      "multi": true,
+      "required": true
+    },
+    {
+      "name": "key",
+      "description": "API key for each server",
+      "type": "string",
+      "multi": true,
+      "required": true
+    },
+    {
+      "name": "cert_check",
+      "description": "Verify server certificate",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "cert_path",
+      "description": "Path to the CA on the system used to check server certificate",
+      "type": "string",
+      "multi": true,
+      "required": false
+    }
+  ],
+  "dockerImage": "cortexneurons/misp:devel"
+}
+,
+{
+  "name": "MISPWarningLists",
+  "author": "Nils Kuhnert, CERT-Bund",
+  "license": "AGPL-V3",
+  "url": "https://github.com/BSI-CERT-Bund/misp-warninglists-analyzer",
+  "version": "1.0",
+  "description": "Check IoCs/Observables against MISP Warninglists to filter false positives.",
+  "dataTypeList": [
+    "ip",
+    "hash",
+    "domain",
+    "fqdn",
+    "url"
+  ],
+  "baseConfig": "MISPWarningLists",
+  "configurationItems": [
+    {
+      "name": "path",
+      "description": "path to Warninglists folder",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "dockerImage": "cortexneurons/mispwarninglists:devel"
+}
+,
+{
   "name": "Malpedia",
   "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
   "license": "AGPL-V3",
@@ -1745,98 +1911,6 @@
   ],
   "baseConfig": "MaxMind",
   "dockerImage": "cortexneurons/maxmind_geoip:devel"
-}
-,
-{
-  "name": "MISP",
-  "author": "Nils Kuhnert, CERT-Bund",
-  "license": "AGPL-V3",
-  "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
-  "description": "Query multiple MISP instances for events containing an observable.",
-  "dataTypeList": [
-    "domain",
-    "ip",
-    "url",
-    "fqdn",
-    "uri_path",
-    "user-agent",
-    "hash",
-    "email",
-    "mail",
-    "mail_subject",
-    "registry",
-    "regexp",
-    "other",
-    "filename"
-  ],
-  "baseConfig": "MISP",
-  "configurationItems": [
-    {
-      "name": "name",
-      "description": "Name of MISP servers",
-      "multi": true,
-      "required": false,
-      "type": "string"
-    },
-    {
-      "name": "url",
-      "description": "URL of MISP servers",
-      "type": "string",
-      "multi": true,
-      "required": true
-    },
-    {
-      "name": "key",
-      "description": "API key for each server",
-      "type": "string",
-      "multi": true,
-      "required": true
-    },
-    {
-      "name": "cert_check",
-      "description": "Verify server certificate",
-      "type": "boolean",
-      "multi": false,
-      "required": true,
-      "defaultValue": true
-    },
-    {
-      "name": "cert_path",
-      "description": "Path to the CA on the system used to check server certificate",
-      "type": "string",
-      "multi": true,
-      "required": false
-    }
-  ],
-  "dockerImage": "cortexneurons/misp:devel"
-}
-,
-{
-  "name": "MISPWarningLists",
-  "author": "Nils Kuhnert, CERT-Bund",
-  "license": "AGPL-V3",
-  "url": "https://github.com/BSI-CERT-Bund/misp-warninglists-analyzer",
-  "version": "1.0",
-  "description": "Check IoCs/Observables against MISP Warninglists to filter false positives.",
-  "dataTypeList": [
-    "ip",
-    "hash",
-    "domain",
-    "fqdn",
-    "url"
-  ],
-  "baseConfig": "MISPWarningLists",
-  "configurationItems": [
-    {
-      "name": "path",
-      "description": "path to Warninglists folder",
-      "type": "string",
-      "multi": false,
-      "required": true
-    }
-  ],
-  "dockerImage": "cortexneurons/mispwarninglists:devel"
 }
 ,
 {
@@ -1958,6 +2032,33 @@
     }
   ],
   "dockerImage": "cortexneurons/nessus:devel"
+}
+,
+{
+  "name": "OTXQuery",
+  "version": "2.0",
+  "author": "Eric Capuano",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Query AlienVault OTX for IPs, domains, URLs, or file hashes.",
+  "dataTypeList": [
+    "url",
+    "domain",
+    "file",
+    "hash",
+    "ip"
+  ],
+  "baseConfig": "OTXQuery",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API key to use to connect the service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "dockerImage": "cortexneurons/otxquery:devel"
 }
 ,
 {
@@ -2141,33 +2242,6 @@
     }
   ],
   "dockerImage": "cortexneurons/onyphe_threats:devel"
-}
-,
-{
-  "name": "OTXQuery",
-  "version": "2.0",
-  "author": "Eric Capuano",
-  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-  "license": "AGPL-V3",
-  "description": "Query AlienVault OTX for IPs, domains, URLs, or file hashes.",
-  "dataTypeList": [
-    "url",
-    "domain",
-    "file",
-    "hash",
-    "ip"
-  ],
-  "baseConfig": "OTXQuery",
-  "configurationItems": [
-    {
-      "name": "key",
-      "description": "Define the API key to use to connect the service",
-      "type": "string",
-      "multi": false,
-      "required": true
-    }
-  ],
-  "dockerImage": "cortexneurons/otxquery:devel"
 }
 ,
 {
@@ -2606,6 +2680,29 @@
 }
 ,
 {
+  "name": "PhishTank_CheckURL",
+  "version": "2.1",
+  "author": "Eric Capuano",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use PhishTank to check if a URL is a verified phishing site.",
+  "dataTypeList": [
+    "url"
+  ],
+  "baseConfig": "PhishTank",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "dockerImage": "cortexneurons/phishtank_checkurl:devel"
+}
+,
+{
   "name": "PhishingInitiative_Lookup",
   "version": "2.0",
   "author": "CERT-BDF",
@@ -2649,29 +2746,6 @@
     }
   ],
   "dockerImage": "cortexneurons/phishinginitiative_scan:devel"
-}
-,
-{
-  "name": "PhishTank_CheckURL",
-  "version": "2.1",
-  "author": "Eric Capuano",
-  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-  "license": "AGPL-V3",
-  "description": "Use PhishTank to check if a URL is a verified phishing site.",
-  "dataTypeList": [
-    "url"
-  ],
-  "baseConfig": "PhishTank",
-  "configurationItems": [
-    {
-      "name": "key",
-      "description": "Define the API Key",
-      "type": "string",
-      "multi": false,
-      "required": true
-    }
-  ],
-  "dockerImage": "cortexneurons/phishtank_checkurl:devel"
 }
 ,
 {
@@ -2907,32 +2981,6 @@
 }
 ,
 {
-  "name": "Shodan_Host_History",
-  "version": "1.0",
-  "author": "ANSSI",
-  "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
-  "license": "AGPL-V3",
-  "description": "Retrieve Shodan history scan results  for an IP address.",
-  "dataTypeList": [
-    "ip"
-  ],
-  "baseConfig": "Shodan",
-  "config": {
-    "service": "host_history"
-  },
-  "configurationItems": [
-    {
-      "name": "key",
-      "description": "Define the API Key",
-      "type": "string",
-      "multi": false,
-      "required": true
-    }
-  ],
-  "dockerImage": "cortexneurons/shodan_host_history:devel"
-}
-,
-{
   "name": "Shodan_Host",
   "version": "1.0",
   "author": "Sebastien Larinier @Sebdraven",
@@ -2956,6 +3004,32 @@
     }
   ],
   "dockerImage": "cortexneurons/shodan_host:devel"
+}
+,
+{
+  "name": "Shodan_Host_History",
+  "version": "1.0",
+  "author": "ANSSI",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
+  "license": "AGPL-V3",
+  "description": "Retrieve Shodan history scan results  for an IP address.",
+  "dataTypeList": [
+    "ip"
+  ],
+  "baseConfig": "Shodan",
+  "config": {
+    "service": "host_history"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "dockerImage": "cortexneurons/shodan_host_history:devel"
 }
 ,
 {
@@ -3224,6 +3298,20 @@
 }
 ,
 {
+  "name": "TalosReputation",
+  "version": "1.0",
+  "author": "Gabriel Antonio da Silva",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get the Talos IP reputation",
+  "dataTypeList": [
+    "ip"
+  ],
+  "baseConfig": "TalosReputation",
+  "dockerImage": "cortexneurons/talosreputation:devel"
+}
+,
+{
   "name": "Threatcrowd",
   "author": "Rémi Allain, Cyberprotect",
   "license": "AGPL-V3",
@@ -3316,6 +3404,23 @@
 }
 ,
 {
+  "name": "URLhaus",
+  "author": "ninoseki, Nils Kuhnert",
+  "license": "MIT",
+  "url": "https://github.com/ninoseki/cortex_URLhaus_analyzer",
+  "version": "2.0",
+  "description": "Search domains, IPs, URLs or hashes on URLhaus.",
+  "dataTypeList": [
+    "domain",
+    "url",
+    "hash",
+    "ip"
+  ],
+  "configurationItems": [],
+  "dockerImage": "cortexneurons/urlhaus:devel"
+}
+,
+{
   "name": "Umbrella_Report",
   "version": "1.0",
   "author": "Kyle Parrish",
@@ -3378,23 +3483,6 @@
 }
 ,
 {
-  "name": "URLhaus",
-  "author": "ninoseki, Nils Kuhnert",
-  "license": "MIT",
-  "url": "https://github.com/ninoseki/cortex_URLhaus_analyzer",
-  "version": "2.0",
-  "description": "Search domains, IPs, URLs or hashes on URLhaus.",
-  "dataTypeList": [
-    "domain",
-    "url",
-    "hash",
-    "ip"
-  ],
-  "configurationItems": [],
-  "dockerImage": "cortexneurons/urlhaus:devel"
-}
-,
-{
   "name": "Urlscan.io_Search",
   "author": "ninoseki",
   "license": "MIT",
@@ -3411,27 +3499,57 @@
 }
 ,
 {
-  "name": "Virusshare",
-  "author": "Nils Kuhnert, CERT-Bund",
+  "name": "VMRay",
   "license": "AGPL-V3",
+  "author": "Nils Kuhnert, CERT-Bund",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
-  "description": "Search for MD5 hashes in Virusshare.com hash list",
+  "version": "3.0",
+  "description": "VMRay Sandbox file analysis.",
   "dataTypeList": [
     "hash",
     "file"
   ],
-  "baseConfig": "Virusshare",
+  "baseConfig": "VMRay",
   "configurationItems": [
     {
-      "name": "path",
-      "description": "Define the path to the stored data",
+      "name": "url",
+      "description": "Define the URL of the service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "key",
+      "description": "Define the API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "certverify",
+      "description": "Verify certificates",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "certpath",
+      "description": "Path to certificate file, in case of self-signed etc.",
       "type": "string",
       "multi": false,
       "required": false
+    },
+    {
+      "name": "disablereanalyze",
+      "description": "If set to true, samples won't get re-analyzed.",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
     }
   ],
-  "dockerImage": "cortexneurons/virusshare:devel"
+  "dockerImage": "cortexneurons/vmray:devel"
 }
 ,
 {
@@ -3508,57 +3626,27 @@
 }
 ,
 {
-  "name": "VMRay",
-  "license": "AGPL-V3",
+  "name": "Virusshare",
   "author": "Nils Kuhnert, CERT-Bund",
+  "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "3.0",
-  "description": "VMRay Sandbox file analysis.",
+  "version": "2.0",
+  "description": "Search for MD5 hashes in Virusshare.com hash list",
   "dataTypeList": [
     "hash",
     "file"
   ],
-  "baseConfig": "VMRay",
+  "baseConfig": "Virusshare",
   "configurationItems": [
     {
-      "name": "url",
-      "description": "Define the URL of the service",
-      "type": "string",
-      "multi": false,
-      "required": true
-    },
-    {
-      "name": "key",
-      "description": "Define the API key",
-      "type": "string",
-      "multi": false,
-      "required": true
-    },
-    {
-      "name": "certverify",
-      "description": "Verify certificates",
-      "type": "boolean",
-      "multi": false,
-      "required": true,
-      "defaultValue": true
-    },
-    {
-      "name": "certpath",
-      "description": "Path to certificate file, in case of self-signed etc.",
+      "name": "path",
+      "description": "Define the path to the stored data",
       "type": "string",
       "multi": false,
       "required": false
-    },
-    {
-      "name": "disablereanalyze",
-      "description": "If set to true, samples won't get re-analyzed.",
-      "type": "boolean",
-      "multi": false,
-      "required": false,
-      "defaultValue": false
     }
   ],
-  "dockerImage": "cortexneurons/vmray:devel"
+  "dockerImage": "cortexneurons/virusshare:devel"
 }
 ,
 {
@@ -3633,6 +3721,13 @@
       "type": "string",
       "multi": false,
       "required": true
+    },
+    {
+      "name": "api_key",
+      "description": "Define the api key of the service",
+      "type": "string",
+      "multi": false,
+      "required": false
     }
   ],
   "dockerImage": "cortexneurons/yeti:devel"

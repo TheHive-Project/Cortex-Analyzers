@@ -1,0 +1,113 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+<div>
+    
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Summary</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal" ng-if="content.scan_results">
+                <dt>Scan Result</dt>
+                <dd class="wrap">
+                    <span ng-if="[0, 5].indexOf(content.scan_results.scan_all_result_i) !== -1" class="label label-success">
+                        {{content.scan_results.scan_all_result_a}}
+                    </span>
+                    <span ng-if="content.scan_results.scan_all_result_i == 1" class="label label-danger">
+                        {{content.scan_results.scan_all_result_a}}
+                    </span>
+                    <span ng-if="content.scan_results.scan_all_result_i == 2" class="label label-warning">
+                        {{content.scan_results.scan_all_result_a}}
+                    </span>
+                    <span ng-if="[3, 4, 6, 7].indexOf(content.scan_results.scan_all_result_i) !== -1" class="label label-info">
+                        {{content.scan_results.scan_all_result_a}}
+                    </span>                
+                </dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.scan_results">
+                <dt>Scanning Engines</dt>
+                <dd class="wrap">
+                    <span ng-if="content.scan_results.total_detected_avs">{{content.scan_results.total_detected_avs}}/</span>{{content.scan_results.total_avs}}
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.file_info">
+        <div class="panel-heading">
+            <strong>File Info</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>Uploaded</dt>
+                <dd class="wrap">{{content.file_info.upload_timestamp}}
+                </dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>File Type</dt>
+                <dd class="wrap">
+                    {{content.file_info.file_type_description}}
+                </dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>File Size</dt>
+                <dd class="wrap">
+                    {{content.file_info.file_size}}
+                </dd>
+            </dl>    
+            <dl class="dl-horizontal">
+                <dt>sha256</dt>
+                <dd class="wrap">
+                    {{content.file_info.sha256}}
+                </dd>
+            </dl>  
+            <dl class="dl-horizontal">
+                <dt>sha1</dt>
+                <dd class="wrap">
+                    {{content.file_info.sha1}}
+                </dd>
+            </dl>  
+            <dl class="dl-horizontal">
+                <dt>md5</dt>
+                <dd class="wrap">
+                    {{content.file_info.md5}}
+                </dd>
+            </dl>                                                
+        </div>
+    </div>    
+
+    <div class="panel panel-info" ng-if="content.scan_results.scan_details">
+        <div class="panel-heading">
+            <strong>Multiscanning</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <th>Engine</th>
+                    <th>Scan Time</th>
+                    <th>Definition Date</th>
+                    <th>Result</th>
+                </tr>
+                <tr ng-repeat="(k, obj) in content.scan_results.scan_details">
+                    <td>
+                        <span class="label label-success" ng-if="obj.scan_result_i == 0"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span>
+                        <span class="label label-danger" ng-if="obj.scan_result_i == 1"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span>
+                        <span class="label label-warning" ng-if="obj.scan_result_i == 3"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></span>
+                        {{k}}
+                    </td>
+                    <td>{{obj.scan_time}}</td>
+                    <td>{{obj.def_time}}</td>
+                    <td>{{obj.threat_found}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>

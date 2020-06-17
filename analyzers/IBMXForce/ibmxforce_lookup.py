@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding: utf-8
 import requests
 from datetime import datetime
@@ -14,6 +14,8 @@ class IBMXForceAnalyzer(Analyzer):
         self.service = self.get_param(
             'config.service', None, 'Service parameter is missing')
         self.url = self.get_param('config.url', None, 'Missing API url')
+        if self.url:
+            self.url = self.url.rstrip('/')
         self.key = self.get_param('config.key', None, 'Missing API key')
         self.pwd = self.get_param('config.pwd', None, 'Missing API password')
         self.verify = self.get_param('config.verify', True)

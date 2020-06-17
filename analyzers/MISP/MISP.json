@@ -3,7 +3,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
+  "version": "2.1",
   "description": "Query multiple MISP instances for events containing an observable.",
   "dataTypeList": [
     "domain",

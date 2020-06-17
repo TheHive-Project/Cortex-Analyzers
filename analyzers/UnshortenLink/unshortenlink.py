@@ -67,7 +67,7 @@ class UnshortenlinkAnalyzer(Analyzer):
 
         result = {'found': False, 'url': None}
         try:
-            response = requests.get(url, proxies=proxies,
+            response = requests.head(url, proxies=proxies,
                                     allow_redirects=False)
 
             if (response.status_code == 301) or (response.status_code == 302):

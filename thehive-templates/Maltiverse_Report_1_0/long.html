@@ -1,0 +1,111 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+<div ng-if="success">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+                Maltiverse record for "{{artifact.data}}"</a>
+                <br/>
+                <a target="_blank" href="https://www.maltiverse.com/{{content.type}}/{{artifact.data}}">view more on www.maltiverse.com</a>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal" ng-if="content.classification">
+                <dt>Classification</dt>
+                <dd class="wrap">{{content.classification}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.type">
+                <dt>Type</dt>
+                <dd class="wrap">{{content.type}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.tag">
+                <dt>Tag</dt>
+                <dd class="wrap">
+                    <span class="label label-default" style="margin-right:1px" ng-repeat="tag in ::content.tag">
+                        {{tag}}
+                    </span>
+                </dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.creation_time">
+                <dt>Creation Time</dt>
+                <dd class="wrap">{{content.creation_time}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.modification_time">
+                <dt>Modification Time</dt>
+                <dd class="wrap">{{content.modification_time}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.subdomains">
+                <dt>Sub domains</dt>
+                <dd class="wrap">{{content.subdomains.join(', ')}}</dd>
+            </dl>
+
+            <dl class="dl-horizontal" ng-if="content.filetype">
+                <dt>File Type</dt>
+                <dd class="wrap">{{content.filetype}}</dd>
+            </dl>
+
+            <dl class="dl-horizontal" ng-if="content.score">
+                <dt>Score</dt>
+                <dd class="wrap">{{content.score}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.resolved_ip && content.resolved_ip.length > 0">
+                <dt>Resolutions</dt>
+                <dd>
+                    <div ng-if="::artifact.dataType === 'domain'">
+                        <strong>This domain has been seen to resolve to the following IP addresses.</strong>
+                    </div>
+                    <div ng-repeat="resolution in ::content.resolved_ip | limitTo:20">
+                        <p class="text-danger wrap">{{(resolution.ip_addr | fang)}}</p>
+                    </div>
+                </dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.filename && content.filename.length > 0">
+                <dt>File names</dt>
+                <dd>
+                    <div ng-if="::artifact.dataType === 'domain'">
+                        <strong>This sample has been seen with the following filename.</strong>
+                    </div>
+                    <div ng-repeat="name in ::content.filename | limitTo:20">
+                        <p class="text-danger wrap">{{(name | fang)}}</p>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+
+
+    <div class="panel panel-info" ng-if="::content.blacklist" ng-init="blacklists_limit = 5">
+        <div class="panel-heading">
+            <strong>Blacklists</strong>
+            <span class="pull-right" ng-show="::content.blacklist.length > 5">
+                <a href ng-show="blacklists_limit===5" ng-click="blacklists_limit = undefined">Show All ({{::content.blacklist.length}})</a>
+                <a href ng-show="!blacklists_limit"ng-click="blacklists_limit = 5">Show less</a>
+            </span>
+        </div>
+
+        <div class="panel-body">
+            <p>The observable is present in the following blacklists: 
+            </p>
+            <table class="table table-hover">
+                <tr>
+                    <th>Source</th>
+                    <th>Description</th>
+                    <th>First seen</th>
+                    <th>Last seen</th>
+                </tr>
+                <tr ng-repeat="bl in content.blacklist | limitTo:blacklists_limit">
+                    <td>{{bl.source}}</td>
+                    <td>{{bl.description}}</td>
+                    <td>{{bl.first_seen}}</td>
+                    <td>{{bl.last_seen}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

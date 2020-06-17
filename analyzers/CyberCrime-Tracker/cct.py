@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from cortexutils.analyzer import Analyzer
 from cybercrimetracker.cybercrimeTrackerAPI import cybercrimeTrackerAPI
@@ -55,7 +55,7 @@ class CyberCrimeTrackerAnalyzer(Analyzer):
                 'results': results
             })
         except Exception:
-            self.error('An error occured while scraping cybercrime-tracker.')
+            self.error('An error occurred while scraping cybercrime-tracker.')
 
 
 if __name__ == '__main__':

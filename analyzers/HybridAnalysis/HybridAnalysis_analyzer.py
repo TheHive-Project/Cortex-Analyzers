@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 According to data from official site [1], VxStream Sandbox Public API allows you to analyze:
@@ -83,7 +83,7 @@ class VxStreamSandboxAnalyzer(Analyzer):
 
                 if hashes is None:
                     filepath = self.get_param('file', None, 'File is missing')
-                    query_data = hashlib.sha256(open(filepath, 'r').read()).hexdigest()
+                    query_data = hashlib.sha256(open(filepath, 'rb').read()).hexdigest()
                 else:
                     # find SHA256 hash
                     query_data = next(h for h in hashes if len(h) == 64)

@@ -1,0 +1,66 @@
+<div class="report-PT" ng-if="success">
+    <style>
+        .report-PT dl {
+            margin-bottom: 2px;
+        }
+    </style>
+
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>PassiveTotal Components Report</strong>
+        </div>
+        <div class="panel-body">
+            <div ng-if="content.result.length === 0">
+                No records found
+            </div>
+            <div ng-if="content.result.length !== 0" class="panel panel-default">
+                <div class="panel-heading">
+                    Summary Information
+                </div>
+                <div class="panel-body">
+                    <dl class="dl-horizontal">
+                        <dt>Total Records:</dt>
+                        <dd>{{content.totalRecords}}</dd>
+                    </dl>
+                </div>
+            </div>
+            <div ng-if="content.result.length !== 0" class="panel panel-default">
+                <div class="panel-heading">
+                    Records
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover" ng-if="content.results.length > 0">
+                        <tr>
+                            <th>Source</th>
+                            <th>Category</th>
+                            <th>Label</th>
+                            <th>Version</th>
+                            <th>First seen</th>
+                            <th>Last seen</th>
+                        </tr>
+                        <tr ng-repeat="c in content.results | orderBy:'-firstSeen'">
+                            <td>{{c.hostname || 'None'}}</td>
+                            <td>{{c.category || 'None'}}</td>
+                            <td>{{c.label || 'None'}}</td>
+                            <td>{{c.version || 'None'}}</td>
+                            <td>{{c.firstSeen || 'None'}}</td>
+                            <td>{{c.lastSeen || 'None'}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

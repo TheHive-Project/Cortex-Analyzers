@@ -1,0 +1,49 @@
+<div class="report-SecurityTrails" ng-if="success">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      emailrep.io lookup ({{ content.mail || "-" }})
+    </div>
+    <div class="panel-body">
+      <div ng-if="(content | json) === '{}'">
+        No data found
+      </div>
+      <div ng-if="(content | json) !== '{}'">
+        <dl class=" dl-horizontal">
+          <dt>Reputation:</dt>
+          <dd class="wrap">{{ content.reputation || "-" }}</dd>
+        </dl>
+        <dl class=" dl-horizontal">
+          <dt>Suspicious:</dt>
+          <dd class="wrap">{{ content.suspicious || "-" }}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+          <dt>References:</dt>
+          <dd class="wrap">{{ content.references || "-" }}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.details.profiles.length !== 0">
+          <dt>Profiles:</dt>
+          <dd class="wrap">
+            <ul ng-repeat="profile in content.details.profiles">
+              <li>{{ profile }}</li>
+            </ul>
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+  <div class="panel-heading">
+    <strong>{{ artifact.data | fang }}</strong>
+  </div>
+  <div class="panel-body">
+    <dl class="dl-horizontal" ng-if="content.errorMessage">
+      <dt>
+        <i class="fa fa-warning"></i>
+      </dt>
+      <dd class="wrap">{{ content.errorMessage }}</dd>
+    </dl>
+  </div>
+</div>

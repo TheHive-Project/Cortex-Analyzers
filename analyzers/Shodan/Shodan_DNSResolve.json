@@ -5,7 +5,7 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
   "license": "AGPL-V3",
   "description": "Retrieve domain resolutions on Shodan.",
-  "dataTypeList": ["domain"],
+  "dataTypeList": ["domain", "fqdn"],
   "command": "Shodan/shodan_analyzer.py",
   "baseConfig": "Shodan",
   "config": {

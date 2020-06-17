@@ -1,0 +1,30 @@
+{
+  "name": "GoogleVisionAPI_WebDetection",
+  "version": "1.0.0",
+  "author": "CERT-LaPoste",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Find look alike image via Google Cloud Vision API using the Web_Detection service ",
+  "dataTypeList": ["file", "url"],
+  "command": "GoogleVisionAPI/GoogleVisionAPI_WebDetection.py",
+  "baseConfig": "GoogleVisionAPI",
+  "config": {
+    "service": "get"
+  },
+  "configurationItems": [
+    {
+      "name": "api_key",
+      "description": "API key for this service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "max_result",
+      "description": "Maximum number of url to fetch",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ]
+}

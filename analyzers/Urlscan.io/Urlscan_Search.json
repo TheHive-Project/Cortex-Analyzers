@@ -1,10 +1,14 @@
 {
   "name": "Urlscan.io_Search",
-  "author": "ninoseki",
+  "author": "ninoseki, Kyle Parrish (@arnydo)",
   "license": "MIT",
-  "url": "https://github.com/ninoseki/cortex_urlscan_analyzer",
-  "version": "0.1.0",
+  "url": "https://github.com/arnydo/Cortex-Analyzers",
+  "version": "0.1.1",
   "description": "Search IPs, domains, hashes or URLs on urlscan.io",
-  "dataTypeList": ["ip", "domain", "hash", "url"],
-  "command": "Urlscan.io/urlscan_analyzer.py"
+  "dataTypeList": ["ip", "domain", "hash", "fqdn", "url"],
+  "command": "Urlscan.io/urlscan_analyzer.py",
+  "baseConfig": "Urlscan.io",
+  "config": {
+    "service": "get"
+  }
 }
