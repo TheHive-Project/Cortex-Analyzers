@@ -8,7 +8,7 @@ class SinkDBAnalyzer(Analyzer):
 	def __init__(self):
 		Analyzer.__init__(self)
 
-		if self.data_type not in ['ip', 'domain', 'mail']:
+		if self.data_type not in ['ip', 'domain', 'fqdn', 'mail']:
 			self.error('SinkDB Analyzer only usable with the ip, domain, and mail data types.')
 
 		self.apikey = self.get_param('config.key', None, 'HTTPS API Key needed for querying SinkDB.')
@@ -19,7 +19,7 @@ class SinkDBAnalyzer(Analyzer):
 		if self.data_type == 'ip':
 			return self.parse_entries(json.loads(self.do_post("api_key={}&ipv4={}".format(self.apikey, self.data)).text))
 
-		elif self.data_type == 'domain':
+		elif self.data_type in ('domain', 'fqdn'):
 			return self.parse_entries(json.loads(self.do_post("api_key={}&domain={}".format(self.apikey, self.data)).text))
 
 		elif self.data_type == 'mail':
