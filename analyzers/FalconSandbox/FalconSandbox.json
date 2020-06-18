@@ -1,0 +1,35 @@
+{
+  "name": "FalconSandbox",
+  "version": "1.0",
+  "author": "Sebastian.Schmerl - Computacenter",
+  "url": "https://www.crowdstrike.com/blog/tech-center/get-access-falcon-apis/",
+  "license": "AGPL",
+  "description": "Submit observables to the Crowdstrike FalconX Sandbox",
+  "dataTypeList": ["file"],
+  "command": "FalconSandbox/FalconSandbox.py",
+  "baseConfig": "FalconSandbox",
+  "configurationItems": [
+    {
+      "name": "OAuth2_Url",
+      "description": "Crowdstrike Api OAuth2 url",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "default":"https://api.crowdstrike.com/oauth2/token"
+    },
+    {
+      "name": "Client_ID",
+      "description": "Crowdstrike Api ClientID",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "Client_Secret",
+      "description": "Crowdstrike Api Client Secret",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}

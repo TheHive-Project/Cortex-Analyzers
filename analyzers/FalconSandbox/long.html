@@ -1,0 +1,25 @@
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+  <div class="panel-heading">
+    <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+  </div>
+  <div class="panel-body">
+    {{results.errorMessage}}
+  </div>
+</div>
+
+<!-- Success -->
+<div class="panel panel-danger" ng-if="success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <a target="_blank" href="https://falcon.crowdstrike.com/intelligence/sandbox/report/{{content.resources[0].id}}/report-summary">Open the Crowdstrike Sandbox Report here</a>
+    </div>
+    <div ng-repeat="(key, value) in content.resources[0].sandbox[0]">
+		{{key}}: {{value}}
+	</div>
+	<div  class="panel-body" style="word-wrap: break-word;overflow-wrap: break-word;width: 100%;">
+        {{content}}
+    </div>
+</div>
