@@ -36,26 +36,13 @@ class FalconSandbox(Analyzer):
             "has_result": True
         }
         value = str(raw['resources'][0]['sandbox'][0]['threat_score'])
-        level = str(raw['resources'][0]['sandbox'][0]['verdict'])
-        #switch results to thehive summary labels
-        #ng-class="{'info': 'label-info', 'safe': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[t.level]">
-        switcher={
-            'no verdict':'info',
-            'No Specific Threat':'safe',
-            'suspicious':'suspicious',
-            'malicious':'malicious'
-        }
-        level = switcher.get(level, "invalid")
-        if level == "invalid":
-            predicate = predicate + "invalid level"
-            level = "info"
+        level = str(raw['resources'][0]['sandbox'][0]['verdict']) # no verdict, No Specific Threat, suspicious, malicious
             
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         return {"taxonomies": taxonomies}
 
 
     def CalcSHA256Hash(self, filepath):
-        # BUF_SIZE is totally arbitrary, change for your app!
         BUF_SIZE = 65536 # lets read stuff in 64kb chunks!
         l_sha256 = hashlib.sha256()
         with open(filepath, 'rb') as f:
@@ -70,14 +57,12 @@ class FalconSandbox(Analyzer):
 
     def RestAPIRequest(self, method, url, headers, data):
         l_json_response = "{}"
-        if method == "get":
-            response = self.oauth.get(url, data=data, headers=headers)
-        if method == "post":
-            response = self.oauth.post(url, data=data, headers=headers)
-        if method == "delete":
-            response = self.oauth.delete(url, data=data, headers=headers)
+        #get the get, post or delete method from the OAuth2Session object
+        method_to_call = getattr(self.oauth, method) 
+        
+        response = method_to_call(url, data=data, headers=headers)
         l_json_response = json.loads(response.text)
-
+        
         if l_json_response["errors"]:
             if l_json_response["errors"][0]["code"] == 403:
                 ## ok, we need a new token
@@ -85,14 +70,9 @@ class FalconSandbox(Analyzer):
                 self.oauth = OAuth2Session(client=self.client)
                 self.token = self.oauth.fetch_token(token_url=self.OAuth2_Url, client_id=self.Client_ID, client_secret=self.Client_Secret)        
                 #lets do it again with new token
-                if method == "get":
-                    response = self.oauth.get(url, data=data, headers=headers)
-                if method == "post":
-                    response = self.oauth.post(url, data=data, headers=headers)
-                if method == "delete":
-                    response = self.oauth.delete(url, data=data, headers=headers)
-            
-        l_json_response = json.loads(response.text)                    
+                response = method_to_call(url, data=data, headers=headers)
+                l_json_response = json.loads(response.text)        
+
         return l_json_response
 
 
@@ -116,7 +96,7 @@ class FalconSandbox(Analyzer):
                 return
             else:
                 if not json_response["resources"]:
-                    #no scan existing scan report for this file -> submit the file for analysis
+                    #no scan reports exists for this file -> submit the file for analysis
                     payload = open(filepath, "rb")
                     headers = {'Content-Type':'application/octet-stream'}
                     Url = "https://api.crowdstrike.com/samples/entities/samples/v2?file_name="+filename+"&comment="+"added by TheHive:FalconSandbox-Analyzer"
@@ -125,7 +105,7 @@ class FalconSandbox(Analyzer):
                         self.error(str(json_response_submit["errors"]))
                         return
                     else:
-                        #start analysis of the file
+                        #start the analysis of the submitted file
                         Url = "https://api.crowdstrike.com/falconx/entities/submissions/v1"
                         headers = {'Content-Type':'application/json'}
                         payload = "{\"sandbox\": [{\"sha256\": \"" + l_FileHashSha256 + "\",\"environment_id\": 110 }] }"
@@ -134,7 +114,7 @@ class FalconSandbox(Analyzer):
                             self.error(str(json_response_start_analysis["errors"]))
                             return
                         else: 
-                            #now the file is submitted and analysis is started, we get now the report_id
+                            #now the file is submitted and analysis is started, let's get the report_id now
                             Url = "https://api.crowdstrike.com/falconx/queries/submissions/v1?filter=sandbox.sha256:\""+l_FileHashSha256+"\"&limit=1"
                             payload = {}
                             headers = {'Content-Type':'application/json'}
