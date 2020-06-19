@@ -9,9 +9,12 @@
                 <p>
                     Observable was found in following MISP warning lists:
                 </p>
-                <ul ng-repeat="list in content.results">
+                <ul ng-repeat="list in content.results" ng-if="content.mode == 'json'">
                     <li>{{list.name}}</li>
                 </ul>
+                <ul ng-repeat="list in content.results" ng-if="content.mode == 'db'">
+                    <li>{{list.value}} - {{list.list_name}} - ver. {{list.list_version}}</li>
+                </ul>                
             </dd>
             <dd ng-if="content.results.length == 0">
                 <p>
@@ -20,12 +23,15 @@
             </dd>
             <dt>Warning lists status:</dt>
             <dd>
-                <span class="label label-success" ng-if="content.is_uptodate">
+                <span class="label label-success" ng-if="content.is_uptodate && content.mode == 'json'">
                     Up-to-date
                 </span>
-                <span class="label label-warning" ng-if="!content.is_uptodate">
+                <span class="label label-warning" ng-if="!content.is_uptodate && content.mode == 'json'">
                     Outdated
                 </span>
+                <span class="label label-warning" ng-if="content.mode == 'db'">
+                    N/A
+                </span>                
             </dd>
         </dl>
     </div>
