@@ -33,8 +33,6 @@ steps:
       user: {from_secret: docker_username}
       password: {from_secret: docker_password}
     when:
-      branch: 
-      - develop
       event: {exclude: [tag]}
 
   - name: build snapshot responders
@@ -45,17 +43,10 @@ steps:
       user: {from_secret: docker_username}
       password: {from_secret: docker_password}
     when:
-      branch:
-      - develop
       event: {exclude: [tag]}
 
   - name: build catalogs
     image: thehiveproject/neurons-build-catalogs
-    when:
-      branch:
-      - develop
-      - master
-
   
   - name: upload catalogs to bintray
     image: thehiveproject/drone-bintray
@@ -118,21 +109,8 @@ steps:
       --file responders/responders-devel.json \
       --repo cortexneurons
     when:
-      branch:
-      - develop
-
-  - name: Prepare documentation files
-    image: thehiveproject/doc-builder
-    settings:
-      type: Cortex-Neurons
-    when:
-      branch:
-      - mkdocs
-
-  - name: Publish documentation 
-    image: thehiveproject/mkdocs
-    settings:
-      token: { from_secret: github_token }
-    when:
-      branch:
-      - mkdocs
+      event:
+        branch:
+        - develop
+        event:
+        - push
