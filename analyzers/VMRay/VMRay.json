@@ -28,7 +28,7 @@
       "description": "Verify certificates",
       "type": "boolean",
       "multi": false,
-      "required": true,
+      "required": false,
       "defaultValue": true
     },
     {
