@@ -5,7 +5,11 @@
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
   "version": "3.1",
   "description": "VMRay Sandbox file analysis.",
-  "dataTypeList": ["hash", "file"],
+  "dataTypeList": [
+    "hash",
+    "file",
+    "url"
+  ],
   "command": "VMRay/vmray.py",
   "baseConfig": "VMRay",
   "configurationItems": [
@@ -39,11 +43,43 @@
       "required": false
     },
     {
-      "name": "disablereanalyze",
-      "description": "If set to true, samples won't get re-analyzed.",
+      "name": "query_retry_wait",
+      "description": "The amount of seconds to wait before trying to fetch the results.",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 10
+    },
+    {
+      "name": "recursive_sample_limit",
+      "description": "The maximum amount of recursive samples which will be analyzed. 0 disables recursion.",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 10
+    },
+    {
+      "name": "reanalyze",
+      "description": "If set to true, known samples will be re-analyzed on submission.",
       "type": "boolean",
       "multi": false,
       "required": false,
+      "defaultValue": true
+    },
+    {
+      "name": "archive_password",
+      "description": "The password that will be used to extract archives.",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "malware"
+    },
+    {
+      "name": "archive_compound_sample",
+      "description": "If set to true, files inside archives are treated as a single, compound sample. Otherwise, each file is treated as its own sample.",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
       "defaultValue": false
     }
   ]

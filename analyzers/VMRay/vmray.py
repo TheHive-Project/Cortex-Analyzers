@@ -4,141 +4,233 @@ from vmrayclient import VMRayClient
 from time import sleep
 
 
-SEVERITY_MAPPING = {
-    'whitelisted':      "safe",
-    'not_suspicious':   "safe",
-    'suspicious':       "suspicious",
-    'malicious':        "malicious",
-    'blacklisted':      "malicious",
-}
-
-
 class VMRayAnalyzer(Analyzer):
     """
     VMRay analyzer that uses VMRayClient to connect to an VMRay instance. Allows uploading a sample and getting
-    information via hash. More info regarding configuration in the complete documentation.
+    information bac via submission data. More info regarding configuration in the complete documentation.
     """
+
+    _namespace = "VMRay"
+
+    _severity_mapping = {
+        "whitelisted": "safe",
+        "suspicious": "suspicious",
+        "malicious": "malicious",
+        "blacklisted": "malicious",
+    }
+
+    _ioc_mapping = {
+        "domains": "domain",
+        "email_addresses": "email",
+        "emails": "sender",
+        "files": "filename",
+        "ips": "ip_address",
+        "mutexes": "mutex_name",
+        "registry": "reg_key_name",
+        "urls": "url",
+    }
+
     def __init__(self):
         Analyzer.__init__(self)
-        self.url = self.get_param('config.url', None, 'No VMRay URL given.').rstrip('/ ')
-        self.key = self.get_param('config.key', None, 'No VMRay API key given.')
+        self.reanalyze = self.get_param("config.reanalyze", True)
 
-        self.disable_reanalyze = self.get_param('config.disablereanalyze', False)
-        if isinstance(self.disable_reanalyze, str): # Check for string and boolean True
-            self.disable_reanalyze = self.disable_reanalyze.lower() == 'true'
-        if self.disable_reanalyze:
-            reanalyze = False
-        else:
-            reanalyze = True
+        self.query_retry_wait = self.get_param("config.query_retry_wait", 10)
+        self.recursive_sample_limit = self.get_param(
+            "config.recursive_sample_limit", 10
+        )
 
-        verify = self.get_param('config.certverify', True)
-        certpath = self.get_param('config.certpath', None)
+        verify = self.get_param("config.certverify", True)
+        certpath = self.get_param("config.certpath", None)
         if verify and certpath:
             verify = certpath
 
-        self.vmrc = VMRayClient(url=self.url,
-                                key=self.key,
-                                reanalyze=reanalyze,
-                                verify=verify)
+        archive_compound_sample = self.get_param(
+            "config.archive_compound_sample", False
+        )
 
-    def build_report(self, samplehash, submissionid=None):
-        samples = self.vmrc.get_sample(samplehash)
+        self.vmrc = VMRayClient(
+            url=self.get_param("config.url", None, "No VMRay URL given.").rstrip("/ "),
+            key=self.get_param("config.key", None, "No VMRay API key given."),
+            reanalyze=self.reanalyze,
+            verify=verify,
+            archive_password=self.get_param("config.archive_password", "malware"),
+            archive_action="compound_sample"
+            if archive_compound_sample
+            else "separate_samples",
+        )
 
-        for s in samples:
-            sampleid = s.get('sample_id')
-            if not submissionid:
-                submissions = self.vmrc.query_sample_submissions(sampleid)
-                for submission in submissions:
-                    if submission.get('submission_type') == 'api':
-                        submissionid = submission.get('submission_id')
-                        break
+    def _build_sample_node(self, sample, current_recursion_level):
+        sample_id = sample["sample_id"]
+        sample["sample_analyses"] = self.vmrc.get_sample_analyses(sample_id)
+        sample["sample_threat_indicators"] = self.vmrc.get_sample_threat_indicators(
+            sample_id
+        )
+        sample["sample_mitre_attack"] = self.vmrc.get_sample_mitre_attack(sample_id)
+        sample["sample_iocs"] = self.vmrc.get_sample_iocs(sample_id)
+        if self.recursive_sample_limit > current_recursion_level:
+            sample["sample_child_samples"] = [
+                self.vmrc.get_sample(child_sample_id)
+                for child_sample_id in sample["sample_child_sample_ids"]
+            ]
+            for child_sample in sample["sample_child_samples"]:
+                self._build_sample_node(child_sample, current_recursion_level + 1)
 
-            s['sample_submission_analyses'] = self.vmrc.get_submission_analyses(submissionid)
-            s['sample_threat_indicators'] = self.vmrc.get_sample_threat_indicators(sampleid)
-            s['sample_mitre_attack'] = self.vmrc.get_sample_mitre_attack(sampleid)
-            s['sample_iocs'] = self.vmrc.get_sample_iocs(sampleid)
+    def _build_report(self, submissions=None, samples=None):
+        if not submissions and not samples:
+            self.error(
+                "Either submissions or samples must be provided in order to build a report"
+            )
+            return
+        sample_ids = (
+            [sample["sample_id"] for sample in samples]
+            if samples
+            else [submission["submission_sample_id"] for submission in submissions]
+        )
+        # note: the dictionary fetched in case the reanalysis is disabled is incomplete. we need to query the samples again in all cases
+        samples = [self.vmrc.get_sample(sample_id) for sample_id in sample_ids]
+        for sample in samples:
+            self._build_sample_node(sample, 0)
+        return {"samples": samples}
 
-        return {'samples': samples}
+    def _wait_for_results(self, submission_result):
+        # Ref: #332: check if job was submitted
+        if not self.reanalyze:
+            if len(submission_result["errors"]) > 0:
+                # Sample has alredy been analyzed and reanalysis is turned off, get the reports
+                self.report(self._build_report(samples=submission_result["samples"]))
+                return  # stop waiting for report, because we already have it
+
+        running_submissions = submission_result["submissions"]
+        finished_submissions = []
+        while len(running_submissions) != len(finished_submissions):
+            finished_submissions.extend(
+                [
+                    updated_submission
+                    for updated_submission in (
+                        self.vmrc.update_submission(current_submission["submission_id"])
+                        for current_submission in running_submissions
+                    )
+                    if "submission_finished" in updated_submission
+                    and updated_submission["submission_finished"]
+                ]
+            )
+            sleep(self.query_retry_wait)
+
+        # Return the results
+        self.report(self._build_report(submissions=finished_submissions))
 
     def run(self):
-        if self.data_type == 'hash':
-            self.report(self.build_report(self.get_data()))
-        elif self.data_type == 'file':
-            filepath = self.get_param('file')
-            filename = self.get_param('filename')
-            submit_report = self.vmrc.submit_sample(filepath=filepath,
-                                                    filename=filename)
-
-            # Ref: #332: check if job was submitted
-            if self.disable_reanalyze:
-                if len(submit_report['errors']) > 0:
-                    # Sample is already there, get the report
-                    self.report(self.build_report(submit_report['samples'][0]['sample_sha256hash']))
-                    return # stop waiting for report, because we already have it
-
-            # Check for completion
-            while not self.vmrc.query_job_status(submit_report['submissions'][0]['submission_id']):
-                sleep(10)
-
-            # Return the results
-            self.report(self.build_report(submit_report['submissions'][0]['submission_sample_sha256'],
-                                          submit_report['submissions'][0]['submission_id']))
+        if self.data_type == "hash":
+            # don't run anything, try to build a report using existing results instead
+            samples = self.vmrc.get_samples_by_hash(self.get_data())
+            if samples:
+                self.report(self._build_report(samples=samples))
+            else:
+                self.report({"samples": samples})
+        elif self.data_type == "file":
+            self._wait_for_results(
+                self.vmrc.submit_file_sample(
+                    file_path=self.get_param("file"),
+                    file_name=self.get_param("filename"),
+                )
+            )
+        elif self.data_type == "url":
+            self._wait_for_results(
+                self.vmrc.submit_url_sample(url_sample=self.get_data())
+            )
         else:
-            self.error('Data type currently not supported')
+            self.error("Data type currently not supported")
+
+    def _taxonomies_for_samples(self, samples):
+        taxonomies = []
+        for sample in samples:
+            level = self._severity_mapping.get(sample["sample_severity"], "info")
+            value = "{}".format(sample["sample_score"])
+            if len(samples) > 1:
+                value += " (from sample {})".format(sample["sample_id"])
+            taxonomies.append(
+                self.build_taxonomy(level, self._namespace, "Score", value)
+            )
+
+            for threat_indicator in sample.get("sample_threat_indicators", {}).get(
+                "threat_indicators", []
+            ):
+                predicate = threat_indicator.get("category", None)
+                value = threat_indicator.get("operation", "")
+                if predicate:
+                    taxonomies.append(
+                        self.build_taxonomy(level, self._namespace, predicate, value)
+                    )
+
+            for mitre_technique in sample.get("sample_mitre_attack", {}).get(
+                "mitre_attack_techniques", []
+            ):
+                predicate = mitre_technique.get("technique_id", None)
+                value = mitre_technique.get("technique", "Unknown MITRE technique")
+                if "tactics" in mitre_technique:
+                    value += " using tactics: {}".format(
+                        ", ".join(mitre_technique["tactics"])
+                    )
+                if predicate:
+                    taxonomies.append(
+                        self.build_taxonomy(level, self._namespace, predicate, value)
+                    )
+
+            # add child sample taxonomies if they have been added
+            taxonomies.extend(
+                self._taxonomies_for_samples(sample.get("sample_child_samples", []))
+            )
+        return taxonomies
 
     def summary(self, raw):
         taxonomies = []
-
-        namespace = "VMRay"
-        predicate = "Score"
-
-        samples = raw.get('samples', [])
-
+        samples = raw.get("samples", [])
         if len(samples) == 0:
-            level = "info"
-            value = "No Scan"
-            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+            taxonomies.append(
+                self.build_taxonomy("info", self._namespace, "None", "No Scan")
+            )
         else:
-            for i, s in enumerate(samples, start=1):
-                level = SEVERITY_MAPPING.get(s.get('sample_severity'), "info")
-                value = "{}".format(s.get('sample_score'))
-                if len(samples) > 1:
-                    value += " (from scan {})".format(i)
-                taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-
-                for ti in s.get('sample_threat_indicators', {}).get('threat_indicators', []):
-                    predicate = ti.get('category', None)
-                    value = ti.get('operation', None)
-                    if predicate and value:
-                        taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-
+            taxonomies.extend(self._taxonomies_for_samples(samples))
         return {"taxonomies": taxonomies}
 
-    def artifacts(self, raw):
+    def _artifacts_for_samples(self, samples):
         artifacts = []
+        for sample in samples:
+            link = sample.get("sample_webif_url", None)
+            iocs = sample.get("sample_iocs", {}).get("iocs", {})
 
-        samples = raw.get('samples', [])
+            for ioc_type, ioc_payload_name in self._ioc_mapping.items():
+                if ioc_type in iocs:
+                    for ioc_node in iocs[ioc_type]:
+                        severity = ioc_node.get("severity", "")
+                        level = self._severity_mapping.get(severity, "info")
+                        tags = [severity, level, ioc_node["type"]]
+                        payload = ioc_node[ioc_payload_name]
+                        if "hashes" in ioc_node:
+                            for hash_node in ioc_node["hashes"]:
+                                if "sha256_hash" in hash_node:
+                                    payload += ", SHA256: {}".format(
+                                        hash_node["sha256_hash"]
+                                    )
+                        elif "operations" in ioc_node:
+                            payload += ", Operations: " + ", ".join(
+                                ioc_node["operations"]
+                            )
+                        artifacts.append(
+                            self.build_artifact(
+                                ioc_payload_name, payload, message=link, tags=tags
+                            )
+                        )
 
-        for s in samples:
-            link = s.get('sample_webif_url', None)
-            iocs = s.get('sample_iocs', {}).get('iocs', {})
-
-            for f in iocs.get('files', []):
-                severity = f.get('severity')
-                level = SEVERITY_MAPPING.get(severity, "info")
-                tags = list({severity, level, f.get('type')})
-                for hashes in f.get('hashes', []):
-                    for h in hashes.values():
-                        if not h: continue
-                        artifacts.append(self.build_artifact("hash", h, message=link, tags=tags))
-
-            for u in iocs.get('urls', []):
-                severity = u.get('severity')
-                level = SEVERITY_MAPPING.get(severity, "info")
-                tags = list({severity, level, u.get('type')})
-                artifacts.append(self.build_artifact("url", u.get('url'), message=link, tags=tags))
-
+            # add child samples if they have been added
+            artifacts.extend(
+                self._artifacts_for_samples(sample.get("sample_child_samples", []))
+            )
         return artifacts
 
-if __name__ == '__main__':
+    def artifacts(self, raw):
+        return self._artifacts_for_samples(raw.get("samples", []))
+
+
+if __name__ == "__main__":
     VMRayAnalyzer().run()

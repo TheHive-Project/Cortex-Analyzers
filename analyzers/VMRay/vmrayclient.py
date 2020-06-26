@@ -7,27 +7,32 @@ from requests import sessions
 
 
 class VMRayClientError(Exception):
-    """Parent class for all specific errors used by VMRayClient."""
+    """ Parent class for all specific errors used by VMRayClient. """
+
+    pass
+
+
+class VMRayAPIError(VMRayClientError):
+    """ Raised in case the VMRay API returns an eror. """
+
     pass
 
 
 class UnknownHashTypeError(VMRayClientError):
-    """Raised when length of hash as hex-string (or in bits) is not 32 (128 bit), 40 (160 bit) or 64 (256 bit)."""
+    """ Raised when length of hash as hex-string (or in bits) is not 32 (128 bit), 40 (160 bit) or 64 (256 bit). """
+
     pass
 
 
 class BadResponseError(VMRayClientError):
-    """HTTP return status is not 200."""
+    """ Raised in case the VMRay API returns a non-2xx status code. """
+
     pass
 
 
 class SampleFileNotFoundError(VMRayClientError):
     """Sample file was not found under given filepath."""
-    pass
 
-
-class UnknownSubmissionIdError(VMRayClientError):
-    """Thrown on invalid submission id or if id request fails."""
     pass
 
 
@@ -45,214 +50,253 @@ class VMRayClient(object):
     :param verify: Certificate for ssl validation in case the server certificate is self-signed. **Default: True**
     :type verify: [bool, str]
     """
-    def __init__(self, url, key, reanalyze=True, verify=True):
+
+    _submit_endpoint = "/rest/sample/submit"
+    _submission_endpoint = "/rest/submission/{}"
+    _sample_endpoint = "/rest/sample/{}"
+    _sample_hash_endpoint = "/rest/sample/{t}/{h}"
+    _sample_analyses_endpoint = "/rest/analysis/sample/{}"
+    _sample_iocs_endpoint = "/rest/sample/{}/iocs"
+    _sample_mitre_endpoint = "/rest/sample/{}/mitre_attack"
+    _sample_threat_indicators_endpoint = "/rest/sample/{}/threat_indicators"
+
+    def __init__(
+        self,
+        url,
+        key,
+        recursive_sample_limit=10,
+        reanalyze=True,
+        verify=True,
+        archive_password="malware",
+        archive_action="separate_samples",
+    ):
         self.url = url
         self.key = key
         self.reanalyze = reanalyze
+        self.recursive_sample_limit = recursive_sample_limit
         self.headers = self._prepare_headers()
         self.session = sessions.Session()
         self.session.headers = self.headers
         self.session.verify = verify
+        self.archive_password = archive_password
+        self.archive_action = archive_action
 
     def _prepare_headers(self):
         """Prepares connection headers for authorization.
 
         :returns: Dict with HTTP headers
         :rtype: dict"""
-        headers = {'Authorization': 'api_key {}'.format(self.key)}
+        headers = {"Authorization": "api_key {}".format(self.key)}
         return headers
 
-    def get_sample(self, samplehash):
+    def _check_response(self, res):
         """
-        Downloads information about a sample using a given hash.
+        Check the response code of the API and either return the results or raise an error.
+        """
+        if res.status_code < 200 or res.status_code > 299:
+            raise BadResponseError(
+                "HTTP response code from VMRay indicates an error: {c} ({t})".format(
+                    c=res.status_code, t=res.text
+                )
+            )
+        else:
+            response_json = res.json()
+            if response_json.get("result") == "ok":
+                return response_json.get("data", [])
+            else:
+                error_content = "Error from VMRay via API: {}"
+                if "data" in response_json:
+                    error_content = error_content.format(
+                        "; ".join(response_json["data"]["errors"])
+                    )
+                elif "error_msg" in response_json:
+                    error_content = error_content.format(response_json["error_msg"])
+                else:
+                    error_content = error_content.format("Unspecified error occurred")
+                raise VMRayAPIError(error_content)
+
+    def submit_url_sample(self, url_sample, tags=["TheHive"]):
+        """
+        Uploads a new URL sample to VMRay api.
+
+        :param url_sample: url to be analyzed
+        :type url_sample: str
+        :param tags: List of tags to apply to the sample
+        :type tags: list(str)
+        :returns: List of submissions and samples
+        :rtype: list(dict)
+        """
+        params = {
+            "sample_url": url_sample,
+            "reanalyze": self.reanalyze,
+            "max_recursive_samples": self.recursive_sample_limit,
+        }
+        if tags:
+            params["tags"] = ",".join(tags)
+
+        return self._check_response(
+            self.session.post(
+                url="{}{}".format(self.url, self._submit_endpoint), params=params,
+            )
+        )
+
+    def submit_file_sample(self, file_path, file_name, tags=["TheHive"]):
+        """
+        Uploads a new file sample to VMRay API. Filename gets sent base64 encoded.
+
+        :param file_path: path to sample
+        :type file_path: str
+        :param file_name: filename of the original file
+        :type file_name: str
+        :param tags: List of tags to apply to the sample
+        :type tags: list(str)
+        :returns: List of submissions and samples
+        :rtype: list(dict)
+        """
+        params = {
+            "sample_filename_b64enc": base64.b64encode(file_name.encode("utf-8")),
+            "reanalyze": self.reanalyze,
+            "max_recursive_samples": self.recursive_sample_limit,
+            "archive_password": self.archive_password,
+            "archive_action": self.archive_action,
+        }
+        if tags:
+            params["tags"] = ",".join(tags)
+
+        if os.path.isfile(file_path):
+            return self._check_response(
+                self.session.post(
+                    url="{}{}".format(self.url, self._submit_endpoint),
+                    files=[("sample_file", open(file_path, mode="rb"))],
+                    params=params,
+                )
+            )
+        else:
+            raise SampleFileNotFoundError("Given sample file was not found.")
+
+    def get_sample_threat_indicators(self, sample_id):
+        """
+        Download Threat Indicators for a given sample id.
+
+        :param sample_id: ID of the sample
+        :type sample_id: int
+        :returns: Dictionary of Threat Indicators
+        :rtype: dict
+        """
+        return self._check_response(
+            self.session.get(
+                url="{}{}".format(
+                    self.url, self._sample_threat_indicators_endpoint.format(sample_id)
+                ),
+            )
+        )
+
+    def get_sample_mitre_attack(self, sample_id):
+        """
+        Download MITRE ATT&CK(tm) information for a given sample id.
+
+        :param sample_id: ID of the sample
+        :type sample_id: int
+        :returns: Dictionary of MITRE ATT&CK(tm) information
+        :rtype: dict
+        """
+
+        return self._check_response(
+            self.session.get(
+                url="{}{}".format(
+                    self.url, self._sample_mitre_endpoint.format(sample_id)
+                ),
+            )
+        )
+
+    def get_sample(self, sample_id):
+        """
+        Query sample with a given sample id.
+
+        :param sample_id: ID of the sample
+        :type sample_id: int
+        :returns: Dictionary of Samples
+        :rtype: dict
+        """
+        return self._check_response(
+            self.session.get(
+                url="{}{}".format(self.url, self._sample_endpoint.format(sample_id)),
+            )
+        )
+
+    def get_samples_by_hash(self, sample_hash):
+        """
+        Downloads information about a all samplse matching the given hash.
 
         :param samplehash: hash to search for. Has to be either md5, sha1 or sha256
         :type samplehash: str
         :returns: List of samples
         :rtype: list(dict)
         """
-        if len(samplehash) == 32:  # MD5
-            hashtype = 'md5'
-        elif len(samplehash) == 40:  # SHA1
-            hashtype = 'sha1'
-        elif len(samplehash) == 64:  # SHA256
-            hashtype = 'sha256'
+        if len(sample_hash) == 32:  # MD5
+            hash_type = "md5"
+        elif len(sample_hash) == 40:  # SHA1
+            hash_type = "sha1"
+        elif len(sample_hash) == 64:  # SHA256
+            hash_type = "sha256"
         else:
-            raise UnknownHashTypeError('Sample hash has an unknown length.')
+            raise UnknownHashTypeError("Sample hash has an unknown length.")
 
-        apiurl = '/rest/sample/{}/{}'.format(hashtype, samplehash)
-        res = self.session.get('{}{}'.format(self.url, apiurl))
-        if res.status_code == 200:
-            sample = res.json()
-            if sample.get('result') == 'ok':
-                return sample.get('data', [])
-            else:
-                raise RuntimeError('Error from VMRay via API.'
-                                   ' Errors: {}'.format('; '.join(sample['data']['errors'])))
-        else:
-            raise BadResponseError('Response from VMRay was not HTTP 200.'
-                                   ' Responsecode: {}; Text: {}'.format(res.status_code, res.text))
+        return self._check_response(
+            self.session.get(
+                url="{}{}".format(
+                    self.url,
+                    self._sample_hash_endpoint.format(t=hash_type, h=sample_hash),
+                ),
+            )
+        )
 
-    def submit_sample(self, filepath, filename, tags=['TheHive']):
+    def get_sample_iocs(self, sample_id):
         """
-        Uploads a new sample to VMRay api. Filename gets sent base64 encoded.
+        Query IOCs for a given sample id.
 
-        :param filepath: path to sample
-        :type filepath: str
-        :param filename: filename of the original file
-        :type filename: str
-        :param tags: List of tags to apply to the sample
-        :type tags: list(str)
-        :returns: List of submissions and samples
-        :rtype: list(dict)
-        """
-        apiurl = '/rest/sample/submit?sample_file'
-        params = {'sample_filename_b64enc': base64.b64encode(filename.encode('utf-8')),
-                  'reanalyze': self.reanalyze}
-        if tags:
-            params['tags'] = ','.join(tags)
-
-        if os.path.isfile(filepath):
-            res = self.session.post(url='{}{}'.format(self.url, apiurl),
-                                    files=[('sample_file', open(filepath, mode='rb'))],
-                                    params=params)
-            if res.status_code == 200:
-                submit_report = res.json()
-                if submit_report.get('result') == 'ok':
-                    return submit_report.get('data', [])
-                else:
-                    raise RuntimeError('Error from VMRay via API.'
-                                    ' Errors: {}'.format('; '.join(submit_report['data']['errors'])))
-            else:
-                raise BadResponseError('Response from VMRay was not HTTP 200.'
-                                       ' Responsecode: {}; Text: {}'.format(res.status_code, res.text))
-        else:
-            raise SampleFileNotFoundError('Given sample file was not found.')
-
-    def get_sample_threat_indicators(self, sampleid):
-        """
-        Download Threat Indicators for a given sample id.
-
-        :param sampleid: ID of the sample
-        :type sampleid: int
-        :returns: Dictionary of Threat Indicators
-        :rtype: dict
-        """
-        apiurl = '/rest/sample/{}/threat_indicators'.format(sampleid)
-        res = self.session.get('{}{}'.format(self.url, apiurl))
-        if res.status_code == 200:
-            threat_indicators = res.json()
-            if threat_indicators.get('result') == 'ok':
-                return threat_indicators.get('data', {})
-            else:
-                raise RuntimeError('Error from VMRay via API.'
-                                   ' Errors: {}'.format('; '.join(threat_indicators['data']['errors'])))
-        else:
-            raise BadResponseError('Response from VMRay was not HTTP 200.'
-                                   ' Status Code: {}; Text: {}'.format(res.status_code, res.text))
-
-    def get_sample_mitre_attack(self, sampleid):
-        """
-        Download MITRE ATT&CK(tm) information for a given sample id.
-
-        :param sampleid: ID of the sample
-        :type sampleid: int
-        :returns: Dictionary of MITRE ATT&CK(tm) information
-        :rtype: dict
-        """
-        apiurl = '/rest/sample/{}/mitre_attack'.format(sampleid)
-        res = self.session.get('{}{}'.format(self.url, apiurl))
-        if res.status_code == 200:
-            mitre_attack = res.json()
-            if mitre_attack.get('result') == 'ok':
-                return mitre_attack.get('data', {})
-            else:
-                raise RuntimeError('Error from VMRay via API.'
-                                   ' Errors: {}'.format('; '.join(mitre_attack['data']['errors'])))
-        else:
-            raise BadResponseError('Response from VMRay was not HTTP 200.'
-                                   ' Status Code: {}; Text: {}'.format(res.status_code, res.text))
-
-    def get_sample_iocs(self, sampleid):
-        """
-        Download IOCs for a given sample id.
-
-        :param sampleid: ID of the sample
-        :type sampleid: int
+        :param sample_id: ID of the sample
+        :type sample_id: int
         :returns: Dictionary of IOCs
         :rtype: dict
         """
-        apiurl = '/rest/sample/{}/iocs'.format(sampleid)
-        res = self.session.get('{}{}'.format(self.url, apiurl))
-        if res.status_code == 200:
-            iocs = res.json()
-            if iocs.get('result') == 'ok':
-                return iocs.get('data', {})
-            else:
-                raise RuntimeError('Error from VMRay via API.'
-                                   ' Errors: {}'.format('; '.join(iocs['data']['errors'])))
-        else:
-            raise BadResponseError('Response from VMRay was not HTTP 200.'
-                                   ' Status Code: {}; Text: {}'.format(res.status_code, res.text))
+        return self._check_response(
+            self.session.get(
+                url="{}{}".format(
+                    self.url, self._sample_iocs_endpoint.format(sample_id)
+                ),
+            )
+        )
 
-    def query_job_status(self, submissionid):
+    def update_submission(self, submission_id):
         """
-        Queries vmray to check id a job was 
+        Queries the current state of a submission.
         
-        :param submissionid: ID of the job/submission
-        :type submissionid: int
-        :returns: True if job finished, false if not
-        :rtype: bool
+        :param submission_id: ID of the submission
+        :type submission_id: int
+        :returns: Dictionary representing the submission
+        :rtype: dict
         """
-        apiurl = '/rest/submission/{}'.format(submissionid)
-        res = self.session.get('{}{}'.format(self.url, apiurl))
-        if res.status_code == 200:
-            submission_info = res.json()
-            if submission_info.get('data', {}).get('submission_finished', False):  # Or something like that
-                return True
-        else:
-            raise UnknownSubmissionIdError('Submission id seems invalid, response was not HTTP 200.')
-        return False
+        return self._check_response(
+            self.session.get(
+                "{}{}".format(self.url, self._submission_endpoint.format(submission_id))
+            )
+        )
 
-    def query_sample_submissions(self, sampleid):
+    def get_sample_analyses(self, sample_id):
         """
-        Queries submissions for a given sample id.
+        Queries analyses about a sample using a given sample id.
 
-        :param sampleid: ID of the sample
-        :type sampleid: int
-        :returns: List of submissions
-        :rtype: list(dict)
-        """
-        apiurl = '/rest/submission/sample/{}'.format(sampleid)
-        res = self.session.get('{}{}'.format(self.url, apiurl))
-        if res.status_code == 200:
-            submissions = res.json()
-            if submissions.get('result') == 'ok':
-                return submissions.get('data', [])
-            else:
-                raise RuntimeError('Error from VMRay via API.'
-                                   ' Errors: {}'.format('; '.join(submissions['data']['errors'])))
-        else:
-            raise BadResponseError('Response from VMRay was not HTTP 200.'
-                                   ' Status Code: {}; Text: {}'.format(res.status_code, res.text))
-
-    def get_submission_analyses(self, submissionid):
-        """
-        Downloads analyses about a sample using a given submission id.
-
-        :param submissionid: ID of the job/submission
-        :type submissionid: int
+        :param sample_id: ID of the sample
+        :type sample_id: int
         :returns: List of analyses
         :rtype: list(dict)
         """
-        apiurl = '/rest/analysis/submission/{}'.format(submissionid)
-        res = self.session.get('{}{}'.format(self.url, apiurl))
-        if res.status_code == 200:
-            analyses = res.json()
-            if analyses.get('result') == 'ok':
-                return analyses.get('data', [])
-            else:
-                raise RuntimeError('Error from VMRay via API.'
-                                   ' Errors: {}'.format('; '.join(analyses['data']['errors'])))
-        else:
-            raise UnknownSubmissionIdError('Submission id seems invalid, response was not HTTP 200.')
+        return self._check_response(
+            self.session.get(
+                "{}{}".format(
+                    self.url, self._sample_analyses_endpoint.format(sample_id)
+                )
+            )
+        )
+

@@ -10,23 +10,21 @@
         <dl class="dl-horizontal">
             <dt ng-if="sample.sample_severity">Severity</dt>
             <dd>
-				<span class="label" ng-class="{'label-success':sample.sample_severity === 'not_suspicious',
+                <span class="label" ng-class="{'label-success':sample.sample_severity === 'not_suspicious',
 					'label-danger': sample.sample_severity==='malicious',
 					'label-info': sample.sample_severity!='not_suspicious' && sample.sample_severity!='malicious'}">
-					{{sample.sample_severity}}
-				</span>
-                <!--<span class="label ">{{sample.sample_last_reputation_severity}}</span>-->
-
+                    {{sample.sample_severity}}
+                </span>
             </dd>
         </dl>
         <dl class="dl-horizontal">
             <dt>Last reputation</dt>
             <dd>
-				<span class="label" ng-class="{'label-info':sample.sample_last_reputation_severity === 'unknown',
+                <span class="label" ng-class="{'label-info':sample.sample_last_reputation_severity === 'unknown',
 					'label-danger': sample.sample_last_reputation_severity==='blacklisted',
 					'label-info': sample.sample_last_reputation_severity!='blacklisted'}">
-				{{sample.sample_last_reputation_severity}}
-				</span>
+                    {{sample.sample_last_reputation_severity}}
+                </span>
             </dd>
         </dl>
         <dl ng-if="sample.sample_webif_url" class="dl-horizontal">
@@ -60,6 +58,8 @@
         </dl>
     </div>
 </div>
+
+
 <div class="panel panel-success" ng-if="success && content.samples.length == 0">
     <div class="panel-heading">
         VMRay Report
