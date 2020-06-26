@@ -37,9 +37,12 @@ class CIRCLPassiveSSLAnalyzer(Analyzer):
 
         newresult = {'ip': ip,
                      'certificates': []}
+        subjects = result.get(ip).get('subjects')
         for cert in certificates:
+            if cert not in subjects:
+                continue
             newresult['certificates'].append({'fingerprint': cert,
-                                              'subject': result.get(ip).get('subjects').get(cert).get('values')[0]})
+                                              'subject': subjects.get(cert).get('values')[0]})
         return newresult
 
     def query_certificate(self, cert_hash):
