@@ -1,12 +1,12 @@
 {
-  "name": "LIS_Get_Report",
+  "name": "LastInfoSec",
   "version": "1.0",
   "author": "LastInfoSec",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-3.0",
   "description": "Get LastInfoSec Report",
   "dataTypeList": ["hash", "domain"],
-  "command": "LIS_GetReport/LIS_GetReport.py",
+  "command": "LastInfoSec/LastInfoSec.py",
   "baseConfig": "LastInfoSec",
   "config": {
     "service": "get_report"
