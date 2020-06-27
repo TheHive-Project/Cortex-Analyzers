@@ -4,7 +4,7 @@ from cortexutils.analyzer import Analyzer
 import requests
 
 
-class LIS_GetReport(Analyzer):
+class LastInfoSec(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
         self.api_key = self.get_param(
@@ -117,4 +117,4 @@ class LIS_GetReport(Analyzer):
 
 
 if __name__ == "__main__":
-    LIS_GetReport().run()
+    LastInfoSec().run()
