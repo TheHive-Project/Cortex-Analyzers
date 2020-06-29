@@ -1,7 +1,7 @@
 <div class="panel panel-info" ng-if="success">
 
     <div class="panel-heading">
-        SpamAssassin score for <strong>{{artifact.data}}</strong>
+        SpamAssassin score for <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
     </div>
     <div class="panel-body">
         <h4>Final Score</h4>
