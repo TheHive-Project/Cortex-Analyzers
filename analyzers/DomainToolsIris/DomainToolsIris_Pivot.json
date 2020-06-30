@@ -26,5 +26,23 @@
       "multi": false,
       "required": true
     }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.domaintools.com",
+  "service_logo": {
+    "path": "assets/domaintools_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/DomainToolsIris_Pivot_long.png",
+      "caption": "DomainToolsIris_Pivot long report sample"
+    },
+    {
+      "path": "assets/DomainToolsIris_Pivot_short.png",
+      "caption:": "DomainToolsIris_Pivot mini report sample"
+    }
   ]
 }
