@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from cortexutils.responder import Responder
 import requests
+import ipaddress
 
 class Wazuh(Responder):
    def __init__(self):

@@ -18,7 +18,7 @@ class DomainToolsAnalyzer(Analyzer):
             "config.service", None, "Service parameter is missing"
         )
         self.raw = ""
-        self.pivot_count_threshold = int(self.get_param("config.pivot_count_threshold"))
+        self.pivot_count_threshold = int(self.get_param("config.pivot_count_threshold", 500))
 
     @staticmethod
     def get_domain_age(create_date):
