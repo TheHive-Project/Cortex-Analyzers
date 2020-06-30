@@ -1,17 +1,17 @@
 {
   "name": "SinkDB",
-  "author": "Nils Kuhnert, CERT-Bund",
+  "author": "Mark Kikta, RedLegg Cybersecurity Solutions",
   "license": "AGPL-V3",
-  "url": "https://github.com/BSI-CERT-Bund/sinkdb-analyzer",
-  "version": "1.0",
-  "description": "Check if ip is sinkholed via sinkdb.abuse.ch",
-  "dataTypeList": ["ip"],
+  "url": "https://github.com/RedLegg/sinkdb-analyzer",
+  "version": "1.1",
+  "description": "Check if ip is sinkholed via the new sinkdb.abuse.ch HTTPS API. Original analyzer can be found at https://github.com/BSI-CERT-Bund/sinkdb-analyzer",
+  "dataTypeList": ["ip", "domain", "fqdn", "mail"],
   "command": "SinkDB/sinkdb.py",
   "baseConfig": "SinkDB",
   "configurationItems": [
     {
       "name": "key",
-      "description": "Define the API Key",
+      "description": "Define the HTTPS API Key",
       "type": "string",
       "multi": false,
       "required": true

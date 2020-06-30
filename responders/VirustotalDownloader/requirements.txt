@@ -1,0 +1,6 @@
+cortexutils
+datetime
+requests
+thehive4py
+python-magic
+filetype

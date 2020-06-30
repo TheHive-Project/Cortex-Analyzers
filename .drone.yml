@@ -127,7 +127,7 @@ steps:
       type: Cortex-Neurons
     when:
       branch:
-      - mkdocs
+      - master
 
   - name: Publish documentation 
     image: thehiveproject/mkdocs
@@ -135,4 +135,4 @@ steps:
       token: { from_secret: github_token }
     when:
       branch:
-      - mkdocs
+      - master

@@ -1,9 +1,9 @@
-# Request Tracker 4 Cortex Responder
+#### Request Tracker 4 Cortex Responder
 Summary: Creates RT tickets from TheHive
 
 Applies To: Case Observables (Artifacts), Alerts, Cases
 
-## Initial Responder Configuration
+##### Initial Responder Configuration
 
 The following need to be configured under **Organization --> Responders** prior to use:
 
@@ -38,7 +38,7 @@ spear_phishing:phishing_spear
 
 Any observable with a `phishing` tag would be assigned the template named `phishing_generic`. Any observale tagged `spear_phishing` would have its ticket created with a body from the `phishing_spear` template.
 
-## Workflow
+##### Workflow
 
 1. Set [Initial Responder Configuration](#Initial-Responder-Configuration)
 2. [Create Template(s)](#Templates)
@@ -46,7 +46,7 @@ Any observable with a `phishing` tag would be assigned the template named `phish
 4. Run the RT4-CreateTicket responder
 5. When complete, the ticket(s) should be created and the `thehive_cf_rtticket` custom field on TheHive cases (if present) should be populated with the URL to any created ticket
 
-## Templates
+##### Templates
 
 Inside the `./templates` dir of the RT4 responder, you will need to create the templates for subjects and notification bodies that will be used on ticket creation. For the above example on an observable tagged to use the `phishing_generic` template, there should be a file inside ./templates/ called `phishing_generic.j2` (all templates should end in the .j2 extension since it uses Jinja2 templating)
 
@@ -86,7 +86,7 @@ Inside the jinja2 template, all block names are passed at RT ticket variables wi
 
 Every ticket created from that template will have the RT custom field CF_Classification set to "Phishing" upon ticket creation.
 
-## Tags to Modify RT4 Responder Behavior
+##### Tags to Modify RT4 Responder Behavior
 
 Set any of the following tags to modify behavior of the created ticket:
 
@@ -108,7 +108,7 @@ Set any of the following tags to modify behavior of the created ticket:
 
 `rt4_set_template:phishing_generic` - overrides any default template from tag_to_template_map setting when constructing the body of the notification, in this case instructing the Responder to use the `phishing_generic` template
 
-## Ticket customization order
+##### Ticket customization order
 
 As already alluded to, there are 4 ways to customize ticket creation options:
 
@@ -132,7 +132,7 @@ Greater numbered config options take precedence over smaller ones.
 
 If a tag_to_template map at the Org Responder config in Cortex is set to map tags of `phishing` to the `phishing_generic` template, but a `set_rt4_template:phishing_spear` tag on the observable sets a different template, the observable tag takes precedence.
 
-## Observable Object Data
+##### Observable Object Data
 
 Observables are a custom dictionary in which their properties are stored. In addition to the ticket properties passed to RT, each observable is also tagged with its case/artifact info which makes available the following info in each observable:
 
