@@ -19,5 +19,23 @@
       "multi": false,
       "required": true
     }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.lastinfosec.com/",
+  "service_logo": {
+    "path": "assets/logolastinfosec.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/LastInfoSec_long.png",
+      "caption": "LastInfoSec long report sample"
+    },
+    {
+      "path": "assets/LastInfoSec_short.png",
+      "caption:": "LastInfoSec mini report sample"
+    }
   ]
 }
