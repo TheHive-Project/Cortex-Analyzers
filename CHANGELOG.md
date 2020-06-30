@@ -1,35 +1,55 @@
-# Change Log
+# Changelog
 
-## [2.7.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.7.0) (2020-05-14)
+## [2.8.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.8.0) (2020-06-30)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.7.0...2.8.0)
+
+**Fixed bugs:**
+
+- \[Bug\] JSONDecodeError with dockerized analyzers [\#800](https://github.com/TheHive-Project/Cortex-Analyzers/issues/800)
+- \[Bug\] Wazuh responder not working. [\#778](https://github.com/TheHive-Project/Cortex-Analyzers/issues/778)
+- \[Bug\] MineMeld\_1\_0 Obesrvable not reaching destination. [\#773](https://github.com/TheHive-Project/Cortex-Analyzers/issues/773)
+- \[Bug\] Abuse\_Finder : pythonwhois dependency tree broken [\#742](https://github.com/TheHive-Project/Cortex-Analyzers/issues/742)
+
+**Closed issues:**
+
+- \[FR\] Rename Lis\_GetReport analyzer to LastInfoSec [\#808](https://github.com/TheHive-Project/Cortex-Analyzers/issues/808)
+- EML-Parser Requirements file missing pip requirement [\#792](https://github.com/TheHive-Project/Cortex-Analyzers/issues/792)
+- ELK - Elasticsearch or Kibana analyzer \(contribution survey\) [\#419](https://github.com/TheHive-Project/Cortex-Analyzers/issues/419)
+
+## [2.7.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.7.0) (2020-05-15)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.6.0...2.7.0)
 
 **Implemented enhancements:**
 
+- BlueCoat Malware Analysis Sandbox Analyzer  [\#145](https://github.com/TheHive-Project/Cortex-Analyzers/issues/145)
 - \[discussion\] Mispwarninglist analyzer speed issue and proposed improvement  [\#731](https://github.com/TheHive-Project/Cortex-Analyzers/issues/731)
 - Improvement: extract IOCs from EmlParser [\#710](https://github.com/TheHive-Project/Cortex-Analyzers/issues/710)
 - \[FR\] Yeti Analyzer - SSL error with self signed certificate [\#468](https://github.com/TheHive-Project/Cortex-Analyzers/issues/468)
-- BlueCoat Malware Analysis Sandbox Analyzer  [\#145](https://github.com/TheHive-Project/Cortex-Analyzers/issues/145)
+- Add RT4-CreateTicket [\#543](https://github.com/TheHive-Project/Cortex-Analyzers/pull/543) ([mdavis332](https://github.com/mdavis332))
 
 **Fixed bugs:**
 
 - \[Bug\] MaxMind [\#752](https://github.com/TheHive-Project/Cortex-Analyzers/issues/752)
-- \[Bug\] EmailRep [\#750](https://github.com/TheHive-Project/Cortex-Analyzers/issues/750)
-- \[Bug\] Shodan Analyzer: Inconsistent Key References [\#748](https://github.com/TheHive-Project/Cortex-Analyzers/issues/748)
 - json.dump \n and \" [\#743](https://github.com/TheHive-Project/Cortex-Analyzers/issues/743)
 - \[Bug\] Yeti Analyzer docker images pip installing pyeti [\#708](https://github.com/TheHive-Project/Cortex-Analyzers/issues/708)
 - \[Bug\] FireHOLBlocklists No such file or directory [\#707](https://github.com/TheHive-Project/Cortex-Analyzers/issues/707)
-- \[Bug\] DNSDB Analyzer Python 3 incompatability [\#613](https://github.com/TheHive-Project/Cortex-Analyzers/issues/613)
 - \[Bug\] Worker cannot be run [\#595](https://github.com/TheHive-Project/Cortex-Analyzers/issues/595)
+- \[Bug\] EmailRep [\#750](https://github.com/TheHive-Project/Cortex-Analyzers/issues/750)
+- \[Bug\] Shodan Analyzer: Inconsistent Key References [\#748](https://github.com/TheHive-Project/Cortex-Analyzers/issues/748)
+- \[Bug\] DNSDB Analyzer Python 3 incompatability [\#613](https://github.com/TheHive-Project/Cortex-Analyzers/issues/613)
 - \[Bug\] Crt\_sh\_Transparency\_Logs\_1\_0 - No JSON object could be decoded [\#594](https://github.com/TheHive-Project/Cortex-Analyzers/issues/594)
 - \[Bug\] TheHive isn't showing error messages from responders [\#429](https://github.com/TheHive-Project/Cortex-Analyzers/issues/429)
 
 **Closed issues:**
 
+- New analyzer : Google Vision API  [\#298](https://github.com/TheHive-Project/Cortex-Analyzers/issues/298)
 - New Analyzer:  ANY.RUN [\#734](https://github.com/TheHive-Project/Cortex-Analyzers/issues/734)
 - New Analyzer: OpenCTI [\#723](https://github.com/TheHive-Project/Cortex-Analyzers/issues/723)
 - New Analyzer: MalwareBazaar [\#722](https://github.com/TheHive-Project/Cortex-Analyzers/issues/722)
-- New analyzer : Google Vision API  [\#298](https://github.com/TheHive-Project/Cortex-Analyzers/issues/298)
+- \[FR\] CyberChef Analyzer [\#600](https://github.com/TheHive-Project/Cortex-Analyzers/issues/600)
+- Cortex Responder for creating RT \(Request Tracker\) tickets out of TheHive [\#430](https://github.com/TheHive-Project/Cortex-Analyzers/issues/430)
 
 **Merged pull requests:**
 
@@ -42,8 +62,12 @@
 - Fix bug emlparser when 'content-type' string in mail is in lower case [\#730](https://github.com/TheHive-Project/Cortex-Analyzers/pull/730) ([TofBaasken](https://github.com/TofBaasken))
 - malwarebazaar hash search [\#728](https://github.com/TheHive-Project/Cortex-Analyzers/pull/728) ([dadokkio](https://github.com/dadokkio))
 - Add OpenCTI Analyzer v1 [\#725](https://github.com/TheHive-Project/Cortex-Analyzers/pull/725) ([amr-cossi](https://github.com/amr-cossi))
+- Add CyberChef analyzer [\#697](https://github.com/TheHive-Project/Cortex-Analyzers/pull/697) ([weslambert](https://github.com/weslambert))
+- Add CyberChef Analyzer [\#599](https://github.com/TheHive-Project/Cortex-Analyzers/pull/599) ([weslambert](https://github.com/weslambert))
+-  DomainTools Iris - Risky DNS Responder [\#587](https://github.com/TheHive-Project/Cortex-Analyzers/pull/587) ([ChuckWoodraska](https://github.com/ChuckWoodraska))
 
 ## [2.6.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.6.0) (2020-03-25)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.5.0...2.6.0)
 
 **Implemented enhancements:**
@@ -61,7 +85,6 @@
 - \[Bug\] VMRay Returns Error [\#520](https://github.com/TheHive-Project/Cortex-Analyzers/issues/520)
 - \[Bug\] FileInfo does not run Oletools submodule for a doc [\#705](https://github.com/TheHive-Project/Cortex-Analyzers/issues/705)
 - \[Bug\] Investigate Analyzer Broken [\#703](https://github.com/TheHive-Project/Cortex-Analyzers/issues/703)
-- \\[Bug\\] AbuseIPDB analyzer returns error [\#701](https://github.com/TheHive-Project/Cortex-Analyzers/issues/701)
 - Analyzers missing cortexutils in requirements.txt [\#695](https://github.com/TheHive-Project/Cortex-Analyzers/issues/695)
 - \[Bug\] abuselpdb stop stupport APIv1 [\#618](https://github.com/TheHive-Project/Cortex-Analyzers/issues/618)
 - \[Bug\] All Onyphe analyzer return "Invalid output" [\#591](https://github.com/TheHive-Project/Cortex-Analyzers/issues/591)
@@ -99,6 +122,7 @@
 - added IntezerCommunity analyzer [\#505](https://github.com/TheHive-Project/Cortex-Analyzers/pull/505) ([mlodic](https://github.com/mlodic))
 
 ## [2.5.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.5.0) (2020-02-24)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.4.1...2.5.0)
 
 **Fixed bugs:**
@@ -117,9 +141,9 @@
 - Cisco Threat Grid Analyzer [\#597](https://github.com/TheHive-Project/Cortex-Analyzers/pull/597) ([maugertg](https://github.com/maugertg))
 - Cisco AMP for Endpoints Responder [\#596](https://github.com/TheHive-Project/Cortex-Analyzers/pull/596) ([maugertg](https://github.com/maugertg))
 - Added IPVoid IP reputation API analyzer  [\#455](https://github.com/TheHive-Project/Cortex-Analyzers/pull/455) ([jdsnape](https://github.com/jdsnape))
-- Redmine responder [\#342](https://github.com/TheHive-Project/Cortex-Analyzers/pull/342) ([srilumpa](https://github.com/srilumpa))
 
 ## [2.4.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.4.1) (2020-02-11)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.4.0...2.4.1)
 
 **Implemented enhancements:**
@@ -143,6 +167,7 @@
 - New Analyzer: SoltraEdge [\#264](https://github.com/TheHive-Project/Cortex-Analyzers/issues/264)
 
 ## [2.4.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.4.0) (2020-02-10)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.3.0...2.4.0)
 
 **Implemented enhancements:**
@@ -178,7 +203,6 @@
 
 **Merged pull requests:**
 
--  DomainTools Iris - Risky DNS Responder [\#587](https://github.com/TheHive-Project/Cortex-Analyzers/pull/587) ([ChuckWoodraska](https://github.com/ChuckWoodraska))
 - DomainTools Iris - Pivot Analyzer [\#586](https://github.com/TheHive-Project/Cortex-Analyzers/pull/586) ([ChuckWoodraska](https://github.com/ChuckWoodraska))
 - Add Spamhaus DBL analyzer [\#585](https://github.com/TheHive-Project/Cortex-Analyzers/pull/585) ([weslambert](https://github.com/weslambert))
 - Add Wazuh responder [\#582](https://github.com/TheHive-Project/Cortex-Analyzers/pull/582) ([weslambert](https://github.com/weslambert))
@@ -193,6 +217,7 @@
 - Malware clustering [\#351](https://github.com/TheHive-Project/Cortex-Analyzers/pull/351) ([garanews](https://github.com/garanews))
 
 ## [2.3.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.3.0) (2019-11-28)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.2.0...2.3.0)
 
 **Implemented enhancements:**
@@ -218,7 +243,7 @@
 - \[Bug\] Docker build fails due to spaces in some responders [\#540](https://github.com/TheHive-Project/Cortex-Analyzers/issues/540)
 - Talos Analyzer No Longer Works [\#521](https://github.com/TheHive-Project/Cortex-Analyzers/issues/521)
 - \[Bug\] Fortiguard: Category parsing does not handle "-" [\#493](https://github.com/TheHive-Project/Cortex-Analyzers/issues/493)
-- fix when hash not found [\#485](https://github.com/TheHive-Project/Cortex-Analyzers/pull/485) ([garanews](https://github.com/garanews))
+- Umbrella analyzer: query\_limit: error if no data provided [\#479](https://github.com/TheHive-Project/Cortex-Analyzers/pull/479) ([siisar](https://github.com/siisar))
 - Fix category parsing forom Fortiguard URLCategory [\#494](https://github.com/TheHive-Project/Cortex-Analyzers/pull/494) ([srilumpa](https://github.com/srilumpa))
 
 **Closed issues:**
@@ -230,6 +255,7 @@
 - Metadefender analyzer [\#510](https://github.com/TheHive-Project/Cortex-Analyzers/pull/510) ([garanews](https://github.com/garanews))
 
 ## [2.2.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.2.0) (2019-10-01)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.1.8...2.2.0)
 
 **Implemented enhancements:**
@@ -263,6 +289,7 @@
 - New analyser : Google Vision API [\#297](https://github.com/TheHive-Project/Cortex-Analyzers/pull/297) ([0xswitch](https://github.com/0xswitch))
 
 ## [2.1.8](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.1.8) (2019-07-12)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.1.7...2.1.8)
 
 **Fixed bugs:**
@@ -270,6 +297,7 @@
 - \[Bug\] PassiveTotal SSL Certificate History analyzer always report at least one record, even if there isn't one [\#513](https://github.com/TheHive-Project/Cortex-Analyzers/issues/513)
 
 ## [2.1.7](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.1.7) (2019-07-10)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.1.6...2.1.7)
 
 **Implemented enhancements:**
@@ -287,13 +315,19 @@
 - New analyzer: Talos Reputation [\#426](https://github.com/TheHive-Project/Cortex-Analyzers/issues/426)
 
 ## [2.1.6](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.1.6) (2019-06-21)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.1.5...2.1.6)
+
+**Implemented enhancements:**
+
+- Use req.text instead of req.content [\#492](https://github.com/TheHive-Project/Cortex-Analyzers/pull/492) ([srilumpa](https://github.com/srilumpa))
 
 **Fixed bugs:**
 
 - Missing request lib in the docker of  Fortiguard analyzer [\#503](https://github.com/TheHive-Project/Cortex-Analyzers/issues/503)
 
 ## [2.1.5](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.1.5) (2019-06-20)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.1.4...2.1.5)
 
 **Fixed bugs:**
@@ -301,6 +335,7 @@
 - Docker for EmlParser is not working, python-magic is missing [\#502](https://github.com/TheHive-Project/Cortex-Analyzers/issues/502)
 
 ## [2.1.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.1.4) (2019-06-20)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.1.3...2.1.4)
 
 **Fixed bugs:**
@@ -308,6 +343,7 @@
 - TalosReputation : not cortexutils in requirements.txt [\#501](https://github.com/TheHive-Project/Cortex-Analyzers/issues/501)
 
 ## [2.1.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.1.3) (2019-06-17)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.1.2...2.1.3)
 
 **Fixed bugs:**
@@ -315,12 +351,15 @@
 - Problem with iocp requirement [\#500](https://github.com/TheHive-Project/Cortex-Analyzers/issues/500)
 
 ## [2.1.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.1.2) (2019-06-16)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.1.1...2.1.2)
 
 ## [2.1.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.1.1) (2019-06-16)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.1.0...2.1.1)
 
 ## [2.1.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.1.0) (2019-06-09)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.0.1...2.1.0)
 
 **Implemented enhancements:**
@@ -328,7 +367,6 @@
 - FileInfo : extract URL from documents like PDF or Office [\#465](https://github.com/TheHive-Project/Cortex-Analyzers/issues/465)
 - Use up to date msg-Extract lib  in FileInfo [\#464](https://github.com/TheHive-Project/Cortex-Analyzers/issues/464)
 - \[FR\] Updated crt.sh Analyzer [\#438](https://github.com/TheHive-Project/Cortex-Analyzers/issues/438)
-- Use req.text instead of req.content [\#492](https://github.com/TheHive-Project/Cortex-Analyzers/pull/492) ([srilumpa](https://github.com/srilumpa))
 - remove extra slash [\#488](https://github.com/TheHive-Project/Cortex-Analyzers/pull/488) ([garanews](https://github.com/garanews))
 - EmlParser - Fixed headers and displayTo  [\#486](https://github.com/TheHive-Project/Cortex-Analyzers/pull/486) ([mgabriel-silva](https://github.com/mgabriel-silva))
 - Crtsh updates [\#432](https://github.com/TheHive-Project/Cortex-Analyzers/pull/432) ([kx499](https://github.com/kx499))
@@ -340,10 +378,6 @@
 - \[Bug\] EmlParser has incomplete header [\#484](https://github.com/TheHive-Project/Cortex-Analyzers/issues/484)
 - \[Bug\] OpenXML files detected as zip but ignored by Oletools. [\#475](https://github.com/TheHive-Project/Cortex-Analyzers/issues/475)
 - \[Bug\] Malwares\_GetReport\_1\_0 [\#470](https://github.com/TheHive-Project/Cortex-Analyzers/issues/470)
-- Use req.text instead of req.content [\#492](https://github.com/TheHive-Project/Cortex-Analyzers/pull/492) ([srilumpa](https://github.com/srilumpa))
-- Umbrella analyzer: query\_limit: error if no data provided [\#479](https://github.com/TheHive-Project/Cortex-Analyzers/pull/479) ([siisar](https://github.com/siisar))
-- remove extra slash [\#488](https://github.com/TheHive-Project/Cortex-Analyzers/pull/488) ([garanews](https://github.com/garanews))
-- EmlParser - Fixed headers and displayTo  [\#486](https://github.com/TheHive-Project/Cortex-Analyzers/pull/486) ([mgabriel-silva](https://github.com/mgabriel-silva))
 - Use VirusTotal with python3  \(issue \#361\) [\#446](https://github.com/TheHive-Project/Cortex-Analyzers/pull/446) ([Nergie](https://github.com/Nergie))
 - Fix emlParser crash [\#439](https://github.com/TheHive-Project/Cortex-Analyzers/pull/439) ([agix](https://github.com/agix))
 
@@ -363,6 +397,7 @@
 - New analyzer: Talos Reputation [\#427](https://github.com/TheHive-Project/Cortex-Analyzers/pull/427) ([mgabriel-silva](https://github.com/mgabriel-silva))
 
 ## [2.0.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.0.1) (2019-04-05)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.0.0...2.0.1)
 
 **Fixed bugs:**
@@ -370,6 +405,7 @@
 - \[Bug\] Invalid version for stable Docker image [\#453](https://github.com/TheHive-Project/Cortex-Analyzers/issues/453)
 
 ## [2.0.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.0.0) (2019-04-05)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.16.0...2.0.0)
 
 **Closed issues:**
@@ -378,6 +414,7 @@
 - \[FR\] Add support to dockerized analyzers [\#450](https://github.com/TheHive-Project/Cortex-Analyzers/issues/450)
 
 ## [1.16.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.16.0) (2019-03-27)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.15.3...1.16.0)
 
 **Implemented enhancements:**
@@ -403,6 +440,7 @@
 - Added AbuseIPDB analyzer [\#400](https://github.com/TheHive-Project/Cortex-Analyzers/pull/400) ([mlodic](https://github.com/mlodic))
 
 ## [1.15.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.15.3) (2019-02-28)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.15.2...1.15.3)
 
 **Implemented enhancements:**
@@ -415,6 +453,7 @@
 - Proofpoint analyzer fails Unexpected Error: Unicode-objects must be encoded before hashing [\#417](https://github.com/TheHive-Project/Cortex-Analyzers/issues/417)
 
 ## [1.15.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.15.2) (2019-02-11)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.15.1...1.15.2)
 
 **Implemented enhancements:**
@@ -441,6 +480,7 @@
 - Fix a broken link in the Cymon\_Check\_IP report [\#407](https://github.com/TheHive-Project/Cortex-Analyzers/pull/407) ([ninoseki](https://github.com/ninoseki))
 
 ## [1.15.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.15.1) (2019-01-09)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.15.0...1.15.1)
 
 **Fixed bugs:**
@@ -457,6 +497,7 @@
 - make code python 3.4 compatible [\#403](https://github.com/TheHive-Project/Cortex-Analyzers/pull/403) ([dadokkio](https://github.com/dadokkio))
 
 ## [1.15.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.15.0) (2018-12-20)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.14.4...1.15.0)
 
 **Implemented enhancements:**
@@ -497,6 +538,7 @@
 - Add DNSDB API parameters [\#319](https://github.com/TheHive-Project/Cortex-Analyzers/pull/319) ([amr-cossi](https://github.com/amr-cossi))
 
 ## [1.14.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.14.4) (2018-12-05)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.14.3...1.14.4)
 
 **Implemented enhancements:**
@@ -506,10 +548,10 @@
 
 **Fixed bugs:**
 
-- Virustotal: update short reports to distinguish Scan from GetReport flavors [\#389](https://github.com/TheHive-Project/Cortex-Analyzers/issues/389)
 - msg-extractor library has been updated and brakes FileInfo analyzer [\#384](https://github.com/TheHive-Project/Cortex-Analyzers/issues/384)
 
 ## [1.14.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.14.3) (2018-11-28)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.14.2...1.14.3)
 
 **Fixed bugs:**
@@ -521,6 +563,7 @@
 - CERTatPassiveDNS\_2\_0 Invalid File for WHOIS.sh [\#349](https://github.com/TheHive-Project/Cortex-Analyzers/issues/349)
 
 ## [1.14.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.14.2) (2018-11-16)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.14.1...1.14.2)
 
 **Fixed bugs:**
@@ -528,6 +571,7 @@
 - Fix URLHaus long template [\#375](https://github.com/TheHive-Project/Cortex-Analyzers/issues/375)
 
 ## [1.14.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.14.1) (2018-11-09)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.14.0...1.14.1)
 
 **Implemented enhancements:**
@@ -545,6 +589,7 @@
 - FileInfo 5.0 Dockerized .exe analysis [\#369](https://github.com/TheHive-Project/Cortex-Analyzers/issues/369)
 
 ## [1.14.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.14.0) (2018-10-26)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.13.2...1.14.0)
 
 **Implemented enhancements:**
@@ -566,7 +611,6 @@
 **Fixed bugs:**
 
 - Cortex Responder - Invalid Output [\#331](https://github.com/TheHive-Project/Cortex-Analyzers/issues/331)
-- Fixes file not found issue and empty result set in CERT.at passive dns analyzer [\#362](https://github.com/TheHive-Project/Cortex-Analyzers/issues/362)
 - Force python3 for MISP-Analyzer [\#356](https://github.com/TheHive-Project/Cortex-Analyzers/issues/356)
 - HybridAnalysis analyzer does not properly handle filenames on some cases [\#323](https://github.com/TheHive-Project/Cortex-Analyzers/issues/323)
 
@@ -582,6 +626,7 @@
 - Proofpoint Forensics Lookup [\#117](https://github.com/TheHive-Project/Cortex-Analyzers/issues/117)
 
 ## [1.13.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.13.2) (2018-10-16)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.13.1...1.13.2)
 
 **Fixed bugs:**
@@ -589,6 +634,7 @@
 - Cuckoo file submission Analyzer error [\#177](https://github.com/TheHive-Project/Cortex-Analyzers/issues/177)
 
 ## [1.13.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.13.1) (2018-09-19)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.13.0...1.13.1)
 
 **Fixed bugs:**
@@ -596,6 +642,7 @@
 - Wrong datatype in artifact\(\) in DShield analyzer  [\#344](https://github.com/TheHive-Project/Cortex-Analyzers/issues/344)
 
 ## [1.13.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.13.0) (2018-09-18)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.12.0...1.13.0)
 
 **Implemented enhancements:**
@@ -630,6 +677,7 @@
 - Manalyze submodule for FileInfo analyzer [\#333](https://github.com/TheHive-Project/Cortex-Analyzers/pull/333) ([3c7](https://github.com/3c7))
 
 ## [1.12.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.12.0) (2018-07-31)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.11.0...1.12.0)
 
 **Merged pull requests:**
@@ -637,6 +685,7 @@
 - Eml Parser analyzer [\#260](https://github.com/TheHive-Project/Cortex-Analyzers/pull/260) ([ninSmith](https://github.com/ninSmith))
 
 ## [1.11.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.11.0) (2018-07-13)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.10.4...1.11.0)
 
 **Implemented enhancements:**
@@ -667,6 +716,7 @@
 - Add hashdd analyzer [\#284](https://github.com/TheHive-Project/Cortex-Analyzers/pull/284) ([iosonogio](https://github.com/iosonogio))
 
 ## [1.10.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.10.4) (2018-06-23)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.10.3...1.10.4)
 
 **Fixed bugs:**
@@ -674,6 +724,7 @@
 - IBM X-Force and Abuse finder problems found in shorts and long report [\#290](https://github.com/TheHive-Project/Cortex-Analyzers/issues/290)
 
 ## [1.10.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.10.3) (2018-06-18)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.10.2...1.10.3)
 
 **Implemented enhancements:**
@@ -692,6 +743,7 @@
 - API Keys to be submitted through Cortex for Analyzers [\#7](https://github.com/TheHive-Project/Cortex-Analyzers/issues/7)
 
 ## [1.10.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.10.2) (2018-06-08)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.10.1...1.10.2)
 
 **Fixed bugs:**
@@ -708,6 +760,7 @@
 - Yara config for multi pathes is not parsing correctly in platform [\#274](https://github.com/TheHive-Project/Cortex-Analyzers/issues/274)
 
 ## [1.10.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.10.1) (2018-06-06)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.10.0...1.10.1)
 
 **Fixed bugs:**
@@ -715,6 +768,7 @@
 - Wrong name for Staxx report template [\#272](https://github.com/TheHive-Project/Cortex-Analyzers/issues/272)
 
 ## [1.10.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.10.0) (2018-06-06)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.9.7...1.10.0)
 
 **Implemented enhancements:**
@@ -727,6 +781,7 @@
 - URLhaus analyzer [\#226](https://github.com/TheHive-Project/Cortex-Analyzers/issues/226)
 - cybercrime-tracker.net analyzer [\#220](https://github.com/TheHive-Project/Cortex-Analyzers/issues/220)
 - Anomali Staxx Analyzer [\#180](https://github.com/TheHive-Project/Cortex-Analyzers/issues/180)
+- Download only new hash files [\#242](https://github.com/TheHive-Project/Cortex-Analyzers/pull/242) ([ktneely](https://github.com/ktneely))
 - Develop branch, add Staxx Analyzer [\#263](https://github.com/TheHive-Project/Cortex-Analyzers/pull/263) ([robertnixon2003](https://github.com/robertnixon2003))
 - Improve EmergingThreats analyzers [\#259](https://github.com/TheHive-Project/Cortex-Analyzers/pull/259) ([ant1](https://github.com/ant1))
 - Created Mnemonic PDNS public and closed analyzers [\#256](https://github.com/TheHive-Project/Cortex-Analyzers/pull/256) ([NFCERT](https://github.com/NFCERT))
@@ -740,26 +795,27 @@
 
 **Fixed bugs:**
 
-- Release 1.10.0 [\#270](https://github.com/TheHive-Project/Cortex-Analyzers/issues/270)
-- No short report in Hybrid-Analysis when there is no result [\#267](https://github.com/TheHive-Project/Cortex-Analyzers/issues/267)
 - Payloadsecurity [\#262](https://github.com/TheHive-Project/Cortex-Analyzers/issues/262)
 - Bug in EmergingThreats\_MalwareInfo analyzer [\#258](https://github.com/TheHive-Project/Cortex-Analyzers/issues/258)
 - Error in permalink in Cymon long report template [\#238](https://github.com/TheHive-Project/Cortex-Analyzers/issues/238)
 - Added the executable flag to cuckoosandbox\_analyzer.py [\#266](https://github.com/TheHive-Project/Cortex-Analyzers/pull/266) ([Jack28](https://github.com/Jack28))
-- JoeSandbox analyzers: use a sane analysis timeout [\#239](https://github.com/TheHive-Project/Cortex-Analyzers/pull/239) ([ant1](https://github.com/ant1))
 - MISP WarningLists - Handling IP address lookup in CIDR IP ranges [\#200](https://github.com/TheHive-Project/Cortex-Analyzers/pull/200) ([srilumpa](https://github.com/srilumpa))
 
 **Closed issues:**
 
 - Create GreyNoise analyzer template [\#269](https://github.com/TheHive-Project/Cortex-Analyzers/issues/269)
 
+**Merged pull requests:**
+
+- Add URLhaus analyzer [\#227](https://github.com/TheHive-Project/Cortex-Analyzers/pull/227) ([ninoseki](https://github.com/ninoseki))
+
 ## [1.9.7](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.9.7) (2018-05-29)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.9.6...1.9.7)
 
 **Implemented enhancements:**
 
 - Update analyzers configuration for Cortex2 [\#172](https://github.com/TheHive-Project/Cortex-Analyzers/issues/172)
-- Download only new hash files [\#242](https://github.com/TheHive-Project/Cortex-Analyzers/pull/242) ([ktneely](https://github.com/ktneely))
 
 **Fixed bugs:**
 
@@ -771,6 +827,7 @@
 - Bluecoat Analyzer [\#85](https://github.com/TheHive-Project/Cortex-Analyzers/issues/85)
 
 ## [1.9.6](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.9.6) (2018-04-25)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.9.5...1.9.6)
 
 **Fixed bugs:**
@@ -778,6 +835,7 @@
 - Yeti pyton lib fails to install for python\_version \> 2.7 [\#241](https://github.com/TheHive-Project/Cortex-Analyzers/issues/241)
 
 ## [1.9.5](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.9.5) (2018-04-18)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.9.4...1.9.5)
 
 **Fixed bugs:**
@@ -786,6 +844,7 @@
 - Censys analyzer : no uid given but the parameter is set [\#232](https://github.com/TheHive-Project/Cortex-Analyzers/issues/232)
 
 ## [1.9.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.9.4) (2018-04-13)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.9.3...1.9.4)
 
 **Implemented enhancements:**
@@ -797,11 +856,8 @@
 - Hybrid Analysis returns success when filename query didn't work [\#223](https://github.com/TheHive-Project/Cortex-Analyzers/issues/223)
 - Fix JSB Url Analysis template [\#207](https://github.com/TheHive-Project/Cortex-Analyzers/pull/207) ([ant1](https://github.com/ant1))
 
-**Merged pull requests:**
-
-- Add URLhaus analyzer [\#227](https://github.com/TheHive-Project/Cortex-Analyzers/pull/227) ([ninoseki](https://github.com/ninoseki))
-
 ## [1.9.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.9.3) (2018-04-09)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.9.2...1.9.3)
 
 **Implemented enhancements:**
@@ -821,6 +877,7 @@
 - Feature Request: haveibeenpwned.com [\#189](https://github.com/TheHive-Project/Cortex-Analyzers/issues/189)
 
 ## [1.9.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.9.2) (2018-04-04)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.9.1...1.9.2)
 
 **Fixed bugs:**
@@ -834,9 +891,11 @@
 - OTXQuery\_2\_0 failes with Cortex2 [\#217](https://github.com/TheHive-Project/Cortex-Analyzers/issues/217)
 
 ## [1.9.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.9.1) (2018-03-30)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.9.0...1.9.1)
 
 ## [1.9.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.9.0) (2018-03-29)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.8.3...1.9.0)
 
 **Implemented enhancements:**
@@ -846,18 +905,20 @@
 - Manage fqdn datatype in domain\_name service of DNSDB analyzer [\#182](https://github.com/TheHive-Project/Cortex-Analyzers/issues/182)
 - Improve Phishtank maliciousness results  [\#181](https://github.com/TheHive-Project/Cortex-Analyzers/issues/181)
 - IP type for CIRCL Passive DNS and others [\#99](https://github.com/TheHive-Project/Cortex-Analyzers/issues/99)
+- WIP: PEP8 all the things [\#165](https://github.com/TheHive-Project/Cortex-Analyzers/pull/165) ([3c7](https://github.com/3c7))
 - added Malpedia Analyzer [\#168](https://github.com/TheHive-Project/Cortex-Analyzers/pull/168) ([garanews](https://github.com/garanews))
 
 **Fixed bugs:**
 
 - Fortiguard analyzer : use HTTPS to request fortiguard service [\#201](https://github.com/TheHive-Project/Cortex-Analyzers/issues/201)
-- DomainTools\\_ReverseIP should accept fqdn and/or domain as datatype [\#193](https://github.com/TheHive-Project/Cortex-Analyzers/issues/193)
 
 **Merged pull requests:**
 
+- Fixes some problems with automatic artifact extraction [\#184](https://github.com/TheHive-Project/Cortex-Analyzers/pull/184) ([3c7](https://github.com/3c7))
 - Addedd cymon cortex analyzers [\#133](https://github.com/TheHive-Project/Cortex-Analyzers/pull/133) ([ST2Labs](https://github.com/ST2Labs))
 
 ## [1.8.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.8.3) (2018-03-23)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.8.2...1.8.3)
 
 **Fixed bugs:**
@@ -866,6 +927,7 @@
 - Bug in Abuse\_Finder Analyzer [\#161](https://github.com/TheHive-Project/Cortex-Analyzers/issues/161)
 
 ## [1.8.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.8.2) (2018-03-21)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.8.1...1.8.2)
 
 **Fixed bugs:**
@@ -883,11 +945,8 @@
 - MISP WarningLists long report does not display results [\#195](https://github.com/TheHive-Project/Cortex-Analyzers/issues/195)
 - error in MISP/requirements.txt [\#179](https://github.com/TheHive-Project/Cortex-Analyzers/issues/179)
 
-**Merged pull requests:**
-
-- Fixes some problems with automatic artifact extraction [\#184](https://github.com/TheHive-Project/Cortex-Analyzers/pull/184) ([3c7](https://github.com/3c7))
-
 ## [1.8.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.8.1) (2018-02-05)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.8.0...1.8.1)
 
 **Implemented enhancements:**
@@ -903,12 +962,12 @@
 - Malpedia \(yara\) Analyzer [\#166](https://github.com/TheHive-Project/Cortex-Analyzers/issues/166)
 
 ## [1.8.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.8.0) (2018-01-11)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.7.1...1.8.0)
 
 **Implemented enhancements:**
 
 - VirusTotal ignores Environment Proxies [\#130](https://github.com/TheHive-Project/Cortex-Analyzers/issues/130)
-- WIP: PEP8 all the things [\#165](https://github.com/TheHive-Project/Cortex-Analyzers/pull/165) ([3c7](https://github.com/3c7))
 - Feature/bluecoat [\#84](https://github.com/TheHive-Project/Cortex-Analyzers/pull/84) ([0xswitch](https://github.com/0xswitch))
 - Fixes \#149, removes download\_hashes.py [\#155](https://github.com/TheHive-Project/Cortex-Analyzers/pull/155) ([3c7](https://github.com/3c7))
 - Joe Sandbox API version 2 support [\#141](https://github.com/TheHive-Project/Cortex-Analyzers/pull/141) ([ant1](https://github.com/ant1))
@@ -936,6 +995,7 @@
 
 - Fixed requirements parsing MsgParser/requirements.txt [\#159](https://github.com/TheHive-Project/Cortex-Analyzers/pull/159) ([peasead](https://github.com/peasead))
 - Censys.io analyzer [\#153](https://github.com/TheHive-Project/Cortex-Analyzers/pull/153) ([3c7](https://github.com/3c7))
+- C1fApp Initial version [\#119](https://github.com/TheHive-Project/Cortex-Analyzers/pull/119) ([etz69](https://github.com/etz69))
 - Fix mode when creating FireHOL ipset directory [\#158](https://github.com/TheHive-Project/Cortex-Analyzers/pull/158) ([srilumpa](https://github.com/srilumpa))
 - Add Onyphe analyzers [\#152](https://github.com/TheHive-Project/Cortex-Analyzers/pull/152) ([Pierre-Baudry](https://github.com/Pierre-Baudry))
 - Tor blutmagie [\#139](https://github.com/TheHive-Project/Cortex-Analyzers/pull/139) ([srilumpa](https://github.com/srilumpa))
@@ -945,6 +1005,7 @@
 - Robtex API Analyzer [\#105](https://github.com/TheHive-Project/Cortex-Analyzers/pull/105) ([3c7](https://github.com/3c7))
 
 ## [1.7.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.7.1) (2017-12-06)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.7.0...1.7.1)
 
 **Closed issues:**
@@ -958,6 +1019,7 @@
 - Rename hybridanalysis\_analyzer.py to HybridAnalysis\_analyzer.py [\#151](https://github.com/TheHive-Project/Cortex-Analyzers/pull/151) ([treed593](https://github.com/treed593))
 
 ## [1.7.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.7.0) (2017-11-08)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.6.5...1.7.0)
 
 **Implemented enhancements:**
@@ -973,15 +1035,20 @@
 
 **Merged pull requests:**
 
+- add Analyzers Shodan [\#125](https://github.com/TheHive-Project/Cortex-Analyzers/pull/125) ([sebdraven](https://github.com/sebdraven))
+- Updated VT Links in Long Report [\#111](https://github.com/TheHive-Project/Cortex-Analyzers/pull/111) ([saadkadhi](https://github.com/saadkadhi))
+- Adding netaddr to requirements for nessus analyzer [\#83](https://github.com/TheHive-Project/Cortex-Analyzers/pull/83) ([drewstinnett](https://github.com/drewstinnett))
 - Fix PhishTank analyzer [\#128](https://github.com/TheHive-Project/Cortex-Analyzers/pull/128) ([ilyaglow](https://github.com/ilyaglow))
 - Fixed: hide empty panel from template [\#108](https://github.com/TheHive-Project/Cortex-Analyzers/pull/108) ([dadokkio](https://github.com/dadokkio))
 - Fixes MISP Analyzer name bug [\#95](https://github.com/TheHive-Project/Cortex-Analyzers/pull/95) ([3c7](https://github.com/3c7))
 - Added VxStream Sandbox \(Hybrid Analysis\) Analyzer [\#73](https://github.com/TheHive-Project/Cortex-Analyzers/pull/73) ([yugoslavskiy](https://github.com/yugoslavskiy))
 
 ## [1.6.5](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.6.5) (2017-11-05)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.6.4...1.6.5)
 
 ## [1.6.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.6.4) (2017-11-04)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.6.3...1.6.4)
 
 **Fixed bugs:**
@@ -999,14 +1066,11 @@
 
 **Merged pull requests:**
 
-- add Analyzers Shodan [\#125](https://github.com/TheHive-Project/Cortex-Analyzers/pull/125) ([sebdraven](https://github.com/sebdraven))
-- ProofPoint Threat Insight Forensics Analyzer [\#123](https://github.com/TheHive-Project/Cortex-Analyzers/pull/123) ([typonino](https://github.com/typonino))
-- C1fApp Initial version [\#119](https://github.com/TheHive-Project/Cortex-Analyzers/pull/119) ([etz69](https://github.com/etz69))
-- Updated VT Links in Long Report [\#111](https://github.com/TheHive-Project/Cortex-Analyzers/pull/111) ([saadkadhi](https://github.com/saadkadhi))
 - Revert "Updated VT links in Long report" [\#110](https://github.com/TheHive-Project/Cortex-Analyzers/pull/110) ([saadkadhi](https://github.com/saadkadhi))
 - Updated VT links in Long report [\#98](https://github.com/TheHive-Project/Cortex-Analyzers/pull/98) ([mthlvt](https://github.com/mthlvt))
 
 ## [1.6.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.6.3) (2017-09-10)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.6.2...1.6.3)
 
 **Merged pull requests:**
@@ -1014,6 +1078,7 @@
 - MISP Analyzer: forgot to add same procedure if using just one MISP-Server [\#91](https://github.com/TheHive-Project/Cortex-Analyzers/pull/91) ([3c7](https://github.com/3c7))
 
 ## [1.6.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.6.2) (2017-09-04)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.6.1...1.6.2)
 
 **Closed issues:**
@@ -1025,6 +1090,7 @@
 - Updates to Virusshare analyzer [\#80](https://github.com/TheHive-Project/Cortex-Analyzers/pull/80) ([colinvanniekerk](https://github.com/colinvanniekerk))
 
 ## [1.6.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.6.1) (2017-09-04)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.6.0...1.6.1)
 
 **Closed issues:**
@@ -1034,9 +1100,9 @@
 **Merged pull requests:**
 
 - Fixes bug in MISP client [\#88](https://github.com/TheHive-Project/Cortex-Analyzers/pull/88) ([3c7](https://github.com/3c7))
-- Adding netaddr to requirements for nessus analyzer [\#83](https://github.com/TheHive-Project/Cortex-Analyzers/pull/83) ([drewstinnett](https://github.com/drewstinnett))
 
 ## [1.6.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.6.0) (2017-07-27)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.5.1...1.6.0)
 
 **Closed issues:**
@@ -1047,10 +1113,11 @@
 
 **Merged pull requests:**
 
-- Feature/fireeye\_ax [\#78](https://github.com/TheHive-Project/Cortex-Analyzers/pull/78) ([BrevilleBro](https://github.com/BrevilleBro))
 - added WOT analyzer & fixed cuckoo templates issue [\#77](https://github.com/TheHive-Project/Cortex-Analyzers/pull/77) ([garanews](https://github.com/garanews))
+- Cuckoo Sandbox Analyzer [\#50](https://github.com/TheHive-Project/Cortex-Analyzers/pull/50) ([garanews](https://github.com/garanews))
 
 ## [1.5.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.5.1) (2017-07-13)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.5.0...1.5.1)
 
 **Fixed bugs:**
@@ -1061,11 +1128,8 @@
 
 - Virustotal Scan returning incorrect taxonomy on URL scan [\#74](https://github.com/TheHive-Project/Cortex-Analyzers/issues/74)
 
-**Merged pull requests:**
-
-- Cuckoo Sandbox Analyzer [\#50](https://github.com/TheHive-Project/Cortex-Analyzers/pull/50) ([garanews](https://github.com/garanews))
-
 ## [1.5.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.5.0) (2017-07-05)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.4.4...1.5.0)
 
 **Implemented enhancements:**
@@ -1091,6 +1155,7 @@
 - There were no carriage returns so it would break if you wanted to mass install the analyzer requirements [\#61](https://github.com/TheHive-Project/Cortex-Analyzers/pull/61) ([Popsiclestick](https://github.com/Popsiclestick))
 
 ## [1.4.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.4.4) (2017-06-15)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.4.3...1.4.4)
 
 **Fixed bugs:**
@@ -1098,6 +1163,7 @@
 - Inconsistance between long and short reports in MISP analyzer [\#59](https://github.com/TheHive-Project/Cortex-Analyzers/issues/59)
 
 ## [1.4.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.4.3) (2017-06-15)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.4.2...1.4.3)
 
 **Fixed bugs:**
@@ -1106,12 +1172,15 @@
 - Encoding problem in cortexutils [\#54](https://github.com/TheHive-Project/Cortex-Analyzers/issues/54)
 
 ## [1.4.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.4.2) (2017-05-24)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.4.1...1.4.2)
 
 ## [1.4.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.4.1) (2017-05-23)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.4.0...1.4.1)
 
 ## [1.4.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.4.0) (2017-05-22)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.3.1...1.4.0)
 
 **Fixed bugs:**
@@ -1128,9 +1197,11 @@
 - corrected for change to fortiguard portal [\#51](https://github.com/TheHive-Project/Cortex-Analyzers/pull/51) ([ecapuano](https://github.com/ecapuano))
 
 ## [1.3.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.3.1) (2017-05-12)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.3.0...1.3.1)
 
 ## [1.3.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.3.0) (2017-05-08)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.2.0...1.3.0)
 
 **Implemented enhancements:**
@@ -1158,6 +1229,7 @@
 - Use StringIO.StringIO\(\) with python2 [\#36](https://github.com/TheHive-Project/Cortex-Analyzers/pull/36) ([3c7](https://github.com/3c7))
 
 ## [1.2.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.2.0) (2017-03-31)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.1.0...1.2.0)
 
 **Closed issues:**
@@ -1172,6 +1244,7 @@
 - Nessus Analyzer [\#20](https://github.com/TheHive-Project/Cortex-Analyzers/pull/20) ([guillomovitch](https://github.com/guillomovitch))
 
 ## [1.1.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.1.0) (2017-03-07)
+
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/1.0.0...1.1.0)
 
 **Implemented enhancements:**
@@ -1183,7 +1256,6 @@
 **Fixed bugs:**
 
 - OTX Query error when processing a file in Cortex  [\#21](https://github.com/TheHive-Project/Cortex-Analyzers/issues/21)
-- VirusTotal GetReport can't get report for files from Cortex [\#9](https://github.com/TheHive-Project/Cortex-Analyzers/issues/9)
 
 **Closed issues:**
 
@@ -1191,10 +1263,13 @@
 - Working on analyzers: CIRCL.lu PassiveSSL/DNS, CERT.AT PassiveDNS, MISP, IntelMQ, VMRay, Google Safebrowsing, URLQuery, yara [\#3](https://github.com/TheHive-Project/Cortex-Analyzers/issues/3)
 
 ## [1.0.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.0.0) (2017-02-17)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/bafbe44f28b3f8d8dddd9bac3f16f2b0416f740c...1.0.0)
+
 **Closed issues:**
 
 -  "VirusTotal\_Scan" analyzer is not checking for TLP [\#2](https://github.com/TheHive-Project/Cortex-Analyzers/issues/2)
 
 
 
-\* *This Change Log was automatically generated by [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)*
+\* *This Changelog was automatically generated by [github_changelog_generator](https://github.com/github-changelog-generator/github-changelog-generator)*
