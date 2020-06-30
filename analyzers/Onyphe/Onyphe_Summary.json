@@ -27,5 +27,23 @@
       "required": true,
       "defaultValue": false
     }
+  ],
+  registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.onyphe.io",
+  "service_logo": {
+    "path": "assets/onyphe_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/Onyphe_Summary_long.png",
+      "caption": "Onyphe_Summary long report sample"
+    },
+    {
+      "path": "assets/Onyphe_Summary_short.png",
+      "caption:": "Onyphe_Summary mini report sample"
+    }
   ]
 }
