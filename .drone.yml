@@ -89,7 +89,8 @@ steps:
       --file responders/responders-stable.json \
       --repo cortexneurons
     when:
-      event: [tag]
+      branch:
+      - master
 
   - name: upload devel catalogs to bintray
     image: thehiveproject/drone-bintray
