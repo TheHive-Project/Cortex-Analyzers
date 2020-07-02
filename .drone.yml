@@ -1,23 +1,15 @@
 ---
 kind: pipeline
+type: docker
 name: default
+
+# Build and publish docker images for analyzers
 
 steps:
   - name: build analyzers for release
     image: thehiveproject/cortex-worker-builder
     settings:
       worker_path: analyzers
-      namespace: cortexneurons
-      user: {from_secret: docker_username}
-      password: {from_secret: docker_password}
-      stable: true
-    when:
-      event: [tag]
-
-  - name: build responders for release
-    image: thehiveproject/cortex-worker-builder
-    settings:
-      worker_path: responders
       namespace: cortexneurons
       user: {from_secret: docker_username}
       password: {from_secret: docker_password}
@@ -37,6 +29,19 @@ steps:
       - develop
       event: {exclude: [tag]}
 
+# Build and publish docker images for responders
+
+  - name: build responders for release
+    image: thehiveproject/cortex-worker-builder
+    settings:
+      worker_path: responders
+      namespace: cortexneurons
+      user: {from_secret: docker_username}
+      password: {from_secret: docker_password}
+      stable: true
+    when:
+      event: [tag]
+
   - name: build snapshot responders
     image: thehiveproject/cortex-worker-builder
     settings:
@@ -48,6 +53,13 @@ steps:
       branch:
       - develop
       event: {exclude: [tag]}
+
+# Build and publish catalogs for docker images
+
+  - name: build catalogs
+    image: thehiveproject/neurons-build-catalogs
+    when:
+      event: [tag]
 
   - name: upload catalogs to bintray
     image: thehiveproject/drone-bintray
@@ -83,6 +95,13 @@ steps:
     when:
       event: [tag]
 
+
+  - name: build catalogs
+    image: thehiveproject/neurons-build-catalogs
+    when:
+      branch:
+      - develop
+
   - name: upload devel catalogs to bintray
     image: thehiveproject/drone-bintray
     settings:
@@ -113,12 +132,7 @@ steps:
       branch:
       - develop
 
-  - name: build catalogs
-    image: thehiveproject/neurons-build-catalogs
-    when:
-      branch:
-      - develop
-      - master
+# Build and publish Documentation 
 
   - name: Prepare documentation files
     image: thehiveproject/doc-builder
