@@ -182,8 +182,30 @@ class VMRayAnalyzer(Analyzer):
             )
         return taxonomies
 
+    def _sandbox_reports_for_samples(self, samples):
+        sandbox = "vmray"
+        sandbox_type = "on-premise"
+        sandbox_reports = []
+        for sample in samples:
+            permalink = sample.get("sample_webif_url", None)
+            score = sample.get("sample_vti_score", 0)
+            sandbox_report = {
+                "permalink": permalink,
+                "score": score,
+                "sandbox-type": sandbox_type,
+                "{}-sandbox".format(sandbox_type): sandbox,
+            }
+            sandbox_reports.append(sandbox_report)
+
+            # add child sample taxonomies if they have been added
+            sandbox_reports.extend(
+                self._sandbox_reports_for_samples(sample.get("sample_child_samples", []))
+            )
+        return sandbox_reports
+
     def summary(self, raw):
         taxonomies = []
+        sandbox_reports = []
         samples = raw.get("samples", [])
         if len(samples) == 0:
             taxonomies.append(
@@ -191,7 +213,8 @@ class VMRayAnalyzer(Analyzer):
             )
         else:
             taxonomies.extend(self._taxonomies_for_samples(samples))
-        return {"taxonomies": taxonomies}
+            sandbox_reports.extend(self._sandbox_reports_for_samples(samples))
+        return {"taxonomies": taxonomies, "sandbox-reports": sandbox_reports}
 
     def _artifacts_for_samples(self, samples):
         artifacts = []
