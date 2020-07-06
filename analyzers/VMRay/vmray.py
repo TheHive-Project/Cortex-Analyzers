@@ -204,18 +204,26 @@ class VMRayAnalyzer(Analyzer):
                     for ioc_node in iocs[ioc_type]:
                         severity = ioc_node.get("severity", "")
                         level = self._severity_mapping.get(severity, "info")
-                        tags = [severity, level, ioc_node["type"]]
+                        tags = list(set((severity, level, ioc_node["type"])))
                         payload = ioc_node[ioc_payload_name]
+
+                        context_tags = []
                         if "hashes" in ioc_node:
                             for hash_node in ioc_node["hashes"]:
                                 if "sha256_hash" in hash_node:
-                                    payload += ", SHA256: {}".format(
-                                        hash_node["sha256_hash"]
+                                    hash_value = hash_node["sha256_hash"]
+                                    context_tags.append(hash_value)
+                                    artifacts.append(
+                                        self.build_artifact(
+                                            "hash", hash_value,
+                                            message=link, tags=tags
+                                        )
                                     )
                         elif "operations" in ioc_node:
-                            payload += ", Operations: " + ", ".join(
-                                ioc_node["operations"]
-                            )
+                            for operation in ioc_node["operations"]:
+                                context_tags.append("HTTP-Method:{}".format(operation))
+
+                        tags.extend(set(context_tags))
                         artifacts.append(
                             self.build_artifact(
                                 ioc_payload_name, payload, message=link, tags=tags
