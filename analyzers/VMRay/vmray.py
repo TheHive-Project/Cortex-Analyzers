@@ -20,14 +20,14 @@ class VMRayAnalyzer(Analyzer):
     }
 
     _ioc_mapping = {
-        "domains": "domain",
-        "email_addresses": "email",
-        "emails": "sender",
-        "files": "filename",
-        "ips": "ip_address",
-        "mutexes": "mutex_name",
-        "registry": "reg_key_name",
-        "urls": "url",
+        "domains": ("domain", "domain"),
+        "email_addresses": ("email", "mail"),
+        "emails": ("sender", "mail"),
+        "files": ("filename", "filename"),
+        "ips": ("ip_address", "ip"),
+        "mutexes": ("mutex_name", "other"),
+        "registry": ("reg_key_name", "registry"),
+        "urls": ("url", "url"),
     }
 
     def __init__(self):
@@ -199,7 +199,7 @@ class VMRayAnalyzer(Analyzer):
             link = sample.get("sample_webif_url", None)
             iocs = sample.get("sample_iocs", {}).get("iocs", {})
 
-            for ioc_type, ioc_payload_name in self._ioc_mapping.items():
+            for ioc_type, (ioc_payload_name, ioc_data_type) in self._ioc_mapping.items():
                 if ioc_type in iocs:
                     for ioc_node in iocs[ioc_type]:
                         severity = ioc_node.get("severity", "")
@@ -226,7 +226,7 @@ class VMRayAnalyzer(Analyzer):
                         tags.extend(set(context_tags))
                         artifacts.append(
                             self.build_artifact(
-                                ioc_payload_name, payload, message=link, tags=tags
+                                ioc_data_type, payload, message=link, tags=tags
                             )
                         )
 
