@@ -202,7 +202,7 @@ class VMRayAnalyzer(Analyzer):
             for ioc_type, (ioc_payload_name, ioc_data_type) in self._ioc_mapping.items():
                 if ioc_type in iocs:
                     for ioc_node in iocs[ioc_type]:
-                        severity = ioc_node.get("severity", "")
+                        severity = ioc_node.get("severity", "unknown")
                         level = self._severity_mapping.get(severity, "info")
                         tags = list(set((severity, level, ioc_node["type"])))
                         payload = ioc_node[ioc_payload_name]
