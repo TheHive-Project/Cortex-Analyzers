@@ -212,7 +212,7 @@ class VMRayAnalyzer(Analyzer):
                             for hash_node in ioc_node["hashes"]:
                                 if "sha256_hash" in hash_node:
                                     hash_value = hash_node["sha256_hash"]
-                                    context_tags.append(hash_value)
+                                    context_tags.append("sha256:{}".format(hash_value))
                                     artifacts.append(
                                         self.build_artifact(
                                             "hash", hash_value,
@@ -221,7 +221,7 @@ class VMRayAnalyzer(Analyzer):
                                     )
                         elif "operations" in ioc_node:
                             for operation in ioc_node["operations"]:
-                                context_tags.append("HTTP-Method:{}".format(operation))
+                                context_tags.append("operation:{}".format(operation))
 
                         tags.extend(set(context_tags))
                         artifacts.append(
