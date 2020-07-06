@@ -42,5 +42,23 @@
       "required": false,
       "defaultValue": 20
     }
+  ],
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": false,
+  "service_homepage": "https://spamassassin.apache.org/",
+  "service_logo": {
+    "path": "assets/SpamAssassin_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/SpamAssassin_long.png",
+      "caption": "SpamAssassin long report sample"
+    },
+    {
+      "path": "assets/SpamAssassin_short.png",
+      "caption:": "SpamAssassin mini report sample"
+    }
   ]
 }
