@@ -12,5 +12,19 @@
     "service": "get"
   },
   "configurationItems": [
+  ],
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": false,
+  "screenshots": [
+    {
+      "path": "assets/DomainMailSPFDMARC_long.png",
+      "caption": "DomainMailSPFDMARC long report sample"
+    },
+    {
+      "path": "assets/DomainMailSPFDMARC_short.png",
+      "caption:": "DomainMailSPFDMARC mini report sample"
+    }
   ]
 }
+
