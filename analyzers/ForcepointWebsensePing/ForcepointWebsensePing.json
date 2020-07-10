@@ -22,7 +22,7 @@
     {
       "name": "timeout",
       "description": "WebsensePing timeout-secs",
-      "type": "string",
+      "type": "number",
       "multi": false,
       "required": true,
       "defaultValue": 10
@@ -37,15 +37,21 @@
     },
     {
       "name": "malicious_categories",
-      "description": "List of Fortinet categories to be considered as malicious",
+      "description": "List of Forcepoint categories to be considered as malicious",
       "type": "string",
       "multi": true,
       "required": true,
-      "defaultValue": ["Malicious Websites", "Phishing", "Spam URLs"]
+      "defaultValue": ["Dynamic DNS", "Elevated Exposure", "Emerging Exploits",
+       "Newly Registered Websites", "Suspicious Content", "Advanced Malware Command and Control",
+       "Advanced Malware Payloads", "Botnets", "Compromised Websites","Custom-Encrypted Uploads",
+       "Files Containing Passwords", "Keyloggers", "Malicious Embedded Link", "Malicious Embedded Iframe", 
+       "Malicious Websites", "Mobile Malware", "Phishing and Other Frauds", "Potentially Exploited Documents",
+        "Potentially Unwanted Software", "Spyware", "Suspicious Embedded Link", "Unauthorized Mobile Marketplaces"
+        ]
     },
     {
       "name": "suspicious_categories",
-      "description": "List of Fortinet categories to be considered as suspicious",
+      "description": "List of Forcepoint categories to be considered as suspicious",
       "type": "string",
       "multi": true,
       "required": true,
