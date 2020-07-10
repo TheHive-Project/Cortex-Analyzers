@@ -55,7 +55,7 @@
       "type": "string",
       "multi": true,
       "required": true,
-      "defaultValue": ["Newly Observed Domain", "Newly Registered Domain", "Dynamic DNS", "Proxy Avoidance", "Hacking"]
+      "defaultValue": ["Uncategorized", "Parked Domain", "Hacking", "Proxy Avoidance", "Intolerance"]
     }
   ],
   "registration_required": true,
