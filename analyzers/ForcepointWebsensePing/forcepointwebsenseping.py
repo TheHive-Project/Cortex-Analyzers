@@ -18,15 +18,14 @@ class WebsensePingAnalyzer(Analyzer):
         taxonomies = []
         if raw.get('Categories', None):
             value = raw['Categories']
-            if r in self.get_param('config.malicious_categories', []):
-                level = "malicious"
-            elif r in self.get_param('config.suspicious_categories', []):
-                level = "suspicious"
-            else:
-                level = "info"
+        if value in self.get_param('config.malicious_categories', []):
+            level = "malicious"
+        elif value in self.get_param('config.suspicious_categories', []):
+            level = "suspicious"
+        else:
+            level = "info"
             taxonomies.append(self.build_taxonomy(level, "Forcepoint", "WebsensePing", value))
-        result = {"taxonomies": taxonomies}
-        return result
+        return {"taxonomies": taxonomies}
 
     def run(self):
         Analyzer.run(self)
