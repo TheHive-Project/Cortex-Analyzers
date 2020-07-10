@@ -1,0 +1,48 @@
+{
+  "name": "ForcepointWebsensePing",
+  "version": "1.0",
+  "author": "Andrea Garavaglia, Davide Arcuri - LDO-CERT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use ForcepointWebsensePing to determine which category a certain URL is assigned to.",
+  "dataTypeList": ["url", "ip", "domain","fqdn"],
+  "command": "ForcepointWebsensePing/forcepointwebsenseping.py",
+  "baseConfig": "ForcepointWebsensePing",
+  "config": {
+      "service": "lookup"
+  },
+  "configurationItems": [
+    {
+      "name": "hostname",
+      "description": "Forcepoint remote Filtering Service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "timeout",
+      "description": "WebsensePing timeout-secs",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.forcepoint.com",
+  "service_logo": {
+    "path": "assets/forcepoint_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/ForcepointWebsensePing_long.png",
+      "caption": "ForcepointWebsensePing long report sample"
+    },
+    {
+      "path": "assets/ForcepointWebsensePing_short.png",
+      "caption:": "ForcepointWebsensePing mini report sample"
+    }
+  ]
+}
