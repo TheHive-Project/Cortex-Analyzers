@@ -51,12 +51,20 @@
     },
     {
       "name": "suspicious_categories",
-      "description": "List of Forcepoint categories to be considered as suspicious",
+      "description": "List of Forcepoint categories you would consider as suspicious",
       "type": "string",
       "multi": true,
       "required": true,
       "defaultValue": ["Uncategorized", "Parked Domain", "Hacking", "Proxy Avoidance", "Intolerance"]
-    }
+    },
+    {
+      "name": "safe_categories",
+      "description": "List of Forcepoint categories you would consider as safe",
+      "type": "string",
+      "multi": true,
+      "required": true,
+      "defaultValue": ["Business and Economy", "Education", "Government", "News and Media", "Religion", "Society and Lifestyles", "Special Events", "Information Technology", "Abortion", "Advocacy Groups", "Entertainment"]
+    }    
   ],
   "registration_required": true,
   "subscription_required": true,
