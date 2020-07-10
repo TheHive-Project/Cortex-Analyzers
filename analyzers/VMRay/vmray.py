@@ -33,6 +33,12 @@ class VMRayAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
         self.reanalyze = self.get_param("config.reanalyze", True)
+        self.shareable = self.get_param("config.shareable", False)
+        self.tags = self.get_param("config.tags", ["TheHive"])
+        self.user_config = {
+            "timeout": self.get_param("config.timeout", None),
+            "net_scheme_name": self.get_param("config.net_scheme_name", None),
+        }
 
         self.query_retry_wait = self.get_param("config.query_retry_wait", 10)
         self.recursive_sample_limit = self.get_param(
@@ -47,6 +53,10 @@ class VMRayAnalyzer(Analyzer):
         archive_compound_sample = self.get_param(
             "config.archive_compound_sample", False
         )
+        if archive_compound_sample:
+            archive_action = "compound_sample"
+        else:
+            archive_action = "separate_samples"
 
         self.vmrc = VMRayClient(
             url=self.get_param("config.url", None, "No VMRay URL given.").rstrip("/ "),
@@ -54,9 +64,13 @@ class VMRayAnalyzer(Analyzer):
             reanalyze=self.reanalyze,
             verify=verify,
             archive_password=self.get_param("config.archive_password", "malware"),
-            archive_action="compound_sample"
-            if archive_compound_sample
-            else "separate_samples",
+            archive_action=archive_action,
+            max_jobs=self.get_param("config.max_jobs", None),
+            enable_reputation=self.get_param("config.enable_reputation", None),
+            enable_whois=self.get_param("config.enable_whois", None),
+            analyzer_mode=self.get_param("config.analyzer_mode", None),
+            known_malicious=self.get_param("config.known_malicious", None),
+            known_benign=self.get_param("config.known_benign", None),
         )
 
     def _build_sample_node(self, sample, current_recursion_level):
@@ -128,15 +142,25 @@ class VMRayAnalyzer(Analyzer):
             else:
                 self.report({"samples": samples})
         elif self.data_type == "file":
+            shareable = self.shareable and self.get_param("tlp") in (0, 1)
             self._wait_for_results(
                 self.vmrc.submit_file_sample(
                     file_path=self.get_param("file"),
                     file_name=self.get_param("filename"),
+                    tags=self.tags,
+                    shareable=shareable,
+                    user_config=self.user_config,
                 )
             )
         elif self.data_type == "url":
+            shareable = self.shareable and self.get_param("tlp") in (0, 1)
             self._wait_for_results(
-                self.vmrc.submit_url_sample(url_sample=self.get_data())
+                self.vmrc.submit_url_sample(
+                    url_sample=self.get_data(),
+                    tags=self.tags,
+                    shareable=shareable,
+                    user_config=self.user_config,
+                )
             )
         else:
             self.error("Data type currently not supported")
