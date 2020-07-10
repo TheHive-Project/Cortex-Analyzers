@@ -24,8 +24,9 @@ class WebsensePingAnalyzer(Analyzer):
                 level = "suspicious"
             else:
                 level = "info"
-            taxonomies.append(self.build_taxonomy(level, "Fortinet", "WebsensePing", value))
-        return {"taxonomies": taxonomies}
+            taxonomies.append(self.build_taxonomy(level, "Forcepoint", "WebsensePing", value))
+        result = {"taxonomies": taxonomies}
+        return result
 
     def run(self):
         Analyzer.run(self)
