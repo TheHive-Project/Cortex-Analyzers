@@ -24,8 +24,17 @@
       "description": "WebsensePing timeout-secs",
       "type": "string",
       "multi": false,
-      "required": true
-    }
+      "required": true,
+      "defaultValue": 10
+    },
+    {
+      "name": "path",
+      "description": "WebsensePing path",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "/opt/Websense/bin"      
+    }    
   ],
   "registration_required": true,
   "subscription_required": true,
