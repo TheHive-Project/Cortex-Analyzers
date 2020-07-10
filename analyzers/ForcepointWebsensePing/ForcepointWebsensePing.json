@@ -34,7 +34,23 @@
       "multi": false,
       "required": true,
       "defaultValue": "/opt/Websense/bin"      
-    }    
+    },
+    {
+      "name": "malicious_categories",
+      "description": "List of Fortinet categories to be considered as malicious",
+      "type": "string",
+      "multi": true,
+      "required": true,
+      "defaultValue": ["Malicious Websites", "Phishing", "Spam URLs"]
+    },
+    {
+      "name": "suspicious_categories",
+      "description": "List of Fortinet categories to be considered as suspicious",
+      "type": "string",
+      "multi": true,
+      "required": true,
+      "defaultValue": ["Newly Observed Domain", "Newly Registered Domain", "Dynamic DNS", "Proxy Avoidance", "Hacking"]
+    }
   ],
   "registration_required": true,
   "subscription_required": true,
