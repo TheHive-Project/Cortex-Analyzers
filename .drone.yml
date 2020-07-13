@@ -56,12 +56,12 @@ steps:
 
 # Build and publish catalogs for docker images
 
-  - name: build catalogs
+  - name: build stable catalogs
     image: thehiveproject/neurons-build-catalogs
     when:
       event: [tag]
 
-  - name: upload catalogs to bintray
+  - name: upload stable catalogs to bintray
     image: thehiveproject/drone-bintray
     settings:
       user: {from_secret: bintray_user}
@@ -96,7 +96,7 @@ steps:
       event: [tag]
 
 
-  - name: build catalogs
+  - name: build devel catalogs
     image: thehiveproject/neurons-build-catalogs
     when:
       branch:
