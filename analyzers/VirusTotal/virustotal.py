@@ -45,8 +45,11 @@ class VirusTotalAnalyzer(Analyzer):
         if status != 200:
             self.error('Bad status : ' + str(status))
         results = response.get('results', {})
+        #sometimes this returns a list , sometimes a dictionary and it used to break the code if it was a list. So if it's of type list we take the first element as result
+        if not type(results) is dict:
+           results = results[0]
         if 'Missing IP address' in results.get('verbose_msg', ''):
-            results['verbose_msg'] = 'IP address not available in VirusTotal'
+           results['verbose_msg'] = 'IP address not available in VirusTotal'
         return results
 
         # 0 => not found
