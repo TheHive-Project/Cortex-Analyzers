@@ -30,7 +30,7 @@
   ],
   "registration_required": true,
   "subscription_required": true,
-  "free_subscription": false,
+  "free_subscription": true,
   "service_homepage": "https://www.onyphe.io",
   "service_logo": {
     "path": "assets/onyphe_logo.png",
