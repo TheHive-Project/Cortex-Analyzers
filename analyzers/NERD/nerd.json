@@ -2,7 +2,7 @@
   "name": "NERD",
   "version": "1.0",
   "author": "Vaclav Bartos, CESNET",
-  "url": https://github.com/TheHive-Project/Cortex-Analyzers",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Get Reputation score and other basic information from Network Entity Reputation Database (NERD)",
   "dataTypeList": ["ip"],
@@ -24,5 +24,8 @@
       "required": false,
       "defaultValue": "https://nerd.cesnet.cz/nerd/"
     }
-  ]
+  ],
+  "registration_required": true,
+  "subscription_required": false,
+  "service_homepage": "https://nerd.cesnet.cz/"
 }
