@@ -27,5 +27,19 @@
   ],
   "registration_required": true,
   "subscription_required": false,
-  "service_homepage": "https://nerd.cesnet.cz/"
+  "service_homepage": "https://nerd.cesnet.cz/",
+  "service_logo": {
+    "path": "assets/NERD_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/NERD_long.png",
+      "caption": "NERD long report sample"
+    },
+    {
+      "path": "assets/NERD_short.png",
+      "caption:": "NERD mini report sample"
+    }
+  ]
 }
