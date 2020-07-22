@@ -59,13 +59,15 @@
             "Dynamic DNS", "Elevated Exposure", "Emerging Exploits",
             "Extended Protection", "Newly Registered Websites",
             "Suspicious Content", "Advanced Malware Command and Control",
-            "Advanced Malware Payloads", "Botnets", "Compromised Websites",
+            "Advanced Malware Payloads", "Botnets", "Bot Networks", 
+            "Compromised Websites", "Malicious Web Sites",
             "Custom-Encrypted Uploads", "Files Containing Passwords",
             "Keyloggers", "Malicious Embedded Link",
             "Malicious Embedded Iframe", "Malicious Websites",
             "Mobile Malware", "Phishing and Other Frauds",
             "Potentially Exploited Documents", "Potentially Unwanted Software",
             "Spyware", "Suspicious Embedded Link",
+            "Elevated Exposure  Newly Registered Websites",
             "Unauthorized Mobile Marketplaces", "User-Defined"
         ]
     }, {
