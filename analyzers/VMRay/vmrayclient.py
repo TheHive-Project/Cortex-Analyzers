@@ -64,6 +64,7 @@ class VMRayClient(object):
     _sample_iocs_endpoint = "/rest/sample/{}/iocs"
     _sample_mitre_endpoint = "/rest/sample/{}/mitre_attack"
     _sample_threat_indicators_endpoint = "/rest/sample/{}/threat_indicators"
+    _continuation_endpoint = "/rest/continuation/{}"
 
     def __init__(
         self,
@@ -105,7 +106,18 @@ class VMRayClient(object):
         else:
             response_json = res.json()
             if response_json.get("result") == "ok":
-                return response_json.get("data", [])
+                data = response_json.get("data", [])
+                if "continuation_id" in response_json:
+                    result = self.session.get(
+                        url="{}{}".format(
+                            self.url,
+                            self._continuation_endpoint.format(
+                                response_json["continuation_id"]
+                            ),
+                        )
+                    )
+                    data.extend(self._check_response(result))
+                return data
             else:
                 error_content = "Error from VMRay via API: {}"
                 if "data" in response_json:
@@ -118,8 +130,9 @@ class VMRayClient(object):
                     error_content = error_content.format("Unspecified error occurred")
                 raise VMRayAPIError(error_content)
 
-    def submit_url_sample(self, url_sample, tags=["TheHive"],
-                          shareable=False, user_config={}):
+    def submit_url_sample(
+        self, url_sample, tags=["TheHive"], shareable=False, user_config={}
+    ):
         """
         Uploads a new URL sample to VMRay api.
 
@@ -131,12 +144,14 @@ class VMRayClient(object):
         :rtype: list(dict)
         """
         params = _filter_dict(self.optional_parameters)
-        params.update({
-            "sample_url": url_sample,
-            "reanalyze": self.reanalyze,
-            "shareable": shareable,
-            "max_recursive_samples": self.recursive_sample_limit,
-        })
+        params.update(
+            {
+                "sample_url": url_sample,
+                "reanalyze": self.reanalyze,
+                "shareable": shareable,
+                "max_recursive_samples": self.recursive_sample_limit,
+            }
+        )
         if tags:
             params["tags"] = ",".join(tags)
 
@@ -150,8 +165,9 @@ class VMRayClient(object):
             )
         )
 
-    def submit_file_sample(self, file_path, file_name, tags=["TheHive"],
-                           shareable=False, user_config={}):
+    def submit_file_sample(
+        self, file_path, file_name, tags=["TheHive"], shareable=False, user_config={}
+    ):
         """
         Uploads a new file sample to VMRay API. Filename gets sent base64 encoded.
 
@@ -165,12 +181,14 @@ class VMRayClient(object):
         :rtype: list(dict)
         """
         params = _filter_dict(self.optional_parameters)
-        params.update({
-            "sample_filename_b64enc": base64.b64encode(file_name.encode("utf-8")),
-            "reanalyze": self.reanalyze,
-            "shareable": shareable,
-            "max_recursive_samples": self.recursive_sample_limit,
-        })
+        params.update(
+            {
+                "sample_filename_b64enc": base64.b64encode(file_name.encode("utf-8")),
+                "reanalyze": self.reanalyze,
+                "shareable": shareable,
+                "max_recursive_samples": self.recursive_sample_limit,
+            }
+        )
         if tags:
             params["tags"] = ",".join(tags)
 

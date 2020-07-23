@@ -223,7 +223,9 @@ class VMRayAnalyzer(Analyzer):
 
             # add child sample taxonomies if they have been added
             sandbox_reports.extend(
-                self._sandbox_reports_for_samples(sample.get("sample_child_samples", []))
+                self._sandbox_reports_for_samples(
+                    sample.get("sample_child_samples", [])
+                )
             )
         return sandbox_reports
 
@@ -246,7 +248,10 @@ class VMRayAnalyzer(Analyzer):
             link = sample.get("sample_webif_url", None)
             iocs = sample.get("sample_iocs", {}).get("iocs", {})
 
-            for ioc_type, (ioc_payload_name, ioc_data_type) in self._ioc_mapping.items():
+            for (
+                ioc_type,
+                (ioc_payload_name, ioc_data_type),
+            ) in self._ioc_mapping.items():
                 if ioc_type in iocs:
                     for ioc_node in iocs[ioc_type]:
                         severity = ioc_node.get("severity", "unknown")
@@ -262,8 +267,7 @@ class VMRayAnalyzer(Analyzer):
                                     context_tags.append("sha256:{}".format(hash_value))
                                     artifacts.append(
                                         self.build_artifact(
-                                            "hash", hash_value,
-                                            message=link, tags=tags
+                                            "hash", hash_value, message=link, tags=tags
                                         )
                                     )
                         elif "operations" in ioc_node:
