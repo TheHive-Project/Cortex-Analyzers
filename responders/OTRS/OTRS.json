@@ -1,0 +1,85 @@
+{
+  "name": "OTRS",
+  "version": "0.1",
+  "author": "Andrea Dainese",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Open an OTRS ticket from a The Hive case",
+  "dataTypeList": [
+    "thehive:case"
+  ],
+  "command": "OTRS/otrs.py",
+  "baseConfig": "OTRS",
+  "configurationItems": [
+    {
+      "name": "otrs_username",
+      "description": "Username to log into OTRS",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "otrs_password",
+      "description": "Password to log into OTRS",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "otrs_url",
+      "description": "URL pointing to OTRS installation, e.g. 'https://otrs.example.com'",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "otrs_queue",
+      "description": "Queue for OTRS tickets, e.g. 'SOC'",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "otrs_ticket_type",
+      "description": "OTRS ticket type, e.g. 'SecurityIncident'",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "otrs_communication_channel",
+      "description": "OTRS communication channel, e.g. 'Email' or 'OTRS'",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "otrs_dynamic_fields",
+      "description": "Dynamic field key and value separated by colon, e.g. 'Competence:The Hive'",
+      "type": "string",
+      "multi": true,
+      "required": false
+    },
+    {
+      "name": "customer_table",
+      "description": "Lookup table for tag and OTRS customers separated by colon, e.g. 'thehive_tag:soc@example.com",
+      "type": "string",
+      "multi": true,
+      "required": true
+    },
+    {
+      "name": "thehive_url",
+      "description": "URL pointing to your TheHive installation, e.g. 'http:/thehive.example.com:9000'",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "thehive_apikey",
+      "description": "TheHive API key which is used to add the downloaded file back to the alert/case",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}
