@@ -172,7 +172,7 @@ steps:
       branch: [master]
 
   - name: rebuild all analyzers periodically
-    image: thehiveproject/cortex-worker-builder
+    image: thehiveproject/cortex-neurons-builder
     settings:
       worker_path: analyzers
       namespace: cortexneurons
@@ -185,7 +185,7 @@ steps:
       - cron
 
   - name: rebuild all responders periodically
-    image: thehiveproject/cortex-worker-builder
+    image: thehiveproject/cortex-neurons-builder
     settings:
       worker_path: responders
       namespace: cortexneurons
@@ -201,7 +201,7 @@ steps:
     image: migueldo/keybase
     settings:
       username: {from_secret: keybase_username}
-      paperkey: {from_secret: pkeybase_aperkey}
+      paperkey: {from_secret: keybase_paperkey}
       channel: {from_secret: keybase_channel}
     commands:
     - |
