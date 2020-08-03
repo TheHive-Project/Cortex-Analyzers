@@ -162,14 +162,14 @@ steps:
     settings:
       type: Cortex-Neurons
     when:
-      branch: [master]
+      event: [tag]
 
   - name: Publish documentation
     image: thehiveproject/mkdocs
     settings:
       token: {from_secret: github_token}
     when:
-      branch: [master]
+      event: [tag]
 
   - name: rebuild all analyzers periodically
     image: thehiveproject/cortex-neurons-builder
@@ -181,8 +181,7 @@ steps:
       stable: true
       force: true
     when:
-      event:
-      - cron
+      event: [cron]
 
   - name: rebuild all responders periodically
     image: thehiveproject/cortex-neurons-builder
@@ -194,11 +193,10 @@ steps:
       stable: true
       force: true
     when:
-      event:
-      - cron
+      event: [cron]
 
   - name: send message
-    image: migueldo/keybase
+    image: thehiveproject/keybase
     settings:
       username: {from_secret: keybase_username}
       paperkey: {from_secret: keybase_paperkey}
