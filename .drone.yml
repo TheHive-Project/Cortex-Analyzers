@@ -196,7 +196,7 @@ steps:
       event: [cron]
 
   - name: send message
-    image: thehiveproject/keybase
+    image: thehiveproject/drone_keybase
     settings:
       username: {from_secret: keybase_username}
       paperkey: {from_secret: keybase_paperkey}
