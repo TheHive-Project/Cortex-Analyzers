@@ -33,7 +33,7 @@ class HashddAnalyzer(Analyzer):
         taxonomies = []
         namespace = 'Hashdd'
         predicate = 'known_level'
-        value = "\0\""
+        value = "0"
 
         level = 'info'  # Default level: this assigned when known_level is unknown
 
@@ -68,20 +68,24 @@ class HashddAnalyzer(Analyzer):
                     'known_level': response[hash]['known_level']
                 })
             elif self.service == "detail":
-                self.report({
-                    'known_level': response[hash]['summary']['hashdd_known_level'],
-                    'file_name': response[hash]['summary']['hashdd_file_name'],
-                    'file_absolute_path': response[hash]['summary']['hashdd_file_absolute_path'],
-                    'size': response[hash]['summary']['hashdd_size'],
-                    'product_manufacturer': response[hash]['summary']['hashdd_product_manufacturer'],
-                    'product_name': response[hash]['summary']['hashdd_product_name'],
-                    'product_version': response[hash]['summary']['hashdd_product_version'],
-                    'architecture': response[hash]['summary']['hashdd_architecture'],
-                    'md5': response[hash]['summary']['hashdd_md5'],
-                    'sha1': response[hash]['summary']['hashdd_sha1'],
-                    'sha256': response[hash]['summary']['hashdd_sha256'],
-                    'ssdeep': response[hash]['summary']['hashdd_ssdeep']
-                })
+                if response.get(hash).get('result') != "NOT_FOUND":
+                    self.report({
+                        'known_level': response[hash]['summary']['hashdd_known_level'],
+                        'file_name': response[hash]['summary']['hashdd_file_name'],
+                        'file_absolute_path': response[hash]['summary']['hashdd_file_absolute_path'],
+                        'size': response[hash]['summary']['hashdd_size'],
+                        'product_manufacturer': response[hash]['summary']['hashdd_product_manufacturer'],
+                        'product_name': response[hash]['summary']['hashdd_product_name'],
+                        'product_version': response[hash]['summary']['hashdd_product_version'],
+                        'architecture': response[hash]['summary']['hashdd_architecture'],
+                        'md5': response[hash]['summary']['hashdd_md5'],
+                        'sha1': response[hash]['summary']['hashdd_sha1'],
+                        'sha256': response[hash]['summary']['hashdd_sha256'],
+                        'ssdeep': response[hash]['summary']['hashdd_ssdeep']
+                    })
+                else:
+                    self.report({'known_level':'Unknown'})
+
         else:
             self.error('{}'.format(response['result']))
 
