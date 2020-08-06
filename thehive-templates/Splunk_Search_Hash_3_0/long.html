@@ -1,0 +1,64 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+<div ng-if="success">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+    	    Summary
+    	</div>
+    	<div class="panel-body">
+    	    <dl class="dl-horizontal" ng-repeat="res in content.savedsearches">
+                <strong>{{res.savedsearch}}</strong>: {{res.length}} results recovered out of a total of {{res.resultCount}} results over {{res.eventCount}} events
+            </dl>
+    	</div>
+    </div>
+    <div class="panel panel-info" ng-repeat="res in content.savedsearches">
+    	<div class="panel-heading">
+    	    Results for "{{res.savedsearch}}"
+    	</div>
+    	<div class="panel-body" ng-if="res.length != 0">
+    	    <div ng-if="!res.failed">
+        	    <dl class="dl-horizontal">
+                    <dt>Results : </dt>
+                    <dd><div ng-class="{'text-warning': res.length<res.resultCount, 'text-success': res.length==res.resultCount}"><strong>{{res.length}}/{{res.resultCount}}</strong></div><div ng-if="res.note">Note: {{res.note}}</div></dd>
+                    <dd><div class="text-danger" ng-if="res.error"><strong>Error: {{res.error}}</strong</div></dd>
+                    <dt>Events : </dt>
+                    <dd>{{res.eventCount}}</dd>
+                    <dt>Job: </dt>
+                    <dd><a href={{res.link}} target="_blank">Go to Splunk</a></dd>
+                    <dt>Earliest time:</dt>
+                    <dd>{{res.searchEarliestTime}} UTC</dd>
+                    <dt>Latest time:</dt>
+                    <dd>{{res.searchLatestTime}} UTC</dd>
+                    <dt ng-if="res.levels">Levels :</dt>
+                    <dd ng-if="res.levels.info>0" class='text-info'><div class='fa fa-question-circle wrap'> Info: {{res.levels.info}}</div></dd>
+                    <dd ng-if="res.levels.safe>0" class='text-success'><div class='fa fa-check-circle wrap'> Safe: {{res.levels.safe}}</div></dd>
+                    <dd ng-if="res.levels.suspicious>0" class='text-warning'><div class='fa fa-exclamation-triangle wrap'> Suspicious: {{res.levels.suspicious}}</div></dd>
+                    <dd ng-if="res.levels.malicious>0" class='text-danger'><div class='fa fa-bug wrap'> Malicious: {{res.levels.malicious}}</div></dd>
+                </dl>
+        	    <table class="table table-hover" >
+        	        <tr>
+        	            <td ng-repeat="(field,value) in res.results[0]"><strong>{{field}}</strong></td>
+        	        </tr>
+        	        <tr ng-repeat="line in res.results">
+        	            <td ng-repeat="(field,value) in line" class="wrap"><div ng-if="field != 'level'">{{value}}</div><div ng-if="field == 'level'" ng-class="{'text-info fa fa-question-circle': value=='info', 'text-success fa fa-check-circle': value=='safe', 'text-warning fa fa-exclamation-triangle': value=='suspicious', 'text-danger fa fa-bug': value=='malicious'}"> {{value}}</div></td>
+        	        </tr>
+        	    </table>
+        	</div>
+        	<div ng-if="res.failed">
+                <dd><div class="text-danger"><strong>Error: {{res.results[0]}}</strong</div></dd>
+            </div>
+        </div>
+    	<div class="panel-body" ng-if="res.length == 0">
+    			<dl class="dl-horizontal">
+    				<dd>No result for this search</dd>
+    			</dl>
+    	</div>
+    </div>
+</div>
