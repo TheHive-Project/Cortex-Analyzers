@@ -7,5 +7,21 @@
   "description": "Use MaxMind to geolocate an IP address.",
   "dataTypeList": ["ip"],
   "baseConfig": "MaxMind",
-  "command": "MaxMind/geo.py"
+  "command": "MaxMind/geo.py",
+  "configurationItems": [
+    {
+      "name": "user_id",
+      "description": "MaxMind API User ID",
+      "required": false,
+      "multi": false,
+      "type": "string"
+    },
+    {
+      "name": "license_key",
+      "description": "MaxMind API License Key",
+      "required": false,
+      "multi": false,
+      "type": "string"
+    }
+  ]
 }
