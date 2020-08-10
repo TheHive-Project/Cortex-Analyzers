@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # encoding: utf-8
-import json
 import requests
 from cortexutils.analyzer import Analyzer
 
@@ -16,7 +15,7 @@ class PhishtankAnalyzer(Analyzer):
         url = 'https://checkurl.phishtank.com/checkurl/'
         postdata = {'url': data, 'format': 'json', 'app_key': self.phishtank_key}
         r = requests.post(url, data=postdata)
-        return json.loads(r.content)
+        return r.json()
 
     def summary(self, raw):
         taxonomies = []

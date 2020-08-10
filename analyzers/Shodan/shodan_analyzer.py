@@ -46,6 +46,7 @@ class ShodanAnalyzer(Analyzer):
     def summary(self, raw):
         taxonomies = []
         level = "info"
+        levelorange = "suspicious"
         namespace = "Shodan"
         predicate = "Location"
         if self.service in ['host', 'host_history']:
@@ -56,18 +57,24 @@ class ShodanAnalyzer(Analyzer):
                 taxonomies.append(self.build_taxonomy(level, namespace, 'Org', raw['host']['org']))
             if 'asn' in raw['host']:
                 taxonomies.append(self.build_taxonomy(level, namespace, 'ASN', raw['host']['asn']))
+            if 'vulns' in raw['host']:
+                totalcve = len(raw['host']['vulns'])
+                if totalcve < 3: 
+                  taxonomies.append(self.build_taxonomy(levelorange, namespace, 'VULNS', raw['host']['vulns']))
+                else:
+                  taxonomies.append(self.build_taxonomy(levelorange, namespace, 'VULNS', totalcve))
         elif self.service == 'info_domain':
-            if 'ips' in raw['infos_domain']:
-                value = "{}".format(len(raw['infos_domain']['ips']))
+            if 'ips' in raw['info_domain']:
+                value = "{}".format(len(raw['info_domain']['ips']))
                 taxonomies.append(self.build_taxonomy(level, namespace, 'IPs', value))
-            if 'all_domains' in raw['infos_domain']:
-                value = "{}".format(len(raw['infos_domain']['all_domains']))
+            if 'all_domains' in raw['info_domain']:
+                value = "{}".format(len(raw['info_domain']['all_domains']))
                 taxonomies.append(self.build_taxonomy(level, namespace, 'Domains', value))
-            if 'asn' in raw['infos_domain']:
-                value = "{}".format(len(raw['infos_domain']['asn']))
+            if 'asn' in raw['info_domain']:
+                value = "{}".format(len(raw['info_domain']['asn']))
                 taxonomies.append(self.build_taxonomy(level, namespace, 'ASNs', value))
-            if 'isp' in raw['infos_domain']:
-                value = "{}".format(len(raw['infos_domain']['isp']))
+            if 'isp' in raw['info_domain']:
+                value = "{}".format(len(raw['info_domain']['isp']))
                 taxonomies.append(self.build_taxonomy(level, namespace, 'ISPs', value))
         elif self.service == 'dns_resolve':
             value = "{}".format(len(raw['records']))

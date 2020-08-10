@@ -1,23 +1,15 @@
 ---
 kind: pipeline
+type: docker
 name: default
+
+# Build and publish docker images for analyzers
 
 steps:
   - name: build analyzers for release
     image: thehiveproject/cortex-worker-builder
     settings:
       worker_path: analyzers
-      namespace: cortexneurons
-      user: {from_secret: docker_username}
-      password: {from_secret: docker_password}
-      stable: true
-    when:
-      event: [tag]
-
-  - name: build responders for release
-    image: thehiveproject/cortex-worker-builder
-    settings:
-      worker_path: responders
       namespace: cortexneurons
       user: {from_secret: docker_username}
       password: {from_secret: docker_password}
@@ -33,7 +25,22 @@ steps:
       user: {from_secret: docker_username}
       password: {from_secret: docker_password}
     when:
+      branch: 
+      - develop
       event: {exclude: [tag]}
+
+# Build and publish docker images for responders
+
+  - name: build responders for release
+    image: thehiveproject/cortex-worker-builder
+    settings:
+      worker_path: responders
+      namespace: cortexneurons
+      user: {from_secret: docker_username}
+      password: {from_secret: docker_password}
+      stable: true
+    when:
+      event: [tag]
 
   - name: build snapshot responders
     image: thehiveproject/cortex-worker-builder
@@ -43,12 +50,18 @@ steps:
       user: {from_secret: docker_username}
       password: {from_secret: docker_password}
     when:
+      branch:
+      - develop
       event: {exclude: [tag]}
 
-  - name: build catalogs
+# Build and publish catalogs for docker images
+
+  - name: build stable catalogs
     image: thehiveproject/neurons-build-catalogs
-  
-  - name: upload catalogs to bintray
+    when:
+      event: [tag]
+
+  - name: upload stable catalogs to bintray
     image: thehiveproject/drone-bintray
     settings:
       user: {from_secret: bintray_user}
@@ -82,6 +95,13 @@ steps:
     when:
       event: [tag]
 
+
+  - name: build devel catalogs
+    image: thehiveproject/neurons-build-catalogs
+    when:
+      branch:
+      - develop
+
   - name: upload devel catalogs to bintray
     image: thehiveproject/drone-bintray
     settings:
@@ -109,8 +129,23 @@ steps:
       --file responders/responders-devel.json \
       --repo cortexneurons
     when:
-      event:
-        branch:
-        - develop
-        event:
-        - push
+      branch:
+      - develop
+
+# Build and publish Documentation 
+
+  - name: Prepare documentation files
+    image: thehiveproject/doc-builder
+    settings:
+      type: Cortex-Neurons
+    when:
+      branch:
+      - master 
+
+  - name: Publish documentation 
+    image: thehiveproject/mkdocs
+    settings:
+      token: { from_secret: github_token }
+    when:
+      branch:
+      - master 
