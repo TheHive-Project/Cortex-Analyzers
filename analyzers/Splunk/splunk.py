@@ -23,7 +23,7 @@ class Splunk(Analyzer):
         self.OWNER = self.getParam('config.owner', None, 'Owner parameter is missing')
         self.APP = self.getParam('config.application', None, 'Application parameter is missing')
         self.SAVEDSEARCHES = self.getParam('config.saved_searches', None, 'At least one Splunk savedsearch name is required')
-        self.EARLIEST = self.getParam('config.earliest_time', "-6mon@mon")
+        self.EARLIEST = self.getParam('config.earliest_time', None)
         self.LATEST = self.getParam('config.latest_time', None)
         self.MAX_COUNT = self.getParam('config.max_count', None)
 
