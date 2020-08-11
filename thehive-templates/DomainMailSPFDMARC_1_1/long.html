@@ -1,0 +1,105 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        DomainMailSPF_DMARC information for <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+        <div>
+            <dl class="dl-horizontal">
+                <dt class="text-bold">Domain</dt>
+                <dd>{{content.DomainMailSPFDMARC.domain}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt class="text-bold">Base domain</dt>
+                <dd>{{content.DomainMailSPFDMARC.base_domain}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt class="text-bold">dnssec</dt>
+                <dd>{{content.DomainMailSPFDMARC.dnssec}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.DomainMailSPFDMARC.ns.hostnames.length > 0">
+                <dt class="text-bold">[NS] Hostnames</dt>
+                <dd>{{content.DomainMailSPFDMARC.ns.hostnames.join(', ') }}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.DomainMailSPFDMARC.ns.warnings.length > 0">
+                <dt class="text-bold">[NS] Warnings</dt>
+                <dd>{{content.DomainMailSPFDMARC.ns.warnings.join('\n') }}</dd>
+            </dl>
+
+            <dl class="dl-horizontal" ng-if="content.DomainMailSPFDMARC.mx.hosts.length > 0">
+                <dt class="text-bold">[MX] Hosts</dt>
+                <dd>{{content.DomainMailSPFDMARC.mx.hosts.join(', ') }}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.DomainMailSPFDMARC.mx.warnings.length > 0">
+                <dt class="text-bold">[MX] Warnings</dt>
+                <dd>{{content.DomainMailSPFDMARC.mx.warnings.join('\n')}}</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        SPF
+    </div>
+    <div class="panel-body">
+        <div>
+            <dl class="dl-horizontal">
+                <dt>Record</dt>
+                <dd>{{content.DomainMailSPFDMARC.spf.record}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Valid</dt>
+                <dd>{{content.DomainMailSPFDMARC.spf.valid}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Error</dt>
+                <dd>{{content.DomainMailSPFDMARC.spf.error}}</dd>
+            </dl>                        
+        </div>
+    </div>
+</div>
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        DMARK
+    </div>
+    <div class="panel-body">
+        <div>
+            <h4 >Info</h4>
+            <dl class="dl-horizontal">
+                <dt>Record</dt>
+                <dd>{{content.DomainMailSPFDMARC.dmarc.record}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Valid</dt>
+                <dd>{{content.DomainMailSPFDMARC.dmarc.valid}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Error</dt>
+                <dd>{{content.DomainMailSPFDMARC.dmarc.error}}</dd>
+            </dl>              
+            <dl class="dl-horizontal">
+                <dt>Location</dt>
+                <dd>{{content.DomainMailSPFDMARC.dmarc.location}}</dd>
+            </dl>                        
+            <dl class="dl-horizontal" ng-if="content.DomainMailSPFDMARC.dmarc.warnings.length > 0">
+                <dt class="text-bold">Warnings</dt>
+                <dd>{{content.DomainMailSPFDMARC.dmarc.warnings.join('\n')}}</dd>
+            </dl>      
+            <hr>
+            <h4 >Tags</h4>
+            <dl class="dl-horizontal" ng-repeat="(tag, value) in content.DomainMailSPFDMARC.dmarc.tags">
+                <dt>{{tag}}</dt>
+                <dd>{{value.value}} <span ng-if="value.explicit">[Explicit]</span></dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

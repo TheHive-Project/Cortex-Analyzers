@@ -23,14 +23,16 @@ class Mailer(Responder):
         Responder.run(self)
 
         title = self.get_param("data.title", None, "title is missing")
-        if self.data_type == "thehive:case_task":
+        if self.data_type in ["thehive:case", "thehive:case_task"]:
             description = self.get_param(
                 "data.description", None, "description is missing"
             )
-        else:
+        elif self.data_type == "thehive:alert":
             description = self.get_param(
                 "data.case.description", None, "description is missing"
             )
+        else:
+            self.error("Invalid dataType")            
 
         mail_to = None
         if self.data_type == "thehive:case":
@@ -68,9 +70,6 @@ class Mailer(Responder):
                 mail_to = mail_artifacts.pop()
             else:
                 self.error("recipient address not found in observables")
-
-        else:
-            self.error("Invalid dataType")
 
         msg = MIMEMultipart()
         msg["Subject"] = title
