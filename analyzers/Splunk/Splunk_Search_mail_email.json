@@ -92,5 +92,22 @@
       "defaultValue": 1000
     }
     ],
-    "command": "Splunk/splunk.py"
+    "command": "Splunk/splunk.py",
+    "registration_required": false,
+    "subscription_required": false,
+    "free_subscription": true,
+    "service_logo": {
+      "path": "assets/splunk_mail_logo.png",
+      "caption": "logo"
+    },
+    "screenshots": [
+      {
+        "path": "assets/Splunk_Search_Mail_Email_long.png",
+        "caption": "Splunk_Search_Mail_Email long report sample"
+      },
+      {
+        "path": "assets/Splunk_Search_Mail_Email_short.png",
+        "caption:": "Splunk_Search_Mail_Email short report sample"
+      }
+    ]
 } 
