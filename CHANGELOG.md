@@ -1,21 +1,125 @@
 # Changelog
 
+## [2.9.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/HEAD)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.8.7...2.9.0)
+
+**Fixed bugs:**
+
+- \[Bug\] Mailer\_1\_0 not working [\#835](https://github.com/TheHive-Project/Cortex-Analyzers/issues/835)
+- \[Bug\] Docker images of some responders are not built  [\#834](https://github.com/TheHive-Project/Cortex-Analyzers/issues/834)
+- PhishTank\_CheckURL\_2\_1 doesn't work\[Bug\] [\#833](https://github.com/TheHive-Project/Cortex-Analyzers/issues/833)
+- PhishingInitiative\_Scan\_1\_0 doesn't work\[Bug\] [\#832](https://github.com/TheHive-Project/Cortex-Analyzers/issues/832)
+- Hashdd\_Detail\_1\_0 doesn't work \[Bug\] [\#831](https://github.com/TheHive-Project/Cortex-Analyzers/issues/831)
+- MalwareBazaar\_1\_0 doesn't support types of observables, but writed that it does\[Bug\] [\#830](https://github.com/TheHive-Project/Cortex-Analyzers/issues/830)
+- MISPWarninglists analyzer doesn't work \[Bug\] [\#827](https://github.com/TheHive-Project/Cortex-Analyzers/issues/827)
+
+**Closed issues:**
+
+- New Analyzer: ForcepointWebsensePing [\#817](https://github.com/TheHive-Project/Cortex-Analyzers/issues/817)
+- \[FR\] add SpamAssassin analyzer [\#810](https://github.com/TheHive-Project/Cortex-Analyzers/issues/810)
+- \[FR\] Velociraptor Analyzer/Responder [\#579](https://github.com/TheHive-Project/Cortex-Analyzers/issues/579)
+
+## [2.8.7](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.8.7) (2020-08-03)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.8.6...2.8.7)
+
+**Fixed bugs:**
+
+- Robtex\_IP\_Query\_1\_0 doesn't work \[Bug\] [\#828](https://github.com/TheHive-Project/Cortex-Analyzers/issues/828)
+
+## [2.8.6](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.8.6) (2020-07-15)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.8.5...2.8.6)
+
+**Fixed bugs:**
+
+- \[Bug\] VirustotalDownloader docker image not available [\#820](https://github.com/TheHive-Project/Cortex-Analyzers/issues/820)
+
+## [2.8.5](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.8.5) (2020-07-13)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.8.4...2.8.5)
+
+**Implemented enhancements:**
+
+- \[PATCH\] Implement some other ONYPHE simple APIs \(but still not the search API\) [\#372](https://github.com/TheHive-Project/Cortex-Analyzers/issues/372)
+
+**Closed issues:**
+
+- \[FR\] Splunk search analyzer [\#791](https://github.com/TheHive-Project/Cortex-Analyzers/issues/791)
+
+## [2.8.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.8.4) (2020-07-02)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.8.3...2.8.4)
+
+## [2.8.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.8.3) (2020-07-02)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.8.2...2.8.3)
+
+**Fixed bugs:**
+
+- \[Bug\] missing simplejson lib in ThreatGrid analyzer [\#812](https://github.com/TheHive-Project/Cortex-Analyzers/issues/812)
+
+## [2.8.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.8.2) (2020-07-02)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.8.1...2.8.2)
+
+## [2.8.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.8.1) (2020-07-02)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.8.0...2.8.1)
+
+**Fixed bugs:**
+
+- \[Bug\] IntezerCommunity Analyser: Permission denied [\#801](https://github.com/TheHive-Project/Cortex-Analyzers/issues/801)
+
+**Closed issues:**
+
+- \[FR\] New Analyzer: LastInfoSec IoC Analysis [\#753](https://github.com/TheHive-Project/Cortex-Analyzers/issues/753)
+
 ## [2.8.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.8.0) (2020-06-30)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/2.7.0...2.8.0)
 
+**Implemented enhancements:**
+
+- Remove catalogs [\#789](https://github.com/TheHive-Project/Cortex-Analyzers/issues/789)
+- WOT: Moving from legacy to the new endpoint [\#771](https://github.com/TheHive-Project/Cortex-Analyzers/issues/771)
+- \#789 catalogs removed [\#790](https://github.com/TheHive-Project/Cortex-Analyzers/pull/790) ([jeromeleonard](https://github.com/jeromeleonard))
+- DomainTools Iris Analyzer Report Updates [\#760](https://github.com/TheHive-Project/Cortex-Analyzers/pull/760) ([ChuckWoodraska](https://github.com/ChuckWoodraska))
+- Updating to use new API [\#483](https://github.com/TheHive-Project/Cortex-Analyzers/pull/483) ([obikao](https://github.com/obikao))
+
 **Fixed bugs:**
 
 - \[Bug\] JSONDecodeError with dockerized analyzers [\#800](https://github.com/TheHive-Project/Cortex-Analyzers/issues/800)
-- \[Bug\] Wazuh responder not working. [\#778](https://github.com/TheHive-Project/Cortex-Analyzers/issues/778)
 - \[Bug\] MineMeld\_1\_0 Obesrvable not reaching destination. [\#773](https://github.com/TheHive-Project/Cortex-Analyzers/issues/773)
 - \[Bug\] Abuse\_Finder : pythonwhois dependency tree broken [\#742](https://github.com/TheHive-Project/Cortex-Analyzers/issues/742)
+- \[Bug\] Wazuh responder not working. [\#778](https://github.com/TheHive-Project/Cortex-Analyzers/issues/778)
+- \[Bug\] Minemeld Responder: No module named 'requests' [\#774](https://github.com/TheHive-Project/Cortex-Analyzers/issues/774)
+- ThreatResponse analyzer fails [\#759](https://github.com/TheHive-Project/Cortex-Analyzers/issues/759)
+- Mailer incorrectly informes about missing receipient address in artifacts for Case object [\#379](https://github.com/TheHive-Project/Cortex-Analyzers/issues/379)
 
 **Closed issues:**
 
 - \[FR\] Rename Lis\_GetReport analyzer to LastInfoSec [\#808](https://github.com/TheHive-Project/Cortex-Analyzers/issues/808)
 - EML-Parser Requirements file missing pip requirement [\#792](https://github.com/TheHive-Project/Cortex-Analyzers/issues/792)
 - ELK - Elasticsearch or Kibana analyzer \(contribution survey\) [\#419](https://github.com/TheHive-Project/Cortex-Analyzers/issues/419)
+- New Responder: Virustotal Downloader [\#765](https://github.com/TheHive-Project/Cortex-Analyzers/issues/765)
+- \[FR\] SendGrid based mail delivery via HTTPS API [\#738](https://github.com/TheHive-Project/Cortex-Analyzers/issues/738)
+- \[FR\] Mailer should support TLS/START-TLS and authentication [\#737](https://github.com/TheHive-Project/Cortex-Analyzers/issues/737)
+- Use APIv2 in Onyphe analyers [\#736](https://github.com/TheHive-Project/Cortex-Analyzers/issues/736)
+
+**Merged pull requests:**
+
+- Rename Lis\_GetReport analyzer to LastInfoSec  [\#809](https://github.com/TheHive-Project/Cortex-Analyzers/pull/809) ([remydewa](https://github.com/remydewa))
+- change wot analyzer to support new api [\#777](https://github.com/TheHive-Project/Cortex-Analyzers/pull/777) ([dadokkio](https://github.com/dadokkio))
+- add requests to requirements [\#775](https://github.com/TheHive-Project/Cortex-Analyzers/pull/775) ([dadokkio](https://github.com/dadokkio))
+- \#759 module\_type removed in ThreatResponse [\#768](https://github.com/TheHive-Project/Cortex-Analyzers/pull/768) ([dadokkio](https://github.com/dadokkio))
+- Add new responder VirustotalDownloader \#765 [\#766](https://github.com/TheHive-Project/Cortex-Analyzers/pull/766) ([hariomenkel](https://github.com/hariomenkel))
+- Add auth to Mailer and support for tasks [\#764](https://github.com/TheHive-Project/Cortex-Analyzers/pull/764) ([dadokkio](https://github.com/dadokkio))
+- sinkdb: fqdn support [\#756](https://github.com/TheHive-Project/Cortex-Analyzers/pull/756) ([dadokkio](https://github.com/dadokkio))
+- new LastInfoSec analyzers for hash and domain [\#754](https://github.com/TheHive-Project/Cortex-Analyzers/pull/754) ([remydewa](https://github.com/remydewa))
+- support onyphe api v2 [\#747](https://github.com/TheHive-Project/Cortex-Analyzers/pull/747) ([dadokkio](https://github.com/dadokkio))
+- Initial commit for SendGrid responder [\#739](https://github.com/TheHive-Project/Cortex-Analyzers/pull/739) ([colin-stubbs](https://github.com/colin-stubbs))
 
 ## [2.7.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/2.7.0) (2020-05-15)
 
