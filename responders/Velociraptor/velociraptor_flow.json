@@ -1,0 +1,30 @@
+{
+  "name": "Velociraptor_Flow",
+  "version": "0.1",
+  "author": "Wes Lambert",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Run Velociraptor flow",
+  "dataTypeList": ["thehive:case_artifact"],
+  "command": "Velociraptor/velociraptor_flow.py",
+  "baseConfig": "Velociraptor",
+  "configurationItems": [
+    {
+      "name": "velociraptor_client_config",
+      "description": "Path to API client config file",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": ""
+    },
+    {
+      "name": "velociraptor_artifact",
+      "description": "Artifact to collect",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": ""
+    }
+  ]
+}
+
