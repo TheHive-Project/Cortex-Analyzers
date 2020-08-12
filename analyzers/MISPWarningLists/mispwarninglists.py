@@ -37,7 +37,7 @@ class MISPWarninglistsAnalyzer(Analyzer):
         self.data = self.get_data()
         self.path = self.get_param("config.path", "misp-warninglists")
         conn = self.get_param("config.conn", None)
-        self.warninglists = self.readwarninglists() if not USE_DB else None
+        self.warninglists = self.readwarninglists() if not conn or not USE_DB else None
         self.engine = db.create_engine(conn) if conn and USE_DB else None
         if not exists(self.path) and not self.engine:
             self.error("wrong configuration settings.")
