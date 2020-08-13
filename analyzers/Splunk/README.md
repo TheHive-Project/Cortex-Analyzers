@@ -1,6 +1,7 @@
 This analyzer allows you to execute a list of searches in Splunk by passing the element you are looking for as a parameter
 
 This analyzer comes in 10 flavors:
+
 - Splunk_Search_**Domain_FQDN**: Dispatch a list of saved searches on a given domain/fqdn
 - Splunk_Search_**File_Filename**: Dispatch a list of saved searches on a given file/filename
 - Splunk_Search_**Hash**: Dispatch a list of saved searches on a given hash
@@ -14,8 +15,10 @@ This analyzer comes in 10 flavors:
 - Splunk_Search_**User**: Dispatch a list of saved searches on a given user id (variable name is 'other'
 
 #### Requirements
+
 You need to have access to a Splunk instance with a dedicated account. For any saved search you want to use, you have to group them in the same Application and with the same owner.
 When you configure an analyzer, it will ask you these information:
+
 - **host**: This is the domain name or the IP of your Splunk instance.
 - **port**: This is the port to reach to access Splunk (API) (Splunk default to 8089).
 - **port_gui**: This is the port to reach to access Splunk (HTTP) (Splunk default to 8000).
@@ -29,17 +32,21 @@ When you configure an analyzer, it will ask you these information:
 - **max_count**: This parameter is set to 1,000 by default. It's the number of results to recover from the job. A limit is set to avoid any trouble in TheHive/Cortex on the GUI. If value is set to 0, then all available results are returned.
 
 #### How to recover arguments in Splunk ?
+
 All arguments can be retrieve using "$args.DATATYPE$". As an example is better than a long speech, here it is:
+
 Imagine that you have a search with this query:
+
 ```
 index=myindex_internet sourcetype=mysourcetype url=$args.url$*
 | stats count by user, url, src_ip
 ```
+
 This query will recover the data using $args.url$.
 
 So, you can recover your data using :
-- $args.type$: This parameter indicates the type of data (if you need so)
 
+- $args.type$: This parameter indicates the type of data (if you need so)
 - $args.domain$: This parameter contains the data for an analysis over a domain
 - $args.fqdn$: This parameter contains the data for an analysis over a fqdn
 - $args.file$: This parameter contains the data for an analysis over a file
@@ -56,7 +63,9 @@ So, you can recover your data using :
 - $args.user-agent$: This parameter contains the data for an analysis over a user-agent
 
 #### Taxonomies
+
 They are 5 taxonomies available on this analyzer:
+
 - **Splunk:Results**: Indicates the total number of results found by all the saved searches
 - **Splunk:Info** (optional): Indicates the total number of results which have a field "level" set to "info"
 - **Splunk:Safe** (optional): Indicates the total number of results which have a field "level" set to "safe"
