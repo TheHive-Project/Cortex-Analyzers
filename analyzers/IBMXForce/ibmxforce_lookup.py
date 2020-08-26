@@ -30,7 +30,7 @@ class IBMXForceAnalyzer(Analyzer):
             date = datetime.strptime(date, "%Y-%m-%dT%H:%M:%SZ")
         return date.strftime("%Y-%m-%d")
 
-    def cleanup(self, ip_data={}, malware_data={}, dns_data={}):
+    def cleanup(self, ip_data={}, malware_data={}, dns_data={}, whois_data={}):
         response = {
             'malware': [],
             'history': [],
@@ -109,6 +109,9 @@ class IBMXForceAnalyzer(Analyzer):
             response['dns'].append(
                 ("", "", ",".join([x for x in dns_data['RDNS']])))
 
+        if self.data_type in ['domain', 'ip']:
+            response['whois'] = whois_data
+
         return response
 
     def ip_query(self, data):
@@ -122,12 +125,14 @@ class IBMXForceAnalyzer(Analyzer):
             _query_malware = _session.get(
                 '%s/ipr/malware/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
             _query_info = _session.get('%s/resolve/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
+            _query_whois = _session.get('%s/whois/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
 
             ip_data = _query_ip.json() if _query_ip.status_code == 200 else {}
             malware_data = _query_malware.json() if _query_malware.status_code == 200 else {}
             dns_data = _query_info.json() if _query_info.status_code == 200 else {}
-            if ip_data or malware_data or dns_data:
-                return self.cleanup(ip_data=ip_data, malware_data=malware_data, dns_data=dns_data)
+            whois_data = _query_whois.json() if _query_whois.status_code == 200 else {}
+            if ip_data or malware_data or dns_data or whois_data:
+                return self.cleanup(ip_data=ip_data, malware_data=malware_data, dns_data=dns_data, whois_data=whois_data)
             else:
                 self.error('API Access error')
 
@@ -147,12 +152,14 @@ class IBMXForceAnalyzer(Analyzer):
             _query_malware = _session.get(
                 '%s/url/malware/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
             _query_info = _session.get('%s/resolve/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
+            _query_whois = _session.get('%s/whois/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
 
             url_data = _query_url.json() if _query_url.status_code == 200 else {}
             malware_data = _query_malware.json() if _query_malware.status_code == 200 else {}
             dns_data = _query_info.json() if _query_info.status_code == 200 else {}
-            if url_data or malware_data or dns_data:
-                return self.cleanup(ip_data=url_data, malware_data=malware_data, dns_data=dns_data)
+            whois_data = _query_whois.json() if _query_whois.status_code == 200 else {}
+            if url_data or malware_data or dns_data or whois_data:
+                return self.cleanup(ip_data=url_data, malware_data=malware_data, dns_data=dns_data, whois_data=whois_data)
             else:
                 self.error('API Access error')
 
