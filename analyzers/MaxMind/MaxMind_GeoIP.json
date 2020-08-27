@@ -12,14 +12,14 @@
     {
       "name": "user_id",
       "description": "MaxMind API User ID",
-      "required": false,
+      "required": true,
       "multi": false,
       "type": "string"
     },
     {
       "name": "license_key",
       "description": "MaxMind API License Key",
-      "required": false,
+      "required": true,
       "multi": false,
       "type": "string"
     }
