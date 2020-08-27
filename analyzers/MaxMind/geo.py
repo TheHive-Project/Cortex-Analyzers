@@ -11,8 +11,8 @@ class MaxMindAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.user_id = self.get_param('config.user_id')
-        self.license_key = self.get_param('config.license_key')
+        self.user_id = self.get_param('config.user_id', None, 'Missing MaxMind API user_id')
+        self.license_key = self.get_param('config.license_key', None, 'Missing MaxMind API license_key')
 
     def dump_city(self, city):
         return {
