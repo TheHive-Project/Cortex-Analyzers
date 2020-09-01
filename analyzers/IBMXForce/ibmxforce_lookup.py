@@ -109,7 +109,7 @@ class IBMXForceAnalyzer(Analyzer):
             response['dns'].append(
                 ("", "", ",".join([x for x in dns_data['RDNS']])))
 
-        if self.data_type in ['domain', 'ip']:
+        if self.data_type != 'hash':
             response['whois'] = whois_data
 
         return response
