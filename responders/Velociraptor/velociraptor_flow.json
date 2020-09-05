@@ -24,7 +24,27 @@
       "multi": false,
       "required": true,
       "defaultValue": ""
+    },
+    {
+      "name": "upload_flow_results",
+      "description": "Upload the results of a flow as an observable",
+      "type": "boolean",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "thehive_url",
+      "description": "URL pointing to your TheHive installation, e.g. 'http://127.0.0.1:9000'",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "thehive_apikey",
+      "description": "TheHive API key (used to add the downloaded file back to the alert/case)",
+      "type": "string",
+      "multi": false,
+      "required": true
     }
   ]
 }
-
