@@ -137,14 +137,11 @@ class Velociraptor(Responder):
                     Name="TheHive-VFSQuery",
                     VQL=vfs_query,
               )])
-              #vfs_results=[]
               for vfs_response in stub.Query(vfs_request):
                   try:
                     vfs_result = json.loads(vfs_response.Response)[0]['VFSPath']
-                    #vfs_results = vfs_result[0]['VFSPath']
                   except:
                     pass
-              #self.report({'message': vfs_result })
               # "Artifact" plugin.
               offset = 0
             
