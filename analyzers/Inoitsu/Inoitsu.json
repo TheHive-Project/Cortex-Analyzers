@@ -1,0 +1,14 @@
+{
+  "name": "Inoitsu",
+  "version": "1.0",
+  "author": "Abdelkader Ben Ali",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "MIT",
+  "description": "Inoitsu lookup.",
+  "dataTypeList": ["mail"],
+  "command": "Inoitsu/inoitsu_analyzer.py",
+  "baseConfig": "Inoitsu",
+  "configurationItems": [
+
+  ]
+}
