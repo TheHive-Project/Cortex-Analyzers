@@ -1,6 +1,6 @@
 {
   "name": "AnyRun_Sandbox_Analysis",
-  "version": "1.0",
+  "version": "1.1",
   "author": "Andrea Garavaglia, Davide Arcuri, LDO-CERT",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -15,6 +15,14 @@
       "type": "string",
       "multi": false,
       "required": false
+    },
+    {
+      "name": "privacy_type",
+      "description": "Define the privacy setting (Allowed values: public, bylink, owner)",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "bylink"
     },
     {
       "name": "verify_ssl",

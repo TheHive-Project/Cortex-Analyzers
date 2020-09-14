@@ -12,6 +12,7 @@ class AnyRunAnalyzer(Analyzer):
         Analyzer.__init__(self)
         self.url = "https://api.any.run/v1"
         self.token = self.get_param("config.token", None, "Service token is missing")
+        self.privacy_type = self.get_param("config.privacy_type", None, "Privacy type is missing")
         self.verify_ssl = self.get_param("config.verify_ssl", True, None)
         if not self.verify_ssl:
             requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -49,9 +50,11 @@ class AnyRunAnalyzer(Analyzer):
                 while status_code in (None, 429) and tries <= 15:
                     with open(filepath, "rb") as sample:
                         files = {"file": (filename, sample)}
+                        data = {"opt_privacy_type": self.privacy_type}
                         response = requests.post(
                             "{0}/analysis".format(self.url),
                             files=files,
+                            data=data,
                             headers=headers,
                             verify=self.verify_ssl,
                         )
@@ -68,7 +71,7 @@ class AnyRunAnalyzer(Analyzer):
                         self.error(response.json()["message"])
             elif self.data_type == "url":
                 url = self.get_param("data", None, "Url is missing")
-                data = {"obj_type": "url", "obj_url": url}
+                data = {"obj_type": "url", "obj_url": url, "opt_privacy_type": self.privacy_type}
                 while status_code in (None, 429) and tries <= 15:
                     response = requests.post(
                         "{0}/analysis".format(self.url),
