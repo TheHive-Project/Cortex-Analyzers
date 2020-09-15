@@ -4,11 +4,28 @@
   "author": "Abdelkader Ben Ali",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "MIT",
-  "description": "Inoitsu lookup.",
+  "description": "Query Inoitsu for a compromised email address.",
   "dataTypeList": ["mail"],
   "command": "Inoitsu/inoitsu_analyzer.py",
   "baseConfig": "Inoitsu",
   "configurationItems": [
 
+  ],
+  "registration_required": false,
+  "subscription_required": false,
+  "service_homepage": "https://www.hotsheet.com/inoitsu/",
+  "service_logo": {
+    "path": "assets/inoitsu_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/Inoitsu_long.png",
+      "caption": "Inoitsu long report sample"
+    },
+    {
+      "path": "assets/Inoitsu_short.png",
+      "caption:": "Inoitsu mini report sample"
+    }
   ]
 }
