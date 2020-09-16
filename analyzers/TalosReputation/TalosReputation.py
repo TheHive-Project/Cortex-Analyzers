@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 
-import requests
+import cloudscraper
 from cortexutils.analyzer import Analyzer
 import json
 
@@ -30,9 +30,8 @@ class TalosReputation(Analyzer):
         if self.data_type == 'ip':
             try:
                 data = self.get_data()
-
-                s = requests.Session()
-                s.get('https://talosintelligence.com/reputation_center/lookup?search={}'.format(data))
+		
+		scraper = cloudscraper.CloudScraper()
 
                 headers={
                     'Host':'talosintelligence.com',
@@ -41,7 +40,7 @@ class TalosReputation(Analyzer):
                     'Accept':'application/json'
                 }
 
-                response_details = s.get('https://talosintelligence.com/sb_api/query_lookup',
+                response_details = scraper.get('https://talosintelligence.com/sb_api/query_lookup',
                     headers = headers,
                     params = {
                         'query':'/api/v2/details/ip/',
@@ -49,7 +48,7 @@ class TalosReputation(Analyzer):
                         }
                     )
 
-                response_location = s.get('https://talosintelligence.com/sb_api/query_lookup',
+                response_location = scraper.get('https://talosintelligence.com/sb_api/query_lookup',
                     headers = headers,
                     params = {
                         'query':'/api/v2/location/ip/',
