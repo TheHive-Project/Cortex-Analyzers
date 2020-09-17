@@ -40,7 +40,7 @@ class Mailer(Responder):
             tags = self.get_param(
                 "data.tags", None, "recipient address not found in tags"
             )
-            mail_tags = [t[5:] for t in tags if t.startswith("mail=")]
+            mail_tags = [t[5:] for t in tags if t.startswith("mail=") or t.startswith("mail:")]
             if mail_tags:
                 mail_to = mail_tags.pop()
             else:
@@ -51,6 +51,8 @@ class Mailer(Responder):
             descr_array = description.splitlines()
             if "mailto:" in descr_array[0]:
                 mail_to = descr_array[0].replace("mailto:", "").strip()
+            elif "mailto=" in descr_array[0]:
+                mail_to = descr_array[0].replace("mailto=", "").strip()
             else:
                 self.error("recipient address not found in description")
             # Set rest of description as body
