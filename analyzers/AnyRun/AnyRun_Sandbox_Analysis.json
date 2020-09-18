@@ -17,6 +17,14 @@
       "required": false
     },
     {
+      "name": "privacy_type",
+      "description": "Define the privacy setting (Allowed values: public, bylink, owner)",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "bylink"
+    },
+    {
       "name": "verify_ssl",
       "description": "Verify SSL certificate",
       "type": "boolean",
