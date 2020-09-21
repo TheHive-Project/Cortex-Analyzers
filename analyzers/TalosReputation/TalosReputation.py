@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 
-import requests
+import cloudscraper
 from cortexutils.analyzer import Analyzer
-import json
+
 
 class TalosReputation(Analyzer):
 
@@ -12,7 +12,7 @@ class TalosReputation(Analyzer):
 
     def summary(self, raw):
         taxonomies = []
-        level = 'info' #If there's a change of naming, will be presented as info
+        level = 'info'  # If there's a change of naming, will be presented as info
         namespace = 'Talos'
         predicate = 'Reputation'
         value = raw.get('email_score_name')
@@ -31,29 +31,28 @@ class TalosReputation(Analyzer):
             try:
                 data = self.get_data()
 
-                s = requests.Session()
-                s.get('https://talosintelligence.com/reputation_center/lookup?search={}'.format(data))
+                scraper = cloudscraper.CloudScraper()
 
-                headers={
-                    'Host':'talosintelligence.com',
-                    'Referer':'https://talosintelligence.com/reputation_center/lookup?search={}'.format(data),
-                    'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36',
-                    'Accept':'application/json'
+                headers = {
+                    'Host': 'talosintelligence.com',
+                    'Referer': 'https://talosintelligence.com/reputation_center/lookup?search={}'.format(data),
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36',
+                    'Accept': 'application/json'
                 }
 
-                response_details = s.get('https://talosintelligence.com/sb_api/query_lookup',
+                response_details = scraper.get('https://talosintelligence.com/sb_api/query_lookup',
                     headers = headers,
                     params = {
-                        'query':'/api/v2/details/ip/',
-                        'query_entry':data
+                        'query': '/api/v2/details/ip/',
+                        'query_entry': data
                         }
                     )
 
-                response_location = s.get('https://talosintelligence.com/sb_api/query_lookup',
+                response_location = scraper.get('https://talosintelligence.com/sb_api/query_lookup',
                     headers = headers,
                     params = {
-                        'query':'/api/v2/location/ip/',
-                        'query_entry':data
+                        'query': '/api/v2/location/ip/',
+                        'query_entry': data
                         }
                     )
 
@@ -69,7 +68,8 @@ class TalosReputation(Analyzer):
             except Exception as e:
                 self.unexpectedError(e)
         else:
-	        self.notSupported()
+            self.notSupported()
+
 
 if __name__ == '__main__':
     TalosReputation().run()
