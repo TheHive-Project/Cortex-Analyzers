@@ -61,13 +61,17 @@ class FileInfoAnalyzer(Analyzer):
         for module in available_submodules:
             if module.check_file(file=self.filepath, filetype=self.filetype, filename=self.filename,
                                  mimetype=self.mimetype):
-                module_results = module.analyze_file(self.filepath)
-                module_summaries = module.module_summary()
-                results.append({
-                    'submodule_name': module.name,
-                    'results': module_results,
-                    'summary': module_summaries
-                })
+                try:                 
+                    module_results = module.analyze_file(self.filepath)
+                    module_summaries = module.module_summary()
+                
+                    results.append({
+                        'submodule_name': module.name,
+                        'results': module_results,
+                        'summary': module_summaries
+                    })
+                except:
+                    print("ERROR. exception occured")
 
         self.report({'results': results})
 
