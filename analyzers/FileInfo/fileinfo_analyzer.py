@@ -71,7 +71,7 @@ class FileInfoAnalyzer(Analyzer):
                         'summary': module_summaries
                     })
                 except:
-                    print("ERROR. exception occured")
+                    pass
 
         self.report({'results': results})
 
