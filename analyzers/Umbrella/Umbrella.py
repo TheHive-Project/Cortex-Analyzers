@@ -45,8 +45,17 @@ class UmbrellaAnalyzer(Analyzer):
 
 
     def run(self):
+        # Map The Hive observable types to Umbrella observable types
+        observable_mapping = {
+            "domain": "domain",
+            "fqdn": "domain", 
+        }
+        
         if self.service == 'get':
-            if self.data_type == 'domain':
+            dataType = self.get_param("dataType")
+
+            # Validate the supplied observable type is supported
+            if dataType in observable_mapping.keys():
                 data = self.get_param('data', None, 'Data is missing')
                 r = self.umbrella_runreport(data)
                 self.report(r)
