@@ -25,17 +25,24 @@ class SophosIntelixAnalyzer(Analyzer):
             if self.data_type == 'hash':
                 try:
                     data = self.get_data()
-                    self.ic.file_lookup(data)
-                    self.report({
-                        "file_hash": data,
-                        "reputation_score": self.ic.reputationScore,
-                        "classification": self.ic.classification
-                    })
+                    try:
+                        self.ic.file_lookup(data)
+                        self.report({
+                            "file_hash": data,
+                            "reputation_score": self.ic.reputationScore,
+                            "classification": self.ic.classification
+                        })
+                    except TypeError:
+                        self.report({
+                            "file_hash": data,
+                            "reputation_score": "None",
+                            "classification": "Unknown"
+                        })
                 except Exception as e:
                     error = str(e)
                     self.error('Error: {}'.format(error))
 
-            elif self.data_type == 'domain':
+            elif self.data_type in ('domain', 'fqdn', 'url'):
                 try:
                     data = self.get_data()
                     self.ic.url_lookup(data)
@@ -78,7 +85,7 @@ class SophosIntelixAnalyzer(Analyzer):
         namespace = "Intelix"
 
         if self.service == 'get':
-            if self.data_type == 'domain':
+            if self.data_type in ('domain', 'fqdn', 'url'):
                 if self.ic.riskLevel == "UNCLASSIFIED":
                     level = "info"
                 elif self.ic.riskLevel == "TRUSTED":
