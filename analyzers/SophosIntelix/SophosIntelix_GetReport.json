@@ -5,7 +5,7 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Fast and easy way to find out if the file is known Good, PUA (Potentially Unwanted Application), or, Malware. For more information or to sign up for SophosLabs Intelix (with a free tier) see https://www.sophos.com/en-us/labs/intelix.aspx",
-  "dataTypeList": ["hash", "domain"],
+  "dataTypeList": ["hash", "domain", "fqdn", "url"],
   "command": "SophosIntelix/intelix_analyzer.py",
   "baseConfig": "SophosIntelix",
   "config": {
