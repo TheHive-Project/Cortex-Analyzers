@@ -20,6 +20,18 @@ class CensysAnalyzer(Analyzer):
             None,
             'No API-Key for Censys given. Please add it to the cortex configuration.'
         )
+        self.__fields = self.get_param(
+            'parameters.fields',
+            ["updated_at", "ip"]
+        )
+        self.__max_records = self.get_param(
+            'parameters.max_records',
+            1000
+        )
+        self.__flatten = self.get_param(
+            'parameters.flatten',
+            True
+        )
 
     def search_hosts(self, ip):
         """
@@ -53,6 +65,16 @@ class CensysAnalyzer(Analyzer):
         c = CensysWebsites(api_id=self.__uid, api_secret=self.__api_key)
         return c.view(dom)
 
+    def search_ipv4(self, search):
+        """
+        Searches for hosts in IPv4 base
+        :param search:search as string
+        :type search: str
+        :return: dict
+        """
+        c = CensysIPv4(api_id=self.__uid, api_secret=self.__api_key)
+        return [x for x in c.search(search, fields=self.__fields,  max_records=self.__max_records, flatten=self.__flatten)]
+
     def run(self):
         try:
             if self.data_type == 'ip':
@@ -66,6 +88,10 @@ class CensysAnalyzer(Analyzer):
             elif self.data_type == 'domain' or self.data_type == 'fqdn':
                 self.report({
                     'website': self.search_website(self.get_data())
+                })
+            elif self.data_type == 'other':
+                self.report({
+                    'matches': self.search_ipv4(self.get_data())
                 })
             else:
                 self.error('Data type not supported. Please use this analyzer with data types hash, ip or domain.')
@@ -84,15 +110,15 @@ class CensysAnalyzer(Analyzer):
             raw = raw['ip']
             service_count = len(raw.get('protocols', []))
             heartbleed = raw.get('443', {}).get('https', {}).get('heartbleed', {}).get('heartbleed_vulnerable', False)
-
             taxonomies.append(self.build_taxonomy('info', 'Censys', 'OpenServices', service_count))
             if heartbleed:
                 taxonomies.append(self.build_taxonomy('malicious', 'Censys', 'Heartbleed', 'vulnerable'))
+
         elif 'website' in raw:
             raw = raw['website']
             service_count = len(raw.get('tags', []))
-
             taxonomies.append(self.build_taxonomy('info', 'Censys', 'OpenServices', service_count))
+
         elif 'cert' in raw:
             raw = raw['cert']
             trusted_count = len(raw.get('validation', []))
@@ -111,6 +137,11 @@ class CensysAnalyzer(Analyzer):
                 taxonomies.append(self.build_taxonomy('info', 'Censys', 'TrustedCount', '{}/{}'.format(
                     trusted_count, validator_count
                 )))
+
+        elif 'matches' in raw:
+            result_count = len(raw.get('matches', []))
+            taxonomies.append(self.build_taxonomy('info', 'Censys ipv4 search', 'results', result_count))
+            
         return {
             'taxonomies': taxonomies
         }
