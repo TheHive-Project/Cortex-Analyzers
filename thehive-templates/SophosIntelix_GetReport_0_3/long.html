@@ -1,4 +1,4 @@
-<div class="panel panel-danger" ng-if="!success">
+	<div class="panel panel-danger" ng-if="!success">
    <div class="panel-heading">
       <strong>{{artifact.data | fang}}</strong>
    </div>
@@ -12,7 +12,7 @@
          <strong>Report for {{artifact.data | fang}} </strong>
       </div>
       <div class="panel-body">
-         <dl ng-if="::artifact.dataType === 'domain'">
+         <dl ng-if="::['domain', 'fqdn', 'url'].indexOf(artifact.dataType) != -1">
             <dt>Productivity Category</dt>
             <dd>{{content.prod_category || "No Data"}}</dd>
             <dt>Security Category</dt>
@@ -28,4 +28,4 @@
          </dl>
       </div>
    </div>
-</div>
+</div> 
