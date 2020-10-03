@@ -8,8 +8,7 @@
     "dataTypeList": [
         "mail",
         "ip",
-        "domain",
-        "fqdn"
+        "domain"
     ],
     "command": "Threatcrowd/threatcrowd_analyzer.py",
     "baseConfig": "Threatcrowd",
