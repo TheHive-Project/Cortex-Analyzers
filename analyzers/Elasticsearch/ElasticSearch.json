@@ -58,7 +58,7 @@
         "type": "string",
         "multi": true,
         "required": true,
-        "defaultValue": ["apm-*-transaction*","auditbeat-*","endgame-*","filebeat-*","packetbeat-*","winlogbeat-*"]
+        "defaultValue": ["apm-*-transaction*","auditbeat-*","endgame-*","filebeat-*","packetbeat-*","winlogbeat-*","logs-*"]
       },
       {
         "name": "field",
