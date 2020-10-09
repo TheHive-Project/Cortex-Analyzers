@@ -37,14 +37,14 @@ class Gmail(Responder):
         else:
             return None
 
-    def delete_message(self, subject, message_id):
-        pass
+    def trash_message(self, subject, message_id):
+        """Moves specified message into trash. this emails can be recovered if false-positive
+        """
+        result = self.__gmail_service.users().messages().trash(userId=subject, id=message_id).execute()
 
     def block_messages(self, subject, query):
         """Automatically labels matching emails according to query argument.
-            Args
-            Returns:
-                filter_id (int): ID for the created filter
+        gmail search syntax can be used in query. https://support.google.com/mail/answer/7190?hl=en
         """
         new_filter = {
             "criteria": {
