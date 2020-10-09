@@ -14,6 +14,7 @@ class Gmail(Responder):
             "https://mail.google.com/",
             "https://www.googleapis.com/auth/gmail.settings.basic",
         ]
+        self.__gmail_service = None
 
     def authenticate(self, service_account_file, scopes, subject):
         """Peforms OAuth2 auth for a given service account, scope and a delegated subject
@@ -33,9 +34,10 @@ class Gmail(Responder):
         )
 
         if (credentials.valid) and (credentials.has_scopes(scopes)):
-            return credentials
+            self.__gmail_service = build("gmail", "v1", credentials=credentials)
+            return True
         else:
-            return None
+            return False
 
     def trash_message(self, subject, message_id):
         """Moves specified message into trash. this emails can be recovered if false-positive
