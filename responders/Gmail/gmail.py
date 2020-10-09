@@ -37,20 +37,32 @@ class Gmail(Responder):
         else:
             return None
 
-    def delete_message(self):
+    def delete_message(self, subject, message_id):
         pass
 
-    def block_domain(self):
-        pass
+    def block_messages(self, subject, query):
+        """Automatically labels matching emails according to query argument.
+            Args
+            Returns:
+                filter_id (int): ID for the created filter
+        """
+        new_filter = {
+            "criteria": {
+                "query": query
+            },
+            "action": { # based on https://developers.google.com/gmail/api/guides/labels
+                "addLabelIds": ["TRASH"],
+                "removeLabelIds": ["INBOX"]
+            }
+        }
 
-    def block_sender(self):
-        pass
+        filter_id = self.__gmail_service.users().settings().filters().create(userId=subject, body=new_filter).execute()
+        return filter_id
 
-    def unblock_domain(self):
-        pass
-
-    def unblock_sender(self):
-        pass
+    def unblock_messages(self, subject, filter_id):
+        """Delete a previous created filter by filter ID
+        """
+        filter_id = self.__gmail_service.users().settings().filters().delete(userId=subject, id=filter_id).execute()
 
     def run(self):
         Responder.run(self)
