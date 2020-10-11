@@ -1,0 +1,23 @@
+{
+    "name": "CarbonBlackPSC_UnblockProcess",
+    "version": "1.0",
+    "author": "TheHive-Project",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Unblock a process using Carbon Black Predictive Security Cloud",
+    "dataTypeList": [
+        "thehive:case_artifact"
+    ],
+    "command": "CarbonBlack/CarbonBlackPSC.py",
+    "service": "unblock",
+    "baseConfig": "CarbonBlack",
+    "configurationItems": [
+        {
+            "name": "todo",
+            "description": "todo",
+            "type": "string",
+            "multi": false,
+            "required": true
+        }
+    ]
+}
