@@ -37,6 +37,7 @@ class IBMXForceAnalyzer(Analyzer):
             'dns': [],
             'cats': [],
             'families': [],
+            'detectionCoverage': [],
             'emails_info': [],
             'subjects_info': [],
             'score': None,
@@ -68,7 +69,8 @@ class IBMXForceAnalyzer(Analyzer):
             else:
                 score_nr = 10
 
-            families = malware_data.get('malware', {}).get('family', [])
+            families = malware_data.get('malware').get('origins').get('external').get('family', [])
+            detectionCoverage = malware_data.get('malware').get('origins').get('external').get('detectionCoverage')
             score = "%s [%d family(s)]" % (score_value, len(families)) if len(families) > 0 else score_value
             cats = []
 
@@ -77,6 +79,7 @@ class IBMXForceAnalyzer(Analyzer):
         response['score'] = score
         response['score_nr'] = score_nr
         response['families'] = families
+        response['detectionCoverage'] = detectionCoverage
 
         for hist in ip_data.get('history', []):
             tmp = {}
@@ -181,7 +184,10 @@ class IBMXForceAnalyzer(Analyzer):
             if _query_malware.status_code == 200:
                 return self.cleanup(malware_data=_query_malware.json())
             else:
-                self.error('API Access error')
+                 self.report({
+                        'resource': data,
+                        'errorMessage': 'No such sample found'
+                    })
 
         except Exception as e:
             self.error("OS error: {0}".format(e))
