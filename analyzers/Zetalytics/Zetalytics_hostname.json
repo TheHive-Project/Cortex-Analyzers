@@ -1,0 +1,23 @@
+{
+    "name": "Zetalytics_hostname",
+    "version": "1.0",
+    "author": "Ben",
+    "url": "None",
+    "license": "None",
+    "description": "Zetalytics transform for hostname",
+    "dataTypeList": ["domain", "fqdn"],
+    "baseConfig": "Zetalytics",
+    "command": "Zetalytics/zetalytics.py",
+    "configurationItems": [
+      {
+        "name": "key",
+        "description": "API key for Zetalytics",
+        "type": "string",
+        "multi": false,
+        "required": true
+      }
+    ],
+    "config": {
+        "service": "hostname"
+    }
+}
