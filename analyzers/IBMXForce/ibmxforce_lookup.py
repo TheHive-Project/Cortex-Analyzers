@@ -51,6 +51,7 @@ class IBMXForceAnalyzer(Analyzer):
             cats = ip_data.get('cats', [])
             score = "%d [%d category(s)]" % (score_value, len(cats)) if len(cats) > 0 else score_value
             families = []
+            detectionCoverage = []
 
         elif self.data_type in ['domain', 'url']:
             score_value = ip_data.get('result', {}).get('score', 0)
@@ -59,6 +60,7 @@ class IBMXForceAnalyzer(Analyzer):
             cats = [x for x in cats.keys()]
             score = "%d [%d category(s)]" % (score_value, len(cats)) if len(cats) > 0 else score_value
             families = []
+            detectionCoverage = []
 
         else:
             score_value = malware_data.get('malware', {}).get('risk', 'low')
