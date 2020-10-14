@@ -1,0 +1,23 @@
+{
+  "name": "Vulners_IOC",
+  "version": "1.0",
+  "author": "Dmitry Uchakin, Vulners team",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get information from the RST Threat Feed, which integrated with Vulners, for a domain, url or an IP address.",
+  "dataTypeList": ["url", "domain", "ip"],
+  "command": "Vulners/vulners_analyzer.py",
+  "baseConfig": "Vulners",
+  "config": {
+    "service": "ioc"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for Vulners",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}
