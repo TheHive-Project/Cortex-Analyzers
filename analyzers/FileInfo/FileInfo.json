@@ -14,7 +14,8 @@
       "description": "Wether to enable manalyze submodule or not.",
       "type": "boolean",
       "required": true,
-      "multi": false
+      "multi": false,
+      "default": false
     },
     {
       "name": "manalyze_enable_docker",
@@ -38,7 +39,7 @@
       "type": "string",
       "required": false,
       "multi": false,
-      "default": "/opt/Cortex-Analyzers/utils/manalyze/bin/manalyze"
+      "default": "/Workder/Manalyze/bin/manalyze"
     }
   ]
 }
