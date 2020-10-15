@@ -57,6 +57,14 @@ steps:
     when:
       event: [tag]
 
+  - name: build report-templates zip package
+    image: thehiveproject/neurons-build-report-templates
+    when:
+      event: [tag]
+
+
+# Bintray will not be used anymore. We keep it until Feb 21
+
   - name: upload catalogs to bintray
     image: thehiveproject/drone-bintray
     settings:
@@ -91,7 +99,8 @@ steps:
     when:
       event: [tag]
 
-  - name: upload catalogs to package server
+
+  - name: upload catalogs and report-templates package to package server
     image: appleboy/drone-scp
     settings:
       host: {from_secret: package_host}
@@ -103,6 +112,7 @@ steps:
         - analyzers/analyzers-stable.json
         - responders/responders.json
         - responders/responders-stable.json
+        - report-templates.zip
       strip_components: 1
     when:
       event: [tag]
@@ -112,6 +122,8 @@ steps:
     when:
       branch: [develop]
 
+
+# Bintray will not be used anymore. We keep it until Feb 21
   - name: upload devel catalogs to bintray
     image: thehiveproject/drone-bintray
     settings:
