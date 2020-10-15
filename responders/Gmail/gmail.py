@@ -71,6 +71,42 @@ class Gmail(Responder):
         """
         filter_id = self.__gmail_service.users().settings().filters().delete(userId=subject, id=filter_id).execute()
 
+    def BlockDomain(self):
+        if self.get_data("data._type") != "case":
+            self.error("Responder with flavor {} needs case as input but got {}".format(self.flavor, self.get_data("data._type")))
+
+        query = ""
+        subjects = list()
+
+        observables = self.hive_api.get_case_observables(self.get_param("data._id"))
+
+        for o in observables:
+            if o["type"] == "domain" and o["ioc"] == True:
+                query += "from: {}".format(o["data"])
+            if o["type"] == "mail" and o["ioc"] == False and "gmail" in o["data"]:
+                subjects.append(o["data"])
+
+        for subject in subjects:
+            self.gmail_filter[subject] = self.block_messages(subject, query)
+
+    def BlockSender(self):
+        if self.get_data("data._type") != "case":
+            self.error("Responder with flavor {} needs case as input but got {}".format(self.flavor, self.get_data("data._type")))
+
+        query = ""
+        subjects = list()
+
+        observables = self.hive_api.get_case_observables(self.get_param("data._id"))
+
+        for o in observables:
+            if o["type"] == "mail" and o["ioc"] == True:
+                query += "from: {}".format(o["data"])
+            if o["type"] == "mail" and o["ioc"] == False and "gmail" in o["data"]:
+                subjects.append(o["data"])
+
+        for subject in subjects:
+            self.gmail_filter[subject] = self.block_messages(subject, query)
+
     def run(self):
         Responder.run(self)
 
@@ -78,7 +114,7 @@ class Gmail(Responder):
         try:
             self.hive_api.health()
         except TheHiveException as e:
-            self.error("Responder failed: {}".format(e))
+            self.error("Responder needs TheHive connection but failed: {}".format(e))
 
         action = getattr(self, self.flavor, self.__not_found)
         action()
