@@ -4,7 +4,9 @@
 from cortexutils.responder import Responder
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-
+import json
+from thehive4py.api import TheHiveApi
+from thehive4py.api import Case, CaseObserable, TheHiveException
 
 class Gmail(Responder):
     def __init__(self):
@@ -15,6 +17,9 @@ class Gmail(Responder):
             "https://www.googleapis.com/auth/gmail.settings.basic",
         ]
         self.__gmail_service = None
+
+    def __not_found(self):
+        self.error("Flavor named {} not found.".format(self.flavor))
 
     def authenticate(self, service_account_file, scopes, subject):
         """Peforms OAuth2 auth for a given service account, scope and a delegated subject
@@ -68,8 +73,16 @@ class Gmail(Responder):
 
     def run(self):
         Responder.run(self)
-        # check if given observable is mail or email address
-        # call respective action based on flavor of the responder
+
+        self.hive_api = TheHiveApi(self.get_param("thehive_url"), self.get_param("thehive_api_key"))
+        try:
+            self.hive_api.health()
+        except TheHiveException as e:
+            self.error("Responder failed: {}".format(e))
+
+        action = getattr(self, self.flavor, self.__not_found)
+        action()
+
 
     def operations(self, raw):
         pass
