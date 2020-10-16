@@ -85,12 +85,12 @@ class Gmail(Responder):
                 self.unblock_messages(f["subject"], f["id"])
         self.report({'message': "Removed filters"})
 
-    def blockdomain(self):
+    def block(self):
         data_type = self.get_param("data.dataType")
-        domain = self.get_param("data.data")
+        ioc = self.get_param("data.data")
         case_id = self.get_param("data._parent")
-        if data_type != "domain":
-            self.error("{} needs data of type 'domain' but {} given".format(
+        if data_type != "domain" or data_type != "mail":
+            self.error("{} needs data of type 'domain' or 'mail' but {} given".format(
                 self.get_param("config.service"), data_type
             ))
 
@@ -100,11 +100,16 @@ class Gmail(Responder):
         if response.status_code == 200:
             gmail_subjects = response.json()
             for s in gmail_subjects:
-                f_id = self.block_messages(s["data"], "from: {}".format(domain))
+                f_id = self.block_messages(s["data"], "from: {}".format(ioc))
                 self.filters.append({"subject": s["data"], "id": f_id})
             self.report({'message': "Added filters"})
         else:
             self.error("Failure: {}/{}".format(response.status_code, response.text))
+
+    def blocksender(self):
+        self.block()
+    def blockdomain(self):
+        self.block()
 
     def run(self):
         Responder.run(self)
