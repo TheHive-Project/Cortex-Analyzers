@@ -1,0 +1,34 @@
+{
+    "name": "Gmail_UnblockSender",
+    "version": "0.1",
+    "author": "David Strassegger, OSCD",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "MIT",
+    "description": "Remove a Gmail message filter",
+    "dataTypeList": ["thehive:case_artifact"],
+    "command": "Gmail/Gmail.py",
+    "baseConfig": "Gmail",
+    "config": {
+      "service": "unblocksender",
+      "max_tlp": 2,
+      "check_tlp": false,
+      "max_pap": 2,
+      "check_pap": true
+    },
+    "configurationItems": [
+      {
+        "name": "thehive_url",
+        "description": "URL for thehive instance",
+        "type": "string",
+        "multi": false,
+        "required": false
+      },
+      {
+        "name": "thehive_api_key",
+        "description": "API key for TheHive instance",
+        "type": "string",
+        "multi": false,
+        "required": false
+      }
+    ]
+  }
