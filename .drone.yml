@@ -99,6 +99,30 @@ steps:
     when:
       event: [tag]
 
+  - name: upload report-templates to bintray
+    image: thehiveproject/drone-bintray
+    settings:
+      user: {from_secret: bintray_user}
+      key: {from_secret: bintray_key}
+      subject: thehive-project
+      package: report-templates
+      version: latest
+      override: 1
+      publish: 1
+    commands:
+    - |
+      export PLUGIN_USER
+      export PLUGIN_KEY
+      export PLUGIN_SUBJECT
+      export PLUGIN_PACKAGE
+      export PLUGIN_VERSION
+      export PLUGIN_OVERRIDE
+      export PLUGIN_PUBLISH
+      upload \
+      --file analyzers/report-templates.zip \
+      --repo binary
+    when:
+      event: [tag]
 
   - name: upload catalogs and report-templates package to package server
     image: appleboy/drone-scp
@@ -112,7 +136,7 @@ steps:
         - analyzers/analyzers-stable.json
         - responders/responders.json
         - responders/responders-stable.json
-        - report-templates.zip
+        - analyzers/report-templates.zip
       strip_components: 1
     when:
       event: [tag]
