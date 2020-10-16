@@ -86,14 +86,15 @@ class Gmail(Responder):
         self.report({'message': "Removed filters"})
 
     def block(self):
+        ### MOVE THIS INTO the respective functions e.g. blockdomain/blocksender
         data_type = self.get_param("data.dataType")
         ioc = self.get_param("data.data")
         case_id = self.get_param("data._parent")
-        if data_type != "domain" or data_type != "mail":
+        if data_type != "domain" and data_type != "mail":
             self.error("{} needs data of type 'domain' or 'mail' but {} given".format(
                 self.get_param("config.service"), data_type
             ))
-
+        #### MOVE THIS IN TO block_messages
         response = self.hive_api.get_case_observables(case_id, query=
             And(Eq("dataType", "mail"), EndsWith("data", "gmail.com"))
         )
