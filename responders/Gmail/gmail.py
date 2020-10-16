@@ -19,7 +19,7 @@ class Gmail(Responder):
             "https://www.googleapis.com/auth/gmail.settings.basic",
         ]
         self.__gmail_service = None
-        self.filters = list()
+        self.filters = []
 
     def __not_found(self):
         self.error("service named {} not found.".format(self.service))
@@ -72,27 +72,18 @@ class Gmail(Responder):
         return filter_id
 
     def unblock_messages(self, subject, filter_id):
+        #### STUB
+        return
         """Delete a previous created filter by filter ID
         """
         filter_id = self.__gmail_service.users().settings().filters().delete(userId=subject, id=filter_id).execute()
 
-    def BlockSender(self):
-        if self.get_data("data._type") != "case":
-            self.error("Responder with service {} needs case as input but got {}".format(self.service, self.get_data("data._type")))
-
-        query = ""
-        subjects = list()
-
-        observables = self.hive_api.get_case_observables(self.get_param("data._id"))
-
-        for o in observables:
-            if o["type"] == "mail" and o["ioc"] == True:
-                query += "from: {}".format(o["data"])
-            if o["type"] == "mail" and o["ioc"] == False and "gmail" in o["data"]:
-                subjects.append(o["data"])
-
-        for subject in subjects:
-            self.gmail_filter[subject] = self.block_messages(subject, query)
+    def unblockdomain(self):
+        if self.hive_api._check_if_custom_field_exists("gmail_filter"):
+            gmail_filters = json.loads(self.get_param("data.case.customFields.gmail_filters.string"))
+            for f in gmail_filters:
+                self.unblock_messages(f["subject"], f["id"])
+        self.report({'message': "Removed filters"})
 
     def blockdomain(self):
         data_type = self.get_param("data.dataType")
@@ -108,8 +99,9 @@ class Gmail(Responder):
         )
         if response.status_code == 200:
             gmail_subjects = response.json()
-            for subject in gmail_subjects:
-                self.filters.append(self.block_messages(subject, "from: {}".format(domain)))
+            for s in gmail_subjects:
+                f_id = self.block_messages(s["data"], "from: {}".format(domain))
+                self.filters.append({"subject": s["data"], "id": f_id})
             self.report({'message': "Added filters"})
         else:
             self.error("Failure: {}/{}".format(response.status_code, response.text))
