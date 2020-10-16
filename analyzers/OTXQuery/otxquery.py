@@ -102,7 +102,7 @@ class OTXQueryAnalyzer(Analyzer):
 
             if ip_['analysis']['analysis']:
                 # file has been analyzed before
-                self.report({
+                result = {
                     'pulse_count': ip_.get('general', {}).get('pulse_info', {}).get('count', "0"),
                     'pulses': ip_.get('general', {}).get('pulse_info', {}).get('pulses', "-"),
                     'malware': ip_.get('analysis', {}).get('malware', "-"),
@@ -120,8 +120,20 @@ class OTXQueryAnalyzer(Analyzer):
                     'filesize': ip_.get('analysis', {}).get('analysis', {}).get('info', {}).get('results', {}).get(
                         'filesize', "-"),
                     'ssdeep': ip_.get('analysis', {}).get('analysis', {}).get('info', {}).get('results', {}).get(
-                        'ssdeep')
-                })
+                        'ssdeep'),
+                }
+                alert_val = ip_.get('analysis', {}).get('analysis', {}).get('plugins', {}).get('cuckoo', {}).get(
+                        'result', {}).get('signatures')
+                if alert_val is not None and len(alert_val) > 0:
+                    result['alerts'] = alert_val
+
+                ids_detections_val = ip_.get('analysis', {}).get('analysis', {}).get('plugins', {}).get('cuckoo', {}).get(
+                        'result', {}).get('suricata', {}).get('rules')
+                if ids_detections_val is not None and len(ids_detections_val) > 0:
+                    result['ids_detections'] = ids_detections_val
+
+                self.report(result)
+
             else:
                 # file has not been analyzed before
                 self.report({
