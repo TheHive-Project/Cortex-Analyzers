@@ -34,10 +34,10 @@ class CIRCLPassiveSSLAnalyzer(Analyzer):
             certificates = []
         else:
             certificates = list(result.get(ip).get('certificates'))
+            subjects = result.get(ip).get('subjects', dict({}))
 
         newresult = {'ip': ip,
                      'certificates': []}
-        subjects = result.get(ip).get('subjects')
         for cert in certificates:
             if cert not in subjects:
                 continue
