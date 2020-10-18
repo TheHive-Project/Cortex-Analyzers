@@ -89,6 +89,30 @@ class CIRCLPassiveSSLAnalyzer(Analyzer):
 
         return {"taxonomies": taxonomies}
 
+
+    def artifacts(self, raw):
+        artifacts = []
+        if 'certificates' in raw:
+            for c in raw.get('certificates'):
+                artifacts.append(
+                    self.build_artifact(
+                        'hash',
+                         str(c.get('fingerprint'))
+                )
+            )
+        
+        if 'query' in raw:
+            for ip in raw.get('query').get('seen'):
+                artifacts.append(
+                    self.build_artifact(
+                        'ip',
+                        str(ip)
+                    )
+
+                )
+        return artifacts
+
+
     def run(self):
         if self.data_type == 'certificate_hash' or self.data_type == 'hash':
             data = self.get_data()
