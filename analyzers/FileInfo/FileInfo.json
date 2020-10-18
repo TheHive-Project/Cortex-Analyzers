@@ -39,7 +39,7 @@
       "type": "string",
       "required": false,
       "multi": false,
-      "defaultValue": "/Worker/Manalyze/bin/manalyze"
+      "defaultValue": "/worker/Manalyze/bin/manalyze"
     }
   ]
 }
