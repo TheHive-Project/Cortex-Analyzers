@@ -34,12 +34,15 @@ class CIRCLPassiveSSLAnalyzer(Analyzer):
             certificates = []
         else:
             certificates = list(result.get(ip).get('certificates'))
+            subjects = result.get(ip).get('subjects', dict({}))
 
         newresult = {'ip': ip,
                      'certificates': []}
         for cert in certificates:
+            if cert not in subjects:
+                continue
             newresult['certificates'].append({'fingerprint': cert,
-                                              'subject': result.get(ip).get('subjects').get(cert).get('values')[0]})
+                                              'subject': subjects.get(cert).get('values')[0]})
         return newresult
 
     def query_certificate(self, cert_hash):
@@ -85,6 +88,30 @@ class CIRCLPassiveSSLAnalyzer(Analyzer):
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         return {"taxonomies": taxonomies}
+
+
+    def artifacts(self, raw):
+        artifacts = []
+        if 'certificates' in raw:
+            for c in raw.get('certificates'):
+                artifacts.append(
+                    self.build_artifact(
+                        'hash',
+                         str(c.get('fingerprint'))
+                )
+            )
+        
+        if 'query' in raw:
+            for ip in raw.get('query').get('seen'):
+                artifacts.append(
+                    self.build_artifact(
+                        'ip',
+                        str(ip)
+                    )
+
+                )
+        return artifacts
+
 
     def run(self):
         if self.data_type == 'certificate_hash' or self.data_type == 'hash':
