@@ -52,9 +52,7 @@ class Gmail(Responder):
         """
         result = self.__gmail_service.users().messages().trash(userId=subject, id=message_id).execute()
 
-    def block_messages(self, subject, query):
-        ##### STUB
-        return randint(10000, 20000)
+    def block_messages(self, case_id, query):
         """Automatically labels matching emails according to query argument.
         gmail search syntax can be used in query. https://support.google.com/mail/answer/7190?hl=en
         """
@@ -68,49 +66,82 @@ class Gmail(Responder):
             }
         }
 
-        filter_id = self.__gmail_service.users().settings().filters().create(userId=subject, body=new_filter).execute()
-        return filter_id
-
-    def unblock_messages(self, subject, filter_id):
-        #### STUB
-        return
-        """Delete a previous created filter by filter ID
-        """
-        filter_id = self.__gmail_service.users().settings().filters().delete(userId=subject, id=filter_id).execute()
-
-    def unblockdomain(self):
-        if self.hive_api._check_if_custom_field_exists("gmail_filter"):
-            gmail_filters = json.loads(self.get_param("data.case.customFields.gmail_filters.string"))
-            for f in gmail_filters:
-                self.unblock_messages(f["subject"], f["id"])
-        self.report({'message': "Removed filters"})
-
-    def block(self):
-        ### MOVE THIS INTO the respective functions e.g. blockdomain/blocksender
-        data_type = self.get_param("data.dataType")
-        ioc = self.get_param("data.data")
-        case_id = self.get_param("data._parent")
-        if data_type != "domain" and data_type != "mail":
-            self.error("{} needs data of type 'domain' or 'mail' but {} given".format(
-                self.get_param("config.service"), data_type
-            ))
-        #### MOVE THIS IN TO block_messages
         response = self.hive_api.get_case_observables(case_id, query=
             And(Eq("dataType", "mail"), EndsWith("data", "gmail.com"))
         )
         if response.status_code == 200:
-            gmail_subjects = response.json()
-            for s in gmail_subjects:
-                f_id = self.block_messages(s["data"], "from: {}".format(ioc))
-                self.filters.append({"subject": s["data"], "id": f_id})
+            gmail_observables = response.json()
+            for observable in gmail_observables:
+                filter_id = self.__gmail_service.users().settings().filters().create(userId=observable["data"], body=new_filter).execute()
+                observable["tags"].extend("gmail_filter:{}:{}".format(self.get_param("data.dataType"), filter_id))
+            # Update observables with filter ids
+            for observable in gmail_observables:
+                self.hive_api.update_case_observables(observable, fields=["tags"])
             self.report({'message': "Added filters"})
         else:
             self.error("Failure: {}/{}".format(response.status_code, response.text))
 
+    def unblock_messages(self, case_id):
+        """Delete a previous created filter by filter ID
+        """
+        response = self.hive_api.get_case_observables(case_id, query=
+            And(
+                Eq("dataType", "mail"), And(
+                    EndsWith("data", "gmail.com"),
+                    ContainsString("tags", "gmail_filter:{}*".format(self.get_param("data.dataType")))
+                )
+            )
+        )
+        if response.status_code == 200:
+            gmail_observables = response.json()
+            for observable in gmail_observables:
+                for tag in observable["tags"]:
+                    if "gmail_filter:{}".format(self.get_param("data.dataType")) in tag:
+                        filter_id = tag.split(":")[-1]  # a tag should look like gmail_filters:domain:1235123121
+                        self.__gmail_service.users().settings().filters().delete(userId=observable["data"], id=filter_id).execute()
+            self.report({'message': "Removed filters"})
+        else:
+            self.error("Failure: {}/{}".format(response.status_code, response.text))
+
+    def unblockdomain(self):
+        data_type = self.get_param("data.dataType")
+        ioc = self.get_param("data.data")
+        case_id = self.get_param("data._parent")
+        if data_type != "domain":
+            self.error("{} needs data of type 'domain' but {} given".format(
+                self.get_param("config.service"), data_type
+            ))
+        self.unblock_messages(case_id)
+
+    def unblocksender(self):
+        data_type = self.get_param("data.dataType")
+        ioc = self.get_param("data.data")
+        case_id = self.get_param("data._parent")
+        if data_type != "mail":
+            self.error("{} needs data of type 'mail' but {} given".format(
+                self.get_param("config.service"), data_type
+            ))
+        self.unblock_messages(case_id)
+
     def blocksender(self):
-        self.block()
+        data_type = self.get_param("data.dataType")
+        ioc = self.get_param("data.data")
+        case_id = self.get_param("data._parent")
+        if data_type != "mail":
+            self.error("{} needs data of type 'mail' but {} given".format(
+                self.get_param("config.service"), data_type
+            ))
+        self.block_messages(case_id, "from: {}".format(ioc))
+
     def blockdomain(self):
-        self.block()
+        data_type = self.get_param("data.dataType")
+        ioc = self.get_param("data.data")
+        case_id = self.get_param("data._parent")
+        if data_type != "domain":
+            self.error("{} needs data of type 'domain' but {} given".format(
+                self.get_param("config.service"), data_type
+            ))
+        self.block_messages(case_id, "from: {}".format(ioc))
 
     def run(self):
         Responder.run(self)
