@@ -19,5 +19,15 @@
       "multi": false,
       "required": true
     }
+  ],
+  "screenshots": [
+    {
+      "path": "assets/ioc_long_template.png",
+      "caption": "Long template for network IOCs (ip, url, domain)"
+    },
+    {
+      "path": "assets/ioc_short_template.png",
+      "caption": "Short template for network IOCs (ip, url, domain)"
+    }
   ]
 }

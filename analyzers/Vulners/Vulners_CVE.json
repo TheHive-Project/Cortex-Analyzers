@@ -19,5 +19,19 @@
       "multi": false,
       "required": true
     }
+  ],
+  "screenshots": [
+    {
+      "path": "assets/theHive_add_cve",
+      "caption": "Add new IOC type in theHive observables"
+    },
+    {
+      "path": "assets/cve_long_template.gif",
+      "caption": "Long template for CVE"
+    },
+    {
+      "path": "assets/cve_short_template",
+      "caption": "Short template for CVE"
+    }
   ]
 }
