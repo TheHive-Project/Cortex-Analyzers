@@ -72,6 +72,7 @@ class IBMXForceAnalyzer(Analyzer):
                 score_nr = 10
 
             families = malware_data.get('malware').get('origins').get('external').get('family', [])
+            families = families if families is not None and isinstance(families, list) else []
             detectionCoverage = malware_data.get('malware').get('origins').get('external').get('detectionCoverage')
             score = "%s [%d family(s)]" % (score_value, len(families)) if len(families) > 0 else score_value
             cats = []
