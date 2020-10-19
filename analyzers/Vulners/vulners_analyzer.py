@@ -43,23 +43,26 @@ class VulnersAnalyzer(Analyzer):
         if self.service == 'ioc':
             if self.data_type in ['ip', 'domain', 'url']:
                 data = self.get_param('data', None, 'Data is missing')
-                document_id = self.vulners.search(f"iocType:{self.data_type} AND {self.data_type}:{data}")
-                if document_id or document_id['type'] == 'rst':
-                    full_document_info = self.vulners.document(document_id[0]['id'],  fields=["*"])
-                    ioc_report = {
-                        'service': self.service,
-                        'first_seen': full_document_info['published'],
-                        'last_seen': full_document_info['lastseen'],
-                        'tags': full_document_info['tags'],
-                        'ioc_score': full_document_info['iocScore']['ioc_total'],
-                        'ioc_url': full_document_info['id'],
-                        'fp_descr': full_document_info['fp']['descr']
-                    }
-                    if self.data_type == 'ip':
-                        ioc_report['geo_info'] = full_document_info['geodata']
-                        ioc_report['asn_info'] = full_document_info['asn']
+                document_id = self.vulners.search(f'iocType:{self.data_type} AND {self.data_type}:"{data}"')
 
-                    self.report(ioc_report)
+                if document_id or 'type' in document_id:
+                    if document_id['type'] == 'rst':
+                        full_document_info = self.vulners.document(
+                            document_id[0]['id'],  fields=["*"])
+                        ioc_report = {
+                            'service': self.service,
+                            'first_seen': full_document_info['published'],
+                            'last_seen': full_document_info['lastseen'],
+                            'tags': full_document_info['tags'],
+                            'ioc_score': full_document_info['iocScore']['ioc_total'],
+                            'ioc_url': full_document_info['id'],
+                            'fp_descr': full_document_info['fp']['descr']
+                        }
+                        if self.data_type == 'ip':
+                            ioc_report['geo_info'] = full_document_info['geodata']
+                            ioc_report['asn_info'] = full_document_info['asn']
+
+                        self.report(ioc_report)
                 else:
                     self.error('No data found')
             else:
