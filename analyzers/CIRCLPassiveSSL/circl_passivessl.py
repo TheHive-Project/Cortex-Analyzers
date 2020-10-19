@@ -94,10 +94,25 @@ class CIRCLPassiveSSLAnalyzer(Analyzer):
         artifacts = []
         if 'certificates' in raw:
             for c in raw.get('certificates'):
+                tags = []
+                tags.append("Certificate:{}".format(
+                                [a  
+                                for a in c.get('subject').split(', ')
+                                if  a.startswith('O=')][0]
+                                )
+                )
+                tags.append("Certificate:{}".format(
+                                [a  
+                                for a in c.get('subject').split(', ')
+                                if  a.startswith('CN=')][0]
+                                )
+                )
                 artifacts.append(
                     self.build_artifact(
                         'hash',
-                         str(c.get('fingerprint'))
+                         str(c.get('fingerprint')),
+                         message=str(c.get('subject')),
+                         tags=tags
                 )
             )
         
@@ -108,7 +123,6 @@ class CIRCLPassiveSSLAnalyzer(Analyzer):
                         'ip',
                         str(ip)
                     )
-
                 )
         return artifacts
 
