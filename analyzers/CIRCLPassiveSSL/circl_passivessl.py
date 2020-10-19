@@ -95,18 +95,8 @@ class CIRCLPassiveSSLAnalyzer(Analyzer):
         if 'certificates' in raw:
             for c in raw.get('certificates'):
                 tags = []
-                tags.append("Certificate:{}".format(
-                                [a  
-                                for a in c.get('subject').split(', ')
-                                if  a.startswith('O=')][0]
-                                )
-                )
-                tags.append("Certificate:{}".format(
-                                [a  
-                                for a in c.get('subject').split(', ')
-                                if  a.startswith('CN=')][0]
-                                )
-                )
+                tags += ["Certificate:{}".format(a) for a in c.get('subject').split(', ') if a.startswith('CN=')] 
+                tags += ["Certificate:{}".format(a) for a in c.get('subject').split(', ') if a.startswith('O=')]
                 artifacts.append(
                     self.build_artifact(
                         'hash',
