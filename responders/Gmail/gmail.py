@@ -20,7 +20,6 @@ class Gmail(Responder):
         ]
         self.__gmail_service = None
         self.__hive_service = None
-        self.filters = []
 
     def __not_found(self):
         self.error("service named {} not found.".format(self.service))
@@ -184,8 +183,7 @@ class Gmail(Responder):
         action(observable, dataType, caseId)
 
     def operations(self, raw):
-        return [self.build_operation('AddTagToArtifact', tag='gmail:blocked'),
-                self.build_operation('AddCustomFields', name="gmailFilters", value=json.dumps(self.filters), tpe='string')]
+        return [self.build_operation('AddTagToArtifact', tag='gmail:blocked')]
 
 if __name__ == '__main__':
     Gmail().run()
