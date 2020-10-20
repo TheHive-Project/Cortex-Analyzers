@@ -120,6 +120,13 @@ class Gmail(Responder):
         else:
             self.error("Failure: {}/{}".format(response.status_code, response.text))
 
+    def deletemessage(self, observable, dataType, caseId):
+        if dataType != "mail":
+            self.error("{} needs data of type 'gmail' but {} given".format(
+                self.get_param("config.service"), dataType
+            ))
+        self.trash_message(caseId, observable)
+
     def unblockdomain(self, observable, dataType, caseId):
         if dataType != "domain":
             self.error("{} needs data of type 'domain' but {} given".format(
