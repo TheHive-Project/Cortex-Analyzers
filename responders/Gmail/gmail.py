@@ -45,7 +45,7 @@ class Gmail(Responder):
             self.__gmail_service = build("gmail", "v1", credentials=credentials)
             return True
         else:
-            return False
+            self.error("Gmail service account authentication failed. Aborting responder")
 
     def trash_message(self, case_id, message_id):
         """Moves specified message into trash. this emails can be recovered if false-positive
