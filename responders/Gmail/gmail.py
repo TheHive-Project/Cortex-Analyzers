@@ -37,6 +37,17 @@ class Gmail(Responder):
         else:
             self.error("Failed to get valid response for query: {}".format(response.status_code, response.text))
 
+    def __get_filter_tag(self, dataType, tags):
+        """
+        Get the correct tag for a dataType in a list of tags
+
+        Returns: tag string on success else None
+        """
+        for tag in tags:
+            if tag.find("gmail_filter:{}".format(dataType)):
+                return tag
+        return None
+
     def hive_auth(self, url, api_key):
         self.__hive_service = TheHiveApi(url, api_key)
         try:
@@ -78,7 +89,7 @@ class Gmail(Responder):
         for observable in gmail_observables:
             result = self.__gmail_service.users().messages().trash(userId=observable["data"], id=message_id).execute()
             observable["tags"].extend("gmail_trash:{}".format(result["id"]))
-        # Update observables with message id
+
         for observable in gmail_observables:
             self.__hive_service.update_case_observables(observable, fields=["tags"])
         self.report({'message': "Deleted message"})
@@ -101,7 +112,7 @@ class Gmail(Responder):
         for observable in gmail_observables:
             filter_id = self.__gmail_service.users().settings().filters().create(userId=observable["data"], body=new_filter).execute()
             observable["tags"].extend("gmail_filter:{}:{}".format(self.get_param("data.dataType"), filter_id))
-        # Update observables with filter ids
+
         for observable in gmail_observables:
             self.__hive_service.update_case_observables(observable, fields=["tags"])
         self.report({'message': "Added filters"})
@@ -118,10 +129,12 @@ class Gmail(Responder):
             )
         )
         for observable in gmail_observables:
-            for tag in observable["tags"]:
-                if "gmail_filter:{}".format(self.get_param("data.dataType")) in tag:
-                    filter_id = tag.split(":")[-1]  # a tag should look like gmail_filters:domain:1235123121
-                    self.__gmail_service.users().settings().filters().delete(userId=observable["data"], id=filter_id).execute()
+            tag = self.__get_filter_tag(observable["tags"]) # a tag should look like gmail_filters:domain:1235123121
+            self.__gmail_service.users().settings().filters().delete(userId=observable["data"], id=tag.split(":")[-1]).execute()
+            observable["tags"].remove(tag)
+
+        for observable in gmail_observables:
+            self.__hive_service.update_case_observables(observable, fields=["tags"])
         self.report({'message': "Removed filters"})
 
     def deletemessage(self, observable, dataType, caseId):
