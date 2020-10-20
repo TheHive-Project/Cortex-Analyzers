@@ -8,7 +8,7 @@ import json
 from thehive4py.api import TheHiveApi
 from thehive4py.api import TheHiveException
 from thehive4py.query import *
-from random import randint
+from urllib.parse import urlencode
 
 class Gmail(Responder):
     def __init__(self):
@@ -18,6 +18,22 @@ class Gmail(Responder):
             "https://mail.google.com/",
             "https://www.googleapis.com/auth/gmail.settings.basic",
         ]
+
+        self.__gmail_service_account = {
+            "type": "service_account",
+            "project_id": self.get_param("config.project_id", None, "Project ID missing"),
+            "private_key_id": self.get_param("config.private_key_id", None, "Private Key ID missing"),
+            "private_key": self.get_param("config.private_key", None, "Private Key (PEM format) missing"),
+            "client_email": self.get_param("config.client_email", None, "Client email missing"),
+            "client_id": self.get_param("config.client_id", None, "Client id missing"),
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://oauth2.googleapis.com/token",
+            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+            "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/{}".format(
+                urlencode(self.get_param("config.client_email", None, "Client email missing"))
+            )
+        }
+
         self.__gmail_service = None
         self.__hive_service = None
 
@@ -65,10 +81,9 @@ class Gmail(Responder):
         Returns:
             google.auth.service_account.Credentials if valid otherwise None
         """
-        credentials = service_account.Credentials.from_service_account_file(
-            service_account_file,
-            scopes=scopes,
-            subject=subject
+        credentials = service_account.Credentials.from_service_account_info(
+            info=self.__gmail_service_account,
+            scopes=scopes
         )
 
         if (credentials.valid) and (credentials.has_scopes(scopes)):
