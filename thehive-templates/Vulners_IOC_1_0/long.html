@@ -1,58 +1,69 @@
-<div class="panel panel-ingo" ng-if="success">
+<!-- Success -->
+<div class="panel panel-info" ng-if="success">
   <div class="panel-heading">
     Vulners information for <strong>{{artifact.data | fang}}</strong>
   </div>
-  <div class="panel-body">
+  <div class="panel-body" ng-if="content.results == 'No data found'">
+    <dd style="color:#ff0000">
+      No data found :(
+    </dd>
+  </div>
+  <div class="panel-body" ng-repeat="result in content.results">
     <div>
       <dl class="dl-horizontal">
+        <dt>Matching result</dt>
+        <dd ng-repeat="match in result.ioc_result">{{match}}</dd>
+      </dl>
+      <dl class="dl-horizontal">
         <dt>First seen</dt>
-        <dd>{{content.first_seen | limitTo : 10}}</dd>
+        <dd>{{result.first_seen | limitTo : 10}}</dd>
       </dl>
       <dl class="dl-horizontal">
         <dt>Last seen</dt>
-        <dd>{{content.last_seen | limitTo : 10}}</dd>
+        <dd>{{result.last_seen | limitTo : 10}}</dd>
       </dl>
       <dl class="dl-horizontal">
         <dt>Score</dt>
-        <dd>{{content.ioc_score}}</dd>
+        <dd>{{result.ioc_score}}</dd>
       </dl>
       <dl class="dl-horizontal">
-        <dt ng-if="content.tags">Tags</dt>
-        <dd ng-if="content.tags">
-          <span ng-repeat="tag in content.tags" class="label label-danger">
+        <dt ng-if="result.tags">Tags</dt>
+        <dd ng-if="result.tags">
+          <span ng-repeat="tag in result.tags" class="label label-danger">
             {{tag}}
           </span>
         </dd>
       </dd>
       </dl>
-      <dl class="dl-horizontal" ng-if="content.fp_descr">
+      <dl class="dl-horizontal" ng-if="result.fp_descr">
         <dt>Possible FP</dt>
         <dd>
           <span class="label label-warning">
-            {{content.fp_descr}}
+            {{result.fp_descr}}
           </span>
         </dd>
       </dl>
-      <dl class="dl-horizontal" ng-if="content.asn_info">
+      <dl class="dl-horizontal" ng-if="result.asn_info">
         <dt>Asn info</dt>
         <dd>
-          ASN {{content.asn_info.num}}: First IP {{content.asn_info.firstip.netv4}}, Last IP {{content.asn_info.lastip.netv4}}<br />
-          ASN name "{{content.asn_info.isp}}"<br />
-          ASN hosts {{content.asn_info.domains}} domains<br />
+          ASN {{result.asn_info.num}}: First IP {{result.asn_info.firstip.netv4}}, Last IP {{result.asn_info.lastip.netv4}}<br />
+          ASN name "{{result.asn_info.isp}}"<br />
+          ASN hosts {{result.asn_info.domains}} domains<br />
         </dd>
       </dl>
-      <dl class="dl-horizontal" ng-if="content.geo_info">
+      <dl class="dl-horizontal" ng-if="result.geo_info">
         <dt>Geo info</dt>
         <dd>
-          Country: {{content.geo_info.country}}<br />
-          Region: {{content.geo_info.region}}<br />
-          City: {{content.geo_info.city}}<br />
+          Country: {{result.geo_info.country}}<br />
+          Region: {{result.geo_info.region}}<br />
+          City: {{result.geo_info.city}}<br />
         </dd>
       </dl>
     </div>
     <p><br>Source info:
-        <a href="https://vulners.com/rst/{{content.ioc_url}}" target="_blank">https://vulners.com/rst/{{content.ioc_url}}</a>
+        <a href="https://vulners.com/rst/{{result.ioc_url}}" target="_blank">https://vulners.com/rst/{{result.ioc_url}}</a>
     </p>
+    <hr><br />
   </div>
 </div>
 
@@ -62,9 +73,9 @@
     <strong>{{(artifact.data) | fang}}</strong>
   </div>
   <div class="panel-body">
-    <dl class="dl-horizontal" ng-if="content.errorMessage">
+    <dl class="dl-horizontal" ng-if="content.results.errorMessage">
       <dt><i class="fa fa-warning"></i> ANALYZERNAME: </dt>
-      <dd class="wrap">{{content.errorMessage}}</dd>
+      <dd class="wrap">{{content.result.errorMessage}}</dd>
     </dl>
   </div>
 </div>

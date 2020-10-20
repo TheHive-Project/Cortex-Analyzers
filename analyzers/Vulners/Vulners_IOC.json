@@ -22,6 +22,14 @@
   ],
   "screenshots": [
     {
+      "path": "assets/vulners_api.png",
+      "caption": "Vulners API key for analyzer"
+    },
+    {
+      "path": "assets/Cortex_settings.png",
+      "caption": "Paste Vulners API key in Cortex settings"
+    },
+    {
       "path": "assets/ioc_long_template.png",
       "caption": "Long template for network IOCs (ip, url, domain)"
     },

@@ -14,20 +14,22 @@ class VulnersAnalyzer(Analyzer):
     def summary(self, raw):
         taxonomies = []
         namespace = "Vulners"
-        if raw['service'] == 'ioc':
+        if self.service == 'ioc':
             predicate = "IOC"
-            tags = ', '.join(raw['tags'])
-            if raw['fp_descr'] and not raw['tags']:
-                level = 'informative'
-                value = f"{raw['ioc_score']} score"
-            elif raw['fp_descr'] and raw['tags']:
-                level = 'suspicious'
-                value = f"{raw['ioc_score']} score / tags: {tags} / possible FP descr: {raw['fp_descr']}"
-            else:
+            tags = ', '.join(
+                set([', '.join(result['tags']) for result in raw['results']])
+            )
+            if tags:
                 level = 'malicious'
-                value = f"{raw['ioc_score']} score / tags: {tags} "
+                value = f"Finded IOCs: {len(raw['results'])} / tags: {tags}"
+            elif not tags:
+                level = 'suspicious'
+                value = f"Finded IOCs: {len(raw['results'])}"
+            else:
+                level = 'info'
+                value = 'No results'
 
-        if raw['service'] == 'vulnerability':
+        if self.service == 'vulnerability':
             predicate = "CVE"
             if not raw['exploits']:
                 level = 'suspicious'
@@ -43,28 +45,41 @@ class VulnersAnalyzer(Analyzer):
         if self.service == 'ioc':
             if self.data_type in ['ip', 'domain', 'url']:
                 data = self.get_param('data', None, 'Data is missing')
-                document_id = self.vulners.search(f'iocType:{self.data_type} AND {self.data_type}:"{data}"')
+                all_short_results = self.vulners.search(
+                    f'type:rst AND iocType:{self.data_type} AND {self.data_type}:"{data}"')
 
-                if document_id or 'type' in document_id:
-                    if document_id['type'] == 'rst':
-                        full_document_info = self.vulners.document(
-                            document_id[0]['id'],  fields=["*"])
-                        ioc_report = {
-                            'service': self.service,
-                            'first_seen': full_document_info['published'],
-                            'last_seen': full_document_info['lastseen'],
-                            'tags': full_document_info['tags'],
-                            'ioc_score': full_document_info['iocScore']['ioc_total'],
-                            'ioc_url': full_document_info['id'],
-                            'fp_descr': full_document_info['fp']['descr']
-                        }
-                        if self.data_type == 'ip':
-                            ioc_report['geo_info'] = full_document_info['geodata']
-                            ioc_report['asn_info'] = full_document_info['asn']
+                results = []
 
-                        self.report(ioc_report)
+                if all_short_results:
+                    if all_short_results[0]['type'] == 'rst' or 'type' in all_short_results[0]:
+
+                        full_documents_info = self.vulners.documentList(
+                            [doc_id['id'] for doc_id in all_short_results],  fields=["*"])
+
+                        for document_results in full_documents_info:
+                            ioc_report = {
+                                'service': self.service,
+                                'first_seen': full_documents_info[f'{document_results}']['published'],
+                                'last_seen': full_documents_info[f'{document_results}']['lastseen'],
+                                'tags': full_documents_info[f'{document_results}']['tags'],
+                                'ioc_score': full_documents_info[f'{document_results}']['iocScore']['ioc_total'],
+                                'ioc_url': full_documents_info[f'{document_results}']['id'],
+                                'fp_descr': full_documents_info[f'{document_results}']['fp']['descr']
+                            }
+                            if self.data_type == 'ip':
+                                ioc_report['ioc_result'] = full_documents_info[f'{document_results}']['ip']
+                                ioc_report['geo_info'] = full_documents_info[f'{document_results}']['geodata']
+                                ioc_report['asn_info'] = full_documents_info[f'{document_results}']['asn']
+                            elif self.data_type == 'url':
+                                ioc_report['ioc_result'] = full_documents_info[f'{document_results}']['url']
+                            elif self.data_type == 'domain':
+                                ioc_report['ioc_result'] = full_documents_info[f'{document_results}']['domain']
+
+                            results.append(ioc_report)
+
+                        self.report({'results': results})
                 else:
-                    self.error('No data found')
+                    self.error({'results': 'No data found'})
             else:
                 self.error('Invalid data type')
 
