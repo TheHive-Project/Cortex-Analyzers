@@ -1,0 +1,62 @@
+{
+  "name": "PaloAltoNGFW_unblock_port",
+  "version": "1.0.0",
+  "author": "Maxim Konakin",
+  "url": "",
+  "license": "AGPL-V3",
+  "description": "Unblock domain",
+  "dataTypeList": ["thehive:alert"],
+  "command": "PaloAltoNGFW_unblock_port/Unblock_port.py",
+  "baseConfig": "PaloAltoNGFW_unblock_port",
+  "configurationItems": [
+    {
+      "name": "Hostname_PaloAltoNGFW",
+      "description": "Hostname_PaloAltoNGFW",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "User_PaloAltoNGFW",
+      "description": "User_PaloAltoNGFW",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "Password_PaloAltoNGFW",
+      "description": "User_PaloAltoNGFW",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "name_internal_Service_Group",
+      "description": "name_internal_Service_Group",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+     {
+      "name": "name_external_Service_Group",
+      "description": "name_external_Service_Group",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "thehive_instance",
+      "description": "URL of the Thehive instance to query",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+	  "name": "thehive_api_key",
+	  "description": "TheHive API key with read access",
+	  "type": "string",
+	  "multi": false,
+	  "required": true
+    }
+  ]
+}
