@@ -83,7 +83,7 @@ class Gmail(Responder):
             observable["tags"].extend("gmail_trash:{}".format(result["id"]))
         # Update observables with message id
         for observable in gmail_observables:
-            self.hive_api.update_case_observables(observable, fields=["tags"])
+            self.__hive_service.update_case_observables(observable, fields=["tags"])
         self.report({'message': "Deleted message"})
 
     def block_messages(self, case_id, query):
@@ -106,7 +106,7 @@ class Gmail(Responder):
             observable["tags"].extend("gmail_filter:{}:{}".format(self.get_param("data.dataType"), filter_id))
         # Update observables with filter ids
         for observable in gmail_observables:
-            self.hive_api.update_case_observables(observable, fields=["tags"])
+            self.__hive_service.update_case_observables(observable, fields=["tags"])
         self.report({'message': "Added filters"})
 
     def unblock_messages(self, case_id):
