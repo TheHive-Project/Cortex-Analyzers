@@ -19,12 +19,35 @@ class Gmail(Responder):
             "https://www.googleapis.com/auth/gmail.settings.basic",
         ]
         self.__gmail_service = None
+        self.__hive_service = None
         self.filters = []
 
     def __not_found(self):
         self.error("service named {} not found.".format(self.service))
 
-    def authenticate(self, service_account_file, scopes, subject):
+    def __get_gmail_subjects(self, caseId, query):
+        """
+        Get all email addresses of a case ending in @gmail.com
+
+        Returns: Array of Observable objects on success
+        """
+        response =  self.__hive_service.get_case_observables(caseId, query=query)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            self.error("Failed to get valid response for query: {}".format(response.status_code, response.text))
+
+    def hive_auth(self):
+        self.__hive_service = TheHiveApi(
+            self.get_param("config.thehive_url"),
+            self.get_param("config.thehive_api_key")
+        )
+        try:
+            self.__hive_service.health()
+        except TheHiveException as e:
+            self.error("Responder needs TheHive connection but failed: {}".format(e))
+
+    def gmail_auth(self, service_account_file, scopes, subject):
         """Peforms OAuth2 auth for a given service account, scope and a delegated subject
 
         Args:
@@ -54,20 +77,14 @@ class Gmail(Responder):
         # this could be extended to support bulk trashing via
         # a gmail search query based on the observable dataType.
         # e.g. dataType = mail -> delete all messages where "from: <mail observable>"
-        response = self.hive_api.get_case_observables(case_id, query=
-            And(Eq("dataType", "mail"), EndsWith("data", "gmail.com"))
-        )
-        if response.status_code == 200:
-            gmail_observables = response.json()
-            for observable in gmail_observables:
-                result = self.__gmail_service.users().messages().trash(userId=observable["data"], id=message_id).execute()
-                observable["tags"].extend("gmail_trash:{}".format(result["id"]))
-            # Update observables with message id
-            for observable in gmail_observables:
-                self.hive_api.update_case_observables(observable, fields=["tags"])
-            self.report({'message': "Deleted message"})
-        else:
-            self.error("Failure: {}/{}".format(response.status_code, response.text))
+        gmail_observables = self.__get_gmail_subjects(case_id, And(Eq("dataType", "mail"), EndsWith("data", "gmail.com")))
+        for observable in gmail_observables:
+            result = self.__gmail_service.users().messages().trash(userId=observable["data"], id=message_id).execute()
+            observable["tags"].extend("gmail_trash:{}".format(result["id"]))
+        # Update observables with message id
+        for observable in gmail_observables:
+            self.hive_api.update_case_observables(observable, fields=["tags"])
+        self.report({'message': "Deleted message"})
 
     def block_messages(self, case_id, query):
         """Automatically labels matching emails according to query argument.
@@ -83,25 +100,19 @@ class Gmail(Responder):
             }
         }
 
-        response = self.hive_api.get_case_observables(case_id, query=
-            And(Eq("dataType", "mail"), EndsWith("data", "gmail.com"))
-        )
-        if response.status_code == 200:
-            gmail_observables = response.json()
-            for observable in gmail_observables:
-                filter_id = self.__gmail_service.users().settings().filters().create(userId=observable["data"], body=new_filter).execute()
-                observable["tags"].extend("gmail_filter:{}:{}".format(self.get_param("data.dataType"), filter_id))
-            # Update observables with filter ids
-            for observable in gmail_observables:
-                self.hive_api.update_case_observables(observable, fields=["tags"])
-            self.report({'message': "Added filters"})
-        else:
-            self.error("Failure: {}/{}".format(response.status_code, response.text))
+        gmail_observables = self.__get_gmail_subjects(case_id, And(Eq("dataType", "mail"), EndsWith("data", "gmail.com")))
+        for observable in gmail_observables:
+            filter_id = self.__gmail_service.users().settings().filters().create(userId=observable["data"], body=new_filter).execute()
+            observable["tags"].extend("gmail_filter:{}:{}".format(self.get_param("data.dataType"), filter_id))
+        # Update observables with filter ids
+        for observable in gmail_observables:
+            self.hive_api.update_case_observables(observable, fields=["tags"])
+        self.report({'message': "Added filters"})
 
     def unblock_messages(self, case_id):
         """Delete a previous created filter by filter ID
         """
-        response = self.hive_api.get_case_observables(case_id, query=
+        gmail_observables = self.__get_gmail_subjects(case_id, query=
             And(
                 Eq("dataType", "mail"), And(
                     EndsWith("data", "gmail.com"),
@@ -109,16 +120,12 @@ class Gmail(Responder):
                 )
             )
         )
-        if response.status_code == 200:
-            gmail_observables = response.json()
-            for observable in gmail_observables:
-                for tag in observable["tags"]:
-                    if "gmail_filter:{}".format(self.get_param("data.dataType")) in tag:
-                        filter_id = tag.split(":")[-1]  # a tag should look like gmail_filters:domain:1235123121
-                        self.__gmail_service.users().settings().filters().delete(userId=observable["data"], id=filter_id).execute()
-            self.report({'message': "Removed filters"})
-        else:
-            self.error("Failure: {}/{}".format(response.status_code, response.text))
+        for observable in gmail_observables:
+            for tag in observable["tags"]:
+                if "gmail_filter:{}".format(self.get_param("data.dataType")) in tag:
+                    filter_id = tag.split(":")[-1]  # a tag should look like gmail_filters:domain:1235123121
+                    self.__gmail_service.users().settings().filters().delete(userId=observable["data"], id=filter_id).execute()
+        self.report({'message': "Removed filters"})
 
     def deletemessage(self, observable, dataType, caseId):
         if dataType != "mail":
@@ -158,11 +165,6 @@ class Gmail(Responder):
     def run(self):
         Responder.run(self)
 
-        self.hive_api = TheHiveApi(self.get_param("config.thehive_url"), self.get_param("config.thehive_api_key"))
-        try:
-            self.hive_api.health()
-        except TheHiveException as e:
-            self.error("Responder needs TheHive connection but failed: {}".format(e))
 
         dataType = self.get_param("data.dataType")
         observable = self.get_param("data.data")
