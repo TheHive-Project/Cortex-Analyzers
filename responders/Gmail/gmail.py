@@ -167,7 +167,7 @@ class Gmail(Responder):
         observable = self.get_param("data.data")
         caseId = self.get_param("data._parent")
 
-        action = getattr(self, self.service, self.__not_found)
+        action = getattr(self, self.service, self.__not_found) # call respective func or fail with default
         action(observable, dataType, caseId)
 
     def operations(self, raw):
