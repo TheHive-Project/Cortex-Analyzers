@@ -47,10 +47,27 @@ class Gmail(Responder):
         else:
             return False
 
-    def trash_message(self, subject, message_id):
+    def trash_message(self, case_id, message_id):
         """Moves specified message into trash. this emails can be recovered if false-positive
         """
-        result = self.__gmail_service.users().messages().trash(userId=subject, id=message_id).execute()
+        # TODO:
+        # this could be extended to support bulk trashing via
+        # a gmail search query based on the observable dataType.
+        # e.g. dataType = mail -> delete all messages where "from: <mail observable>"
+        response = self.hive_api.get_case_observables(case_id, query=
+            And(Eq("dataType", "mail"), EndsWith("data", "gmail.com"))
+        )
+        if response.status_code == 200:
+            gmail_observables = response.json()
+            for observable in gmail_observables:
+                result = self.__gmail_service.users().messages().trash(userId=observable["data"], id=message_id).execute()
+                observable["tags"].extend("gmail_trash:{}".format(result["id"]))
+            # Update observables with message id
+            for observable in gmail_observables:
+                self.hive_api.update_case_observables(observable, fields=["tags"])
+            self.report({'message': "Deleted message"})
+        else:
+            self.error("Failure: {}/{}".format(response.status_code, response.text))
 
     def block_messages(self, case_id, query):
         """Automatically labels matching emails according to query argument.
@@ -103,45 +120,33 @@ class Gmail(Responder):
         else:
             self.error("Failure: {}/{}".format(response.status_code, response.text))
 
-    def unblockdomain(self):
-        data_type = self.get_param("data.dataType")
-        ioc = self.get_param("data.data")
-        case_id = self.get_param("data._parent")
-        if data_type != "domain":
+    def unblockdomain(self, observable, dataType, caseId):
+        if dataType != "domain":
             self.error("{} needs data of type 'domain' but {} given".format(
-                self.get_param("config.service"), data_type
+                self.get_param("config.service"), dataType
             ))
-        self.unblock_messages(case_id)
+        self.unblock_messages(caseId)
 
-    def unblocksender(self):
-        data_type = self.get_param("data.dataType")
-        ioc = self.get_param("data.data")
-        case_id = self.get_param("data._parent")
-        if data_type != "mail":
+    def unblocksender(self, observable, dataType, caseId):
+        if dataType != "mail":
             self.error("{} needs data of type 'mail' but {} given".format(
-                self.get_param("config.service"), data_type
+                self.get_param("config.service"), dataType
             ))
-        self.unblock_messages(case_id)
+        self.unblock_messages(caseId)
 
-    def blocksender(self):
-        data_type = self.get_param("data.dataType")
-        ioc = self.get_param("data.data")
-        case_id = self.get_param("data._parent")
-        if data_type != "mail":
+    def blocksender(self, observable, dataType, caseId):
+        if dataType != "mail":
             self.error("{} needs data of type 'mail' but {} given".format(
-                self.get_param("config.service"), data_type
+                self.get_param("config.service"), dataType
             ))
-        self.block_messages(case_id, "from: {}".format(ioc))
+        self.block_messages(caseId, "from: {}".format(observable))
 
-    def blockdomain(self):
-        data_type = self.get_param("data.dataType")
-        ioc = self.get_param("data.data")
-        case_id = self.get_param("data._parent")
-        if data_type != "domain":
+    def blockdomain(self, observable, dataType, caseId):
+        if dataType != "domain":
             self.error("{} needs data of type 'domain' but {} given".format(
-                self.get_param("config.service"), data_type
+                self.get_param("config.service"), dataType
             ))
-        self.block_messages(case_id, "from: {}".format(ioc))
+        self.block_messages(caseId, "from: {}".format(observable))
 
     def run(self):
         Responder.run(self)
@@ -152,9 +157,12 @@ class Gmail(Responder):
         except TheHiveException as e:
             self.error("Responder needs TheHive connection but failed: {}".format(e))
 
-        action = getattr(self, self.service, self.__not_found)
-        action()
+        dataType = self.get_param("data.dataType")
+        observable = self.get_param("data.data")
+        caseId = self.get_param("data._parent")
 
+        action = getattr(self, self.service, self.__not_found)
+        action(observable, dataType, caseId)
 
     def operations(self, raw):
         return [self.build_operation('AddTagToArtifact', tag='gmail:blocked'),
