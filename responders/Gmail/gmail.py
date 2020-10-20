@@ -37,11 +37,8 @@ class Gmail(Responder):
         else:
             self.error("Failed to get valid response for query: {}".format(response.status_code, response.text))
 
-    def hive_auth(self):
-        self.__hive_service = TheHiveApi(
-            self.get_param("config.thehive_url"),
-            self.get_param("config.thehive_api_key")
-        )
+    def hive_auth(self, url, api_key):
+        self.__hive_service = TheHiveApi(url, api_key)
         try:
             self.__hive_service.health()
         except TheHiveException as e:
