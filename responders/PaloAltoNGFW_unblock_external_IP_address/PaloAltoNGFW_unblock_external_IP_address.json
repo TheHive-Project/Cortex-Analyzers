@@ -1,13 +1,13 @@
 {
-  "name": "PaloAltoNGFW_block_external_domain",
-  "version": "2.0.0",
+  "name": "PaloAltoNGFW_unblock_external_IP_address",
+  "version": "1.0.0",
   "author": "Maxim Konakin",
   "url": "",
   "license": "AGPL-V3",
-  "description": "Block external domain",
+  "description": "Unblock ip",
   "dataTypeList": ["thehive:alert"],
-  "command": "PaloAltoNGFW_block_external_domain/Block_domain.py",
-  "baseConfig": "PaloAltoNGFW_block_external_domain",
+  "command": "PaloAltoNGFW_unblock_external_IP_address/Unblock_ip.py",
+  "baseConfig": "PaloAltoNGFW_unblock_ip",
   "configurationItems": [
     {
       "name": "Hostname_PaloAltoNGFW",
@@ -31,25 +31,25 @@
       "required": true
     },
     {
-      "name": "name_security_rule",
-      "description": "name_internal_security_rule_for_domain",
+      "name": "name_external_Address_Group",
+      "description": "name_external_Address_Group",
       "type": "string",
       "multi": false,
       "required": false
     },
-	{
-        "name": "thehive_instance",
-        "description": "URL of the Thehive instance to query",
-        "type": "string",
-        "multi": false,
-        "required": true
-      },
-      {
-        "name": "thehive_api_key",
-        "description": "TheHive API key with read access",
-        "type": "string",
-        "multi": false,
-        "required": true
-      }
+    {
+      "name": "thehive_instance",
+      "description": "URL of the Thehive instance to query",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+	  "name": "thehive_api_key",
+	  "description": "TheHive API key with read access",
+	  "type": "string",
+	  "multi": false,
+	  "required": true
+    }
   ]
 }

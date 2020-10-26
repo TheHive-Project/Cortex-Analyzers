@@ -10,7 +10,7 @@ need install:
 
 # ToDo
 
-to work, you need to create Address_Group in PaloAltoNGFW and create security polites and name them in  "name_internal_Address_Group_for_domain".
+to work, you need set setting PaloAltoNGFW and The Hive. If you want create or add setting for custom rule you need set "name_security_rule"
 https://docs.paloaltonetworks.com/pan-os/8-1/pan-os-web-interface-help/monitor/monitor-block-ip-list
 
 principle of operation:
@@ -19,3 +19,4 @@ principle of operation:
 3. if ioc not in AddressObject, will add
 4. if ioc in AddressObject, next step
 5. checks if there is already a blocking list, if not, ioc will add
+6. create security rule and add AddressObject

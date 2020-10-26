@@ -5,6 +5,7 @@ from cortexutils.responder import Responder
 from thehive4py.api import TheHiveApi
 from panos import firewall
 import panos.objects
+import panos.policies
 
 class Block_domain(Responder):
     def __init__(self):
@@ -12,7 +13,7 @@ class Block_domain(Responder):
         self.hostname_PaloAltoNGFW = self.get_param('config.Hostname_PaloAltoNGFW')
         self.User_PaloAltoNGFW = self.get_param('config.User_PaloAltoNGFW')
         self.Password_PaloAltoNGFW = self.get_param('config.Password_PaloAltoNGFW')
-        self.name_internal_Address_Group_for_domain = self.get_param('config.name_internal_Address_Group')
+        self.name_security_rule = self.get_param('config.name_security_rule','Block internal Domain')
         self.thehive_instance = self.get_param('config.thehive_instance')
         self.thehive_api_key = self.get_param('config.thehive_api_key', 'YOUR_KEY_HERE')
         self.api = TheHiveApi(self.thehive_instance, self.thehive_api_key)
@@ -33,18 +34,36 @@ class Block_domain(Responder):
                 ioc="".join(ioc_clear)
         fw = firewall.Firewall(self.hostname_PaloAltoNGFW, api_username=self.User_PaloAltoNGFW, api_password=self.Password_PaloAltoNGFW)
         panos.objects.AddressObject.refreshall(fw)
+        rulebase = panos.policies.Rulebase()
+        fw.add(rulebase)
+        current_security_rules =panos.policies.SecurityRule.refreshall(rulebase)
         if ioc not in str(fw.find(ioc, panos.objects.AddressObject)):
-            new_ioc_object = panos.objects.AddressObject(ioc, ioc, description="Blocked fqdn",type="fqdn")
+            new_ioc_object = panos.objects.AddressObject(ioc, ioc, description="Blocked domain",type="fqdn")
             fw.add(new_ioc_object)
-            new_ioc_object.create()
+            new_ioc_object.create()        
         panos.objects.AddressGroup.refreshall(fw)
-        block_list = fw.find(self.name_internal_Address_Group_for_domain, panos.objects.AddressGroup)
-        ioc_list = block_list.about().get('static_value')
-        if ioc not in ioc_list:
-            ioc_list.append(ioc)
-            temp1 = panos.objects.AddressGroup(self.name_internal_Address_Group_for_domain, static_value=ioc_list)
+        block_list = fw.find("Black list internal domain", panos.objects.AddressGroup)
+        if block_list != None:
+            ioc_list = block_list.about().get('static_value')
+            if ioc not in ioc_list:
+                ioc_list.append(ioc)
+                temp1 = panos.objects.AddressGroup("Black list internal domain", static_value=ioc_list)
+                fw.add(temp1)
+                temp1.apply()
+        elif block_list == None:
+            temp1 = panos.objects.AddressGroup("Black list internal domain", static_value=ioc)
             fw.add(temp1)
             temp1.apply()
+        desired_rule_params = {
+            "name": self.name_security_rule,
+            "description": "Block internal Domain",
+            "type": "intrazone",
+            "action": "deny",
+            'destination': "Black list internal domain"
+            }
+        new_rule = panos.policies.SecurityRule(**desired_rule_params)
+        rulebase.add(new_rule)
+        new_rule.apply()
         self.report({'message': 'message sent'})
 
 if __name__ == '__main__':

@@ -10,13 +10,11 @@ need install:
 
 # ToDo
 
-to work, you need set setting PaloAltoNGFW and The Hive. If you want create or add setting for custom rule you need set "name_security_rule"
+to work, you need set setting PaloAltoNGFW and The Hive. If you want delete in custom Address Group you need set "Address_Group"
 https://docs.paloaltonetworks.com/pan-os/8-1/pan-os-web-interface-help/monitor/monitor-block-ip-list
 
 principle of operation:
 1. the value is selected from the alert the hive.
 2. ioc compare against already added AddressObject.
-3. if ioc not in AddressObject, will add
-4. if ioc in AddressObject, next step
-5. checks if there is already a blocking list, if not, ioc will add
-6. create security rule and add AddressObject
+3. if ioc in AddressGroup, will delete
+4. if ioc in AddressObject, will delete
