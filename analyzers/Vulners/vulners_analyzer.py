@@ -57,23 +57,28 @@ class VulnersAnalyzer(Analyzer):
                             [doc_id['id'] for doc_id in all_short_results],  fields=["*"])
 
                         for document_results in full_documents_info:
+                            info_from_document = full_documents_info[f'{document_results}']
+
                             ioc_report = {
                                 'service': self.service,
-                                'first_seen': full_documents_info[f'{document_results}']['published'],
-                                'last_seen': full_documents_info[f'{document_results}']['lastseen'],
-                                'tags': full_documents_info[f'{document_results}']['tags'],
-                                'ioc_score': full_documents_info[f'{document_results}']['iocScore']['ioc_total'],
-                                'ioc_url': full_documents_info[f'{document_results}']['id'],
-                                'fp_descr': full_documents_info[f'{document_results}']['fp']['descr']
+                                'first_seen': info_from_document['published'],
+                                'last_seen': info_from_document['lastseen'],
+                                'tags': info_from_document['tags'],
+                                'ioc_score': info_from_document['iocScore']['ioc_total'],
+                                'ioc_url': info_from_document['id'],
+                                'fp_descr': info_from_document['fp']['descr']
                             }
                             if self.data_type == 'ip':
-                                ioc_report['ioc_result'] = full_documents_info[f'{document_results}']['ip']
-                                ioc_report['geo_info'] = full_documents_info[f'{document_results}']['geodata']
-                                ioc_report['asn_info'] = full_documents_info[f'{document_results}']['asn']
+                                ioc_report['ioc_result'] = info_from_document['ip']
+                                ioc_report['geo_info'] = info_from_document['geodata']
+                                ioc_report['asn_info'] = info_from_document['asn']
                             elif self.data_type == 'url':
-                                ioc_report['ioc_result'] = full_documents_info[f'{document_results}']['url']
+                                ioc_report['ioc_result'] = info_from_document['url']
                             elif self.data_type == 'domain':
-                                ioc_report['ioc_result'] = full_documents_info[f'{document_results}']['domain']
+                                ioc_report['ioc_result'] = info_from_document['domain']
+
+                            if 'threat' in info_from_document:
+                                ioc_report['threat_family'] = info_from_document['threat']
 
                             results.append(ioc_report)
 

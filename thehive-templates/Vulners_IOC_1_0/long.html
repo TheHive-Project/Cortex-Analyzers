@@ -33,7 +33,14 @@
             {{tag}}
           </span>
         </dd>
-      </dd>
+      </dl>
+      <dl class="dl-horizontal">
+        <dt ng-if="result.threat_family">Threat family</dt>
+        <dd ng-if="result.threat_family">
+          <span ng-repeat="threat in result.threat_family" class="label label-danger">
+            {{threat}}
+          </span>
+        </dd>
       </dl>
       <dl class="dl-horizontal" ng-if="result.fp_descr">
         <dt>Possible FP</dt>

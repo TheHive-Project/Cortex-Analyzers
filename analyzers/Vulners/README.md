@@ -35,6 +35,10 @@ Long template:
 
 ![Long IOC template](assets/ioc_long_template.png)
 
+
+![Long_IOC_threat_template](assets/ioc_with_malware_family.PNG)
+
+
 **Vulnerabilities**:
 
 Short template: 
