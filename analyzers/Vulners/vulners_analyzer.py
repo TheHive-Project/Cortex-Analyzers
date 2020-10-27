@@ -16,15 +16,12 @@ class VulnersAnalyzer(Analyzer):
         namespace = "Vulners"
         if self.service == 'ioc':
             predicate = "IOC"
-            tags = ', '.join(
-                set([', '.join(result['tags']) for result in raw['results']])
-            )
-            if tags:
+            if raw['results']:
+                tags = ', '.join(
+                    set([', '.join(result['tags']) for result in raw['results']])
+                )
                 level = 'malicious'
                 value = f"Finded IOCs: {len(raw['results'])} / tags: {tags}"
-            elif not tags:
-                level = 'suspicious'
-                value = f"Finded IOCs: {len(raw['results'])}"
             else:
                 level = 'info'
                 value = 'No results'
