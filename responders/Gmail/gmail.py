@@ -86,11 +86,11 @@ class Gmail(Responder):
             scopes=scopes
         )
 
-        if (credentials.valid) and (credentials.has_scopes(scopes)):
+        if credentials.has_scopes(scopes):
             self.__gmail_service = build("gmail", "v1", credentials=credentials)
             return True
         else:
-            self.error("Gmail service account authentication failed. Aborting responder")
+            self.error("Gmail service account creation failed. Aborting responder")
 
     def trash_message(self, case_id, message_id):
         """Moves specified message into trash. this emails can be recovered if false-positive
