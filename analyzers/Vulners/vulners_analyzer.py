@@ -9,7 +9,11 @@ class VulnersAnalyzer(Analyzer):
         Analyzer.__init__(self)
         self.service = self.get_param('config.service', None, 'Service parameter is missing')
         self.api_key = self.get_param('config.key', None, 'Missing vulners api key')
-        self.vulners = vulners.Vulners(api_key=self.api_key)
+        proxies = {
+            "https": self.get_param("config.proxy_https"),
+            "http": self.get_param("config.proxy_http"),
+        }
+        self.vulners = vulners.Vulners(api_key=self.api_key, proxies=proxies)
 
     def summary(self, raw):
         taxonomies = []
