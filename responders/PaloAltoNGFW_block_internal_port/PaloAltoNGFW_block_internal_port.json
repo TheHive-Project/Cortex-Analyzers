@@ -1,6 +1,6 @@
 {
   "name": "PaloAltoNGFW_block_internal_port",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "Maxim Konakin",
   "url": "",
   "license": "AGPL-V3",
@@ -31,11 +31,11 @@
       "required": true
     },
     {
-      "name": "name_internal_Service_Group",
-      "description": "name_internal_Service_Group",
+      "name": "name_security_rule",
+      "description": "name_internal_name_security_rule_for_port",
       "type": "string",
       "multi": false,
-      "required": true
+      "required": false
     },
 	{
         "name": "thehive_instance",

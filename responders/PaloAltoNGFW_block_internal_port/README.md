@@ -10,14 +10,12 @@ need install:
 
 # ToDo
 
-to work, you need to create Address_Group in PaloAltoNGFW and create security polites and name them in  "name_internal_Service_Group".
-
-First: you need add field "port" and "protocol" to "Observable types management" in the hive.
-or you can change script and call your field names
+to work, you need set setting PaloAltoNGFW and The Hive. If you want create or add setting for custom rule you need set "name_security_rule"
 
 principle of operation:
 1. the value is selected from the alert the hive.
-2. ioc compare against already added Service_Group.
-3. if ioc not in Service_Group, will add field port and protocol
-4. if ioc in Service_Group, next step
+2. ioc compare against already added ServiceObject.
+3. if ioc not in ServiceObject, will add
+4. if ioc in ServiceObject, next step
 5. checks if there is already a blocking list, if not, ioc will add
+6. create security rule and add ServiceGroup

@@ -6,13 +6,15 @@ from thehive4py.api import TheHiveApi
 from panos import firewall
 import panos.objects
 import re
+import panos.policies
+
 class Block_port(Responder):
     def __init__(self):
         Responder.__init__(self)
         self.hostname_PaloAltoNGFW = self.get_param('config.Hostname_PaloAltoNGFW')
         self.User_PaloAltoNGFW = self.get_param('config.User_PaloAltoNGFW')
         self.Password_PaloAltoNGFW = self.get_param('config.Password_PaloAltoNGFW')
-        self.name_external_Service_Group = self.get_param('config.name_external_Service_Group')
+        self.name_security_rule = self.get_param('config.name_security_rule','Block external port')
         self.thehive_instance = self.get_param('config.thehive_instance')
         self.thehive_api_key = self.get_param('config.thehive_api_key', 'YOUR_KEY_HERE')
         self.api = TheHiveApi(self.thehive_instance, self.thehive_api_key)
@@ -34,6 +36,9 @@ class Block_port(Responder):
         port=re.findall(r'[0-9]+',str(data)); port="".join(port)
         fw = firewall.Firewall(self.hostname_PaloAltoNGFW, api_username=self.User_PaloAltoNGFW, api_password=self.Password_PaloAltoNGFW)
         panos.objects.ServiceObject.refreshall(fw)
+        rulebase = panos.policies.Rulebase()
+        fw.add(rulebase)
+        current_security_rules =panos.policies.SecurityRule.refreshall(rulebase)
         if port not in str(fw.find(port, panos.objects.ServiceObject)):
             new_port_object = panos.objects.ServiceObject(port, protocol, description="Blocked port",destination_port=port)
             fw.add(new_port_object)
@@ -41,13 +46,28 @@ class Block_port(Responder):
 
             
         panos.objects.ServiceGroup.refreshall(fw)
-        block_list = fw.find(self.name_external_Service_Group, panos.objects.ServiceGroup)
-        port_list = block_list.about().get('value')
-        if port not in port_list:
-            port_list.append(port)
-            temp1 = panos.objects.ServiceGroup(self.name_external_Service_Group, value=port_list)
+        block_list = fw.find("Black list external port", panos.objects.ServiceGroup)
+        if block_list != None:
+            port_list = block_list.about().get('value')
+            if port not in port_list:
+                port_list.append(port)
+                temp1 = panos.objects.ServiceGroup("Black list external port", value=port_list)
+                fw.add(temp1)
+                temp1.apply()
+        elif block_list == None:
+            temp1 = panos.objects.ServiceGroup("Black list external port", value=port)
             fw.add(temp1)
             temp1.apply()
+        desired_rule_params = {
+            "name": self.name_security_rule,
+            "description": "Block external port",
+            "type": "interzone",
+            "action": "deny",
+            'service': "Black list external port"
+            }
+        new_rule = panos.policies.SecurityRule(**desired_rule_params)
+        rulebase.add(new_rule)
+        new_rule.apply()
         self.report({'message': 'message sent'})
 
 if __name__ == '__main__':
