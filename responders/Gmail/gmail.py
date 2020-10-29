@@ -34,7 +34,7 @@ class Gmail(Responder):
             "token_uri": "https://oauth2.googleapis.com/token",
             "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
             "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/{}".format(
-                urlencode(self.get_param("config.gmail_client_email", None, "Client email missing"))
+                quote(self.get_param("config.gmail_client_email", None, "Client email missing"))
             )
         }
 
