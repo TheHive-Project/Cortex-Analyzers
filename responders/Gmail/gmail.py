@@ -20,6 +20,8 @@ class Gmail(Responder):
             "https://mail.google.com/",
             "https://www.googleapis.com/auth/gmail.settings.basic",
         ]
+        self.__thehive_url = self.get_param("config.thehive_url", None, "The Hive URL missing")
+        self.__thehive_api_key = self.get_param("config.thehive_api_key", None, "The Hive API key missing")
 
         self.__gmail_service_account = {
             "type": "service_account",
@@ -207,6 +209,7 @@ class Gmail(Responder):
     def run(self):
         Responder.run(self)
 
+        self.hive_auth(self.__thehive_url, self.__thehive_api_key)
 
         dataType = self.get_param("data.dataType")
         observable = self.get_param("data.data")
