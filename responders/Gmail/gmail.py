@@ -46,7 +46,7 @@ class Gmail(Responder):
 
     def __get_gmail_subjects(self, caseId, query):
         """
-        Get all email addresses of a case ending in @gmail.com
+        Get all email addresses of a case for the correspondig gsuite domain
 
         Returns: Array of Observable objects on success
         """
