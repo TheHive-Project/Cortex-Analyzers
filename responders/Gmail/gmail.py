@@ -22,7 +22,7 @@ class Gmail(Responder):
         ]
         self.__thehive_url = self.get_param("config.thehive_url", None, "The Hive URL missing")
         self.__thehive_api_key = self.get_param("config.thehive_api_key", None, "The Hive API key missing")
-
+        self.__gmail_domain = self.get_param("config.gmail_domain", None, "The Hive API key missing")
         self.__gmail_service_account = {
             "type": "service_account",
             "project_id": self.get_param("config.gmail_project_id", None, "Project ID missing"),
