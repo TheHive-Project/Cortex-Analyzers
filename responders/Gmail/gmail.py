@@ -9,6 +9,8 @@ from thehive4py.api import TheHiveApi
 from thehive4py.api import TheHiveException
 from thehive4py.query import *
 from urllib.parse import urlencode
+from google.auth.exceptions import GoogleAuthError
+from googleapiclient.errors import HttpError
 
 class Gmail(Responder):
     def __init__(self):
@@ -70,12 +72,10 @@ class Gmail(Responder):
         except TheHiveException as e:
             self.error("Responder needs TheHive connection but failed: {}".format(e))
 
-    def gmail_auth(self, service_account_file, scopes, subject):
+    def gmail_impersonate(self, subject):
         """Peforms OAuth2 auth for a given service account, scope and a delegated subject
 
         Args:
-            service_account_file (str): Path to the service account file
-            scopes (array): array of oauth2 scopes needed to operate
             subject (str): email adress of the user, whos data shall be accessed (delegation)
 
         Returns:
@@ -83,12 +83,12 @@ class Gmail(Responder):
         """
         credentials = service_account.Credentials.from_service_account_info(
             info=self.__gmail_service_account,
-            scopes=scopes
+            scopes=self.__scopes,
+            subject=subject
         )
 
-        if credentials.has_scopes(scopes):
-            self.__gmail_service = build("gmail", "v1", credentials=credentials)
-            return True
+        if credentials.has_scopes(self.__scopes):
+            return build("gmail", "v1", credentials=credentials)
         else:
             self.error("Gmail service account creation failed. Aborting responder")
 
@@ -101,7 +101,13 @@ class Gmail(Responder):
         # e.g. dataType = mail -> delete all messages where "from: <mail observable>"
         gmail_observables = self.__get_gmail_subjects(case_id, And(Eq("dataType", "mail"), EndsWith("data", "gmail.com")))
         for observable in gmail_observables:
-            result = self.__gmail_service.users().messages().trash(userId=observable["data"], id=message_id).execute()
+            resource = self.gmail_impersonate(observable["data"])
+            try:
+                result = resource.users().messages().trash(userId=observable["data"], id=message_id).execute()
+            except GoogleAuthError as e:
+                self.error("Gmail oauth failed: {}".format(e))
+            except HttpError as e:
+                self.error("Gmail api failed: {}".format(e))
             observable["tags"].extend("gmail_trash:{}".format(result["id"]))
 
         for observable in gmail_observables:
@@ -124,7 +130,13 @@ class Gmail(Responder):
 
         gmail_observables = self.__get_gmail_subjects(case_id, And(Eq("dataType", "mail"), EndsWith("data", "gmail.com")))
         for observable in gmail_observables:
-            filter_id = self.__gmail_service.users().settings().filters().create(userId=observable["data"], body=new_filter).execute()
+            resource = self.gmail_impersonate(observable["data"])
+            try:
+                filter_id = resource.users().settings().filters().create(userId=observable["data"], body=new_filter).execute()
+            except GoogleAuthError as e:
+                self.error("Gmail oauth failed: {}".format(e))
+            except HttpError as e:
+                self.error("Gmail api failed: {}".format(e))
             observable["tags"].extend("gmail_filter:{}:{}".format(self.get_param("data.dataType"), filter_id))
 
         for observable in gmail_observables:
@@ -144,7 +156,13 @@ class Gmail(Responder):
         )
         for observable in gmail_observables:
             tag = self.__get_filter_tag(observable["tags"]) # a tag should look like gmail_filters:domain:1235123121
-            self.__gmail_service.users().settings().filters().delete(userId=observable["data"], id=tag.split(":")[-1]).execute()
+            resource = self.gmail_impersonate(observable["data"])
+            try:
+                resource.users().settings().filters().delete(userId=observable["data"], id=tag.split(":")[-1]).execute()
+            except GoogleAuthError as e:
+                self.error("Gmail oauth failed: {}".format(e))
+            except HttpError as e:
+                self.error("Gmail api failed: {}".format(e))
             observable["tags"].remove(tag)
 
         for observable in gmail_observables:
