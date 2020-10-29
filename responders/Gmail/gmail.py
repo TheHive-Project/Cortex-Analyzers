@@ -27,7 +27,7 @@ class Gmail(Responder):
             "type": "service_account",
             "project_id": self.get_param("config.gmail_project_id", None, "Project ID missing"),
             "private_key_id": self.get_param("config.gmail_private_key_id", None, "Private Key ID missing"),
-            "private_key": self.get_param("config.gmail_private_key", None, "Private Key (PEM format) missing"),
+            "private_key": self.get_param("config.gmail_private_key", None, "Private Key (PEM format) missing").replace("\\n", "\n"),
             "client_email": self.get_param("config.gmail_client_email", None, "Client email missing"),
             "client_id": self.get_param("config.gmail_client_id", None, "Client id missing"),
             "auth_uri": "https://accounts.google.com/o/oauth2/auth",
