@@ -1,6 +1,6 @@
 {
     "name": "Gmail_BlockDomain",
-    "version": "0.1",
+    "version": "0.2",
     "author": "David Strassegger, OSCD",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "MIT",
@@ -26,6 +26,13 @@
       {
         "name": "thehive_api_key",
         "description": "API key for TheHive instance",
+        "type": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "name": "gmail_domain",
+        "description": "Gsuite Domain",
         "type": "string",
         "multi": false,
         "required": true

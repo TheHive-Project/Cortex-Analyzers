@@ -1,15 +1,14 @@
 {
-    "name": "Gmail_UnblockSender",
+    "name": "Gmail",
     "version": "0.2",
     "author": "David Strassegger, OSCD",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "MIT",
-    "description": "Remove a Gmail message filter",
+    "description": "Move emails from a given domain to trash on Gmail",
     "dataTypeList": ["thehive:case_artifact"],
     "command": "Gmail/Gmail.py",
     "baseConfig": "Gmail",
     "config": {
-      "service": "unblocksender",
       "max_tlp": 2,
       "check_tlp": false,
       "max_pap": 2,
