@@ -101,7 +101,7 @@ class Gmail(Responder):
         # this could be extended to support bulk trashing via
         # a gmail search query based on the observable dataType.
         # e.g. dataType = mail -> delete all messages where "from: <mail observable>"
-        gmail_observables = self.__get_gmail_subjects(case_id, And(Eq("dataType", "mail"), EndsWith("data", "gmail.com")))
+        gmail_observables = self.__get_gmail_subjects(case_id, And(Eq("dataType", "mail"), EndsWith("data", self.__gmail_domain)))
         for observable in gmail_observables:
             resource = self.gmail_impersonate(observable["data"])
             try:
@@ -130,7 +130,7 @@ class Gmail(Responder):
             }
         }
 
-        gmail_observables = self.__get_gmail_subjects(case_id, And(Eq("dataType", "mail"), EndsWith("data", "gmail.com")))
+        gmail_observables = self.__get_gmail_subjects(case_id, And(Eq("dataType", "mail"), EndsWith("data", self.__gmail_domain)))
         for observable in gmail_observables:
             resource = self.gmail_impersonate(observable["data"])
             try:
@@ -151,7 +151,7 @@ class Gmail(Responder):
         gmail_observables = self.__get_gmail_subjects(case_id, query=
             And(
                 Eq("dataType", "mail"), And(
-                    EndsWith("data", "gmail.com"),
+                    EndsWith("data", self.__gmail_domain),
                     ContainsString("tags", "gmail_filter:{}*".format(self.get_param("data.dataType")))
                 )
             )
