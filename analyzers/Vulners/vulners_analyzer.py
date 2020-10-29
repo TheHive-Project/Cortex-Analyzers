@@ -85,7 +85,7 @@ class VulnersAnalyzer(Analyzer):
 
                         self.report({'results': results})
                 else:
-                    self.error({'results': 'No data found'})
+                    self.report({'results': 'No data found'})
             else:
                 self.error('Invalid data type')
 
@@ -111,7 +111,7 @@ class VulnersAnalyzer(Analyzer):
                         'affectedSoftware': cve_info['affectedSoftware']
                     }
                 else:
-                    self.error('No data for specified CVE was found')
+                    self.report({'result': 'No data for specified CVE was found'})
 
                 if cve_exploits:
                     full_exploit_info = []
