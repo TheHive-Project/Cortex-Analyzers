@@ -95,23 +95,21 @@ class Gmail(Responder):
         else:
             self.error("Gmail service account creation failed. Aborting responder")
 
-    def trash_message(self, case_id, message_id):
+    def trash_message(self, case_id, query):
         """Moves specified message into trash. this emails can be recovered if false-positive
         """
-        # TODO:
-        # this could be extended to support bulk trashing via
-        # a gmail search query based on the observable dataType.
-        # e.g. dataType = mail -> delete all messages where "from: <mail observable>"
         gmail_observables = self.__get_gmail_subjects(case_id, And(Eq("dataType", "mail"), EndsWith("data", self.__gmail_domain)))
         for observable in gmail_observables:
             resource = self.gmail_impersonate(observable["data"])
             try:
-                result = resource.users().messages().trash(userId=observable["data"], id=message_id).execute()
+                response = resource.users().messages().list(userId=observable["data"], q=query).execute()
+                for message in response['messages']:
+                    result = resource.users().messages().trash(userId=observable["data"], id=message["id"]).execute()
             except GoogleAuthError as e:
                 self.error("Gmail oauth failed: {}".format(e))
             except HttpError as e:
                 self.error("Gmail api failed: {}".format(e))
-            observable["tags"].extend("gmail_trash:{}".format(result["id"]))
+            observable["tags"].append("gmail_trash:{}".format(result["id"]))
 
         for observable in gmail_observables:
             self.__hive_service.update_case_observables(CaseObservable(**observable), fields=["tags"])
@@ -173,8 +171,8 @@ class Gmail(Responder):
         self.report({'message': "Removed filters"})
 
     def deletemessage(self, observable, dataType, caseId):
-        if dataType != "mail":
-            self.error("{} needs data of type 'gmail' but {} given".format(
+        if dataType != "other":
+            self.error("{} needs gmail query of type 'other' but {} given".format(
                 self.get_param("config.service"), dataType
             ))
         self.trash_message(caseId, observable)
