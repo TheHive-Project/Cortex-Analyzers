@@ -57,7 +57,7 @@ class Gmail(Responder):
         else:
             self.error("Failed to get valid response for query: {}".format(response.status_code, response.text))
 
-    def __get_filter_tag(self, dataType, tags):
+    def __get_filter_tag(self, tags):
         """
         Get the correct tag for a dataType in a list of tags
 
@@ -157,7 +157,7 @@ class Gmail(Responder):
             )
         )
         for observable in gmail_observables:
-            tag = self.__get_filter_tag(observable["dataType"], observable["tags"]) # a tag should look like gmail_filters:domain:1235123121
+            tag = self.__get_filter_tag(observable["tags"]) # a tag should look like gmail_filters:domain:1235123121
             resource = self.gmail_impersonate(observable["data"])
             try:
                 print("deleteing: {}".format(tag.split(":")[-1]))
