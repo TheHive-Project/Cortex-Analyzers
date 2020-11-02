@@ -7,8 +7,9 @@ from googleapiclient.discovery import build
 import json
 from thehive4py.api import TheHiveApi
 from thehive4py.api import TheHiveException
+from thehive4py.models import CaseObservable
 from thehive4py.query import *
-from urllib.parse import urlencode
+from urllib.parse import quote
 from google.auth.exceptions import GoogleAuthError
 from googleapiclient.errors import HttpError
 
@@ -113,7 +114,7 @@ class Gmail(Responder):
             observable["tags"].extend("gmail_trash:{}".format(result["id"]))
 
         for observable in gmail_observables:
-            self.__hive_service.update_case_observables(observable, fields=["tags"])
+            self.__hive_service.update_case_observables(CaseObservable(**observable), fields=["tags"])
         self.report({'message': "Deleted message"})
 
     def block_messages(self, case_id, query):
@@ -134,15 +135,15 @@ class Gmail(Responder):
         for observable in gmail_observables:
             resource = self.gmail_impersonate(observable["data"])
             try:
-                filter_id = resource.users().settings().filters().create(userId=observable["data"], body=new_filter).execute()
+                gmail_filter = resource.users().settings().filters().create(userId=observable["data"], body=new_filter).execute()
             except GoogleAuthError as e:
                 self.error("Gmail oauth failed: {}".format(e))
             except HttpError as e:
                 self.error("Gmail api failed: {}".format(e))
-            observable["tags"].extend("gmail_filter:{}:{}".format(self.get_param("data.dataType"), filter_id))
+            observable["tags"].append("gmail_filter:{}:{}".format(self.get_param("data.dataType"), gmail_filter["id"]))
 
         for observable in gmail_observables:
-            self.__hive_service.update_case_observables(observable, fields=["tags"])
+            self.__hive_service.update_case_observables(CaseObservable(**observable), fields=["tags"])
         self.report({'message': "Added filters"})
 
     def unblock_messages(self, case_id):
@@ -168,7 +169,7 @@ class Gmail(Responder):
             observable["tags"].remove(tag)
 
         for observable in gmail_observables:
-            self.__hive_service.update_case_observables(observable, fields=["tags"])
+            self.__hive_service.update_case_observables(CaseObservable(**observable), fields=["tags"])
         self.report({'message': "Removed filters"})
 
     def deletemessage(self, observable, dataType, caseId):
