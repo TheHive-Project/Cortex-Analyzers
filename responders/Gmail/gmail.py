@@ -64,9 +64,9 @@ class Gmail(Responder):
         Returns: tag string on success else None
         """
         for tag in tags:
-            if tag.find("gmail_filter:{}".format(dataType)):
+            if "gmail_filter:{}".format(self.get_param("data.data")) in tag:
                 return tag
-        return None
+        self.error("No valid filter tag found on observable. Tags: {}".format(tags))
 
     def hive_auth(self, url, api_key):
         self.__hive_service = TheHiveApi(url, api_key)
@@ -140,7 +140,7 @@ class Gmail(Responder):
                 self.error("Gmail oauth failed: {}".format(e))
             except HttpError as e:
                 self.error("Gmail api failed: {}".format(e))
-            observable["tags"].append("gmail_filter:{}:{}".format(self.get_param("data.dataType"), gmail_filter["id"]))
+            observable["tags"].append("gmail_filter:{}:{}".format(self.get_param("data.data"), gmail_filter["id"]))
 
         for observable in gmail_observables:
             self.__hive_service.update_case_observables(CaseObservable(**observable), fields=["tags"])
@@ -152,15 +152,15 @@ class Gmail(Responder):
         gmail_observables = self.__get_gmail_subjects(case_id, query=
             And(
                 Eq("dataType", "mail"), And(
-                    EndsWith("data", self.__gmail_domain),
-                    ContainsString("tags", "gmail_filter:{}*".format(self.get_param("data.dataType")))
+                    EndsWith("data", self.__gmail_domain)
                 )
             )
         )
         for observable in gmail_observables:
-            tag = self.__get_filter_tag(observable["tags"]) # a tag should look like gmail_filters:domain:1235123121
+            tag = self.__get_filter_tag(observable["dataType"], observable["tags"]) # a tag should look like gmail_filters:domain:1235123121
             resource = self.gmail_impersonate(observable["data"])
             try:
+                print("deleteing: {}".format(tag.split(":")[-1]))
                 resource.users().settings().filters().delete(userId=observable["data"], id=tag.split(":")[-1]).execute()
             except GoogleAuthError as e:
                 self.error("Gmail oauth failed: {}".format(e))
