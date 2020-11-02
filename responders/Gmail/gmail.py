@@ -218,7 +218,7 @@ class Gmail(Responder):
         action(observable, dataType, caseId)
 
     def operations(self, raw):
-        return [self.build_operation('AddTagToArtifact', tag='gmail:blocked')]
+        return [self.build_operation('AddTagToArtifact', tag='gmail:handled')]
 
 if __name__ == '__main__':
     Gmail().run()
