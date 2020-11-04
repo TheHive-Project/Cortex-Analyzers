@@ -103,7 +103,7 @@ class Gmail(Responder):
             resource = self.gmail_impersonate(observable["data"])
             try:
                 response = resource.users().messages().list(userId=observable["data"], q=query).execute()
-                for message in response['messages']:
+                for message in response.get("messages", []):
                     result = resource.users().messages().trash(userId=observable["data"], id=message["id"]).execute()
             except GoogleAuthError as e:
                 self.error("Gmail oauth failed: {}".format(e))
