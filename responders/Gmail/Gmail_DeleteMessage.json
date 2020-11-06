@@ -1,10 +1,10 @@
 {
     "name": "Gmail_DeleteMessage",
-    "version": "0.2",
+    "version": "1.0",
     "author": "David Strassegger, OSCD",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "MIT",
-    "description": "Move a given Gmail Message into the trash folder",
+    "description": "Move a given message into the trash folder",
     "dataTypeList": ["thehive:case_artifact"],
     "command": "Gmail/Gmail.py",
     "baseConfig": "Gmail",

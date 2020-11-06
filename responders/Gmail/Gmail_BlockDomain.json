@@ -1,10 +1,10 @@
 {
     "name": "Gmail_BlockDomain",
-    "version": "0.2",
+    "version": "1.0",
     "author": "David Strassegger, OSCD",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "MIT",
-    "description": "Move emails from a given domain to trash on Gmail",
+    "description": "Move emails from a given domain to trash",
     "dataTypeList": ["thehive:case_artifact"],
     "command": "Gmail/Gmail.py",
     "baseConfig": "Gmail",

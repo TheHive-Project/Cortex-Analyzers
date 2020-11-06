@@ -1,10 +1,10 @@
 {
     "name": "Gmail_UnblockSender",
-    "version": "0.2",
+    "version": "1.0",
     "author": "David Strassegger, OSCD",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "MIT",
-    "description": "Remove a Gmail message filter",
+    "description": "Remove a message filter for a given sender",
     "dataTypeList": ["thehive:case_artifact"],
     "command": "Gmail/Gmail.py",
     "baseConfig": "Gmail",
