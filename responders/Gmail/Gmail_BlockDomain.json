@@ -1,7 +1,7 @@
 {
     "name": "Gmail_BlockDomain",
     "version": "1.0",
-    "author": "David Strassegger, OSCD",
+    "author": "David Strassegger, @oscd_initiative",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "MIT",
     "description": "Move emails from a given domain to trash",
