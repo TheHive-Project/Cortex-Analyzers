@@ -41,13 +41,22 @@ class Block_user(Responder):
                 user_list=i.about().get("source_user")
         if user not in user_list:
             user_list.append(user)
-        desired_rule_params = {
-            "name": self.name_security_rule,
-            "description": "Block user internal communication",
-            "type": "intrazone",
-            "action": "deny",
-            'source_user': user_list
-            }
+            if "any" in user_list:
+                user_list.remove("any")
+        desired_rule_params = None
+        for i in current_security_rules:
+            if self.name_security_rule == i.about().get("name"):
+                rule_atrib = i.about()
+                rule_atrib.update({"source_user": user_list})
+                desired_rule_params = rule_atrib
+            elif self.name_security_rule != i.about().get("name"):
+                desired_rule_params = {
+                    "name": self.name_security_rule,
+                    "description": "Block user internal communication",
+                    "type": "intrazone",
+                    "action": "deny",
+                    'source_user': user_list
+                    }
         new_rule = panos.policies.SecurityRule(**desired_rule_params)
         rulebase.add(new_rule)
         new_rule.apply()

@@ -57,13 +57,25 @@ class Block_port(Responder):
             temp1 = panos.objects.ServiceGroup("Black list internal port", value=port)
             fw.add(temp1)
             temp1.apply()
-        desired_rule_params = {
-            "name": self.name_security_rule,
-            "description": "Block internal port",
-            "type": "interzone",
-            "action": "deny",
-            'service': "Black list internal port"
-            }
+        desired_rule_params = None
+        for i in current_security_rules:
+            if self.name_security_rule == i.about().get("name"):
+                rule_atrib = i.about()
+                temp_rule_atrib = rule_atrib.get("service")
+                if "Black list internal port" not in temp_rule_atrib:
+                    temp_rule_atrib.append("Black list internal port")
+                    if "application-default" in temp_rule_atrib:
+                        temp_rule_atrib.remove("application-default")
+                    rule_atrib.update({"service": temp_rule_atrib})
+                    desired_rule_params = rule_atrib
+            elif self.name_security_rule != i.about().get("name"):
+                desired_rule_params = {
+                    "name": self.name_security_rule,
+                    "description": "Block internal port",
+                    "type": "interzone",
+                    "action": "deny",
+                    'service': "Black list internal port"
+                    }
         new_rule = panos.policies.SecurityRule(**desired_rule_params)
         rulebase.add(new_rule)
         new_rule.apply()
