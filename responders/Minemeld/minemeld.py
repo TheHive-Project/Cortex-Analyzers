@@ -40,7 +40,7 @@ class Minemeld(Responder):
        elif self.observable_type == "url":
          indicator_type = "URL"
        elif self.observable_type == "domain":
-         indicator_type = "Domain"
+         indicator_type = "domain"
        
        # Check for comment
        if self.observable_description == "":
