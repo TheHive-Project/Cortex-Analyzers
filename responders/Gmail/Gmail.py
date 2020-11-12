@@ -104,12 +104,12 @@ class Gmail(Responder):
             try:
                 response = resource.users().messages().list(userId=observable["data"], q=query).execute()
                 for message in response.get("messages", []):
-                    result = resource.users().messages().trash(userId=observable["data"], id=message["id"]).execute()
+                    resource.users().messages().delete(userId=observable["data"], id=message["id"]).execute()
+                    observable["tags"].append("gmail_delete:{}".format(message["id"]))
             except GoogleAuthError as e:
                 self.error("Gmail oauth failed: {}".format(e))
             except HttpError as e:
                 self.error("Gmail api failed: {}".format(e))
-            observable["tags"].append("gmail_trash:{}".format(result["id"]))
 
         for observable in gmail_observables:
             self.__hive_service.update_case_observables(CaseObservable(**observable), fields=["tags"])
