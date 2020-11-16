@@ -125,8 +125,7 @@
                 }
             },
             "required": [
-                "path",
-                "caption"
+                "path"
             ]
         }
     }
