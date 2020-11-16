@@ -42,7 +42,7 @@ python3 utils/flavors/check_json_schema.py -f analyzers/SEKOIAIntelligenceCenter
 ✅ analyzers/SEKOIAIntelligenceCenter/IntelligenceCenter_Context.json
 ```
 
-## Temaplates
+## Templates
 
 If you want to start writing an Analyzer or a Responder, or a new flavor, you can start with the appropriate template: 
 - `analyzer_flavor_template.json` for an new flavor of an analyser
