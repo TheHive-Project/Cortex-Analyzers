@@ -15,8 +15,6 @@ import sys
 import os
 import argparse
 
-FLAVOR_FILE="utils/flavors/flavor_schema.json"
-
 def printJson(fjson:dict) -> str:
     print(json.dumps(fjson, indent=4))
 
@@ -64,8 +62,7 @@ def fixJsonFlavorFile(jsonfile:dict) -> dict:
         jsonfile["screenshots"] =  screenshots
     return jsonfile
 
-def validateFlavorFormat(flavorfile:str, schemafile:str) -> str:
-    # flavorSchema = openJsonFile(FLAVOR_FILE)
+def validateFlavorFormat(flavorfile:str, schemafile:str, fix:bool) -> str:
     flavorSchema = openJsonFile(schemafile)
     fjson = openJsonFile(flavorfile)
         
@@ -76,13 +73,19 @@ def validateFlavorFormat(flavorfile:str, schemafile:str) -> str:
     else:
         printSuccess(False, flavorfile)
         for error in errors:
-            print("{}: {}".format(error.path,error.message))
-            # print('------')
-    
-    
+            print("{}: {}".format(error.path,error.message))    
+        if fix:
+            print("Fixing {}".format(flavorfile))
+            j = fixJsonFlavorFile(fjson)
+            with open(flavorfile, 'w+') as fj:
+                fj.write(json.dumps(j,indent=4))
+            fj.close()
+
+
 def run():
     parser = argparse.ArgumentParser()
     parser.add_argument("-r", "--report", help="Generate report for all JSON flavors of all Analyzers and responders", action="store_true", default=False)
+    parser.add_argument("-x", "--fix", help="Adding new information required for documentation", action="store_true", default=False)
     parser.add_argument("-f", "--file", help="Validate JSON of the Flavor definition file")
     parser.add_argument("-s", "--schema", help="JSON Schema of a flavor", default="utils/flavors/flavor_schema.json")
 
@@ -97,17 +100,19 @@ def run():
                         for file in os.listdir(os.path.join(p,neuron)):
                             if file.endswith(".json"):
                                 filepath = os.path.join(p,neuron,file)
-                                validateFlavorFormat(filepath, args.schema)
+                                validateFlavorFormat(filepath, args.schema, args.fix)
+
         
             if args.file:
                 filepath = args.file
                 try:
                     if os.path.isfile(filepath) and filepath.endswith(".json"):
-                        validateFlavorFormat(filepath, args.schema)
+                        validateFlavorFormat(filepath, args.schema, args.fix)
                     else:
                         print("Error: Check this is a file, json formatted, and it has .json extention\n {}".format(filepath))
                 except Exception as e:
                     print(e)
+
 
     except Exception as e: 
         print(e)
