@@ -2,3 +2,5 @@ cortexutils
 future
 requests
 virustotal-api
+python-magic
+filetype

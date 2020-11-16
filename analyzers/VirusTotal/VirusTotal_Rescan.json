@@ -1,15 +1,14 @@
 {
-  "name": "VirusTotal_GetReport",
+  "name": "VirusTotal_Rescan",
   "version": "3.0",
-  "author": "CERT-BDF",
+  "author": "CERT-LDO",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Get the latest VirusTotal report for a file, hash, domain or an IP address.",
-  "dataTypeList": ["file", "hash", "domain", "fqdn", "ip", "url"],
-  "command": "VirusTotal/virustotal.py",
+  "description": "Use VirusTotal to run new analysis on hash.",
+  "dataTypeList": ["hash"],
   "baseConfig": "VirusTotal",
   "config": {
-    "service": "get"
+    "service": "rescan"
   },
   "configurationItems": [
     {
@@ -26,14 +25,6 @@
       "multi": false,
       "required": false,
       "defaultValue": 60
-    },
-    {
-      "name": "rescan_hash_older_than_days",
-      "description": "Rescan hash observable if report is older than selected days",
-      "type": "number",
-      "multi": false,
-      "required": false,
-      "defaultValue": 30
     },
     {
       "name": "highlighted_antivirus",
@@ -56,5 +47,6 @@
       "multi": false,
       "required": false
     }
-  ]
+  ],
+  "command": "VirusTotal/virustotal.py"
 }
