@@ -113,7 +113,14 @@ class VirusTotalAnalyzer(Analyzer):
     def artifacts(self, raw):
         artifacts = []
         if self.obs_path:
-            artifacts.append(self.build_artifact("file", self.obs_path))
+            tags = []
+            # This will work only in scan/rescan workflow, not in download only
+            if self.highlighted_antivirus:
+                for av in self.highlighted_antivirus:
+                    detected = raw.get("scans", {}).get(av, {}).get("detected", None)
+                    if detected == False:
+                        tags.append("to_{}".format(av))
+            artifacts.append(self.build_artifact("file", self.obs_path, tags=tags))
         return artifacts
 
     def summary(self, raw):
@@ -125,6 +132,10 @@ class VirusTotalAnalyzer(Analyzer):
 
         if self.service == "scan":
             predicate = "Scan"
+        elif self.service == "rescan":
+            predicate = "Rescan"
+        elif self.service == "download":
+            return {"taxonomies": taxonomies}
 
         result = {"has_result": True}
 
@@ -157,6 +168,7 @@ class VirusTotalAnalyzer(Analyzer):
                     level = "suspicious"
                 else:
                     level = "malicious"
+
             if "detected_urls" in raw:
                 result["detected_urls"] = len(raw["detected_urls"])
                 value = "{} detected_url(s)".format(result["detected_urls"])
@@ -219,6 +231,12 @@ class VirusTotalAnalyzer(Analyzer):
             else:
                 self.error("Invalid data type")
 
+        elif self.service == "download":
+            if self.data_type == "hash":
+                data = self.get_param("data", None, "Data is missing")
+                self.get_file(data)
+                self.report({"message": "file downloaded"})
+
         elif self.service == "get":
             if self.data_type == "domain":
                 data = self.get_param("data", None, "Data is missing")
@@ -261,10 +279,11 @@ class VirusTotalAnalyzer(Analyzer):
                         self.vt.rescan_file(data), self.wait_file_report
                     )
 
-            # download if hash and not seen by av
+            # download if hash, dangerous and not seen by av
             if (
                 self.data_type == "hash"
                 and (results.get("response_code", None) == 1)
+                and (results.get("positives", 0) >= 5)
                 and (
                     self.download_sample
                     or (
@@ -283,7 +302,6 @@ class VirusTotalAnalyzer(Analyzer):
                 )
             ):
                 self.get_file(data)
-
             self.report(results)
 
         else:
