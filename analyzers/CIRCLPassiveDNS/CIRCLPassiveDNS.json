@@ -38,11 +38,11 @@
     },
     "screenshots": [
         {
-            "path": "sc-short-circlpassivedns.png",
+            "path": "assets/sc-short-circlpassivedns.png",
             "caption": "CIRCLPassiveDNS: short report"
         },
         {
-            "path": "sc-long-circlpassivedns.png",
+            "path": "assets/sc-long-circlpassivedns.png",
             "caption": "CIRCLPassiveDNS: long report"
         }
     ]
