@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # encoding: utf-8
-
-import json
+#Author: Daniel Weiner @dmweiner
 import requests
 import traceback
 import datetime
