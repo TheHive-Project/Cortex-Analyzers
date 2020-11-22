@@ -5,7 +5,7 @@
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
     "description": "Revoke all Microsoft Azure authentication session tokens for a list of User Principal Names",
-    "dataTypeList": ["thehive:case", "thehive:alert", "thehive:case_task", "thehive:case_artifact"],
+    "dataTypeList": ["thehive:case"],
     "command": "AzureTokenRevoker.py",
     "baseConfig": "AzureTokenRevoker",
     "configurationItems": [
@@ -23,12 +23,6 @@
         },
         {"name": "client_secret",
         "description": "Secret for Azure AD Registered Application",
-        "type": "string",
-        "multi": false,
-        "required": true
-        },
-        {"name": "user",
-        "description": "A User Principal Name to invalidate all current authentication tokens for (Example: username@domain.com",
         "type": "string",
         "multi": false,
         "required": true
