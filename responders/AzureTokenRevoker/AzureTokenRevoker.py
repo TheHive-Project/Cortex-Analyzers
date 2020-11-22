@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # encoding: utf-8
-#Author: Daniel Weiner @dmweiner
+# Author: Daniel Weiner @dmweiner
 import requests
 import traceback
 import datetime
@@ -52,7 +52,7 @@ class AzureTokenRevoker(Responder):
             
             else:
                 #record time of successful auth token revokation
-                self.time = datetime.datetime.utcnow().st
+                self.time = datetime.datetime.utcnow()
         
         except Exception as ex:
             self.error(traceback.format_exc())
