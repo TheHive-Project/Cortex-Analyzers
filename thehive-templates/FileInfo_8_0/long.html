@@ -628,8 +628,8 @@
                                  ng-class="r.submodule_section_header === 'Errors' ? 'panel-danger' : 'panel-info'"
                                  heading="{{r.submodule_section_header}}" is-open="true"
                                  is-disabled="status.isFirstDisabled">
-                                <ul ng-repeat="string in r.submodule_section_content">
-                                    <li>{{string}}</li>
+                                <ul>
+                                    <li ng-repeat="string in r.submodule_section_content track by $index">{{string}}</li>
                                 </ul>
                             </div>
                         </uib-accordion>
