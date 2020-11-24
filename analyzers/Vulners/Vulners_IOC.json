@@ -20,6 +20,11 @@
       "required": true
     }
   ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://vulners.com",
+  "service_logo": {"path":"assets/vulners_logo.png", "caption": "logo"},
   "screenshots": [
     {
       "path": "assets/vulners_api.png",
@@ -36,6 +41,10 @@
     {
       "path": "assets/ioc_short_template.png",
       "caption": "Short template for network IOCs (ip, url, domain)"
+    },
+    {
+      "path": "assets/assets/ioc_with_malware_family.png",
+      "caption": "Full template with malware family"
     }
   ]
 }

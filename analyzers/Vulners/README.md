@@ -25,7 +25,7 @@ By default theHive does not have a "cve" type to be observables, so we have to a
 
 ## Run the Analyzer in TheHive
 
-**Network IOCs**:
+####Network IOCs:
 
 Short template:
 
@@ -39,7 +39,7 @@ Long template:
 ![Long_IOC_threat_template](assets/ioc_with_malware_family.PNG)
 
 
-**Vulnerabilities**:
+####Vulnerabilities:
 
 Short template: 
 

@@ -20,6 +20,11 @@
       "required": true
     }
   ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://vulners.com",
+  "service_logo": {"path":"assets/vulners_logo.png", "caption": "logo"},
   "screenshots": [
     {
       "path": "assets/theHive_add_cve",
