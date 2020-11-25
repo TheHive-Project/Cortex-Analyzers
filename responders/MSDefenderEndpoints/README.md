@@ -1,6 +1,6 @@
-# Cortex responder for Microsoft Defender for Endpoits (formerly know as Microsoft ATP)
+# Cortex responder for Microsoft Defender for Endpoints (formerly know as Microsoft ATP)
 
-## With this reponder you can
+## With this responder you can
 * Isolate machine
 * Unisolate machine
 * Run full antivirus scan
@@ -44,7 +44,7 @@ To get client credentials:
 
 **IMPORTANT: Copy and store this key in a safe place. Treat it like a password.**
 
-Permissions:
+### Detailed permissions:
 ![Permissions](img/thehive_integration.jpg)
 
 [How to create Azure App (link to MS blog)](https://techcommunity.microsoft.com/t5/microsoft-defender-for-endpoint/wdatp-api-hello-world-or-using-a-simple-powershell-script-to/ba-p/326813)
