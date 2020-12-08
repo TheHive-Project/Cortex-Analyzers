@@ -7,7 +7,7 @@
     "description": "Determine whether an IP has known scanning activity using GreyNoise.",
     "dataTypeList": ["ip"],
     "baseConfig": "GreyNoise",
-    "command": "GreyNoise/greynoise.py",
+    "command": "GreyNoise/greynoisev3.py",
     "configurationItems": [
       {
         "name": "key",

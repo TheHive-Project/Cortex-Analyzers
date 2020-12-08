@@ -33,6 +33,7 @@ class GreyNoiseAnalyzer(Analyzer):
 
         Input
         {
+            "seen": True,
             "actor": "SCANNER1",
             "classification": "benign",
             "tags": ['a', 'b', 'c']
@@ -43,6 +44,7 @@ class GreyNoiseAnalyzer(Analyzer):
 
         Input
         {
+            "seen": True,
             "actor": "SCANNER1",
             "classification": "unknown",
             "tags": ['a', 'b', 'c']
@@ -53,6 +55,7 @@ class GreyNoiseAnalyzer(Analyzer):
 
         Input
         {
+            "seen": True,
             "actor": "SCANNER1",
             "classification": "unknown",
             "tags": ['a', 'b']
@@ -63,6 +66,7 @@ class GreyNoiseAnalyzer(Analyzer):
 
         Input
         {
+            "seen": True,
             "actor": "SCANNER1",
             "classification": "malicious",
             "tags": ['a', 'b', 'c']
@@ -70,6 +74,13 @@ class GreyNoiseAnalyzer(Analyzer):
         Output
         GreyNoise:tags = 3 (Malicious)
         GreyNoise:classification = malicious (Malicious)
+
+        Input
+        {
+            "seen": "False"
+        }
+        Output
+        GreyNoise:Seen last 60 days = False (Info)
         """
 
 
@@ -82,23 +93,34 @@ class GreyNoiseAnalyzer(Analyzer):
         try:
             taxonomies = []
 
-            tag_count = len(raw.get('tags', []))
-            classification = raw.get('classification', 'unknown')
-            actor = raw.get('actor')
+            seen = raw.get('seen', False)
+            if seen:
+                tag_count = len(raw.get('tags', []))
+                classification = raw.get('classification', 'unknown')
+                actor = raw.get('actor')
 
-            t1_level = classification_level_map.get(classification)(tag_count)
-            t1_namespace = 'GreyNoise'
-            t1_predicate = 'tags'
-            t1_value = tag_count
-            # print('{}:{} = {} ({})'.format(t1_namespace, t1_predicate, t1_value, t1_level))
-            taxonomies.append(self.build_taxonomy(t1_level, t1_namespace, t1_predicate, t1_value))
+                t1_level = classification_level_map.get(classification)(tag_count)
+                t1_namespace = 'GreyNoise'
+                t1_predicate = 'tags'
+                t1_value = tag_count
+                # print('{}:{} = {} ({})'.format(t1_namespace, t1_predicate, t1_value, t1_level))
+                taxonomies.append(self.build_taxonomy(t1_level, t1_namespace, t1_predicate, t1_value))
 
-            t2_level = classification_level_map.get(classification)(None)
-            t2_namespace = 'GreyNoise'
-            t2_predicate = 'actor' if classification == 'benign' else 'classification'
-            t2_value = actor if classification == 'benign' else classification
-            # print('{}:{} = {} ({})'.format(t2_namespace, t2_predicate, t2_value, t2_level))
-            taxonomies.append(self.build_taxonomy(t2_level, t2_namespace, t2_predicate, t2_value))
+                t2_level = classification_level_map.get(classification)(None)
+                t2_namespace = 'GreyNoise'
+                t2_predicate = 'actor' if classification == 'benign' else 'classification'
+                t2_value = actor if classification == 'benign' else classification
+                # print('{}:{} = {} ({})'.format(t2_namespace, t2_predicate, t2_value, t2_level))
+                taxonomies.append(self.build_taxonomy(t2_level, t2_namespace, t2_predicate, t2_value))
+            else:
+                taxonomies.append(
+                    self.build_taxonomy(
+                        classification_level_map.get('unknown')(None),
+                        'GreyNoise',
+                        'Seen last 60 days',
+                        False
+                    )
+                )
 
             return {"taxonomies": taxonomies}
 
