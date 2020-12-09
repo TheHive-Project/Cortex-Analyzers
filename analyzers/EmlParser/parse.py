@@ -8,6 +8,7 @@ import binascii
 import hashlib
 import base64
 from pprint import pprint
+import iocextract
 
 class EmlParserAnalyzer(Analyzer):
 
@@ -43,6 +44,26 @@ class EmlParserAnalyzer(Analyzer):
 
         return {"taxonomies": taxonomies}
 
+    def artifacts(self, raw):
+        artifacts = []
+        urls = list(iocextract.extract_urls(str(raw)))
+        ipv4s = list(iocextract.extract_ipv4s(str(raw)))
+        mail_addresses = list(iocextract.extract_emails(str(raw)))
+        hashes = list(iocextract.extract_hashes(str(raw)))
+
+        if urls:
+            for u in urls:
+                artifacts.append(self.build_artifact('url',str(u)))
+        if ipv4s:
+            for i in ipv4s:
+                artifacts.append(self.build_artifact('ip',str(i)))
+        if mail_addresses:
+            for e in mail_addresses:
+                artifacts.append(self.build_artifact('mail',str(e)))
+        if hashes:
+            for h in hashes:
+                artifacts.append(self.build_artifact('hash',str(h)))
+        return artifacts
 
 def parseEml(filepath):
 
@@ -68,7 +89,7 @@ def parseEml(filepath):
     #splited string because it was returning the body inside 'Content-Type'
     hParser = email.parser.HeaderParser()
     h = str(hParser.parsestr(raw_eml))
-    result['headers'] = h[:h.index('Content-Type:')]
+    result['headers'] = h[:h.lower().index('content-type:')]
 
     parsed_eml = eml_parser.eml_parser.decode_email(filepath, include_raw_body=True, include_attachment_data=True)
     #parsed_eml['header'].keys() gives:

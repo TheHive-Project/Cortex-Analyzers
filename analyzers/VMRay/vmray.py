@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from cortexutils.analyzer import Analyzer
 from vmrayclient import VMRayClient
 from time import sleep
@@ -43,6 +43,7 @@ class VMRayAnalyzer(Analyzer):
                     if submit_report['result'] == 'ok':
                         # Sample is already there, get the report
                         self.report({'scanreport': self.vmrc.get_sample(samplehash=submit_report['data']['samples'][0]['sample_sha256hash'])})
+                        return
                     else:
                         self.error('Error while submitting sample to VMRay: {}.'
                                    .format([error_msg for error_msg in submit_report['data']['errors']]))
@@ -89,7 +90,7 @@ class VMRayAnalyzer(Analyzer):
                 else:
                     level = "info"
 
-                if r["reports"] > 1:
+                if len(r["reports"]) > 1:
                     value = "{}( from scan {})".format(s["score"], i)
                 else:
                     value = "{}".format(s["score"])

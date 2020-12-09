@@ -1,38 +1,36 @@
-	<div class="panel panel-danger" ng-if="success && content.values.length > 0">
+	<div class="panel panel-danger" ng-if="success && content.values[0].data.reports.length > 0">
 		<div class="panel-heading">
-			AbuseIPDB Report for {{artifact.data | fang}}
+			AbuseIPDB Report for {{ content.values[0].data.ipAddress }}
 		</div>
 		<div class="panel-body">
 			<table class="table table-striped" ng-if="content.values">
 				<thead>
 					<tr>
-						<th>Created Date</th>
+						<th>Reported Date</th>
 						<th>Abuse Confidence Score</th>
 						<th>ISO Code</th>
 						<th>Country</th>
-						<th>Withelisted</th>
+						<th>Whitelisted</th>
 						<th>Categories</th>
-
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="r in content.values | orderBy:'-created'">
-						<td>{{r.created}}</td>
+					<tr ng-repeat="r in content.values[0].data.reports | orderBy:'-reportedAt'">
+						<td>{{r.reportedAt}}</td>
 						<td><span class="text" 
-							ng-class="{ 'text-danger': r.abuseConfidenceScore >=70 ,'text-warning': r.abuseConfidenceScore < 70, 'text-success': r.abuseConfidenceScore == 0}">{{r.abuseConfidenceScore}}</span></td>
-						<td>{{r.isoCode}}</td>
-						<td>{{r.country}}</td>
-						<td>{{r.isWhitelisted}}</td>
+							ng-class="{ 'text-danger': content.values[0].data.abuseConfidenceScore >=70 ,'text-warning': content.values[0].data.abuseConfidenceScore < 70, 'text-success': content.values[0].data.abuseConfidenceScore == 0}">{{content.values[0].data.abuseConfidenceScore}}</span></td>
+						<td>{{r.reporterCountryCode}}</td>
+						<td>{{r.reporterCountryName}}</td>
+						<td>{{content.values[0].data.isWhitelisted}}</td>
 						<td>
 							<span ng-repeat="c in r.categories_strings"><span class="label label-primary">{{c}}</span> </span>
 						</td>
-
 					</tr>					
 				</tbody>
 			</table>
 		</div>
 	</div>
-	<div class="panel panel-success" ng-if="success && content.values.length == 0">
+	<div class="panel panel-success" ng-if="success && content.values[0].data.reports.length == 0">
 		<div class="panel-heading">
 			AbuseIPDB Report
 		</div>

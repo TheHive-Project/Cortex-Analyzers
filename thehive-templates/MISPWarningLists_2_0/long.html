@@ -1,0 +1,48 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        MISP warning lists information for <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.results">
+            <dt>Results:</dt>
+            <dd ng-if="content.results.length > 0">
+                <p>
+                    Observable was found in following MISP warning lists:
+                </p>
+                <ul ng-repeat="list in content.results" ng-if="content.mode == 'json'">
+                    <li>{{list.name}}</li>
+                </ul>
+                <ul ng-repeat="list in content.results" ng-if="content.mode == 'db'">
+                    <li>{{list.value}} - {{list.list_name}} - ver. {{list.list_version}}</li>
+                </ul>                
+            </dd>
+            <dd ng-if="content.results.length == 0">
+                <p>
+                    Observable was not found in warning lists.
+                </p>
+            </dd>
+            <dt>Warning lists status:</dt>
+            <dd>
+                <span class="label label-success" ng-if="content.is_uptodate && content.mode == 'json'">
+                    Up-to-date
+                </span>
+                <span class="label label-warning" ng-if="!content.is_uptodate && content.mode == 'json'">
+                    Outdated
+                </span>
+                <span class="label label-warning" ng-if="content.mode == 'db'">
+                    N/A
+                </span>                
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

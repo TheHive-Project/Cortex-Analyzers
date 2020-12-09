@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 According to data from official site [1], VxStream Sandbox Public API allows you to analyze:

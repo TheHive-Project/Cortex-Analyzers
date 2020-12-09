@@ -56,10 +56,10 @@ class MISPClient:
                     raise CertificateNotFoundError('Certificate not found under {}.'.format(ssl))
                 elif isinstance(ssl, bool):
                     verify = ssl
-                self.misp_connections.append(pymisp.PyMISP(url=server,
-                                                           key=key[idx],
-                                                           ssl=verify,
-                                                           proxies=proxies))
+                self.misp_connections.append(pymisp.ExpandedPyMISP(url=server,
+                                                                   key=key[idx],
+                                                                   ssl=verify,
+                                                                   proxies=proxies))
         else:
             verify = True
             if isinstance(ssl, str) and os.path.isfile(ssl):
@@ -68,10 +68,10 @@ class MISPClient:
                 raise CertificateNotFoundError('Certificate not found under {}.'.format(ssl))
             elif isinstance(ssl, bool):
                 verify = ssl
-            self.misp_connections.append(pymisp.PyMISP(url=url,
-                                                       key=key,
-                                                       ssl=verify,
-                                                       proxies=proxies))
+            self.misp_connections.append(pymisp.ExpandedPyMISP(url=url,
+                                                               key=key,
+                                                               ssl=verify,
+                                                               proxies=proxies))
         self.misp_name = name
 
     @staticmethod
@@ -205,7 +205,7 @@ class MISPClient:
         """
         response = []
 
-        for event in misp_response.get('response', []):
+        for event in misp_response:
             response.append(self.__clean_event(event['Event']))
 
         return response
@@ -222,7 +222,7 @@ class MISPClient:
         if not value:
             raise EmptySearchtermError
         for idx, connection in enumerate(self.misp_connections):
-            misp_response = connection.search(type_attribute=type_attribute, values=value)
+            misp_response = connection.search(type_attribute=type_attribute, value=value)
 
             # Fixes #94
             if isinstance(self.misp_name, list):

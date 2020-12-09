@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding: utf-8
 
 import time
@@ -150,6 +150,10 @@ class VirusTotalAnalyzer(Analyzer):
                 self.error('Invalid data type')
         elif self.service == 'get':
             if self.data_type == 'domain':
+                data = self.get_param('data', None, 'Data is missing')
+                self.report(self.check_response(
+                    self.vt.get_domain_report(data)))
+            elif self.data_type == 'fqdn':
                 data = self.get_param('data', None, 'Data is missing')
                 self.report(self.check_response(
                     self.vt.get_domain_report(data)))

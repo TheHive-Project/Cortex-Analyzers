@@ -1,0 +1,15 @@
+{
+    "name": "TeamCymruMHR",
+    "version": "1.0",
+    "author": "Wes Lambert",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Submit hash to Team Cymru's Malware Hash Registry",
+    "dataTypeList": ["hash"],
+    "baseConfig": "TeamCymruMHR",
+    "config": {
+       "service": "HashLookup"
+    },
+    "command": "TeamCymruMHR/TeamCymruMHR.py",
+    "configurationItems": []
+}

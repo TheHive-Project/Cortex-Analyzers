@@ -1,11 +1,11 @@
 {
   "name": "Abuse_Finder",
-  "version": "2.0",
+  "version": "3.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Find abuse contacts associated with domain names, URLs, IPs and email addresses.",
-  "dataTypeList": ["ip", "domain", "url", "mail"],
+  "dataTypeList": ["ip", "domain", "fqdn", "url", "mail"],
   "baseConfig": "Abuse_Finder",
   "command": "Abuse_Finder/abusefinder.py"
 }

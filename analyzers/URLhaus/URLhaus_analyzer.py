@@ -15,7 +15,7 @@ class URLhausAnalyzer(Analyzer):
         results = {}
         if self.data_type == 'url':
             results = URLhausClient.search_url(data)
-        elif self.data_type in ['domain', 'ip']:
+        elif self.data_type in ['domain', 'fqdn', 'ip']:
             results = URLhausClient.search_host(data)
         elif self.data_type == 'hash':
             if len(data) in [32, 64]:
@@ -35,7 +35,8 @@ class URLhausAnalyzer(Analyzer):
         namespace = "URLhaus"
 
         if raw['query_status'] == 'no_results' \
-        or raw['query_status'] == 'ok' and raw['md5_hash'] == None and raw['sha256_hash'] == None:
+        or (raw['query_status'] == 'ok' and not raw.get('md5_hash', None) \
+        and not raw.get('sha256_hash', None)):
             taxonomies.append(self.build_taxonomy(
                 'info',
                 namespace,
@@ -50,7 +51,7 @@ class URLhausAnalyzer(Analyzer):
                     'Threat',
                     raw['threat']
                 ))
-            elif self.data_type in ['domain', 'ip']:
+            elif self.data_type in ['domain', 'fqdn', 'ip']:
                 threat_types = []
                 for url in raw['urls']:
                     if url['threat'] not in threat_types:

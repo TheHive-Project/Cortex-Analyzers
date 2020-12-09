@@ -1,6 +1,6 @@
 {
   "name": "MaxMind_GeoIP",
-  "version": "3.0",
+  "version": "4.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
