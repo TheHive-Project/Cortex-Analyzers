@@ -85,9 +85,9 @@ class GreyNoiseAnalyzer(Analyzer):
 
 
         classification_level_map = {
-            'benign': lambda x: 'Safe',
-            'unknown': lambda tag_count: 'Info' if (not tag_count) or (tag_count <= 2) else 'Suspicious',
-            'malicious': lambda x: 'Malicious'
+            'benign': lambda x: 'safe',
+            'unknown': lambda tag_count: 'info' if (not tag_count) or (tag_count <= 2) else 'suspicious',
+            'malicious': lambda x: 'malicious'
         }
 
         try:
