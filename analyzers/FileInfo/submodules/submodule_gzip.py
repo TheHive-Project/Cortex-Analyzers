@@ -6,13 +6,13 @@ class GZIPSubmodule(SubmoduleBaseclass):
 
     def __init__(self):
         SubmoduleBaseclass.__init__(self)
-        self.name = 'GZIP Test'
+        self.name = "GZIP Test"
 
     def check_file(self, **kwargs):
-        if kwargs.get('filetype') == 'GZIP':
+        if kwargs.get("filetype") == "GZIP":
             return True
         return False
 
     def analyze_file(self, path):
-        self.add_result_subsection('TEST', {})
-        return self.results
+        self.add_result_subsection("TEST", {})
+        return self.results, None
