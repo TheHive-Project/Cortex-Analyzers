@@ -1,0 +1,55 @@
+{
+  "name": "PaloAltoNGFW_unblock_internal_domain",
+  "version": "1.0.0",
+  "author": "Maxim Konakin, OSCD Community",
+  "url": "",
+  "license": "AGPL-V3",
+  "description": "Unblock domain",
+  "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
+  "command": "PaloAltoNGFW/Unblock_internal_domain.py",
+  "baseConfig": "PaloAltoNGFW_unblock_internal_domain",
+  "configurationItems": [
+    {
+      "name": "Hostname_PaloAltoNGFW",
+      "description": "Hostname_PaloAltoNGFW",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "User_PaloAltoNGFW",
+      "description": "User_PaloAltoNGFW",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "Password_PaloAltoNGFW",
+      "description": "User_PaloAltoNGFW",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "name_internal_Address_Group",
+      "description": "name_internal_Address_Group_for_domain",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "thehive_instance",
+      "description": "URL of the Thehive instance to query",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+	  "name": "thehive_api_key",
+	  "description": "TheHive API key with read access",
+	  "type": "string",
+	  "multi": false,
+	  "required": true
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "name": "PaloAltoNGFW_block_internal_user",
+  "version": "1.0.0",
+  "author": "Maxim Konakin, OSCD Community",
+  "url": "",
+  "license": "AGPL-V3",
+  "description": "Block internal user",
+  "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
+  "command": "PaloAltoNGFW/Block_internal_user.py",
+  "baseConfig": "PaloAltoNGFW_block_internal_user",
+  "configurationItems": [
+    {
+      "name": "Hostname_PaloAltoNGFW",
+      "description": "Hostname_PaloAltoNGFW",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "User_PaloAltoNGFW",
+      "description": "User_PaloAltoNGFW",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "Password_PaloAltoNGFW",
+      "description": "User_PaloAltoNGFW",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "name_security_rule",
+      "description": "name_internal_name_security_rule_for_users",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+	{
+        "name": "thehive_instance",
+        "description": "URL of the Thehive instance to query",
+        "type": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "name": "thehive_api_key",
+        "description": "TheHive API key with read access",
+        "type": "string",
+        "multi": false,
+        "required": true
+      }
+  ]
+}
