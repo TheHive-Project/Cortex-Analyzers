@@ -69,16 +69,14 @@
       "description": "Mail addresses which are allowed to receive tlp:amber classified incidents",
       "type": "string",
       "multi": true,
-      "required": false,
-      "defaultValue": "Incident Case Notification: "
+      "required": false
     },
     {
       "name": "tlp_green_mail_domains",
       "description": "Mail domains which are allowed to receive tlp:green classified incidents",
       "type": "string",
       "multi": true,
-      "required": false,
-      "defaultValue": "Incident Case Notification: "
+      "required": false
     },
     {
       "name": "thehive_url",
