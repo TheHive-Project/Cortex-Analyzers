@@ -51,7 +51,7 @@ class MailIncidentStatus(Responder):
         tags = self.get_param(
             "data.tags", None, "recipient address not found in tags"
         )
-        mail_addresses = [t[5:].strip('"') for t in tags if t.startswith("mail=")]
+        mail_addresses = [t[5:].strip('"') for t in tags if t.startswith("mail=") or t.startswith("mail:")]
         if len(mail_addresses) == 0:
             self.error("recipient address not found in tags")
         
@@ -81,18 +81,15 @@ class MailIncidentStatus(Responder):
                         server.starttls(context=context)
                         server.ehlo()
                         server.login(self.smtp_user, self.smtp_pwd)
-                        server.send_message(msg, self.mail_from, [mail_address])
-                        #server.send_message(msg)
+                        server.send_message(msg, self.mail_from, mail_address)
                 except smtplib.SMTPNotSupportedError:
                     with smtplib.SMTP(self.smtp_host, self.smtp_port) as server:
                         server.ehlo()
                         server.login(self.smtp_user, self.smtp_pwd)
-                        server.send_message(msg, self.mail_from, [mail_address])
-                        #server.send_message(msg)
+                        server.send_message(msg, self.mail_from, mail_address)
             else:
                 with smtplib.SMTP(self.smtp_host, self.smtp_port) as server:
-                    server.send_message(msg, self.mail_from, [mail_address])
-                    #server.send_message(msg)
+                    server.send_message(msg, self.mail_from, mail_address)
 
             # SET RETURN MESSAGE
             message += "message sent to " + mail_address + ";"
@@ -166,7 +163,10 @@ class MailIncidentStatus(Responder):
         createdAt_row = ('createdAt',date_str)
         createdBy_row = ('createdBy',self.get_param("data.createdBy")) 
         time = self.get_param("data.updatedAt")
-        date_str = (datetime.datetime.fromtimestamp(time / 1e3)).strftime('%m/%d/%Y %H:%M')
+        if time:
+            date_str = (datetime.datetime.fromtimestamp(time / 1e3)).strftime('%m/%d/%Y %H:%M')
+        else:
+            date_str = "Unknown"
         updatedAt_row = ('updatedAt',date_str)
         updatedBy_row = ('updatedBy',self.get_param("data.updatedBy"))
         table_rows = [case_row,title_row,severity_row,tlp_row,status_row,description_row,tasks_row,startDate_row,createdAt_row,createdBy_row,updatedAt_row,updatedBy_row]
@@ -180,7 +180,10 @@ class MailIncidentStatus(Responder):
             cust_value_type = next(iter(cust_fields.get(item)))
             if cust_value_type == "date":
                 date_int = (cust_fields.get(item)).get(cust_value_type)
-                date_str = (datetime.datetime.fromtimestamp(date_int / 1e3)).strftime('%m/%d/%Y %H:%M')
+                if date_int:
+                    date_str = (datetime.datetime.fromtimestamp(date_int / 1e3)).strftime('%m/%d/%Y %H:%M')
+                else:
+                    date_str = "Date not set"
                 cust_value_str = date_str
             else:
                 cust_value_str = str((cust_fields.get(item)).get(cust_value_type))
@@ -238,7 +241,6 @@ class MailIncidentStatus(Responder):
         """
             Get all tasks of a given incident, and calculate statistics of the task. Return them as HTML string.
         """
-
         # get case tasks by th4py
         api = TheHiveApi(self.thehive_url, self.thehive_apikey)
         response = api.get_case_tasks(caseID)
@@ -265,65 +267,6 @@ class MailIncidentStatus(Responder):
         ratio = "/" + str(t_total)
         summary = "Completed: " + str(t_compl) + ratio + "<br/>InProgress: " + str(t_inpro) + ratio + "<br/>Waiting: " + str(t_waiti) + ratio + "<br/>Canceled: " + str(t_cance) + ratio    
         return summary
-
-
-
-
-"""
-        title = "Incident notification: " + self.get_param("data.title", None, "title is missing")
-        if self.data_type in ["thehive:case", "thehive:case_task"]:
-            description = self.get_param(
-                "data.description", None, "description is missing"
-            )
-        elif self.data_type == "thehive:alert":
-            description = self.get_param(
-                "data.case.description", None, "description is missing"
-            )
-        else:
-            self.error("Invalid dataType")            
-
-        mail_address = None
-        if self.data_type == "thehive:case":
-            # Search recipient address in case tags
-            tags = self.get_param(
-                "data.tags", None, "recipient address not found in tags"
-            )
-            mail_addresses = [t[5:] for t in tags if t.startswith("mail=")]
-            if mail_addresses:
-                mail_address = mail_addresses.pop()
-            else:
-                self.error("recipient address not found in tags")
-
-        elif self.data_type == "thehive:case_task":
-            # Search recipient address in tasks description
-            descr_array = description.splitlines()
-            if "mailto:" in descr_array[0]:
-                mail_address = descr_array[0].replace("mailto:", "").strip()
-            else:
-                self.error("recipient address not found in description")
-            # Set rest of description as body
-            description = "\n".join(descr_array[1:])
-
-        elif self.data_type == "thehive:alert":
-            # Search recipient address in artifacts
-            artifacts = self.get_param(
-                "data.artifacts", None, "recipient address not found in observables"
-            )
-            mail_artifacts = [
-                a["data"]
-                for a in artifacts
-                if a.get("dataType") == "mail" and "data" in a
-            ]
-            if mail_artifacts:
-                mail_address = mail_artifacts.pop()
-            else:
-                self.error("recipient address not found in observables")
-
-        
-
-    def operations(self, raw):
-        return [self.build_operation("AddTagToCase", tag="mail sent")]
-"""
 
 if __name__ == "__main__":
     MailIncidentStatus().run()

@@ -1,6 +1,3 @@
-ssl
 smtplib
 cortexutils
-email
 thehive4py
-json
