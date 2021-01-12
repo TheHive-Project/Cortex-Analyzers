@@ -153,7 +153,7 @@ class VMRayClient(object):
             }
         )
         if tags:
-            params["tags"] = ",".join(tags)
+            params["tags"] = ",".join(filter(None, tags))
 
         user_config = _filter_dict(user_config)
         if user_config:
@@ -161,7 +161,8 @@ class VMRayClient(object):
 
         return self._check_response(
             self.session.post(
-                url="{}{}".format(self.url, self._submit_endpoint), params=params,
+                url="{}{}".format(self.url, self._submit_endpoint),
+                params=params,
             )
         )
 
@@ -190,7 +191,7 @@ class VMRayClient(object):
             }
         )
         if tags:
-            params["tags"] = ",".join(tags)
+            params["tags"] = ",".join(filter(None, tags))
 
         user_config = _filter_dict(user_config)
         if user_config:
@@ -304,7 +305,7 @@ class VMRayClient(object):
     def update_submission(self, submission_id):
         """
         Queries the current state of a submission.
-        
+
         :param submission_id: ID of the submission
         :type submission_id: int
         :returns: Dictionary representing the submission
@@ -332,4 +333,3 @@ class VMRayClient(object):
                 )
             )
         )
-
