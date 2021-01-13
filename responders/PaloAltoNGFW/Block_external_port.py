@@ -7,6 +7,7 @@ from panos import firewall
 import panos.objects
 import re
 import panos.policies
+import json
 
 class Block_port(Responder):
     def __init__(self):
@@ -53,6 +54,8 @@ class Block_port(Responder):
             for n in data:
                if n.get('dataType') == 'port':
                    port=n.get('data')
+               if n.get('dataType') == 'protocol':
+                   protocol=n.get('data')
         fw = firewall.Firewall(self.hostname_PaloAltoNGFW, api_username=self.User_PaloAltoNGFW, api_password=self.Password_PaloAltoNGFW)
         panos.objects.ServiceObject.refreshall(fw)
         rulebase = panos.policies.Rulebase()

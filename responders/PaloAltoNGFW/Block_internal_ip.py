@@ -6,6 +6,7 @@ from thehive4py.api import TheHiveApi
 from panos import firewall
 import panos.objects
 import panos.policies
+import json
 
 class Block_ip(Responder):
     def __init__(self):
@@ -85,6 +86,8 @@ class Block_ip(Responder):
                     if "any" in temp_rule_atrib:
                         temp_rule_atrib.remove("any")
                     rule_atrib.update({"destination": temp_rule_atrib})
+                    desired_rule_params = rule_atrib
+                else:
                     desired_rule_params = rule_atrib
         new_rule = panos.policies.SecurityRule(**desired_rule_params)
         rulebase.add(new_rule)

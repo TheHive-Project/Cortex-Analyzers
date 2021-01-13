@@ -6,6 +6,8 @@ from thehive4py.api import TheHiveApi
 from panos import firewall
 import panos.objects
 import re
+import json
+
 class Unblock_port(Responder):
     def __init__(self):
         Responder.__init__(self)

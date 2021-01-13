@@ -6,6 +6,7 @@ from thehive4py.api import TheHiveApi
 from panos import firewall
 import panos.objects
 import panos.policies
+import json
 
 class Unblock_domain(Responder):
     def __init__(self):

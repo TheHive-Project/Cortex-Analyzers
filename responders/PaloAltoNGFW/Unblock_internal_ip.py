@@ -5,6 +5,7 @@ from cortexutils.responder import Responder
 from thehive4py.api import TheHiveApi
 from panos import firewall
 import panos.objects
+import json
 
 class Unblock_ip(Responder):
     def __init__(self):
