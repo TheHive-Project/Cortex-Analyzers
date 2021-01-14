@@ -136,6 +136,13 @@ class ProcessorIp(Processor):
                                     cert["sha256"],
                                 )
                             )
+                        continue
+                    if "vulns" in script:
+                        for vuln in script["vulns"]:
+                            if vuln["state"] == "VULNERABLE":
+                                result.setdefault("vulnerabilities", set()).add(
+                                    "/".join(sorted(vuln["ids"]))
+                                )
         for subr in all_results.values() if self.keep_addresses else [result]:
             self.clean_results(subr)
         if self.keep_addresses:
@@ -387,9 +394,44 @@ class IVREAnalyzer(Analyzer):
         )
         self.databases = {name: getattr(self.db, attr) for name, attr in DATABASES}
 
-    @staticmethod
-    def summary(raw):
-        return {"results": sorted(raw) or None}
+    def summary(self, raw):
+        taxonomies = []
+        if "data" in raw:
+            cur = raw["data"]
+            if "as_num" in cur:
+                if "as_name" in cur:
+                    value = "AS%(as_num)d-%(as_name)s" % (cur)
+                else:
+                    value = "AS%d" % cur["as_num"]
+                taxonomies.append(self.build_taxonomy("info", "IVRE", "AS", value))
+            if "country_code" in cur:
+                if "country_name" in cur:
+                    value = "%(country_code)s - %(country_name)s" % cur
+                else:
+                    value = cur["country_code"]
+                taxonomies.append(self.build_taxonomy("info", "IVRE", "Country", value))
+        for subrec in ["passive", "scans"]:
+            if subrec not in raw:
+                continue
+            cur = raw[subrec]
+            if not isinstance(raw[subrec], list):
+                cur = [{"data": cur}]
+            vulnerabilities = set()
+            openports = set()
+            for data in cur:
+                res = data["data"]
+                vulnerabilities.update(res.get("vulnerabilities", []))
+                openports.update(res.get("openports", []))
+            for vuln in vulnerabilities:
+                taxonomies.append(
+                    self.build_taxonomy("malicious", "IVRE", "Vulns", vuln)
+                )
+            taxonomies.append(
+                self.build_taxonomy(
+                    "info", "IVRE", "Distinct open ports", str(len(openports))
+                )
+            )
+        return {"taxonomies": taxonomies}
 
     def artifacts(self, raw):
         return [
