@@ -1,3 +1,2 @@
-smtplib
 cortexutils
 thehive4py
