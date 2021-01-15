@@ -1,2 +1,2 @@
-python-ldap
 cortexutils
+ldap3
