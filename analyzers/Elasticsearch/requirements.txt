@@ -1,3 +1,4 @@
 elasticsearch
 cortexutils
 pytz
+requests
