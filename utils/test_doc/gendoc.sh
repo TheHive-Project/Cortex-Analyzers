@@ -9,7 +9,6 @@ doc-buidler/build/Cortex-Neurons/generate.py
 
 cp -v CHANGELOG.md docs/.
 cp -v code_of_conduct.md docs/.
-cp -rv images docs/
 cp -rv README.md docs/
 
 
