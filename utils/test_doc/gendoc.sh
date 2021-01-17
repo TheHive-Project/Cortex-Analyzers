@@ -5,10 +5,9 @@
 
 gh repo clone TheHive-Project/doc-builder
 
-doc-buidler/build/Cortex-Neurons/generate.py
+doc-builder/build/Cortex-Neurons/generate.py
 
 cp -v CHANGELOG.md docs/.
 cp -v code_of_conduct.md docs/.
 cp -rv README.md docs/
-
 
