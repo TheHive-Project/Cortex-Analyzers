@@ -10,9 +10,13 @@ need install:
 3. thehive4py
 # ToDo
 
-Для работы responders, необходимо загрузить папку PaloAltoNGFW в директорию, где храняться другие responder. Далее перейти в загруженную папку и сделать запускаемыми скрипты на языке python командой chmod +x *.py
+Для работы responders, необходимо загрузить папку PaloAltoNGFW в директорию, где храняться другие responder. Далее перейти в загруженную папку и сделать запускаемыми скрипты на языке python командой "chmod +x *.py"
 
-Далее в веб консоли системы cortex, выбрать пункт "Organization" -> "Responders", выбрать интерисующий вас responder и настроить его так, что поля:
+Далее необходимо:
+Выполнить перезагрузку системы cortex;
+
+После перезагрузки в веб консоли cortex перейти на вкладку "Organization", выбрать организацию для которой будет выполнена настройка и перейти на вкладку "Responders", выбрать интерисующий Вас responder и настроить поля в соответсвии с их значениями:
+![alt text](Responders.jpg)
 1. Hostname_PaloAltoNGFW - сетевой адрес системы PaloAltoNGFW
 2. User_PaloAltoNGFW - пользователь в системе PaloAltoNGFW
 3. Password_PaloAltoNGFW - пароль для пользователя в системе PaloAltoNGFW
@@ -44,4 +48,5 @@ need install:
 2. FQDN - 'hostname'
 3. порт - 'port'
 4. имя пользователя - 'user-agent'
-Примечание: данный тип необходимо создать в системе TheHive
+Примечание: данный тип необходимо создать в системе TheHive. По умолчанию TheHive не имеет типа данных "user-agent" в Observable type, поэтому мы должны добавить его в настройках администратора.
+![alt text](AddObservableType.jpg)
