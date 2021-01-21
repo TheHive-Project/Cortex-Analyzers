@@ -1,0 +1,50 @@
+{
+  "name": "Vulners_IOC",
+  "version": "1.0",
+  "author": "Dmitry Uchakin, Vulners team",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get information from the RST Threat Feed, which integrated with Vulners, for a domain, url or an IP address.",
+  "dataTypeList": ["url", "domain", "ip"],
+  "command": "Vulners/vulners_analyzer.py",
+  "baseConfig": "Vulners",
+  "config": {
+    "service": "ioc"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for Vulners",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://vulners.com",
+  "service_logo": {"path":"assets/vulners_logo.png", "caption": "logo"},
+  "screenshots": [
+    {
+      "path": "assets/vulners_api.png",
+      "caption": "Vulners API key for analyzer"
+    },
+    {
+      "path": "assets/Cortex_settings.png",
+      "caption": "Paste Vulners API key in Cortex settings"
+    },
+    {
+      "path": "assets/ioc_long_template.png",
+      "caption": "Long template for network IOCs (ip, url, domain)"
+    },
+    {
+      "path": "assets/ioc_short_template.png",
+      "caption": "Short template for network IOCs (ip, url, domain)"
+    },
+    {
+      "path": "assets/assets/ioc_with_malware_family.png",
+      "caption": "Full template with malware family"
+    }
+  ]
+}
