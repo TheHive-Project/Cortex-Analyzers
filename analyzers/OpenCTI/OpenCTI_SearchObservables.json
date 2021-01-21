@@ -55,5 +55,11 @@
       "required": true,
       "defaultValue": true
     }
-  ]
+  ],
+  "registration_required": true,
+  "subscription_required": false,
+  "free_subscription": false,
+  "service_homepage": "https://www.opencti.io",
+  "service_logo": {"path":"assets/logo_opencti.png", "caption": "logo"},
+  "screenshots": []
 }
