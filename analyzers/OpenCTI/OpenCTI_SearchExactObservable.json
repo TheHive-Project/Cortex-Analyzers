@@ -1,10 +1,10 @@
 {
-  "name": "OpenCTI_SearchObservable",
+  "name": "OpenCTI_SearchExactObservable",
   "author": "ANSSI",
   "license": "AGPL-V3",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/",
-  "version": "1.0",
-  "description": "Query multiple OpenCTI instances for an observable.",
+  "version": "2.0",
+  "description": "Query multiple OpenCTI instances for a specific observable.",
   "dataTypeList": [
     "domain",
     "ip",
@@ -20,6 +20,9 @@
     "other",
     "filename"
   ],
+  "config": {
+      "service": "search_exact"
+  },
   "baseConfig": "OpenCTI",
   "command": "OpenCTI/opencti.py",
   "configurationItems": [
@@ -52,5 +55,11 @@
       "required": true,
       "defaultValue": true
     }
-  ]
+  ],
+  "registration_required": true,
+  "subscription_required": false,
+  "free_subscription": false,
+  "service_homepage": "https://www.opencti.io",
+  "service_logo": {"path":"assets/logo_opencti.png", "caption": "logo"},
+  "screenshots": []
 }
