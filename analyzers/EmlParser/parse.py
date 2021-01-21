@@ -46,10 +46,11 @@ class EmlParserAnalyzer(Analyzer):
 
     def artifacts(self, raw):
         artifacts = []
-        urls = list(iocextract.extract_urls(str(raw)))
-        ipv4s = list(iocextract.extract_ipv4s(str(raw)))
-        mail_addresses = list(iocextract.extract_emails(str(raw)))
-        hashes = list(iocextract.extract_hashes(str(raw)))
+        # report a list of uniq IOCs
+        urls = list(set(list(iocextract.extract_urls(str(raw), strip=True))))
+        ipv4s = list(set(list(iocextract.extract_ipv4s(str(raw)))))
+        mail_addresses = list(set(list(iocextract.extract_emails(str(raw)))))
+        hashes = list(set(list(iocextract.extract_hashes(str(raw)))))
 
         if urls:
             for u in urls:

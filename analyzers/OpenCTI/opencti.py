@@ -15,6 +15,7 @@ class OpenCTIAnalyzer(Analyzer):
         names = self.get_param('config.name', None, 'No OpenCTI instance name given.')
         urls = self.get_param('config.url', None, 'No OpenCTI url given.')
         keys = self.get_param('config.key', None, 'No OpenCTI api key given.')
+        proxies = self.get_param('config.proxy', None)        
 
         if len(names) != len(urls) or len(urls) != len(keys):
             self.error("Config error: please add a name, an url and a key for each OpenCTI instance.")

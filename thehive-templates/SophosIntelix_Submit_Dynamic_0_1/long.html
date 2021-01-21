@@ -1,0 +1,256 @@
+<div class="panel panel-danger" ng-if="!success">
+   <div class="panel-heading">
+      <strong>{{artifact.data | fang}}</strong>
+   </div>
+   <div class="panel-body">
+      {{content.errorMessage}}
+   </div>
+</div>
+<div class="panel panel-primary" ng-if="success" ng-init="table_limit = 50">
+   <div class="panel-heading">
+      <strong>Sample Details - First Submitted: {{content.submission}} - Analysis Type: {{content.analysis_type}}</strong>
+   </div>
+   <table class="table table-hover">
+      <tr>
+         <th>File Name</th>
+         <th>SHA1</th>
+         <th>SHA256</th>
+         <th>MIME Type</th>
+         <th>Score</th>
+      </tr>
+      <tr>
+         <td>{{artifact.attachment.name | fang}}</td>
+         <td>{{content.analysis_subject.sha1}}</td>
+         <td>{{content.analysis_subject.sha256}}</td>
+         <td>{{content.analysis_subject.mime_type}}</td>
+         <td>{{content.score}}</td>
+      </tr>
+   </table>
+   <div class="panel panel-info" ng-if="::content.malicious_activity">
+      <div class="panel-heading">
+         <strong>Malicious Activity</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Category</th>
+            <th>Activity</th>
+         </tr>
+         <tr ng-repeat="activity in content.malicious_activity.Suspicious | limitTo:table_limit">
+            <td>Suspicious</td>
+            <td>{{activity}}</td>
+         </tr>
+         <tr ng-repeat="activity in content.malicious_activity.Network | limitTo:table_limit">
+            <td>Network</td>
+            <td>{{activity}}</td>
+         </tr>
+         <tr ng-repeat="activity in content.malicious_activity.Signature | limitTo:table_limit">
+            <td>Signature</td>
+            <td>{{activity}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.malicious_classifications">
+      <div class="panel-heading">
+         <strong>Files Written</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Classification</th>
+            <th>Classification Type</th>
+            <th>Artifact</th>
+            <th>Artifact Type</th>
+            <th>Threat Name</th>
+            <th>PID</th>
+         </tr>
+         <tr ng-repeat="mc in content.malicious_classifications | limitTo:table_limit">
+            <td>{{mc.classification}}</td>
+            <td>{{mc.classification_type}}</td>
+            <td>{{mc.artifact}}</td>
+            <td>{{mc.artifact_type}}</td>
+            <td>{{mc.threat_name}}</td>
+            <td>{{mc.pid}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.files.written">
+      <div class="panel-heading">
+         <strong>Files Written</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Process</th>
+            <th>Path</th>
+            <th>PID</th>
+         </tr>
+         <tr ng-repeat="file in content.files.written | limitTo:table_limit">
+            <td>{{file.process}}</td>
+            <td>{{file.path}}</td>
+            <td>{{file.pid}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.files.deleted">
+      <div class="panel-heading">
+         <strong>Files Deleted</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Path</th>
+         </tr>
+         <tr ng-repeat="file in content.files.deleted | limitTo:table_limit">
+            <td>{{file.path}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.registry.added">
+      <div class="panel-heading">
+         <strong>Registry Keys Added</strong>
+      </div>
+      <table class="table table-hover" >
+         <tr>
+            <th>TimeStamp</th>
+            <th>Process</th>
+            <th>PID</th>
+            <th>Key</th>
+            <th>Value</th>
+            <th>Data</th>
+         </tr>
+         <tr ng-repeat="regkey in content.registry.added | limitTo:table_limit">
+            <td>{{regkey.timestamp}}</td>
+            <td>{{regkey.process}}</td>
+            <td>{{regkey.pid}}</td>
+            <td>{{regkey.key}}</td>
+            <td>{{regkey.reg_value}}</td>
+            <td>{{regkey.reg_data}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.registry.deleted">
+      <div class="panel-heading">
+         <strong>Registry Keys Deleted</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>TimeStamp</th>
+            <th>Process</th>
+            <th>PID</th>
+            <th>Key</th>
+         </tr>
+         <tr ng-repeat="regkey in content.registry.deleted | limitTo:table_limit">
+            <td>{{regkey.timestamp}}</td>
+            <td>{{regkey.process}}</td>
+            <td>{{regkey.pid}}</td>
+            <td>{{regkey.key}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.processes">
+      <div class="panel-heading">
+         <strong>Processes</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Start Time</th>
+            <th>Process</th>
+            <th>PID</th>
+            <th>Parent Process</th>
+            <th>Parent PID</th>
+            <th>Command Line</th>
+         </tr>
+         <tr ng-repeat="proc in content.processes | limitTo:table_limit">
+            <td>{{proc.start_time}}</td>
+            <td>{{proc.process}}</td>
+            <td>{{proc.pid}}</td>
+            <td>{{proc.parent_process}}</td>
+            <td>{{proc.ppid}}</td>
+            <td>{{proc.command_line}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.network.connections">
+      <div class="panel-heading">
+         <strong>Network Connections</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>IP</th>
+            <th>Port</th>
+            <th>Protocol</th>
+            <th>Host</th>
+            <th>Process</th>
+            <th>PID</th>
+         </tr>
+         <tr ng-repeat="connection in content.network.connections | limitTo:table_limit">
+            <td>{{connection.ip}}</td>
+            <td>{{connection.port}}</td>
+            <td>{{connection.protocol}}</td>
+            <td>{{connection.host}}</td>
+            <td>{{connection.process}}</td>
+            <td>{{connection.pid}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.network.http_flow">
+      <div class="panel-heading">
+         <strong>HTTP Flow</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>URI</th>
+            <th>HTTP Method</th>
+            <th>HTTP User Agent</th>
+            <th>IP</th>
+            <th>Process</th>
+            <th>URL Classification</th>
+            <th>Response</th>
+         </tr>
+         <tr ng-repeat="http in content.network.http_flow | limitTo:table_limit">
+            <td>{{http.uri}}</td>
+            <td>{{http.http_method}}</td>
+            <td>{{http.http_useragent}}</td>
+            <td>{{http.ip}}</td>
+            <td>{{http.process}}</td>
+            <td>{{http.url_classification}}</td>
+            <td>Code: {{http.response.http_status}}
+               </br>
+               MIME Type: {{http.response.mime_type}}
+               </br>
+               Size: {{http.response.size}}
+               </br>
+               SHA1: {{http.response.sha1}}
+            </td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.network.dns_requests">
+      <div class="panel-heading">
+         <strong>DNS Requests</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>IP</th>
+            <th>Domain</th>
+         </tr>
+         <tr ng-repeat="request in content.network.dns_requests | limitTo:table_limit">
+            <td>{{request.ip}}</td>
+            <td>{{request.domain}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.activity_tree.vis">
+      <div class="panel-heading">
+         <strong>Activity Tree</strong>
+      </div>
+      </br>
+      <img src={{content.activity_tree.vis}} width="1000">
+   </div>
+   <div class="panel panel-info" ng-if="::content.screenshots">
+      <div class="panel-heading">
+         <strong>Screenshots</strong>
+      </div>
+      <table class="table table-hover">
+         <tr ng-repeat="screen in content.screenshots">
+            <td><img src={{screen}} width="1000"></td>
+      </table>
+   </div>
+</div>
