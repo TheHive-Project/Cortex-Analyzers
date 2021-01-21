@@ -27,10 +27,11 @@ class OpenCTIAnalyzer(Analyzer):
                         "name": names[i],
                         "url": urls[i],
                         "api_client": OpenCTIApiClient(
-                            urls[i],
-                            keys[i],
-                            "error",
-                            ssl,
+                            url=urls[i],
+                            token=keys[i],
+                            log_level="error",
+                            ssl_verify=ssl,
+                            proxies={'http': self.http_proxy, 'https': self.https_proxy}
                         )
                     })
             except Exception as e:
