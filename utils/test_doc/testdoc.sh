@@ -1,0 +1,26 @@
+#!/bin/bash
+
+
+# this program is for test only. To ensure the documentation is generated as it should.
+# this program should be run from Cortex-Analyzers/ path only.
+ROOT_PATH=${PWD}
+TEST_PATH="./test_doc"
+
+mkdir ${TEST_PATH}
+cp -rv . ${TEST_PATH}
+cd ${TEST_PATH}
+gh repo clone TheHive-Project/doc-builder
+
+doc-builder/build/Cortex-Neurons/generate.py
+
+
+cp -v CHANGELOG.md docs/.
+cp -v code_of_conduct.md docs/.
+cp -rv README.md docs/
+
+
+
+mkdocs serve -a 0.0.0.0:8888
+
+cd ${ROOT_PATH}
+rm -rf ${TEST_PATH}
