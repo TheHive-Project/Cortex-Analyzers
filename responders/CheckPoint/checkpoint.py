@@ -2,6 +2,7 @@
 # encoding: utf-8
 import os
 import json
+import ipaddress
 from cortexutils.responder import Responder
 from cpapi import APIClient, APIClientArgs
 
@@ -32,11 +33,31 @@ class CheckPoint(Responder):
         self.group_name = self.get_param(
             "config.group_name", None, "Missing group_name in config"
         )
+        self.exclusions = self.get_param("config.exclusions", [])
 
     def run(self):
         Responder.run(self)
 
         data = self.get_param("data.data")
+        try:
+            data = ipaddress.ip_address(data)
+        except ValueError:
+            self.error("{} is not a valid ip".format(data))
+
+        for excl in self.exclusions:
+            try:
+                excl = ipaddress.ip_address(excl)
+                if data == excl:
+                    self.error("{} in exclusions".format(data))
+            except ValueError:
+                try:
+                    excl = ipaddress.ip_network(excl)
+                    if data in excl:
+                        self.error("{} in exclusions".format(data))
+                except ValueError:
+                    continue
+
+        data = str(data)
 
         return_dict = {}
 

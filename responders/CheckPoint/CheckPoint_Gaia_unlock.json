@@ -39,6 +39,13 @@
       "type": "string",
       "multi": false,
       "required": true
+    },
+    {
+      "name": "exclusions",
+      "description": "ip/subnet that cannot be locked or unlocked",
+      "type": "string",
+      "multi": true,
+      "required": false
     }
   ]
 }
