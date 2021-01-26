@@ -17,7 +17,7 @@ class GreyNoiseAnalyzer(Analyzer):
 
         if self.data_type == "ip":
             api_key = self.get_param('config.key', None)
-            api_client = GreyNoise(api_key=api_key, timeout=30)
+            api_client = GreyNoise(api_key=api_key, timeout=30, integration_name="greynoise-cortex-analyzer-v3.0")
             try:
                 self.report(api_client.ip(self.get_data()))
             except Exception as e:
