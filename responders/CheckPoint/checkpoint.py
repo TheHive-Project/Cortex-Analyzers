@@ -34,6 +34,8 @@ class CheckPoint(Responder):
             "config.group_name", None, "Missing group_name in config"
         )
         self.exclusions = self.get_param("config.exclusions", [])
+        self.added_tag = self.get_param("config.added_tag", None)
+        self.removed_tag = self.get_param("config.removed_tag", None)
 
     def run(self):
         Responder.run(self)
@@ -160,6 +162,12 @@ class CheckPoint(Responder):
                     return_dict["Success"] = True
 
             self.report({"message": return_dict})
+
+    def operations(self, raw):
+        if self.service == "lock" and self.added_tag:
+            return [self.build_operation("AddTagToArtifact", tag=self.added_tag)]
+        elif self.service == "unlock" and self.removed_tag:
+            return [self.build_operation("AddTagToArtifact", tag=self.removed_tag)]
 
 
 if __name__ == "__main__":

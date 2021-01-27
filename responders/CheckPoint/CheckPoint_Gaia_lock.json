@@ -46,6 +46,20 @@
       "type": "string",
       "multi": true,
       "required": false
+    },
+    {
+      "name": "added_tag",
+      "description": "Tag added to observable when adding to FW",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "removed_tag",
+      "description": "Tag added to observable when removing from FW",
+      "type": "string",
+      "multi": false,
+      "required": false
     }
   ]
 }
