@@ -22,33 +22,23 @@
     </div>
     <div class="panel-body">
 
-        <table class="table table-striped">
+        <div ng-repeat="result in content.search_results">
+            <dl class="dl-horizontal" ng-if="$index == 0">
+                <dt>Knowlevel:</dt>
+                <dd class="wrap">{{result.knownlevel}}</dd>
+                <dt>MD5:</dt>
+                <dd class="wrap">{{result.details.hashdd_md5}}</dd>
+                <dt>SHA1:</dt>
+                <dd class="wrap">{{result.details.hashdd_sha1}}</dd>
+                <dt>CRC32:</dt>
+                <dd class="wrap">{{result.details.hashdd_crc32}}</dd>
+                <dt>Size:</dt>
+                <dd class="wrap">{{result.details.hashdd_size}}</dd>
+                <dt>Results:</dt>
+                <dd class="wrap">{{content.search_results.lenght}}</dd>
+            </dl>
+        </div>
 
-            <div ng-repeat="result in content.search_results">
-                <dl class="dl-horizontal" ng-if="$index == 0">
-                    <dt>Knowlevel:</dt>
-                    <dd class="wrap">{{result.knownlevel}}</dd>
-                    <dt>MD5:</dt>
-                    <dd class="wrap">{{result.details.hashdd_md5}}</dd>
-                    <dt>SHA1:</dt>
-                    <dd class="wrap">{{result.details.hashdd_sha1}}</dd>
-                    <dt>CRC32:</dt>
-                    <dd class="wrap">{{result.details.hashdd_crc32}}</dd>
-                    <dt>Size:</dt>
-                    <dd class="wrap">{{result.details.hashdd_size}}</dd>
-                </dl>
-                <hr ng-if="$index == 0" />
-                <dl class="dl-horizontal" ng-repeat="(key, value) in result.details">
-                    <dt ng-if="['hashdd_md5', 'hashdd_sha1', 'hashdd_crc32', 'hashdd_size'].indexOf(key) == -1">{{key}}:
-                    </dt>
-                    <dd class="wrap"
-                        ng-if="['hashdd_md5', 'hashdd_sha1', 'hashdd_crc32', 'hashdd_size'].indexOf(key) == -1">
-                        {{value}}</dt>
-                </dl>
-                <hr />
-            </div>
-
-        </table>
     </div>
 </div>
 
