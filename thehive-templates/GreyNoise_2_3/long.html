@@ -3,21 +3,21 @@
         GreyNoise results for <strong>{{artifact.data}}</strong>
     </div>
     <div class="panel-body">
-        <table class="table" ng-if="content.records">
+        <table class="table" ng-if="content.data">
             <thead>
-                <th>Category</th>
-                <th>Confidence</th>
+                <th>Classification</th>
                 <th>Last update</th>
-                <th>Name</th>
+                <th>Actor</th>
+                <th>Cve</th>
                 <th>Tags</th>
             </thead>
-            <tbody ng-repeat="record in content.records | orderBy:'-last_updated'">
+            <tbody ng-repeat="record in content.data | orderBy:'-last_updated'">
                 <tr>
-                    <td>{{record.category}}</td>
-                    <td><span class="label" ng-class="{'high': 'label-success', 'low': 'label-warning'}[record.confidence]">{{record.confidence}}</span></td>
-                    <td>{{record.last_updated}}</td>
-                    <td>{{record.name}}</td>
-                    <td><span class="label label-warning" ng-if="content.metadata.tor">Tor-Node</span></td>
+                    <td>{{record.classification}}</td>
+                    <td>{{record.last_seen}}</td>
+                    <td>{{record.actor}}</td>
+                    <td>{{record.cve.join(', ')}}</td>
+                    <td>{{record.tags.join(' ,')}}</td>
                 </tr>
                 <tr>
                     <td colspan="5">
@@ -26,7 +26,7 @@
                 </tr>
             </tbody>
         </table>
-        <p ng-if="!content.records">No records found for {{artifact.data}}.</p>
+        <p ng-if="!content.data">No records found for {{artifact.data}}.</p>
     </div>
 </div>
 
