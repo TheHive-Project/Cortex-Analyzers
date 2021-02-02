@@ -8,7 +8,7 @@
 - Detailed malware reports
 
 #### Requirements
-You need a valid AnyRun API integration subscription) to use the analyzer. Free plan does not provide API access.
+You need a valid AnyRun API integration subscription to use the analyzer. Free plan does not provide API access.
 
 - Provide your API token as a value for the `token` parameter.
 - Define the privacy setting in `privacy_type` parameter.
