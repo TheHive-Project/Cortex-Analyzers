@@ -13,9 +13,9 @@
     "max_tlp": 2
   },
   "configurationItems": [],
-  "registration_required": false,
-  "subscription_required": false,
-  "free_subscription": false,
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
   "service_homepage": "https://cybercrime-tracker.net/",
   "service_logo": {
     "path": "assets/cybercrime.png",
