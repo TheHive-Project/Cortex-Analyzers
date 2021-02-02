@@ -4,7 +4,7 @@
 The analyzer comes in only one flavor.
 
 #### Requirements
- You need a valid AbuseIPDB API integration subscription) to use the analyzer:
+You need a valid AbuseIPDB API integration subscription to use the analyzer:
 
 - Provide your API key as a value for the `key` parameter.
 - Set the `days` parameter to limit temporal range in search
