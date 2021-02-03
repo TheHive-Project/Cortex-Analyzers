@@ -1,0 +1,42 @@
+{
+  "name": "Vulners_CVE",
+  "version": "1.0",
+  "author": "Dmitry Uchakin, Vulners team",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get information about CVE from powerful Vulners database.",
+  "dataTypeList": ["cve"],
+  "command": "Vulners/vulners_analyzer.py",
+  "baseConfig": "Vulners",
+  "config": {
+    "service": "vulnerability"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for Vulners",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://vulners.com",
+  "service_logo": {"path":"assets/vulners_logo.png", "caption": "logo"},
+  "screenshots": [
+    {
+      "path": "assets/theHive_add_cve",
+      "caption": "Add new IOC type in theHive observables"
+    },
+    {
+      "path": "assets/cve_long_template.gif",
+      "caption": "Long template for CVE"
+    },
+    {
+      "path": "assets/cve_short_template",
+      "caption": "Short template for CVE"
+    }
+  ]
+}

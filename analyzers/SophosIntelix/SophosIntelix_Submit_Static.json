@@ -1,0 +1,38 @@
+{
+  "name": "SophosIntelix_Submit_Static",
+  "version": "0.1",
+  "author": "SOL",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use SophosLabs machine learning to understand the characteristics of your suspicious file allowing you to see if the file is similar to known malware. For more information or to sign up for SophosLabs Intelix (with a free tier) see https://www.sophos.com/en-us/labs/intelix.aspx",
+  "dataTypeList": ["file"],
+  "command": "SophosIntelix/intelix_analyzer.py",
+  "baseConfig": "SophosIntelix",
+  "config": {
+    "service": "submit_static"
+  },
+  "configurationItems": [
+    {
+      "name": "clientID",
+      "description": "Client ID for Sophos Labs Intelix",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "clientSecret",
+      "description": "Client Secret for Sophos Labs Intelix",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "polling_interval",
+      "description": "Define time interval between two requests attempts for the report",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 60
+    }
+  ]
+}

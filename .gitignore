@@ -16,3 +16,7 @@ lib64
 pyvenv.cfg
 share
 
+analyzers/*/input
+analyzers/*/output
+responders/*/input
+responders/*/output
