@@ -1,0 +1,96 @@
+{
+  "name": "MailIncidentStatus",
+  "version": "1.0",
+  "author": "Manuel Krucker",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Mail a detailed status information of an incident case. The mail is sent to recipients specified by tags prefixed with 'mail='. The responder respects tlp definitions. For tlp:amber mail addresse and for tlp:green mail domains must be pre-defined in the configuration. For tlp:red sending mails is denied. The responser also uses thehive4py to collect information about the status of the tasks of the incidents.",
+  "dataTypeList": ["thehive:case"],
+  "command": "MailIncidentStatus/mailincidentstatus.py",
+  "baseConfig": "MailIncidentStatus", 
+  "configurationItems": [
+    {
+      "name": "from",
+      "description": "email address from which the mail is send",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "smtp_host",
+      "description": "SMTP server used to send mail",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "localhost"
+    },
+    {
+      "name": "smtp_port",
+      "description": "SMTP server port",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 25
+    },
+    {
+      "name": "smtp_user",
+      "description": "SMTP server user",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "user"
+    },
+    {
+      "name": "smtp_pwd",
+      "description": "SMTP server password",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "pwd"
+    },
+    {
+      "name": "mail_subject_prefix",
+      "description": "Prefix of the mail subject",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "Incident Case Notification: "
+    },
+    {
+      "name": "mail_html_style_tag_content",
+      "description": "The css content of the style tag for the HTML mail body. Define table, th, hd, .first, and .second elements.",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "table { border: 1px solid black; border-collapse: collapse; text-align: left; vertical-align: top; th { border: 1px solid black; border-collapse: collapse; text-align: left;} td { border: 1px solid black; border-collapse: collapse; text-align: left;} .first { width: 150px; min-width: 150px; max-width: 150px; background-color: #ffe8d4; } .second { background-color: #d7d9f2;}"
+    },
+    {
+      "name": "tlp_amber_mail_addresses",
+      "description": "Mail addresses which are allowed to receive tlp:amber classified incidents",
+      "type": "string",
+      "multi": true,
+      "required": false
+    },
+    {
+      "name": "tlp_green_mail_domains",
+      "description": "Mail domains which are allowed to receive tlp:green classified incidents",
+      "type": "string",
+      "multi": true,
+      "required": false
+    },
+    {
+      "name": "thehive_url",
+      "description": "URL pointing to your TheHive installation, e.g. 'http://127.0.0.1:9000'",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "thehive_apikey",
+      "description": "TheHive API key which is used get tasks and other elements of the incident",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}
