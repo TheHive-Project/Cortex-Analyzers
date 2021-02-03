@@ -3,7 +3,7 @@
         GreyNoise results for <strong>{{artifact.data}}</strong>
     </div>
     <div class="panel-body">
-        <table class="table" ng-if="content.data">
+        <table class="table" ng-if="content">
             <thead>
                 <th>Classification</th>
                 <th>Last update</th>
@@ -11,17 +11,18 @@
                 <th>Cve</th>
                 <th>Tags</th>
             </thead>
-            <tbody ng-repeat="record in content.data | orderBy:'-last_updated'">
+            <tbody>
                 <tr>
-                    <td>{{record.classification}}</td>
-                    <td>{{record.last_seen}}</td>
-                    <td>{{record.actor}}</td>
-                    <td>{{record.cve.join(', ')}}</td>
-                    <td>{{record.tags.join(' ,')}}</td>
+                    <td>{{content.classification}}</td>
+                    <td>{{content.last_seen}}</td>
+                    <td>{{content.actor}}</td>
+                    <td>{{content.cve.join(', ')}}</td>
+                    <td>{{content.tags.join(' ,')}}</td>
                 </tr>
                 <tr>
                     <td colspan="5">
-                        Metadata: <pre>{{record.metadata | json}}</pre>
+                        Metadata:
+                        <pre>{{content.metadata | json}}</pre>
                     </td>
                 </tr>
             </tbody>
