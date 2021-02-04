@@ -1,0 +1,132 @@
+<div class="panel panel-success" ng-if="success">
+
+    <div class="panel-heading">
+        Any.Run Sandbox
+    </div>
+    <div class="panel-body">
+        <div>
+            <dl class="dl-horizontal">
+                <dt>Score:</dt><dd>{{content.analysis.scores.verdict.score}}/100</dd>
+                <dt>Threat Score:</dt>
+                <dd><span class="label" ng-class="{0: 'label-info', 1: 'label-warning', 2:'label-danger'}[content.analysis.scores.verdict.threatLevel]">{{content.analysis.scores.verdict.threatLevelText}}</dd>
+                <dt>Tags:</dt><dd><span ng-if="content.analysis.tags" ng-repeat="tag in content.analysis.tags" class="label label-info">{{tag.tag}}</span></dd>
+            </dl>
+        </div>
+
+        <div>
+            <h3>Link</h3>
+            <div class="btn-group btn-group-justified" role="group">
+                <div class="btn-group" role="group"><a target="_blank" href="{{content.analysis.permanentUrl}}"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>Report</button></a></div>
+                <div class="btn-group" role="group"><a target="_blank" href="{{content.analysis.reports.HTML}}"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>Html</button></a></div>
+                <div class="btn-group" role="group"><a target="_blank" href="{{content.analysis.reports.graph}}"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>Graph</button></a></div>
+                <div class="btn-group" role="group"><a target="_blank" href="{{content.analysis.reports.MISP}}"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>MISP</button></a></div>
+                <div class="btn-group" role="group"><a target="_blank" href="{{content.analysis.reports.IOC}}"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>IOC</button></a></div>
+            </div>   
+        </div>
+
+        <div>
+            <h3>Counters</h3>
+            <div class="row">
+                <div class="col-md-3">
+                    <h4>Registry</h4>
+                    <dl class="dl-horizontal">
+                        <dt>Read:</dt><dd>{{content.counters.registry.read}}</dd>
+                        <dt>Write:</dt><dd>{{content.counters.registry.write}}</dd>
+                        <dt>Delete:</dt><dd>{{content.counters.registry.delete}}</dd>
+                        <dt>Total:</dt><dd>{{content.counters.registry.total}}</dd>
+                    </dl>
+                </div>
+                <div class="col-md-3">
+                    <h4>Processes</h4>
+                    <dl class="dl-horizontal">
+                        <dt>Monitored:</dt><dd>{{content.counters.processes.monitored}}</dd>
+                        <dt>Suspicious:</dt><dd>{{content.counters.processes.suspicious}}</dd>
+                        <dt>Malicious:</dt><dd>{{content.counters.processes.malicious}}</dd>
+                        <dt>Total:</dt><dd>{{content.counters.processes.total}}</dd>
+                    </dl>
+                </div>
+                <div class="col-md-3">
+                    <h4>Files</h4>
+                    <dl class="dl-horizontal">
+                        <dt>Text:</dt><dd>{{content.counters.files.text}}</dd>
+                        <dt>Suspicious:</dt><dd>{{content.counters.files.suspicious}}</dd>
+                        <dt>Malicious:</dt><dd>{{content.counters.files.malicious}}</dd>
+                        <dt>Unknown:</dt><dd>{{content.counters.files.unknown}}</dd>
+                    </dl>
+                </div>
+                <div class="col-md-3">
+                    <h4>Network</h4>
+                    <dl class="dl-horizontal">
+                        <dt>Dns:</dt><dd>{{content.counters.network.dns}}</dd>
+                        <dt>Http:</dt><dd>{{content.counters.network.http}}</dd>
+                        <dt>Connections:</dt><dd>{{content.counters.network.connections}}</dd>
+                        <dt>Threats:</dt><dd>{{content.counters.network.threats}}</dd>
+                    </dl>
+                </div>
+            </dl>
+        </div>        
+
+        <div>
+            <h3>Scores</h3>     
+            <div class="btn-group-xs btn-group-justified" role="group">
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.executableDropped" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.executableDropped]">Executable Dropped</button></div>
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.crashedTask" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.crashedTask]">Crashed Task</button></div>
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.torUsed" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.torUsed]">Tor Used</button></div>
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.memOverrun" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.memOverrun]">Mem Overrun</button></div>
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.stealing" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.stealing]">Stealing</button></div>
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.networkLoader" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.networkLoader]">Network Loader</button></div>
+            </div>
+            <br/>
+            <div class="btn-group-xs btn-group-justified" role="group">
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.serviceLauncher" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.serviceLauncher]">Service Launcher</button></div>
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.notStarted" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.notStarted]">Not Started</button></div>
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.privEscalation" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.privEscalation]">Privilege Escalation</button></div>
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.autostart" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.autostart]">Autostart</button></div>
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.crashedApps" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.crashedApps]">Crashed Apps</button></div>
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.rebooted" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.rebooted]">Rebooted</button></div>
+            </div>
+            <br/>
+            <div class="btn-group-xs btn-group-justified" role="group">
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.multiprocessing" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.multiprocessing]">Multiprocessing</button></div>
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.injects" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.injects]">Injects</button></div>
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.lowAccess" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.lowAccess]">Low Access</button></div>
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.exploitable" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.exploitable]">Exploitable</button></div>
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.suspStruct" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.suspStruct]">Suspicious Struct</button></div>
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.staticDetections" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.staticDetections]">Static Detections</button></div>
+            </div>
+            <br/>
+            <div class="btn-group-xs btn-group-justified" role="group">            
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.spam" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.spam]">Spam</button></div>
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.networkThreats" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.networkThreats]">Network Threats</button></div>
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.cpuOverrun" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.cpuOverrun]">Cpu Overrun</button></div>
+                <div class="btn-group" role="group"><button type="button" class="btn btn-default" ng-disabled="!content.analysis.scores.specs.debugOutput" ng-class="{true: 'btn-danger', false: 'btn-default'}[content.analysis.scores.specs.debugOutput]">Debug Output</button></div>
+            </div>   
+        </div>
+
+        <div ng-if="content.mitre.length > 0">  
+            <h3>Mitre</h3>
+            <div class="btn-group btn-group-justified" role="group">
+                <div class="btn-group" role="group" ng-repeat="mitre in content.mitre">
+                    <a href="https://attack.mitre.org/techniques/{{mitre.id}}/" target="_blank" title="{{mitre.name}}">
+                        <button type="button" class="btn btn-default">
+                            <span style="font-weight: bolder">{{mitre.id}}</span>
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- on error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+         Any.Run Sandbox <b>Error</b>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Error: </dt>
+            <dd>{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
