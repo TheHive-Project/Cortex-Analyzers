@@ -59,5 +59,24 @@
       "multi": true,
       "required": false
     }
+  ],
+  "config": {
+    "check_tlp": true,
+    "max_tlp": 2,
+    "auto_extract": false
+  },
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://www.misp-project.org/",
+  "service_logo": {
+    "path": "assets/misp.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report.png",
+      "caption": "MISP: long report"
+    }
   ]
 }
