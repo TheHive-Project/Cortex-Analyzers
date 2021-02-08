@@ -1,5 +1,5 @@
 ### VirusShare 
-[VirusShare](hhttps://virusshare.com/) is a repository of malware samples to provide security researchers, incident responders, forensic analysts, and the morbidly curious access to samples of live malicious code.
+[VirusShare](https://virusshare.com/) is a repository of malware samples to provide security researchers, incident responders, forensic analysts, and the morbidly curious access to samples of live malicious code.
 
 The analyzer enables local searching for md5 hashes in Virusshare.com hash list. 
 
