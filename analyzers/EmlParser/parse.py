@@ -139,11 +139,10 @@ def parseEml(filepath, job_directory):
             attachmentSumUp['md5'] = attachment['hash']['md5']
             attachmentSumUp['sha1'] = attachment['hash']['sha1']
             attachmentSumUp['sha256'] = attachment['hash']['sha256']
-            attachmentSumUp['blah'] = "3"
             filepath = os.path.join(job_directory, 'output', attachment.get('filename', ''))
             attachmentSumUp['path'] = filepath
             with open(filepath, 'wb') as f:
-                f.write(attachment['raw'])
+                f.write(base64.b64decode(attachment['raw']))
             f.close()
             result['attachments'].append(attachmentSumUp)
 
