@@ -86,7 +86,7 @@ class Block_port(Responder):
                 rule_atrib = i.about()
                 temp_rule_atrib = rule_atrib.get("service")
                 if "TheHive Black list external port" not in temp_rule_atrib:
-                    temp_rule_atrib.append("Black list external port")
+                    temp_rule_atrib.append("TheHive Black list external port")
                     if "application-default" in temp_rule_atrib:
                         temp_rule_atrib.remove("application-default")
                     rule_atrib.update({"service": temp_rule_atrib})
