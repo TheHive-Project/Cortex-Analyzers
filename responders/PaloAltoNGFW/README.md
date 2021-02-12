@@ -5,9 +5,10 @@
 # Installation
 
 need install:
-1. pan-os-python
-2. thehive4py
-3. thehive4py
+1. cortexutils
+2. requests
+3. pan-os-python
+4. thehive4py
 # ToDo
 
 Для работы responders, необходимо загрузить папку PaloAltoNGFW в директорию, где храняться другие responder. Далее перейти в загруженную папку и сделать запускаемыми скрипты на языке python командой "chmod +x *.py"
@@ -22,20 +23,20 @@ need install:
 3. Password_PaloAltoNGFW - пароль для пользователя в системе PaloAltoNGFW
 4. name_security_rule (не обязательное поле) - имя правила безопасности в системе PaloAltoNGFW. Установлены следующие стандартные наименования правил:  
 4.1 Для блокировки\разблокировки имени пользователей:  
-4.1.1 TheHive Block user internal communication  
-4.1.2 TheHive Block user external communication  
+4.1.1 "TheHive Block user internal communication"  
+4.1.2 "TheHive Block user external communication"  
 
 4.2 Для блокировки\разблокировки сетевых адресов:  
-4.2.1 TheHive Block internal IP address  
-4.2.2 TheHive Block external IP address  
+4.2.1 "TheHive Block internal IP address"  
+4.2.2 "TheHive Block external IP address"  
 
 4.3 Для блокировки\разблокировки FQDN:  
-4.3.1 TheHive Block external Domain  
-4.3.2 TheHive Block internal Domain  
+4.3.1 "TheHive Block external Domain"  
+4.3.2 "TheHive Block internal Domain"  
 
 4.4 Для блокировки\разблокировки портов:  
-4.4.1 TheHive Block internal port  
-4.4.2 TheHive Block external port  
+4.4.1 "TheHive Block internal port"  
+4.4.2 "TheHive Block external port"  
 
 4.5 thehive_instance - url адрес системы TheHive (используется только для типов case и alert)
 

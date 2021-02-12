@@ -1,7 +1,7 @@
 {
   "name": "PaloAltoNGFW_block_external_domain",
   "version": "2.0.0",
-  "author": "Maxim Konakin, OSCD Community",
+  "author": "Maxim Konakin, OSCD Initiative",
   "url": "",
   "license": "AGPL-V3",
   "description": "Block external domain",
