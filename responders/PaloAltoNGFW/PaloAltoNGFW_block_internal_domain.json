@@ -7,7 +7,7 @@
   "description": "Block internal domain",
   "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
   "command": "PaloAltoNGFW/Block_internal_domain.py",
-  "baseConfig": "PaloAltoNGFW_block_internal_domain",
+  "baseConfig": "PaloAltoNGFW_main",
   "configurationItems": [
     {
       "name": "Hostname_PaloAltoNGFW",
@@ -35,7 +35,8 @@
       "description": "name_internal_security_rule_for_domain",
       "type": "string",
       "multi": false,
-      "required": false
+      "required": false,
+	  "defaultValue": "TheHive Block internal Domain"
     },
 	{
         "name": "thehive_instance",

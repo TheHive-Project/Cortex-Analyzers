@@ -7,7 +7,7 @@
   "description": "Block external domain",
   "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
   "command": "PaloAltoNGFW/Block_external_domain.py",
-  "baseConfig": "PaloAltoNGFW_block_external_domain",
+  "baseConfig": "PaloAltoNGFW_main",
   "configurationItems": [
     {
       "name": "Hostname_PaloAltoNGFW",
@@ -28,7 +28,8 @@
       "description": "User_PaloAltoNGFW",
       "type": "string",
       "multi": false,
-      "required": true
+      "required": true,
+	  "defaultValue": "TheHive Block external Domain"
     },
     {
       "name": "name_security_rule",

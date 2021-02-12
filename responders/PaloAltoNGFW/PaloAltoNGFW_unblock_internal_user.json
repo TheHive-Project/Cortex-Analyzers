@@ -7,7 +7,7 @@
   "description": "Unblock internal user",
   "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
   "command": "PaloAltoNGFW/Unblock_internal_user.py",
-  "baseConfig": "PaloAltoNGFW_unblock_internal_user",
+  "baseConfig": "PaloAltoNGFW_main",
   "configurationItems": [
     {
       "name": "Hostname_PaloAltoNGFW",
@@ -35,7 +35,8 @@
       "description": "name_internal_name_security_rule_for_users",
       "type": "string",
       "multi": false,
-      "required": false
+      "required": false,
+	  "defaultValue": "TheHive Block user internal communication"
     },
 	{
         "name": "thehive_instance",

@@ -7,7 +7,7 @@
   "description": "Unblock domain",
   "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
   "command": "PaloAltoNGFW/Unblock_external_port.py",
-  "baseConfig": "PaloAltoNGFW_unblock_external_port",
+  "baseConfig": "PaloAltoNGFW_unblock_port",
   "configurationItems": [
     {
       "name": "Hostname_PaloAltoNGFW",
@@ -31,11 +31,12 @@
       "required": true
     },
     {
-      "name": "name_external_Service_Group",
+      "name": "name_Service_Group",
       "description": "name_external_Service_Group",
       "type": "string",
       "multi": false,
-      "required": false
+      "required": false,
+	  "defaultValue": 'TheHive Black list external port'
     },
     {
       "name": "thehive_instance",

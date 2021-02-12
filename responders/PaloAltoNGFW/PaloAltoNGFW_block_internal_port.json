@@ -7,7 +7,7 @@
   "description": "Block internal port",
   "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
   "command": "PaloAltoNGFW/Block_internal_port.py",
-  "baseConfig": "PaloAltoNGFW_block_internal_port",
+  "baseConfig": "PaloAltoNGFW_main",
   "configurationItems": [
     {
       "name": "Hostname_PaloAltoNGFW",
@@ -35,7 +35,8 @@
       "description": "name_internal_name_security_rule_for_port",
       "type": "string",
       "multi": false,
-      "required": false
+      "required": false,
+	  "defaultValue": "TheHive Block internal port"
     },
 	{
         "name": "thehive_instance",

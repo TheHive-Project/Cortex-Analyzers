@@ -7,7 +7,7 @@
   "description": "Block external user",
   "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
   "command": "PaloAltoNGFW/Block_external_user.py",
-  "baseConfig": "PaloAltoNGFW_block_external_user",
+  "baseConfig": "PaloAltoNGFW_main",
   "configurationItems": [
     {
       "name": "Hostname_PaloAltoNGFW",
@@ -35,7 +35,8 @@
       "description": "name_external_name_security_rule_for_users",
       "type": "string",
       "multi": false,
-      "required": false
+      "required": false,
+	  "defaultValue": "TheHive Block user external communication"
     },
 	{
         "name": "thehive_instance",

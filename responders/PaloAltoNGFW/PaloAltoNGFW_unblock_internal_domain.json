@@ -7,7 +7,7 @@
   "description": "Unblock domain",
   "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
   "command": "PaloAltoNGFW/Unblock_internal_domain.py",
-  "baseConfig": "PaloAltoNGFW_unblock_internal_domain",
+  "baseConfig": "PaloAltoNGFW_unblock_domain",
   "configurationItems": [
     {
       "name": "Hostname_PaloAltoNGFW",
@@ -31,11 +31,12 @@
       "required": true
     },
     {
-      "name": "name_internal_Address_Group",
+      "name": "name_Address_Group",
       "description": "name_internal_Address_Group_for_domain",
       "type": "string",
       "multi": false,
-      "required": false
+      "required": false,
+	  "defaultValue": "TheHive Black list internal domain"
     },
     {
       "name": "thehive_instance",

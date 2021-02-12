@@ -7,7 +7,7 @@
   "description": "Block internal IP address",
   "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
   "command": "PaloAltoNGFW/Block_internal_ip.py",
-  "baseConfig": "PaloAltoNGFW_block_internal_IP_address",
+  "baseConfig": "PaloAltoNGFW_main",
   "configurationItems": [
     {
       "name": "Hostname_PaloAltoNGFW",
@@ -35,7 +35,8 @@
       "description": "name_internal_name_security_rule_for_ip",
       "type": "string",
       "multi": false,
-      "required": false
+      "required": false,
+	  "defaultValue": 'TheHive Block internal IP address'
     },
 	{
         "name": "thehive_instance",

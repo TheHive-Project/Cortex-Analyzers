@@ -7,7 +7,7 @@
   "description": "Unblock ip",
   "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
   "command": "PaloAltoNGFW/Unblock_external_ip.py",
-  "baseConfig": "PaloAltoNGFW_unblock_external_ip",
+  "baseConfig": "PaloAltoNGFW_unblock_ip",
   "configurationItems": [
     {
       "name": "Hostname_PaloAltoNGFW",
@@ -31,11 +31,12 @@
       "required": true
     },
     {
-      "name": "name_external_Address_Group",
+      "name": "name_Address_Group",
       "description": "name_external_Address_Group",
       "type": "string",
       "multi": false,
-      "required": false
+      "required": false,
+	  "defaultValue": "TheHive Black list external IP"
     },
     {
       "name": "thehive_instance",
