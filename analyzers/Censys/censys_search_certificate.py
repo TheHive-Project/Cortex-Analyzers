@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from cortexutils.analyzer import Analyzer
-from censys.ipv4 import CensysIPv4
+from censys.certificates import CensysCertificates
 from censys.exceptions import CensysNotFoundException, CensysRateLimitExceededException, CensysUnauthorizedException
 
 
@@ -20,7 +20,7 @@ class CensysAnalyzer(Analyzer):
         )
         self.__fields = self.get_param(
             'parameters.fields',
-            ["updated_at", "ip"]
+            ["metadata.added_at","parsed.subject_dn","parsed.names","parsed.issuer_dn","parsed.fingerprint_sha1","parsed.fingerprint_sha256"]
         )
         self.__max_records = self.get_param(
             'parameters.max_records',
@@ -45,7 +45,7 @@ class CensysAnalyzer(Analyzer):
         :type flatten: bool
         :return: dict
         """
-        c = CensysIPv4(api_id=self.__uid, api_secret=self.__api_key)
+        c = CensysCertificates(api_id=self.__uid, api_secret=self.__api_key)
         return c.search(search, fields=self.__fields,  max_records=self.__max_records, flatten=self.__flatten)
 
     def run(self):

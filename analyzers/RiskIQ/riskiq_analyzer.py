@@ -44,7 +44,7 @@ class RiskIQAnalyzer(Analyzer):
         try:
             # passive dns service
             if self.service == 'passive_dns_ip':
-                URI = '/pdns/data/ip?ip='
+                URI = 'pdns/data/ip?max=1000&ip='
                 headers = {'Authorization': 'Basic ' + self.basic_token, 'Accept': 'application/json'}
                 r = requests.get(self.URL+URI+data, headers=headers)
                 if r.status_code==200:

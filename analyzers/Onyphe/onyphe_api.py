@@ -111,14 +111,14 @@ class Onyphe:
         """Return datascan information we have for the given string with history of changes
         """
         param = {}
-        url_path = "/api/search/datascan/{search}".format(search=search)
+        url_path = "/api/v2/search/category:datascan%20{search}".format(search=search)
         param["page"] = page
         return self._request(path=url_path, query_params=param)
 
-    def datascan(self, search: str):
+    def datascan(self, search: str, page=1):
         """Return datascan information we have for the given IPv{4,6} address or string with history of changes
         """
-        url_path = "/api/v2/category:datascan%20{search}".format(search=search)
+        url_path = "/api/v2/simple/datascan/{search}".format(search=search)
         return self._request(path=url_path)
 
     def reverse(self, search: str):

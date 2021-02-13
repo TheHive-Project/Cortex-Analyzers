@@ -156,8 +156,9 @@ class OnypheAnalyzer(Analyzer):
                 results = {'inetnum': self.onyphe_client.inetnum(ip)}
                 self.report(results)
             if self.service == 'datascan':
-                ip = self.get_param('data', None, 'Data is missing')
-                results = {'datascan': self.onyphe_client.datascan(ip)}
+                data = self.get_param('data', None, 'Data is missing')
+                page = self.get_param('parameters.page', 1, None)
+                results = {'search': self.onyphe_client.datascan(data, page)}
                 self.report(results)
             if self.service == 'search':
                 page = self.get_param('parameters.page', 1, None)
