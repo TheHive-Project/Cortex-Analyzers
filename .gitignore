@@ -20,3 +20,4 @@ analyzers/*/input
 analyzers/*/output
 responders/*/input
 responders/*/output
+analyzers/*/cortexutils

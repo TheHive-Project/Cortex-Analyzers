@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # encoding: utf-8
+import os
 import email.parser
 import eml_parser
 from cortexutils.analyzer import Analyzer
@@ -24,7 +25,7 @@ class EmlParserAnalyzer(Analyzer):
     def run(self):
         if self.data_type == 'file':
             try:
-                parsingResult = parseEml(self.filepath)
+                parsingResult = parseEml(self.filepath, self.job_directory)
                 self.report(parsingResult)
             except Exception as e:
                 self.unexpectedError(e)
@@ -64,9 +65,14 @@ class EmlParserAnalyzer(Analyzer):
         if hashes:
             for h in hashes:
                 artifacts.append(self.build_artifact('hash',str(h)))
+        for f in raw['attachments']:
+            filepath = os.path.join(self.job_directory, 'output', f.get('filename'))
+            artifacts.append(
+                self.build_artifact('file', filepath )
+            )
         return artifacts
 
-def parseEml(filepath):
+def parseEml(filepath, job_directory):
 
     result = dict()
     result['subject'] = str()
@@ -125,7 +131,6 @@ def parseEml(filepath):
         for attachment in parsed_eml['attachment']:
             attachmentSumUp = dict()
             attachmentSumUp['filename'] = attachment.get('filename', '')
-
             #because of module conflict name with magic
             #eml-parser does not provide the mime type
             #it has to be calculated, the attachment is in base64
@@ -134,6 +139,11 @@ def parseEml(filepath):
             attachmentSumUp['md5'] = attachment['hash']['md5']
             attachmentSumUp['sha1'] = attachment['hash']['sha1']
             attachmentSumUp['sha256'] = attachment['hash']['sha256']
+            filepath = os.path.join(job_directory, 'output', attachment.get('filename', ''))
+            attachmentSumUp['path'] = filepath
+            with open(filepath, 'wb') as f:
+                f.write(base64.b64decode(attachment['raw']))
+            f.close()
             result['attachments'].append(attachmentSumUp)
 
     except KeyError as e:
