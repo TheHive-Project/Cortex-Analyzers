@@ -18,11 +18,17 @@ class DNSLookingglassAnalyzer(Analyzer):
     def artifacts(self, raw):
         artifacts = []
         ipv4s = list(iocextract.extract_ipv4s(str(raw)))
+        ipv6s = list(iocextract.extract_ipv6s(str(raw)))
 
         if ipv4s:
             ipv4s = list(dict.fromkeys(ipv4s))
             for i in ipv4s:
                 artifacts.append(self.build_artifact('ip',str(i)))
+
+        if ipv6s:
+            ipv6s = list(dict.fromkeys(ipv6s))
+            for j in ipv6s:
+                artifacts.append(self.build_artifact('ip',str(j)))
 
         return artifacts
 
