@@ -1,0 +1,14 @@
+{
+  "name": "DNS_Lookingglass",
+  "version": "1.0",
+  "author": "Dennis Perto, Conscia",
+  "url": "https://github.com/xme/thehive/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Query the SANS ISC Global DNS Lookingglass API to check a domain name for resolved IP addresses.",
+  "dataTypeList": ["domain", "fqdn"],
+  "command": "DNSLookingglass/DNSLookingglass_lookup.py",
+  "baseConfig": "DNSLookingglass.json",
+  "config": {
+      "service": "query"
+  }
+}
