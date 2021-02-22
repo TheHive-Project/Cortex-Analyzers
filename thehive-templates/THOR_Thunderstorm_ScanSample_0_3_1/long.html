@@ -1,0 +1,104 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel panel-danger">
+        <div class="panel-heading"><strong>THOR Thunderstorm Scan Failed</strong></div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <td>{{content.errorMessage}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="content.matches.length === 0">
+    <div class="panel panel-info">
+        <div class="panel-heading"><strong>THOR Thunderstorm Scan Result</strong></div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <td>THOR didn't find any matches scanning that sample</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="content.matches.length > 0">
+    <div class="panel panel-info">
+        <div class="panel-heading"><strong>THOR Thunderstorm Scan Meta Data</strong></div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td>Level</td>
+                    <td>{{content.level}}</td>
+                </tr>
+                <tr>
+                    <td>Messsage</td>
+                    <td>{{content.message}}</td>
+                </tr>
+                <tr>
+                    <td>Score</td>
+                    <td>{{content.score}}</td>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td>{{content.context.type}}</td>
+                </tr>
+                <tr>
+                    <td>Size</td>
+                    <td>{{content.context.size}}</td>
+                </tr>
+                <tr>
+                    <td>First Bytes</td>
+                    <td>{{content.context.firstbytes}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    
+    <div class="panel panel-danger" ng-if="content.yara_matches > 0">
+        <div class="panel-heading"><strong>THOR Engine YARA Matches</strong></div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <th>Rule Name</th>
+                    <th>Description</th>
+                    <th>Sub Score</th>
+                    <th>Tags</th>
+                    <th>Rule Date</th>
+                    <th>Reference</th>
+                </tr>
+                <tr ng-repeat="match in content.matches">
+                    <td>{{match.rulename}}</td>
+                    <td>{{match.reason}}</td>
+                    <td>{{match.subscore}}</td>
+                    <td>{{match.tags.join(", ")}}</td>
+                    <td>{{match.ruledate}}</td>
+                    <td><a href="{{match.ref}}">{{match.ref}}</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-danger" ng-if="content.other_matches > 0">
+        <div class="panel-heading"><strong>THOR Engine Other Matches</strong></div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <th>Reason</th>
+                    <th>Sub Score</th>
+                </tr>
+                <tr ng-repeat="match in content.matches">
+                    <td>{{match.reason}}</td>
+                    <td>{{match.subscore}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>
