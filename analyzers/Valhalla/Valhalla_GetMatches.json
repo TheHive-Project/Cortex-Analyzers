@@ -17,5 +17,18 @@
       "required": true,
       "defaultValue": "1111111111111111111111111111111111111111111111111111111111111111"
     }
-  ]
+  ],
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": false,
+  "service_homepage": "https://valhalla.nextron-systems.com",
+  "service_logo": {"path":"assets/Valhalla_logo.png", "caption": "logo"},
+  "screenshots": [
+    {"path":"assets/Valhalla_GetMatches_short.png",
+      "caption":"Valhalla Get Hashes short report sample"
+    },
+    {
+      "path": "assets/Valhalla_GetMatches_long.png",
+      "caption:":"Valhalla Get Hashes long report sample"
+    }]
 }
