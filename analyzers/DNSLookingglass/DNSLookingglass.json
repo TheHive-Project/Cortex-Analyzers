@@ -9,6 +9,24 @@
   "command": "DNSLookingglass/DNSLookingglass_lookup.py",
   "baseConfig": "DNSLookingglass.json",
   "config": {
-      "service": "query"
-  }
+    "service": "query"
+  },
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": false,
+  "service_homepage": "https://isc.sans.edu/",
+  "service_logo": {
+    "path": "assets/dshield.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/DNS_Lookingglass_long.png",
+      "caption": "DNS Lookingglass: Long report template"
+    },
+    {
+      "path": "assets/DNS_Lookingglass_artifacts.png",
+      "caption": "DNS Lookingglass: artifacts"
+    }
+  ]
 }

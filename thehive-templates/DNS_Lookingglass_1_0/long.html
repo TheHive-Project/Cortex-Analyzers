@@ -1,68 +1,32 @@
-<div class="report-DNS_Lookingglass" ng-if="success">
-    <style>
-        .report-DNS_Lookingglass dl {
-            margin-bottom: 2px;
-        }
-        .backgroundTable tr:nth-child(even) {background-color: #f2f2f2;}
-        .backgroundTableodd tr:nth-child(odd) {background-color: #f2f2f2;}
-
-        .backgroundTable th, .backgroundTableodd th {
-            background: white;
-            position: sticky;
-            top: -2px;
-            box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
-        }
-        .timelineTable th {
-            background: white;
-            position: sticky;
-            top: -15px;
-            box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
-            text-align: center;
-        }
-        .timelineTable tbody tr:hover td, .backgroundTable tbody tr:hover td, .backgroundTableodd tbody tr:hover td {
-        background-color: #d9edf7;
-        }
-        .timelineTable td {
-            max-width:200px;
-        }
-        .timelineTable tr {
-            max-height:100px;
-        }
-    </style>
-
-    <div class="panel panel-info">
-        <div class="panel panel-info" ng-if="content.results">
-            <div class="panel-heading">
-                <strong>Results</strong> (from {{content.count}} locations)
-            </div>
-            <div class="panel-body" style="display:block;height:750px;overflow:auto;">
-                <table class="table table-hover backgroundTable timelineTable">
-                    <thead>
-                        <th>Lookup from country</th>
-                        <th>Lookup status</th>
-                        <th>Lookup answer</th>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="hit in content.results track by $index">
-                            <td>
-                                {{hit.country.toString()}}
-                            </td>
-                            <td style="overflow:auto">
-                                {{hit.status.toString()}}
-                            </td>
-                            <td style="overflow:auto">
-                                {{hit.answer.toString()}}
-                            </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+<div class="panel panel-info" ng-if="success">
+    <div class="panel panel-info" ng-if="content.results">
+        <div class="panel-heading">
+            <strong>Results</strong> (from {{content.count}} locations)
         </div>
-            <br/>
-            <hr>
-            <br/>
+        <div class="panel-body" style="display:block;height:750px;overflow:auto;">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <th>Lookup from country</th>
+                    <th>Lookup status</th>
+                    <th>Lookup answer</th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="hit in content.results track by $index">
+                        <td>
+                            {{hit.country.toString()}}
+                        </td>
+                        <td style="overflow:auto">
+                            {{hit.status.toString()}}
+                        </td>
+                        <td style="overflow:auto">
+                            {{hit.answer.toString()}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-
+</div>
 
 <!-- General error  -->
 <div class="panel panel-danger" ng-if="!success">
@@ -72,4 +36,4 @@
     <div class="panel-body">
         {{content.errorMessage}}
     </div>
-</div> 
+</div>
