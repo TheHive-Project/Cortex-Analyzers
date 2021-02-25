@@ -1,7 +1,7 @@
 {
   "name": "PaloAltoNGFW_block_external_domain",
   "version": "2.0.0",
-  "author": "Maxim Konakin, OSCD Initiative",
+  "author": "Maxim Konakin, OSCD Community",
   "url": "",
   "license": "AGPL-V3",
   "description": "Block external domain",
@@ -28,8 +28,7 @@
       "description": "User_PaloAltoNGFW",
       "type": "string",
       "multi": false,
-      "required": true,
-	  "defaultValue": "TheHive Block external Domain"
+      "required": true
     },
     {
       "name": "name_security_rule",

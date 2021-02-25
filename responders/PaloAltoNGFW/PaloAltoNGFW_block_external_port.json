@@ -35,8 +35,7 @@
       "description": "name_external_name_security_rule_for_port",
       "type": "string",
       "multi": false,
-      "required": false,
-	  "defaultValue": "TheHive Block external port"
+      "required": false
     },
 	{
         "name": "thehive_instance",

@@ -1,7 +1,7 @@
 {
   "name": "PaloAltoNGFW_block_internal_IP_address",
   "version": "2.0.0",
-  "author": "Maxim Konakin, OSCD Initiative",
+  "author": "Maxim Konakin, OSCD Community",
   "url": "",
   "license": "AGPL-V3",
   "description": "Block internal IP address",
@@ -35,8 +35,7 @@
       "description": "name_internal_name_security_rule_for_ip",
       "type": "string",
       "multi": false,
-      "required": false,
-	  "defaultValue": 'TheHive Block internal IP address'
+      "required": false
     },
 	{
         "name": "thehive_instance",

@@ -1,7 +1,7 @@
 {
   "name": "PaloAltoNGFW_unblock_internal_user",
   "version": "1.0.0",
-  "author": "Maxim Konakin, OSCD Initiative",
+  "author": "Maxim Konakin, OSCD Community",
   "url": "",
   "license": "AGPL-V3",
   "description": "Unblock internal user",
@@ -35,8 +35,7 @@
       "description": "name_internal_name_security_rule_for_users",
       "type": "string",
       "multi": false,
-      "required": false,
-	  "defaultValue": "TheHive Block user internal communication"
+      "required": false
     },
 	{
         "name": "thehive_instance",
