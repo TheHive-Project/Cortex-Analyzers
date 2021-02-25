@@ -1,4 +1,4 @@
-cortexutils;python_version>='3.5'
+cortexutils>='2.1.0';python_version>='3.5'
 eml_parser
 python-magic
 iocextract
