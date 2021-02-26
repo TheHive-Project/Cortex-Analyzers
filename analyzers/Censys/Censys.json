@@ -23,5 +23,19 @@
       "multi": false,
       "required": true
     }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://censys.io/",
+  "service_logo": {
+    "path": "assets/censys.png",
+    "caption": "Censys logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report.png",
+      "caption": "Censys: Long report template"
+    }
   ]
 }

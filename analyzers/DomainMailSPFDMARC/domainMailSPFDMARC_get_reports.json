@@ -1,7 +1,7 @@
 {
   "name": "DomainMailSPFDMARC_Analyzer",
   "version": "1.1",
-  "url":"https://thehive-project.org",
+  "url": "https://thehive-project.org",
   "author": "torsolaso",
   "license": "AGPL-V3",
   "description": "DomainMailSPFDMARC",
@@ -11,8 +11,7 @@
   "config": {
     "service": "get"
   },
-  "configurationItems": [
-  ],
+  "configurationItems": [],
   "registration_required": false,
   "subscription_required": false,
   "free_subscription": false,
@@ -23,8 +22,7 @@
     },
     {
       "path": "assets/DomainMailSPFDMARC_short.png",
-      "caption:": "DomainMailSPFDMARC mini report sample"
+      "caption": "DomainMailSPFDMARC mini report sample"
     }
   ]
 }
-

@@ -8,11 +8,10 @@
   "dataTypeList": ["mail"],
   "command": "Inoitsu/inoitsu_analyzer.py",
   "baseConfig": "Inoitsu",
-  "configurationItems": [
-
-  ],
+  "configurationItems": [],
   "registration_required": false,
   "subscription_required": false,
+  "free_subscription": true,
   "service_homepage": "https://www.hotsheet.com/inoitsu/",
   "service_logo": {
     "path": "assets/inoitsu_logo.png",
@@ -25,7 +24,7 @@
     },
     {
       "path": "assets/Inoitsu_short.png",
-      "caption:": "Inoitsu mini report sample"
+      "caption": "Inoitsu mini report sample"
     }
   ]
 }

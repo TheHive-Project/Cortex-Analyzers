@@ -12,5 +12,19 @@
     "check_tlp": true,
     "max_tlp": 2
   },
-  "configurationItems": []
+  "configurationItems": [],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://cybercrime-tracker.net/",
+  "service_logo": {
+    "path": "assets/cybercrime.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report.png",
+      "caption": "cybercrime: long report"
+    }
+  ]
 }
