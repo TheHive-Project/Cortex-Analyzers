@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"/>
-        <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
            <style>
             #mapid { width: 800px;height: 600px; }
         </style>
@@ -79,22 +79,22 @@
                     
                             var lat = $(".geo_lat").map(function(){return parseInt($(this).text());}).get();
                             var lon = $(".geo_lon").map(function(){return parseInt($(this).text());}).get();
-                            var mymap = L.map('mapid').setView([0, 0], 3);
-                            L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+                            var mymap = L.map('mapid', {center:[0,0], zoom:3});
+                            L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+                                tileSize: 512,
                                 maxZoom: 18,
-                                id: 'mapbox.streets'
+                                zoomOffset: -1,
+                                id: 'mapbox/streets-v11'
                             }).addTo(mymap);
-							
+                            
+							var group = new L.featureGroup().addTo(mymap);
+
 							$.each( lon, function( index, value ){
-                                L.marker([lat[index] , lon[index]]).addTo(mymap);
-                            });
-							
-                            var mark_list = $.map( lon, function( index, value ){
-                                return L.marker([lat[index] , lon[index]]);
+                                marker = L.marker([lat[index] , lon[index]]);
+                                marker.addTo(group);
                             });
                             
-                            var group = new L.featureGroup(mark_list);
-                            mymap.fitBounds(group.getBounds(),{maxZoom: 3});
+                            mymap.fitBounds(group.getBounds(),{maxZoom: 4});
                             
                     }, 3000);
                 });
