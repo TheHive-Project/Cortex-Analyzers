@@ -49,25 +49,10 @@
                         </div>
                     </dd>
                 </dl>
-                <dl class="dl-horizontal" ng-if="['ip', 'domain', 'hash'].indexOf(artifact.dataType) !== -1">
+                <dl class="dl-horizontal" ng-if="content.permalink">
                     <dt>Virus Total</dt>
                     <dd>
-                        <span ng-if="artifact.dataType === 'domain'">
-                            <i class="fa fa-search"></i>
-                            <a ng-href="https://www.virustotal.com/#/domain/{{artifact.data}}" target="_blank">
-                                View Full Report</a>
-                        </span>
-                        <span ng-if="artifact.dataType === 'ip'">
-                            <i class="fa fa-search"></i>
-                            <a ng-href="https://www.virustotal.com/#/ip-address/{{artifact.data}}" target="_blank">
-                                View Full Report</a>
-                        </span>
-                        <span ng-if="artifact.dataType === 'hash'">
-                            <i class="fa fa-search"></i>
-                            <a ng-href="https://www.virustotal.com/#/file/{{artifact.data}}/detection" target="_blank">
-                                View Full Report</a>
-                        </span>
-                        <span ng-if="artifact.dataType === 'url'">
+                        <span ng-if="content.permalink">
                             <i class="fa fa-search"></i>
                             <a ng-href="{{content.permalink}}" target="_blank">View Full Report</a>
                         </span>
