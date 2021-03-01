@@ -11,9 +11,19 @@
                 <dt>Sub-verdict</dt>
                 <dd>{{content.result.sub_verdict}}</dd>
             </dl>
-            <dl class="dl-horizontal">
+            <dl class="dl-horizontal" ng-if="content.result.family_name">
                 <dt>Family</dt>
                 <dd>{{content.result.family_name}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.result.analysis_url">
+                <dt>Online report:</dt>
+                <dd>
+                    <span>
+                       <i class="fa fa-search"></i>
+                       <a href="{{content.result.analysis_url}}" target="_blank">
+                           {{content.result.analysis_url}}</a>
+                    </span>
+                </dd>
             </dl>
         </div>
 	</div>
