@@ -87,6 +87,13 @@ class Gmail(Responder):
         except TheHiveException as e:
             self.error("Responder needs TheHive connection but failed: {}".format(e))
 
+        user_object = self.__hive_service.get_current_user().json()
+        if not self.hive_check_permissions(user_object):
+            self.error("API key of `{}` is missing `read` or `write` role. Users current roles: {}".format(
+                user_object["name"],
+                user_object["roles"]
+            ))
+
     def gmail_impersonate(self, subject):
         """Peforms OAuth2 auth for a given service account, scope and a delegated subject
 
