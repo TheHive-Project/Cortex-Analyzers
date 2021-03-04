@@ -13,6 +13,7 @@ can be used to implement message filters and delete message in a mailbox of a Gm
 - All observables that get blocked/unblocked get a `gmail:handled` tag
 
 **Constrains:**
+ - TheHive API key needs to provide **read** AND **write** permissions
  - The Gmail user **MUST** be part of a Gsuite domain.
  - Gsuite domain **MUST** have an _service account_ enabled with domain-wide delegation.
  - The _service account_ **MUST** be configured with the following OAuth Scopes:
