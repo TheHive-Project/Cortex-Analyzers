@@ -68,6 +68,18 @@ class Gmail(Responder):
                 return tag
         self.error("No valid filter tag found on observable. Tags: {}".format(tags))
 
+    def hive_check_permissions(self, user):
+        """
+        Checks if the `user` does provide read,write permissions to the hive
+        
+        Returns: True if read,write permissions are available, otherwise False
+        """
+        roles = user["roles"]
+        if "read" in roles and "write" in roles:
+            return True
+        else:
+            return False
+
     def hive_auth(self, url, api_key):
         self.__hive_service = TheHiveApi(url, api_key)
         try:
