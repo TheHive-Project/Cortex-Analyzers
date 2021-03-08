@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 
+import sys
+
 from assemblyline_client import get_client
 from cortexutils.analyzer import Analyzer
 
@@ -21,6 +23,7 @@ class AssemblyLineAnalyzer(Analyzer):
     def read_analysis_response(self, filepath):
         al_client = get_client(self.assemblyline_host, auth=(self.assemblyline_user,self.assemblyline_key), verify=False)
         analyse_file = al_client.submit(filepath)
+        print(analyse_file)
 
     def run(self):
         if self.service == 'AnalyseFile':
