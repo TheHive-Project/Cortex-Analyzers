@@ -24,12 +24,9 @@ class AssemblyLineAnalyzer(Analyzer):
     def read_analysis_response(self, filepath):
         al_client = get_client(self.assemblyline_host, auth=(self.assemblyline_user,self.assemblyline_key), verify=False)
         response = al_client.submit(filepath)
-        print(response)
-        print(response['sid'])
-        if response['sid'] != 0:
-            print('SID Detected')
-            for file in response['files']:
-                print(file['sha256'])
+        # if response['sid'] != 0:
+        #     for file in response['files']:
+        #         print(file['sha256'])
 
     def summary(self, raw):
         taxonomies = []
