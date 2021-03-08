@@ -25,7 +25,7 @@ class AssemblyLineAnalyzer(Analyzer):
         al_client = get_client(self.assemblyline_host, auth=(self.assemblyline_user,self.assemblyline_key), verify=False)
         response = al_client.submit(filepath)
         print(response)
-        print(response.sid)
+        print(response['sid'])
         if response.sid != 0:
             print('SID Detected')
             for file in response['files']:
