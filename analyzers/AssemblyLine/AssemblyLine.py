@@ -31,6 +31,23 @@ class AssemblyLineAnalyzer(Analyzer):
             for file in response['files']:
                 print(file['sha256'])
 
+    def summary(self, raw):
+        taxonomies = []
+        level = "info"
+        namespace = "AssemblyLine"
+        predicate = "RetrieveAnalysis"
+        value = "0"
+
+        if self.service == "RetrieveAnalysis":
+            predicate = "RetrieveAnalysis"
+
+        result = {
+            "success": True
+        }
+
+        taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        return {"taxonomies": taxonomies}
+
     def run(self):
         if self.service == 'AnalyseFile':
             filename = self.get_param('filename', 'none.ext')
