@@ -23,8 +23,7 @@ class AssemblyLineAnalyzer(Analyzer):
 
     def read_analysis_response(self, filepath):
         al_client = get_client(self.assemblyline_host, auth=(self.assemblyline_user,self.assemblyline_key), verify=False)
-        analyse_file = al_client.submit(filepath)
-        response = json.loads(analyse_file)
+        response = al_client.submit(filepath)
         if response.sid != 0:
             print('SID Detected')
             for file in response['files']:
