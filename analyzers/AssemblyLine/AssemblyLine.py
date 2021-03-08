@@ -40,4 +40,4 @@ class AssemblyLineAnalyzer(Analyzer):
 
 
 if __name__ == '__main__':
-    AssemblylineAnalyzer().run()
+    AssemblyLineAnalyzer().run()
