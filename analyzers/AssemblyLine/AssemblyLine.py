@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 import sys
+import json
 
 from assemblyline_client import get_client
 from cortexutils.analyzer import Analyzer
@@ -23,7 +24,10 @@ class AssemblyLineAnalyzer(Analyzer):
     def read_analysis_response(self, filepath):
         al_client = get_client(self.assemblyline_host, auth=(self.assemblyline_user,self.assemblyline_key), verify=False)
         analyse_file = al_client.submit(filepath)
-        print(analyse_file)
+        response = json.loads(analyse_file)
+        if response.sid != 0:
+            for file in response['files']:
+                print(file.sha256)
 
     def run(self):
         if self.service == 'AnalyseFile':
