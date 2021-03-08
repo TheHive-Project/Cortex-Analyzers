@@ -57,15 +57,9 @@ class AssemblyLineAnalyzer(Analyzer):
             self.read_analysis_response(filepath=filepath)
 
         elif self.service == 'RetrieveAnalysis':
-            if self.data_type == 'file':
-                filepath = self.get_param('file', None, 'File is missing')
+            hashValue = self.get_param('hash', None, 'Hash is missing')
+            self.search_for_analysis(hashvalue=hashValue)
 
-            elif self.data_type == 'hash':
-                hashValue = self.get_param('hash', None, 'Hash is missing')
-                self.search_for_analysis(hashvalue=hashValue)
-
-            else:
-                self.error('Invalid data type')
         else:
             self.error('Invalid service')
 
