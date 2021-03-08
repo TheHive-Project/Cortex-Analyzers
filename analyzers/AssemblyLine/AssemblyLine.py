@@ -26,10 +26,10 @@ class AssemblyLineAnalyzer(Analyzer):
         response = al_client.submit(filepath)
         print(response)
         print(response['sid'])
-        if response.sid != 0:
+        if response['sid'] != 0:
             print('SID Detected')
             for file in response['files']:
-                print(file.sha256)
+                print(file['sha256'])
 
     def run(self):
         if self.service == 'AnalyseFile':
