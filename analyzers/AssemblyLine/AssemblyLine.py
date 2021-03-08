@@ -28,6 +28,12 @@ class AssemblyLineAnalyzer(Analyzer):
         #     for file in response['files']:
         #         print(file['sha256'])
 
+    def search_for_analysis(self, hashValue):
+        al_client = get_client(self.assemblyline_host, auth=(self.assemblyline_user, self.assemblyline_key), verify=False)
+        # file.md5	, file.sha1, file.sha256
+        print(hashValue)
+        response = al_client.search.submission("file.md5:")
+
     def summary(self, raw):
         taxonomies = []
         level = "info"
@@ -47,15 +53,17 @@ class AssemblyLineAnalyzer(Analyzer):
 
     def run(self):
         if self.service == 'AnalyseFile':
-            filename = self.get_param('filename', 'none.ext')
             filepath = self.get_param('file', None, 'File is missing')
             self.read_analysis_response(filepath=filepath)
 
         elif self.service == 'RetrieveAnalysis':
             if self.data_type == 'file':
-                var = 'not yet implemented'
+                filepath = self.get_param('file', None, 'File is missing')
+
             elif self.data_type == 'hash':
-                var = 'not yet implemented'
+                hashValue = self.get_param('hash', None, 'Hash is missing')
+                self.search_for_analysis(hashvalue=hashValue)
+
             else:
                 self.error('Invalid data type')
         else:
