@@ -1,0 +1,45 @@
+{
+  "name": "AssemblyLine_RetrieveAnalysis",
+  "version": "1.0",
+  "author": "McHughSecurity",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Retrieve analysis reports from AssemblyLine for a file or hash",
+  "dataTypeList": ["file", "hash"],
+  "command": "AssemblyLine/AssemblyLine.py",
+  "baseConfig": "AssemblyLine",
+  "config": {
+    "service": "RetrieveAnalysis"
+  },
+  "configurationItems": [
+    {
+      "name": "al_host",
+      "description": "Host or IP for AssemblyLine",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "al_user",
+      "description": "UserID key for AssemblyLine",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "al_key",
+      "description": "API key for AssemblyLine",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "polling_interval",
+      "description": "Define time interval between two requests attempts for the report",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 60
+    }
+  ]
+}
