@@ -30,9 +30,9 @@ class AssemblyLineAnalyzer(Analyzer):
 
         elif self.service == 'RetrieveAnalysis':
             if self.data_type == 'file':
-
+                var = 'not yet implemented'
             elif self.data_type == 'hash':
-
+                var = 'not yet implemented'
             else:
                 self.error('Invalid data type')
         else:
