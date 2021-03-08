@@ -26,6 +26,7 @@ class AssemblyLineAnalyzer(Analyzer):
         analyse_file = al_client.submit(filepath)
         response = json.loads(analyse_file)
         if response.sid != 0:
+            print('SID Detected')
             for file in response['files']:
                 print(file.sha256)
 
