@@ -32,7 +32,7 @@ class Mailer(Responder):
                 "data.case.description", None, "description is missing"
             )
         else:
-            self.error("Invalid dataType")            
+            self.error("Invalid dataType")
 
         mail_to = None
         if self.data_type == "thehive:case":
@@ -40,7 +40,9 @@ class Mailer(Responder):
             tags = self.get_param(
                 "data.tags", None, "recipient address not found in tags"
             )
-            mail_tags = [t[5:] for t in tags if t.startswith("mail=") or t.startswith("mail:")]
+            mail_tags = [
+                t[5:] for t in tags if t.startswith("mail=") or t.startswith("mail:")
+            ]
             if mail_tags:
                 mail_to = mail_tags.pop()
             else:
@@ -88,7 +90,7 @@ class Mailer(Responder):
                     server.ehlo()
                     server.login(self.smtp_user, self.smtp_pwd)
                     server.send_message(msg, self.mail_from, [mail_to])
-            except smtplib.SMTPNotSupportedError:
+            except (smtplib.SMTPNotSupportedError, ssl.ssl.SSLCertVerificationError):
                 with smtplib.SMTP(self.smtp_host, self.smtp_port) as server:
                     server.ehlo()
                     server.login(self.smtp_user, self.smtp_pwd)
