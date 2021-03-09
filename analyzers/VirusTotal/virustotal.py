@@ -36,7 +36,11 @@ class VirusTotalAnalyzer(Analyzer):
         )
         self.obs_path = None
         self.proxies = self.get_param("config.proxy", None)
-        if self.download_sample or self.download_sample_if_highlighted:
+        if (
+            self.download_sample
+            or self.download_sample_if_highlighted
+            or self.service == "download"
+        ):
             self.vt_pay = PrivateApi(self.virustotal_key, self.proxies)
         self.vt = PublicApi(self.virustotal_key, self.proxies)
 
