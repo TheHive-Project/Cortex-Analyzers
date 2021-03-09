@@ -1,6 +1,6 @@
 {
   "name": "FileInfo",
-  "version": "7.0",
+  "version": "8.0",
   "author": "TheHive-Project",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -40,7 +40,30 @@
       "required": false,
       "multi": false,
       "defaultValue": "/worker/Manalyze/bin/manalyze"
+    },
+    {
+      "name": "floss_enable",
+      "description": "Enable the use of FireEye FLARE FLOSS",
+      "type": "boolean",
+      "required": false,
+      "multi": false,
+      "default": false
+    },
+    {
+      "name": "floss_binary_path",
+      "description": "Path to the FLOSS binary.",
+      "type": "string",
+      "required": false,
+      "multi": false,
+      "default": "/usr/bin/floss"
+    },
+    {
+      "name": "floss_minimal_string_length",
+      "description": "Length of strings must be in order to be considered.",
+      "type": "number",
+      "required": false,
+      "multi": false,
+      "default": 4
     }
   ]
 }
-

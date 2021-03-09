@@ -1,5 +1,7 @@
+import os
 import hashlib
 import magic
+import tempfile
 from .submodule_base import SubmoduleBaseclass
 
 #  from ExtractMsg import Message, Attachment
@@ -12,13 +14,13 @@ class OutlookSubmodule(SubmoduleBaseclass):
 
     def __init__(self):
         SubmoduleBaseclass.__init__(self)
-        self.name = 'Outlook mail Information'
+        self.name = "Outlook mail Information"
 
     def check_file(self, **kwargs):
         try:
-            msg_mimetypes = ['application/vnd.ms-outlook', 'application/CDFV2-unknown']
+            msg_mimetypes = ["application/vnd.ms-outlook", "application/CDFV2-unknown"]
             for m in msg_mimetypes:
-                if kwargs.get('mimetype').find(m) == 0:
+                if kwargs.get("mimetype").find(m) == 0:
                     return True
         except KeyError:
             return False
@@ -29,29 +31,37 @@ class OutlookSubmodule(SubmoduleBaseclass):
         m = Message(path)
 
         def xstr(s):
-            return '' if s is None else str(s)
+            return "" if s is None else str(s)
 
         attachments = m.attachments
         a = []
+        observables = []
+        outdir = tempfile.mkdtemp()
         for attachment in attachments:
             sha256 = hashlib.sha256()
             if type(attachment.data) is not Message:
                 sha256.update(attachment.data)
                 minfo = magic.Magic(uncompress=True).from_buffer(attachment.data)
-                a.append({'name': attachment.longFilename,
-                      'sha256': sha256.hexdigest(),
-                      'mimeinfo': minfo
-                      })
+                a.append(
+                    {
+                        "name": attachment.longFilename,
+                        "sha256": sha256.hexdigest(),
+                        "mimeinfo": minfo,
+                    }
+                )
+                with open(os.path.join(outdir, attachment.longFilename), "wb") as f:
+                    f.write(attachment.data)
+                    observables.append(os.path.join(outdir, attachment.longFilename))
 
-
-        email = {'header': xstr(m.header),
-                    'from': xstr(m.sender),
-                    'to': xstr(m.to),
-                    'cc': xstr(m.cc),
-                    'subject': xstr(m.subject),
-                    'date': xstr(m.date),
-                    'body': decode_utf7(m.body),
-                    'attachments': a
-                 }
-        self.add_result_subsection('Email details', email)
-        return self.results
+        email = {
+            "header": xstr(m.header),
+            "from": xstr(m.sender),
+            "to": xstr(m.to),
+            "cc": xstr(m.cc),
+            "subject": xstr(m.subject),
+            "date": xstr(m.date),
+            "body": decode_utf7(m.body),
+            "attachments": a,
+        }
+        self.add_result_subsection("Email details", email)
+        return self.results, observables
