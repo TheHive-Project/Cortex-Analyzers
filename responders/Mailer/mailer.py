@@ -90,7 +90,11 @@ class Mailer(Responder):
                     server.ehlo()
                     server.login(self.smtp_user, self.smtp_pwd)
                     server.send_message(msg, self.mail_from, [mail_to])
-            except (smtplib.SMTPNotSupportedError, ssl.SSLCertVerificationError):
+            except (
+                smtplib.SMTPNotSupportedError,
+                ssl.SSLCertVerificationError,
+                smtplib.SMTPException,
+            ):
                 with smtplib.SMTP(self.smtp_host, self.smtp_port) as server:
                     server.ehlo()
                     server.login(self.smtp_user, self.smtp_pwd)
