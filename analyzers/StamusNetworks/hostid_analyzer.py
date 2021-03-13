@@ -29,6 +29,14 @@ class StamusNetworksAnalyzer(Analyzer):
                     self.build_artifact('fqdn',
                         host['host'],
                         tags=tags))
+        net_info = raw['host_id'].get('net_info', [])
+        if len(net_info) > -1:
+            net_info = sorted(net_info, key=lambda k: k['last_seen'], reverse=True)[0]['agg']
+            tags=["network-info"]
+            artifacts.append(
+                    self.build_artifact('other',
+                        net_info,
+                        tags=tags))
         return artifacts
 
     def summary(self, raw):
