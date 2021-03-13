@@ -39,6 +39,16 @@ class StamusNetworksAnalyzer(Analyzer):
         value = raw["host_id"]["last_seen"]
         taxonomies.append(self.build_taxonomy("info", namespace, 'last-seen', value))
 
+        value = raw["host_id"].get("services_count")
+        if value:
+            taxonomies.append(self.build_taxonomy("info", namespace, 'services', value))
+        value = raw["host_id"].get("tls.ja3_count")
+        if value:
+            taxonomies.append(self.build_taxonomy("info", namespace, 'tls-agents', value))
+        value = raw["host_id"].get("http.user_agent_count")
+        if value:
+            taxonomies.append(self.build_taxonomy("info", namespace, 'http-agents', value))
+
         return {"taxonomies": taxonomies}
 
     def run(self):
