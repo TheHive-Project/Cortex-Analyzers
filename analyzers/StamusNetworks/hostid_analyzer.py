@@ -27,6 +27,8 @@ class StamusNetworksAnalyzer(Analyzer):
 
     def artifacts(self, raw):
         artifacts = []
+        if raw.get('host_id') is None:
+            return []
         hostnames = raw['host_id'].get('hostname', [])
         for host in hostnames:
             tags=["first-seen:" + host['first_seen'], "last-seen:" + host['last_seen']]
@@ -71,6 +73,7 @@ class StamusNetworksAnalyzer(Analyzer):
             if self.data_type == 'ip':
                 url = self.base_url + "/rest/appliances/host_id/" + self.get_data() + self.tenant_param
                 resp = self.session.get(url, verify=self.ssl_verify, proxies=self.proxies)
+                resp.raise_for_status()
                 info = resp.json()
             # TODO add support for user-agent and fqdn
             else:
