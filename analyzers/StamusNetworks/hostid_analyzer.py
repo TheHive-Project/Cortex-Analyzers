@@ -13,6 +13,11 @@ class StamusNetworksAnalyzer(Analyzer):
         self.base_url = self.get_param('config.url', None, 'Scirius Security Platform url is missing')
         self.base_url = self.base_url.rstrip('/ ')
         self.ssl_verify = self.get_param('config.ssl_verify', None, 'Scirius Security Platform TLS verification info is missing')
+        tenant = self.get_param('config.tenant')
+        if tenant is not None and len(tenant):
+            self.tenant_param = "?tenant=" + tenant
+        else:
+            self.tenant_param = ""
         self.proxies = {
                 "https" : self.get_param("config.proxy_https", None),
                 "http" : self.get_param("config.proxy_http", None)
@@ -64,7 +69,7 @@ class StamusNetworksAnalyzer(Analyzer):
         info = {}
         try:
             if self.data_type == 'ip':
-                url = self.base_url + "/rest/appliances/host_id/" + self.get_data()
+                url = self.base_url + "/rest/appliances/host_id/" + self.get_data() + self.tenant_param
                 resp = self.session.get(url, verify=self.ssl_verify, proxies=self.proxies)
                 info = resp.json()
             # TODO add support for user-agent and fqdn

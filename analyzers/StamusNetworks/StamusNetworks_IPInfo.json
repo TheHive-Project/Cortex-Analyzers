@@ -32,6 +32,13 @@
       "type": "boolean",
       "multi": false,
       "required": true
+    },
+    {
+      "name": "tenant",
+      "description": "Tenant value for organization in Scirius Security Platform",
+      "type": "string",
+      "multi": false,
+      "required": false
     }
   ]
 }
