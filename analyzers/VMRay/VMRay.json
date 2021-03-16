@@ -4,7 +4,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
   "version": "4.1",
-  "description": "VMRay Sandbox file analysis.",
+  "description": "VMRay Sandbox file and URL analysis.",
   "dataTypeList": [
     "hash",
     "file",
