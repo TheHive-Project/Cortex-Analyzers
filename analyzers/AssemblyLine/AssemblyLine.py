@@ -26,9 +26,9 @@ class AssemblyLineAnalyzer(Analyzer):
         filepath_filename = os.path.basename(filepath)
         response = al_client.submit(path=filepath, fname=filepath_filename)
         print(response)
-        # if response['sid'] != 0:
-        #     for file in response['files']:
-        #         print(file['sha256'])
+        if response['sid'] != 0:
+            for file in response['files']:
+                print(file['sha256'])
 
     def search_for_analysis(self, hashValue):
         al_client = get_client(self.assemblyline_host, apikey=(self.assemblyline_user, self.assemblyline_key), verify=False)
@@ -52,6 +52,15 @@ class AssemblyLineAnalyzer(Analyzer):
 
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         return {"taxonomies": taxonomies}
+
+    def check_response(self, response):
+        if type(response) is not dict:
+            self.error('Bad response : ' + str(response))
+        status = response.get('response_code', -1)
+        if status != 200:
+            self.error('Bad status : ' + str(status))
+        results = response.get('results', {})
+        return results
 
     def run(self):
         if self.service == 'AnalyseFile':
