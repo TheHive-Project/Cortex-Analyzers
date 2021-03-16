@@ -22,14 +22,14 @@ class AssemblyLineAnalyzer(Analyzer):
         self.proxies = self.get_param('config.proxy', None)
 
     def read_analysis_response(self, filepath):
-        al_client = get_client(self.assemblyline_host, auth=(self.assemblyline_user,self.assemblyline_key), verify=False)
+        al_client = get_client(self.assemblyline_host, apikey=(self.assemblyline_user,self.assemblyline_key), verify=False)
         response = al_client.submit(filepath)
         # if response['sid'] != 0:
         #     for file in response['files']:
         #         print(file['sha256'])
 
     def search_for_analysis(self, hashValue):
-        al_client = get_client(self.assemblyline_host, auth=(self.assemblyline_user, self.assemblyline_key), verify=False)
+        al_client = get_client(self.assemblyline_host, apikey=(self.assemblyline_user, self.assemblyline_key), verify=False)
         # file.md5	, file.sha1, file.sha256
         print(hashValue)
         response = al_client.search.submission("file.md5:")
