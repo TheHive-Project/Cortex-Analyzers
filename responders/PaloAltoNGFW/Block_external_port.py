@@ -15,7 +15,7 @@ class Block_port(Responder):
         self.hostname_PaloAltoNGFW = self.get_param('config.Hostname_PaloAltoNGFW')
         self.User_PaloAltoNGFW = self.get_param('config.User_PaloAltoNGFW')
         self.Password_PaloAltoNGFW = self.get_param('config.Password_PaloAltoNGFW')
-        self.name_security_rule = self.get_param('config.name_security_rule','TheHive Block external port')
+        self.name_security_rule = self.get_param('config.Security_rule_for_block_port_external_communication','TheHive Block port for external communication')
         self.thehive_instance = self.get_param('config.thehive_instance')
         self.thehive_api_key = self.get_param('config.thehive_api_key', 'YOUR_KEY_HERE')
         self.api = TheHiveApi(self.thehive_instance, self.thehive_api_key)
@@ -94,7 +94,8 @@ class Block_port(Responder):
         new_rule = panos.policies.SecurityRule(**desired_rule_params)
         rulebase.add(new_rule)
         new_rule.apply()
-        self.report({'message': 'Responder comlited, added %s into TheHive Black list external port to %s' % (port,self.name_security_rule)})
+        fw.commit()
+        self.report({'message': 'Responder successfully added %s into TheHive Black list external port to %s' % (port,self.name_security_rule)})
 
 if __name__ == '__main__':
     Block_port().run()

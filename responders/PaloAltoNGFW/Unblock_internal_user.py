@@ -13,7 +13,7 @@ class Unblock_user(Responder):
         self.hostname_PaloAltoNGFW = self.get_param('config.Hostname_PaloAltoNGFW')
         self.User_PaloAltoNGFW = self.get_param('config.User_PaloAltoNGFW')
         self.Password_PaloAltoNGFW = self.get_param('config.Password_PaloAltoNGFW')
-        self.name_security_rule = self.get_param('config.name_security_rule','TheHive Block user internal communication')
+        self.name_security_rule = self.get_param('config.Security_rule_for_unblock_internal_user','TheHive Block user internal communication')
         self.thehive_instance = self.get_param('config.thehive_instance')
         self.thehive_api_key = self.get_param('config.thehive_api_key', 'YOUR_KEY_HERE')
         self.api = TheHiveApi(self.thehive_instance, self.thehive_api_key)
@@ -70,7 +70,8 @@ class Unblock_user(Responder):
         new_rule = panos.policies.SecurityRule(**desired_rule_params)
         rulebase.add(new_rule)
         new_rule.apply()
-        self.report({'message': 'Responder comlited, deleted %s from %s' % (user,self.name_security_rule)})
+        self.report({'message': 'Responder successfully deleted %s from %s' % (user,self.name_security_rule)})
+        fw.commit()
 
 if __name__ == '__main__':
     Unblock_user().run()

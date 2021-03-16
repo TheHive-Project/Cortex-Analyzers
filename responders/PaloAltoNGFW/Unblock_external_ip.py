@@ -13,7 +13,7 @@ class Unblock_ip(Responder):
         self.hostname_PaloAltoNGFW = self.get_param('config.Hostname_PaloAltoNGFW')
         self.User_PaloAltoNGFW = self.get_param('config.User_PaloAltoNGFW')
         self.Password_PaloAltoNGFW = self.get_param('config.Password_PaloAltoNGFW')
-        self.name_external_Address_Group = self.get_param('config.name_external_Address_Group',"TheHive Black list external IP")
+        self.name_external_Address_Group = self.get_param('config.Address_group_for_unblock_external_IP_address',"TheHive Black list external IP")
         self.thehive_instance = self.get_param('config.thehive_instance')
         self.thehive_api_key = self.get_param('config.thehive_api_key', 'YOUR_KEY_HERE')
         self.api = TheHiveApi(self.thehive_instance, self.thehive_api_key)
@@ -71,7 +71,7 @@ class Unblock_ip(Responder):
             except:
                 self.report({'message': 'Responder did not comlite. Warning in AddressObject'})
         
-        self.report({'message': 'Responder comlited, deleted %s from %s' % (ioc,self.name_external_Address_Group)})
-
+        self.report({'message': 'Responder successfully deleted %s from %s' % (ioc,self.name_external_Address_Group)})
+        fw.commit()
 if __name__ == '__main__':
     Unblock_ip().run()

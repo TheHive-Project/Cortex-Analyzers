@@ -70,7 +70,8 @@ class Unblock_user(Responder):
         new_rule = panos.policies.SecurityRule(**desired_rule_params)
         rulebase.add(new_rule)
         new_rule.apply()
-        self.report({'message': 'Responder comlited, deleted %s from %s' % (user,self.name_security_rule)})
+        self.report({'message': 'Responder successfully deleted %s from %s' % (user,self.name_security_rule)})
+        fw.commit()
 
 if __name__ == '__main__':
     Unblock_user().run()

@@ -1,12 +1,12 @@
 {
-  "name": "PaloAltoNGFW_unblock_external_user",
-  "version": "1.0.0",
+  "name": "PaloAltoNGFW_block_port_for_internal_communication"
+  "version": "2.0.0",
   "author": "Maxim Konakin, OSCD Community",
   "url": "",
   "license": "AGPL-V3",
-  "description": "Unblock external user",
+  "description": "Block internal port",
   "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
-  "command": "PaloAltoNGFW/Unblock_external_user.py",
+  "command": "PaloAltoNGFW/Block_internal_port.py",
   "baseConfig": "PaloAltoNGFW_main",
   "configurationItems": [
     {
@@ -31,12 +31,12 @@
       "required": true
     },
     {
-      "name": "Security_rule_for_unblock_external_user",
-      "description": "Name external name security rule for users",
+      "name": "Security_rule_for_blocking_port_internal_communication",
+      "description": "Name internal name security rule for port",
       "type": "string",
       "multi": false,
       "required": false,
-	  "defaultValue": "TheHive Block user external communication"
+	  "defaultValue": "TheHive Block port for internal communication"
     },
 	{
         "name": "TheHive_instance",

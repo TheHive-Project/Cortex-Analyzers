@@ -35,8 +35,8 @@ need install:
 4.3.2 "TheHive Block internal Domain"  
 
 4.4 Для блокировки\разблокировки портов:  
-4.4.1 "TheHive Block internal port"  
-4.4.2 "TheHive Block external port"  
+4.4.1 "TheHive Block port for internal communication"  
+4.4.2 "TheHive Block port for external communication"  
 
 4.5 thehive_instance - url адрес системы TheHive (используется только для типов case и alert).
 Важно для каждой организации должен быть свой пользователь с API!
@@ -48,6 +48,6 @@ need install:
 2. FQDN - 'hostname'
 3. порт - 'port'
 4. протокол - 'protocol'
-5. имя пользователя - 'user-agent'  
+5. имя пользователя - 'username'  
 Примечание: типы 'port' и 'protocol' необходимо создать в системе TheHive. По умолчанию TheHive не имеет данных типов данных в Observable type, поэтому мы должны добавить его в настройках администратора.  
 ![alt text](AddObservableType.jpg)

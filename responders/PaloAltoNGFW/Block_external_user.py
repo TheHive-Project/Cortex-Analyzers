@@ -13,7 +13,7 @@ class Block_user(Responder):
         self.hostname_PaloAltoNGFW = self.get_param('config.Hostname_PaloAltoNGFW')
         self.User_PaloAltoNGFW = self.get_param('config.User_PaloAltoNGFW')
         self.Password_PaloAltoNGFW = self.get_param('config.Password_PaloAltoNGFW')
-        self.name_security_rule = self.get_param('config.name_security_rule','TheHive Block user external communication')
+        self.name_security_rule = self.get_param('config.Security_rule_for_block_external_user','TheHive Block user external communication')
         self.thehive_instance = self.get_param('config.thehive_instance')
         self.thehive_api_key = self.get_param('config.thehive_api_key', 'YOUR_KEY_HERE')
         self.api = TheHiveApi(self.thehive_instance, self.thehive_api_key)
@@ -28,7 +28,7 @@ class Block_user(Responder):
             user=None
             user_list_alert=[]
             for i in list(response.json().get("artifacts")):
-                if 'user-agent' in str(i):
+                if 'username' in str(i):
                     ioc = i.get("data")
                     for i in ioc:
                         if i == "[" or i == "]":
@@ -51,7 +51,7 @@ class Block_user(Responder):
             a=None
             data = r.json()
             for n in data:
-               if n.get('dataType') == 'user-agent':
+               if n.get('dataType') == 'username':
                    user=n.get('data')
         fw = firewall.Firewall(self.hostname_PaloAltoNGFW, api_username=self.User_PaloAltoNGFW, api_password=self.Password_PaloAltoNGFW)
         rulebase = panos.policies.Rulebase()
@@ -74,7 +74,8 @@ class Block_user(Responder):
         new_rule = panos.policies.SecurityRule(**desired_rule_params)
         rulebase.add(new_rule)
         new_rule.apply()
-        self.report({'message': 'Responder comlited, added %s to %s' % (user,self.name_security_rule)})
+        fw.commit()
+        self.report({'message': 'Responder successfully added %s to %s' % (user,self.name_security_rule)})
 
 if __name__ == '__main__':
     Block_user().run()
