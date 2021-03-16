@@ -3,7 +3,7 @@
   "license": "AGPL-V3",
   "author": "Nils Kuhnert, CERT-Bund",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "3.1",
+  "version": "4.1",
   "description": "VMRay Sandbox file analysis.",
   "dataTypeList": [
     "hash",
