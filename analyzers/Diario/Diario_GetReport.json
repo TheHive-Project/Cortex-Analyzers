@@ -1,0 +1,38 @@
+{
+  "name": "Diario_GetReport",
+  "version": "1.0",
+  "author": "Mercadolibre",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get the latest Diario report for a file or hash.",
+  "dataTypeList": ["file", "hash"],
+  "command": "Diario/diario_analyzer.py",
+  "baseConfig": "Diario",
+  "config": {
+    "service": "get"
+  },
+  "configurationItems": [
+    {
+      "name": "client_id",
+      "description": "Client id for Diario",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "secret",
+      "description": "Secret for Diario",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "polling_interval",
+      "description": "Define time interval between two requests attempts for the report",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 60
+    }
+  ]
+}
