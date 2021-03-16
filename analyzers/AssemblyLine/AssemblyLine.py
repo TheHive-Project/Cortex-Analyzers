@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # encoding: utf-8
-
+import os
 import sys
 import json
 
@@ -22,8 +22,12 @@ class AssemblyLineAnalyzer(Analyzer):
         self.proxies = self.get_param('config.proxy', None)
 
     def read_analysis_response(self, filepath):
+        print(self.assemblyline_host)
+        print(self.assemblyline_user)
+        print(self.assemblyline_key)
         al_client = get_client(self.assemblyline_host, apikey=(self.assemblyline_user,self.assemblyline_key), verify=False)
-        response = al_client.submit(filepath)
+        filepath_filename = os.path.basename(filepath)
+        response = al_client.submit(path=filepath, fname=filepath_filename)
         # if response['sid'] != 0:
         #     for file in response['files']:
         #         print(file['sha256'])
