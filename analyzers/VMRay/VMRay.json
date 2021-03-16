@@ -43,6 +43,14 @@
       "required": false
     },
     {
+      "name": "verdict_only",
+      "description": "If set to true, only the verdict (or the score for VMRay versions < 4.0) will be added as labels.",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    },
+    {
       "name": "query_retry_wait",
       "description": "The amount of seconds to wait before trying to fetch the results.",
       "type": "number",

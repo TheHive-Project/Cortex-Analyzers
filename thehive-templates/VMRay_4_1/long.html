@@ -3,26 +3,29 @@
         VMRay Report
     </div>
     <div class="panel-body" ng-repeat="sample in content.samples">
-        <dl class="dl-horizontal">
-            <dt>Score</dt>
-            <dd><a href="{{sample.sample_webif_url}}">{{sample.sample_score}}</a></dd>
-        </dl>
-        <dl class="dl-horizontal">
-            <dt ng-if="sample.sample_severity">Severity</dt>
+        <dl class="dl-horizontal" ng-if="sample.sample_verdict">
+            <dt>Verdict</dt>
             <dd>
-                <span class="label" ng-class="{'label-success':sample.sample_severity === 'not_suspicious',
-					'label-danger': sample.sample_severity==='malicious',
-					'label-info': sample.sample_severity!='not_suspicious' && sample.sample_severity!='malicious'}">
-                    {{sample.sample_severity}}
+                <span class="label"
+                    ng-class="{'label-success':sample.sample_verdict === 'clean',
+					'label-danger': sample.sample_verdict==='malicious',
+					'label-warning': sample.sample_verdict==='suspicious',
+					'label-info': sample.sample_verdict!='clean' && sample.sample_verdict!='suspicious' && sample.sample_verdict!='suspicious'}">
+                    {{sample.sample_verdict}}
                 </span>
             </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Score</dt>
+            <dd>{{sample.sample_score}}</dd>
         </dl>
         <dl class="dl-horizontal">
             <dt>Last reputation</dt>
             <dd>
                 <span class="label" ng-class="{'label-info':sample.sample_last_reputation_severity === 'unknown',
-					'label-danger': sample.sample_last_reputation_severity==='blacklisted',
-					'label-info': sample.sample_last_reputation_severity!='blacklisted'}">
+					'label-danger': sample.sample_last_reputation_severity==='malicious',
+                    'label-success':sample.sample_last_reputation_severity === 'clean',
+					'label-info': sample.sample_last_reputation_severity!='malicious'}">
                     {{sample.sample_last_reputation_severity}}
                 </span>
             </dd>

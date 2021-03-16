@@ -13,6 +13,7 @@ class VMRayAnalyzer(Analyzer):
     _namespace = "VMRay"
 
     _severity_mapping = {
+        "clean": "safe",
         "whitelisted": "safe",
         "suspicious": "suspicious",
         "malicious": "malicious",
@@ -33,6 +34,7 @@ class VMRayAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
         self.reanalyze = self.get_param("config.reanalyze", True)
+        self.verdict_only = self.get_param("config.verdict_only", False)
         self.shareable = self.get_param("config.shareable", False)
         self.tags = self.get_param("config.tags", ["TheHive"])
         self.user_config = {
@@ -168,42 +170,56 @@ class VMRayAnalyzer(Analyzer):
     def _taxonomies_for_samples(self, samples):
         taxonomies = []
         for sample in samples:
-            level = self._severity_mapping.get(sample["sample_severity"], "info")
-            value = "{}".format(sample["sample_score"])
+            has_verdict = "sample_verdict" in sample
+            level = (
+                self._severity_mapping.get(sample["sample_verdict"], "info")
+                if has_verdict
+                else self._severity_mapping.get(sample["sample_severity"], "info")
+            )
+            value = "{}".format(
+                sample["sample_verdict"] if has_verdict else sample["sample_score"]
+            )
             if len(samples) > 1:
                 value += " (from sample {})".format(sample["sample_id"])
             taxonomies.append(
-                self.build_taxonomy(level, self._namespace, "Score", value)
+                self.build_taxonomy(level, self._namespace, "Verdict", value)
+                if has_verdict
+                else self.build_taxonomy(level, self._namespace, "Score", value)
             )
 
-            for threat_indicator in sample.get("sample_threat_indicators", {}).get(
-                "threat_indicators", []
-            ):
-                predicate = threat_indicator.get("category", None)
-                value = threat_indicator.get("operation", "")
-                if predicate:
-                    taxonomies.append(
-                        self.build_taxonomy(level, self._namespace, predicate, value)
-                    )
+            if not self.verdict_only:
+                for threat_indicator in sample.get("sample_threat_indicators", {}).get(
+                    "threat_indicators", []
+                ):
+                    predicate = threat_indicator.get("category", None)
+                    value = threat_indicator.get("operation", "")
+                    if predicate:
+                        taxonomies.append(
+                            self.build_taxonomy(
+                                level, self._namespace, predicate, value
+                            )
+                        )
 
-            for mitre_technique in sample.get("sample_mitre_attack", {}).get(
-                "mitre_attack_techniques", []
-            ):
-                predicate = mitre_technique.get("technique_id", None)
-                value = mitre_technique.get("technique", "Unknown MITRE technique")
-                if "tactics" in mitre_technique:
-                    value += " using tactics: {}".format(
-                        ", ".join(mitre_technique["tactics"])
-                    )
-                if predicate:
-                    taxonomies.append(
-                        self.build_taxonomy(level, self._namespace, predicate, value)
-                    )
+                for mitre_technique in sample.get("sample_mitre_attack", {}).get(
+                    "mitre_attack_techniques", []
+                ):
+                    predicate = mitre_technique.get("technique_id", None)
+                    value = mitre_technique.get("technique", "Unknown MITRE technique")
+                    if "tactics" in mitre_technique:
+                        value += " using tactics: {}".format(
+                            ", ".join(mitre_technique["tactics"])
+                        )
+                    if predicate:
+                        taxonomies.append(
+                            self.build_taxonomy(
+                                level, self._namespace, predicate, value
+                            )
+                        )
 
-            # add child sample taxonomies if they have been added
-            taxonomies.extend(
-                self._taxonomies_for_samples(sample.get("sample_child_samples", []))
-            )
+                # add child sample taxonomies if they have been added
+                taxonomies.extend(
+                    self._taxonomies_for_samples(sample.get("sample_child_samples", []))
+                )
         return taxonomies
 
     def _sandbox_reports_for_samples(self, samples):
