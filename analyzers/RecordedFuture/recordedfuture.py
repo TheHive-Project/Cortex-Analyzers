@@ -48,7 +48,10 @@ class RecordedFutureAnalyzer(Analyzer):
                     self.summary(j)
                     return self.report(j)
             except IOError as e:
-                self.error(str(e))
+                if e.code == 404:
+                    self.report({'message':'IOC Not Found.'})
+                else:
+                    self.error(str(e))
         else:
             self.error('Invalid data type')
 
