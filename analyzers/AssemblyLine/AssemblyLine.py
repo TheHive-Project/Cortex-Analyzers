@@ -72,7 +72,7 @@ class AssemblyLineAnalyzer(Analyzer):
 
     def AnalyseURL(self):
         al_client = get_client(self.assemblyline_host, apikey=(self.assemblyline_user, self.assemblyline_key), verify=False)
-        response = al_client.submit(path=self.url)
+        response = al_client.submit(url=self.url)
         return response
 
     def RetrieveAnalysis(self):
