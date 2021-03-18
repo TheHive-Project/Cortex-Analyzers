@@ -33,7 +33,7 @@ class AssemblyLineAnalyzer(Analyzer):
 
         elif self.data_type == 'url':
             try:
-                self.url = self.getParam('url', None, 'URL is missing')
+                self.url = self.get_data()
                 parsingResult = self.AnalyseURL()
                 self.report(parsingResult)
             except Exception as e:
@@ -41,7 +41,7 @@ class AssemblyLineAnalyzer(Analyzer):
 
         elif self.data_type == 'hash':
             try:
-                self.hash = self.getParam('hash', None, 'Hash is missing')
+                self.hash = self.get_data()
                 parsingResult = self.RetrieveAnalysis()
                 self.report(parsingResult)
             except Exception as e:
