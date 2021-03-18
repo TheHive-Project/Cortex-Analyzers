@@ -5,7 +5,7 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Retrieve analysis reports from AssemblyLine for a file or hash",
-  "dataTypeList": ["file", "hash"],
+  "dataTypeList": ["hash"],
   "command": "AssemblyLine/AssemblyLine.py",
   "baseConfig": "AssemblyLine",
   "config": {

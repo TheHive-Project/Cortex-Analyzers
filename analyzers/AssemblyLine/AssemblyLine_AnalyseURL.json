@@ -5,7 +5,7 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Use AssemblyLine to perform static analysis of an Internet hosted file",
-  "dataTypeList": ["file"],
+  "dataTypeList": ["url"],
   "command": "AssemblyLine/AssemblyLine.py",
   "baseConfig": "AssemblyLine",
   "config": {
