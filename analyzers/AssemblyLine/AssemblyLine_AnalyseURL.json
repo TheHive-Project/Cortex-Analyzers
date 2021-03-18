@@ -1,0 +1,45 @@
+{
+  "name": "AssemblyLine_AnalyseURL",
+  "version": "1.0",
+  "author": "McHughSecurity",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use AssemblyLine to perform static analysis of an Internet hosted file",
+  "dataTypeList": ["file"],
+  "command": "AssemblyLine/AssemblyLine.py",
+  "baseConfig": "AssemblyLine",
+  "config": {
+    "service": "AnalyseURL"
+  },
+  "configurationItems": [
+    {
+      "name": "al_host",
+      "description": "Host or IP for AssemblyLine",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "al_user",
+      "description": "UserID key for AssemblyLine",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "al_key",
+      "description": "API key for AssemblyLine",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "polling_interval",
+      "description": "Define time interval between two requests attempts for the report",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 60
+    }
+  ]
+}

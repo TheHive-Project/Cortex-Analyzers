@@ -21,59 +21,64 @@ class AssemblyLineAnalyzer(Analyzer):
         self.polling_interval = self.get_param('config.polling_interval', 60)
         self.proxies = self.get_param('config.proxy', None)
 
-    def read_analysis_response(self, filepath):
-        al_client = get_client(self.assemblyline_host, apikey=(self.assemblyline_user,self.assemblyline_key), verify=False)
-        filepath_filename = os.path.basename(filepath)
-        response = al_client.submit(path=filepath, fname=filepath_filename)
-        print(response)
-        if response['sid'] != 0:
-            for file in response['files']:
-                print(file['sha256'])
+    def run(self):
+        if self.data_type == 'file':
+            try:
+                self.filepath = self.getParam('file', None, 'File is missing')
+                self.filename = self.getParam('attachment.name', 'noname.ext')
+                parsingResult = self.AnalyseFile()
+                self.report(parsingResult)
+            except Exception as e:
+                self.unexpectedError(e)
 
-    def search_for_analysis(self, hashValue):
-        al_client = get_client(self.assemblyline_host, apikey=(self.assemblyline_user, self.assemblyline_key), verify=False)
-        # file.md5	, file.sha1, file.sha256
-        print(hashValue)
-        response = al_client.search.submission("file.md5:")
+        elif self.data_type == 'url':
+            try:
+                self.url = self.getParam('url', None, 'URL is missing')
+                parsingResult = self.AnalyseURL()
+                self.report(parsingResult)
+            except Exception as e:
+                self.unexpectedError(e)
+
+        elif self.data_type == 'hash':
+            try:
+                self.hash = self.getParam('hash', None, 'Hash is missing')
+                parsingResult = self.RetrieveAnalysis()
+                self.report(parsingResult)
+            except Exception as e:
+                self.unexpectedError(e)
+
+        else:
+            self.notSupported()
 
     def summary(self, raw):
         taxonomies = []
         level = "info"
-        namespace = "AssemblyLine"
-        predicate = "RetrieveAnalysis"
-        value = "0"
+        namespace = "Assemblyline"
 
-        if self.service == "RetrieveAnalysis":
+        if self.service == "AnalyseFile":
+            predicate = "AnalyseFile"
+        elif self.service == "AnalyseURL":
+            predicate = "AnalyseURL"
+        elif self.service == "RetrieveAnalysis":
             predicate = "RetrieveAnalysis"
 
-        result = {
-            "success": True
-        }
+        value = ''
+        print(raw)
 
-        taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-        return {"taxonomies": taxonomies}
+    def AnalyseFile(self):
+        al_client = get_client(self.assemblyline_host, apikey=(self.assemblyline_user, self.assemblyline_key), verify=False)
+        response = al_client.submit(path=self.filepath, fname=self.filename)
+        return response
 
-    def check_response(self, response):
-        if type(response) is not dict:
-            self.error('Bad response : ' + str(response))
-        status = response.get('response_code', -1)
-        if status != 200:
-            self.error('Bad status : ' + str(status))
-        results = response.get('results', {})
-        return results
+    def AnalyseURL(self):
+        al_client = get_client(self.assemblyline_host, apikey=(self.assemblyline_user, self.assemblyline_key), verify=False)
+        response = al_client.submit(path=self.url)
+        return response
 
-    def run(self):
-        if self.service == 'AnalyseFile':
-            filepath = self.get_param('file', None, 'File is missing')
-            self.read_analysis_response(filepath=filepath)
-
-        elif self.service == 'RetrieveAnalysis':
-            hashValue = self.get_param('hash', None, 'Hash is missing')
-            self.search_for_analysis(hashvalue=hashValue)
-
-        else:
-            self.error('Invalid service')
-
+    def RetrieveAnalysis(self):
+        al_client = get_client(self.assemblyline_host, apikey=(self.assemblyline_user, self.assemblyline_key), verify=False)
+        response = al_client.search("submission.files.sha256:" + self.hash)
+        return response
 
 if __name__ == '__main__':
     AssemblyLineAnalyzer().run()
