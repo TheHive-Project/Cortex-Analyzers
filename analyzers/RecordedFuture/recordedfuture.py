@@ -40,7 +40,7 @@ class RecordedFutureAnalyzer(Analyzer):
     def run(self):
         if self.data_type in ['domain', 'ip', 'hash']:
             data = self.get_param('data', None, 'Data is missing')
-            url = 'https://api.recordedfuture.com/v2/{}/{}?fields=risk%2CintelCard'.format(self.data_type, data)
+            url = 'https://api.recordedfuture.com/v2/{}/{}?fields=metrics%2Ctimestamps%2Crisk%2CintelCard'.format(self.data_type, data)
             req = urllib.request.Request(url, None, {'X-RFToken': self.recordedfuture_key})
             try:
                 with urllib.request.urlopen(req) as res:
