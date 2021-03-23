@@ -84,13 +84,25 @@ class Mailer(Responder):
         if self.smtp_user and self.smtp_pwd:
             try:
                 context = ssl.create_default_context()
+
+                # STANDARD CONNECTION, TRY ADDING TLS
                 with smtplib.SMTP(self.smtp_host, self.smtp_port) as server:
                     server.ehlo()
                     server.starttls(context=context)
                     server.ehlo()
                     server.login(self.smtp_user, self.smtp_pwd)
                     server.send_message(msg, self.mail_from, [mail_to])
+
+                # SMTP_SSL CONNECTION
+            except smtplib.SMTPServerDisconnected:
+                with smtplib.SMTP_SSL(
+                    self.smtp_host, self.smtp_port, context=context
+                ) as server:
+                    server.login(self.smtp_user, self.smtp_pwd)
+                    server.send_message(msg, self.mail_from, [mail_to])
+
             except Exception:
+                # STANDARD CONNECTION WITHOUT TLS
                 with smtplib.SMTP(self.smtp_host, self.smtp_port) as server:
                     server.ehlo()
                     server.login(self.smtp_user, self.smtp_pwd)
