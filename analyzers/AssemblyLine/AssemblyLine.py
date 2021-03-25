@@ -77,8 +77,8 @@ class AssemblyLineAnalyzer(Analyzer):
 
     def RetrieveAnalysis(self):
         al_client = get_client(self.assemblyline_host, apikey=(self.assemblyline_user, self.assemblyline_key), verify=False)
-        submissions = al_client.search.result("files.sha256:" + self.hash)
-        return submissions
+        report = al_client.file.result(sha256=self.hash)
+        return report
 
 if __name__ == '__main__':
     AssemblyLineAnalyzer().run()
