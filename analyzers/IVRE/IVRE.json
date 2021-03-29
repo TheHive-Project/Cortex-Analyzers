@@ -5,7 +5,6 @@
   "license": "AGPL-V3",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "service_homepage": "https://ivre.rocks/",
-  "version": "1.0",
   "description": "Fetch details from an IVRE instance.",
   "dataTypeList": [
     "autonomous-system",
