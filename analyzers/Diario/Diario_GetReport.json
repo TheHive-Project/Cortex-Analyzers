@@ -1,7 +1,7 @@
 {
   "name": "Diario_GetReport",
   "version": "1.0",
-  "author": "Mercadolibre",
+  "author": "Ignacio Rodriguez Paez",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Get the latest Diario report for a file or hash.",

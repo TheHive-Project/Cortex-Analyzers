@@ -1,7 +1,7 @@
 {
   "name": "Diario_Scan",
   "version": "1.0",
-  "author": "Mercadolibre",
+  "author": "Ignacio Rodriguez Paez",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Use Diario to scan a file, it can be DOC*, XLS*, PPTX or PDF.",
