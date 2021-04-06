@@ -137,24 +137,30 @@ class GreyNoiseAnalyzer(Analyzer):
                 classification = raw.get("classification", "unknown")
                 name = raw.get("name")
                 t1_level = classification_level_map.get(classification)(None)
-                t1_namespace = "GreyNoise"
-                t1_predicate = classification
-                t1_value = (
-                    "Benign Service" if riot else "Internet Noise"
-                )
+                t1_namespace = "GreyNoise Community"
+                t1_predicate = "classification"
+                t1_value = classification
                 # print('{}:{} = {} ({})'.format(t1_namespace, t1_predicate, t1_value))
                 taxonomies.append(
                     self.build_taxonomy(t1_level, t1_namespace, t1_predicate, t1_value)
                 )
                 t2_level = classification_level_map.get(classification)(None)
-                t2_namespace = "GreyNoise"
-                t2_predicate = (
-                    name if classification == "benign" else "classification"
-                )
-                t2_value = name if classification == "benign" else classification
+                t2_namespace = "GreyNoise Community"
+                t2_predicate = "Name"
+                t2_value = name
                 # print('{}:{} = {} ({})'.format(t2_namespace, t2_predicate, t2_value, t2_level))
                 taxonomies.append(
                     self.build_taxonomy(t2_level, t2_namespace, t2_predicate, t2_value)
+                )
+                t3_level = classification_level_map.get(classification)(None)
+                t3_namespace = "GreyNoise Community"
+                t3_predicate = "Type"
+                t3_value = (
+                    "Benign Service" if riot else "Internet Noise"
+                )
+                # print('{}:{} = {} ({})'.format(t2_namespace, t2_predicate, t2_value, t2_level))
+                taxonomies.append(
+                    self.build_taxonomy(t3_level, t3_namespace, t3_predicate, t3_value)
                 )
             else:
                 taxonomies.append(
