@@ -3,13 +3,13 @@
         GreyNoise results for <strong>{{artifact.data}}</strong>
     </div>
     <div class="panel-body">
-        <table class="table" ng-if="content">
+        <table class="table" ng-if="content.seen">
             <thead>
                 <th>Classification</th>
-                <th>Last update</th>
+                <th>Last Seen</th>
                 <th>Actor</th>
-                <th>Cve</th>
-                <th>Tags</th>
+                <th>CVE(s)</th>
+                <th>Tag(s)</th>
             </thead>
             <tbody>
                 <tr>
@@ -25,9 +25,53 @@
                         <pre>{{content.metadata | json}}</pre>
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="5">
+                        <a target="_blank" href="https://viz.greynoise.io/ip/{{content.ip}}">Click here for more details on the GreyNoise Visualizer.</a>
+                    </td>
+                </tr>
             </tbody>
         </table>
-        <p ng-if="!content">No records found for {{artifact.data}}.</p>
+
+        <table class="table" ng-if="content.noise">
+            <thead>
+                <th>Classification</th>
+                <th>Last Updated</th>
+                <th>Name</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{content.classification}}</td>
+                    <td>{{content.last_seen}}</td>
+                    <td>{{content.name}}</td>
+                </tr>
+                <tr ng-if="content.noise">
+                    <td colspan="5">
+                        <a target="_blank" href="https://viz.greynoise.io/ip/{{content.ip}}">Click here for more details on the GreyNoise Visualizer (Noise Info).</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table" ng-if="content.riot">
+            <thead>
+                <th>Classification</th>
+                <th>Last Updated</th>
+                <th>Name</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{content.classification}}</td>
+                    <td>{{content.last_seen}}</td>
+                    <td>{{content.name}}</td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <a target="_blank" href="https://viz.greynoise.io/riot/{{content.ip}}">Click here for more details on the GreyNoise Visualizer (RIOT Info).</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    <p ng-if="!content">No records found for {{artifact.data}}.</p>
     </div>
 </div>
 
