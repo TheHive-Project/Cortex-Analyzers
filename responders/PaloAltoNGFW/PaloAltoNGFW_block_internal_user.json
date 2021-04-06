@@ -1,12 +1,12 @@
 {
   "name": "PaloAltoNGFW_block_internal_user",
   "version": "1.0.0",
-  "author": "Maxim Konakin, OSCD Community",
+  "author": "Maxim Konakin, OSCD Initiative",
   "url": "",
   "license": "AGPL-V3",
   "description": "Block internal user",
   "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
-  "command": "PaloAltoNGFW/Block_internal_user.py",
+  "command": "PaloAltoNGFW/block_internal_user.py",
   "baseConfig": "PaloAltoNGFW_main",
   "configurationItems": [
     {
@@ -32,11 +32,11 @@
     },
     {
       "name": "Security_rule_for_block_internal_user",
-      "description": "Name internal name security rule for users",
+      "description": "Name internal security rule for users",
       "type": "string",
       "multi": false,
       "required": false,
-	  "defaultValue": "TheHive Block user internal communication"
+	  "defaultValue": "TheHive Block internal user"
     },
 	{
         "name": "TheHive_instance",

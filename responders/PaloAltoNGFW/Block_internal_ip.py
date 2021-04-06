@@ -15,9 +15,9 @@ class Block_ip(Responder):
         self.User_PaloAltoNGFW = self.get_param('config.User_PaloAltoNGFW')
         self.Password_PaloAltoNGFW = self.get_param('config.Password_PaloAltoNGFW')
         self.name_security_rule = self.get_param('config.Security_rule_for_block_internal_IP_address','TheHive Block internal IP address')
-        self.thehive_instance = self.get_param('config.thehive_instance')
-        self.thehive_api_key = self.get_param('config.thehive_api_key', 'YOUR_KEY_HERE')
-        self.api = TheHiveApi(self.thehive_instance, self.thehive_api_key)
+        self.TheHive_instance = self.get_param('config.TheHive_instance')
+        self.TheHive_API_key = self.get_param('config.TheHive_API_key', 'YOUR_KEY_HERE')
+        self.api = TheHiveApi(self.TheHive_instance, self.TheHive_API_key)
 
     def run(self):
         self.instance_type = self.get_param('data._type')
@@ -44,8 +44,8 @@ class Block_ip(Responder):
                 "query": { "_parent": { "_type": "case", "_query": { "_id": case_id } } },
                 "range": "all"
             }
-            headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.thehive_api_key) }
-            thehive_api_url_case_search = '{}/api/case/artifact/_search'.format(self.thehive_instance)
+            headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.TheHive_API_key) }
+            thehive_api_url_case_search = '{}/api/case/artifact/_search'.format(self.TheHive_instance)
             r = requests.post(thehive_api_url_case_search, data=json.dumps(payload), headers=headers)
             if r.status_code != requests.codes.ok:
                 self.error(json.dumps(r.text))
@@ -64,16 +64,16 @@ class Block_ip(Responder):
             fw.add(new_ioc_object)
             new_ioc_object.create()        
         panos.objects.AddressGroup.refreshall(fw)
-        block_list = fw.find("TheHive Black list internal IP", panos.objects.AddressGroup)
+        block_list = fw.find("TheHive Block list internal IP address", panos.objects.AddressGroup)
         if block_list != None:
             ioc_list = block_list.about().get('static_value')
             if ioc not in ioc_list:
                 ioc_list.append(ioc)
-                temp1 = panos.objects.AddressGroup("TheHive Black list internal IP", static_value=ioc_list)
+                temp1 = panos.objects.AddressGroup("TheHive Block list internal IP address", static_value=ioc_list)
                 fw.add(temp1)
                 temp1.apply()
         elif block_list == None:
-            temp1 = panos.objects.AddressGroup("TheHive Black list internal IP", static_value=ioc)
+            temp1 = panos.objects.AddressGroup("TheHive Block list internal IP address", static_value=ioc)
             fw.add(temp1)
             temp1.apply()
         desired_rule_params = None
@@ -81,8 +81,8 @@ class Block_ip(Responder):
             if self.name_security_rule == i.about().get("name"):
                 rule_atrib = i.about()
                 temp_rule_atrib = rule_atrib.get("destination")
-                if "TheHive Black list internal IP" not in temp_rule_atrib:
-                    temp_rule_atrib.append("TheHive Black list internal IP")
+                if "TheHive Block list internal IP address" not in temp_rule_atrib:
+                    temp_rule_atrib.append("TheHive Block list internal IP address")
                     if "any" in temp_rule_atrib:
                         temp_rule_atrib.remove("any")
                     rule_atrib.update({"destination": temp_rule_atrib})
@@ -93,6 +93,6 @@ class Block_ip(Responder):
         rulebase.add(new_rule)
         new_rule.apply()
         fw.commit()
-        self.report({'message': 'Responder successfully added %s into TheHive Black list internal IP from %s' % (ioc,self.name_security_rule)})
+        self.report({'message': 'Responder successfully added %s into TheHive Block list internal IP address from %s' % (ioc,self.name_security_rule)})
 if __name__ == '__main__':
     Block_ip().run()

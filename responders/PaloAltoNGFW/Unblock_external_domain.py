@@ -14,10 +14,10 @@ class Unblock_domain(Responder):
         self.hostname_PaloAltoNGFW = self.get_param('config.Hostname_PaloAltoNGFW')
         self.User_PaloAltoNGFW = self.get_param('config.User_PaloAltoNGFW')
         self.Password_PaloAltoNGFW = self.get_param('config.Password_PaloAltoNGFW')
-        self.name_external_Address_Group_for_domain = self.get_param('config.Address_group_for_unblock_external_domain',"TheHive Black list external domain")
-        self.thehive_instance = self.get_param('config.thehive_instance')
-        self.thehive_api_key = self.get_param('config.thehive_api_key', 'YOUR_KEY_HERE')
-        self.api = TheHiveApi(self.thehive_instance, self.thehive_api_key)
+        self.name_external_Address_Group_for_domain = self.get_param('config.Address_group_for_unblock_external_domain',"TheHive Block list external domain")
+        self.TheHive_instance = self.get_param('config.TheHive_instance')
+        self.TheHive_API_key = self.get_param('config.TheHive_API_key', 'YOUR_KEY_HERE')
+        self.api = TheHiveApi(self.TheHive_instance, self.TheHive_API_key)
 
     def run(self):
         self.instance_type = self.get_param('data._type')
@@ -44,8 +44,8 @@ class Unblock_domain(Responder):
                 "query": { "_parent": { "_type": "case", "_query": { "_id": case_id } } },
                 "range": "all"
             }
-            headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.thehive_api_key) }
-            thehive_api_url_case_search = '{}/api/case/artifact/_search'.format(self.thehive_instance)
+            headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.TheHive_API_key) }
+            thehive_api_url_case_search = '{}/api/case/artifact/_search'.format(self.TheHive_instance)
             r = requests.post(thehive_api_url_case_search, data=json.dumps(payload), headers=headers)
             if r.status_code != requests.codes.ok:
                 self.error(json.dumps(r.text))

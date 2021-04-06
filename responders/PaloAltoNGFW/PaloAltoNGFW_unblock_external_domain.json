@@ -1,12 +1,12 @@
 {
   "name": "PaloAltoNGFW_unblock_external_domain",
   "version": "1.0.0",
-  "author": "Maxim Konakin, OSCD Community",
+  "author": "Maxim Konakin, OSCD Initiative",
   "url": "",
   "license": "AGPL-V3",
-  "description": "Unblock domain",
+  "description": "Unblock external domain",
   "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
-  "command": "PaloAltoNGFW/Unblock_external_domain.py",
+  "command": "PaloAltoNGFW/unblock_external_domain.py",
   "baseConfig": "PaloAltoNGFW_main",
   "configurationItems": [
     {
@@ -32,11 +32,11 @@
     },
     {
       "name": "Address_group_for_unblock_external_domain",
-      "description": "Name external Address Group for domain",
+      "description": "Name external Address Group for domains",
       "type": "string",
       "multi": false,
       "required": false,
-	  "defaultValue": "TheHive Black list external domain"
+	  "defaultValue": "TheHive Block list external domain"
     },
     {
       "name": "TheHive_instance",

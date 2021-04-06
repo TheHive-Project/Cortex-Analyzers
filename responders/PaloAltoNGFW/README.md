@@ -23,8 +23,8 @@ need install:
 3. Password_PaloAltoNGFW - пароль для пользователя в системе PaloAltoNGFW
 4. name_security_rule (не обязательное поле) - имя правила безопасности в системе PaloAltoNGFW. Установлены следующие стандартные наименования правил:  
 4.1 Для блокировки\разблокировки имени пользователей:  
-4.1.1 "TheHive Block user internal communication"  
-4.1.2 "TheHive Block user external communication"  
+4.1.1 "TheHive Block internal user"  
+4.1.2 "TheHive Block external user"  
 
 4.2 Для блокировки\разблокировки сетевых адресов:  
 4.2.1 "TheHive Block internal IP address"  
@@ -38,16 +38,15 @@ need install:
 4.4.1 "TheHive Block port for internal communication"  
 4.4.2 "TheHive Block port for external communication"  
 
-4.5 thehive_instance - url адрес системы TheHive (используется только для типов case и alert).
+4.5 TheHive_instance - url адрес системы TheHive (используется только для типов case и alert).
 Важно для каждой организации должен быть свой пользователь с API!
 
-4.6 thehive_api_key - API ключ для подключения к системе TheHive  
+4.6 TheHive_API_key - API ключ для подключения к системе TheHive  
 Примечание: указанные правила безопасноти должны быть созданы в PaloAltoNGFW, а так же расставлены в порядке их применения.  
 Типы используемых данных для работы в системе TheHive:
 1. Сетевой адрес - 'ip'
 2. FQDN - 'hostname'
-3. порт - 'port'
-4. протокол - 'protocol'
-5. имя пользователя - 'username'  
-Примечание: типы 'port' и 'protocol' необходимо создать в системе TheHive. По умолчанию TheHive не имеет данных типов данных в Observable type, поэтому мы должны добавить его в настройках администратора.  
+3. порт-протокол - 'port-protocol'
+4. имя пользователя - 'username'  
+Примечание: типы 'port-protocol' и 'username' необходимо создать в системе TheHive. По умолчанию TheHive не имеет данных типов данных в Observable type, поэтому мы должны добавить его в настройках администратора.  
 ![alt text](AddObservableType.jpg)

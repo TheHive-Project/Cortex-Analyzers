@@ -1,12 +1,12 @@
 {
-  "name": "PaloAltoNGFW_block_port_for_internal_communication"
+  "name": "PaloAltoNGFW_block_port_for_internal_communication",
   "version": "2.0.0",
-  "author": "Maxim Konakin, OSCD Community",
+  "author": "Maxim Konakin, OSCD Initiative",
   "url": "",
   "license": "AGPL-V3",
-  "description": "Block internal port",
+  "description": "Block internal port communication",
   "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
-  "command": "PaloAltoNGFW/Block_internal_port.py",
+  "command": "PaloAltoNGFW/block_internal_port.py",
   "baseConfig": "PaloAltoNGFW_main",
   "configurationItems": [
     {
@@ -31,8 +31,8 @@
       "required": true
     },
     {
-      "name": "Security_rule_for_blocking_port_internal_communication",
-      "description": "Name internal name security rule for port",
+      "name": "Security_rule_for_block_port_internal_communication",
+      "description": "Name internal security rule for port communications",
       "type": "string",
       "multi": false,
       "required": false,

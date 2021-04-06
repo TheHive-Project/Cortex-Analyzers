@@ -13,10 +13,10 @@ class Unblock_user(Responder):
         self.hostname_PaloAltoNGFW = self.get_param('config.Hostname_PaloAltoNGFW')
         self.User_PaloAltoNGFW = self.get_param('config.User_PaloAltoNGFW')
         self.Password_PaloAltoNGFW = self.get_param('config.Password_PaloAltoNGFW')
-        self.name_security_rule = self.get_param('config.name_security_rule','TheHive Block user external communication')
-        self.thehive_instance = self.get_param('config.thehive_instance')
-        self.thehive_api_key = self.get_param('config.thehive_api_key', 'YOUR_KEY_HERE')
-        self.api = TheHiveApi(self.thehive_instance, self.thehive_api_key)
+        self.name_security_rule = self.get_param('config.name_security_rule','TheHive Block external user')
+        self.TheHive_instance = self.get_param('config.TheHive_instance')
+        self.TheHive_API_key = self.get_param('config.TheHive_API_key', 'YOUR_KEY_HERE')
+        self.api = TheHiveApi(self.TheHive_instance, self.TheHive_API_key)
 
     def run(self):
         self.instance_type = self.get_param('data._type')
@@ -28,7 +28,7 @@ class Unblock_user(Responder):
             user=None
             user_list_alert=[]
             for i in list(response.json().get("artifacts")):
-                if 'user' in str(i):
+                if 'username' in str(i):
                     ioc = i.get("data")
                     for i in ioc:
                         if i == "[" or i == "]":
@@ -43,15 +43,15 @@ class Unblock_user(Responder):
                 "query": { "_parent": { "_type": "case", "_query": { "_id": case_id } } },
                 "range": "all"
             }
-            headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.thehive_api_key) }
-            thehive_api_url_case_search = '{}/api/case/artifact/_search'.format(self.thehive_instance)
+            headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(self.TheHive_API_key) }
+            thehive_api_url_case_search = '{}/api/case/artifact/_search'.format(self.TheHive_instance)
             r = requests.post(thehive_api_url_case_search, data=json.dumps(payload), headers=headers)
             if r.status_code != requests.codes.ok:
                 self.error(json.dumps(r.text))
             a=None
             data = r.json()
             for n in data:
-               if n.get('dataType') == 'user-agent':
+               if n.get('dataType') == 'username':
                    user=n.get('data')
         fw = firewall.Firewall(self.hostname_PaloAltoNGFW, api_username=self.User_PaloAltoNGFW, api_password=self.Password_PaloAltoNGFW)
         rulebase = panos.policies.Rulebase()

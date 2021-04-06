@@ -1,12 +1,12 @@
 {
   "name": "PaloAltoNGFW_block_external_IP_address",
   "version": "2.0.0",
-  "author": "Maxim Konakin, OSCD Community",
+  "author": "Maxim Konakin, OSCD Initiative",
   "url": "",
   "license": "AGPL-V3",
   "description": "Block external IP address",
   "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
-  "command": "PaloAltoNGFW/Block_external_ip.py",
+  "command": "PaloAltoNGFW/block_external_ip.py",
   "baseConfig": "PaloAltoNGFW_main",
   "configurationItems": [
     {
@@ -32,21 +32,21 @@
     },
     {
       "name": "Security_rule_for_block_external_IP_address",
-      "description": "Name external name security rule for ip",
+      "description": "Name external name security rule for IP address",
       "type": "string",
       "multi": false,
       "required": false,
 	  "defaultValue": "TheHive Block external IP address"
     },
 	{
-        "name": "Thehive_instance",
-        "description": "URL of the Thehive instance to query",
+        "name": "TheHive_instance",
+        "description": "URL of the TheHive instance to query",
         "type": "string",
         "multi": false,
         "required": true
       },
       {
-        "name": "Thehive_API_key",
+        "name": "TheHive_API_key",
         "description": "TheHive API key with read access",
         "type": "string",
         "multi": false,

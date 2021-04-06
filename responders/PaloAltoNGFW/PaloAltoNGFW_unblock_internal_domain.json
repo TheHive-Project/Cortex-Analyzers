@@ -1,12 +1,12 @@
 {
   "name": "PaloAltoNGFW_unblock_internal_domain",
   "version": "1.0.0",
-  "author": "Maxim Konakin, OSCD Community",
+  "author": "Maxim Konakin, OSCD Initiative",
   "url": "",
   "license": "AGPL-V3",
-  "description": "Unblock domain",
+  "description": "Unblock internal domain",
   "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
-  "command": "PaloAltoNGFW/Unblock_internal_domain.py",
+  "command": "PaloAltoNGFW/unblock_internal_domain.py",
   "baseConfig": "PaloAltoNGFW_main",
   "configurationItems": [
     {
@@ -32,11 +32,11 @@
     },
     {
       "name": "Address_group_for_unblock_internal_domain",
-      "description": "Name internal Address Group for domain",
+      "description": "Name internal Address Group for domains",
       "type": "string",
       "multi": false,
       "required": false,
-	  "defaultValue": "TheHive Black list internal domain"
+	  "defaultValue": "TheHive Block list internal domain"
     },
     {
       "name": "TheHive_instance",
