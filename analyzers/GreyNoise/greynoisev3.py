@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from collections import defaultdict, OrderedDict
-
 from cortexutils.analyzer import Analyzer
 from greynoise import GreyNoise
 
@@ -22,7 +20,7 @@ class GreyNoiseAnalyzer(Analyzer):
                     api_key=api_key,
                     timeout=30,
                     integration_name="greynoise-cortex-analyzer-v3.1",
-                    offering="community"
+                    offering="community",
                 )
             else:
                 api_client = GreyNoise(
@@ -118,7 +116,8 @@ class GreyNoiseAnalyzer(Analyzer):
                 t1_namespace = "GreyNoise"
                 t1_predicate = "tags"
                 t1_value = tag_count
-                # print('{}:{} = {} ({})'.format(t1_namespace, t1_predicate, t1_value, t1_level))
+                # print('{}:{} = {} ({})'.format(t1_namespace, t1_predicate,
+                #                               t1_value, t1_level))
                 taxonomies.append(
                     self.build_taxonomy(t1_level, t1_namespace, t1_predicate, t1_value)
                 )
@@ -129,7 +128,8 @@ class GreyNoiseAnalyzer(Analyzer):
                     "actor" if classification == "benign" else "classification"
                 )
                 t2_value = actor if classification == "benign" else classification
-                # print('{}:{} = {} ({})'.format(t2_namespace, t2_predicate, t2_value, t2_level))
+                # print('{}:{} = {} ({})'.format(t2_namespace, t2_predicate,
+                #                               t2_value, t2_level))
                 taxonomies.append(
                     self.build_taxonomy(t2_level, t2_namespace, t2_predicate, t2_value)
                 )
@@ -148,17 +148,17 @@ class GreyNoiseAnalyzer(Analyzer):
                 t2_namespace = "GreyNoise Community"
                 t2_predicate = "Name"
                 t2_value = name
-                # print('{}:{} = {} ({})'.format(t2_namespace, t2_predicate, t2_value, t2_level))
+                # print('{}:{} = {} ({})'.format(t2_namespace, t2_predicate,
+                #                               t2_value, t2_level))
                 taxonomies.append(
                     self.build_taxonomy(t2_level, t2_namespace, t2_predicate, t2_value)
                 )
                 t3_level = classification_level_map.get(classification)(None)
                 t3_namespace = "GreyNoise Community"
                 t3_predicate = "Type"
-                t3_value = (
-                    "Benign Service" if riot else "Internet Noise"
-                )
-                # print('{}:{} = {} ({})'.format(t2_namespace, t2_predicate, t2_value, t2_level))
+                t3_value = "Benign Service" if riot else "Internet Noise"
+                # print('{}:{} = {} ({})'.format(t3_namespace, t3_predicate,
+                #                                  t3_value, t3_level))
                 taxonomies.append(
                     self.build_taxonomy(t3_level, t3_namespace, t3_predicate, t3_value)
                 )
