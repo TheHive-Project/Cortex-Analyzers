@@ -8,6 +8,7 @@ from greynoise import GreyNoise
 class GreyNoiseAnalyzer(Analyzer):
     """
     GreyNoise API docs: https://developer.greynoise.io/reference#noisecontextip-1
+    GreyNoise Community API Reference: https://developer.greynoise.io/reference/community-api
     """
 
     def run(self):
@@ -167,7 +168,7 @@ class GreyNoiseAnalyzer(Analyzer):
                     self.build_taxonomy(
                         classification_level_map.get("unknown")(None),
                         "GreyNoise",
-                        "IP not observed scanning the internet in the last 90 days",
+                        "IP observed scanning the internet in the last 90 days",
                         False,
                     )
                 )
