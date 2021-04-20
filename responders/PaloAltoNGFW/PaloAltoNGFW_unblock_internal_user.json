@@ -35,7 +35,7 @@
       "description": "Name security rule for internal users",
       "type": "string",
       "multi": false,
-      "required": false,
+      "required": true,
 	  "defaultValue": "TheHive Block internal user"
     },
 	{

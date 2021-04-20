@@ -67,8 +67,9 @@ class Block_port(Responder):
         rulebase = panos.policies.Rulebase()
         fw.add(rulebase)
         current_security_rules =panos.policies.SecurityRule.refreshall(rulebase)
-        if port not in str(fw.find(port, panos.objects.ServiceObject)):
-            new_port_object = panos.objects.ServiceObject(port, protocol, description="TheHive Blocked port",destination_port=port)
+        raise IOError(fw.find(f"the_hive-{port}-{protocol}", panos.objects.ServiceObject))
+        if f"the_hive-{port}-{protocol}" not in str(fw.find(f"the_hive-{port}-{protocol}", panos.objects.ServiceObject)):
+            new_port_object = panos.objects.ServiceObject(f"the_hive-{port}-{protocol}", protocol, description="TheHive Blocked port",destination_port=port)
             fw.add(new_port_object)
             new_port_object.create()    
 
@@ -77,13 +78,13 @@ class Block_port(Responder):
         block_list = fw.find("TheHive Block list for external port communication", panos.objects.ServiceGroup)
         if block_list != None:
             port_list = block_list.about().get('value')
-            if port not in port_list:
-                port_list.append(port)
+            if f"the_hive-{port}-{protocol}" not in port_list:
+                port_list.append(f"the_hive-{port}-{protocol}")
                 temp1 = panos.objects.ServiceGroup("TheHive Block list for external port communication", value=port_list)
                 fw.add(temp1)
                 temp1.apply()
         elif block_list == None:
-            temp1 = panos.objects.ServiceGroup("TheHive Block list for external port communication", value=port)
+            temp1 = panos.objects.ServiceGroup("TheHive Block list for external port communication", value=f"the_hive-{port}-{protocol}")
             fw.add(temp1)
             temp1.apply()
         desired_rule_params = None

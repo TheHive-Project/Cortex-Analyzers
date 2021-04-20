@@ -59,21 +59,21 @@ class Block_ip(Responder):
         rulebase = panos.policies.Rulebase()
         fw.add(rulebase)
         current_security_rules =panos.policies.SecurityRule.refreshall(rulebase)
-        if ioc not in str(fw.find(ioc, panos.objects.AddressObject)):
-            new_ioc_object = panos.objects.AddressObject(ioc, ioc, description="TheHive Blocked ip address")
+        if f"the_hive-{ioc}" not in str(fw.find(f"the_hive-{ioc}", panos.objects.AddressObject)):
+            new_ioc_object = panos.objects.AddressObject(f"the_hive-{ioc}", ioc, description="TheHive Blocked ip address")
             fw.add(new_ioc_object)
             new_ioc_object.create()        
         panos.objects.AddressGroup.refreshall(fw)
         block_list = fw.find("TheHive Block list external IP address", panos.objects.AddressGroup)
         if block_list != None:
             ioc_list = block_list.about().get('static_value')
-            if ioc not in ioc_list:
-                ioc_list.append(ioc)
+            if f"the_hive-{ioc}" not in ioc_list:
+                ioc_list.append(f"the_hive-{ioc}")
                 temp1 = panos.objects.AddressGroup("TheHive Block list external IP address", static_value=ioc_list)
                 fw.add(temp1)
                 temp1.apply()
         elif block_list == None:
-            temp1 = panos.objects.AddressGroup("TheHive Block list external IP address", static_value=ioc)
+            temp1 = panos.objects.AddressGroup("TheHive Block list external IP address", static_value=f"the_hive-{ioc}")
             fw.add(temp1)
             temp1.apply()
         desired_rule_params = None

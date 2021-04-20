@@ -10,18 +10,16 @@ need install:
 3. pip install pan-os-python
 4. pip install thehive4py
 # ToDo
-
-Для работы responders, необходимо загрузить папку PaloAltoNGFW в директорию, где храняться другие responder. Далее перейти в загруженную папку и сделать запускаемыми скрипты на языке python командой "chmod +x *.py"
-
+Для работы responders, необходимо загрузить папку PaloAltoNGFW в директорию, где храняться другие responder.
 Далее необходимо:
-Выполнить перезагрузку системы cortex;
+- Выполнить перезагрузку системы cortex;
 
-После перезагрузки в веб консоли cortex перейти на вкладку "Organization", выбрать организацию для которой будет выполнена настройка и перейти на вкладку "Responders Config" и выполняем настройку полей в соответсвии с их значениями:
+- Для настройки респондера необходимо перейти в веб консоли cortex перейти на вкладку "Organization", выбрать организацию для которой будет выполнена настройка и перейти на вкладку "Responders Config" и выполняем настройку полей для "PaloAltoNGFW_main" в соответсвии с их значениями:
 ![alt text](Responders.jpg)
 1. Hostname_PaloAltoNGFW - сетевой адрес системы PaloAltoNGFW
 2. User_PaloAltoNGFW - пользователь в системе PaloAltoNGFW
 3. Password_PaloAltoNGFW - пароль для пользователя в системе PaloAltoNGFW
-4. name_security_rule (не обязательное поле) - имя правила безопасности в системе PaloAltoNGFW. Установлены следующие стандартные наименования правил:  
+4. Security_rule_* - имя правила безопасности в системе PaloAltoNGFW. Установлены следующие стандартные наименования правил:  
 4.1 Для блокировки\разблокировки имени пользователей:  
 4.1.1 "TheHive Block internal user"  
 4.1.2 "TheHive Block external user"  

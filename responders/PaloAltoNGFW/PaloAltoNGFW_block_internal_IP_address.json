@@ -35,7 +35,7 @@
       "description": "Name internal security rule for IP address",
       "type": "string",
       "multi": false,
-      "required": false,
+      "required": true,
 	  "defaultValue": "TheHive Block internal IP address"
     },
 	{

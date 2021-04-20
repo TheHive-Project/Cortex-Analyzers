@@ -57,21 +57,21 @@ class Unblock_ip(Responder):
         panos.objects.AddressGroup.refreshall(fw)
         block_list = fw.find(self.name_internal_Address_Group, panos.objects.AddressGroup)
         ioc_list = block_list.about().get('static_value')
-        if ioc in ioc_list:
-            ioc_list.remove(ioc)
+        if f"the_hive-{ioc}" in ioc_list:
+            ioc_list.remove(f"the_hive-{ioc}")
             temp1 = panos.objects.AddressGroup(self.name_internal_Address_Group, static_value=ioc_list)
             fw.add(temp1)
             temp1.apply()
       
         panos.objects.AddressObject.refreshall(fw)
-        if ioc in str(fw.find(ioc, panos.objects.AddressObject)):
+        if f"the_hive-{ioc}" in str(fw.find(f"the_hive-{ioc}", panos.objects.AddressObject)):
             try:
-                deleted_ioc = fw.find(ioc, panos.objects.AddressObject)
+                deleted_ioc = fw.find(f"the_hive-{ioc}", panos.objects.AddressObject)
                 deleted_ioc.delete()
             except:
                 self.report({'message': 'Responder did not comlite. Warning in AddressObject'})
 
-        self.report({'message': 'Responder successfully deleted %s from %s' % (ioc,self.name_internal_Address_Group)})
+        self.report({'message': 'Responder successfully deleted %s from %s' % (f"the_hive-{ioc}",self.name_internal_Address_Group)})
         fw.commit()
 
 if __name__ == '__main__':

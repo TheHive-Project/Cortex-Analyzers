@@ -35,7 +35,7 @@
       "description": "Name external security rule for domains",
       "type": "string",
       "multi": false,
-      "required": false,
+      "required": true,
 	  "defaultValue": "TheHive Block external Domain"
     },
 	{

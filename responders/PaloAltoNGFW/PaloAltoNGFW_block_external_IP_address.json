@@ -35,7 +35,7 @@
       "description": "Name external name security rule for IP address",
       "type": "string",
       "multi": false,
-      "required": false,
+      "required": true,
 	  "defaultValue": "TheHive Block external IP address"
     },
 	{

@@ -35,7 +35,7 @@
       "description": "Name internal Address Group for domains",
       "type": "string",
       "multi": false,
-      "required": false,
+      "required": true,
 	  "defaultValue": "TheHive Block list internal domain"
     },
     {

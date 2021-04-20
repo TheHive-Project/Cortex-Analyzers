@@ -35,7 +35,7 @@
       "description": "Name external Address Group for IP address",
       "type": "string",
       "multi": false,
-      "required": false,
+      "required": true,
 	  "defaultValue": "TheHive Block list external IP address"
     },
     {

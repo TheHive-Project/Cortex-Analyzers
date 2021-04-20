@@ -65,8 +65,8 @@ class Unblock_port(Responder):
         panos.objects.ServiceGroup.refreshall(fw)
         block_list = fw.find(self.name_internal_Service_Group, panos.objects.ServiceGroup)
         port_list = block_list.about().get('value')    
-        if port in port_list:
-            port_list.remove(port)
+        if f"the_hive-{port}-{protocol}" in port_list:
+            port_list.remove(f"the_hive-{port}-{protocol}")
             temp1 = panos.objects.ServiceGroup(self.name_internal_Service_Group, value=port_list)
             fw.add(temp1)
             temp1.apply()
