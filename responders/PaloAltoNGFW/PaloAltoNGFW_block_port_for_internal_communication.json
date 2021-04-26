@@ -6,7 +6,7 @@
   "license": "AGPL-V3",
   "description": "Block internal port communication",
   "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
-  "command": "PaloAltoNGFW/block_internal_port.py",
+  "command": "PaloAltoNGFW/block_port_for_internal_communication.py",
   "baseConfig": "PaloAltoNGFW_main",
   "configurationItems": [
     {

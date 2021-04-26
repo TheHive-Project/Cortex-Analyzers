@@ -67,7 +67,6 @@ class Block_port(Responder):
         rulebase = panos.policies.Rulebase()
         fw.add(rulebase)
         current_security_rules =panos.policies.SecurityRule.refreshall(rulebase)
-        raise IOError(fw.find(f"the_hive-{port}-{protocol}", panos.objects.ServiceObject))
         if f"the_hive-{port}-{protocol}" not in str(fw.find(f"the_hive-{port}-{protocol}", panos.objects.ServiceObject)):
             new_port_object = panos.objects.ServiceObject(f"the_hive-{port}-{protocol}", protocol, description="TheHive Blocked port",destination_port=port)
             fw.add(new_port_object)

@@ -6,7 +6,7 @@
   "license": "AGPL-V3",
   "description": "Block external port communication",
   "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
-  "command": "PaloAltoNGFW/block_external_port.py",
+  "command": "PaloAltoNGFW/block_port_for_external_communication.py",
   "baseConfig": "PaloAltoNGFW_main",
   "configurationItems": [
     {
