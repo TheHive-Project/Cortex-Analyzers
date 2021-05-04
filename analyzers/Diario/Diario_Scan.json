@@ -1,0 +1,55 @@
+{
+  "name": "Diario_Scan",
+  "version": "1.0",
+  "author": "Ignacio Rodriguez Paez",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use Diario to scan a file, it can be DOC*, XLS*, PPTX or PDF.",
+  "dataTypeList": ["file"],
+  "command": "Diario/diario_analyzer.py",
+  "baseConfig": "Diario",
+  "config": {
+    "service": "scan"
+  },
+  "configurationItems": [
+    {
+      "name": "client_id",
+      "description": "Client id for Diario",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "secret",
+      "description": "Secret for Diario",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "polling_interval",
+      "description": "Define time interval between two requests attempts for the report",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 60
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "service_homepage": "https://diario.elevenpaths.com/",
+  "service_logo": {
+      "path": "assets/logo.png",
+      "caption": "DIARIO logo"
+  },
+  "screenshots": [
+      {
+          "path": "assets/diario_scan_short.png",
+          "caption": "DIARIO: short report"
+      },
+      {
+          "path": "assets/diario_scan_long.png",
+          "caption": "DIARIO: long report"
+      }
+  ]
+}
