@@ -59,16 +59,16 @@ class Unblock_domain(Responder):
                 
         block_list = fw.find(self.name_internal_Address_Group_for_domain, panos.objects.AddressGroup)
         ioc_list = block_list.about().get('static_value')
-        if f"the_hive-{ioc}" in ioc_list:
-            ioc_list.remove(f"the_hive-{ioc}")
+        if f"thehive-{ioc}" in ioc_list:
+            ioc_list.remove(f"thehive-{ioc}")
             temp1 = panos.objects.AddressGroup(self.name_internal_Address_Group_for_domain, static_value=ioc_list)
             fw.add(temp1)
             temp1.apply()
         
         panos.objects.AddressObject.refreshall(fw)
-        if f"the_hive-{ioc}" in str(fw.find(f"the_hive-{ioc}", panos.objects.AddressObject)):
+        if f"thehive-{ioc}" in str(fw.find(f"thehive-{ioc}", panos.objects.AddressObject)):
             try:
-                deleted_ioc = fw.find(f"the_hive-{ioc}", panos.objects.AddressObject)
+                deleted_ioc = fw.find(f"thehive-{ioc}", panos.objects.AddressObject)
                 deleted_ioc.delete()
             except:
                 self.report({'message': 'Responder did not comlite. Warning in AddressObject'})
