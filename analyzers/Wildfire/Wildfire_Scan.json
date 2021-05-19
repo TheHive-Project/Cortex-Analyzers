@@ -1,0 +1,34 @@
+{
+  "name": "Wildfire_Scan",
+  "version": "1.0",
+  "author": "Ignacio Rodriguez Paez",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use Palo Alto Wildfire service to scan a file or URL.",
+  "dataTypeList": [
+    "file",
+    "url"
+  ],
+  "command": "Wildfire/wildfire.py",
+  "baseConfig": "Wildfire",
+  "config": {
+    "service": "scan"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for Wildfire",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "polling_interval",
+      "description": "Define time interval between two requests attempts for the report",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 60
+    }
+  ]
+}
