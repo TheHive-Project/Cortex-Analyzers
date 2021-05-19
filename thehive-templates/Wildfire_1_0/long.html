@@ -1,0 +1,81 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        Wildfire Report
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt ng-if="content.results.file_info.malware">Veredict</dt>
+            <dd>
+                <span class="label" ng-if="content.results.file_info.malware === 'yes'" ng-class="{'label-info':content.results.file_info.malware === 'no',
+                'label-danger': content.results.file_info.malware === 'yes'">
+                    Malware
+                </span>
+                <span class="label" ng-if="content.results.file_info.malware === No" ng-class="{'label-info':content.results.file_info.malware === 'no',
+                'label-danger': content.results.file_info.malware === 'yes'">
+                    Bening
+                </span>
+            </dd>
+        </dl>
+
+        <hr>
+        <dl class="dl-horizontal">
+            <dt>File Signer</dt>
+            <dd>{{content.results.file_info.file_signer}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>File Type</dt>
+            <dd>{{content.results.file_info.filetype}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>File Size</dt>
+            <dd>{{content.results.file_info.size}} bytes</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>MD5</dt>
+            <dd>{{content.results.file_info.md5}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>SHA1</dt>
+            <dd>{{{content.results.file_info.sha1}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>SHA256</dt>
+            <dd>{{{content.results.file_info.sha256}}</dd>
+        </dl>
+    </div>
+</div>
+<div class="panel panel-success" ng-if="success && content.scanreport.data.length == 0">
+    <div class="panel-heading">
+        VMRay Report
+    </div>
+    <div class="panel-body">
+        <b>No matches.</b>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        VMRay Report returned with an error
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Error:</dt>
+            <dd>{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="success && content.data.errors.length > 0">
+    <div class="panel-heading">
+        VMRay Upload returned with an error (reanalyzation deactivated?)
+    </div>
+    <div class="panel-body" ng-repeat="e in content.data.errors">
+        <dl class="dl-horizontal">
+            <dt><i class="fa fa-warning"></i> Error:</dt>
+            <dd>{{e.error_msg}}</dd>
+            <dt>Filename:</dt>
+            <dd><a href="https://vmray.analyse.certbund/user/sample/list?quick_search_value={{e.submission_filename}}">{{e.submission_filename}}
+                    (search)</a></dd>
+        </dl>
+    </div>
+</div>
