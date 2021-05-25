@@ -58,7 +58,7 @@
 </div>
 
 <!-- URLs  -->
-<div class="panel panel-info" ng-if="success && content.result !== null && content.result.targets['0'].iocs">
+<div class="panel panel-info" ng-if="success && content.result !== null && content.result.targets['0'].iocs.urls">
     <div class="panel panel-heading" ng-if="content.result.targets">URLs</div>
                     <div class="panel-body" ng-repeat="r in content.result.targets">
                             <span ng-repeat="x in r.iocs.urls">
@@ -69,7 +69,7 @@
 
 
 <!-- Domains  -->
-<div class="panel panel-info" ng-if="success && content.result !== null && content.result.targets['0'].iocs">
+<div class="panel panel-info" ng-if="success && content.result !== null && content.result.targets['0'].iocs.domains">
     <div class="panel panel-heading" ng-if="content.result.targets">Domains</div>
                     <div class="panel-body" ng-repeat="r in content.result.targets">
                             <span ng-repeat="x in r.iocs.domains">
@@ -79,7 +79,7 @@
 </div>
 
 <!-- IPs  -->
-<div class="panel panel-info" ng-if="success && content.result !== null && content.result.targets['0'].iocs">
+<div class="panel panel-info" ng-if="success && content.result !== null && content.result.targets['0'].iocs.ips">
     <div class="panel panel-heading" ng-if="content.result.targets">IPs</div>
                     <div class="panel-body" ng-repeat="r in content.result.targets">
                             <span ng-repeat="x in r.iocs.ips">
