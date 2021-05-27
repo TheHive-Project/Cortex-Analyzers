@@ -5,7 +5,7 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "version": "1.0",
   "description": "Submit artifacts to the Triage sandbox service. This analyzer requires a paid subscription",
-  "dataTypeList": ["ip", "fqdn", "domain", "url", "file"],
+  "dataTypeList": ["ip", "url", "file"],
   "baseConfig": "Triage",
   "config": {
       "check_tlp": true,

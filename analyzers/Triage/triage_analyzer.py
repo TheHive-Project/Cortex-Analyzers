@@ -88,7 +88,7 @@ class TriageAnalyzer(Analyzer):
 
     def run(self):
 
-            if self.data_type == 'domain' or self.data_type == 'fqdn'  or self.data_type == 'ip' or self.data_type == 'url':
+            if self.data_type == 'ip' or self.data_type == 'url':
                 data = self.get_param('data', None, 'Data is missing')
 
                 if ':' in data:
