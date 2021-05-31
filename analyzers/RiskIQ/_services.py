@@ -84,6 +84,14 @@ class IlluminateServiceFile():
         """Build summary data structure for data processed by this service."""
         return { 'taxonomies': self.get_taxonomies(data) }
     
+    def transform(self, data):
+        """Optionally post-process report data.
+        
+        Used by IlluminateAnalyzer.run() to give a service an opportunity to transform
+        data before sending it upstream.
+        """
+        return data
+    
 
 
 class Reputation(IlluminateServiceFile):
@@ -105,6 +113,24 @@ class Reputation(IlluminateServiceFile):
             'UNKOWN': 'info'
         }
         return levels.get(data['classification'],'info')
+    
+    def transform(self, data):
+        classes = {
+            'SUSPICIOUS': 'warning',
+            'MALICIOUS': 'danger',
+            'GOOD': 'success',
+            'UNKOWN': 'info'
+        }
+        data['uicontext'] = classes.get(data['classification'],'info')
+        for index, rule in enumerate(data['rules']):
+            if rule['severity'] >= 4:
+                uicontext = 'danger'
+            elif rule['severity'] >= 2:
+                uicontext = 'warning'
+            else:
+                uicontext = 'info'
+            data['rules'][index]['uicontext'] = uicontext
+        return data
 
 
 
@@ -142,6 +168,19 @@ class Summary(IlluminateServiceFile):
                 'value': count
             })
         return taxonomies
+    
+    def transform(self, data):
+        levels = {
+            'malware_hashes': 'danger',
+            'projects': 'warning',
+            'articles': 'danger'
+        }
+        uicontexts = {}
+        for field in ['resolutions','certificates','malware_hashes','projects','articles',
+                      'trackers','components','hostpairs','cookies','services']:
+            uicontexts[field] = levels.get(field,'info')
+        data['uicontexts'] = uicontexts
+        return data
 
 
 
