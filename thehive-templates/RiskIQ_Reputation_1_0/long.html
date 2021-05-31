@@ -1,0 +1,71 @@
+<div class="report-PT" ng-if="success">
+    <style>
+        .report-PT dl {
+            margin-bottom: 2px;
+        }
+        .progress {
+            border: 1px solid #CCC;
+            height: 27px;
+        }
+        .progress-bar {
+            font-size: 16px;
+            line-height: 25px;
+        }
+    </style>
+
+
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <div ng-if="content.result.length === 0">
+                No Reputation Score available for this IOC.
+            </div>
+            <div ng-if="content.result.length !== 0" class="panel panel-{{content.uicontext}}">
+                <div class="panel-heading">
+                    <strong>RiskIQ Illuminate Reputation Score</strong>
+                </div>
+                <div class="panel-body">
+                    <dl class="dl-horizontal">
+                        <dt>Score:</dt>
+                        <dd>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-{{content.uicontext}}" role="progressbar" aria=valuenow="{{content.score}}" aria-valuemin="0" aria-valuemax="100" style="width: {{content.score}}%;">
+                                    <b>{{content.score}}</b> / 100 ({{content.classification}})
+                                </div>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div ng-if="content.result.length !== 0" class="panel panel-default">
+                <div class="panel-heading">
+                    Score Justification
+                </div>
+                <div class="panel-body">
+                    <table class="table table-sm" ng-if="content.rules.length > 0">
+                        <tr>
+                            <th>Severity</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr ng-repeat="r in content.rules">
+                            <td><span class="label label-{{r.uicontext}}">{{r.severity}}</span></td>
+                            <td>{{r.name || 'None'}}</td>
+                            <td>{{r.description || 'None'}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
