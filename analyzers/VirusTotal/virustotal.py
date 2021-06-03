@@ -188,7 +188,15 @@ class VirusTotalAnalyzer(Analyzer):
                     raw["detected_downloaded_samples"]
                 )
 
-        if self.service in ["scan", "rescan"]:
+            if "Webutation domain info" in raw:
+                if raw['Webutation domain info']['Verdict'] == 'safe':
+                    level = 'safe'
+                elif raw['Webutation domain info']['Verdict'] == 'unsure':
+                    level = 'suspicious'
+                else:
+                    level = 'malicious'
+
+        if self.service == "scan":
             if "scans" in raw:
                 result["scans"] = len(raw["scans"])
                 value = "{}/{}".format(result["positives"], result["total"])
