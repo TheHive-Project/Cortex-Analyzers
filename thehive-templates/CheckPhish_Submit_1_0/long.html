@@ -1,0 +1,29 @@
+<div class="panel panel-info" ng-if="::content">
+    <div class="panel-heading">
+        <strong>Summary</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <th>JobID</th>
+                <td>{{content.jobID | ellipsis:130}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt>
+                <i class="fa fa-warning"></i> urlscan.io:
+            </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
+
