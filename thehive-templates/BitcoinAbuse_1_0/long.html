@@ -1,0 +1,56 @@
+<div class="panel panel-info" ng-if="::content.recent" ng-init="recent_limit = 20">
+    <div class="panel-heading">
+        <strong>Summary</strong>
+        <span class="pull-right" ng-show="::content.recent.length > 20">
+            <a href ng-show="recent_limit===20" ng-click="recent_limit = undefined">Show All ({{::content.recent.length}})</a>
+            <a href ng-show="!recent_limit" ng-click="recent_limit = 20">Show less</a>
+        </span>
+    </div>
+
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <th>Description</th>
+                <th>Time</th>
+            </tr>
+            <tr ng-repeat="r in content.recent | limitTo:recent_limit | orderBy:'-created_at'">
+                <td>{{r.description | ellipsis:130}}</td>
+                <td>{{r.created_at}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="panel panel-info" ng-if="::content.recent">
+    <div class="panel-heading">
+        <strong>Other info</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <td>URL</td>
+                <td>
+                    <span>
+                        <i class="fa fa-search"></i>
+                        <a ng-href="https://www.bitcoinabuse.com/reports/{{content.address}}" target="_blank">View Full Report</a>
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+    <!-- General error  -->
+    <div class="panel panel-danger" ng-if="!success">
+        <div class="panel-heading">
+            <strong>{{artifact.data | fang}}</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal" ng-if="content.errorMessage">
+                <dt>
+                    <i class="fa fa-warning"></i> urlscan.io:
+                </dt>
+                <dd class="wrap">{{content.errorMessage}}</dd>
+            </dl>
+        </div>
+    </div>
+
