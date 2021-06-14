@@ -7,14 +7,15 @@ class UrlscanAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
 
-    def search(self, indicator):
+    def search(self, indicator, search_after=None):
         """
         Searches for a website using the indicator
+        :param search_after:
         :param indicator: domain, ip, hash, url
         :type indicator: str
         :return: dict
         """
-        res = Urlscan(indicator).search()
+        res = Urlscan(indicator).search(search_after=search_after)
         return res
 
     def run(self):
@@ -26,10 +27,11 @@ class UrlscanAnalyzer(Analyzer):
 
         try:
             if self.data_type in targets:
+                search_after = self.get_param('parameters.search_after', None, None)
                 self.report({
                     'type': self.data_type,
-                    'query': query,
-                    'indicator': self.search(query)
+                    'query': query+". Search after: "+search_after,
+                        'indicator': self.search(query, search_after=search_after)
                 })
         except UrlscanException as err:
             self.error(str(err))
@@ -43,12 +45,12 @@ class UrlscanAnalyzer(Analyzer):
         total = raw["indicator"]["total"]
         if total <= 1:
             level = 'suspicious' if total == 1 else 'info'
-            value = "{} result".format(total)
+            value = total
             taxonomies.append(self.build_taxonomy(
                 level, namespace, predicate, value))
         else:
             level = 'suspicious'
-            value = "{} results".format(total)
+            value = total
             taxonomies.append(self.build_taxonomy(
                 level, namespace, predicate, value))
 
