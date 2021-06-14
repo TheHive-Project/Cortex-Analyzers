@@ -1,13 +1,13 @@
 {
   "name": "Censys_search",
   "author": "Marc Nebout, SEKOIA",
+  "version": "2.0",
   "license": "AGPL-V3",
-  "url": "https://github.com/CTIMarc/Cortex-Analyzers/tree/master/analyzers/Censys",
-  "version": "1.1",
-  "description": "Search pattern in Censys",
-  "dataTypeList": ["other"],
+  "url": "https://github.com/CTIMarc/Cortex-Analyzers/tree/master/analyzers/CensysV2",
+  "description": "Search pattern in Censys v2",
+  "dataTypeList": ["other","ip","domain"],
   "baseConfig": "Censys",
-  "command": "Censys/censys_search_ip.py",
+  "command": "CensysV2/censys_search.py",
   "configurationItems": [
     {
       "name": "uid",
