@@ -87,7 +87,7 @@ def parseEml(filepath):
     #HeaderParser adheres to rfc2821, and extracts all header, so no need to monkeypatch a split. 
     hParser = email.parser.HeaderParser()
     h = str(hParser.parsestr(raw_eml))
-    result['headers'] = h
+    result['headers'] = h[:h.lower().index('content-type: ')]
 
     parsed_eml = eml_parser.eml_parser.decode_email(filepath, include_raw_body=True, include_attachment_data=True)
     #parsed_eml['header'].keys() gives:
