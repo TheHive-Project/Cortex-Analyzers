@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 import requests
+import re
 import json
+
+regex_search_after = "\\d{13},[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
 
 
 class UrlscanException(Exception):
@@ -9,11 +12,16 @@ class UrlscanException(Exception):
 
 class Urlscan:
     def __init__(self, query=""):
-        assert len(query) > 0, "Qeury must be defined"
+        assert len(query) > 0, "Query must be defined"
         self.query = query
 
-    def search(self):
-        payload = {"q": self.query}
+    def search(self, search_after=None):
+        if re.match(regex_search_after, search_after):
+            payload = {"q": self.query,
+                       "search_after": search_after
+                       }
+        else:
+            payload = {"q": self.query}
         r = requests.get("https://urlscan.io/api/v1/search/", params=payload, verify=False)
         if r.status_code == 200:
             return r.json()
