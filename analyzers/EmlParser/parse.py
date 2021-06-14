@@ -96,7 +96,7 @@ def parseEml(filepath, job_directory):
     #splited string because it was returning the body inside 'Content-Type'
     hParser = email.parser.HeaderParser()
     h = str(hParser.parsestr(raw_eml))
-    result['headers'] = h[:h.lower().index('content-type:')]
+    result['headers'] = h[:h.lower().index('content-type: ')]
 
     parsed_eml = eml_parser.eml_parser.decode_email(filepath, include_raw_body=True, include_attachment_data=True)
     #parsed_eml['header'].keys() gives:
