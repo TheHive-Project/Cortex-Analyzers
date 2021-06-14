@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from cortexutils.analyzer import Analyzer
-from censys.search.v1.ipv4 import CensysIPv4
-from censys.common.exceptions import CensysNotFoundException, CensysRateLimitExceededException, CensysUnauthorizedException
+from censys.search import CensysHosts
+from censys.common.exceptions import CensysNotFoundException, CensysUnauthorizedException, CensysRateLimitExceededException
 
 
 class CensysAnalyzer(Analyzer):
@@ -18,17 +18,13 @@ class CensysAnalyzer(Analyzer):
             None,
             'No API-Key for Censys given. Please add it to the cortex configuration.'
         )
-        self.__fields = self.get_param(
-            'parameters.fields',
-            ["updated_at", "ip"]
-        )
-        self.__max_records = self.get_param(
+        self.__per_page = self.get_param(
             'parameters.max_records',
-            1000
+            100
         )
-        self.__flatten = self.get_param(
-            'parameters.flatten',
-            True
+        self.__pages = self.get_param(
+            'parameters.pages',
+            200
         )
 
     def search(self, search):
@@ -45,8 +41,11 @@ class CensysAnalyzer(Analyzer):
         :type flatten: bool
         :return: dict
         """
-        c = CensysIPv4(api_id=self.__uid, api_secret=self.__api_key)
-        return c.search(search, fields=self.__fields,  max_records=self.__max_records, flatten=self.__flatten)
+        h = CensysHosts(api_id=self.__uid, api_secret=self.__api_key)
+        results = []
+        for page in h.search(search, per_page=self.__per_page,  pages=self.__pages):
+            results = results + page
+        return results
 
     def run(self):
         try:
@@ -70,7 +69,7 @@ class CensysAnalyzer(Analyzer):
         taxonomies = []
         if 'matches' in raw:
             result_count = len(raw.get('matches', []))
-            taxonomies.append(self.build_taxonomy('info', 'Censys ipv4 search', 'results', result_count))
+            taxonomies.append(self.build_taxonomy('info', 'CensysV2 search', 'results', result_count))
 
         return {
             'taxonomies': taxonomies

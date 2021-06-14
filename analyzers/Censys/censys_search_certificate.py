@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from cortexutils.analyzer import Analyzer
-from censys.certificates import CensysCertificates
-from censys.exceptions import CensysNotFoundException, CensysRateLimitExceededException, CensysUnauthorizedException
+from censys.search.v1.certificates import CensysCertificates
+from censys.common.exceptions import CensysNotFoundException, CensysRateLimitExceededException, CensysUnauthorizedException
 
 
 class CensysAnalyzer(Analyzer):
