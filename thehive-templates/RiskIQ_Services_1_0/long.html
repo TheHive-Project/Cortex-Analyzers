@@ -1,0 +1,175 @@
+<div class="report-PT" ng-if="success">
+    <style>
+        .report-PT dl {
+            margin-bottom: 2px;
+        }
+        .fieldlabel {
+            font-size: 10pt;
+            color: #777;
+        }
+        .fieldvalue {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .svctitle {
+            font-size: 18px;
+        }
+        .modal-content {
+            border: 1px solid #999;
+            border: 1px solid rgba(0,0,0,.2);
+            border-radius: 6px;
+            -webkit-box-shadow: 0 3px 9px rgb(0 0 0 / 50%);
+            box-shadow: 0 3px 9px rgb(0 0 0 / 50%);
+            outline: 0;
+        }
+    </style>
+
+
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <div ng-if="content.records.length === 0">
+                No service history available for this IOC.
+            </div>
+            <div ng-if="content.records.length !== 0" class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>RiskIQ Services</strong>
+                </div>
+                <div class="panel-body">
+                    <div class="panel panel-info" ng-repeat="svc in content.records">
+                        <div class="panel-heading svctitle"><strong>{{svc.protocol}} {{svc.port}}</strong> <i>({{svc.status}})</i>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-xs-4 fieldlabel">First Seen</div>
+                                <div class="col-xs-4 fieldlabel">Last Seen</div>
+                                <div class="col-xs-4 fieldlabel">Observations</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-4 fieldvalue">{{svc.firstseen}}</div>
+                                <div class="col-xs-4 fieldvalue">{{svc.lastseen}}</div>
+                                <div class="col-xs-4 fieldvalue">{{svc.count}}</div>
+                            </div>
+                            <div class="row" ng-if="svc.current_services.length !== 0">
+                                <hr/>
+                                <div class="col-xs-12 fieldlabel">Current Services</div>
+                            </div>
+                            <div class="panel" ng-if="svc.current_services.length !== 0">
+                                <div class="panel-body">
+                                    <table class="table table-condensed">
+                                        <thead>
+                                            <tr>
+                                                <th>Service</th>
+                                                <th>Category</th>
+                                                <th>Version</th>
+                                                <th>First Seen</th>
+                                                <th>Last Seen</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="s in svc.current_services">
+                                                <td>{{s.label}}</td>
+                                                <td>{{s.category}}</td>
+                                                <td>{{s.version}}</td>
+                                                <td>{{s.firstSeen}}</td>
+                                                <td>{{s.lastSeen}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div class="row" ng-if="svc.banners.length !== 0">
+                                <hr/>
+                                <div class="col-xs-12 fieldlabel">Banners</div>
+                            </div>
+                            <div class="panel" ng-if="svc.banners.length !== 0">
+                                <div class="panel-body">
+                                    <table class="table table-condensed">
+                                        <thead>
+                                            <tr>
+                                                <th>Scan Type</th>
+                                                <th>Observations</th>
+                                                <th>First Seen</th>
+                                                <th>Last Seen</th>
+                                                <th>Banners</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="b in svc.banners">
+                                                <td>{{b.scanType}}</td>
+                                                <td>{{b.count}}</td>
+                                                <td>{{b.firstSeen}}</td>
+                                                <td>{{b.lastSeen}}</td>
+                                                <td><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#b{{svc.protocol}}{{svc.port}}{{b.scanType}}">View</button>
+                                                    <div 
+                                                        class="modal" 
+                                                        id="b{{svc.protocol}}{{svc.port}}{{b.scanType}}" 
+                                                        role="dialog" 
+                                                        aria-labeledby="b{{svc.protocol}}{{svc.port}}{{b.scanType}}label" >
+                                                        <div class="modal-dialog modal-lg" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                    <h4 class="modal-title" id="b{{svc.protocol}}{{svc.port}}{{b.scanType}}label">{{svc.protocol}} {{svc.port}} Banners via {{b.scanType}} from {{b.firstSeen}} to {{b.lastSeen}}</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <pre class="pre-scrollable">{{b.banner}}</pre>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div class="row" ng-if="svc.recent_services.length !== 0">
+                                <hr/>
+                                <div class="col-xs-12 fieldlabel">Recent Services</div>
+                            </div>
+                            <div class="panel" ng-if="svc.recent_services.length !== 0">
+                                <div class="panel-body">
+                                    <table class="table table-condensed">
+                                        <thead>
+                                            <tr>
+                                                <th>Service</th>
+                                                <th>Category</th>
+                                                <th>Version</th>
+                                                <th>First Seen</th>
+                                                <th>Last Seen</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="s in svc.recent_services">
+                                                <td>{{s.label}}</td>
+                                                <td>{{s.category}}</td>
+                                                <td>{{s.version}}</td>
+                                                <td>{{s.firstSeen}}</td>
+                                                <td>{{s.lastSeen}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
