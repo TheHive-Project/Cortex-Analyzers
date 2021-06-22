@@ -30,8 +30,14 @@ class IlluminateAnalyzer(Analyzer):
             value = getattr(ioc_obj, self._property)
         except AttributeError as e:
             self.error('Unknown property {}'.format(self._property))
+        except riqanalyzer.AnalyzerAPIError as e:
+            if e.status_code == 404:
+                self.report({'found': False, 'records': []})
+                return
+            else:
+                self.error('API error while getting property "{0}": {1}'.format(self._property, e))
         except riqanalyzer.AnalyzerError as e:
-            self.error('API error while getting property "{0}": {1}'.format(self._property, e))
+            self.error('Analyzer error while getting property "{0}": {1}'.format(self._property, e))
         try:
             data = value.as_dict
         except Exception as e:
