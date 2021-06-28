@@ -42,6 +42,7 @@ class CensysAnalyzer(Analyzer):
         :return: dict
         """
         h = CensysHosts(api_id=self.__uid, api_secret=self.__api_key)
+        h.DEFAULT_TIMEOUT = 60
         results = []
         for page in h.search(search, per_page=self.__per_page,  pages=self.__pages):
             results = results + page
