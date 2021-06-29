@@ -92,6 +92,9 @@ class IlluminateServiceFile():
         """
         return data
     
+    def build_artifacts(self, report):
+        return None
+    
 
 
 class Reputation(IlluminateServiceFile):
@@ -351,6 +354,24 @@ class Resolutions(IlluminateServiceFile):
         self._config['property'] = 'resolutions'
 
 
+
+class Subdomains(IlluminateServiceFile):
+    
+    def __init__(self):
+        super().__init__()
+        self._name = 'RiskIQ_Subdomains'
+        self._description = 'RiskIQ: subdomains observed historically in pDNS records.'
+        self._dataTypeList = ['fqdn','domain']
+        self._taxonomy_predicate = 'Subdomains'
+        self._taxonomy_level = 'info'
+        self._taxonomy_valuekey = 'totalrecords'
+        self._config['property'] = 'subdomains'
+    
+    def build_artifacts(self, report):
+        return [ { 'dataType': 'fqdn', 'data': r.get('hostname') } for r in report.get('records', []) ]
+
+
+
 class Trackers(IlluminateServiceFile):
     
     def __init__(self):
@@ -391,6 +412,7 @@ SERVICES = {
     'reputation': Reputation,
     'resolutions': Resolutions,
     'services': Services,
+    'subdomains': Subdomains,
     'trackers': Trackers,
     'summary': Summary,
     'whois': Whois,

@@ -47,6 +47,12 @@ class IlluminateAnalyzer(Analyzer):
 
     def summary(self, raw):
         return self._svc.summarize(raw)
+    
+    def artifacts(self, report):
+        svc_artifacts = self._svc.build_artifacts(report)
+        if svc_artifacts is None:
+            return super().artifacts(report)
+        return svc_artifacts
 
 
 

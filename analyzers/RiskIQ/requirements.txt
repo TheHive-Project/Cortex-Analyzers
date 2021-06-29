@@ -1,2 +1,2 @@
 cortexutils
-passivetotal
+passivetotal>=2.5.0
