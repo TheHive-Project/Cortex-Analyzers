@@ -198,6 +198,7 @@ class IBMXForceAnalyzer(Analyzer):
         return results
 
     def summary(self, raw):
+        print("hello")
         taxonomies = []
         level = "info"
         namespace = "IBMXForce"
@@ -205,17 +206,25 @@ class IBMXForceAnalyzer(Analyzer):
         score_value = raw['score_value']
         score = raw['score']
 
-        if score_value < 4 or score_value == 'low':
-            level = "safe"
-        elif score_value < 7 or score_value == 'medium':
-            level = "suspicious"
-        elif score_value >= 7 or score_value == 'high':
-            level = "malicious"
+        if type(score_value) == int:
+            if score_value < 4:
+                level = "safe"
+            elif score_value < 7:
+                level = "suspicious"
+            elif score_value >= 7:
+                level = "malicious"
+        elif type(score_value) == str:
+            if score_value == 'low':
+                level = "safe"
+            elif score_value == 'medium':
+                level = "suspicious"
+            elif score_value == 'high':
+                level = "malicious"           
 
         #taxonomies.append(self.build_taxonomy(level, namespace, predicate, "{}".format(score)))
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, "{}".format(score)))
 
-
+        print("taxonomies: ", taxonomies)
         return {"taxonomies": taxonomies}
 
     def run(self):
