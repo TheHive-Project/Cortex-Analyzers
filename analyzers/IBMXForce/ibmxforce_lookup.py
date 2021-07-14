@@ -198,7 +198,6 @@ class IBMXForceAnalyzer(Analyzer):
         return results
 
     def summary(self, raw):
-        print("hello")
         taxonomies = []
         level = "info"
         namespace = "IBMXForce"
@@ -224,7 +223,6 @@ class IBMXForceAnalyzer(Analyzer):
         #taxonomies.append(self.build_taxonomy(level, namespace, predicate, "{}".format(score)))
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, "{}".format(score)))
 
-        print("taxonomies: ", taxonomies)
         return {"taxonomies": taxonomies}
 
     def run(self):
