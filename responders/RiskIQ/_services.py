@@ -1,13 +1,16 @@
 import json
 from passivetotal import ProjectsRequest, ArtifactsRequest
 
+VERSION = '1.0'
+
+
 
 class IlluminateServiceFile():
     """Base service class for all RiskIQ service files."""
 
     def __init__(self, **kwargs):
         self._name = 'RiskIQ_{}'.format(self.__class__.__name__)
-        self._version = '1.0'
+        self._version = VERSION
         self._author = 'RiskIQ'
         self._url = 'https://github.com/TheHive-Project/Cortex-Analyzers'
         self._license = 'AGPL-V3'
@@ -118,6 +121,7 @@ class PushArtifactToProject(IlluminateServiceFile):
         project_description = data['case'].get('description','')
         project_visibility = self._params['visibility']
         request = ProjectsRequest(username=self._params['username'], api_key=self._params['api_key'])
+        request.set_context('thehive','riq-responder',VERSION,self.__class__.__name__)
         projects = request.find_projects(project_name, visibility=project_visibility)
         if len(projects) > 1:
             self._report['error'] = 'Found more than one project with the same name'
@@ -129,6 +133,7 @@ class PushArtifactToProject(IlluminateServiceFile):
             project = projects[0]
         project_guid = project['guid']
         request = ArtifactsRequest(username=self._params['username'], api_key=self._params['api_key'])
+        request.set_context('thehive','riq-responder',VERSION,self.__class__.__name__)
         artifact_tag = self._params.get('riq_artifact_tag')
         if artifact_tag is not None:
             tags = [artifact_tag]
