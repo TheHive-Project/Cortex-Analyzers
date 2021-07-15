@@ -6,6 +6,9 @@ from cortexutils.analyzer import Analyzer
 from passivetotal import analyzer as riqanalyzer
 from _services import SERVICES
 
+VERSION = '1.0'
+
+
 
 class IlluminateAnalyzer(Analyzer):
     def __init__(self):
@@ -16,6 +19,7 @@ class IlluminateAnalyzer(Analyzer):
         self._days_back = self.get_param('config.days_back', None, 'RiskIQ Illuminate days_back is missing')
         riqanalyzer.init(username=self._username, api_key=self._api_key)
         riqanalyzer.set_date_range(days_back=self._days_back)
+        riqanalyzer.set_context('thehive','riq-analyzer',VERSION,'analyzer')
         if self._property not in SERVICES:
             self.error('Unknown property {}'.format(self._property))
         self._svc = SERVICES[self._property]()
