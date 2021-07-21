@@ -1,7 +1,7 @@
 {
     "name": "EmlParser",
-    "version": "1.3",
-    "author": "ninsmith",
+    "version": "2.0",
+    "author": "StrangeBee",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
     "baseConfig": "EmlParser",
@@ -10,9 +10,27 @@
         "max_tlp": 3,
         "service": ""
     },
-    "description": "Parse Eml message",
+    "description": "Parse and visualise EML email message. Submit a .eml formatted file and extract some useful information.",
     "dataTypeList": [
         "file"
     ],
-    "command": "EmlParser/parse.py"
+    "command": "EmlParser/parse.py",
+    "configurationItems": [
+        {
+            "name": "email_visualisation",
+            "description": "Enable email visualisation in report. This option requires the program `wkhtmltoimage` and installation of `wkhtmltopdf` package on the system. Docker image has this program installed. Refer to the documentation for more information. ",
+            "type": "boolean",
+            "defaultValue": false,
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "wkhtmltoimage_path",
+            "description": "Path of wkhtmltoimage program on the system. This program is required to generate visualisation of the message as it seen in mail client program. If using Docker image, use default configuration.",
+            "defaultValue": "/usr/bin/wkhtmltoimage",
+            "type": "string",
+            "multi": false,
+            "required": true
+        }
+    ]
 }
