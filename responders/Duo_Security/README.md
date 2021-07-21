@@ -1,4 +1,4 @@
-# CortexResponder_DuoUserAccount
+### CortexResponder_DuoUserAccount
 Rep. for Cortex Responder (TheHive project - https://github.com/TheHive-Project/CortexDocs)
 to Lock/Unlock User Accounts in the Duo Admin Portal (Cisco Security)
 
@@ -12,20 +12,20 @@ There are two Responder available in order to change the status of a User in Duo
 The Responder is looking for a "**username**" as input and queries the Duo Admin API, to receive the associated UserID.
 The UserID is used to change the "status" of the particular user.
 
-## How to install:
+#### How to install:
   * copy the folders "DuoLockUserAccount" & "DuoUnlockUserAccount" into your Cortex responders path
   * install necessary python modules from the requirements.txt (**pip install -r requirements.txt**)
   * restart Cortex to initialize the new Responder "**systemctl restart cortex**"
   * add the ResponderConfig 
-  * ![ResponderConfig](ResponderConfig.jpg)
+  * ![ResponderConfig](assets/ResponderConfig.jpg)
   * enable the Responder Actions
-  * ![Responders](Responders.jpg)
+  * ![Responders](assets/Responders.jpg)
  
-## Add Observable type in TheHive**
+#### Add Observable type in TheHive**
   * per default TheHive has no "username" Observable type, so we have to add this in the Admin settings
-  * ![AddObservableType](AddObservableType.jpg)
+  * ![AddObservableType](assets/AddObservableType.jpg)
 
-## Run the Responder action in TheHive
+#### Run the Responder action in TheHive
 
 If you have add an observable, you can now take action and lock/unlock the User in Duo Security
- * ![Demo_Lock-Unlock_DuoUser](Demo_Lock-Unlock_DuoUser.gif)
+ * ![Demo_Lock-Unlock_DuoUser](assets/Demo_Lock-Unlock_DuoUser.gif)
