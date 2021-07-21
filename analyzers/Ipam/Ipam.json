@@ -1,0 +1,43 @@
+{
+    "name": "IPAM",
+    "version": "1.0",
+    "author": "Andrey Glauzer",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Search for information on an IPV4 in IPAM",
+    "dataTypeList": [
+        "ip"
+    ],
+    "baseConfig": "Ipam",
+    "command": "Ipam/Ipam.py",
+    "configurationItems": [
+        {
+            "name": "host",
+            "description": "The IPAM url",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "app_name",
+            "description": "The appname to use for sessionless authentication",
+            "type": "string",
+            "multi": false,
+            "required": false
+        },
+        {
+            "name": "password",
+            "description": "The password to use for session authentication",
+            "type": "string",
+            "multi": false,
+            "required": false
+        },
+        {
+            "name": "username",
+            "description": "The username to use for session authentication",
+            "type": "string",
+            "multi": false,
+            "required": false
+        }
+    ]
+}

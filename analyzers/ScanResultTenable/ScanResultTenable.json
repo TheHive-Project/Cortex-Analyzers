@@ -1,0 +1,58 @@
+{
+    "name": "Scan Result Tenable",
+    "version": "1.0",
+    "author": "Andrey Glauzer",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Get Tenable scan result by hostname or IPV4",
+    "dataTypeList": [
+        "ip",
+        "hostname"
+    ],
+    "baseConfig": "ScanResultTenable",
+    "command": "ScanResultTenable/ScanResultTenable.py",
+    "configurationItems": [
+        {
+            "name": "host",
+            "description": "The address of the Tenable.sc instance to connect to.",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "port",
+            "description": "Define the login to Nessus",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "access_key",
+            "description": "The API access key to use for sessionless authentication",
+            "type": "string",
+            "multi": false,
+            "required": false
+        },
+        {
+            "name": "secret_key",
+            "description": "The API secret key to use for sessionless authentication",
+            "type": "string",
+            "multi": false,
+            "required": false
+        },
+        {
+            "name": "password",
+            "description": "The password to use for session authentication",
+            "type": "string",
+            "multi": false,
+            "required": false
+        },
+        {
+            "name": "username",
+            "description": "The username to use for session authentication",
+            "type": "string",
+            "multi": false,
+            "required": false
+        }
+    ]
+}
