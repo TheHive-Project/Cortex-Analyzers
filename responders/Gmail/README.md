@@ -1,4 +1,4 @@
-## Gmail responder
+### Gmail responder
 This responder allows mailbox manipulation of Gsuite / Google Workspace accounts. The responder
 can be used to implement message filters and delete message in a mailbox of a Gmail user.
 
@@ -20,7 +20,7 @@ can be used to implement message filters and delete message in a mailbox of a Gm
     - `https://mail.google.com/`
     - `https://www.googleapis.com/auth/gmail.settings.basic`
 
-### How to setup a Gmail service account
+#### How to setup a Gmail service account
 
 The responder needs a Gmail _service account_ with domain-wide delegation. The rough setup steps are:
 1. enable a _service account_ via GCP
