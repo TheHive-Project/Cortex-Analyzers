@@ -114,7 +114,7 @@ class FileInfoAnalyzer(Analyzer):
 
     def artifacts(self, raw):
         artifacts = []
-        if self.observables and self.self.auto_extract_artifacts:
+        if self.observables and self.auto_extract_artifacts:
             for path, module in self.observables:
                 artifacts.append(
                     self.build_artifact(
