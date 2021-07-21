@@ -1,21 +1,22 @@
-# Описание работы responder модуля для системы Palo Alto NGFW
+### Описание работы responder модуля для системы Palo Alto NGFW
 
 Данное описание содержит требуемые действия от инженера для интеграции работы responder с Palo Alto NGFW.
 
-# Installation
+#### Installation
 
 need install:
 1. pip install cortexutils
 2. pip install requests
 3. pip install pan-os-python
 4. pip install thehive4py
-# ToDo
+
+###  ToDo
 Для работы responders, необходимо загрузить папку PaloAltoNGFW в директорию, где храняться другие responder.
 Далее необходимо:
 - Выполнить перезагрузку системы cortex;
 
 - Для настройки респондера необходимо перейти в веб консоли cortex перейти на вкладку "Organization", выбрать организацию для которой будет выполнена настройка и перейти на вкладку "Responders Config" и выполняем настройку полей для "PaloAltoNGFW_main" в соответсвии с их значениями:
-![alt text](Responders.jpg)
+![alt text](assets/Responders.jpg)
 1. Hostname_PaloAltoNGFW - сетевой адрес системы PaloAltoNGFW
 2. User_PaloAltoNGFW - пользователь в системе PaloAltoNGFW
 3. Password_PaloAltoNGFW - пароль для пользователя в системе PaloAltoNGFW
@@ -47,4 +48,4 @@ need install:
 3. порт-протокол - 'port-protocol'
 4. имя пользователя - 'username'  
 Примечание: типы 'port-protocol' и 'username' необходимо создать в системе TheHive. По умолчанию TheHive не имеет данных типов данных в Observable type, поэтому мы должны добавить его в настройках администратора.  
-![alt text](AddObservableType.jpg)
+![alt text](assets/AddObservableType.jpg)
