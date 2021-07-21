@@ -32,5 +32,22 @@
             "multi": false,
             "required": true
         }
+    ],
+    "registration_required": false,
+    "subscription_required": false,
+    "service_homepage": "https://www.strangebee.com",
+    "service_logo": {
+        "path": "assets/sb-logo.jpg",
+        "caption": "StrangeBee logo"
+    },
+    "screenshots": [
+        {
+            "path": "assets/emlparser-short.png",
+            "caption": "EmlParser: short report"
+        },
+        {
+            "path": "assets/emlparser-long.png",
+            "caption": "EmlParser: long report"
+        }
     ]
 }
