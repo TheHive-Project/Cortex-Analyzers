@@ -3,8 +3,8 @@
   "license": "AGPL-V3",
   "author": "Nils Kuhnert, CERT-Bund",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "3.1",
-  "description": "VMRay Sandbox file analysis.",
+  "version": "4.1",
+  "description": "VMRay Sandbox file and URL analysis.",
   "dataTypeList": [
     "hash",
     "file",
@@ -41,6 +41,14 @@
       "type": "string",
       "multi": false,
       "required": false
+    },
+    {
+      "name": "verdict_only",
+      "description": "If set to true, only the verdict (or the score for VMRay versions < 4.0) will be added as labels.",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
     },
     {
       "name": "query_retry_wait",
