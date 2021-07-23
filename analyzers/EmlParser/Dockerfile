@@ -19,5 +19,6 @@ WORKDIR /worker
 WORKDIR /worker
 COPY . EmlParser
 RUN test ! -e EmlParser/requirements.txt || pip install --no-cache-dir -rEmlParser/requirements.txt
+RUN apt update
 RUN apt install -y wkhtmltopdf
 ENTRYPOINT EmlParser/parse.py
