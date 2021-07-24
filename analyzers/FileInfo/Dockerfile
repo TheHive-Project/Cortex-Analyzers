@@ -13,7 +13,8 @@ RUN git clone https://github.com/JusticeRage/Manalyze.git           && \
     cmake .                                                         && \
     make -j5                                                        && \
     cd bin/yara_rules                                               && \ 
-    python2 update_clamav_signatures.py
+    pip3 install requests                                           && \ 
+    python3 update_clamav_signatures.py
 RUN apt update                                                  && \
     apt install -y -q libfuzzy-dev libimage-exiftool-perl       && \
     rm -rf /var/lib/apt/lists/*                                 && \
