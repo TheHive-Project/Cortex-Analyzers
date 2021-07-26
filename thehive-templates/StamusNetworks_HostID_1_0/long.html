@@ -1,0 +1,80 @@
+<!-- Success !-->
+<div class="panel panel-info" ng-if="success"  ng-init="recordsLimit=20">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+        <a ng-show="::content.records.length > 20" class="pull-right" href ng-click="recordsLimit=undefined">View All ({{::content.records.length}})</a>
+    </div>
+    <div class="panel-body">
+        <p>
+            SSP Host Information Report
+        </p>
+        <div ng-if="content.host_id.services_count>0">
+            <p><em>Services for IP</em></p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="50">#</th>
+                        <th>Proto</th>
+                        <th>Port</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="row in content.host_id.services | limitTo:recordsLimit">
+                    <td>{{$index + 1}}</td>
+                    <td>{{row.proto}}</td>
+                    <td>{{row.port}}</td>
+                </tbody>
+            </table>
+        </div>
+        <div ng-if="content.host_id.username_count>0">
+            <p><em>Username</em></p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="50">#</th>
+                        <th>Username</th>
+                        <th>First Seen</th>
+                        <th>Last Seen</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="row in content.host_id.username | limitTo:recordsLimit">
+                    <td>{{$index + 1}}</td>
+                    <td>{{row.user}}</td>
+                    <td>{{row.first_seen}}</td>
+                    <td>{{row.last_seen}}</td>
+                </tbody>
+            </table>
+        </div>
+        <div ng-if="content.host_id['http.user_agent']">
+            <p><em>Username</em></p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="50">#</th>
+                        <th>HTTP User Agent</th>
+                        <th>First Seen</th>
+                        <th>Last Seen</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="row in content.host_id['http.user_agent'] | limitTo:recordsLimit">
+                    <td>{{$index + 1}}</td>
+                    <td>{{row.agent}}</td>
+                    <td>{{row.first_seen}}</td>
+                    <td>{{row.last_seen}}</td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- Error !-->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading" >
+        <strong> Error while running the service </strong>
+     </div>
+     <div class="panel-body">
+        <pre>
+        {{content.errorMessage}}
+        </pre>
+     </div>
+</div>
