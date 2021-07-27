@@ -1,6 +1,6 @@
 {
   "name": "FileInfo",
-  "version": "7.0",
+  "version": "8.0",
   "author": "TheHive-Project",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -14,15 +14,16 @@
       "description": "Wether to enable manalyze submodule or not.",
       "type": "boolean",
       "required": true,
-      "multi": false
+      "multi": false,
+      "defaultValue": false
     },
     {
       "name": "manalyze_enable_docker",
-      "description": "Use docker to run Manalyze.",
+      "description": "Use docker to run Manalyze. Can be used only if not using the docker image of FileInfo",
       "type": "boolean",
       "required": false,
       "multi": false,
-      "default": false
+      "defaultValue": false
     },
     {
       "name": "manalyze_enable_binary",
@@ -30,16 +31,39 @@
       "type": "boolean",
       "required": false,
       "multi": false,
-      "default": true
+      "defaultValue": true
     },
     {
       "name": "manalyze_binary_path",
-      "description": "Path to the Manalyze binary that was compiled before",
+      "description": "Path to the Manalyze binary that was compiled before. Keep the default value if using the docker image of FileInfo ",
       "type": "string",
       "required": false,
       "multi": false,
-      "default": "/opt/Cortex-Analyzers/utils/manalyze/bin/manalyze"
+      "defaultValue": "/worker/Manalyze/bin/manalyze"
+    },
+    {
+      "name": "floss_enable",
+      "description": "Enable the use of FireEye FLARE FLOSS",
+      "type": "boolean",
+      "required": false,
+      "multi": false,
+      "default": false
+    },
+    {
+      "name": "floss_binary_path",
+      "description": "Path to the FLOSS binary.",
+      "type": "string",
+      "required": false,
+      "multi": false,
+      "default": "/usr/bin/floss"
+    },
+    {
+      "name": "floss_minimal_string_length",
+      "description": "Length of strings must be in order to be considered.",
+      "type": "number",
+      "required": false,
+      "multi": false,
+      "default": 4
     }
   ]
 }
-

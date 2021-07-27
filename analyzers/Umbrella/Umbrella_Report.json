@@ -5,7 +5,7 @@
   "url": "https://github.com/arnydo/thehive/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Query the Umbrella Reporting API for recent DNS queries and their status.",
-  "dataTypeList": ["domain"],
+  "dataTypeList": ["domain", "fqdn"],
   "command": "Umbrella/Umbrella.py",
   "baseConfig": "Umbrella",
   "config": {

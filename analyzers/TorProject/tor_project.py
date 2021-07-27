@@ -19,13 +19,22 @@ class TorProjectClient:
                            Ignored if `cache_duration` is 0.
     :param cache_root: Path where to store the cached file
                        downloaded from torproject.org
+    :param proxies: Proxies to be using during requests session
     :type ttl: int
     :type cache_duration: int
     :type cache_root: str
     """
-    def __init__(self, ttl=86400, cache_duration=3600,
-                 cache_root='/tmp/cortex/tor_project'):
+
+    def __init__(
+        self,
+        ttl=86400,
+        cache_duration=3600,
+        cache_root="/tmp/cortex/tor_project",
+        proxies=None,
+    ):
         self.session = requests.Session()
+        if proxies:
+            self.session.proxies.update(proxies)
         self.delta = None
         self.cache = None
         if ttl > 0:
@@ -33,21 +42,22 @@ class TorProjectClient:
         if cache_duration > 0:
             self.cache = Cache(cache_root)
             self.cache_duration = cache_duration
-        self.url = 'https://check.torproject.org/exit-addresses'
+        self.url = "https://check.torproject.org/exit-addresses"
 
-    __cache_key = __name__ + ':raw_data'
+    __cache_key = __name__ + ":raw_data"
 
     def _get_raw_data(self):
         try:
-            return self.cache['raw_data']
-        except(AttributeError, TypeError):
+            return self.cache["raw_data"]
+        except (AttributeError, TypeError):
             return self.session.get(self.url).text
         except KeyError:
             self.cache.set(
-                'raw_data',
+                "raw_data",
                 self.session.get(self.url).text,
-                expire=self.cache_duration)
-            return self.cache['raw_data']
+                expire=self.cache_duration,
+            )
+            return self.cache["raw_data"]
 
     def search_tor_node(self, ip):
         """Lookup an IP address to check if it is a known tor exit node.
@@ -65,14 +75,13 @@ class TorProjectClient:
         tmp = {}
         present = datetime.utcnow().replace(tzinfo=pytz.utc)
         for line in self._get_raw_data().splitlines():
-            params = line.split(' ')
-            if params[0] == 'ExitNode':
-                tmp['node'] = params[1]
-            elif params[0] == 'ExitAddress':
-                tmp['last_status'] = params[2] + 'T' + params[3] + '+0000'
-                last_status = parse(tmp['last_status'])
-                if (self.delta is None or
-                   (present - last_status) < self.delta):
+            params = line.split(" ")
+            if params[0] == "ExitNode":
+                tmp["node"] = params[1]
+            elif params[0] == "ExitAddress":
+                tmp["last_status"] = params[2] + "T" + params[3] + "+0000"
+                last_status = parse(tmp["last_status"])
+                if self.delta is None or (present - last_status) < self.delta:
                     data[params[1]] = tmp
                 tmp = {}
             else:

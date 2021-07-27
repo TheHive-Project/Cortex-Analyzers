@@ -1,0 +1,17 @@
+ {
+    "dataType":"file",
+    "file": "Payment Notification 00000307700.eml",
+    "filename": "filetest",
+    "config":{
+        "manalyze_enable": false,
+        "manalyze_enable_docker": false,
+        "proxy_http": null,
+        "proxy_https": null,
+        "cacerts": null,
+        "jobTimeout": 10,
+        "check_tlp": false,
+        "max_tlp": 2,
+        "check_pap": false,
+        "max_pap": 2
+    }
+}

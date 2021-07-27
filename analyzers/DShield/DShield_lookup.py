@@ -18,10 +18,20 @@ class DShieldAnalyzer(Analyzer):
     def artifacts(self, raw):
         artifacts = []
         if 'as' in raw:
-            artifacts.append({'type':'autonomous-system','value':str(raw['as'])})
-
+            artifacts.append(
+                self.build_artifact(
+                    'autonomous-system',
+                    str(raw['as']
+                    )
+                )
+            )
         if 'asabusecontact' in raw:
-            artifacts.append({'type': 'mail', 'value':str(raw['asabusecontact'])})
+            artifacts.append(
+                self.build_artifact(
+                    'mail',
+                    str(raw['asabusecontact'])
+                )
+            )
         return artifacts
 
     def summary(self, raw):

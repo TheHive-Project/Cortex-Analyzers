@@ -1,0 +1,76 @@
+{
+    "name": "Gmail_BlockSender",
+    "version": "1.0",
+    "author": "David Strassegger, @oscd_initiative",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "MIT",
+    "description": "Move emails from a given sender to trash",
+    "dataTypeList": ["thehive:case_artifact"],
+    "command": "Gmail/Gmail.py",
+    "baseConfig": "Gmail",
+    "config": {
+      "service": "blocksender",
+      "max_tlp": 2,
+      "check_tlp": false,
+      "max_pap": 2,
+      "check_pap": true
+    },
+    "configurationItems": [
+      {
+        "name": "thehive_url",
+        "description": "URL for thehive instance",
+        "type": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "name": "thehive_api_key",
+        "description": "API key for TheHive instance",
+        "type": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "name": "gmail_domain",
+        "description": "Gsuite Domain",
+        "type": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "name": "gmail_project_id",
+        "description": "GCP Project ID",
+        "type": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "name": "gmail_private_key_id",
+        "description": "Service account private key id",
+        "type": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "name": "gmail_private_key",
+        "description": "Service Account private key (PEM Format)",
+        "type": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "name": "gmail_client_email",
+        "description": "Service Account E-Mail address",
+        "type": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "name": "gmail_client_id",
+        "description": "OAuth Client ID",
+        "type": "string",
+        "multi": false,
+        "required": true
+      }
+    ]
+  }

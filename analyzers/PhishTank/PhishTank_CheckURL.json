@@ -1,20 +1,34 @@
 {
-    "name": "PhishTank_CheckURL",
-    "version": "2.1",
-    "author": "Eric Capuano",
-    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "Use PhishTank to check if a URL is a verified phishing site.",
-    "dataTypeList": ["url"],
-    "baseConfig": "PhishTank",
-    "command": "PhishTank/phishtank_checkurl.py",
-    "configurationItems": [
+  "name": "PhishTank_CheckURL",
+  "version": "2.1",
+  "author": "Eric Capuano",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use PhishTank to check if a URL is a verified phishing site.",
+  "dataTypeList": ["url"],
+  "baseConfig": "PhishTank",
+  "command": "PhishTank/phishtank_checkurl.py",
+  "configurationItems": [
     {
       "name": "key",
       "description": "Define the API Key",
       "type": "string",
       "multi": false,
       "required": true
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://phishtank.com/",
+  "service_logo": {
+    "path": "assets/phish_tank.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report.png",
+      "caption": "PhishTank: long report"
     }
   ]
 }

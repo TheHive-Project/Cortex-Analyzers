@@ -1,0 +1,5 @@
+<div class="label" ng-repeat="t in content.taxonomies"
+    ng-class="{'info': 'label-info', 'safe': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[t.level]"
+    style="display:inline-block;">
+    {{t.namespace}}:{{t.predicate}}="{{t.value}}"
+</div>

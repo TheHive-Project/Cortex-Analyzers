@@ -1,0 +1,38 @@
+{
+  "name": "SophosIntelix_GetReport",
+  "version": "0.3",
+  "author": "SOL",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Fast and easy way to find out if the file is known Good, PUA (Potentially Unwanted Application), or, Malware. For more information or to sign up for SophosLabs Intelix (with a free tier) see https://www.sophos.com/en-us/labs/intelix.aspx",
+  "dataTypeList": ["hash", "domain", "fqdn", "url"],
+  "command": "SophosIntelix/intelix_analyzer.py",
+  "baseConfig": "SophosIntelix",
+  "config": {
+    "service": "get"
+  },
+  "configurationItems": [
+    {
+      "name": "clientID",
+      "description": "Client ID for Sophos Labs Intelix",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "clientSecret",
+      "description": "Client Secret for Sophos Labs Intelix",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "polling_interval",
+      "description": "Define time interval between two requests attempts for the report",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 60
+    }
+  ]
+}

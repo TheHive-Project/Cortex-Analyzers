@@ -5,11 +5,7 @@
   "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Check URL, file, SHA256 against ProofPoint forensics",
-  "dataTypeList": [
-    "url",
-    "file",
-    "hash"
-  ],
+  "dataTypeList": ["url", "file", "hash"],
   "baseConfig": "ProofPoint",
   "config": {
     "service": "query",
@@ -44,7 +40,9 @@
       "name": "verifyssl",
       "description": "Verify server's SSL certificate",
       "type": "boolean",
-      "defaultValue": true
+      "defaultValue": true,
+      "required": false,
+      "multi": false
     }
   ]
 }
