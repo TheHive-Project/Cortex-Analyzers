@@ -1,0 +1,43 @@
+{
+    "name": "Cytomic Orion Hash",
+    "version": "1.0",
+    "author": "Andrey Glauzer",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "This analyzer helps to search for MD5 hash on other computers that are managed by Cytomic Orion's EDR Panda",
+    "dataTypeList": [
+        "hash"
+    ],
+    "baseConfig": "CytomicOrionHash",
+    "command": "CytomicOrionHash/CytomicOrionHash.py",
+    "configurationItems": [
+        {
+            "name": "client_id",
+            "description": "Client ID do Cytomic Orion",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "client_secret",
+            "description": "Client Secret do Cytomic Orion",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "username",
+            "description": "The username to use for session authentication",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "password",
+            "description": "The password to use for session authentication",
+            "type": "string",
+            "multi": false,
+            "required": true
+        }
+    ]
+}
