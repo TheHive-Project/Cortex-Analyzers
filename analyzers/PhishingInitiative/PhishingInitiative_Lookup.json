@@ -1,14 +1,17 @@
 {
-    "name": "PhishingInitiative_Lookup",
-    "version": "2.0",
-    "author": "CERT-BDF",
-    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-    "license": "AGPL-V3",
-    "description": "Use Phishing Initiative to check if a URL is a verified phishing site.",
-    "dataTypeList": ["url"],
-    "baseConfig": "PhishingInitiative",
-    "command": "PhishingInitiative/phishinginitiative_lookup.py",
-    "configurationItems": [
+  "name": "PhishingInitiative_Lookup",
+  "version": "2.0",
+  "author": "CERT-BDF",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use Phishing Initiative to check if a URL is a verified phishing site.",
+  "dataTypeList": ["url"],
+  "baseConfig": "PhishingInitiative",
+  "command": "PhishingInitiative/phishinginitiative.py",
+  "config": {
+    "service": "lookup"
+  },
+  "configurationItems": [
     {
       "name": "key",
       "description": "Define the API Key",
@@ -16,5 +19,14 @@
       "multi": false,
       "required": true
     }
-  ]
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://phishing-initiative.fr/",
+  "service_logo": {
+    "path": "assets/phishing-initiative.png",
+    "caption": "logo"
+  },
+  "screenshots": []
 }

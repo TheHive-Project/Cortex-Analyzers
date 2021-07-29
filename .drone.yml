@@ -74,7 +74,6 @@ steps:
         - analyzers/analyzers-stable.json
         - responders/responders.json
         - responders/responders-stable.json
-        - analyzers/report-templates.zip
       strip_components: 1
     when:
       event: [tag]

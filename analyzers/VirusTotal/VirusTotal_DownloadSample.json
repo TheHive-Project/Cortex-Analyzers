@@ -1,0 +1,23 @@
+{
+  "name": "VirusTotal_DownloadSample",
+  "version": "3.0",
+  "author": "LDO-CERT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use VirusTotal to download the original file for an hash.",
+  "dataTypeList": ["hash"],
+  "baseConfig": "VirusTotal",
+  "config": {
+    "service": "download"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API private key for Virustotal",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "command": "VirusTotal/virustotal.py"
+}

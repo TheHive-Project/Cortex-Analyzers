@@ -1,0 +1,28 @@
+<div class="report-LdapQuery" ng-if="success">
+  <style>
+    .report-LdapQuery dl {
+      margin-bottom: 2px;
+    }
+  </style>
+
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <strong>LDAP Query Summary</strong>
+    </div>
+    <div class="panel-body">
+      <div ng-if="content.results.length === 0">
+        No records found
+      </div>
+      <div ng-if="content.results.length > 0">
+        <div ng-repeat="results in content.results">
+          <dl class="dl-horizontal" ng-repeat="(key, value) in results">
+            <dt>{{key}}: </dt>
+            <dd class="wrap">{{value}}</dd>
+          </dl>
+          <hr/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -4,4 +4,3 @@ ipaddress
 tld
 sqlalchemy
 psycopg2-binary
-tqdm

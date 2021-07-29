@@ -10,8 +10,8 @@ class Wazuh(Responder):
        self.wazuh_user = self.get_param('config.wazuh_user', None, 'Username missing!')
        self.wazuh_password = self.get_param('config.wazuh_password', None, 'Password missing!')
        self.wazuh_agent_id = self.get_param('data.case.customFields.wazuh_agent_id.string', None, "Agent ID Missing!")
-       self.wazuh_alert_id = self.get_param('data.case.customFields.wazuh_alert_id.string', None, " Missing!")
-       self.wazuh_rule_id = self.get_param('data.case.customFields.wazuh_rule_id.string', None, "Agent ID Missing!")
+       self.wazuh_alert_id = self.get_param('data.case.customFields.wazuh_alert_id.string', None, "Alert ID Missing!")
+       self.wazuh_rule_id = self.get_param('data.case.customFields.wazuh_rule_id.string', None, "Rule ID Missing!")
        self.observable = self.get_param('data.data', None, "Data is empty")
        self.observable_type = self.get_param('data.dataType', None, "Data type is empty")
    
