@@ -8,11 +8,8 @@ RUN apt install -y -q libboost-regex-dev                              \
     libboost-system-dev libboost-filesystem-dev libssl-dev            \
     build-essential cmake                                             \
     git 
-#RUN git clone https://github.com/JusticeRage/Manalyze.git           && \
-# Using fork with fix, waiting for the PR being validated on
-# original repo
-# PR: https://github.com/JusticeRage/Manalyze/pull/46
-RUN git clone https://github.com/jeromeleonard/Manalyze.git           && \
+RUN git clone https://github.com/JusticeRage/Manalyze.git           && \
+# RUN git clone https://github.com/jeromeleonard/Manalyze.git           && \
     cd Manalyze                                                     && \
     cmake .                                                         && \
     make -j5                                                        && \
