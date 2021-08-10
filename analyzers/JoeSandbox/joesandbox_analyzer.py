@@ -3,12 +3,30 @@
 
 from cortexutils.analyzer import Analyzer
 
+import zipfile
+import os 
+import base64
 import io
 import requests
 import time
 import json
 from jbxapi import JoeSandbox
 
+def get_files(folder):
+    # function to get all files in a folder sorted
+    
+    # get the path of the files
+    files = [f"{file}" for file in os.listdir(folder)]
+    # split <filename>.<extention>
+    for i in range(len(files)):
+        files[i]=files[i].split('.')
+    # sort by <filename> numerically
+    files.sort(key=lambda x: int(x[0]))
+    # merge <folder>/<filename>.<extention>
+    for i in range(len(files)):
+        files[i]=folder+"/"+files[i][0]+"."+files[i][1]
+    return files    
+ 
 
 class JoeSandboxAnalyzer(Analyzer):
     def __init__(self):
@@ -49,15 +67,33 @@ class JoeSandboxAnalyzer(Analyzer):
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         return {"taxonomies": taxonomies}
 
+    def artifacts(self, raw):
+        # this function get the html report as an observable in TH
+        artifacts= []
+        myfile = [self.webid]
+        
+        if self.service != "full_report_analysis_inet" and self.service != "full_report_analysis_noinet" : 
+            return 
+        if not myfile:
+            return
+        
+        for webid in myfile:
+            response = self.joe.analysis_download(webid, "html", run=0)
+            with open('/tmp/'+str(response[0]), 'wb') as the_file:
+                the_file.write(response[1])
+            artifacts.append(self.build_artifact('file',"/tmp/"+str(response[0])))
+            os.remove('/tmp/'+str(response[0]))
+        return artifacts
+   
     def run(self):
         Analyzer.run(self)
 
         # file analysis with internet access
-        if self.service == "file_analysis_inet":
+        if self.service == "file_analysis_inet" or "full_report_analysis_inet":
             filename = self.get_param("filename", "")
             filepath = self.get_param("file", "")
             response = self.joe.submit_sample((filename, open(filepath, "rb")))
-        elif self.service == "file_analysis_noinet":
+        elif self.service == "file_analysis_noinet" or "full_report_analysis_noinet":
             filename = self.get_param("filename", "")
             filepath = self.get_param("file", "")
             response = self.joe.submit_sample(
@@ -79,15 +115,42 @@ class JoeSandboxAnalyzer(Analyzer):
         while not finished and tries <= self.analysistimeout / 60:
             time.sleep(60)
             response = self.joe.submission_info(submission_id)
-            webid = response["analyses"][0]["webid"]
+            self.webid = response["analyses"][0]["webid"]
             if response["status"] == "finished":
                 finished = True
             tries += 1
         if not finished:
             self.error("JoeSandbox analysis timed out")
         # Download the report
-        response = self.joe.analysis_download(webid, "irjsonfixed", run=0)
+        response = self.joe.analysis_download(self.webid, "irjsonfixed", run=0)    
         analysis = json.loads(response[1].decode("utf-8")).get("analysis", None)
+        
+        # Download images
+        zip_images = self.joe.analysis_download(self.webid, "shoots", run=0)
+        zip_location = "/tmp/"+str(zip_images[0])
+        zip_folder = "/tmp/images/"+str(zip_images[0])
+        # write ziped images in /tmp
+        with open(zip_location, 'wb') as file:
+            file.write(zip_images[1])
+        if not os.path.exists("/tmp/images/"):
+            os.mkdir(path="/tmp/images/", mode = 0o744)
+        if not os.path.exists(zip_folder):
+            os.mkdir(path=zip_folder, mode = 0o744)
+        # unzip images
+        with zipfile.ZipFile(zip_location) as z:
+            z.extractall(path=zip_folder)
+        # remove ziped images (not needed anymore)
+        os.remove(zip_location) 
+        # put image in json
+        images=[]
+        for f in get_files(zip_folder):
+            with open(str(f), mode='rb') as file:
+                    images.append( base64.encodebytes(file.read()).decode('utf-8') )
+            os.remove(f) 
+        analysis["images"] = images
+        # remove not needed files
+        os.rmdir(zip_folder) 
+
         if analysis:
             analysis["htmlreport"] = (
                 self.url + "analysis/" + str(analysis["id"]) + "/0/html"
