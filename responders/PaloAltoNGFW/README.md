@@ -1,6 +1,6 @@
-### Описание работы responder модуля для системы Palo Alto NGFW
+### Description of the responder module operation for the Palo Alto NGFW system
 
-Данное описание содержит требуемые действия от инженера для интеграции работы responder с Palo Alto NGFW.
+This description contains the required actions from the engineer to integrate the responder with the Palo Alto NGFW.
 
 #### Installation
 
@@ -11,41 +11,41 @@ need install:
 4. pip install thehive4py
 
 ###  ToDo
-Для работы responders, необходимо загрузить папку PaloAltoNGFW в директорию, где храняться другие responder.
-Далее необходимо:
-- Выполнить перезагрузку системы cortex;
+For responders to work, you need to upload the PaloAltoNGFW folder to the directory where other responders are stored.
+Further it is necessary:
+- Reboot the cortex system;
 
-- Для настройки респондера необходимо перейти в веб консоли cortex перейти на вкладку "Organization", выбрать организацию для которой будет выполнена настройка и перейти на вкладку "Responders Config" и выполняем настройку полей для "PaloAltoNGFW_main" в соответсвии с их значениями:
+- To configure the responder, go to the cortex web console, go to the "Organization" tab, select the organization for which the configuration will be performed and go to the "Responders Config" tab and configure the fields for "PaloAltoNGFW_main" in accordance with their values:
 ![alt text](assets/Responders.jpg)
-1. Hostname_PaloAltoNGFW - сетевой адрес системы PaloAltoNGFW
-2. User_PaloAltoNGFW - пользователь в системе PaloAltoNGFW
-3. Password_PaloAltoNGFW - пароль для пользователя в системе PaloAltoNGFW
-4. Security_rule_* - имя правила безопасности в системе PaloAltoNGFW. Установлены следующие стандартные наименования правил:  
-4.1 Для блокировки\разблокировки имени пользователей:  
+1. Hostname_PaloAltoNGFW - network address of the PaloAltoNGFW system
+2. User_PaloAltoNGFW - user in the PaloAltoNGFW system
+3. Password_PaloAltoNGFW - password for the user in the PaloAltoNGFW system
+4. Security_rule_* - the name of the security rule in the PaloAltoNGFW system. The following standard rule names have been established:  
+4.1 To block/unblock user:  
 4.1.1 "TheHive Block internal user"  
 4.1.2 "TheHive Block external user"  
 
-4.2 Для блокировки\разблокировки сетевых адресов:  
+4.2 To block/unblock network addresses:
 4.2.1 "TheHive Block internal IP address"  
 4.2.2 "TheHive Block external IP address"  
 
-4.3 Для блокировки\разблокировки FQDN:  
+4.3 To block/unblock FQDN:  
 4.3.1 "TheHive Block external Domain"  
 4.3.2 "TheHive Block internal Domain"  
 
-4.4 Для блокировки\разблокировки портов:  
+4.4 To block/unblock ports: 
 4.4.1 "TheHive Block port for internal communication"  
 4.4.2 "TheHive Block port for external communication"  
 
-4.5 TheHive_instance - url адрес системы TheHive (используется только для типов case и alert).
-Важно для каждой организации должен быть свой пользователь с API!
+4.5 TheHive_instance - url address of The Hive system (used only for case and alert types).
+It is important for each organization to have its own user with the API!
 
-4.6 TheHive_API_key - API ключ для подключения к системе TheHive  
-Примечание: указанные правила безопасноти должны быть созданы в PaloAltoNGFW, а так же расставлены в порядке их применения.  
-Типы используемых данных для работы в системе TheHive:
-1. Сетевой адрес - 'ip'
+4.6 TheHive_API_key - API key to connect to TheHive system  
+Note: the specified safety rules must be created in PaloAltoNGFW, and also placed in the order of their application.  
+Types of data used to work in TheHive system:
+1. Network address - 'ip'
 2. FQDN - 'hostname'
-3. порт-протокол - 'port-protocol'
-4. имя пользователя - 'username'  
-Примечание: типы 'port-protocol' и 'username' необходимо создать в системе TheHive. По умолчанию TheHive не имеет данных типов данных в Observable type, поэтому мы должны добавить его в настройках администратора.  
+3. port-protocol - 'port-protocol'
+4. Username - 'username'  
+Note: types 'port-protocol' and 'username' need to be created in TheHive system. By default, TheHive does not have these data types in the Observable type, so you must add it in the admin settings.  
 ![alt text](assets/AddObservableType.jpg)
