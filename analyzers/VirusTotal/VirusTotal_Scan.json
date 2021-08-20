@@ -25,6 +25,13 @@
       "multi": false,
       "required": false,
       "defaultValue": 60
+    },
+    {
+      "name": "highlighted_antivirus",
+      "description": "Add taxonomy if selected AV don't recognize observable",
+      "type": "string",
+      "multi": true,
+      "required": false
     }
   ],
   "command": "VirusTotal/virustotal.py"

@@ -28,5 +28,19 @@
             "type": "string",
             "multi": false
         }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://intelligence.fireeye.com/",
+    "service_logo": {
+        "path": "assets/fireeyeisight.png",
+        "caption": "FireEyeiSight logo"
+    },
+    "screenshots": [
+        {
+            "path": "assets/long_report.png",
+            "caption": "FireEyeiSight: Long report template"
+        }
     ]
 }

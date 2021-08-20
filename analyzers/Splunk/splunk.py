@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 
+
 import splunklib.client as client
 from time import sleep
 from cortexutils.analyzer import Analyzer
@@ -138,7 +139,7 @@ class Splunk(Analyzer):
 
               
               if jobResult["resultCount"] > self.MAX_COUNT:
-                  jobResult["note"] = "Only the first "+str(self.MAX_COUNT)+" results were recovered over "+jobResult["resultCount"]+" to avoid any trouble on TheHive/Cortex. This parameter (max_count) can be changed in the analyzer configuration."
+                  jobResult["note"] = "Only the first {} results were recovered over {} to avoid any trouble on TheHive/Cortex. This parameter (max_count) can be changed in the analyzer configuration.".format(self.MAX_COUNT, jobResult["resultCount"])
 
               jobResult["search"] = job_infos["search"]
               jobResult["savedsearch"] = saved_search

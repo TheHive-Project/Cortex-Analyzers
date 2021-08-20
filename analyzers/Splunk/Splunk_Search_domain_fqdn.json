@@ -1,17 +1,17 @@
 {
-    "name": "Splunk_Search_Domain_FQDN",
-    "version": "3.0",
-    "url": "",
-    "author": "Unit777, LetMeR00t",
-    "license": "AGPL-V3",
-    "dataTypeList": ["domain","fqdn"],
-    "description": "Execute a savedsearch on a Splunk instance with a domain or a FQDN as argument",
-    "baseConfig": "Splunk",
-    "config": {
-        "check_tlp": false,
-        "max_tlp": 4,
-        "service": "Search_Domain_FQDN"
-    },
+  "name": "Splunk_Search_Domain_FQDN",
+  "version": "3.0",
+  "url": "",
+  "author": "Unit777, LetMeR00t",
+  "license": "AGPL-V3",
+  "dataTypeList": ["domain", "fqdn"],
+  "description": "Execute a savedsearch on a Splunk instance with a domain or a FQDN as argument",
+  "baseConfig": "Splunk",
+  "config": {
+    "check_tlp": false,
+    "max_tlp": 4,
+    "service": "Search_Domain_FQDN"
+  },
   "configurationItems": [
     {
       "name": "host",
@@ -91,23 +91,23 @@
       "required": false,
       "defaultValue": 1000
     }
-    ],
-    "command": "Splunk/splunk.py",
-    "registration_required": false,
-    "subscription_required": false,
-    "free_subscription": true,
-    "service_logo": {
-      "path": "assets/splunk_domain_logo.png",
-      "caption": "logo"
+  ],
+  "command": "Splunk/splunk.py",
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_logo": {
+    "path": "assets/splunk_domain_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/Splunk_Search_Domain_FQDN_long.png",
+      "caption": "Splunk_Search_Domain_FQDN long report sample"
     },
-    "screenshots": [
-      {
-        "path": "assets/Splunk_Search_Domain_FQDN_long.png",
-        "caption": "Splunk_Search_Domain_FQDN long report sample"
-      },
-      {
-        "path": "assets/Splunk_Search_Domain_FQDN_short.png",
-        "caption:": "Splunk_Search_Domain_FQDN short report sample"
-      }
-   ] 
-} 
+    {
+      "path": "assets/Splunk_Search_Domain_FQDN_short.png",
+      "caption": "Splunk_Search_Domain_FQDN short report sample"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+    "name": "AzureTokenRevoker",
+    "version": "1.0",
+    "author": "Daniel Weiner @dmweiner",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Revoke all Microsoft Azure authentication session tokens for a list of User Principal Names",
+    "dataTypeList": ["thehive:case"],
+    "command": "AzureTokenRevoker.py",
+    "baseConfig": "AzureTokenRevoker",
+    "configurationItems": [
+        {"name": "redirect_uri",
+        "description": "Azure AD Application URI (Example: https://login.microsoftonline.com/TENANTIDHERE/oauth2/token)",
+        "type": "string",
+        "multi": false,
+        "required": true
+        },
+        {"name": "client_id",
+        "description": "Client ID/Application ID of Azure AD Registered App",
+        "type": "string",
+        "multi": false,
+        "required": true
+        },
+        {"name": "client_secret",
+        "description": "Secret for Azure AD Registered Application",
+        "type": "string",
+        "multi": false,
+        "required": true
+        }
+    ]
+
+}

@@ -1,0 +1,39 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel panel-info" ng-if="content.results">
+        <div class="panel-heading">
+            <strong>Results</strong> (from {{content.count}} locations)
+        </div>
+        <div class="panel-body" style="display:block;height:750px;overflow:auto;">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <th>Lookup from country</th>
+                    <th>Lookup status</th>
+                    <th>Lookup answer</th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="hit in content.results track by $index">
+                        <td>
+                            {{hit.country.toString()}}
+                        </td>
+                        <td style="overflow:auto">
+                            {{hit.status.toString()}}
+                        </td>
+                        <td style="overflow:auto">
+                            {{hit.answer.toString()}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

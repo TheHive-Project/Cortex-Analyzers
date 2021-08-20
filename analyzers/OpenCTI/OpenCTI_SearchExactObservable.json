@@ -1,0 +1,65 @@
+{
+  "name": "OpenCTI_SearchExactObservable",
+  "author": "ANSSI",
+  "license": "AGPL-V3",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers/",
+  "version": "2.0",
+  "description": "Query multiple OpenCTI instances for a specific observable.",
+  "dataTypeList": [
+    "domain",
+    "ip",
+    "url",
+    "fqdn",
+    "uri_path",
+    "user-agent",
+    "hash",
+    "mail",
+    "mail_subject",
+    "registry",
+    "regexp",
+    "other",
+    "filename"
+  ],
+  "config": {
+      "service": "search_exact"
+  },
+  "baseConfig": "OpenCTI",
+  "command": "OpenCTI/opencti.py",
+  "configurationItems": [
+    {
+      "name": "name",
+      "description": "Name of OpenCTI servers",
+      "multi": true,
+      "required": false,
+      "type": "string"
+    },
+    {
+      "name": "url",
+      "description": "URL of OpenCTI servers",
+      "type": "string",
+      "multi": true,
+      "required": true
+    },
+    {
+      "name": "key",
+      "description": "API key for each server",
+      "type": "string",
+      "multi": true,
+      "required": true
+    },
+    {
+      "name": "cert_check",
+      "description": "Verify server certificate",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": false,
+  "free_subscription": false,
+  "service_homepage": "https://www.opencti.io",
+  "service_logo": {"path":"assets/logo_opencti.png", "caption": "logo"},
+  "screenshots": []
+}

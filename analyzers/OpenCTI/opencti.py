@@ -9,12 +9,13 @@ class OpenCTIAnalyzer(Analyzer):
         Analyzer.__init__(self)
 
         self.service = self.get_param(
-            'config.service', "search_observable", None)
+            'config.service', "search_exact", None)
 
         ssl = self.get_param('config.cert_check', True)
         names = self.get_param('config.name', None, 'No OpenCTI instance name given.')
         urls = self.get_param('config.url', None, 'No OpenCTI url given.')
         keys = self.get_param('config.key', None, 'No OpenCTI api key given.')
+        proxies = self.get_param('config.proxy', None)        
 
         if len(names) != len(urls) or len(urls) != len(keys):
             self.error("Config error: please add a name, an url and a key for each OpenCTI instance.")
@@ -27,10 +28,11 @@ class OpenCTIAnalyzer(Analyzer):
                         "name": names[i],
                         "url": urls[i],
                         "api_client": OpenCTIApiClient(
-                            urls[i],
-                            keys[i],
-                            "error",
-                            ssl,
+                            url=urls[i],
+                            token=keys[i],
+                            log_level="error",
+                            ssl_verify=ssl,
+                            proxies={'http': self.http_proxy, 'https': self.https_proxy}
                         )
                     })
             except Exception as e:
@@ -42,24 +44,13 @@ class OpenCTIAnalyzer(Analyzer):
         namespace = "OpenCTI"
         predicate = "Search Observable"
 
-        data = []
-        found = False
+        found = 0
         for r in raw['results']:
-            if r['observable']:
-                found = True
-            for res in r['reports']:
-                if 'id' in res:
-                    data.append(res['id'])
+            if r['observables']:
+                found += len(r['observables'])
 
-        # return number of reports
-        value = "Found - " if found else "Not found - "
-        if not data:
-            value += "0 reports"
-            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
-        else:
-            value += "{} report(s)".format(len(list(set(data))))
-            level = "suspicious"
-            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        value = ("Found " + str(found) + " observables") if found > 0 else "Not found"
+        taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         return {"taxonomies": taxonomies}
 
@@ -70,46 +61,47 @@ class OpenCTIAnalyzer(Analyzer):
         response = []
 
         for opencti in self.openctis:
-            # Lookup observable 
-            observable = opencti["api_client"].stix_observable.read(
-                filters=[{"key": "observable_value", "values": [data]}]
-            )
-            reports = []
-            if observable:
-                # Strip observable data for lighter output.
-                del(observable["markingDefinitionsIds"])
-                del(observable["tagsIds"])
+            # Lookup observables 
+            observables = opencti["api_client"].stix_cyber_observable.list(search=data)
+
+            if self.service == "search_exact":
+                # Filter results to only keep exact matches
+                observables = [observable for observable in observables if observable["observable_value"] == data]
+
+            for observable in observables:
+                # Strip observable data for lighter output
+                del(observable["objectMarkingIds"])
+                del(observable["objectLabelIds"])
                 del(observable["externalReferencesIds"])
                 del(observable["indicatorsIds"])
+                del(observable["parent_types"])
 
                 # Get a list of reports containing this observable
                 reports = opencti["api_client"].report.list(
                     filters=[
                         {
-                            "key": "observablesContains",
+                            "key": "objectContains",
                             "values": [observable["id"]],
                         }
                     ]
                 )
 
                 # Strip reports data for lighter output.
-                for r in reports:
-                    del(r["graph_data"])
-                    del(r["objectRefs"])
-                    del(r["observableRefs"])
-                    del(r["relationRefs"])
-                    del(r["markingDefinitionsIds"])
-                    del(r["tagsIds"])
-                    del(r["externalReferencesIds"])
-                    del(r["objectRefsIds"])
-                    del(r["observableRefsIds"])
-                    del(r["relationRefsIds"])
+                for report in reports:
+                    del(report["objects"])
+                    del(report["objectMarkingIds"])
+                    del(report["externalReferencesIds"])
+                    del(report["objectLabelIds"])
+                    del(report["parent_types"])
+                    del(report["objectsIds"])
+                    del(report["x_opencti_graph_data"])
+
+                observable["reports"] = reports
 
             response.append({
                 "name": opencti["name"],
                 "url": opencti["url"],
-                "observable": observable,
-                "reports": reports
+                "observables": observables
             })
 
         self.report({'results': response})

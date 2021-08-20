@@ -32,7 +32,7 @@ class Mailer(Responder):
                 "data.case.description", None, "description is missing"
             )
         else:
-            self.error("Invalid dataType")            
+            self.error("Invalid dataType")
 
         mail_to = None
         if self.data_type == "thehive:case":
@@ -40,7 +40,9 @@ class Mailer(Responder):
             tags = self.get_param(
                 "data.tags", None, "recipient address not found in tags"
             )
-            mail_tags = [t[5:] for t in tags if t.startswith("mail:")]
+            mail_tags = [
+                t[5:] for t in tags if t.startswith("mail=") or t.startswith("mail:")
+            ]
             if mail_tags:
                 mail_to = mail_tags.pop()
             else:
@@ -51,6 +53,8 @@ class Mailer(Responder):
             descr_array = description.splitlines()
             if "mailto:" in descr_array[0]:
                 mail_to = descr_array[0].replace("mailto:", "").strip()
+            elif "mailto=" in descr_array[0]:
+                mail_to = descr_array[0].replace("mailto=", "").strip()
             else:
                 self.error("recipient address not found in description")
             # Set rest of description as body
@@ -80,13 +84,25 @@ class Mailer(Responder):
         if self.smtp_user and self.smtp_pwd:
             try:
                 context = ssl.create_default_context()
+
+                # STANDARD CONNECTION, TRY ADDING TLS
                 with smtplib.SMTP(self.smtp_host, self.smtp_port) as server:
                     server.ehlo()
                     server.starttls(context=context)
                     server.ehlo()
                     server.login(self.smtp_user, self.smtp_pwd)
                     server.send_message(msg, self.mail_from, [mail_to])
-            except smtplib.SMTPNotSupportedError:
+
+                # SMTP_SSL CONNECTION
+            except smtplib.SMTPServerDisconnected:
+                with smtplib.SMTP_SSL(
+                    self.smtp_host, self.smtp_port, context=context
+                ) as server:
+                    server.login(self.smtp_user, self.smtp_pwd)
+                    server.send_message(msg, self.mail_from, [mail_to])
+
+            except Exception:
+                # STANDARD CONNECTION WITHOUT TLS
                 with smtplib.SMTP(self.smtp_host, self.smtp_port) as server:
                     server.ehlo()
                     server.login(self.smtp_user, self.smtp_pwd)
