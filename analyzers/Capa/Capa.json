@@ -1,0 +1,24 @@
+{
+    "name": "Capa",
+    "version": "1.0",
+    "author": "Wes Lambert",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Analyze files with Capa",
+    "dataTypeList": ["file"],
+    "baseConfig": "Capa",
+    "config": {
+       "service": "CapaAnalyze"
+    },
+    "command": "Capa/CapaAnalyze.py",
+    "configurationItems": [
+     {
+      "name": "capa_path",
+      "description": "Path to Capa binary",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "/Cortex-Analyzers/analyzers/Capa/capa"
+    }
+    ]
+}
