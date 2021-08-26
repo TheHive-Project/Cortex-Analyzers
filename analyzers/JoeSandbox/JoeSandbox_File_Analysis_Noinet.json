@@ -1,6 +1,6 @@
 {
   "name": "JoeSandbox_File_Analysis_Noinet",
-  "version": "2.0",
+  "version": "3.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -41,6 +41,30 @@
       "multi": false,
       "required": true,
       "defaultValue": 30
-    }
+    },
+    {
+      "name": "HTML_report",
+      "description": "Download HTML report",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": false 
+    },
+	{
+      "name": "images",
+      "description": "Allow images in the report",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": false 
+    },
+	{
+	  "name": "observables",
+      "description": "Creat observables form report",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": false 
+	}
   ]
 }
