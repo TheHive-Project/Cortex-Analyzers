@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # encoding: utf-8
-import json
+import json, re
 import requests
 import urllib
 import hashlib
@@ -121,6 +121,8 @@ class OTXQueryAnalyzer(Analyzer):
                         'filesize', "-"),
                     'ssdeep': ip_.get('analysis', {}).get('analysis', {}).get('info', {}).get('results', {}).get(
                         'ssdeep'),
+                    'combined_score' : ip_.get('analysis', {}).get('analysis', {}).get('plugins', {}).get('cuckoo', {}).get(
+                        'result', {}).get('info', {}).get('combined_score')
                 }
                 alert_val = ip_.get('analysis', {}).get('analysis', {}).get('plugins', {}).get('cuckoo', {}).get(
                         'result', {}).get('signatures')
@@ -171,8 +173,27 @@ class OTXQueryAnalyzer(Analyzer):
         level = "info"
         namespace = "OTX"
         predicate = "Pulses"
+        pulses = dict()
         value = "{}".format(raw["pulse_count"])
-        taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        pulses = raw.get("pulses", 0)
+        malicious_count = 0
+
+        if "combined_score" in raw:
+            combined_score = raw['combined_score']
+            if (combined_score < 3):
+                level = "safe"
+            elif (combined_score < 7):
+                level = "suspicious"
+            elif (combined_score >= 7):
+                level = "malicious"
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        else:
+            for pulse in pulses:
+                for tag in pulse["tags"]:
+                    if re.match(r"Malicious", tag, re.IGNORECASE) is not None:
+                        malicious_count +=1
+            value = "Number of pulses: " + value + ", Pulses that have a malicious tag: " + str(malicious_count)
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         return {"taxonomies": taxonomies}
 
