@@ -50,7 +50,7 @@
       "required": true,
       "defaultValue": false 
     },
-	{
+	  {
       "name": "images",
       "description": "Allow images in the report",
       "type": "boolean",
@@ -58,13 +58,30 @@
       "required": true,
       "defaultValue": false 
     },
-	{
+	  {
 	  "name": "observables",
       "description": "Creat observables form report",
       "type": "boolean",
       "multi": false,
       "required": true,
       "defaultValue": false 
-	}
+	  }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+
+  "screenshots": [
+    {
+      "path": "assets/HTML_report.png",
+      "caption": "EmlParser: HTML report"
+    },
+    {
+      "path": "assets/images_preview.png",
+      "caption": "EmlParser: images preview"
+    },
+    {
+      "path": "assets/IP_URL.png",
+      "caption": "EmlParser: IP and URL"
+    }
   ]
 }
