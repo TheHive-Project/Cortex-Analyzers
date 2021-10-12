@@ -61,12 +61,12 @@ class OpenCTIAnalyzer(Analyzer):
         response = []
 
         for opencti in self.openctis:
-            # Lookup observables 
-            observables = opencti["api_client"].stix_cyber_observable.list(search=data)
-
+            # Lookup observables
             if self.service == "search_exact":
-                # Filter results to only keep exact matches
-                observables = [observable for observable in observables if observable["observable_value"] == data]
+                observables = [opencti["api_client"].stix_cyber_observable.read(
+                    filters=[{"key": "value", "values": [data]}])]
+            else:
+                observables = opencti["api_client"].stix_cyber_observable.list(search=data)
 
             for observable in observables:
                 # Strip observable data for lighter output
