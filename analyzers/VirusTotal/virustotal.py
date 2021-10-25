@@ -275,7 +275,7 @@ class VirusTotalAnalyzer(Analyzer):
 
             # if aged and enabled rescan
             if self.data_type == "hash" and self.rescan_hash_older_than_days:
-                if (
+                if "scan_date" in results and (
                     datetime.strptime(results["scan_date"], "%Y-%m-%d %H:%M:%S")
                     - datetime.now()
                 ).days > self.rescan_hash_older_than_days:
