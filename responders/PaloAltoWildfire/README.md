@@ -9,7 +9,7 @@ One need valid API-key to PaloAlto's Wildfire service.
 
 #### Configuration
 - `api_key` : Wildfire API-key   
-- `takedown_url`: Wildfire URL (default: Cloud version)
+- `wildfire_url`: Wildfire URL (default: Cloud version)
 
 #### Official documenation
 Official API documentation: [PaloAlto site](https://docs.paloaltonetworks.com/wildfire/u-v/wildfire-api.html).
