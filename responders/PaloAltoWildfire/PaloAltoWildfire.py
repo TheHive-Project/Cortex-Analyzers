@@ -12,7 +12,7 @@ class PaloAltoWildfire(Responder):
         self.api_key = self.get_param(
             'config.api_key', None, "API-key Missing")
         self.wildfire_url = self.get_param(
-            'config.wildfire_url', None, "Takedown URL Missing")
+            'config.wildfire_url', None, "Wildfire URL Missing")
         self.observable_type = self.get_param('data.dataType', None, "Data type is empty")
         self.observable_description = self.get_param('data.message', None, "Description is empty")
 
@@ -37,7 +37,7 @@ class PaloAltoWildfire(Responder):
 
                 response = requests.post(self.wildfire_url, data=payload, headers=headers)
                 if response.status_code == 200:
-                    self.report({'message': 'Takedown request sent to Wildfire. Message: {}'.format(response.text)})
+                    self.report({'message': 'Observable sent to Wildfire. Message: {}'.format(response.text)})
                 elif response.status_code == 401:
                     self.error({'message': 'Failed authentication. Check API-Key. Message: {}'.format(response.text)})
                 else:
