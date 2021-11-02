@@ -5,7 +5,7 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Submit URL to Netcrafts Takedown API.",
-  "dataTypeList": ["url", "domain", "fqdn"],
+  "dataTypeList": ["thehive:case_artifact"],
   "command": "Netcraft/Netcraft.py",
   "baseConfig": "Netcraft",
   "configurationItems": [
@@ -14,7 +14,27 @@
       "description": "Netcraft Takedown API key",
       "type": "string",
       "multi": false,
-      "required": true
+      "required": false
+    },
+    {
+      "name": "username",
+      "description": "Netcraft Takedown Username",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "password",
+      "description": "Netcraft Takedown Password",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "useUserPass",
+      "description": "Use User and Password authentication",
+      "type": "boolean",
+      "multi": false
     },
     {
       "name": "takedown_url",
