@@ -67,7 +67,7 @@
   "service_logo": {"path":"assets/zscaler_logo.png", "caption": "logo"},
   "screenshots": [
     {"path":"assets/zscaler_sample_lookup_long.png",
-      "caption":"Cylance Lookup sample Information full report"
+      "caption":"Zscaler Lookup sample Information full report"
     },
     {
       "path": "assets/zscaler_sample_lookup_short.png",

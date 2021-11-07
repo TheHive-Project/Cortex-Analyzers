@@ -1,4 +1,4 @@
-# Zylance 
+# Zscaler 
 
 ### General requirements
 
