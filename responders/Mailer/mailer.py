@@ -29,7 +29,7 @@ class Mailer(Responder):
             )
         elif self.data_type == "thehive:alert":
             description = self.get_param(
-                "data.case.description", None, "description is missing"
+                "data.description", None, "description is missing"
             )
         else:
             self.error("Invalid dataType")
