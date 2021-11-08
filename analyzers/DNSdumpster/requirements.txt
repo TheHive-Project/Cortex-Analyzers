@@ -1,0 +1,4 @@
+cortexutils
+requests
+iocextract
+beautifulsoup4
