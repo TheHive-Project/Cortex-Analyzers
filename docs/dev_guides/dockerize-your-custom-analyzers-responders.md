@@ -1,4 +1,4 @@
-# Create your own Analyzers or Responders catalog
+# Dockerize you custom Analyzers & Responders
 
 ## Cortex-Analyzers catalogs
 Since Cortex version 3.0, Analyzers and Responders can be executed as docker containers, and this is useful in several ways. The first is you do not have to bother with libraries and dependancies to run the program ; download the image, run it, trash it.  
@@ -33,7 +33,9 @@ ENTRYPOINT {command}
 This file is also in the repository: [Cortex-Analyzers/Dockerfile_template at master · TheHive-Project/Cortex-Analyzers · GitHub](https://github.com/TheHive-Project/Cortex-Analyzers/blob/master/utils/docker/Dockerfile_template)
 
 ### Build your catalog
-A catalog is required for Analyzers and Responders. A catalog is a list of flavors definition (typically the json definition of the flavor and for each of them the *dockerImage* attribute is added with the name of the associated image.  For example: 
+A catalog is required for Analyzers and Responders. A catalog is a list of flavor definitions (typically the json definition of the flavor) and for each of them the *dockerImage* attribute is added with the name of the associated image. 
+This catalog, when registered in Cortex's configuration file, allows the discovery of the available Analyzers or Responders and tells Cortex how to run each worker using the dockerImage attribute.Below is an example of a catalog file that contains a single Analyzer:
+
 
 ```json
 
@@ -116,7 +118,6 @@ Once finished, you should find your docker images built, and catalogs as well in
 #!/usr/bin/env bash
 
 ###
-# run this with the following command line: 
 # This program assumes your analyzers and responders folder looks like: 
 #.
 # └── Custom-Analyzers
@@ -189,7 +190,3 @@ build_catalog() {
 build_catalog analyzers
 build_catalog responders
 ```
-
-## Documentation
-This guide has also been added on our dedicated documentation website: [https://thehive-project.github.io/Cortex-Analyzers/dev_guides/create-your-own-analyzers-or-responders-catalog/](https://thehive-project.github.io/Cortex-Analyzers/dev_guides/create-your-own-analyzers-or-responders-catalog/) 
-
