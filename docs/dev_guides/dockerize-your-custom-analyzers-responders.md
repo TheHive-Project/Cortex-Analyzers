@@ -34,7 +34,7 @@ This file is also in the repository: [Cortex-Analyzers/Dockerfile_template at ma
 
 ### Build your catalog
 A catalog is required for Analyzers and Responders. A catalog is a list of flavor definitions (typically the json definition of the flavor) and for each of them the *dockerImage* attribute is added with the name of the associated image. 
-This catalog, when registered in Cortex's configuration file, allows the discovery of the available Analyzers or Responders and tells Cortex how to run each worker using the dockerImage attribute.Below is an example of a catalog file that contains a single Analyzer:
+This catalog, when registered in Cortex's configuration file, allows the discovery of the available Analyzers or Responders and tells Cortex how to run each worker using the dockerImage attribute. Below is an example of a catalog file that contains a single Analyzer:
 
 
 ```json
@@ -87,21 +87,20 @@ analyzer {
 
 Then restart Cortex.
 
-###  `build.sh`
+###  build.sh
 This program allows you to build your own images  ~AND~ catalogs. This program assumes your folder of custom *Analyzers* and *Responders* are respectively stored in *analyzers* and *responders* folders.
 
 ```
-.
-└── Custom-Analyzers
-    ├── analyzers
-    │   └── My_Custom_Analyzer
-    └── responders
-        └── My_Custom_Responder
-            ├── customresponderflavor.json
-            ├── program.py
-            ├── Dockerfile
-            ├── README.md
-            └── requirements.txt
+Custom-Analyzers
+├── analyzers/
+│   └── My_custom_analyzer/
+└── responders/
+    └── My_custom_responder/
+        ├── customresponderflavor.json
+        ├── Dockerfile
+        ├── program.py*
+        ├── README.md
+        └── requirements.txt
 ```
 
 To use it, update the variable `DOCKER_REPOSITORY` first (for example with the name of your team). Enter the folder of your own programs, amd and run it.
@@ -111,7 +110,7 @@ cd ./Custom-Analyzers
 bash /path/to/build.sh 
 ```
 
-Once finished, you should find your docker images built, and catalogs as well in `./analyzers/analyzers.json` and  `./responders/responders.json`
+Once finished, you should find your docker images built, and catalogs as well in `./analyzers/analyzers.json` and  `./responders/responders.json`.
 
 
 ```bash
@@ -119,15 +118,15 @@ Once finished, you should find your docker images built, and catalogs as well in
 
 ###
 # This program assumes your analyzers and responders folder looks like: 
-#.
-# └── Custom-Analyzers
-#     ├── analyzers
-#     │   └── My_Custom_Analyzer
-#     └── responders
-#         └── My_Custom_Responder
+#
+#     Custom-Analyzers
+#     ├── analyzers/
+#     │   └── My_custom_analyzer/
+#     └── responders/
+#         └── My_custom_responder/
 #             ├── customresponderflavor.json
-#             ├── program.py
 #             ├── Dockerfile
+#             ├── program.py*
 #             ├── README.md
 #             └── requirements.txt
 #
@@ -138,7 +137,7 @@ Once finished, you should find your docker images built, and catalogs as well in
 ###
 
 # Set your docker repository name
-DOCKER_REPOSITORY=strangebee
+DOCKER_REPOSITORY=ilovestrangebee
 
 build_image() {
 	  JSON=$1
