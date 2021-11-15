@@ -81,8 +81,7 @@
                                 ng-repeat="h in content.body.text_html">
                                 <div ng-show="h.rendered_html" style="overflow-x:scroll;">
 
-                                    <img style="border: 2px solid #555;"
-                                        src={{h.rendered_html}}></img>
+                                    <img style="border: 2px solid #555; width: 100%;" src={{h.rendered_html}}></img>
                                     <p style="color: grey">
                                         <b>Content-Type:
                                         </b>{{h["content_header"]["content-type"][0]}},<b>Content-Transfer-Encoding:
@@ -177,7 +176,7 @@
                                 ng-repeat="p in content.body.text_plain">
 
                                 <pre
-                                    style="color:black;background-color: inherit; overflow-wrap: break-word;">
+                                    style="color:black;background-color: inherit; white-space: pre-wrap;">
                                     {{p.content}}
                                 </pre>
                                 <p style="color: grey">
