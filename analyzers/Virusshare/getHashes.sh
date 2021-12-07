@@ -28,7 +28,7 @@ do
     if [ -e $1/$u ]; then
         echo "File already downloaded"
     else
-        wget https://virusshare.com/hashes/$u
+        wget https://virusshare.com/hashfiles/$u
         sleep 3
     fi
 
