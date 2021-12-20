@@ -3495,6 +3495,15 @@
     "hash",
     "url"
   ],
+  "configurationItems": [
+    {
+      "name": "api_key",
+      "description": "Api Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
   "dockerImage": "cortexneurons/urlscan.io_search:0"
 }
 ,

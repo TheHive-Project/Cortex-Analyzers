@@ -7,7 +7,7 @@ class UrlscanAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
 
-    def search(self, indicator, search_after=None):
+    def search(self, indicator, search_after=None, api_key):
         """
         Searches for a website using the indicator
         :param search_after:
@@ -15,7 +15,7 @@ class UrlscanAnalyzer(Analyzer):
         :type indicator: str
         :return: dict
         """
-        res = Urlscan(indicator).search(search_after=search_after)
+        res = Urlscan(indicator, self.api_key).search(search_after=search_after)
         return res
 
     def run(self):
