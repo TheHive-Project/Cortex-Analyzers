@@ -3493,7 +3493,8 @@
     "ip",
     "domain",
     "hash",
-    "url"
+    "url",
+    "other"
   ],
   "configurationItems": [
     {
@@ -3503,8 +3504,7 @@
       "multi": false,
       "required": true
     }
-  ],
-  "dockerImage": "cortexneurons/urlscan.io_search:0"
+  ]
 }
 ,
 {
