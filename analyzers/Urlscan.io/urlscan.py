@@ -18,7 +18,7 @@ class Urlscan:
 
     def search(self, search_after=None):
 
-        if re.match(regex_search_after, search_after):
+        if re.match(regex_search_after, str(search_after)):
             payload = {"q": self.query,
                        "search_after": search_after
                        }

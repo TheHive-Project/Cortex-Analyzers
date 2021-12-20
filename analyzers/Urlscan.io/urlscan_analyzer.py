@@ -11,6 +11,7 @@ class UrlscanAnalyzer(Analyzer):
     def search(self, indicator, api_key, search_after=None):
         """
         Searches for a website using the indicator
+        :param api_key:
         :param search_after:
         :param indicator: domain, ip, hash, url
         :type indicator: str
@@ -31,8 +32,8 @@ class UrlscanAnalyzer(Analyzer):
                 search_after = self.get_param('parameters.search_after', None, None)
                 self.report({
                     'type': self.data_type,
-                    'query': query+". Search after: "+search_after,
-                        'indicator': self.search(query, self.api_key, search_after=search_after)
+                    'query': query+". Search after: " + str(search_after),
+                    'indicator': str(self.search(query, self.api_key, search_after=search_after))
                 })
         except UrlscanException as err:
             self.error(str(err))
