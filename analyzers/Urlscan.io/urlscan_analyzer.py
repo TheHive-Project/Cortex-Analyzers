@@ -6,6 +6,7 @@ from urlscan import Urlscan, UrlscanException
 class UrlscanAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
+        self.api_key = self.get_param("config.api_key", None, 'Missing Shodan API key')
 
     def search(self, indicator, api_key, search_after=None):
         """
@@ -15,7 +16,7 @@ class UrlscanAnalyzer(Analyzer):
         :type indicator: str
         :return: dict
         """
-        res = Urlscan(indicator, self.api_key).search(search_after=search_after)
+        res = Urlscan(indicator, api_key).search(search_after=search_after)
         return res
 
     def run(self):
