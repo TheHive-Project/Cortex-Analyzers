@@ -33,7 +33,7 @@ class UrlscanAnalyzer(Analyzer):
                 self.report({
                     'type': self.data_type,
                     'query': query+". Search after: " + str(search_after),
-                    'indicator': str(self.search(query, self.api_key, search_after=search_after))
+                    'indicator': self.search(query, self.api_key, search_after=search_after)
                 })
         except UrlscanException as err:
             self.error(str(err))
