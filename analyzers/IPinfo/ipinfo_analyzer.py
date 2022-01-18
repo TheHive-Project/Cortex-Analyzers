@@ -32,6 +32,37 @@ class IPinfoAnalyzer(Analyzer):
                     self.build_taxonomy(
                         level, namespace, "ASN", asn.get("asn"))
                 )
+            privacy = raw.get("privacy")
+            if privacy and privacy.get("vpn"):
+                taxonomies.append(
+                    self.build_taxonomy(
+                        level, namespace, "VPN", privacy.get("vpn"))
+                )
+            if privacy and privacy.get("tor"):
+                taxonomies.append(
+                    self.build_taxonomy(
+                        level, namespace, "TOR", privacy.get("tor"))
+                )
+            if privacy and privacy.get("proxy"):
+                taxonomies.append(
+                    self.build_taxonomy(
+                        level, namespace, "Proxy", privacy.get("proxy"))
+                )
+            if privacy and privacy.get("relay"):
+                taxonomies.append(
+                    self.build_taxonomy(
+                        level, namespace, "Relay", privacy.get("relay"))
+                )
+            if privacy and privacy.get("hosting"):
+                taxonomies.append(
+                    self.build_taxonomy(
+                        level, namespace, "Hosting", privacy.get("hosting"))
+                )
+            if privacy and privacy.get("service"):
+                taxonomies.append(
+                    self.build_taxonomy(
+                        level, namespace, "PrivacyService", privacy.get("service"))
+                )
 
         elif self.service == "hosted_domains":
             total = 0
