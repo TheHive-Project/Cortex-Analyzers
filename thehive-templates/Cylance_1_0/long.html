@@ -1,0 +1,146 @@
+<div class="panel panel-info" ng-if="success && content.hashlookup != 'hash_not_found'">
+	<div class="panel-heading">
+	Cylance Lookup, Sample Information: 
+        <strong>{{artifact.data | fang}}</strong>
+	</div>
+	<!-- Hash details -->
+   <table class="table">
+           <tbody>
+            <div class="panel-body">
+          <div>
+              <dl class="dl-horizontal">
+                <dt>Sample Name: </dt>
+                <dd class="wrap">{{content.hashlookup.sample.sample_name|| "-"}}</dd>
+              </dl>
+               <dl class="dl-horizontal">
+                <dt>SHA256: </dt>
+                <dd class="wrap">{{content.hashlookup.sample.sha256 || "-"}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>MD5: </dt>
+                <dd class="wrap">{{content.hashlookup.sample.md5 || "-"}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>Signed: </dt>
+                <dd class="wrap">{{content.hashlookup.sample.signed || "-"}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>Cylance Score: </dt>
+                <dd class="wrap">{{content.hashlookup.sample.cylance_score || "-"}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>AV Industry: </dt>
+                <dd class="wrap">{{content.hashlookup.sample.av_industry || "-"}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>Classification: </dt>
+                <dd class="wrap">{{content.hashlookup.sample.classification || "-"}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>Sub Classification: </dt>
+                <dd class="wrap">{{content.hashlookup.sample.sub_classification|| "-"}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>Global Quarantine: </dt>
+                <dd class="wrap">{{content.hashlookup.sample.global_quarantine || "-"}}</dd>
+              </dl>
+               <dl class="dl-horizontal">
+                <dt>Safelisted: </dt>
+                <dd class="wrap">{{content.hashlookup.sample.safelisted || "-"}}</dd>
+              </dl>
+               <dl class="dl-horizontal">
+                <dt>Cert Publisher: </dt>
+                <dd class="wrap">{{content.hashlookup.sample.cert_publisher || "-"}}</dd>
+              </dl>
+               <dl class="dl-horizontal">
+                <dt>Cert Issuer: </dt>
+                <dd class="wrap">{{content.hashlookup.sample.cert_issuer || "-"}}</dd>
+              </dl>
+               <dl class="dl-horizontal">
+                <dt>Cert Timestampt: </dt>
+                <dd class="wrap">{{content.hashlookup.sample.cert_timestamp || "-"}}</dd>
+              </dl>
+               <dl class="dl-horizontal">
+                <dt>File Size (bytes): </dt>
+                <dd class="wrap">{{content.hashlookup.sample.file_size || "-"}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>Unique to Cylance: </dt>
+                <dd class="wrap">{{content.hashlookup.sample.unique_to_cylance || "-"}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>Running: </dt>
+                <dd class="wrap">{{content.hashlookup.sample.running || "-"}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>Autorun: </dt>
+                <dd class="wrap">{{content.hashlookup.sample.autorun || "-"}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>Detected By: </dt>
+                <dd class="wrap">{{content.hashlookup.sample.detected_by || "-"}}</dd>
+              </dl>
+            </div>
+        </div>
+            </tbody>
+        </table>
+	</div>
+</div>
+<div class="panel panel-info" ng-if="success && content.hashlookup != 'hash_not_found'">
+	<div class="panel-heading">
+	Cylance Lookup: Host Information
+	</div>
+
+	<div class="panel-body">
+		<!-- Client details -->
+        <p ng-if="content.hashlookup == 0">
+            No result found.
+        </p>
+        <table class="table" ng-if="content.hashlookup">
+            <thead>
+                <th>Name</th>
+                <th>State</th>
+                <th>Found</th>
+                <th>Status</th>
+                <th>Path</th>
+                <th>IP</th>
+            </thead>
+            <tbody ng-repeat="r in content.hashlookup">
+                <tr>
+                    <td>{{r.name}}</td>
+                    <td>{{r.state}}</td>
+                    <td>{{r.found}}</td>
+                    <td>{{r.status}}</td>
+                    <td>{{r.path}}</td>
+                    <td>{{r.ip}}</td>
+                </tr>
+            </tbody>
+        </table>
+	</div>
+</div>
+<!-- No results -->
+<div class="panel panel-danger" ng-if="content.hashlookup == 'hash_not_found'">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>
+                <i class="fa fa-warning"></i> Cylance:
+            </dt>
+            <dd class="wrap">No results</dd>
+        </dl>
+    </div>
+</div>
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+    	<dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> Cylance: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
