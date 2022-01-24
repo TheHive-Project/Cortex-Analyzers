@@ -52,5 +52,9 @@
       "required": true,
       "defaultValue": "https://login.windows.net/"
     }
-  ]
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://securitycenter.windows.com"
 }
