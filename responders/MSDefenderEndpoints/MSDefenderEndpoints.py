@@ -193,7 +193,7 @@ class MSDefenderEndpoints(Responder):
             except requests.exceptions.RequestException as e:
                 self.error({'message': e})
 
-        print("blop")
+        # print("blop")
         if self.service == "isolateMachine":
             isolateMachine(getMachineId(self.observable))
         elif self.service == "unisolateMachine":
