@@ -31,5 +31,9 @@
       "multi": false,
       "required": true
     }
-  ]
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.crowdstrike.com"
 }
