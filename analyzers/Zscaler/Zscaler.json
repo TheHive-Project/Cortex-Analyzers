@@ -66,11 +66,11 @@
   "service_homepage": "https://www.zscaler.com/",
   "service_logo": {"path":"assets/zscaler_logo.png", "caption": "logo"},
   "screenshots": [
-    {"path":"assets/zscaler_sample_lookup_long.png",
+    {"path":"assets/zscaler_url_lookup_long.png",
       "caption":"Zscaler Lookup sample Information full report"
     },
     {
-      "path": "assets/zscaler_sample_lookup_short.png",
+      "path": "assets/zscaler_url_lookup_short.png",
       "caption:":"Zscaler Lookup sample mini report"
     }]
 }
