@@ -19,7 +19,7 @@ class LdapQuery(Analyzer):
         password = self.get_param("config.LDAP_password", None, "password is missing")
         self.base_dn = self.get_param("config.base_DN", None, "base_dn is missing")
         uid_search_field = self.get_param(
-            "config.search_field", None, "uid_search_field is missing"
+            "config.uid_search_field", None, "uid_search_field is missing"
         )
         if self.data_type == "mail":
             self.search_field = "mail"
