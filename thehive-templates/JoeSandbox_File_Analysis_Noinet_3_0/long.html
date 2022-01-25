@@ -145,6 +145,24 @@
         </div>
     </div>
 
+    <div class="panel panel-info " ng-if="content.images" >
+        <div class="panel-heading">
+            <strong>Images</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <center>
+                    <h3>
+                        <a id="1" href ng-click="index = (index-1+content.images.length)%(content.images.length)">←</a>
+                        {{index||0}}
+                        <a id="2" href ng-click="index = (index+1)%(content.images.length)">→</a>
+                    </h3>
+                    <hr>
+                    <img data-ng-src="data:image/png;base64,{{content.images[index||0]}}" width="840" height="525">
+                </center>
+            </dl>
+        </div>
+    </div>
 
     <div class="panel panel-info" ng-if="content.htmlreport || content.pdfreport">
         <div class="panel-heading">
@@ -174,3 +192,4 @@
         {{content.errorMessage}}
     </div>
 </div>
+
