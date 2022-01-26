@@ -1,0 +1,6 @@
+mdutils
+pdfkit
+md2html-phuker
+thehive4py
+cortexutils
+requests

@@ -1,0 +1,125 @@
+{
+    "name": "Case_Reporter",
+    "version": "1.0",
+    "author": "Florian Perret @Cyberpescadito",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Generate fully customizable case reports in various formats. See README.md for help",
+    "dataTypeList": ["thehive:case"],
+    "command": "Case_Reporter/case_reporter.py",
+    "baseConfig": "case_reporter",
+    "configurationItems": [
+      {
+        "name": "thehive_url",
+        "description": "URL to TheHive. Eg: https://myhive.com:9000",
+        "type": "string",
+        "multi": false,
+        "required": true,
+        "defaultValue": ""
+      },
+      {
+        "name": "thehive_apikey",
+        "description": "API Key with permissions on the target organisation",
+        "type": "string",
+        "multi": false,
+        "required": true,
+        "defaultValue": ""
+      },
+      {
+        "name": "export_format",
+        "description": "You can chose: 'all', 'pdf', 'html' or 'markdown'",
+        "type": "string",
+        "multi": false,
+        "required": true,
+        "defaultValue": "pdf"
+      },
+      {
+        "name": "temp_path",
+        "description": "A path where reports files will be temporary stored",
+        "type": "string",
+        "multi": false,
+        "required": true,
+        "defaultValue": "/tmp/"
+      },
+      {
+        "name": "max_observables_tlp",
+        "description": "Filter to define observables max tlp to include in the report. 1=white, 2=green, 3=amber,4=red",
+        "type": "number",
+        "multi": false,
+        "required": true,
+        "defaultValue": 3
+      },
+      {
+        "name": "section_information",
+        "description": "Set at which position you want this section in the report. Put 0 to disable this section.",
+        "type": "number",
+        "multi": false,
+        "required": false,
+        "defaultValue": 1
+      },
+      {
+        "name": "section_description",
+        "description": "Set at which position you want this section in the report. Put 0 to disable this section.",
+        "type": "number",
+        "multi": false,
+        "required": false,
+        "defaultValue": 2
+      },
+      {
+        "name": "section_customFields",
+        "description": "Set at which position you want this section in the report. Put 0 to disable this section.",
+        "type": "number",
+        "multi": false,
+        "required": false,
+        "defaultValue": 3
+      },
+      {
+        "name": "section_summary",
+        "description": "Set at which position you want this section in the report. Put 0 to disable this section.",
+        "type": "number",
+        "multi": false,
+        "required": false,
+        "defaultValue": 4
+      },
+      {
+        "name": "section_observables",
+        "description": "Set at which position you want this section in the report. Put 0 to disable this section.",
+        "type": "number",
+        "multi": false,
+        "required": false,
+        "defaultValue": 5
+      },
+      {
+        "name": "section_ttps",
+        "description": "Set at which position you want this section in the report. Put 0 to disable this section.",
+        "type": "number",
+        "multi": false,
+        "required": false,
+        "defaultValue": 6
+      },
+      {
+        "name": "section_tasks",
+        "description": "Set at which position you want this section in the report. Put 0 to disable this section.",
+        "type": "number",
+        "multi": false,
+        "required": false,
+        "defaultValue": 7
+      },
+      {
+        "name": "section_tasklogs",
+        "description": "Set at which position you want this section in the report. Put 0 to disable this section.",
+        "type": "number",
+        "multi": false,
+        "required": false,
+        "defaultValue": 8
+      },
+      {
+        "name": "branding_logo",
+        "description": "Base64 code of your company png logo. small size highly recommended",
+        "type": "string",
+        "multi": false,
+        "required": false,
+        "defaultValue": ""
+      }
+    ]
+}
