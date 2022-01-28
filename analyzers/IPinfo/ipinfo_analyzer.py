@@ -37,6 +37,12 @@ class IPinfoAnalyzer(Analyzer):
                     self.build_taxonomy(
                         level, namespace, "ASNType", asn.get("type"))
                 )
+            company = raw.get("company")
+            if company and company.get("name"):
+                taxonomies.append(
+                    self.build_taxonomy(
+                        level, namespace, "Company", company.get("name"))
+                )
             privacy = raw.get("privacy")
             if privacy and privacy.get("vpn"):
                 taxonomies.append(
