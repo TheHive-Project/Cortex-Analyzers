@@ -115,7 +115,7 @@
       },
       {
         "name": "branding_logo",
-        "description": "Base64 code of your company png logo. small size highly recommended",
+        "description": "Base64 code of your company png logo. small size (like 80x80) highly recommended",
         "type": "string",
         "multi": false,
         "required": false,
