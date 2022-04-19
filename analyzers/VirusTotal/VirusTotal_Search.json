@@ -1,0 +1,23 @@
+{
+  "name": "VirusTotal_Search",
+  "version": "1.0",
+  "author": "CTI_Marc",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use VirusTotal to search.",
+  "dataTypeList": ["other"],
+  "baseConfig": "VirusTotal",
+  "config": {
+    "service": "search"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for Virustotal",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "command": "VirusTotal/virustotal.py"
+}

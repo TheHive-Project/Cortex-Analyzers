@@ -1,9 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding: utf-8
 
 import time
 import hashlib
-
+import requests
+import json
 from virus_total_apis import PublicApi as VirusTotalPublicApi
 from cortexutils.analyzer import Analyzer
 
@@ -71,16 +72,16 @@ class VirusTotalAnalyzer(Analyzer):
 
         if self.service == "scan":
             predicate = "Scan"
+        if self.service != 'search':
+            result = {
+                "has_result": True
+            }
 
-        result = {
-            "has_result": True
-        }
+            if raw["response_code"] != 1:
+                result["has_result"] = False
 
-        if raw["response_code"] != 1:
-            result["has_result"] = False
-
-        result["positives"] = raw.get("positives", 0)
-        result["total"] = raw.get("total", 0)
+            result["positives"] = raw.get("positives", 0)
+            result["total"] = raw.get("total", 0)
 
         if "scan_date" in raw:
             result["scan_date"] = raw["scan_date"]
@@ -130,8 +131,16 @@ class VirusTotalAnalyzer(Analyzer):
                 else:
                     level = "malicious"
 
+        if self.service == 'search':
+            predicate = "search"
+            if 'meta' in raw:
+                value =  "{}".format(raw["meta"]["total_hits"])
+            else:
+                value =  "{}".format(0)
+
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         return {"taxonomies": taxonomies}
+
 
     def run(self):
         if self.service == 'scan':
@@ -174,6 +183,21 @@ class VirusTotalAnalyzer(Analyzer):
                 self.report(self.check_response(self.vt.get_url_report(data)))
             else:
                 self.error('Invalid data type')
+        elif self.service == 'search':
+            # documentation https://developers.virustotal.com/reference/intelligence-search
+            limit = 20
+            cursor = self.get_param('cursor',None)
+            if cursor:
+                url = f"""https://www.virustotal.com/api/v3/intelligence/search?descriptors_only=true&cursor={cursor}&limit={str(limit)}&query={self.get_data()}"""
+            else:
+                url = f"""https://www.virustotal.com/api/v3/intelligence/search?descriptors_only=true&limit={str(limit)}&query={self.get_data()}"""
+            headers = {
+                        "Accept": "application/json",
+                        "X-Apikey": self.virustotal_key
+                        }
+            response = requests.get( url, headers=headers)
+            self.report(json.loads(response.text))
+
         else:
             self.error('Invalid service')
 
