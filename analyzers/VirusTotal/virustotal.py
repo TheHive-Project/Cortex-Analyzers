@@ -133,7 +133,7 @@ class VirusTotalAnalyzer(Analyzer):
 
         if self.service == 'search':
             predicate = "search"
-            if 'meta' in raw:
+            if 'meta' in raw and 'total_hits' in raw["meta"]:
                 value =  "{}".format(raw["meta"]["total_hits"])
             else:
                 value =  "{}".format(0)
