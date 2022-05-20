@@ -45,6 +45,13 @@
       "multi": false,
       "type": "boolean",
       "default": true
+    },
+    {
+      "name": "account",
+      "description": "Account ID",
+      "required": false,
+      "multi": false,
+      "type": "string"
     }
   ]
 }
