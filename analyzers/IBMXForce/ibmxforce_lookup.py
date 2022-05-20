@@ -22,6 +22,7 @@ class IBMXForceAnalyzer(Analyzer):
         if not self.verify:
             requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
         self.proxies = self.get_param('config.proxy', None)
+        self.account = self.get_param('config.account', None)
 
     def parse_data(self, date):
         try:
@@ -126,6 +127,9 @@ class IBMXForceAnalyzer(Analyzer):
         try:
             _session = requests.Session()
             _session.auth = (self.key, self.pwd)
+            if self.account != None: 
+                _session.headers.update({'account': self.account})
+
 
             _query_ip = _session.get('%s/ipr/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
             _query_malware = _session.get(
@@ -153,6 +157,10 @@ class IBMXForceAnalyzer(Analyzer):
         try:
             _session = requests.Session()
             _session.auth = (self.key, self.pwd)
+            
+            if self.account != None: 
+                _session.headers.update({'account': self.account})
+
 
             _query_url = _session.get('%s/url/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
             _query_malware = _session.get(
@@ -180,6 +188,9 @@ class IBMXForceAnalyzer(Analyzer):
         try:
             _session = requests.Session()
             _session.auth = (self.key, self.pwd)
+            
+            if self.account != None: 
+                _session.headers.update({'account': self.account})
 
             _query_malware = _session.get(
                 '%s/malware/%s' % (self.url, data), proxies=self.proxies, verify=self.verify)
