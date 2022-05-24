@@ -1,0 +1,40 @@
+{
+  "name": "Palo Alto WildFire",
+  "version": "1.0",
+  "author": "Ignacio Rodriguez Paez, Joe Lazaro",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Run Palo Alto WildFire analysis on a file, hash, or URL",
+  "dataTypeList": [
+    "file",
+    "url",
+    "hash"
+  ],
+  "command": "PaloAltoWildFire/wildfire.py",
+  "baseConfig": "PaloAltoWildFire",
+  "configurationItems": [
+    {
+      "name": "api_host",
+      "description": "You can send requests to the WildFire global cloud (U.S., default option) or to the WildFire regional clouds that Palo Alto Networks owns and maintains. See the WildFire Public Cloud documentation for a list of valid servers.",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "wildfire.paloaltonetworks.com"
+    },
+    {
+      "name": "key",
+      "description": "API key for WildFire",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "polling_interval",
+      "description": "Define time interval between two requests attempts for the report",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 60
+    }
+  ]
+}
