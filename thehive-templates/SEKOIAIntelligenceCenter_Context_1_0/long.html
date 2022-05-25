@@ -13,8 +13,12 @@
                 <div class="panel-body">
                     <div>
                         <dl class="dl-horizontal">
+                            <dt>ID</dt>
+                            <dd class="wrap">{{item.id}}</dd>
+                        </dl>
+                        <dl class="dl-horizontal">
                             <dt>Type</dt>
-                            <dd class="wrap">{{item.type}}</dd>
+                            <dd class="wrap">{{item.type}}<span ng-if="item.x_ic_is_source"> (source)</span><span ng-if="item.x_ic_is_sector"> (sector)</span></dd>
                         </dl>
                         <dl class="dl-horizontal" ng-if="item.aliases">
                             <dt>Aliases</dt>
@@ -23,6 +27,13 @@
                                 <div ng-if="item.aliases.length > 0">
                                     <span class="label label-info" style="margin: 2px;" ng-repeat="alias in item.aliases">{{alias}}</span> 
                                 </div>
+                            </dd>
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>Tags</dt>
+                            <dd>
+                                <span class="label label-danger" style="margin: 2px;" ng-if="item.revoked" >Revoked</span>
+                                <span class="label label-success" style="margin: 2px;" ng-if="!item.revoked" >Not Revoked</span>
                             </dd>
                         </dl>
                         <dl class="dl-horizontal">
