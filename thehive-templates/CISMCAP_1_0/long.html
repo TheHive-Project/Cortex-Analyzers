@@ -1,0 +1,55 @@
+<!-- Success -->
+<div class="panel panel-danger" ng-if="success">
+    <div class="panel-heading">
+        MCAP Report
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>IOC</th>
+                    <th>Severity</th>
+                    <th>Confidence</th>
+                    <th>Data</th>
+                    <th>Hashes</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="ioc in content.iocs">
+                    <td>{{ioc.ioc}}</td>
+                    <td>{{ioc.severity}}</td>
+                    <td>{{ioc.confidence}}</td>
+                    <td>
+                        <span ng-if="ioc.path">Path: {{ioc.path}}</span>
+                        <span ng-if="ioc.domain">Domain: {{ioc.domain}}</span>
+                        <span ng-if="ioc.url">URL: {{ioc.url}}</span>
+                    </td>
+                    <td>
+                        <ul>
+                            <li>SHA-256: {{ioc.sample_sha256 || ioc.artifact_sha256}}
+                            </li>
+                            <li>
+                                MD5: {{ioc.artifact_sha256 || "n/a"}}
+                            </li>
+                        </ul>
+                    </td>
+                    <td>{{ioc.timestamp}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> MCAP: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
