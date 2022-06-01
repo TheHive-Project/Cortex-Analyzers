@@ -181,8 +181,8 @@ class MCAPAnalyzer(Analyzer):
             return status[0]
         return None
 
-    def check_feed(self, data_type: str, data):
-        """TODO: FIXME"""
+    def check_feed(self, data_type: str, data) -> list[dict]:
+        """TODO: FIXME Returns IOCs"""
         request_data = {
             'confidence': self.minimum_confidence,
             'severity': self.minimum_severity
@@ -210,9 +210,14 @@ class MCAPAnalyzer(Analyzer):
         try:
             response = self.session.get(url, params=request_data)
             self._check_for_api_errors(response, "While checking feed:")
+            iocs = response.json()
         except requests.RequestException as e:
             self.error('Error while trying to get check feed: ' + str(e))
-        return response.json()
+
+        if data_type == 'ip' and isinstance(iocs, dict):
+            # Special case to make sure we're returning a list of dicts
+            return list(iocs.values())
+        return iocs
 
     def summary(self, full_report: dict):
         """Build taxonomies from the report data to give a summary"""

@@ -19,24 +19,28 @@
     <div class="panel-body" ng-if="content.sample_status">
       <table>
         <caption>
-          Sample Status
+          Sample Analysis Status
         </caption>
         <tbody>
+          <tr>
+            <td class="header">Status</td>
+            <td>{{content.sample_status.status}}</td>
+          </tr>
           <tr>
             <td class="header">Filename</td>
             <td>{{content.sample_status.filename}}</td>
           </tr>
           <tr>
-            <td class="header">Tags</td>
-            <td>{{content.sample_status.tags}}</td>
-          </tr>
-          <tr>
             <td class="header">Hashes/ID</td>
             <td>
-                MD5: {{content.sample_status.md5}}<br>
-                SHA-1: {{content.sample_status.sha1}}<br>
-                SHA-256: {{content.sample_status.sha256}}
+              MD5: {{content.sample_status.md5}}<br />
+              SHA-1: {{content.sample_status.sha1}}<br />
+              SHA-256: {{content.sample_status.sha256}}
             </td>
+          </tr>
+          <tr>
+            <td class="header">Tags</td>
+            <td>{{content.sample_status.tags}}</td>
           </tr>
           <tr>
             <td class="header">Private</td>
@@ -45,8 +49,8 @@
           <tr>
             <td class="header">Analysis Date/Time</td>
             <td>
-              Submitted: {{content.sample_status.submitted_at}}<br>
-              Started: {{content.sample_status.started_at}}<br>
+              Submitted: {{content.sample_status.submitted_at}}<br />
+              Started: {{content.sample_status.started_at}}<br />
               Completed: {{content.sample_status.completed_at}}
             </td>
           </tr>
@@ -54,38 +58,14 @@
             <td class="header">VM</td>
             <td>{{content.sample_status.vm}} ({{content.sample_status.os}})</td>
           </tr>
-          <tr>
-            <td class="header">Status</td>
-            <td>{{content.sample_status.status}}</td>
-          </tr>
-          <tr>
-            <td class="header"></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td class="header"></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td class="header"></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td class="header"></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td class="header"></td>
-            <td></td>
-          </tr>
         </tbody>
       </table>
     </div>
     <div class="panel-body" ng-if="content.iocs.length === 0">
-      No IOC were returned
+      <p class="lead">No IOC were returned</p>
     </div>
     <div class="panel-body" ng-if="content.iocs.length > 0">
-      <table class="table table-striped">
+      <table class="table-striped">
         <thead>
           <tr>
             <th>IOC</th>
@@ -102,15 +82,16 @@
             <td>{{ioc.severity}}</td>
             <td>{{ioc.confidence}}</td>
             <td>
-              <span ng-if="ioc.path">Path: {{ioc.path}}</span>
-              <span ng-if="ioc.domain">Domain: {{ioc.domain}}</span>
-              <span ng-if="ioc.url">URL: {{ioc.url}}</span>
+              <span ng-if="ioc.path !== undefined"> Path: {{ioc.path}} </span>
+              <span ng-if="ioc.domain !== undefined">
+                Domain: {{ioc.domain}}
+              </span>
+              <span ng-if="ioc.url !== undefined"> URL: {{ioc.url}} </span>
+              <span ng-if="ioc.port !== undefined"> Port: {{ioc.port || "n/a"}} </span>
             </td>
             <td>
-              <ul>
-                <li>SHA-256: {{ioc.sample_sha256 || ioc.artifact_sha256}}</li>
-                <li>MD5: {{ioc.artifact_sha256 || "n/a"}}</li>
-              </ul>
+              SHA-256: {{ioc.sample_sha256 || ioc.artifact_sha256}}<br />
+              MD5: {{ioc.artifact_sha256 || "n/a"}}
             </td>
             <td>{{ioc.timestamp}}</td>
           </tr>
