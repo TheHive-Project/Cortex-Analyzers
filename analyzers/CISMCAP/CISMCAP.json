@@ -48,11 +48,19 @@
         },
         {
             "name": "polling_interval",
-            "description": "Define time interval between two requests attempts for the report",
+            "description": "Interval (seconds) between requests for sample status.",
             "type": "number",
             "multi": false,
             "required": false,
-            "defaultValue": 60
+            "defaultValue": 120
+        },
+        {
+            "name": "max_sample_result_wait",
+            "description": "Maximum time to retry requests for sample status. Defaults to 15 minutes since the API says to allow that long for analysis to complete.",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 900
         }
     ]
 }
