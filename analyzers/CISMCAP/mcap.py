@@ -71,35 +71,6 @@ class MCAPAnalyzer(Analyzer):
                 file_hash.update(chunk)
         return file_hash.hexdigest()
 
-    # @staticmethod
-    # def get_file_hash2(
-    #         f: BinaryIO,
-    #         blocksize: int = 8192,
-    #         algorithm=hashlib.sha256):
-    #     file_hash = algorithm()
-    #     for chunk in iter(lambda: f.read(blocksize), b""):
-    #         file_hash.update(chunk)
-    #     return file_hash.hexdigest()
-
-    def _check_for_api_errors(self, response: requests.Response,
-                              error_prefix="", good_status_code=200):
-        """Check for API a failure response and exit with error if needed"""
-        if response.status_code != good_status_code:
-            message = None
-            try:
-                response_dict = response.json()
-                if 'message' in response_dict:
-                    errors = str(response_dict.get('errors', ''))
-                    message = "{} {}{}".format(
-                        error_prefix, response_dict['message'], errors)
-            except requests.exceptions.JSONDecodeError:
-                pass
-
-            if message is None:
-                message = "{} HTTP {} {}".format(
-                    error_prefix, response.status_code, response.text)
-            self.error(message)
-
     def __init__(self):
         Analyzer.__init__(self)
         self.api_key = self.get_param(
@@ -123,6 +94,25 @@ class MCAPAnalyzer(Analyzer):
             'Accept': 'application/json',
             'Authorization': f"Bearer {self.api_key}"
         })
+
+    def _check_for_api_errors(self, response: requests.Response,
+                              error_prefix="", good_status_code=200):
+        """Check for API a failure response and exit with error if needed"""
+        if response.status_code != good_status_code:
+            message = None
+            try:
+                response_dict = response.json()
+                if 'message' in response_dict:
+                    errors = str(response_dict.get('errors', ''))
+                    message = "{} {}{}".format(
+                        error_prefix, response_dict['message'], errors)
+            except requests.exceptions.JSONDecodeError:
+                pass
+
+            if message is None:
+                message = "{} HTTP {} {}".format(
+                    error_prefix, response.status_code, response.text)
+            self.error(message)
 
     def submit_file(self, file_path: str) -> SubmitResponse:
         """Upload a file to MCAP and return the sample's tracking info
@@ -258,22 +248,15 @@ class MCAPAnalyzer(Analyzer):
 
         filename = self.get_param('filename', 'sample')
         filepath = self.get_param('file', None, 'File is missing')
-
-        # Calculate SHA-256 hash locally so we can check if it's known
-        # with open(filepath, 'rb') as f:
-        # sha256 = self.get_file_hash(f)
-        # sample_identifier = {'sha256': sha256}
         sample_identifier = {'sha256': self.get_file_hash(filepath)}
-        print(f"{sample_identifier=}")
         sample_status = self.get_sample_status(**sample_identifier)
         if sample_status is None:
             submit_response = self.submit_file(filepath, filename)
             mcap_id = submit_response['sample']['mcap_id']
             sample_identifier = {'mcap_id': mcap_id}
-            # Set a fake initial state loop
 
+        # Loop until we get sample results or time out
         tries = 0
-        # The API says to allow up to 15 minutes, so give up after that
         max_tries = math.ceil(
             self.max_sample_result_wait // self.polling_interval)
         while ((sample_status is None and tries <= max_tries)
@@ -290,10 +273,9 @@ class MCAPAnalyzer(Analyzer):
                 f" Last status details: {sample_status['status']}"
                 f" | Unique sample id: {sample_status['id']}")
 
-        iocs = self.check_feed('hash', sample_status['sha256'])
         self.report({
             'sample_status': sample_status,
-            'iocs': iocs
+            'iocs': self.check_feed('hash', sample_status['sha256'])
         })
 
 

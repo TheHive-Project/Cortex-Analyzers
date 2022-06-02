@@ -27,24 +27,12 @@
             <td>{{content.sample_status.status}}</td>
           </tr>
           <tr>
-            <td class="header">Filename</td>
-            <td>{{content.sample_status.filename}}</td>
-          </tr>
-          <tr>
             <td class="header">Hashes/ID</td>
             <td>
               MD5: {{content.sample_status.md5}}<br />
               SHA-1: {{content.sample_status.sha1}}<br />
               SHA-256: {{content.sample_status.sha256}}
             </td>
-          </tr>
-          <tr>
-            <td class="header">Tags</td>
-            <td>{{content.sample_status.tags}}</td>
-          </tr>
-          <tr>
-            <td class="header">Private</td>
-            <td>{{content.sample_status.private}}</td>
           </tr>
           <tr>
             <td class="header">Analysis Date/Time</td>
@@ -57,6 +45,14 @@
           <tr>
             <td class="header">VM</td>
             <td>{{content.sample_status.vm}} ({{content.sample_status.os}})</td>
+          </tr>
+          <tr>
+            <td class="header">Private</td>
+            <td>{{content.sample_status.private}}</td>
+          </tr>
+          <tr>
+            <td class="header">Tags</td>
+            <td>{{content.sample_status.tags}}</td>
           </tr>
         </tbody>
       </table>
