@@ -4,7 +4,7 @@
 import hashlib
 import math
 import time
-from typing import BinaryIO, Optional, TypedDict, Literal
+from typing import Literal, Optional, TypedDict
 
 import requests
 from cortexutils.analyzer import Analyzer
@@ -62,30 +62,36 @@ class SampleStatus(TypedDict):
 class MCAPAnalyzer(Analyzer):
     @staticmethod
     def get_file_hash(
-            f: BinaryIO,
+            file_path: str,
             blocksize: int = 8192,
             algorithm=hashlib.sha256):
         file_hash = algorithm()
-        for chunk in iter(lambda: f.read(blocksize), b""):
-            file_hash.update(chunk)
+        with open(file_path, 'rb') as f:
+            for chunk in iter(lambda: f.read(blocksize), b""):
+                file_hash.update(chunk)
         return file_hash.hexdigest()
+
+    # @staticmethod
+    # def get_file_hash2(
+    #         f: BinaryIO,
+    #         blocksize: int = 8192,
+    #         algorithm=hashlib.sha256):
+    #     file_hash = algorithm()
+    #     for chunk in iter(lambda: f.read(blocksize), b""):
+    #         file_hash.update(chunk)
+    #     return file_hash.hexdigest()
 
     def _check_for_api_errors(self, response: requests.Response,
                               error_prefix="", good_status_code=200):
-        """Requests response processing hook"""
+        """Check for API a failure response and exit with error if needed"""
         if response.status_code != good_status_code:
-            # print("HTTP {} ({}) != {} ({})".format(
-            #     response.status_code, type(response.status_code),
-            #     good_status_code, type(good_status_code)
-            # ))
             message = None
             try:
                 response_dict = response.json()
                 if 'message' in response_dict:
                     errors = str(response_dict.get('errors', ''))
-                    message = "{} {}{}".format(error_prefix,
-                                               response_dict['message'],
-                                               errors)
+                    message = "{} {}{}".format(
+                        error_prefix, response_dict['message'], errors)
             except requests.exceptions.JSONDecodeError:
                 pass
 
@@ -95,14 +101,6 @@ class MCAPAnalyzer(Analyzer):
             self.error(message)
 
     def __init__(self):
-        """Initializes the Analyzer class
-
-        Args:
-            proxies (dict): An optional dictionary containing proxy data, with
-            https as the key, and the proxy path
-            as the value
-            verify (bool): Verify the certificate
-        """
         Analyzer.__init__(self)
         self.api_key = self.get_param(
             'config.key', None, "Missing API Key")
@@ -119,15 +117,22 @@ class MCAPAnalyzer(Analyzer):
         self.api_root = "https://mcap.cisecurity.org/api"
 
         self.session = requests.Session()
-        self.session.verify = False  # TODO: Disable after testing
+        self.session.verify = True
         self.session.proxies = self.get_param('config.proxy', None)
         self.session.headers.update({
             'Accept': 'application/json',
             'Authorization': f"Bearer {self.api_key}"
         })
 
-    def submit_file(self, file_path: str, filename="sample") -> SubmitResponse:
-        """TODO: FIXME"""
+    def submit_file(self, file_path: str) -> SubmitResponse:
+        """Upload a file to MCAP and return the sample's tracking info
+
+        Args:
+            file_path: Full path to the file to be uploaded
+
+        Returns:
+            SubmitResponse
+        """
         url = self.api_root + "/sample/submit"
         data = {
             "private": 1 if self.private_samples else 0,
@@ -146,15 +151,17 @@ class MCAPAnalyzer(Analyzer):
         return submit_response
 
     def get_sample_status(
-            self, mcap_id=None, sha256=None) -> Optional[SampleStatus]:
+            self,
+            mcap_id: Optional[str] = None,
+            sha256: Optional[str] = None) -> Optional[SampleStatus]:
         """Get the status of a previously submitted sample
 
-        There are additional possible parameters to the API that are not used,
-        such as md5 or sha1 hash.
+        Note that even after a sample is submitted, this function can still
+        return None for several minutes until the analysis has been completed.
 
         Args:
-            mcap_id (str, optional): unique MCAP id of the sample ex: 1
-            sha256 (str, optional): A sha256 of the submitted sample
+            mcap_id: unique MCAP integer ID of the sample used to check status
+            sha256: SHA-256 hash of the submitted sample
 
         Returns:
             Return the sample status if it was found, else None
@@ -182,7 +189,9 @@ class MCAPAnalyzer(Analyzer):
         return None
 
     def check_feed(self, data_type: str, data) -> list[dict]:
-        """TODO: FIXME Returns IOCs"""
+        """Return a list of known IOCs for an observable"""
+
+        # First figure out the request parameters
         request_data = {
             'confidence': self.minimum_confidence,
             'severity': self.minimum_severity
@@ -196,16 +205,17 @@ class MCAPAnalyzer(Analyzer):
         elif data_type == 'url':
             feed_name = 'urls'
             request_data['url'] = data
+        elif data_type == 'hash' and len(data) != 64:
+            self.error(
+                "This API only supports SHA-256 hashes which have 64"
+                f" characters. Your hash '{data}' has {len(data)}")
         elif data_type == 'hash':
-            if len(data) != 64:
-                self.error(
-                    "This API only supports SHA-256 hashes which have 64"
-                    f" characters. Your hash '{data}' has {len(data)}")
             feed_name = 'artifacts'
             request_data['sha256'] = data
         else:
             self.error(f"Cannot check feed for {data_type=}")
 
+        # Now we can make the API request
         url = f"{self.api_root}/feeds/{feed_name}"
         try:
             response = self.session.get(url, params=request_data)
@@ -214,13 +224,15 @@ class MCAPAnalyzer(Analyzer):
         except requests.RequestException as e:
             self.error('Error while trying to get check feed: ' + str(e))
 
-        if data_type == 'ip' and isinstance(iocs, dict):
-            # Special case to make sure we're returning a list of dicts
+        if isinstance(iocs, dict):
+            # The IP feed was observed to return a dictionary keyed by the
+            # string representation of the list index, so this special case
+            # ensures that our return value is always a list.
             return list(iocs.values())
         return iocs
 
     def summary(self, full_report: dict):
-        """Build taxonomies from the report data to give a summary"""
+        """Build taxonomies from the report data to give an IOC count"""
         taxonomies = []
         namespace = "CISMCAP"
         predicate = "IOC count"
@@ -237,20 +249,22 @@ class MCAPAnalyzer(Analyzer):
         if self.data_type not in [
                 "ip", "hash", "url", "domain", "fqdn", "file"]:
             self.error(f"Unsupported data type {self.data_type}")
+
         if self.data_type != "file":
             data = self.get_param('data', None, 'Missing data field')
             iocs = self.check_feed(self.data_type, str.strip(data))
             return self.report({'iocs': iocs})
+        # else the data type "file" is implied
 
-        # Implied data type is "file"
         filename = self.get_param('filename', 'sample')
         filepath = self.get_param('file', None, 'File is missing')
 
-        # Calculate SHA-256 hash locally so we can see if it's known
-        with open(filepath, 'rb') as f:
-            sha256 = self.get_file_hash(f)
-            sample_identifier = {'sha256': sha256}
-
+        # Calculate SHA-256 hash locally so we can check if it's known
+        # with open(filepath, 'rb') as f:
+        # sha256 = self.get_file_hash(f)
+        # sample_identifier = {'sha256': sha256}
+        sample_identifier = {'sha256': self.get_file_hash(filepath)}
+        print(f"{sample_identifier=}")
         sample_status = self.get_sample_status(**sample_identifier)
         if sample_status is None:
             submit_response = self.submit_file(filepath, filename)
@@ -258,8 +272,6 @@ class MCAPAnalyzer(Analyzer):
             sample_identifier = {'mcap_id': mcap_id}
             # Set a fake initial state loop
 
-        # state: Literal["pending", "running", "succ", "proc", "fail"]
-        print("Starting sample status polling loop")
         tries = 0
         # The API says to allow up to 15 minutes, so give up after that
         max_tries = math.ceil(
