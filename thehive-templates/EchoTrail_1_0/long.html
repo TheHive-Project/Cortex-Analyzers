@@ -1,0 +1,177 @@
+<style>
+  section.report td,
+  section.report th {
+    border: 1px solid rgb(141, 159, 68);
+    padding: 8px;
+  }
+
+  section.report th,
+  section.report td.header {
+    background-color: rgb(209, 224, 181);
+    font-weight: bold;
+    font-size: larger;
+  }
+
+  section.report .report-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 0.5em;
+  }
+  section.report .report-list {
+    margin-right: 0.5em;
+    margin-bottom: 1em;
+  }
+  section.report tr.striped-row:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+</style>
+<section class="report">
+  <!-- General error  -->
+  <div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+      <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+      <dl class="dl-horizontal" ng-if="content.errorMessage">
+        <dt><i class="fa fa-warning"></i> MCAP:</dt>
+        <dd class="wrap">{{content.errorMessage}}</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- Success -->
+  <div class="panel panel-primary" ng-if="success">
+    <div class="panel-heading">EchoTrail Report</div>
+
+    <div class="panel-body" ng-if="!(content.matched)">
+      <p class="lead">{{content.message}}</p>
+    </div>
+
+    <div class="panel-body" ng-if="content.matched">
+      <dl class="dl-horizontal">
+        <dt>Execution Rank</dt>
+        <dd>{{content.rank}}</dd>
+        <dt>Host Prevalence</dt>
+        <dd>{{content.host_prev}}%</dd>
+        <dt>EchoTrail Prev. Score</dt>
+        <dd>{{content.eps}} (100 = most common, 0 = least common)</dd>
+        <dt>Description</dt>
+        <dd>
+          <p>{{content.description}}</p>
+          <p>{{content.intel}}</p>
+        </dd>
+      </dl>
+      <hr />
+
+      <div class="report-list-container">
+        <div class="report-list" ng-if="content.paths.length > 0">
+          <table>
+            <thead>
+              <tr>
+                <th>Path</th>
+                <th>Prevalence</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="striped-row" ng-repeat="item in content.paths">
+                <td>{{item[0]}}</td>
+                <td>{{item[1]}}%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- end of paths listing -->
+
+        <div class="report-list" ng-if="content.parents.length > 0">
+          <table>
+            <thead>
+              <tr>
+                <th>Parent Processes</th>
+                <th>Prevalence</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="striped-row" ng-repeat="item in content.parents">
+                <td>{{item[0]}}</td>
+                <td>{{item[1]}}%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- end of parents listing -->
+
+        <div class="report-list" ng-if="content.children.length > 0">
+          <table>
+            <thead>
+              <tr>
+                <th>Child Processes</th>
+                <th>Prevalence</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="striped-row" ng-repeat="item in content.children">
+                <td>{{item[0]}}</td>
+                <td>{{item[1]}}%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- end of children listing -->
+
+        <div class="report-list" ng-if="content.grandparents.length > 0">
+          <table>
+            <thead>
+              <tr>
+                <th>Grandparent Processes</th>
+                <th>Prevalence</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="striped-row" ng-repeat="item in content.grandparents">
+                <td>{{item[0]}}</td>
+                <td>{{item[1]}}%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- end of grandparents listing -->
+
+        <div class="report-list" ng-if="content.hashes.length > 0">
+          <table>
+            <thead>
+              <tr>
+                <th>Hashes</th>
+                <th>Prevalence</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="striped-row" ng-repeat="item in content.hashes">
+                <td>{{item[0]}}</td>
+                <td>{{item[1]}}%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- end of hashes listing -->
+
+        <div class="report-list" ng-if="content.network.length > 0">
+          <table>
+            <thead>
+              <tr>
+                <th>Network Ports</th>
+                <th>Prevalence</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="striped-row" ng-repeat="item in content.network">
+                <td>{{item[0]}}</td>
+                <td>{{item[1]}}%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- end of network listing -->
+      </div>
+    </div>
+  </div>
+</section>
