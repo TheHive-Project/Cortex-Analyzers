@@ -1,56 +1,64 @@
 <style>
-  h1 {
+  section.report h1 {
     color: rgb(109, 136, 10);
     margin: 3em 0 2em 0;
   }
-  th,
-  td.header {
+  section.report th,
+  section.report td.header {
     background-color: rgb(209, 224, 181);
     font-weight: bold;
     font-size: larger;
   }
-  td,
-  th {
+  section.report td,
+  section.report th {
     border: 1px solid rgb(141, 159, 68);
     padding: 8px;
   }
-  .verdict {
+  section.report .verdict {
     font-weight: bold;
     font-size: larger;
     text-transform: capitalize;
   }
-  .behavior-title {
+  section.report .analysis-type {
+    text-transform: capitalize;
+  }
+  section.report .behavior-title {
     font-size: x-large;
   }
-  .subsection-content {
+  section.report .subsection-content {
     margin-left: 2em;
   }
-  .report-table {
-    width: 100%;
+  section.report .observable-container {
+    justify-content: start;
   }
-  section {
+  section.report .observable-item {
+    margin-right: 1em;
+    padding: 1em;
+    border: solid black 1px;
+  }
+  section.report {
     counter-reset: h1counter;
   }
-  section h1 {
+  section.report h1 {
     counter-reset: h2counter;
   }
-  section h1::before {
+  section.report h1::before {
     counter-increment: h1counter;
     content: counter(h1counter) '. ';
   }
-  section h2 {
+  section.report h2 {
     counter-reset: h3counter;
   }
-  section h2::before {
+  section.report h2::before {
     counter-increment: h2counter;
     content: counter(h1counter) '.' counter(h2counter) '. ';
   }
-  section h3::before {
+  section.report h3::before {
     counter-increment: h3counter;
     content: counter(h1counter) '.' counter(h2counter) '.' counter(h3counter)
       '. ';
   }
-  section h4 {
+  section.report h4 {
     /* Make h4 larger than normal */
     display: block;
     font-size: 1.5em;
@@ -60,7 +68,7 @@
     margin-right: 0;
     font-weight: bold;
   }
-  section h5 {
+  section.report h5 {
     /* Make h5 larger than normal */
     display: block;
     font-size: 1.17em;
@@ -72,7 +80,7 @@
   }
 </style>
 
-<section>
+<section class="report">
   <div class="panel panel-danger" ng-if="!success">
     <div class="panel-heading">
       <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
@@ -88,7 +96,7 @@
     >
       <h1>File Information</h1>
       <div class="subsection-content">
-        <table class="report-table">
+        <table class="w-100">
           <tr>
             <td class="header">File Type</td>
             <td>{{content.results.file_info.filetype}}</td>
@@ -141,7 +149,7 @@
             This file was statically analyzed and the table below lists the
             noteworthy items that were found.
           </p>
-          <table class="report-table table-striped">
+          <table class="w-100 table-striped">
             <tr>
               <th>Property</th>
               <th>Description</th>
@@ -173,7 +181,7 @@
             on this virtual machine. In the table below, a score of 1.0
             indicates the highest severity and 0.0 indicates the lowest.
           </p>
-          <table class="report-table table-striped">
+          <table class="w-100 table-striped">
             <thead>
               <tr>
                 <th>Severity</th>
@@ -200,7 +208,7 @@
         <h3>Network Activity</h3>
         <h4>DNS Queries</h4>
         <div class="subsection-content">
-          <table class="report-table table-striped">
+          <table class="w-100 table-striped">
             <thead>
               <tr>
                 <th>Domain Name</th>
@@ -221,7 +229,7 @@
 
         <h4>Connections</h4>
         <div class="subsection-content">
-          <table class="report-table table-striped">
+          <table class="w-100 table-striped">
             <thead>
               <tr>
                 <th>Host</th>
@@ -258,7 +266,7 @@
             </p>
             <div ng-if="process.process_activity">
               <h5>Process Activity</h5>
-              <table class="report-table table-striped">
+              <table class="w-100 table-striped">
                 <thead>
                   <tr>
                     <th>Child Process</th>
@@ -279,7 +287,7 @@
             <h5>File Activity</h5>
             <p ng-if="!process.file">No file activity for this process</p>
             <div ng-if="process.file">
-              <table class="report-table table-striped">
+              <table class="w-100 table-striped">
                 <thead>
                   <tr>
                     <th>File</th>
@@ -310,7 +318,7 @@
               No registry activity for this process
             </p>
             <div ng-if="process.registry">
-              <table class="report-table table-striped">
+              <table class="w-100 table-striped">
                 <thead>
                   <tr>
                     <th>Registry Key</th>
@@ -331,7 +339,7 @@
             <h5>Service Activity</h5>
             <p ng-if="!process.service">No service activity for this process</p>
             <div ng-if="process.service">
-              <table class="report-table table-striped">
+              <table class="w-100 table-striped">
                 <thead>
                   <tr>
                     <th>Service Name</th>
@@ -352,7 +360,7 @@
             <h5>Mutex Activity</h5>
             <p ng-if="!process.mutex">No mutex activity for this process</p>
             <div ng-if="process.mutex">
-              <table class="report-table table-striped">
+              <table class="w-100 table-striped">
                 <thead>
                   <tr>
                     <th>Mutex Name</th>
@@ -402,40 +410,43 @@
           <li>{{reason.description}}</li>
         </ul>
       </div>
-      <span
+      <hr>
+
+      <div
         ng-repeat="mp in content.results.report.maec_packages track by mp.id"
       >
-        <div class="row">
+        <!-- <div class="bg-info">
           <div class="col-sm-4"><strong>Analysis Type</strong></div>
           <div class="col-sm-4"><strong>Conclusion</strong></div>
           <div class="col-sm-4"><strong>Description</strong></div>
-        </div>
+        </div> -->
         <span ng-repeat="mo in mp.maec_objects track by mo.id">
-          <div
-            class="row"
-            ng-repeat="metadata in mo.analysis_metadata track by $index"
-          >
-            <div class="col-sm-4">{{ metadata.analysis_type }}</div>
-            <div class="col-sm-4">{{ metadata.conclusion }}</div>
-            <div class="col-sm-4">{{ metadata.description }}</div>
-          </div>
+          <span ng-repeat="metadata in mo.analysis_metadata track by $index" >
+            <p class="lead">
+              <span class="analysis-type">{{ metadata.analysis_type }}</span>
+              analysis
+              <span ng-if="metadata.description"
+                >({{ metadata.description }})</span
+              >
+              , Conclusion:
+              <strong>{{ metadata.conclusion }}</strong>
+            </p>
+          </span>
         </span>
-        <button
-          data-toggle="collapse"
-          data-target="{{ '#observables-' + mp.id }}"
-        >
-          Observable Objects
-        </button>
-        <div class="collapse" ng-attr-id="{{ 'observables-' + mp.id }}">
-          <div class="well" ng-repeat="(index, obj) in mp.observable_objects">
-            <dl class="dl-horizontal" ng-repeat="(key, value) in obj">
-              <dt>{{key}}</dt>
-              <dd>{{value}}</dd>
-            </dl>
+
+        <div>
+          <h5>Observable Objects</h5>
+          <div class="d-flex flex-row observable-container">
+            <div class="p-2 bg-info observable-item" ng-repeat="(index, obj) in mp.observable_objects">
+              <span ng-repeat="(key, value) in obj">
+                <strong>{{key}}: </strong>{{value}}<br>
+              </span>
+            </div>
           </div>
         </div>
         <hr />
-      </span>
-    </div><!-- End of url report -->
+      </div>
+    </div>
+    <!-- End of url report -->
   </div>
 </section>
