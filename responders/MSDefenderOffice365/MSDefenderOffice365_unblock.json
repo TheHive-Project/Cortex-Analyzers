@@ -1,0 +1,46 @@
+{
+    "name": "MSDefenderOffice365_unblock",
+    "version": "1.0",
+    "author": "Joe Lazaro",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Add entries to the Tenant Allow/Block List in the Microsoft 365 Defender",
+    "dataTypeList": [
+        "thehive:case_artifact"
+    ],
+    "command": "MSDefenderOffice365/ms_defender_office.py",
+    "baseConfig": "MSDefenderOffice365",
+    "config": {
+        "service": "unblock"
+    },
+    "configurationItems": [
+        {
+            "name": "certificate_base64",
+            "description": "Base64-encoded PFX certificate to be used for certificate-based authentication.",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "certificate_password",
+            "description": "Password for the certificate used to authenticate",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "app_id",
+            "description": "The application ID of the service principal that's used in certificate based authentication",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "organization",
+            "description": "Tenant ID. Example: something.onmicrosoft.com",
+            "type": "string",
+            "multi": false,
+            "required": true
+        }
+    ]
+}
