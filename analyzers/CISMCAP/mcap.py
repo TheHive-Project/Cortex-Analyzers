@@ -246,12 +246,11 @@ class MCAPAnalyzer(Analyzer):
             return self.report({'iocs': iocs})
         # else the data type "file" is implied
 
-        filename = self.get_param('filename', 'sample')
         filepath = self.get_param('file', None, 'File is missing')
         sample_identifier = {'sha256': self.get_file_hash(filepath)}
         sample_status = self.get_sample_status(**sample_identifier)
         if sample_status is None:
-            submit_response = self.submit_file(filepath, filename)
+            submit_response = self.submit_file(filepath)
             mcap_id = submit_response['sample']['mcap_id']
             sample_identifier = {'mcap_id': mcap_id}
 
