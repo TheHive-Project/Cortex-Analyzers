@@ -19,5 +19,5 @@ $connectSplat = @{
     Organization = $organization
 }
 
-Connect-ExchangeOnline @connectSplat=
+Connect-ExchangeOnline @connectSplat
 New-TenantAllowBlockListItems -Verbose -ListType Sender -Block -Notes $notes -Entries $entries
