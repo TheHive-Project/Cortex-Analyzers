@@ -19,7 +19,7 @@ cp -rv README.md docs/
 
 
 
-mkdocs serve -a 0.0.0.0:8888
+mkdocs serve -a 0.0.0.0:8889
 
 cd ${ROOT_PATH}
 rm -rf ${TEST_PATH}

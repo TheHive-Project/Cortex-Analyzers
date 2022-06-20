@@ -1,0 +1,42 @@
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+  <div class="panel-heading">
+    <strong>Crowdstrike FalconX Sandbox report for {{(artifact.data || artifact.attachment.name) | fang}}</strong>
+  </div>
+  <div class="panel-body">
+    {{results.errorMessage}}
+  </div>
+</div>
+
+<!-- Success -->
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        <strong>CrowdStrike Falcon X Sandbox Report for {{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <a target="_blank" href="https://falcon.crowdstrike.com/intelligence/sandbox/report/{{content.resources[0].id}}/report-summary">Open the Crowdstrike Sandbox Report here</a>
+    </div>
+    <div class="panel-body" ng-repeat="sample in content.resources">
+        
+        <div class="panel-body" ng-repeat="sandbox in sample.sandbox">
+            <div ng-repeat="(key, value) in sandbox">
+                <dl class="dl-horizontal">
+                    <dt>{{key}}</dt>
+                    <dd>
+                       <div ng-switch on="key">
+                            <div ng-switch-when="verdict">
+                                <span class="label" ng-class="{'label-info':value === 'no specific threat',
+					            'label-warning': value==='suspicious',
+					            'label-danger': value==='malicious',
+					            'label-success': value==='no verdict'}">
+					                {{value}}
+				                </span>
+                            </div>
+                            <div ng-switch-default>{{value}}</div>
+                        </div>
+                    </dd>
+                </dl>        
+            </div>
+	    </div>
+	</div>
+</div>
