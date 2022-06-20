@@ -1,0 +1,43 @@
+{
+  "author": "RiskIQ",
+  "baseConfig": "RiskIQ",
+  "command": "RiskIQ/_analyzer.py",
+  "config": {
+    "auto_extract": true,
+    "property": "resolutions"
+  },
+  "configurationItems": [
+    {
+      "description": "API username of the RiskIQ Illuminate or PassiveTotal account (usually an email address)",
+      "multi": false,
+      "name": "username",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "description": "API key of the RiskIQ Illuminate or PassiveTotal account",
+      "multi": false,
+      "name": "api_key",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "defaultValue": 180,
+      "description": "Number of days back to search for date-bounded historical queries",
+      "multi": false,
+      "name": "days_back",
+      "required": false,
+      "type": "number"
+    }
+  ],
+  "dataTypeList": [
+    "domain",
+    "fqdn",
+    "ip"
+  ],
+  "description": "RiskIQ: PDNS resolutions for an IOC.",
+  "license": "AGPL-V3",
+  "name": "RiskIQ_Resolutions",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "version": "1.0"
+}
