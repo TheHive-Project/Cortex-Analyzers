@@ -7,6 +7,7 @@ import requests
 import json
 from virus_total_apis import PublicApi as VirusTotalPublicApi
 from cortexutils.analyzer import Analyzer
+import urllib.parse
 
 
 class VirusTotalAnalyzer(Analyzer):
@@ -187,10 +188,11 @@ class VirusTotalAnalyzer(Analyzer):
             # documentation https://developers.virustotal.com/reference/intelligence-search
             limit = 20
             cursor = self.get_param('cursor',None)
+            data = urllib.parse.quote_plus(self.get_data())
             if cursor:
-                url = f"""https://www.virustotal.com/api/v3/intelligence/search?descriptors_only=true&cursor={cursor}&limit={str(limit)}&query={self.get_data()}"""
+                url = f"""https://www.virustotal.com/api/v3/intelligence/search?descriptors_only=true&cursor={cursor}&limit={str(limit)}&query={data}"""
             else:
-                url = f"""https://www.virustotal.com/api/v3/intelligence/search?descriptors_only=true&limit={str(limit)}&query={self.get_data()}"""
+                url = f"""https://www.virustotal.com/api/v3/intelligence/search?descriptors_only=true&limit={str(limit)}&query={data}"""
             headers = {
                         "Accept": "application/json",
                         "X-Apikey": self.virustotal_key
