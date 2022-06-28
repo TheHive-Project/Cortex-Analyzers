@@ -73,7 +73,7 @@ class VirusTotalAnalyzer(Analyzer):
 
         if self.service == "scan":
             predicate = "Scan"
-        if self.service != 'search':
+        if self.service != 'search' and self.service!='relationships':
             result = {
                 "has_result": True
             }
@@ -135,9 +135,17 @@ class VirusTotalAnalyzer(Analyzer):
         if self.service == 'search':
             predicate = "search"
             if 'meta' in raw and 'total_hits' in raw["meta"]:
-                value =  "{}".format(raw["meta"]["total_hits"])
+                value = "{}".format(raw["meta"]["total_hits"])
             else:
-                value =  "{}".format(0)
+                value = "{}".format(0)
+
+        if self.service == 'relationships':
+            predicate = "relationships"
+            print(raw["meta"])
+            if 'meta' in raw and 'count' in raw["meta"]:
+                value = "{}".format(raw["meta"]["count"])
+            else:
+                value = "{}".format(0)
 
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         return {"taxonomies": taxonomies}
@@ -186,8 +194,8 @@ class VirusTotalAnalyzer(Analyzer):
                 self.error('Invalid data type')
         elif self.service == 'search':
             # documentation https://developers.virustotal.com/reference/intelligence-search
-            limit = 20
-            cursor = self.get_param('cursor',None)
+            limit = self.get_param('parameters.limit', 20)
+            cursor = self.get_param('parameters.cursor',None)
             data = urllib.parse.quote_plus(self.get_data())
             if cursor:
                 url = f"""https://www.virustotal.com/api/v3/intelligence/search?descriptors_only=true&cursor={cursor}&limit={str(limit)}&query={data}"""
@@ -197,7 +205,22 @@ class VirusTotalAnalyzer(Analyzer):
                         "Accept": "application/json",
                         "X-Apikey": self.virustotal_key
                         }
-            response = requests.get( url, headers=headers)
+            response = requests.get(url, headers=headers)
+            self.report(json.loads(response.text))
+        elif self.service == 'relationships':
+            limit = self.get_param('parameters.limit', 20)
+            cursor = self.get_param('parameters.cursor', None)
+            relationship = self.get_param('parameters.relationship',"itw_urls") #default value set to "itw_urls" to avoid errors.
+            data = self.get_data()
+            if cursor:
+                url = f"""https://www.virustotal.com/api/v3/files/{data}/{relationship}?limit={limit}&cursor={cursor}"""
+            else:
+                url = f"""https://www.virustotal.com/api/v3/files/{data}/{relationship}"""
+            headers = {
+                        "Accept": "application/json",
+                        "X-Apikey": self.virustotal_key
+                        }
+            response = requests.get(url, headers=headers)
             self.report(json.loads(response.text))
 
         else:

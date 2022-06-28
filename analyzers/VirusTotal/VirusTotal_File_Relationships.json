@@ -1,0 +1,23 @@
+{
+  "name": "VirusTotal_File_Relationship",
+  "version": "1.0",
+  "author": "CTI_Marc",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use VirusTotal to get File Relationships",
+  "dataTypeList": ["hash"],
+  "baseConfig": "VirusTotal",
+  "config": {
+    "service": "relationships"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for Virustotal",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "command": "VirusTotal/virustotal.py"
+}
