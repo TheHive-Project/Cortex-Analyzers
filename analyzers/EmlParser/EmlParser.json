@@ -1,6 +1,6 @@
 {
     "name": "EmlParser",
-    "version": "2.0",
+    "version": "2.1",
     "author": "StrangeBee",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
@@ -21,6 +21,14 @@
             "description": "Enable email visualisation in report. This option requires the program `wkhtmltoimage` and installation of `wkhtmltopdf` package on the system. Docker image has this program installed. Refer to the documentation for more information. ",
             "type": "boolean",
             "defaultValue": false,
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "sanitized_rendering",
+            "description": "If wkhtmltoimage fails because some imports can't be loaded the rendering will be done without them. If disabled an error message will be displayed instead.",
+            "defaultValue": false,
+            "type": "boolean",
             "multi": false,
             "required": true
         },
