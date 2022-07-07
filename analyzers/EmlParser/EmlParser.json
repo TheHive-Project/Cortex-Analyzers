@@ -25,14 +25,6 @@
             "required": true
         },
         {
-            "name": "sanitized_rendering",
-            "description": "If wkhtmltoimage fails because some imports can't be loaded the rendering will be done without them. If disabled an error message will be displayed instead.",
-            "defaultValue": false,
-            "type": "boolean",
-            "multi": false,
-            "required": true
-        },
-        {
             "name": "wkhtmltoimage_path",
             "description": "Path of wkhtmltoimage program on the system. This program is required to generate visualisation of the message as it seen in mail client program. If using Docker image, use default configuration.",
             "defaultValue": "/usr/bin/wkhtmltoimage",
