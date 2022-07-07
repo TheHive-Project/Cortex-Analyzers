@@ -1,6 +1,6 @@
 The following repository is used by [TheHive Project](https://thehive-project.org)
 to develop and store [Cortex](https://github.com/TheHive-Project/Cortex/blob/master/README.md)
-analyzers.
+analyzers & responders.
 
 ![](images/cortex-ui.png)
 
