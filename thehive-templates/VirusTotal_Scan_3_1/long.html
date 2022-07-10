@@ -1,0 +1,100 @@
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>VirusTotal GetReport</strong>
+    </div>
+    <div class="panel-body">{{content.errorMessage}}</div>
+</div>
+
+<!-- Success -->
+<div ng-switch="content.response_code" ng-if="success">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Summary</strong>
+        </div>
+        <div class="panel-body">
+            <dl
+                class="dl-horizontal"
+                ng-if="content.attributes.stats"
+                ng-init="stats = content.attributes.stats; total = stats['harmless'] + stats['type-unsupported'] + stats['suspicious'] + stats['confirmed-timeout'] + stats['timeout'] + stats['failure'] + stats['malicious'] + stats['undetected']"
+            >
+                <dt>Malicious</dt>
+                <dd class="wrap">
+                    <strong style="color: #fa541c">{{content.attributes.stats.malicious}}</strong
+                    >/{{total}}
+                </dd>
+            </dl>
+            <dl
+                class="dl-horizontal"
+                ng-if="content.attributes.stats"
+                ng-init="stats = content.attributes.stats; total = stats['harmless'] + stats['type-unsupported'] + stats['suspicious'] + stats['confirmed-timeout'] + stats['timeout'] + stats['failure'] + stats['malicious'] + stats['undetected']"
+            >
+                <dt>Suspicious</dt>
+                <dd class="wrap">
+                    <strong style="color: #ffa940">{{content.attributes.stats.suspicious}}</strong
+                    >/{{total}}
+                </dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.attributes.date">
+                <dt>Last analysis date</dt>
+                <dd class="wrap">{{content.attributes.date*1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.attributes.date">
+                <dt>VirusTotal Report</dt>
+                <dd>
+                    <a ng-href="{{'https://www.virustotal.com/gui/file-analysis/'+content.id}}" target="_blank" ng-if="content.id[0] != 'u'"
+                        >https://www.virustotal.com/gui/file-analysis/{{content.id}}</a
+                    >
+                    <a ng-href="{{'https://www.virustotal.com/gui/url/'+content.id.split('-')[1]}}" target="_blank" ng-if="content.id[0] == 'u'"
+                        >https://www.virustotal.com/gui/url/{{content.id.split("-")[1]}}</a
+                    >
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.attributes.results">
+        <div class="panel-heading">
+            <strong>Scans</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Scanner</th>
+                        <th scope="col">Detected</th>
+                        <th scope="col" ng-if="content.id[0] == 'u'">Result</th>
+                        <th scope="col">Method</th>
+                        <th scope="col" ng-if="content.id[0] != 'u'">Update</th>
+                        <th scope="col" ng-if="content.id[0] != 'u'">Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="scanner in content.attributes.results">
+                        <td>
+                            <strong>{{scanner.engine_name}}</strong>
+                        </td>
+                        <td>
+                            <i
+                                ng-class="scanner.category == 'malicious' ? 'text-danger fas fa-bug' : (scanner.category == 'suspicious' ? 'text-warning fas fa-bug' : (scanner.category == 'harmless' ? 'text-success fas fa-check-circle' : 'text-info fas fa-question-circle' ))"
+                            >
+                            </i>
+                        </td>
+                        <td
+                            ng-if="content.id[0] == 'u'"
+                            ng-class="{'text-danger': scanner.category == 'malicious', 'text-warning': scanner.category == 'suspicious', 'text-success': scanner.category == 'harmless', 'text-info': scanner.category == 'failure' && scanner.category == 'undetected' && scanner.category == 'type-unsupported' }"
+                            class="wrap"
+                        >
+                            {{scanner.result || "null"}}
+                        </td>
+                        <td>{{scanner.method || "null"}}</td>
+                        <td ng-if="content.id[0] != 'u'">
+                            {{scanner.engine_update.slice(0,4)+"/"+scanner.engine_update.slice(4,6)+"/"+scanner.engine_update.slice(6,8)}}
+                        </td>
+                        <td ng-if="content.id[0] != 'u'">{{scanner.engine_version || ""}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
