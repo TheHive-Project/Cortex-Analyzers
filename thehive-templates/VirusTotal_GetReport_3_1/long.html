@@ -7,7 +7,7 @@
 </div>
 
 <!-- Success -->
-<div ng-switch="content.response_code" ng-if="success" ng-app="myApp" ng-controller="TabController as tab">
+<div ng-switch="content.response_code" ng-if="success">
     <div class="panel panel-info">
         <div class="panel-heading">
             <strong>Summary</strong>
@@ -207,7 +207,7 @@
         </div>
     </div>
 
-    <div class="panel panel-info" ng-if="content.relations.contacted_urls">
+    <div class="panel panel-info" ng-if="content.relations.contacted_urls.meta.count > 0">
         <div class="panel-heading">
             <strong>Contacted URLs</strong>
         </div>
@@ -241,7 +241,7 @@
         </div>
     </div>
 
-    <div class="panel panel-info" ng-if="content.relations.contacted_domains">
+    <div class="panel panel-info" ng-if="content.relations.contacted_domains.meta.count > 0">
         <div class="panel-heading">
             <strong>Contacted Domains</strong>
         </div>
@@ -276,7 +276,7 @@
         </div>
     </div>
 
-    <div class="panel panel-info" ng-if="content.relations.contacted_ips">
+    <div class="panel panel-info" ng-if="content.relations.contacted_ips.meta.count > 0">
         <div class="panel-heading">
             <strong>Contacted IP Addresses</strong>
         </div>
@@ -310,7 +310,7 @@
         </div>
     </div>
 
-    <div class="panel panel-info" ng-if="content.relations.last_serving_ip_address">
+    <div class="panel panel-info" ng-if="content.relations.last_serving_ip_address.meta.count > 0">
         <div class="panel-heading">
             <strong>Last Serving IP Address</strong>
         </div>
@@ -325,7 +325,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="ip in content.relations.last_serving_ip_address.data">
+                <tr ng-init="ip = content.relations.last_serving_ip_address.data">
                     <td>
                         <strong>{{ip.id}}</strong>
                     </td>
@@ -344,7 +344,7 @@
         </div>
     </div>
 
-    <div class="panel panel-info" ng-if="content.relations.urls">
+    <div class="panel panel-info" ng-if="content.relations.urls.meta.count > 0">
         <div class="panel-heading">
             <strong>URLs</strong>
         </div>
