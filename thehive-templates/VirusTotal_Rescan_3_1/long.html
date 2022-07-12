@@ -70,7 +70,7 @@
                 <tbody>
                 <tr ng-repeat="url in content.relations.contacted_urls.data">
                     <td>
-                        <strong>{{url.attributes.last_analysis_date}}</strong>
+                        <strong>{{url.attributes.last_analysis_date*1000 | date: 'yyyy-MM-dd'}}</strong>
                     </td>
                     <td
                         ng-init="stats = url.attributes.last_analysis_stats; total = stats['harmless'] + stats['type-unsupported'] + stats['suspicious'] + stats['confirmed-timeout'] + stats['timeout'] + stats['failure'] + stats['malicious'] + stats['undetected']"

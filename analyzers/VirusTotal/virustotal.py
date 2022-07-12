@@ -405,7 +405,6 @@ class VirusTotalAnalyzer(Analyzer):
                 "data": yara_ruleset["attributes"]["rules"],
                 "tags": [
                     "detection:YARA",
-                    "autoImport:false",
                     "ruleset:{}".format(yara_ruleset["attributes"]["name"])
                 ]
             })
@@ -416,7 +415,6 @@ class VirusTotalAnalyzer(Analyzer):
                 "data": ids_result["rule_raw"],
                 "tags": [
                     "detection:IDS",
-                    "autoImport:false",
                     "rule-src:{}".format(ids_result["rule_source"])
                 ]
             })
@@ -432,7 +430,7 @@ class VirusTotalAnalyzer(Analyzer):
             for ip in result['data']:
                 iocs["ip"].append({
                     "data": ip["id"],
-                    "tags": ["known-relationship:contacted-ip", "autoImport:false"]
+                    "tags": ["known-relationship:contacted-ip"]
                 })
         except Exception:
             pass #Premium api required for urls
@@ -448,7 +446,7 @@ class VirusTotalAnalyzer(Analyzer):
             for domain in result['data']:
                 iocs["domain"].append({
                     "data": domain["id"],
-                    "tags": ["known-relationship:contacted-domain", "autoImport:false"]
+                    "tags": ["known-relationship:contacted-domain"]
                 })
         except Exception:
             pass #Premium api required for urls
@@ -463,7 +461,7 @@ class VirusTotalAnalyzer(Analyzer):
         for url in result['data']:
             iocs["url"].append({
                 "data": url['attributes']['url'],
-                "tags": ["known-relationship:contacted-urls", "autoImport:false"]
+                "tags": ["known-relationship:contacted-urls"]
             })
 
     def get_last_serving_ip_address(self, results, iocs, data_type, data):
@@ -475,7 +473,7 @@ class VirusTotalAnalyzer(Analyzer):
         results['relations']['last_serving_ip_address'] = result
         iocs["ip"].append({
             "data": result['data']["id"],
-            "tags": ["known-relationship:last_serving_ip_address", "autoImport:false"]
+            "tags": ["known-relationship:last_serving_ip_address"]
         })
 
     def get_urls(self, results, iocs, data):
@@ -489,7 +487,7 @@ class VirusTotalAnalyzer(Analyzer):
             for url in result['data']:
                 iocs["url"].append({
                     "data": url['attributes']['url'],
-                    "tags": ["known-relationship:url", "autoImport:false"]
+                    "tags": ["known-relationship:url"]
                 })
         except Exception:
             pass #Premium api required
