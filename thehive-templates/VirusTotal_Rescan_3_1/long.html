@@ -13,42 +13,9 @@
             <strong>Summary</strong>
         </div>
         <div class="panel-body">
-            <dl
-                class="dl-horizontal"
-                ng-if="content.attributes.stats"
-                ng-init="stats = content.attributes.stats; total = stats['harmless'] + stats['type-unsupported'] + stats['suspicious'] + stats['confirmed-timeout'] + stats['timeout'] + stats['failure'] + stats['malicious'] + stats['undetected']"
-            >
-                <dt>Malicious</dt>
-                <dd class="wrap">
-                    <strong style="color: #fa541c">{{content.attributes.stats.malicious}}</strong
-                    >/{{total}}
-                </dd>
-            </dl>
-            <dl
-                class="dl-horizontal"
-                ng-if="content.attributes.stats"
-                ng-init="stats = content.attributes.stats; total = stats['harmless'] + stats['type-unsupported'] + stats['suspicious'] + stats['confirmed-timeout'] + stats['timeout'] + stats['failure'] + stats['malicious'] + stats['undetected']"
-            >
-                <dt>Suspicious</dt>
-                <dd class="wrap">
-                    <strong style="color: #ffa940">{{content.attributes.stats.suspicious}}</strong
-                    >/{{total}}
-                </dd>
-            </dl>
-            <dl class="dl-horizontal" ng-if="content.attributes.date">
-                <dt>Last analysis date</dt>
-                <dd class="wrap">{{content.attributes.date*1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</dd>
-            </dl>
-            <dl class="dl-horizontal" ng-if="content.attributes.date">
-                <dt>VirusTotal Report</dt>
-                <dd>
-                    <a ng-href="{{'https://www.virustotal.com/gui/file-analysis/'+content.id}}" target="_blank" ng-if="content.id[0] != 'u'"
-                        >https://www.virustotal.com/gui/file-analysis/{{content.id}}</a
-                    >
-                    <a ng-href="{{'https://www.virustotal.com/gui/url/'+content.id.split('-')[1]}}" target="_blank" ng-if="content.id[0] == 'u'"
-                        >https://www.virustotal.com/gui/url/{{content.id.split("-")[1]}}</a
-                    >
-                </dd>
+            <dl class="dl-horizontal" ng-if="content.data.id">
+                <dt>Id (base64)</dt>
+                <dd class="wrap">{{content.data.id}}</dd>
             </dl>
         </div>
     </div>

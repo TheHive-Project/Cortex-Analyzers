@@ -16,6 +16,15 @@
             <div class="row" style="margin-bottom: 1em">
                 <div class="text-center col-md-6">
                     <dl
+                        class="dl-horizontal"
+                        ng-if="content.message"
+                    >
+                        <dt>Message</dt>
+                        <dd class="wrap">
+                            {{content.message}}
+                        </dd>
+                    </dl>
+                    <dl
                             class="dl-horizontal"
                             ng-if="content.attributes.last_analysis_stats"
                             ng-init="stats = content.attributes.last_analysis_stats; total = stats['harmless'] + stats['type-unsupported'] + stats['suspicious'] + stats['confirmed-timeout'] + stats['timeout'] + stats['failure'] + stats['malicious'] + stats['undetected']"
@@ -60,25 +69,35 @@
                     <dt>Url</dt>
                     <dd class="wrap">{{content.attributes.url}}</dd>
                 </dl>
-                <dl class="dl-horizontal" ng-if="content.id">
+                <dl class="dl-horizontal" ng-if="content.id && content.type != 'domain' && content.type != 'fqdn'">
                     <dt>SHA-256</dt>
                     <dd class="wrap">{{content.id}}</dd>
                 </dl>
-                <dl class="dl-horizontal" ng-if="content.attributes.last_analysis_date">
+                <div class="col-md-6 text-center" ng-if="content.id && (content.type == 'domain' || content.type ==  'fqdn')">
+                    <dl class="dl-horizontal">
+                        <dt>Resolution</dt>
+                        <dd class="wrap">{{content.id}}</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="row">
+                <dl class="dl-horizontal" ng-if="content.attributes.last_analysis_results">
                     <dt>VirusTotal Report</dt>
                     <dd>
                         <a
-                                ng-href="{{'https://www.virustotal.com/gui/search/'+content.id}}"
-                                target="_blank"
-                                ng-if="content.type != 'url'"
-                        >https://www.virustotal.com/gui/search/{{content.id}}</a
+                            ng-href="{{'https://www.virustotal.com/gui/search/'+content.id}}"
+                            target="_blank"
+                            ng-if="content.type != 'url'"
                         >
+                            https://www.virustotal.com/gui/search/{{content.id}}
+                        </a>
                         <a
-                                ng-href="{{'https://www.virustotal.com/gui/url/'+content.id}}"
-                                target="_blank"
-                                ng-if="content.type == 'url'"
-                        >https://www.virustotal.com/gui/url/{{content.id}}</a
+                            ng-href="{{'https://www.virustotal.com/gui/url/'+content.id}}"
+                            target="_blank"
+                            ng-if="content.type == 'url'"
                         >
+                            https://www.virustotal.com/gui/url/{{content.id}}
+                        </a>
                     </dd>
                 </dl>
             </div>
@@ -310,43 +329,9 @@
         </div>
     </div>
 
-    <div class="panel panel-info" ng-if="content.relations.last_serving_ip_address.meta.count > 0">
-        <div class="panel-heading">
-            <strong>Last Serving IP Address</strong>
-        </div>
-        <div class="panel-body">
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th scope="col">IP</th>
-                    <th scope="col">Detections</th>
-                    <th scope="col">Autonomous System</th>
-                    <th scope="col">Country</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-init="ip = content.relations.last_serving_ip_address.data">
-                    <td>
-                        <strong>{{ip.id}}</strong>
-                    </td>
-                    <td
-                        ng-init="stats = ip.attributes.last_analysis_stats; total = stats['harmless'] + stats['type-unsupported'] + stats['suspicious'] + stats['confirmed-timeout'] + stats['timeout'] + stats['failure'] + stats['malicious'] + stats['undetected']"
-                    >
-                        <strong ng-class="ip.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
-                            {{ip.attributes.last_analysis_stats.malicious || "0"}}
-                        </strong> / {{total}}
-                    </td>
-                    <td>{{ip.attributes.asn || "-"}}</td>
-                    <td>{{ip.attributes.country || "-"}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
     <div class="panel panel-info" ng-if="content.relations.urls.meta.count > 0">
         <div class="panel-heading">
-            <strong>URLs</strong>
+            <strong>Detected URLs</strong>
         </div>
         <div class="panel-body">
             <table class="table table-hover">
@@ -361,7 +346,7 @@
                 <tbody>
                 <tr ng-repeat="url in content.relations.urls.data">
                     <td>
-                        <strong>{{url.attributes.last_analysis_date}}</strong>
+                        <strong>{{url.attributes.last_analysis_date*1000 | date: 'yyyy-MM-dd'}}</strong>
                     </td>
                     <td
                         ng-init="stats = url.attributes.last_analysis_stats; total = stats['harmless'] + stats['type-unsupported'] + stats['suspicious'] + stats['confirmed-timeout'] + stats['timeout'] + stats['failure'] + stats['malicious'] + stats['undetected']"
@@ -378,6 +363,69 @@
         </div>
     </div>
 
+    <div class="panel panel-info" ng-if="content.relations.downloaded_files.meta.count > 0">
+        <div class="panel-heading">
+            <strong>Detected files downloaded from this domain</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Scanned</th>
+                    <th scope="col">Detections</th>
+                    <th scope="col">SHA256</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="file in content.relations.downloaded_files.data">
+                    <td>
+                        <strong>{{file.attributes.last_analysis_date*1000 | date: 'yyyy-MM-dd'}}</strong>
+                    </td>
+                    <td
+                        ng-init="stats = file.attributes.last_analysis_stats; total = stats['harmless'] + stats['type-unsupported'] + stats['suspicious'] + stats['confirmed-timeout'] + stats['timeout'] + stats['failure'] + stats['malicious'] + stats['undetected']"
+                    >
+                        <strong ng-class="file.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
+                            {{file.attributes.last_analysis_stats.malicious || "0"}}
+                        </strong> / {{total}}
+                    </td>
+                    <td>{{file.attributes.sha256 || "-"}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.relations.referrer_files.meta.count > 0">
+        <div class="panel-heading">
+            <strong>Detected files which refer to this domain</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Scanned</th>
+                    <th scope="col">Detections</th>
+                    <th scope="col">SHA256</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="file in content.relations.referrer_files.data">
+                    <td>
+                        <strong>{{file.attributes.last_analysis_date*1000 | date: 'yyyy-MM-dd'}}</strong>
+                    </td>
+                    <td
+                        ng-init="stats = file.attributes.last_analysis_stats; total = stats['harmless'] + stats['type-unsupported'] + stats['suspicious'] + stats['confirmed-timeout'] + stats['timeout'] + stats['failure'] + stats['malicious'] + stats['undetected']"
+                    >
+                        <strong ng-class="file.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
+                            {{file.attributes.last_analysis_stats.malicious || "0"}}
+                        </strong> / {{total}}
+                    </td>
+                    <td>{{file.attributes.sha256 || "-"}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <div class="panel panel-info" ng-if="content.attributes.last_analysis_results">
         <div class="panel-heading">
