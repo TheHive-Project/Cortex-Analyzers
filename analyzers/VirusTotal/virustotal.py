@@ -81,18 +81,14 @@ class VirusTotalAnalyzer(Analyzer):
 
     def summary(self, raw):
         taxonomies = []
-        level = "info"
         namespace = "VT"
         predicate = "GetReport"
-        value = "0"
         stats_field = "last_analysis_stats"
         results_field = "last_analysis_results"
-        date_field = "last_analysis_date"
 
         if self.service == "scan" or self.service == "rescan":
             stats_field = "stats"
             results_field = "results"
-            date_field = "date"
 
         if self.service == "scan":
             predicate = "Scan"
@@ -124,33 +120,29 @@ class VirusTotalAnalyzer(Analyzer):
                 total += value
             result["total"] = total
 
-        if date_field in raw["attributes"]:
-            result["scan_date"] = raw["attributes"][date_field]
+        if stats_field in raw["attributes"]:
+            value = "{}/{}".format(
+                result["malicious"] + result["suspicious"], result["total"]
+            )
+            if result["malicious"] > 0:
+                level = "malicious"
+            elif result["suspicious"] > 0:
+                level = "suspicious"
+            elif (
+                result.get("type-unsupported", 0) > 1
+                or result.get("confirmed-timeout", 0) > 1
+                or result.get("timeout", 0) > 1
+                or result.get("failure", 0) > 1
+                or result.get("undetected", 0)
+            ):
+                level = "info"
+            else:
+                level = "safe"
+            taxonomies.append(
+                self.build_taxonomy(level, namespace, predicate, value)
+            )
 
         if self.service == "get":
-            if "last_analysis_stats" in raw["attributes"]:
-                result["scans"] = len(raw["attributes"]["last_analysis_results"])
-                value = "{}/{}".format(
-                    result["malicious"] + result["suspicious"], result["total"]
-                )
-                if result["malicious"] > 0:
-                    level = "malicious"
-                elif result["suspicious"] > 0:
-                    level = "suspicious"
-                elif (
-                    result["type-unsupported"] > 1
-                    or result["confirmed-timeout"] > 1
-                    or result["timeout"] > 1
-                    or result["failure"] > 1
-                    or result["undetected"]
-                ):
-                    level = "info"
-                else:
-                    level = "safe"
-                taxonomies.append(
-                    self.build_taxonomy(level, namespace, predicate, value)
-                )
-
             data_type = "files"
             if raw["type"] == "url":
                 data_type = "urls"
@@ -222,30 +214,6 @@ class VirusTotalAnalyzer(Analyzer):
                     taxonomies.append(
                         self.build_taxonomy(level, namespace, predicate, value)
                     )
-
-        if self.service in ["scan", "rescan"]:
-            if "stats" in raw["attributes"]:
-                result["scans"] = len(raw["attributes"]["last_analysis_results"])
-                value = "{}/{}".format(
-                    result["malicious"] + result["suspicious"], result["total"]
-                )
-                if result["malicious"] > 0:
-                    level = "malicious"
-                elif result["suspicious"] > 0:
-                    level = "suspicious"
-                elif (
-                    result["type-unsupported"] > 1
-                    or result["confirmed-timeout"] > 1
-                    or result["timeout"] > 1
-                    or result["failure"] > 1
-                    or result["undetected"]
-                ):
-                    level = "info"
-                else:
-                    level = "safe"
-                taxonomies.append(
-                    self.build_taxonomy(level, namespace, predicate, value)
-                )
 
         if self.highlighted_antivirus:
             for av in (av for av in self.highlighted_antivirus if av):
@@ -324,9 +292,7 @@ class VirusTotalAnalyzer(Analyzer):
                     filepath = self.get_param("file", None, "File is missing")
                     with open(filepath, "rb") as f:
                         file_hash = self.file_to_sha256(f)
-                        results = self.vt.get_object(
-                            "/files/{}".format(file_hash)
-                        ).to_dict()
+                        results = self.vt.get_object("/files/{}".format(file_hash)).to_dict()
                         self.get_relation("contacted_domains", "files", file_hash, results, iocs)
                         self.get_relation("contacted_ips", "files", file_hash, results, iocs)
                         self.get_relation("contacted_urls", "files", file_hash, results, iocs)

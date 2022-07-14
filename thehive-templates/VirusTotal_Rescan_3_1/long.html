@@ -40,7 +40,7 @@
                         <strong>{{url.attributes.last_analysis_date*1000 | date: 'yyyy-MM-dd'}}</strong>
                     </td>
                     <td
-                        ng-init="stats = url.attributes.last_analysis_stats; total = stats['harmless'] + stats['type-unsupported'] + stats['suspicious'] + stats['confirmed-timeout'] + stats['timeout'] + stats['failure'] + stats['malicious'] + stats['undetected']"
+                        ng-init="stats = url.attributes.last_analysis_stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
                     >
                         <strong ng-class="url.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
                             {{url.attributes.last_analysis_stats.malicious || "0"}}
@@ -74,7 +74,7 @@
                         <strong>{{domain.id}}</strong>
                     </td>
                     <td
-                        ng-init="stats = domain.attributes.last_analysis_stats; total = stats['harmless'] + stats['type-unsupported'] + stats['suspicious'] + stats['confirmed-timeout'] + stats['timeout'] + stats['failure'] + stats['malicious'] + stats['undetected']"
+                        ng-init="stats = domain.attributes.last_analysis_stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
                     >
                         <strong ng-class="domain.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
                             {{domain.attributes.last_analysis_stats.malicious || "0"}}
@@ -109,7 +109,7 @@
                         <strong>{{ip.id}}</strong>
                     </td>
                     <td
-                        ng-init="stats = ip.attributes.last_analysis_stats; total = stats['harmless'] + stats['type-unsupported'] + stats['suspicious'] + stats['confirmed-timeout'] + stats['timeout'] + stats['failure'] + stats['malicious'] + stats['undetected']"
+                        ng-init="stats = ip.attributes.last_analysis_stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
                     >
                         <strong ng-class="ip.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
                             {{ip.attributes.last_analysis_stats.malicious || "0"}}
@@ -143,7 +143,7 @@
                         <strong>{{ip.id}}</strong>
                     </td>
                     <td
-                        ng-init="stats = ip.attributes.last_analysis_stats; total = stats['harmless'] + stats['type-unsupported'] + stats['suspicious'] + stats['confirmed-timeout'] + stats['timeout'] + stats['failure'] + stats['malicious'] + stats['undetected']"
+                        ng-init="stats = ip.attributes.last_analysis_stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
                     >
                         <strong ng-class="ip.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
                             {{ip.attributes.last_analysis_stats.malicious || "0"}}

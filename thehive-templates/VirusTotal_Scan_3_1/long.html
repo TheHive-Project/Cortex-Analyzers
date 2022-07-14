@@ -16,7 +16,7 @@
             <dl
                 class="dl-horizontal"
                 ng-if="content.attributes.stats"
-                ng-init="stats = content.attributes.stats; total = stats['harmless'] + stats['type-unsupported'] + stats['suspicious'] + stats['confirmed-timeout'] + stats['timeout'] + stats['failure'] + stats['malicious'] + stats['undetected']"
+                ng-init="stats = content.attributes.stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
             >
                 <dt>Malicious</dt>
                 <dd class="wrap">
@@ -27,12 +27,24 @@
             <dl
                 class="dl-horizontal"
                 ng-if="content.attributes.stats"
-                ng-init="stats = content.attributes.stats; total = stats['harmless'] + stats['type-unsupported'] + stats['suspicious'] + stats['confirmed-timeout'] + stats['timeout'] + stats['failure'] + stats['malicious'] + stats['undetected']"
+                ng-init="stats = content.attributes.stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
             >
                 <dt>Suspicious</dt>
                 <dd class="wrap">
                     <strong style="color: #ffa940">{{content.attributes.stats.suspicious}}</strong
                     >/{{total}}
+                </dd>
+            </dl>
+            <dl
+                class="dl-horizontal"
+                ng-if="content.attributes.stats"
+                ng-init="stats = content.attributes.stats;
+                         others = stats.type-unsupported + stats.confirmed-timeout + stats.timeout + stats.failure + stats.undetected;
+                         total = others + stats.harmless + stats.malicious + stats.suspicious"
+            >
+                <dt>Undefined</dt>
+                <dd class="wrap">
+                    <strong class="text-info">{{others}}</strong>/{{total}}
                 </dd>
             </dl>
             <dl class="dl-horizontal" ng-if="content.attributes.date">
@@ -54,8 +66,13 @@
     </div>
 
     <div class="panel panel-info" ng-if="content.relations.contacted_urls.meta.count > 0">
-        <div class="panel-heading">
-            <strong>Contacted URLs</strong>
+        <div class="panel-heading row">
+            <div class="col-md-6">
+                <strong>Contacted URLs</strong>
+            </div>
+            <div class="col-md-6 text-right" ng-if="content.relations.contacted_urls.meta.count > 10">
+                (Last 10)
+            </div>
         </div>
         <div class="panel-body">
             <table class="table table-hover">
@@ -73,7 +90,7 @@
                         <strong>{{url.attributes.last_analysis_date*1000 | date: 'yyyy-MM-dd'}}</strong>
                     </td>
                     <td
-                        ng-init="stats = url.attributes.last_analysis_stats; total = stats['harmless'] + stats['type-unsupported'] + stats['suspicious'] + stats['confirmed-timeout'] + stats['timeout'] + stats['failure'] + stats['malicious'] + stats['undetected']"
+                        ng-init="stats = url.attributes.last_analysis_stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
                     >
                         <strong ng-class="url.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
                             {{url.attributes.last_analysis_stats.malicious || "0"}}
@@ -88,8 +105,13 @@
     </div>
 
     <div class="panel panel-info" ng-if="content.relations.contacted_domains.meta.count > 0">
-        <div class="panel-heading">
-            <strong>Contacted Domains</strong>
+        <div class="panel-heading row">
+            <div class="col-md-6">
+                <strong>Contacted Domains</strong>
+            </div>
+            <div class="col-md-6 text-right" ng-if="content.relations.contacted_domains.meta.count > 10">
+                (Last 10)
+            </div>
         </div>
         <div class="panel-body">
             <table class="table table-hover">
@@ -107,7 +129,7 @@
                         <strong>{{domain.id}}</strong>
                     </td>
                     <td
-                        ng-init="stats = domain.attributes.last_analysis_stats; total = stats['harmless'] + stats['type-unsupported'] + stats['suspicious'] + stats['confirmed-timeout'] + stats['timeout'] + stats['failure'] + stats['malicious'] + stats['undetected']"
+                        ng-init="stats = domain.attributes.last_analysis_stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
                     >
                         <strong ng-class="domain.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
                             {{domain.attributes.last_analysis_stats.malicious || "0"}}
@@ -122,9 +144,48 @@
         </div>
     </div>
 
-    <div class="panel panel-info" ng-if="content.relations.contacted_ips.meta.count > 0">
+    <div class="panel panel-info" ng-if="content.relations.last_serving_ip_address.meta.count > 0">
         <div class="panel-heading">
-            <strong>Contacted IP Addresses</strong>
+            <strong>Last Serving IP Address</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">IP</th>
+                    <th scope="col">Detections</th>
+                    <th scope="col">Autonomous System</th>
+                    <th scope="col">Country</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-init="ip = content.relations.last_serving_ip_address.data">
+                    <td>
+                        <strong>{{ip.id}}</strong>
+                    </td>
+                    <td
+                            ng-init="stats = ip.attributes.last_analysis_stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
+                    >
+                        <strong ng-class="ip.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
+                            {{ip.attributes.last_analysis_stats.malicious || "0"}}
+                        </strong> / {{total}}
+                    </td>
+                    <td>{{ip.attributes.asn || "-"}}</td>
+                    <td>{{ip.attributes.country || "-"}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.relations.contacted_ips.meta.count > 0">
+        <div class="panel-heading row">
+            <div class="col-md-6">
+                <strong>Contacted IP Addresses</strong>
+            </div>
+            <div class="col-md-6 text-right" ng-if="content.relations.contacted_ips.meta.count > 10">
+                (Last 10)
+            </div>
         </div>
         <div class="panel-body">
             <table class="table table-hover">
@@ -142,7 +203,7 @@
                         <strong>{{ip.id}}</strong>
                     </td>
                     <td
-                        ng-init="stats = ip.attributes.last_analysis_stats; total = stats['harmless'] + stats['type-unsupported'] + stats['suspicious'] + stats['confirmed-timeout'] + stats['timeout'] + stats['failure'] + stats['malicious'] + stats['undetected']"
+                        ng-init="stats = ip.attributes.last_analysis_stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
                     >
                         <strong ng-class="ip.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
                             {{ip.attributes.last_analysis_stats.malicious || "0"}}
@@ -151,6 +212,51 @@
                     <td>{{ip.attributes.asn || "-"}}</td>
                     <td>{{ip.attributes.country || "-"}}</td>
                 </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.attributes.results">
+        <div class="panel-heading">
+            <strong>Scans</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Scanner</th>
+                        <th scope="col">Detected</th>
+                        <th scope="col" ng-if="content.id[0] == 'u'">Result</th>
+                        <th scope="col">Method</th>
+                        <th scope="col" ng-if="content.id[0] != 'u'">Update</th>
+                        <th scope="col" ng-if="content.id[0] != 'u'">Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="scanner in content.attributes.results">
+                        <td>
+                            <strong>{{scanner.engine_name}}</strong>
+                        </td>
+                        <td>
+                            <i
+                                ng-class="scanner.category == 'malicious' ? 'text-danger fas fa-bug' : (scanner.category == 'suspicious' ? 'text-warning fas fa-bug' : (scanner.category == 'harmless' ? 'text-success fas fa-check-circle' : 'text-info fas fa-question-circle' ))"
+                            >
+                            </i>
+                        </td>
+                        <td
+                            ng-if="content.id[0] == 'u'"
+                            ng-class="{'text-danger': scanner.category == 'malicious', 'text-warning': scanner.category == 'suspicious', 'text-success': scanner.category == 'harmless', 'text-info': scanner.category == 'failure' && scanner.category == 'undetected' && scanner.category == 'type-unsupported' }"
+                            class="wrap"
+                        >
+                            {{scanner.result || "null"}}
+                        </td>
+                        <td>{{scanner.method || "null"}}</td>
+                        <td ng-if="content.id[0] != 'u'">
+                            {{scanner.engine_update.slice(0,4)+"/"+scanner.engine_update.slice(4,6)+"/"+scanner.engine_update.slice(6,8)}}
+                        </td>
+                        <td ng-if="content.id[0] != 'u'">{{scanner.engine_version || ""}}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
