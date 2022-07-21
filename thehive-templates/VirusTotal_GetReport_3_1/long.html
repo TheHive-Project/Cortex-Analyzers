@@ -540,7 +540,7 @@
                     </td>
                     <td>{{scanner.method || "null"}}</td>
                     <td ng-if="content.type != 'url'">
-                        {{scanner.engine_update*1000 | date: 'yyyy/MM/dd HH:mm:ss'}}
+                        {{scanner.engine_update.slice(0,4)+"/"+scanner.engine_update.slice(4,6)+"/"+scanner.engine_update.slice(6,8)}}
                     </td>
                     <td ng-if="content.type != 'url'">{{scanner.engine_version || ""}}</td>
                 </tr>
