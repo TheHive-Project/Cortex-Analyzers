@@ -13,11 +13,11 @@
 #############################
 #  VARIABLES TO CUSTOMISE   #
 ############################# 
-## Set the path for custom analyzers (configured in Cortex)
+## Set the path to your custom analyzers repository (configured in Cortex)
 analyzerspath="/opt/customneurons/analyzers"
-## Set the path for custom responders (configured in Cortex)
+## Set the path to your custom responders repository  (configured in Cortex)
 responderspath="/opt/customneurons/responders"
-# Set the path for docker images archives
+# Set the path to your docker images archives
 dockerimagearchives="/opt/backup-images"
 # Set a name for the docker image repository 
 dockerimagerepositoryname="customimage"

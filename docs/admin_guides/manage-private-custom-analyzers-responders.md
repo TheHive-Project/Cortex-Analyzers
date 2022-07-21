@@ -7,7 +7,7 @@ This guide propose a way to manage your own analyzers without publishing them or
 
 Make Cortex know of custom Analyzers and Responders.
 
-Update the `/etc/cortex/application.conf` or ensure your configuration is similar to: 
+Update the `/etc/cortex/application.conf` or ensure your configuration is similar to:
 
 ```yaml
 [..]
@@ -15,18 +15,20 @@ analyzer {
   # Absolute path where you have pulled the Cortex-Analyzers repository.
   urls = [
         "https://download.thehive-project.org/analyzers.json"
-        "/tmp/analyzers"
+        "/opt/customneurons/analyzers"
         ]
 
 [..]
 }
 [..]
-responder.urls = [
-  "https://download.thehive-project.org/responders.json"
-  "/opt/Cortex-Analyzers/responders"
+responder { 
+  urls = [
+        "https://download.thehive-project.org/responders.json"
+        "/opt/customneurons/responders"
 
 ]
 [..]
+}
 ```
 
 ## Write your code
@@ -53,40 +55,41 @@ Analyzer/
 
 ## Build your docker images
 
+
 #### Configure the program
 
 A program helps you to manage the build of your private analyzers/responders. You can find it [there](https://github.com/TheHive-Project/Cortex-Analyzers/blob/master/utils/docker/build-customimage.sh).
 
-Download it, and edit the file to adjust few variables: 
+Download it, and edit the file to adjust few variables:
 
 ```bash
 #############################
 #  VARIABLES TO CUSTOMISE   #
 ############################# 
-## Set the path for custom analyzers (configured in Cortex)
+## Set the path to your custom analyzers repository (configured in Cortex)
 analyzerspath="/opt/customneurons/analyzers"
-## Set the path for custom responders (configured in Cortex)
+## Set the path to your custom responders repository  (configured in Cortex)
 responderspath="/opt/customneurons/responders"
-# Set the path for docker images archives
+# Set path to your docker images archives
 dockerimagearchives="/opt/backup-images"
 # Set a name for the docker image repository 
 dockerimagerepositoryname="customimage"
 ```
 
-4 variables should be set: 
+4 variables should be set:
 
-* `analyzerspath`, the path for custom analyzers (it should be the same as in the Cortex configuration)
-* `responderspath`, the path for custom responders (it should be the same as in the Cortex configuration)
-* `dockerimagearchives`, the path for docker images archives. Indeed, once built, the program save the docker images in a dedicated folder
+* `analyzerspath`, the path to your custom analyzers repository  (it should be the same as in the Cortex configuration)
+* `responderspath`, the path to your custom responders repository  (it should be the same as in the Cortex configuration)
+* `dockerimagearchives`, the path to your docker images archives. Indeed, once built, the program save the docker images in a dedicated folder
 * `dockerimagerepositoryname`, a name for the docker image repository, used in docker image names or tags. `customimage` is used by default
 
-One updated, save the file.
+Once updated, save the file.
 
 #### Run the program
 
-Before running it, there are few requirements: 
+Before running it, there are few requirements:
 
-* `jq` (from https://stedolan.github.io/jq/) should be installed in the system. For example, if using Ubuntu or Debian, run the following command: `apt install jq`
+* `jq` (from [https://stedolan.github.io/jq/](https://stedolan.github.io/jq/)) should be installed in the system. For example, if using Ubuntu or Debian, run the following command: `apt install jq`
 * _Python3 + json lib_ should be available on the system
 * the Python library `json-spec` should be installed (`pip3 install json-spec`)
 
@@ -102,14 +105,14 @@ Build docker images for Custom analyzers and responders
    options:
    -h          Print this Help.
    -t type     Type: 'analyzer' or 'responder' 
-   -b path     Path of analyzer or responder json file
+   -b path     path to analyzer or responder json file
 ```
 
-To run it successfully, you need to identify the type of neuron to build, `analyzer` or `responder` and specify the path of the JSON file of the neuron
+To run it successfully, you need to identify the type of neuron to build, `analyzer` or `responder` and specify the path to the neurons JSON file.
 
 For example:
 
-```
+```bash
 ./build-customimage.sh -t analyzer -b /home/jerome/Devel/PrivateAnalyzer/analyzer.json
 ```
 
@@ -122,7 +125,7 @@ This will:
 
 ## Refresh Cortex
 
-Open Cortex web console, log in as `orgadmin`, and refresh Analyzers. 
+Open Cortex web console, log in as `orgadmin`, and refresh Analyzers.
 
 ![](../../images/cortex-refresh-analyzers.png)
 
