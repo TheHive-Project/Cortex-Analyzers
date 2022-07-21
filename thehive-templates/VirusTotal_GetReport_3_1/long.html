@@ -123,7 +123,7 @@
             <div ng-repeat="result in content.attributes.crowdsourced_yara_results">
                 <div class="row" style="margin-bottom: 1em">
                     <div class="text-center col-md-1">
-                        <i class="far fa-exclamation-triangle" style="color: #ffa940"></i>
+                        <i class="fa fa-exclamation-triangle" style="color: #ffa940"></i>
                     </div>
                     <div class="col-md-11">
                         Matches rule <span style="color: #ffa940">{{result.rule_name}}</span> by
@@ -135,7 +135,7 @@
                         <span style="color: #666666">
                             <div class="row" style="margin-bottom: 1em">
                                 <div class="text-center col-md-1" style="width:0%; padding-right:0.5%">
-                                    <i class="far fa-info-circle"></i>
+                                    <i class="fa fa-info-circle"></i>
                                 </div>
                                 <div class="col-md-11">
                                     {{result.description}}
@@ -172,7 +172,7 @@
             <div ng-repeat="result in content.attributes.crowdsourced_ids_results">
                 <div class="row" style="margin-bottom: 1em">
                     <div class="text-center col-md-1">
-                        <i class="far fa-exclamation-triangle mt-auto mb-auto"
+                        <i class="fa fa-exclamation-triangle mt-auto mb-auto"
                            ng-class="result.alert_severity == 'high' ? 'text-danger' : (scanner.category == 'medium' ? 'text-warning' : (scanner.category == 'low' ? 'text-success' : 'text-info' ))">
                         </i>
                     </div>
@@ -187,7 +187,7 @@
                         <span style="color: #666666">
                             <div class="row" style="margin-bottom: 1em">
                                 <div class="text-center col-md-1" style="width:0%; padding-right:0.5%">
-                                <i class="far fa-info-circle"></i>
+                                <i class="fa fa-info-circle"></i>
                                 </div>
                                 <div class="col-md-11">
                                     <strong>Category: </strong>{{result.rule_category}}
