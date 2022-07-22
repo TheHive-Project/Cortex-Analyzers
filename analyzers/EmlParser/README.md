@@ -15,6 +15,8 @@ By default, this option is **not** enabled. To proceed, the Analyzer requires th
 
 When enabled, the Analyzer tries to render the html included in the email. If it fails, a dedicated message is displayed.
 
+![](./assets/emlparser-extracted-observables.png)
+
 ### Requirements
 `wkhtmltopdf` program is required to enable visualisation. DEB and RPM packages exist.
 Once installed, in Cortex, configure the Analyzer accordingly :
