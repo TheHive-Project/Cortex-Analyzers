@@ -118,7 +118,7 @@ For example:
 
 This will:
 
-* check if a _Dockerfile` exist in the folder and create a default one if not
+* check if a _Dockerfile_`_ exist in the folder and create a default one if not
 * Build the Docker image and name it `customimage-analyzer:latest`
 * Save this image in _/opt/backup-images/customimage-analyzer.tar_
 * Modify the _analyzer.json_ file accordingly and save it in _/opt/customneurons/analyzers/PrivateAnalyzer/analyzer.json_
@@ -127,6 +127,6 @@ This will:
 
 Open Cortex web console, log in as `orgadmin`, and refresh Analyzers.
 
-![](../../images/cortex-refresh-analyzers.png)
+![](../images/cortex-refresh-analyzers.png)
 
 Then your analyzer should appear and be ready to be configured and used as a Docker image.
