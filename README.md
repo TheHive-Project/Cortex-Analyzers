@@ -22,7 +22,6 @@ If an analyzer is released by its author under a different license, the subfolde
 
 Information, news and updates are regularly posted on [TheHive Project Twitter account](https://twitter.com/thehive_project), [StrangeBee Twitter account](https://twitter.com/strangebee) and on [the blog](https://blog.strangebee.com/).
 
-
 # Contributing
 
 We welcome your **[contributions for new analyzers](https://thehive-project.github.io/Cortex-Analyzers/dev_guides/how-to-create-an-analyzer/)**
@@ -32,6 +31,9 @@ that can take away the load off overworked fellow analysts or improvements to ex
 
 We do have a [Code of conduct](code_of_conduct.md). Make sure to check it out before contributing.
 
+# Security
+
+See the [dedicated page](./SECURITY.md).
 
 # Support
 
@@ -48,4 +50,5 @@ Alternatively, you can join the community on [Discord](https://chat.thehive-proj
 
 
 # Website
-<https://thehive-project.org/>
+
+<https://www.strangebee.com/>
