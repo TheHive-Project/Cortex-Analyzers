@@ -1,0 +1,20 @@
+{
+  "name": "BitcoinAbuse",
+  "version": "1.0",
+  "author": "Peter Juhas",
+  "url": "https://github.com/pjuhas/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Check Bitcoin address against Bitcoin Abuse database",
+  "dataTypeList": ["btc_address"],
+  "baseConfig": "BitcoinAbuse",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for Bitcoin Abuse",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "command": "BitcoinAbuse/BitcoinAbuse.py"
+}
