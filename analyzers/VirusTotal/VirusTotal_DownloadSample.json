@@ -19,5 +19,12 @@
       "required": true
     }
   ],
+  "registration_required": true,
+  "subscription_required": true,
+  "service_homepage": "https://www.virustotal.com/",
+  "service_logo": {
+    "path": "assets/virustotal-logo.png",
+    "caption": "logo"
+  },
   "command": "VirusTotal/virustotal.py"
 }

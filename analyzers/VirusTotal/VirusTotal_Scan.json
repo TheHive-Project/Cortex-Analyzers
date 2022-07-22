@@ -1,7 +1,7 @@
 {
   "name": "VirusTotal_Scan",
   "version": "3.1",
-  "author": "CERT-BDF",
+  "author": "CERT-BDF, StrangeBee",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Use VirusTotal to scan a file or URL.",
@@ -34,5 +34,12 @@
       "required": false
     }
   ],
+  "registration_required": true,
+  "subscription_required": false,
+  "service_homepage": "https://www.virustotal.com/",
+  "service_logo": {
+    "path": "assets/virustotal-logo.png",
+    "caption": "logo"
+  },
   "command": "VirusTotal/virustotal.py"
 }
