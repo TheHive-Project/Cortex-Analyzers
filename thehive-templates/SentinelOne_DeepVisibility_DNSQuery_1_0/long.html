@@ -1,0 +1,12 @@
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <strong> Hosts with DNSQueries for {{artifact.data}}.</strong>
+    </div>
+    <div class="panel-body">
+        <p>The following hosts made a least one DNS request for the domain pulled from {{artifact.data}} within the time
+            window of hours_ago (set in analyzer config) to the time the action was initiated.</p>
+        <ol>
+            <li ng-repeat="agent in content.agent_names">{{agent}}</li>
+        </ol>
+    </div>
+</div>
