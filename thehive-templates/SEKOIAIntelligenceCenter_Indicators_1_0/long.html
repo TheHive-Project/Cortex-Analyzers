@@ -10,6 +10,17 @@
         <div class="panel-body">
             <div>
                 <dl class="dl-horizontal">
+                    <dt>ID</dt>
+                    <dd class="wrap">{{item.id}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Tags</dt>
+                    <dd>
+                        <span class="label label-danger" style="margin: 2px;" ng-if="item.revoked" >Revoked</span>
+                        <span class="label label-success" style="margin: 2px;" ng-if="!item.revoked" >Not Revoked</span>
+                    </dd>
+                </dl>
+                <dl class="dl-horizontal">
                     <dt>Description</dt>
                     <dd class="wrap">{{indicator.description || 'No description' }}</dd>
                 </dl>
