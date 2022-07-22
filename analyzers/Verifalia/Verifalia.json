@@ -1,0 +1,27 @@
+{
+  "name": "Verifalia",
+  "version": "1.0",
+  "author": "Peter Juhas",
+  "url": "https://github.com/pjuhas/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Analyze e-mail address via Verifalia",
+  "dataTypeList": ["mail"],
+  "baseConfig": "Verifalia",
+  "configurationItems": [
+    {
+      "name": "login",
+      "description": "Username for Verifalia",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "password",
+      "description": "Password for Verifalia",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "command": "Verifalia/Verifalia.py"
+}
