@@ -1,0 +1,41 @@
+<div class="panel panel-info" ng-if="::content.entries">
+    <div class="panel-heading">
+        <strong>Summary</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <th>E-mail address</th>
+                <th>Local part</th>
+                <th>Domain part</th>
+                <th>Disposable e-mail</th>
+                <th>Free</th>
+                <th>Classification</th>
+            </tr>
+            <tr ng-repeat="r in content.entries.data">
+                <td>{{r.emailAddress}}</td>
+                <td>{{r.emailAddressLocalPart}}</td>
+                <td>{{r.emailAddressDomainPart}}</td>
+                <td>{{r.isDisposableEmailAddress}}</td>
+                <td>{{r.isFreeEmailAddress}}</td>
+                <td>{{r.classification}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt>
+                <i class="fa fa-warning"></i> urlscan.io:
+            </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
+
