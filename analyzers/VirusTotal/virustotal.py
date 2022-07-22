@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 
-# report -> domain
-
 import os
 import time
 import hashlib
