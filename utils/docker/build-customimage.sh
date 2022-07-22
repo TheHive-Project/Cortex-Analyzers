@@ -13,7 +13,7 @@
 #############################
 #  VARIABLES TO CUSTOMISE   #
 ############################# 
-## Set the path to your custom analyzers repository (configured in Cortex)
+## Set the path for custom analyzers (configured in Cortex)
 analyzerspath="/opt/customneurons/analyzers"
 ## Set the path to your custom responders repository  (configured in Cortex)
 responderspath="/opt/customneurons/responders"
@@ -129,9 +129,7 @@ neuronschema='{
         "description",
         "dataTypeList",
         "command",
-        "baseConfig",
-        "registration_required",
-        "subscription_required"
+        "baseConfig"
     ],
     "definition": {
         "configurationItem": {
