@@ -1,0 +1,22 @@
+{
+  "name": "Crowdsec_Analyzer",
+  "version": "1.0",
+  "author": "CERT-ARKEA",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Query Crowdsec API",
+  "dataTypeList": ["ip"],
+  "command": "Crowdsec/crowdsec_analyzer.py",
+  "baseConfig": "Crowdsec",
+
+  "configurationItems": [
+        {
+            "name": "api_key",
+            "description": "Crowdsec API key",
+            "type": "string",
+            "multi": false,
+            "required": true
+        }
+       ]
+}
+
