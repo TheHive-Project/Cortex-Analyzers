@@ -46,8 +46,14 @@ class VxStreamSandboxAnalyzer(Analyzer):
             # get first report with not Null verdict (First report in the list will be the last analysis performed)
             for minireport in minireports:
                 if minireport["verdict"] is not None:
-                    report_verdict = minireport["verdict"]
+                    if (int(minireport["av_detect"]) >= 50):
+                        report_verdict = "malicious"
+                    elif (int(minireport["av_detect"]) >= 20):
+                         report_verdict = "suspicious"
+                    else:
+                         report_verdict = minireport["verdict"]
                     break
+
 
             # create shield badge for short.html
             if report_verdict == 'malicious':
