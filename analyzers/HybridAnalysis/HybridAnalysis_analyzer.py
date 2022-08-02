@@ -54,7 +54,6 @@ class VxStreamSandboxAnalyzer(Analyzer):
                          report_verdict = minireport["verdict"]
                     break
 
-
             # create shield badge for short.html
             if report_verdict == 'malicious':
                 level = 'malicious'
