@@ -36,6 +36,13 @@ class VxStreamSandboxAnalyzer(Analyzer):
         predicate = "Threat level"
         value = "No verdict"
 
+        verdicts = {
+            "no specific threat": 0,
+            "whitelisted": 1,
+            "suspicious": 2,
+            "malicious": 3,
+        }
+
         # define json keys to loop
         if self.data_type in ['hash', 'file']:
             minireports = raw_report["results"]
@@ -43,16 +50,28 @@ class VxStreamSandboxAnalyzer(Analyzer):
             minireports = raw_report["results"]["result"]
 
         if len(minireports) != 0:
-            # get first report with not Null verdict (First report in the list will be the last analysis performed)
+            # Previous solution was looping through the report and take the first one that was not empty
+            # Better solution, loop throught all the last verdicts (less than an hour from last one) and take the worst verdict
+            # In some cases, HA returns a verdict with "No specific threat" but the one just before (few seconds) from the same scan and different tool was tagued malicious
+            last_verdict_time = None
+            last_verdict = None
+
             for minireport in minireports:
                 if minireport["verdict"] is not None:
-                    if (int(minireport["av_detect"]) >= 50):
-                        report_verdict = "malicious"
-                    elif (int(minireport["av_detect"]) >= 20):
-                         report_verdict = "suspicious"
-                    else:
-                         report_verdict = minireport["verdict"]
-                    break
+                     if (last_verdict_time == None):
+                         last_verdict_time = int((datetime.timestamp(datetime.strptime(minireport["analysis_start_time"][:10]+minireport["analysis_start_time"][11:19], "%Y-%m-%d%H:%M:%S"))))
+                         last_verdict = minireport["verdict"]
+                     else:
+                         new_verdict_time = int((datetime.timestamp(datetime.strptime(minireport["analysis_start_time"][:10]+minireport["analysis_start_time"][11:19], "%Y-%m-%d%H:%M:%S"))))
+                         if (abs(last_verdict_time - new_verdict_time) <= 3600):
+                             last_verdict_time = new_verdict_time
+                             try:
+                                 if (verdicts[minireport["verdict"]] > verdicts[last_verdict]):
+                                     last_verdict =  minireport["verdict"]
+                             except:
+                                 continue
+
+            report_verdict = last_verdict
 
             # create shield badge for short.html
             if report_verdict == 'malicious':
