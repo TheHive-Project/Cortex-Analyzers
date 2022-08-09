@@ -194,9 +194,18 @@ class ElasticsearchAnalyzer(Analyzer):
                     info['query'] += "%22'),sort:!(!(start_time,desc)))"
                     info['querystring'] += '"'
                 #loop to get hits from each index
-                for index in self.index:
+                
+                #Get only index with data
+                index_valid=[]
+                for index_name in self.index:
+                    if es.indices.exists(index=index_name):
+                        info_index = es.count(index=index_name)
+                        if info_index['count']>0:
+                            index_valid.append(index_name)                
+                
+                for index in index_valid:
                     #search elastic for fields in each index
-                    res = es.search(size=self.size,index=index,body={'sort':[{"@timestamp":{"order":"desc"}}],'query':{'multi_match':{'query':self.data, 'fields':self.fields}}})
+                    res = es.search(size=self.size,index=index,sort={"@timestamp":{"order":"desc"}},query={'multi_match':{'query':self.data, 'fields':self.fields}})
                     #if relation is gte then more logs exist than we will display
                     if res['hits']['total']['relation'] == 'gte' or res['hits']['total']['relation'] == 'gt':
                         total = 'gte'
