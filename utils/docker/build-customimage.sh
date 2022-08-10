@@ -140,6 +140,9 @@ neuronschema='{
                 "description": {
                     "type": "string"
                 },
+                "type": {
+                    "type": "string"
+                },
                 "multi": {
                     "type": "boolean"
                 },
@@ -154,7 +157,8 @@ neuronschema='{
                 "name",
                 "description",
                 "multi",
-                "required" 
+                "required",
+                "type"
             ]
         },
         "screenshot": {
@@ -260,7 +264,7 @@ neuron-type() {
 ############################
 json-validate() {
   jsondata=$1
-  cat ${jsondata} | python -mjson.tool > /dev/null && log ok "JSON validated" 
+  cat ${jsondata} | python3 -mjson.tool > /dev/null && log ok "JSON validated" 
 }
 
 
@@ -282,6 +286,16 @@ updatejsonfile() {
     cat ${sourcefile} | jq 'del(.command)'  | jq --arg j ${dockerimagename} '. + {dockerImage: $j }' > "${dest}"
   )
 
+}
+
+#########################################
+# UPDATE PERMISSION ON JSON FILE        #
+#########################################
+updatepermissions() {
+  destination=$1
+  uid=$2
+  gid=$3
+  chown -R ${uid}:${gid} ${destination}
 }
 
 #########################################
@@ -375,6 +389,7 @@ build-image() {
     # Update and save json file with dockerImage value
     mkdir -p ${destinationpath}/${workername}
     updatejsonfile ${jsonpath} ${destinationpath}/${workername}/$(basename  ${jsonpath})
+    updatepermissions ${destinationpath}/${workername}/$(basename  ${jsonpath}) $(stat -c '%u' ${destinationpath}/${workername}) $(stat -c '%g' ${destinationpath}/${workername})
     log success "\nDocker image for your ${neurontype} has been built successfully.
 Image name: ${dockerimagename}
 JSON file updated and saved in: ${destinationpath}/${workername}/$(basename  ${jsonpath})"
