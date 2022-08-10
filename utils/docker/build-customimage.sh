@@ -389,7 +389,7 @@ build-image() {
     # Update and save json file with dockerImage value
     mkdir -p ${destinationpath}/${workername}
     updatejsonfile ${jsonpath} ${destinationpath}/${workername}/$(basename  ${jsonpath})
-    updatepermissions ${destinationpath}/${workername}/$(basename  ${jsonpath}) $(stat -c '%u' ${destinationpath}) $(stat -c '%g' ${destinationpath})
+    updatepermissions ${destinationpath}) $(stat -c '%u' ${destinationpath}) $(stat -c '%g' ${destinationpath})
     log success "\nDocker image for your ${neurontype} has been built successfully.
 Image name: ${dockerimagename}
 JSON file updated and saved in: ${destinationpath}/${workername}/$(basename  ${jsonpath})"
