@@ -1,6 +1,13 @@
 #!/bin/bash
 
 
+# Build and manage your own docker images of Analyzers or Responders:
+# - Build your custom docker images
+# - Store related Analyzer or Responder definition file in your dedicated custom folders
+# - Archive your docker images in a dedicated folder
+# - Use a custom image repository (See VARIABLES TO CUSTOMISE)
+
+
 ############################
 #  REQUIREMENTS            #
 ############################ 
@@ -8,6 +15,19 @@
 # - json-spec (`pip3 install json-spec`)
 # - python3 + json lib
  
+
+######### 
+# USAGE #
+#########
+# $ bash utils/docker/build-customimage.sh -t TYPE -b DEFINITION_FILE
+# with:
+# -t : type of neurons (analyzer or responder)
+# -b : path to analyzer or responder description file
+# 
+# Example: 
+# $ cd /opt/Cortex-Analyzers
+# $ bash utils/docker/build-customimage.sh -t analyzer -b analyzers/EmlParser/EmlParser.json
+
 
 
 #############################
@@ -389,7 +409,7 @@ build-image() {
     # Update and save json file with dockerImage value
     mkdir -p ${destinationpath}/${workername}
     updatejsonfile ${jsonpath} ${destinationpath}/${workername}/$(basename  ${jsonpath})
-    updatepermissions ${destinationpath}) $(stat -c '%u' ${destinationpath}) $(stat -c '%g' ${destinationpath})
+    updatepermissions ${destinationpath} $(stat -c '%u' ${destinationpath}) $(stat -c '%g' ${destinationpath})
     log success "\nDocker image for your ${neurontype} has been built successfully.
 Image name: ${dockerimagename}
 JSON file updated and saved in: ${destinationpath}/${workername}/$(basename  ${jsonpath})"
