@@ -1,49 +1,102 @@
-Authors
--------
+# Authors
 
-* Nabil Adouani <nabil@thehive-project.org>
-* Thomas Franco <toom@thehive-project.org>
-* Saâd Kadhi <saad@thehive-project.org> (project leader)
-* Jérôme Leonard <jerome@thehive-project.org>
+* Nabil Adouani
+* Thomas Franco
+* Jérôme Leonard
 
-Contributors
-------------
+# Contributors
 
-* Danni Co <danni@thehive-project.org>
-* Nils Kuhnert <nils@thehive-project.org>
-* CERT Banque de France (CERT-BDF)
-
-* Rémi Allain
-* Mehdy Aschy
-* Davide Arcuri (LDO-CERT)
+* Abdelkader Ben Ali
 * Adrien Barchapt
-* Pierre Baudry
-* Antoine Brodin
-* Eric Capuano
-* crackytsi
-* Arcuri Davide
-* Marc-André Doll (Starc, by EXAPROBE)
-* etz69
-* Matt Erasmus
 * Andrea Garavaglia (LDO-CERT)
-* Julian Gonzalez
-* Sébastien Larinier
-* Matteo Lodi
-* Nicolas Mattiocco
-* Xavier Mertens
-* Nclose
-* Manabu Niseki
-* Robert Nixon
-* ph34tur3
-* Kyle Parrish
-* Rémi Pointel
-* Guillaume Rousse
-* Gabriel Antonio da Silva
-* Michael Stensrud
+* ANSSI
+* brandon@backscatter.io
+* Brandon Dixon (9bplus)
+* Brian Laskowski
+* CERT-BDF
+* CERT-LaPoste
+* CERT-LDO
+* Cisco Security
+* Cisco Umbrella Research @opendns
+* crackytsi
+* Daniel Weiner @dmweiner
+* Daniil Yugoslavskiy (Tieto)
+* Danni Co
+* Davide Arcuri (LDO-CERT)
+* David Strassegger @oscd_initiative
+* Dennis Perto, Conscia
+* Dmitry Uchakin, Vulners team
+* DomainTools
 * Emmanuel Torquato
-* Daniil Yugoslavskiy
+* Equate Technologies
+* Eric Capuano
+* etz69
+* Florian Perret @cyber_pescadito
+* Florian Roth
+* @frikkylikeme
+* Gabriel Antonio da Silva
+* Guillaume Rousse
+* Ignacio Rodriguez Paez
+* iosonogio, dadokkio
+* Joel Snape @ Nettitude
+* Joe Vasquez
+* KAPSCH-CDC
+* Keijo Korte
+* Kyle Parrish
+* LastInfoSec
+* LetMeR00t
+* Manabu Niseki, @ninoseki
+* Manuel Krucker
+* Marc-André DOLL (STARC by EXAPROBE)
+* Mario Henkel @hariomenkel
+* Mark Kikta, RedLegg Cybersecurity Solutions
+* Matteo Lodi
+* Matt Erasmus, Jonas Hergenhahn
+* Maxim Konakin (OSCD Initiative)
+* Mehdy Aschy
+* Michael
+* Michael Davis, REN-ISAC
+* Michael Hornung (Expeditors International of Washington, Inc.)
+* Michael Stensrud (Nordic Financial CERT)
+* Mikael Keri
+* Nclose
+* Nick Prokop
+* Nicolas Mattiocco
+* Nils Kuhnert (CERT-Bund)
+* ninoseki
+* Kyle Parrish (@arnydo)
+* ottimo
+* Peter Juhas
+* pettai@sunet.se, SUNET
+* ph34tur3
+* Pierre Baudry
+* Pierre Lalet
+* Rémi Allain, Cyberprotect
+* Remi Pointel
+* RiskIQ
+* Robert Nixon
+* Sebastian Schmerl - Computacenter
+* Sebastien Larinier @Sebdraven
+* SEKOIA
+* Simon Lavigne
+* Mikael Keri
+* SOL
+* Stamus Networks
+* StrangeBee
+* Sven Kutzer / Gyorgy Acs, @oscd_initiative
+* TheHive-Project
+* torsolaso
+* Unit777
+* LetMeR00t
+* Vaclav Bartos (CESNET)
+* Wes Lambert (Security Onion Solutions)
+* Xavier Xavier (SANS ISC)
 
-Copyright (C) 2017-2019 Nabil Adouani
-Copyright (C) 2014-2019 Thomas Franco
+---
+Copyright (C) 2017-2022 Nabil Adouani
+
+Copyright (C) 2014-2022 Thomas Franco
+
 Copyright (C) 2014-2019 Saâd Kadhi
-Copyright (C) 2014-2019 Jérôme Leonard
+
+Copyright (C) 2014-2022 Jérôme Leonard
