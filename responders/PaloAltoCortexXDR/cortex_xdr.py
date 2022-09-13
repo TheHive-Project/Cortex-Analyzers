@@ -279,7 +279,8 @@ class PaloAltoCortexXDRResponder(Responder):
             self.error(action_result)
         self.report({
             'success': True,
-            'message': 'All endpoint scans have been completed',
+            'message': ('Successfully isolated endpoints: ' +
+                        str(self.current_endpoints)),
             'action_status': action_result['action_status'],
             'endpoints': self.current_endpoints,
         })
@@ -309,7 +310,8 @@ class PaloAltoCortexXDRResponder(Responder):
             self.error(action_result)
         self.report({
             'success': True,
-            'message': 'All endpoint scans have been completed',
+            'message': ('Successfully un-isolated endpoints: ' +
+                        str(self.current_endpoints)),
             'action_status': action_result['action_status'],
             'endpoints': self.current_endpoints,
         })
