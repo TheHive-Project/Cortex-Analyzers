@@ -354,7 +354,9 @@ class PaloAltoCortexXDRResponder(Responder):
         # Make sure there are no empty/whitespace strings in the list
         o_data = list(filter(None, map(str.strip, o_data)))
 
-        if len(o_data) > 1 and not self.allow_multi_target:
+        if (self.service != 'scan'
+                and len(o_data) > 1
+                and not self.allow_multi_target):
             self.error(
                 f'{self.service} requested on multiple targets but'
                 ' this has been disallowed in the responder configuration.')
