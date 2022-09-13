@@ -6,6 +6,7 @@ import secrets
 import string
 import time
 from typing import Any, List, Literal, TypedDict
+from pprint import pformat
 
 import requests
 from cortexutils.responder import Responder
@@ -77,12 +78,25 @@ class PaloAltoCortexXDRResponder(Responder):
                               error_prefix="", good_status_code=200):
         """Check for API a failure response and exit with error if needed"""
         if response.status_code != good_status_code:
-            response_json = response.json()
+            try:
+                response_json = response.json()
+            except requests.JSONDecodeError:
+                self.error('Failed to JSON decode response: ' + str(response))
+
+            if 'reply' not in response_json:
+                self.error(
+                    'Response is missing the expected "reply" key: ' +
+                    pformat(response_json)
+                )
+
             reply = response_json['reply']
             message = error_prefix + "Error {err_code}: {err_msg}".format(
                 **reply)
             if (err_extra := reply.get('err_extra')) is not None:
                 message += f". {err_extra}"
+            message += (f'\nWe expected status code {good_status_code} but'
+                        f' got {response.status_code} with the error message'
+                        ' reported above.')
 
             self.error({
                 'message': message,
@@ -95,6 +109,7 @@ class PaloAltoCortexXDRResponder(Responder):
         response = self.session.request(method, headers=headers, **kwargs)
         self._check_for_api_errors(response, error_prefix)
         response_json = response.json()
+
         if 'reply' not in response_json:
             self.error("Missing reply in response. Did the API change?"
                        f" {response_json=}")
@@ -167,21 +182,29 @@ class PaloAltoCortexXDRResponder(Responder):
     def scan_endpoints(self, endpoints: List[Endpoint]):
         """Run a scan on selected endpoints."""
         url = f'{self.api_root}/endpoints/scan/'
+        endpoint_log = []
 
         scannable_endpoints = []
         unscannable_endpoints = []
         for e in endpoints:
             if e['scan_status'] != 'SCAN_STATUS_IN_PROGRESS':
                 scannable_endpoints.append(e)
+                endpoint_log.append(
+                    'Found scannable endpoint: ' + e['endpoint_id'])
             else:
                 unscannable_endpoints.append(e)
+                endpoint_log.append(
+                    'Found endpoint with scan already in progress: ' +
+                    e['endpoint_id'])
 
         endpoint_ids = [e['endpoint_id'] for e in scannable_endpoints]
         if len(endpoint_ids) == 0:
             return self.report({
                 'success': True,
-                'message': ('No endpoints to scan or scans are already'
-                            ' in progress'),
+                'message': (
+                    '\n'.join(endpoint_log) + '\n'
+                    'No endpoints to scan or scans are already'
+                    ' in progress'),
                 'endpoints': endpoints
             })
         response_json = self._make_api_request(
