@@ -280,7 +280,7 @@ class PaloAltoCortexXDRResponder(Responder):
         self.report({
             'success': True,
             'message': ('Successfully isolated endpoints: ' +
-                        str(self.current_endpoints)),
+                        str(endpoint_ids)),
             'action_status': action_result['action_status'],
             'endpoints': self.current_endpoints,
         })
@@ -311,7 +311,7 @@ class PaloAltoCortexXDRResponder(Responder):
         self.report({
             'success': True,
             'message': ('Successfully un-isolated endpoints: ' +
-                        str(self.current_endpoints)),
+                        str(endpoint_ids)),
             'action_status': action_result['action_status'],
             'endpoints': self.current_endpoints,
         })
