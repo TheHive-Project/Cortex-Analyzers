@@ -8,6 +8,8 @@ param (
     [parameter(mandatory=$true)]
     [string] $organization,
     [string] $notes="",
+    [parameter(mandatory=$true)]
+    [int] $expirationLength,
     [parameter(mandatory=$true, valueFromRemainingArguments=$true)]
     [string[]] $entries
 )
@@ -20,4 +22,11 @@ $connectSplat = @{
 }
 
 Connect-ExchangeOnline @connectSplat
-New-TenantAllowBlockListItems -OutputJson -ListType Sender -Block -Notes $notes -Entries $entries -NoExpiration | ConvertTo-Json
+
+if ($expirationLength -le 0) {
+    # No expiration
+    New-TenantAllowBlockListItems -OutputJson -ListType Sender -Block -Notes $notes -Entries $entries -NoExpiration | ConvertTo-Json
+} else {
+    $expiry = (Get-Date).AddDays($expirationLength)
+    New-TenantAllowBlockListItems -OutputJson -ListType Sender -Block -ExpirationDate $expiry -Notes $notes -Entries $entries | ConvertTo-Json
+}

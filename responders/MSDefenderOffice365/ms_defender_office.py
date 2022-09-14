@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-from mailbox import _mboxMMDFMessage
+import json
 import os
+import re
 import subprocess
 import tempfile
 from base64 import b64decode
 from pathlib import Path
-import re
-import json
 
 from cortexutils.responder import Responder
 
@@ -28,6 +27,10 @@ class MsDefenderOffice365Responder(Responder):
         self.organization = self.get_param(
             'config.organization', None,
             'Config missing organization')
+        self.block_expiration_days = self.get_param(
+            'config.block_expiration_days', None,
+            'Config missing block_expiration_days'
+        )
         self.script_dir = os.path.join(Path(__file__).absolute(), 'scripts')
 
     def clean_output(self, stream: bytes):
@@ -62,11 +65,12 @@ class MsDefenderOffice365Responder(Responder):
             temp_cert_file.name,
             self.certificate_password,
             self.app_id,
-            self.organization
+            self.organization,
         ]
         if self.service == 'block':
             caseId = observable['case']['caseId']
             process_args.append(f"TheHive case #{caseId}")
+            process_args.append(self.block_expiration_days),
         process_args += o_data
 
         try:

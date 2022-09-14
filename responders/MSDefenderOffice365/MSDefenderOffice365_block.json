@@ -41,6 +41,14 @@
             "type": "string",
             "multi": false,
             "required": true
+        },
+        {
+            "name": "block_expiration_days",
+            "description": "How many days out should we set the expiration? A value <= 0 means to set no expiration.",
+            "type": "number",
+            "multi": false,
+            "required": true,
+            "defaultValue": 0
         }
     ]
 }
