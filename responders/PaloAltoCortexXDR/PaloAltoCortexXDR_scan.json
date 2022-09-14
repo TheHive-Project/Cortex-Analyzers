@@ -41,6 +41,22 @@
             "type": "string",
             "multi": false,
             "required": true
+        },
+        {
+            "name": "scan_polling_interval",
+            "description": "Interval, in seconds between requests for scan actions.",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 60
+        },
+        {
+            "name": "scan_max_polling_retries",
+            "description": "Maximum number of time to retry action status when a scan action is still in progress.",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 240
         }
     ]
 }

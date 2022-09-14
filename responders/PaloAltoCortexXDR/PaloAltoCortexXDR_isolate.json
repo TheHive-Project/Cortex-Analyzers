@@ -43,16 +43,16 @@
             "required": true
         },
         {
-            "name": "polling_interval",
-            "description": "Interval, in seconds between requests for action status.",
+            "name": "isolate_polling_interval",
+            "description": "Interval, in seconds between requests for isolate or unisolate actions.",
             "type": "number",
             "multi": false,
             "required": false,
             "defaultValue": 30
         },
         {
-            "name": "max_polling_retries",
-            "description": "Maximum number of time to retry action status when the action is still in progress.",
+            "name": "isolate_max_polling_retries",
+            "description": "Maximum number of time to retry action status when the isolate or unisolate action is still in progress.",
             "type": "number",
             "multi": false,
             "required": false,

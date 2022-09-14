@@ -55,16 +55,18 @@ class PaloAltoCortexXDRResponder(Responder):
             'config.advanced_security', None, 'Missing advanced_security')
         self.api_host = self.get_param(
             'config.api_host', None, 'Missing API host')
-        self.polling_interval = self.get_param(
-            'config.polling_interval', 30)
-        self.max_polling_retries = self.get_param(
-            'config.max_polling_retries', 120)
+        self.isolate_polling_interval = self.get_param(
+            'config.isolate_polling_interval', 30)
+        self.isolate_max_polling_retries = self.get_param(
+            'config.isolate_max_polling_retries', 120)
+        self.scan_polling_interval = self.get_param(
+            'config.scan_polling_interval', 60)
+        self.scan_max_polling_retries = self.get_param(
+            'config.scan_max_polling_retries', 240)
         self.allow_multi_target = self.get_param(
             'config.allow_multiple_isolation_targets', False)
         self.service = self.get_param(
             'config.service', None, 'Missing config.service')
-        self.polling_interval = self.get_param(
-            'config.polling_interval', 60)
         if self.api_host.startswith('http'):
             self.error('api_host should be a FQDN, not a URL')
         self.api_root = f'https://{self.api_host}/public_api/v1'
@@ -98,11 +100,11 @@ class PaloAltoCortexXDRResponder(Responder):
                         f' got {response.status_code} with the error message'
                         ' reported above.')
 
-            self.error({
+            self.error(str({
                 'message': message,
                 'request_body': str(response.request.body),
                 'endpoints': self.current_endpoints
-            })
+            }))
 
     def _make_api_request(self, method: str, error_prefix="", **kwargs):
         headers = self._get_auth_header()
@@ -224,9 +226,9 @@ class PaloAltoCortexXDRResponder(Responder):
             }
         )
         action_id = response_json['reply']['action_id']
-        action_result = self.poll_action_status(action_id)
+        action_result = self.poll_action_status(action_id, 'scan')
         if not action_result['success']:
-            self.error(action_result)
+            self.error(str(action_result))
 
         self.report({
             'success': True,
@@ -245,20 +247,27 @@ class PaloAltoCortexXDRResponder(Responder):
         })
         return response_json['reply']['data']
 
-    def poll_action_status(self, action_id):
+    def poll_action_status(self, action_id, action_type):
         """Check status of an action until it is finished"""
         action_status = {}
         terminal_statuses = [
             'CANCELLED', 'ABORTED', 'EXPIRED', 'COMPLETED_SUCCESSFULLY',
             'FAILED', 'TIMEOUT']
 
+        if action_type in ['isolate', 'unisolate']:
+            interval = self.isolate_polling_interval
+            max_tries = self.isolate_max_polling_retries
+        else:
+            interval = self.scan_polling_interval
+            max_tries = self.scan_max_polling_retries
+
         tries = 0
         while (not action_status
-               or (tries < self.max_polling_retries
+               or (tries < max_tries
                    and not all([status in terminal_statuses
                                 for status in action_status.values()]))
                ):
-            time.sleep(self.polling_interval)
+            time.sleep(interval)
             action_status = self.get_action_status(action_id)
             tries += 1
 
@@ -297,9 +306,9 @@ class PaloAltoCortexXDRResponder(Responder):
             }
         )
         action_id = response_json['reply']['action_id']
-        action_result = self.poll_action_status(action_id)
+        action_result = self.poll_action_status(action_id, 'isolate')
         if not action_result['success']:
-            self.error(action_result)
+            self.error(str(action_result))
         self.report({
             'success': True,
             'message': ('Successfully isolated endpoints: ' +
@@ -328,9 +337,9 @@ class PaloAltoCortexXDRResponder(Responder):
             }
         )
         action_id = response_json['reply']['action_id']
-        action_result = self.poll_action_status(action_id)
+        action_result = self.poll_action_status(action_id, 'unisolate')
         if not action_result['success']:
-            self.error(action_result)
+            self.error(str(action_result))
         self.report({
             'success': True,
             'message': ('Successfully un-isolated endpoints: ' +
@@ -407,10 +416,7 @@ class PaloAltoCortexXDRResponder(Responder):
         elif self.service == 'scan':
             self.scan_endpoints(endpoints)
         else:
-            self.error({
-                'success': False,
-                'message': f'Service {self.service} is not implemented'
-            })
+            self.error(f'Service {self.service} is not implemented')
 
 
 if __name__ == '__main__':
