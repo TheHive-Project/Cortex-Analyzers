@@ -89,7 +89,7 @@ class MsDefenderOffice365Responder(Responder):
         try:
             # We should get back an array of dictionaries, one for each
             # endpoint that was submitted for action.
-            scriptResult = json.load(result.stdout)
+            scriptResult = json.load(self.clean_output(result.stdout))
             endpointResults = scriptResult['Value']
         except json.JSONDecodeError as e:
             self.error("Error while trying to parse powershell script"
