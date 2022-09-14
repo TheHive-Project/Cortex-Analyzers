@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
+from mailbox import _mboxMMDFMessage
 import os
 import subprocess
 import tempfile
 from base64 import b64decode
 from pathlib import Path
 import re
+import json
 
 from cortexutils.responder import Responder
 
 
-class PaloAltoCortexXDRResponder(Responder):
+class MsDefenderOffice365Responder(Responder):
     def __init__(self):
         Responder.__init__(self)
         self.service = self.get_param(
@@ -28,11 +30,18 @@ class PaloAltoCortexXDRResponder(Responder):
             'Config missing organization')
         self.script_dir = os.path.join(Path(__file__).absolute(), 'scripts')
 
+    def clean_output(self, stream: bytes):
+        """Decode byte stream and remove ANSI color codes"""
+        re_no_ansi = re.compile(r'\x1b[^m]*m')
+        return re_no_ansi.sub('', stream.decode('utf-8'))
+
     def run(self):
         observable = self.get_data()
         o_data = observable['data']
+        if isinstance(o_data, str) and '\n' in o_data:
+            o_data = o_data.splitlines()
         if not isinstance(o_data, list):
-            o_data = [o_data]  # for consistency
+            o_data = [o_data]
 
         if observable['dataType'] not in ['domain', 'fqdn', 'mail']:
             self.error(f"Data type {observable['dataType']} not supported.")
@@ -57,7 +66,7 @@ class PaloAltoCortexXDRResponder(Responder):
         ]
         if self.service == 'block':
             caseId = observable['case']['caseId']
-            process_args += f"TheHive case #{caseId}"
+            process_args.append(f"TheHive case #{caseId}")
         process_args += o_data
 
         try:
@@ -66,20 +75,66 @@ class PaloAltoCortexXDRResponder(Responder):
                 capture_output=True,
                 timeout=60)
         except subprocess.TimeoutExpired:
-            self.error(f'Timeout waiting for {script_name} to complete.'
-                       f'\nstdout: ${result.stdout}'
-                       f'\nstderr: ${result.stderr}')
+            self.error(f"Timeout waiting for {script_name} to complete."
+                       f"\nstdout: ${self.clean_output(result.stdout)}"
+                       f"\nstderr: ${self.clean_output(result.stderr)}")
 
-        if result.returncode != 0:
-            err_msg = result.stderr.decode('utf-8')
-            self.error(f'An error occurred: {err_msg}')
+        scriptErr = self.clean_output(result.stderr)
+        if len(scriptErr) > 0 or result.returncode != 0:
+            self.error(
+                "The powershell script reported an error: " + scriptErr +
+                "\n\nThe script was called with using these parameters: " +
+                process_args)
 
-        self.report({
-            'message': 'Operation completed successfully.',
-            '_stdout': result.stdout,
-            '_stderr': result.stderr,
-        })
+        try:
+            # We should get back an array of dictionaries, one for each
+            # endpoint that was submitted for action.
+            scriptResult = json.load(result.stdout)
+            endpointResults = scriptResult['Value']
+        except json.JSONDecodeError as e:
+            self.error("Error while trying to parse powershell script"
+                       f" as JSON: ${e}"
+                       f"\n\nThe script output was: " +
+                       self.clean_output(result.stdout))
+        except ValueError:
+            self.error("Failed to find the 'Value' key in the script output: "
+                       + str(scriptResult))
+
+        successful_endpoints = []
+        errored_endpoints = []
+        for endpoint in endpointResults:
+            if 'Error' not in endpoint:
+                self.error(
+                    "Endpoint result is missing an 'Error' property: "
+                    + str(endpoint))
+            elif endpoint['Error'] is not None:
+                errored_endpoints.append({
+                    "action": endpoint['Action'],
+                    "entry": endpoint['Value'],
+                    "error": endpoint['Error'].get('Message',
+                                                   str(endpoint['Error']))
+                })
+            else:
+                successful_endpoints.append({
+                    "action": endpoint['Action'],
+                    "entry": endpoint['Value'],
+                    "expiration": endpoint.get('ExpirationDate')
+                })
+
+        if len(errored_endpoints) > 0:
+            report = {
+                'message': "At least one endpoint action had an error.",
+                'errored_endpoints': errored_endpoints,
+                'successful_endpoints': successful_endpoints,
+            }
+            self.error(json.dumps(report))
+        else:
+            report = {
+                'message': "All endpoint actions completed with no error",
+                'successful_endpoints': successful_endpoints,
+            }
+            self.report(report)
 
 
 if __name__ == '__main__':
-    PaloAltoCortexXDRResponder().run()
+    MsDefenderOffice365Responder().run()

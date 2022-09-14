@@ -19,4 +19,4 @@ $connectSplat = @{
 }
 
 Connect-ExchangeOnline @connectSplat
-Remove-TenantAllowBlockListItems -ListType Sender -Entries $entries
+Remove-TenantAllowBlockListItems -OutputJson -ListType Sender -Entries $entries | ConvertTo-Json

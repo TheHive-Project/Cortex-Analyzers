@@ -20,4 +20,4 @@ $connectSplat = @{
 }
 
 Connect-ExchangeOnline @connectSplat
-New-TenantAllowBlockListItems -Verbose -ListType Sender -Block -Notes $notes -Entries $entries
+New-TenantAllowBlockListItems -OutputJson -ListType Sender -Block -Notes $notes -Entries $entries -NoExpiration | ConvertTo-Json
