@@ -58,11 +58,11 @@ class PaloAltoCortexXDRResponder(Responder):
         self.isolate_polling_interval = self.get_param(
             'config.isolate_polling_interval', 30)
         self.isolate_max_polling_retries = self.get_param(
-            'config.isolate_max_polling_retries', 120)
+            'config.isolate_max_polling_retries', 60)
         self.scan_polling_interval = self.get_param(
-            'config.scan_polling_interval', 60)
+            'config.scan_polling_interval', 30)
         self.scan_max_polling_retries = self.get_param(
-            'config.scan_max_polling_retries', 240)
+            'config.scan_max_polling_retries', 30)
         self.allow_multi_target = self.get_param(
             'config.allow_multiple_isolation_targets', False)
         self.service = self.get_param(
@@ -189,7 +189,8 @@ class PaloAltoCortexXDRResponder(Responder):
         scannable_endpoints = []
         unscannable_endpoints = []
         for e in endpoints:
-            if e['scan_status'] != 'SCAN_STATUS_IN_PROGRESS':
+            if e['scan_status'] not in [
+                    'PENDING', 'IN_PROGRESS', 'SCAN_STATUS_IN_PROGRESS']:
                 scannable_endpoints.append(e)
                 endpoint_log.append(
                     'Found scannable endpoint: ' + e['endpoint_id'])
@@ -200,15 +201,21 @@ class PaloAltoCortexXDRResponder(Responder):
                     e['endpoint_id'])
 
         endpoint_ids = [e['endpoint_id'] for e in scannable_endpoints]
+
+        endpoints_terse = []
+        for e in endpoints:
+            endpoints_terse.append(
+
+                f"Name: {e['endpoint_name']} | ID: {e['endpoint_id']}")
+
         if len(endpoint_ids) == 0:
             return self.report({
                 'success': True,
                 'message': (
-                    '\n'.join(endpoint_log) + '\n'
-                    'No endpoints to scan or scans are already'
-                    ' in progress'),
-                'endpoints': endpoints
+                    'No endpoints to scan or scans are already pending.'),
+                'endpoints': endpoints_terse
             })
+
         response_json = self._make_api_request(
             'post',
             'scan_endpoint:',
@@ -234,7 +241,7 @@ class PaloAltoCortexXDRResponder(Responder):
             'success': True,
             'message': 'Finished endpoint scan.',
             'action_status': action_result['action_status'],
-            'endpoints': self.current_endpoints
+            'endpoints': endpoints_terse
         })
 
     def get_action_status(self, action_id):
@@ -250,9 +257,12 @@ class PaloAltoCortexXDRResponder(Responder):
     def poll_action_status(self, action_id, action_type):
         """Check status of an action until it is finished"""
         action_status = {}
+        # Since scans can take hours, if we see that the scan is in progress
+        # or pending then we'll return success.
         terminal_statuses = [
             'CANCELLED', 'ABORTED', 'EXPIRED', 'COMPLETED_SUCCESSFULLY',
-            'FAILED', 'TIMEOUT']
+            'FAILED', 'TIMEOUT', 'SCAN_STATUS_IN_PROGRESS', 'IN_PROGRESS',
+            'PENDING']
 
         if action_type in ['isolate', 'unisolate']:
             interval = self.isolate_polling_interval
@@ -311,8 +321,9 @@ class PaloAltoCortexXDRResponder(Responder):
             self.error(str(action_result))
         self.report({
             'success': True,
-            'message': ('Successfully isolated endpoints: ' +
-                        str(endpoint_ids)),
+            'message': (
+                'Finished isolate action without errors on endpoints: ' +
+                str(endpoint_ids)),
             'action_status': action_result['action_status'],
             'endpoints': self.current_endpoints,
         })
@@ -342,8 +353,9 @@ class PaloAltoCortexXDRResponder(Responder):
             self.error(str(action_result))
         self.report({
             'success': True,
-            'message': ('Successfully un-isolated endpoints: ' +
-                        str(endpoint_ids)),
+            'message': (
+                'Finished unisolate action without errors on endpoints: ' +
+                str(endpoint_ids)),
             'action_status': action_result['action_status'],
             'endpoints': self.current_endpoints,
         })
