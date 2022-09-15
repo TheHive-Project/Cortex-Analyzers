@@ -19,4 +19,15 @@ $connectSplat = @{
 }
 
 Connect-ExchangeOnline @connectSplat
-Remove-TenantAllowBlockListItems -OutputJson -ListType Sender -Entries $entries | ConvertTo-Json
+
+$allResults = @()
+ForEach ($entry in $entries) {
+    $result = Remove-TenantAllowBlockListItems -ListType Sender -Entries $entries | ConvertTo-Json
+    $allResults += @{
+        entry = $entry;
+        result = $result;
+        error = If ($?) {$null} else {$Error[0].Exception.SerializedRemoteException.Message};
+    }
+}
+
+$allResults | ConvertTo-Json -Depth 4

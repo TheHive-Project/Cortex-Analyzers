@@ -23,10 +23,25 @@ $connectSplat = @{
 
 Connect-ExchangeOnline @connectSplat
 
-if ($expirationLength -le 0) {
-    # No expiration
-    New-TenantAllowBlockListItems -OutputJson -ListType Sender -Block -Notes $notes -Entries $entries -NoExpiration | ConvertTo-Json
-} else {
-    $expiry = (Get-Date).AddDays($expirationLength)
-    New-TenantAllowBlockListItems -OutputJson -ListType Sender -Block -ExpirationDate $expiry -Notes $notes -Entries $entries | ConvertTo-Json
+$allResults = @()
+ForEach ($entry in $entries) {
+    if ($expirationLength -le 0) {
+        # No expiration
+        $result = New-TenantAllowBlockListItems -ListType Sender -Block -Notes $notes -Entries $entry -NoExpiration -ErrorAction Continue | ConvertTo-Json
+        $allResults += @{
+            entry = $entry;
+            result = $result;
+            error = If ($?) {$null} else {$Error[0].Exception.SerializedRemoteException.Message};
+        }
+    } else {
+        $expiry = (Get-Date).AddDays($expirationLength)
+        $result = New-TenantAllowBlockListItems -ListType Sender -Block -ExpirationDate $expiry -Notes $notes -Entries $entry -ErrorAction Continue | ConvertTo-Json
+        $allResults += @{
+            entry = $entry;
+            result = $result;
+            error = If ($?) {$null} else {$Error[0].Exception.SerializedRemoteException.Message};
+        }
+    }
 }
+
+$allResults | ConvertTo-Json -Depth 4

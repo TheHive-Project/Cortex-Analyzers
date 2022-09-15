@@ -28,9 +28,7 @@ class MsDefenderOffice365Responder(Responder):
             'config.organization', None,
             'Config missing organization')
         self.block_expiration_days = self.get_param(
-            'config.block_expiration_days', None,
-            'Config missing block_expiration_days'
-        )
+            'config.block_expiration_days', 0)
         self.script_dir = os.path.join(Path(__file__).absolute(), 'scripts')
 
     def clean_output(self, stream: bytes):
@@ -70,72 +68,78 @@ class MsDefenderOffice365Responder(Responder):
         if self.service == 'block':
             caseId = observable['case']['caseId']
             process_args.append(f"TheHive case #{caseId}")
-            process_args.append(self.block_expiration_days),
+            process_args.append(str(self.block_expiration_days))
         process_args += o_data
 
         try:
             result = subprocess.run(
                 process_args,
-                capture_output=True,
-                timeout=60)
+                capture_output=True)
         except subprocess.TimeoutExpired:
             self.error(f"Timeout waiting for {script_name} to complete."
-                       f"\nstdout: ${self.clean_output(result.stdout)}"
-                       f"\nstderr: ${self.clean_output(result.stderr)}")
+                       f"\nstdout: {self.clean_output(result.stdout)}"
+                       f"\nstderr: {self.clean_output(result.stderr)}")
 
         scriptErr = self.clean_output(result.stderr)
-        if len(scriptErr) > 0 or result.returncode != 0:
+        # if len(scriptErr) > 0 or result.returncode != 0:
+        if result.returncode != 0:
             self.error(
-                "The powershell script reported an error: " + scriptErr +
-                "\n\nThe script was called with using these parameters: " +
-                process_args)
+                f"The powershell script reported an error: {scriptErr}"
+                "\n\nThe non-error output was the following: " +
+                self.clean_output(result.stdout)
+            )
 
         try:
             # We should get back an array of dictionaries, one for each
             # endpoint that was submitted for action.
-            scriptResult = json.load(self.clean_output(result.stdout))
-            endpointResults = scriptResult['Value']
-        except json.JSONDecodeError as e:
-            self.error("Error while trying to parse powershell script"
-                       f" as JSON: ${e}"
-                       f"\n\nThe script output was: " +
-                       self.clean_output(result.stdout))
-        except ValueError:
-            self.error("Failed to find the 'Value' key in the script output: "
-                       + str(scriptResult))
+            scriptResult = self.clean_output(result.stdout)
+            re_json = re.compile(r'\[\s*\{.*\}\s*\]', re.DOTALL)
+            match = re_json.search(scriptResult)
 
-        successful_endpoints = []
-        errored_endpoints = []
-        for endpoint in endpointResults:
-            if 'Error' not in endpoint:
+            if match is None:
                 self.error(
-                    "Endpoint result is missing an 'Error' property: "
-                    + str(endpoint))
-            elif endpoint['Error'] is not None:
-                errored_endpoints.append({
-                    "action": endpoint['Action'],
-                    "entry": endpoint['Value'],
-                    "error": endpoint['Error'].get('Message',
-                                                   str(endpoint['Error']))
-                })
-            else:
-                successful_endpoints.append({
-                    "action": endpoint['Action'],
-                    "entry": endpoint['Value'],
-                    "expiration": endpoint.get('ExpirationDate')
-                })
+                    "Failed to extract JSON from script output:" +
+                    scriptResult)
+            scriptResultDict = json.loads(match.group())
+        except json.JSONDecodeError as e:
+            self.error(f"Error decoding JSON: {e}"
+                       f"| Input: {scriptResult}")
 
-        if len(errored_endpoints) > 0:
+        successful_entries = []
+        error_entries = []
+        for item in scriptResultDict:
+            if item.get('error') is not None:
+                # Don't treat it as an error if the entry we're trying to
+                # unblock already exists
+                if 'Entry not found' in item['error']:
+                    successful_entries.append(
+                        f"{item['entry']}: Entry not found."
+                    )
+                else:
+                    error_entries.append(
+                        f"{item['entry']}: {item['error']}"
+                    )
+            else:
+                success_dict = json.loads(item['result'])
+                if self.service == 'block':
+                    result_msg = (f"{item['entry']} Expiration " +
+                                  str(success_dict['ExpirationDate']))
+                else:
+                    result_msg = item['entry']
+
+                successful_entries.append(result_msg)
+
+        if len(error_entries) > 0:
             report = {
                 'message': "At least one endpoint action had an error.",
-                'errored_endpoints': errored_endpoints,
-                'successful_endpoints': successful_endpoints,
+                'errored_entries': error_entries,
+                'successful_entries': successful_entries,
             }
             self.error(json.dumps(report))
         else:
             report = {
                 'message': "All endpoint actions completed with no error",
-                'successful_endpoints': successful_endpoints,
+                'entries': successful_entries,
             }
             self.report(report)
 
