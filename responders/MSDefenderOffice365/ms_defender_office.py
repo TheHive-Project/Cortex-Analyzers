@@ -81,7 +81,6 @@ class MsDefenderOffice365Responder(Responder):
                        f"\nstderr: {self.clean_output(result.stderr)}")
 
         scriptErr = self.clean_output(result.stderr)
-        # if len(scriptErr) > 0 or result.returncode != 0:
         if result.returncode != 0:
             self.error(
                 f"The powershell script reported an error: {scriptErr}"
@@ -93,17 +92,24 @@ class MsDefenderOffice365Responder(Responder):
             # We should get back an array of dictionaries, one for each
             # endpoint that was submitted for action.
             scriptResult = self.clean_output(result.stdout)
-            re_json = re.compile(r'\[\s*\{.*\}\s*\]', re.DOTALL)
-            match = re_json.search(scriptResult)
+            re_json_list = re.compile(r'\[\s*\{.*\}\s*\]', re.DOTALL)
+            re_json_object = re.compile(r'\{.*\}', re.DOTALL)
+            match_json_list = re_json_list.search(scriptResult)
+            match_json_object = re_json_object.search(scriptResult)
 
-            if match is None:
+            if match_json_list is not None:
+                extractedJson = match_json_list.group()
+                scriptResultDict = json.loads(extractedJson)
+            elif match_json_object is not None:
+                extractedJson = match_json_object.group()
+                scriptResultDict = [json.loads(extractedJson)]
+            else:
                 self.error(
-                    "Failed to extract JSON from script output:" +
+                    "Failed to identify JSON in script output:" +
                     scriptResult)
-            scriptResultDict = json.loads(match.group())
         except json.JSONDecodeError as e:
             self.error(f"Error decoding JSON: {e}"
-                       f"| Input: {scriptResult}")
+                       f"| Input: {extractedJson}")
 
         successful_entries = []
         error_entries = []
