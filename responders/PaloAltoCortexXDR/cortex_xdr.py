@@ -205,7 +205,6 @@ class PaloAltoCortexXDRResponder(Responder):
         endpoints_terse = []
         for e in endpoints:
             endpoints_terse.append(
-
                 f"Name: {e['endpoint_name']} | ID: {e['endpoint_id']}")
 
         if len(endpoint_ids) == 0:
@@ -300,6 +299,11 @@ class PaloAltoCortexXDRResponder(Responder):
         """Isolate one or more endpoints"""
         url = f'{self.api_root}/endpoints/isolate/'
         endpoint_ids = [e['endpoint_id'] for e in endpoints]
+        endpoints_terse = []
+        for e in endpoints:
+            endpoints_terse.append(
+                f"Name: {e['endpoint_name']} | ID: {e['endpoint_id']}")
+
         response_json = self._make_api_request(
             'post',
             url=url,
@@ -320,18 +324,21 @@ class PaloAltoCortexXDRResponder(Responder):
         if not action_result['success']:
             self.error(str(action_result))
         self.report({
-            'success': True,
             'message': (
                 'Finished isolate action without errors on endpoints: ' +
-                str(endpoint_ids)),
+                str(endpoints_terse)),
             'action_status': action_result['action_status'],
-            'endpoints': self.current_endpoints,
         })
 
     def unisolate_endpoints(self, endpoints: List[Endpoint]):
         """Unisolate one or more endpoints"""
         url = f'{self.api_root}/endpoints/unisolate/'
         endpoint_ids = [e['endpoint_id'] for e in endpoints]
+        endpoints_terse = []
+        for e in endpoints:
+            endpoints_terse.append(
+                f"Name: {e['endpoint_name']} | ID: {e['endpoint_id']}")
+
         response_json = self._make_api_request(
             'post',
             url=url,
@@ -352,12 +359,10 @@ class PaloAltoCortexXDRResponder(Responder):
         if not action_result['success']:
             self.error(str(action_result))
         self.report({
-            'success': True,
             'message': (
                 'Finished unisolate action without errors on endpoints: ' +
-                str(endpoint_ids)),
+                str(endpoints_terse)),
             'action_status': action_result['action_status'],
-            'endpoints': self.current_endpoints,
         })
 
     def run(self):
