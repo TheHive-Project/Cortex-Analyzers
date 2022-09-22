@@ -13,6 +13,20 @@
     "config": {
         "service": "isolate"
     },
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://www.paloaltonetworks.com/cortex/cortex-xdr",
+    "service_logo": {
+        "path": "assets/cortex_logo.png",
+        "caption": "logo"
+    },
+    "screenshots": [
+        {
+            "path": "assets/PaloAltoCortexXDR_isolate.png",
+            "caption": "Example responder action result"
+        }
+    ],
     "configurationItems": [
         {
             "name": "api_key",
