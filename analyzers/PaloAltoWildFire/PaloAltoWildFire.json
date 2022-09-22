@@ -12,6 +12,24 @@
   ],
   "command": "PaloAltoWildFire/wildfire.py",
   "baseConfig": "PaloAltoWildFire",
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.paloaltonetworks.com/network-security/wildfire",
+  "service_logo": {
+    "path": "assets/palo_alto_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/wildfire_file.png",
+      "caption": "WildFire file analysis long report sample"
+    },
+    {
+      "path": "assets/wildfire_url.png",
+      "caption": "WildFire URL analysis long report sample"
+    }
+  ],
   "configurationItems": [
     {
       "name": "api_host",
