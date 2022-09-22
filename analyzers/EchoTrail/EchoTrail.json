@@ -11,6 +11,20 @@
     ],
     "command": "EchoTrail/echotrail.py",
     "baseConfig": "EchoTrail",
+    "registration_required": true,
+    "subscription_required": false,
+    "free_subscription": true,
+    "service_homepage": "https://www.echotrail.io/",
+    "service_logo": {
+        "path": "assets/echotrail_logo.png",
+        "caption": "logo"
+    },
+    "screenshots": [
+        {
+            "path": "assets/echotrail_filename_report.png",
+            "caption": "Sample long form report on a filename from a Windows system"
+        }
+    ],
     "configurationItems": [
         {
             "name": "key",
