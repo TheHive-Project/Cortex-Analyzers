@@ -15,6 +15,24 @@
     ],
     "command": "CISMCAP/mcap.py",
     "baseConfig": "CISMCAP",
+    "registration_required": true,
+    "subscription_required": false,
+    "free_subscription": false,
+    "service_homepage": "https://www.cisecurity.org/ms-isac/services",
+    "service_logo": {
+        "path": "assets/cis_mcap_logo.png",
+        "caption": "logo"
+    },
+    "screenshots": [
+        {
+            "path": "assets/CISMCAP_file.png",
+            "caption": "Analyzer report for a file"
+        },
+        {
+            "path": "assets/CISMCAP_IP.png",
+            "caption:": "Analyzer report for an IP address"
+        }
+    ],
     "configurationItems": [
         {
             "name": "key",
