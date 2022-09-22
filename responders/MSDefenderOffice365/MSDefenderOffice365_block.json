@@ -13,6 +13,20 @@
     "config": {
         "service": "block"
     },
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://learn.microsoft.com/en-us/microsoft-365/security/office-365-security/defender-for-office-365?view=o365-worldwide",
+    "service_logo": {
+        "path": "assets/MicrosoftDefenderForOffice365_logo.png",
+        "caption": "logo"
+    },
+    "screenshots": [
+        {
+            "path": "assets/MSDefenderOffice365_Block.png",
+            "caption": "Example responder action result"
+        }
+    ],
     "configurationItems": [
         {
             "name": "certificate_base64",
