@@ -982,6 +982,11 @@ class HarfangLab(Responder):
             if job_name in HarfangLab.JOBS:
                 job = HarfangLab.JOBS[job_name]
             else:
+                self.error('Unknown service')
+                return
+
+            if not self.agentId:
+                self.error('Not agent identifier found. It must be in a case or alert custom field "hfl/agent/agentid".')
                 return
 
             parameters = job.get('parameters', None)
