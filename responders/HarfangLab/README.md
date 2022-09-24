@@ -12,6 +12,8 @@ The detailed list of HarfangLab's responders is the following:
 |:-------------------------------------:|:-------------------------------------:|
 |HarfangLab_Isolate			| case or alert                         |
 |HarfangLab_Unisolate			| case or alert				|
+|HarfangLab_KillProcess			| case or alert                         |
+|HarfangLab_DumpProcess			| case                                  |
 |HarfangLab_GetArtifactAll		| case					|
 |HarfangLab_GetArtifactEvtx		| case					|
 |HarfangLab_GetArtifactFilesystem	| case					|

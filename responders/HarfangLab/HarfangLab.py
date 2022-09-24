@@ -313,12 +313,37 @@ class HarfangLab(Responder):
         """
         return ('saddr', v)
 
+    def __get_kill_process_api_endpoint(self):
+        """
+           Return the HarfangLab API endpoint to kill a specific process from its UUID
+
+           :return: The API endpoint
+           :rtype: ``str``
+        """
+        if not self.processUUID: 
+            self.error(f'Missing process unique identifier field: "hfl/process/process_unique_id')
+            return None
+        return f'/api/data/telemetry/Processes/{self.processUUID}/requestKillProcess/'
+
+    def __get_dump_process_api_endpoint(self):
+        """
+           Return the HarfangLab API endpoint to dump a specific process from its UUID
+
+           :return: The API endpoint
+           :rtype: ``str``
+        """
+        if not self.processUUID: 
+            self.error(f'Missing process unique identifier field: "hfl/process/process_unique_id')
+            return None
+        return f'/api/data/telemetry/Processes/{self.processUUID}/requestDumpProcess/'
+
     """
     The JOBS dict contains all the job services and their description. Its keys correspond to the service names in the service description file in JSON format.
     Each job is associated to a responder flavor. When called from a TheHive case, it generates a dedicated task in TheHive whose description contains the job result in Markdown.
 
     Job description structure:
-      * api_endpoint: HarfangLab API endpoint
+      * request_api_endpoint: HarfangLab API endpoint to start a job and get its status
+      * result_api_endpoint: HarfangLab API endpoint to get job results
       * title: Title associated to the job result, that is provided in the task description
       * task_title: Description of the TheHive task
       * action: Job action that is transmitted to the HarfangLab API
@@ -336,7 +361,9 @@ class HarfangLab(Responder):
 
     JOBS = {
         'getProcesses': {
-            'api_endpoint': '/api/data/investigation/hunting/Process/',
+            'request_api_endpoint': '/api/data/Job/',
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/hunting/Process/',
             'title': 'Process list',
             'task_title': 'Review process list',
             'action': 'getProcessList',
@@ -360,7 +387,9 @@ class HarfangLab(Responder):
             ]
         },
         'getServices': {
-            'api_endpoint': '/api/data/investigation/hunting/Service/',
+            'request_api_endpoint': '/api/data/Job/',
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/hunting/Service/',
             'title': 'Service list',
             'task_title': 'Review service list',
             'action': 'getHives',
@@ -379,7 +408,9 @@ class HarfangLab(Responder):
             ]
         },
         'getPipes': {
-            'api_endpoint': '/api/data/investigation/hunting/Pipe/',
+            'request_api_endpoint': '/api/data/Job/',
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/hunting/Pipe/',
             'title': 'Pipe list',
             'task_title': 'Review pipe list',
             'action': 'getPipeList',
@@ -389,7 +420,9 @@ class HarfangLab(Responder):
             ]
         },
         'getDrivers': {
-            'api_endpoint': '/api/data/investigation/hunting/Driver/',
+            'request_api_endpoint': '/api/data/Job/',
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/hunting/Driver/',
             'title': 'Loaded driver list',
             'task_title': 'Review loaded driver list',
             'action': 'getLoadedDriverList',
@@ -406,7 +439,9 @@ class HarfangLab(Responder):
             ]
         },
         'getPrefetches': {
-            'api_endpoint': '/api/data/investigation/hunting/Prefetch/',
+            'request_api_endpoint': '/api/data/Job/',
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/hunting/Prefetch/',
             'title': 'Prefetch list',
             'task_title': 'Review prefetch list',
             'action': 'getPrefetch',
@@ -419,7 +454,9 @@ class HarfangLab(Responder):
             ]
         },
         'getScheduledTasks': {
-            'api_endpoint': '/api/data/investigation/hunting/ScheduledTaskXML/',
+            'request_api_endpoint': '/api/data/Job/',
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/hunting/ScheduledTaskXML/',
             'title': 'Scheduled task list',
             'task_title': 'Review scheduled task list',
             'action': 'getScheduledTasks',
@@ -437,7 +474,9 @@ class HarfangLab(Responder):
             ]
         },
         'getRunKeys': {
-            'api_endpoint': '/api/data/investigation/hunting/RunKey/',
+            'request_api_endpoint': '/api/data/Job/',
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/hunting/RunKey/',
             'title': 'Run key list',
             'task_title': 'Review run key list',
             'action': 'getHives',
@@ -455,7 +494,9 @@ class HarfangLab(Responder):
             ]
         },
         'getStartupFiles': {
-            'api_endpoint': '/api/data/investigation/hunting/Startup/',
+            'request_api_endpoint': '/api/data/Job/',
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/hunting/Startup/',
             'title': 'Startup file list',
             'task_title': 'Review startup file list',
             'action': 'getStartupFileList',
@@ -476,7 +517,9 @@ class HarfangLab(Responder):
             ]
         },
         'getPersistence': {
-            'api_endpoint': '/api/data/investigation/hunting/PersistanceFile/',
+            'request_api_endpoint': '/api/data/Job/',
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/hunting/PersistanceFile/',
             'title': 'Persistence list',
             'task_title': 'Review persistence list',
             'action': 'persistanceScanner',
@@ -488,7 +531,9 @@ class HarfangLab(Responder):
             ]
         },
         'getWMI': {
-            'api_endpoint': '/api/data/investigation/hunting/Wmi/',
+            'request_api_endpoint': '/api/data/Job/',
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/hunting/Wmi/',
             'title': 'WMI list',
             'task_title': 'Review  list',
             'action': 'getWMI',
@@ -505,7 +550,9 @@ class HarfangLab(Responder):
             ]
         },
         'getNetworkShares': {
-            'api_endpoint': '/api/data/investigation/hunting/NetworkShare/',
+            'request_api_endpoint': '/api/data/Job/',
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/hunting/NetworkShare/',
             'title': 'Network share list',
             'task_title': 'Review network share list',
             'action': 'getNetworkShare',
@@ -523,7 +570,9 @@ class HarfangLab(Responder):
             ]
         },
         'getSessions': {
-            'api_endpoint': '/api/data/investigation/hunting/Session/',
+            'request_api_endpoint': '/api/data/Job/',
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/hunting/Session/',
             'title': 'Session list',
             'task_title': 'Review session list',
             'action': 'getSessions',
@@ -541,7 +590,9 @@ class HarfangLab(Responder):
             ]
         },
         'getArtifactMFT': {
-            'api_endpoint': '/api/data/investigation/artefact/Artefact/',
+            'request_api_endpoint': '/api/data/Job/',
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/artefact/Artefact/',
             'title': 'MFT',
             'task_title': 'Analyze MFT',
             'action': 'collectRAWEvidences',
@@ -557,7 +608,9 @@ class HarfangLab(Responder):
             ]
         },
         'getArtifactHives': {
-            'api_endpoint': '/api/data/investigation/artefact/Artefact/',
+            'request_api_endpoint': '/api/data/Job/',
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/artefact/Artefact/',
             'title': 'Hives',
             'task_title': 'Analyze Hives',
             'action': 'collectRAWEvidences',
@@ -573,7 +626,9 @@ class HarfangLab(Responder):
             ]
         },
         'getArtifactEvtx': {
-            'api_endpoint': '/api/data/investigation/artefact/Artefact/',
+            'request_api_endpoint': '/api/data/Job/',
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/artefact/Artefact/',
             'title': 'Windows event logs',
             'task_title': 'Analyze event logs',
             'action': 'collectRAWEvidences',
@@ -589,7 +644,9 @@ class HarfangLab(Responder):
             ]
         },
         'getArtifactLogs': {
-            'api_endpoint': '/api/data/investigation/artefact/Artefact/',
+            'request_api_endpoint': '/api/data/Job/',
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/artefact/Artefact/',
             'title': 'Linux logs',
             'task_title': 'Analyze logs',
             'action': 'collectRAWEvidences',
@@ -605,7 +662,9 @@ class HarfangLab(Responder):
             ]
         },
         'getArtifactFilesystem': {
-            'api_endpoint': '/api/data/investigation/artefact/Artefact/',
+            'request_api_endpoint': '/api/data/Job/',
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/artefact/Artefact/',
             'title': 'Linux filesystem',
             'task_title': 'Analyze filesystem',
             'action': 'collectRAWEvidences',
@@ -621,7 +680,9 @@ class HarfangLab(Responder):
             ]
         },
         'getArtifactUSN': {
-            'api_endpoint': '/api/data/investigation/artefact/Artefact/',
+            'request_api_endpoint': '/api/data/Job/',
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/artefact/Artefact/',
             'title': 'USN logs',
             'task_title': 'Analyze USN logs',
             'action': 'collectRAWEvidences',
@@ -637,7 +698,9 @@ class HarfangLab(Responder):
             ]
         },
         'getArtifactPrefetch': {
-            'api_endpoint': '/api/data/investigation/artefact/Artefact/',
+            'request_api_endpoint': '/api/data/Job/',
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/artefact/Artefact/',
             'title': 'USN logs',
             'task_title': 'Analyze prefetches',
             'action': 'collectRAWEvidences',
@@ -653,7 +716,9 @@ class HarfangLab(Responder):
             ]
         },
         'getArtifactAll': {
-            'api_endpoint': '/api/data/investigation/artefact/Artefact/',
+            'request_api_endpoint': '/api/data/Job/',
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/artefact/Artefact/',
             'title': 'All raw artifacts',
             'task_title': 'Analyze all raw artifacts',
             'action': 'collectRAWEvidences',
@@ -669,7 +734,9 @@ class HarfangLab(Responder):
             ]
         },
         'getArtifactRamdump': {
-            'api_endpoint': '/api/data/investigation/artefact/Artefact/',
+            'request_api_endpoint': '/api/data/Job/',
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/artefact/Artefact/',
             'title': 'RAM Dump',
             'task_title': 'Analyze RAM dump',
             'action': 'memoryDumper',
@@ -681,8 +748,40 @@ class HarfangLab(Responder):
                 {'name': 'download_link', 'path': 'id', 'default': None,
                  'transform': __generate_link_for_artifact, 'is_url': True, 'link_text': 'Download'}
             ]
-        }
+        },
+        'killProcess': {
+            'request_api_endpoint': __get_kill_process_api_endpoint,
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/job/Simple/',
+            'title': 'Killed process',
+            'task_title': 'Review process kill report',
+            'action': 'knownProcessFinderKiller',
+            'ordering': 'name',
+            'fields': [
+                {'name': 'message', 'path': 'msg', 'default': None},
+                {'name': 'date', 'path': 'date', 'default': None},
+                {'name': 'hostname', 'path': 'agent.hostname', 'default': None}
+            ]
+        },
+        'dumpProcess': {
+            'request_api_endpoint': __get_dump_process_api_endpoint,
+            'status_api_endpoint': '/api/data/Job/',
+            'result_api_endpoint': '/api/data/investigation/artefact/Artefact/',
+            'title': 'Dumped process',
+            'task_title': 'Analyze dumped process',
+            'action': 'processDumper',
+            'ordering': '-date',
+            'fields': [
+                {'name': 'message', 'path': 'msg', 'default': None},
+                {'name': 'date', 'path': 'date', 'default': None},
+                {'name': 'size', 'path': 'size', 'default': None},
+                {'name': 'hostname', 'path': 'agent.hostname', 'default': None},
+                {'name': 'download_link', 'path': 'id', 'default': None,
+                 'transform': __generate_link_for_artifact, 'is_url': True, 'link_text': 'Download'}
+            ]
+        },
     }
+
 
     TELEMETRY_SEARCHES = {
         'searchHash': {
@@ -859,6 +958,9 @@ class HarfangLab(Responder):
                 'hfl/agent/agentid', {}).get('string', None)
             self.agentHostname = self.get_param('data.customFields', {}, 'Case custom fields are missing').get(
                 'hfl/agent/hostname', {}).get('string', None)
+            self.processUUID = self.get_param('data.customFields', {}, 'Case custom fields are missing').get(
+                'hfl/process/process_unique_id', {}).get('string', None)
+
         self.service = self.get_param(
             "config.service", None, 'Service is missing')
 
@@ -911,6 +1013,7 @@ class HarfangLab(Responder):
                 if not data and mandatory:
                     self.error(
                         f'Mismatch between the observable type and what the responder expects ({field["name"]})')
+                    return
                 if func:
                     (f, v) = func(self, data)
                     params[f] = v
@@ -989,16 +1092,24 @@ class HarfangLab(Responder):
                 self.error('Not agent identifier found. It must be in a case or alert custom field "hfl/agent/agentid".')
                 return
 
-            parameters = job.get('parameters', None)
-
             # Create job
-            url = f'{self.apiURL}/api/data/Job/'
+            api_endpoint = None
+            if isinstance(job["request_api_endpoint"],str):
+                api_endpoint = job["request_api_endpoint"]
+            elif callable(job["request_api_endpoint"]):
+                func = job["request_api_endpoint"]
+                api_endpoint = func(self)
+            if not api_endpoint:
+                return
+
+            url = f'{self.apiURL}{api_endpoint}'
+
             data = {
                 'targets': {'agents': [self.agentId]},
                 'actions': [
                     {
-                        'value': job['action'],
-                        'params': parameters,
+                        'value': job.get('action', None),
+                        'params': job.get('parameters', None),
                     }
                 ]
             }
@@ -1007,17 +1118,21 @@ class HarfangLab(Responder):
                 response = self.hlSession.post(url=url, json=data)
                 response.raise_for_status()
                 data = response.json()
-                if len(data) == 0:
-                    self.error(
-                        'Failed to start job (wrong agent identifier ?)')
-                    return
-                job_id = data[0]['id']
+                if isinstance(data,list):
+                    if len(data) == 0:
+                        self.error(
+                            'Failed to start job (wrong agent identifier ?)')
+                        return
+                    job_id = data[0]['id']
+                elif isinstance(data,dict):
+                    job_id = data['job_id']
+
             except Exception as e:
                 self.error('Failed to start job: %s' % (str(e)))
                 return
 
             # Get job status
-            url = f'{self.apiURL}/api/data/Job/{job_id}'
+            url = f'{self.apiURL}{job["status_api_endpoint"]}{job_id}'
 
             duration = 0
             polling_period = 5
@@ -1057,7 +1172,7 @@ class HarfangLab(Responder):
                 duration += polling_period
 
             # Get Job results
-            url = f'{self.apiURL}{job["api_endpoint"]}?limit=10000&job_id={job_id}'
+            url = f'{self.apiURL}{job["result_api_endpoint"]}?limit=10000&job_id={job_id}'
 
             if job['ordering'] is not None:
                 url += f'&ordering={job["ordering"]}'
