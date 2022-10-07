@@ -42,7 +42,7 @@ class Crowdsec:
         """Return a summary of all information we have for the given IPv{4,6} address. 
         """
         if datatype == 'ip':
-            url_path = "/v1/smoke/{ip}".format(ip=data)
+            url_path = "/v2/smoke/{ip}".format(ip=data)
         return self._request(path=url_path)
 
 
