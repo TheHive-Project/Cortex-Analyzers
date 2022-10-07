@@ -29,8 +29,8 @@ class CrowdsecAnalyzer(Analyzer):
         if 'history' in raw:
                 taxonomies.append(self.build_taxonomy(levelinfo, namespace, 'LastSeen', raw['history']['last_seen']))
 
-        if 'attack_categories' in raw:
-                for attack in raw['attack_categories'] :
+        if 'attack_details' in raw:
+                for attack in raw['attack_details'] :
                     taxonomies.append(self.build_taxonomy(levelorange, namespace, 'Attack', attack['name']))
                     
         if len(taxonomies) == 0:
