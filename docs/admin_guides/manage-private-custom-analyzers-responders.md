@@ -7,7 +7,7 @@ This guide propose a way to manage your own analyzers without publishing them or
 
 Make Cortex know of custom Analyzers and Responders.
 
-Update the `/etc/cortex/application.conf` or ensure your configuration is similar to:
+Update the `/etc/cortex/application.conf` or add the folders where you store your custom code. Ensure your configuration is similar to:
 
 ```yaml
 [..]
@@ -38,7 +38,7 @@ See:
 * [How to create an Analyzer guide](../dev_guides/how-to-create-an-analyzer.md)
 * [Analyzer definition file](../dev_guides/analyzers_definition.md)
 
-To prepare your package you have to write your `Dockerfile`. We recommend starting with [this one](https://github.com/TheHive-Project/Cortex-Analyzers/blob/master/utils/docker/Dockerfile_template) and update it, especially if additional programs on the system are required (the list could be added in a `programs.txt` file). 
+To prepare your package you have to write your `Dockerfile`. We recommend starting with [this one](https://github.com/TheHive-Project/Cortex-Analyzers/blob/master/utils/docker/Dockerfile_template) and update it, especially if additional packages or programs are required in the image. 
 
 As a result, your program should be at least:
 
@@ -47,7 +47,6 @@ Analyzer/
 ├── analyzer.json  #required
 ├── analyzer.py    #required
 ├── README.md            #optional
-├── programs.txt         #optional
 ├── Dockerfile           #required
 └── requirements.txt     #required
 ```
@@ -72,6 +71,8 @@ analyzerspath="/opt/customneurons/analyzers"
 responderspath="/opt/customneurons/responders"
 # Set path to your docker images archives
 dockerimagearchives="/opt/backup-images"
+# Set a name for the docker image registry 
+dockerimageregistryname="localhost"
 # Set a name for the docker image repository 
 dockerimagerepositoryname="customimage"
 ```
@@ -81,11 +82,12 @@ dockerimagerepositoryname="customimage"
 * `analyzerspath`, the path to your custom analyzers repository  (it should be the same as in the Cortex configuration)
 * `responderspath`, the path to your custom responders repository  (it should be the same as in the Cortex configuration)
 * `dockerimagearchives`, the path to your docker images archives. Indeed, once built, the program save the docker images in a dedicated folder
+* `dockerimageregistryname`,  name for the docker image registry. By default this is localhost. Even if you do not have a docker registry, Cortex will ensure to use the local images loaded.
 * `dockerimagerepositoryname`, a name for the docker image repository, used in docker image names or tags. `customimage` is used by default
 
 Once updated, save the file.
 
-#### Run the program
+#### Install requirements
 
 Before running it, there are few requirements:
 
@@ -93,7 +95,7 @@ Before running it, there are few requirements:
 * _Python3 + json lib_ should be available on the system
 * the Python library `json-spec` should be installed (`pip3 install json-spec`)
 
-#### Build your image
+#### Run and build your image
 
 The program has several options.
 
@@ -113,7 +115,7 @@ To run it successfully, you need to identify the type of neuron to build, `analy
 For example:
 
 ```bash
-./build-customimage.sh -t analyzer -b /home/jerome/Devel/PrivateAnalyzer/analyzer.json
+./build-customimage.sh -t analyzer -b /home/dev/PrivateAnalyzer/analyzer.json
 ```
 
 This will:

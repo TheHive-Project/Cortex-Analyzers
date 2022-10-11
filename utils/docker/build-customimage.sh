@@ -39,8 +39,10 @@ analyzerspath="/opt/customneurons/analyzers"
 responderspath="/opt/customneurons/responders"
 # Set the path to your docker images archives
 dockerimagearchives="/opt/backup-images"
+# Set a name for the docker image registry 
+dockerimageregistryname="localhost"
 # Set a name for the docker image repository 
-dockerimagerepositoryname="customimage"
+dockerimagerepositoryname="customimages"
 
 ###################################
 # HOW TO  RELOAD DOCKERIMAGES     #
@@ -378,24 +380,9 @@ build-image() {
       exit
     fi
     # Set docker image name
-    dockerimagename="${dockerimagerepositoryname}/${neuronname}:latest"
+    dockerimagename="${dockerimageregistryname}/${dockerimagerepositoryname}/${neuronname}:latest"
     # Set docker image archive name
     archivename="${dockerimagearchives}/${dockerimagerepositoryname}-${neuronname}.tar"
-    # Check if programs.txt exists
-    if [ -f "${folderpath}/programs.txt" ]
-    then
-      log ok "Additionnal programs required. Read the file programs.txt and ensure having provided a custom Dockerfile in ${folderpath}"
-      if [ ! -f "${folderpath}/Dockerfile" ]
-      then
-        log ko "Custom Dockerfile not found in ${folderpath}. Edit a Dockerfile with required packages to install. See ${folderpath}/programs.txt"
-        exit 1
-      fi
-    else
-      log ok "No additionnal programs required (programs.txt not found)"
-    fi
-
-    workername=$(dirname ${jsonpath} | awk -F "/" ' {print $NF} ')
-    command=$(cat ${jsonpath} | jq '.command')
     
     # if no Dockerfile, create a default one
     (
