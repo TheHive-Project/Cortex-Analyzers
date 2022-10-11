@@ -17,6 +17,9 @@
             "multi": false,
             "required": true
         }
-       ]
+       ],
+       "registration_required": true,
+       "service_homepage": "https://www.crowdsec.net/product/threat-intelligence",
+       "service_logo": {"path":"./assets/logo_crowdsec.svg", "caption": "logo"}
 }
 
