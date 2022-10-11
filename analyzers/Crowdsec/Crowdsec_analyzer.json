@@ -19,10 +19,10 @@
             "required": true
         }
     ],
-    "registration_required": "yes",
-    "subscription_required": "yes",
-    "free_subscription": "yes",
-    "service_homepage": "https://www.crowdsec.net",
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": true,
+    "service_homepage": "https://www.crowdsec.net/product/threat-intelligence",
     "service_logo": {
         "path": "assets/crowdsec-logo.png",
         "caption": "logo"
@@ -30,6 +30,10 @@
     "screenshots": [
         {
             "path": "assets/crowdsec-report-long.png",
+            "caption": ""
+        },
+        {
+            "path": "assets/crowdsec-analyzer-result-example.png",
             "caption": ""
         }
     ]
