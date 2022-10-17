@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Get binary information and download link",
-  "dataTypeList": ["thehive:case_artifact"],
+  "dataTypeList": [
+    "thehive:case_artifact"
+  ],
   "command": "HarfangLab/HarfangLab.py",
   "baseConfig": "HarfangLab",
   "config": {
@@ -28,5 +30,11 @@
       "required": true,
       "defaultValue": "0123456789abcdef"
     }
-  ]
+  ],
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_logo": {
+    "path": "assets/HarfangLab_logo.png",
+    "caption": "logo"
+  }
 }

@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Get services on a host",
-  "dataTypeList": ["thehive:case"],
+  "dataTypeList": [
+    "thehive:case"
+  ],
   "command": "HarfangLab/HarfangLab.py",
   "baseConfig": "HarfangLab",
   "config": {
@@ -28,5 +30,11 @@
       "required": true,
       "defaultValue": "0123456789abcdef"
     }
-  ]
+  ],
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_logo": {
+    "path": "assets/HarfangLab_logo.png",
+    "caption": "logo"
+  }
 }

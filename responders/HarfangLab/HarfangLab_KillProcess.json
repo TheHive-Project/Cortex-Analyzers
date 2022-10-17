@@ -5,7 +5,10 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Kill a process",
-  "dataTypeList": ["thehive:case", "thehive:alert"],
+  "dataTypeList": [
+    "thehive:case",
+    "thehive:alert"
+  ],
   "command": "HarfangLab/HarfangLab.py",
   "baseConfig": "HarfangLab",
   "config": {
@@ -28,5 +31,11 @@
       "required": true,
       "defaultValue": "0123456789abcdef"
     }
-  ]
+  ],
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_logo": {
+    "path": "assets/HarfangLab_logo.png",
+    "caption": "logo"
+  }
 }
