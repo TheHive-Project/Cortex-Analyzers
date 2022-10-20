@@ -16,7 +16,6 @@
 
 FROM python:3.9-slim
 WORKDIR /worker
-WORKDIR /worker
 COPY . EmlParser
 RUN test ! -e EmlParser/requirements.txt || pip install --no-cache-dir -rEmlParser/requirements.txt
 RUN apt update
