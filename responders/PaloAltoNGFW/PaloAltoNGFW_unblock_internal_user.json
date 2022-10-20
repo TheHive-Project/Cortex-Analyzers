@@ -2,7 +2,7 @@
   "name": "PaloAltoNGFW_unblock_internal_user",
   "version": "1.0.0",
   "author": "Maxim Konakin, OSCD Initiative",
-  "url": "",
+  "url": "https://www.paloaltonetworks.com/",
   "license": "AGPL-V3",
   "description": "Unblock internal user",
   "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],

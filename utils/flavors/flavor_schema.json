@@ -2,7 +2,8 @@
     "type": "object",
     "properties": {
         "name": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^[^\\s]*$"
         },
         "version": {
             "type": "string"
@@ -83,9 +84,7 @@
         "description",
         "dataTypeList",
         "command",
-        "baseConfig",
-        "registration_required",
-        "subscription_required"
+        "baseConfig"
     ],
     "definition": {
         "configurationItem": {
@@ -124,8 +123,7 @@
                 }
             },
             "required": [
-                "path",
-                "caption"
+                "path"
             ]
         }
     }

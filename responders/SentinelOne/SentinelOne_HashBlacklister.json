@@ -40,7 +40,8 @@
             "description": "OS type, must be one of the following: macos, windows, linux, or windows_legacy.  Default is windows",
             "type": "string",
             "multi": false,
-            "default": "windows"
+            "default": "windows",
+            "required": false
         }
     ]
 }

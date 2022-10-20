@@ -1,7 +1,7 @@
 {
   "name": "Splunk_Search_File_Filename",
   "version": "3.0",
-  "url": "",
+  "url": "https://www.splunk.com",
   "author": "Unit777, LetMeR00t",
   "license": "AGPL-V3",
   "dataTypeList": ["file", "filename"],
