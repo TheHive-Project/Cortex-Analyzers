@@ -1,5 +1,23 @@
 # Changelog
 
+## [3.2.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.2.0)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.1.1...3.2.0)
+
+**Closed issues:**
+
+- Build and manage images of private and custom analyzers/responders [\#1112](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1112)
+- \[Bug\] MSDefender Responder has no module named cortexutils [\#1107](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1107)
+- \[FR\] Virustotal Analyzer and VT API v3? \(v2 will go offline soon\)  [\#1012](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1012)
+- \[FR\] Verifalia analyzer [\#1007](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1007)
+- \[FR\] ThreatMiner analyzer [\#1005](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1005)
+- \[FR\] Kaspersky Threat Intelligence Portal analyzer [\#1003](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1003)
+- \[FR\] IP-API analyzer [\#1001](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1001)
+- \[FR\] CheckPhish Analyzer [\#997](https://github.com/TheHive-Project/Cortex-Analyzers/issues/997)
+- \[FR\] Bitcoin Abuse Analyzer [\#995](https://github.com/TheHive-Project/Cortex-Analyzers/issues/995)
+- \[FR\] Upgrade OpenCTI analyzer for v4 compatibility [\#929](https://github.com/TheHive-Project/Cortex-Analyzers/issues/929)
+- \[FR\] SentinelOne Hash Blacklister \(Responder\) [\#781](https://github.com/TheHive-Project/Cortex-Analyzers/issues/781)
+
 ## [3.1.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.1.1) (2022-06-21)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.1.0...3.1.1)
