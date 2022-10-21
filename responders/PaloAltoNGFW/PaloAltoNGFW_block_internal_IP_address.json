@@ -2,7 +2,7 @@
   "name": "PaloAltoNGFW_block_internal_IP_address",
   "version": "2.0.0",
   "author": "Maxim Konakin, OSCD Initiative",
-  "url": "",
+  "url": "https://www.paloaltonetworks.com/",
   "license": "AGPL-V3",
   "description": "Block internal IP address",
   "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],

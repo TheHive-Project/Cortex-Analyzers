@@ -1,6 +1,6 @@
 cortexutils
 future
 requests
-virustotal-api
+vt-py
 python-magic
 filetype

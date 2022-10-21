@@ -1,4 +1,4 @@
-# Vulners-analyzer
+### Vulners-analyzer
  
 This analyzer consists of 2 parts.
 1. **Vulners_IOC**: As a result of collaboration between Vulners and RST Threat Feed, the idea was to send IOC analysis results through theHive analyzer: blog post
@@ -7,7 +7,7 @@ This analyzer consists of 2 parts.
 
 Vulners API key required.
 
-## Setting up analyzer
+#### Setting up analyzer
 
 * copy the folders "Vulners" analyzer & "Vulners" into your Cortex analyzer path
 * install necessary python modules from the requirements.txt (**pip install -r requirements.txt**)
@@ -15,17 +15,17 @@ Vulners API key required.
 
 Get your Vulners api key: ![Vulners API](assets/vulners_api.png)
 
-Add your Vulners API in Cortex settings: ![API key in Cortex](assets/Cortex_settings.png)
+Add your Vulners API in Cortex settings: ![API key in Cortex](assets/Cortex_settings.PNG)
 
-## Add Observable type in TheHive
+#### Add Observable type in TheHive
 
 By default theHive does not have a "cve" type to be observables, so we have to add it to Administrator Settings:
 
-![add observable](assets/theHive_add_cve.PNG)​
+![add observable](assets/theHive_add_cve.png)​
 
-## Run the Analyzer in TheHive
+#### Run the Analyzer in TheHive
 
-####Network IOCs:
+##### Network IOCs:
 
 Short template:
 
@@ -39,7 +39,7 @@ Long template:
 ![Long_IOC_threat_template](assets/ioc_with_malware_family.PNG)
 
 
-####Vulnerabilities:
+##### Vulnerabilities:
 
 Short template: 
 
