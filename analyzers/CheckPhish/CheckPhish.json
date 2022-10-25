@@ -4,8 +4,11 @@
   "author": "Peter Juhas",
   "url": "https://github.com/pjuhas/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Check url address via CheckPhis using jobID returned from CheckPhish_Submit",
-  "dataTypeList": ["string"],
+  "service_homepage": "https://checkphish.ai",
+  "description": "Check url address via CheckPhish using jobID returned from CheckPhish_Submit",
+  "dataTypeList": [
+    "string"
+  ],
   "baseConfig": "CheckPhish",
   "configurationItems": [
     {
