@@ -2,7 +2,7 @@
 
 from cortexutils.analyzer import Analyzer
 from onyphe_api import Onyphe
-
+import urllib.parse
 
 class OnypheAnalyzer(Analyzer):
     def __init__(self):
@@ -163,7 +163,7 @@ class OnypheAnalyzer(Analyzer):
             if self.service == 'search':
                 page = self.get_param('parameters.page', 1, None)
                 data = self.get_param('data', None, 'Data is missing')
-                results = {'search': self.onyphe_client.search(data, page)}
+                results = {'search': self.onyphe_client.search(urllib.parse.quote_plus(data), page)}
                 self.report(results)
         except Exception:
             pass
