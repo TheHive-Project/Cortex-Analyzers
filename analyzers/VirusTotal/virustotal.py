@@ -39,7 +39,7 @@ class VirusTotalAnalyzer(Analyzer):
             "config.download_sample_if_highlighted", False
         )
         self.obs_path = None
-        self.proxies = self.get_param("config.proxy", None)
+        self.proxies = self.get_param("config.proxy.https", None)
         self.vt = Client(apikey=self.virustotal_key, proxy=self.proxies)
 
     def get_file(self, hash):
@@ -323,8 +323,9 @@ class VirusTotalAnalyzer(Analyzer):
                         filepath = self.get_param("file", None, "File is missing")
                         with open(filepath, "rb") as f:
                             self.vt.scan_file(file=f, wait_for_completion=True)
-            except Exception:
-                self.report({"message": "Report not found."})
+            except Exception as e:
+                # self.report({"message": "Report not found."})
+                self.report({"message": str(e)})
                 return
 
             # download if hash, dangerous and not seen by av
