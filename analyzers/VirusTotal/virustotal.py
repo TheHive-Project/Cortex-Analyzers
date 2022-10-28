@@ -40,7 +40,9 @@ class VirusTotalAnalyzer(Analyzer):
         )
         self.obs_path = None
         self.proxies = self.get_param("config.proxy.https", None)
-        self.vt = Client(apikey=self.virustotal_key, proxy=self.proxies)
+        if os.environ.get("REQUESTS_CA_BUNDLE"):
+            os.environ["SSL_CERT_FILE"] = os.environ["REQUESTS_CA_BUNDLE"]
+        self.vt = Client(apikey=self.virustotal_key, proxy=self.proxies, verify_ssl=None, trust_env=True)
 
     def get_file(self, hash):
         self.obs_path = "{}/{}".format(tempfile.gettempdir(), hash)
