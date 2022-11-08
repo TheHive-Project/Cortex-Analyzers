@@ -6,6 +6,7 @@ import uuid
 import json
 import time
 import subprocess
+from shutil import copy2
 from datetime import datetime
 from argparse import ArgumentParser
 
@@ -63,6 +64,9 @@ class AnalyzerRunlocal():
             self.stderr('\nERROR: {}\n'.format(e))
             exit(1)
 
+        copy2(job_definition['file'], '{}/input/'.format(job_path)) # Copy file specified in job definition to the current job path input
+        job_definition['file'] = os.path.basename(job_definition['file']) # Change "file" filepath in job definiton to comply with cortexutils
+
         with open(input_filename, 'w') as f:
             json.dump(job_definition, f)
 
@@ -95,8 +99,10 @@ class AnalyzerRunlocal():
             raise AnalyzerRunlocalException('job_definition is not a dict as expected')
         if 'dataType' not in job_definition:
             raise AnalyzerRunlocalException('job_definition is missing a "dataType" dict key value')
-        if 'data' not in job_definition:
-            raise AnalyzerRunlocalException('job_definition is missing a "data" dict key value')
+        if 'data' not in job_definition and 'file' not in job_definition:
+            raise AnalyzerRunlocalException('job_definition is missing a "data" or "file" dict key value')
+        if not os.path.isfile(job_definition['file']):
+            raise AnalyzerRunlocalException('the "file" path specified in the job_definition does not exist: {}'.format(job_definition['file']))
 
     def stdout(self, message=''):
         print(message)
