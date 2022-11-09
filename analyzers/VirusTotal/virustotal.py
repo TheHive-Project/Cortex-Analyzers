@@ -39,8 +39,10 @@ class VirusTotalAnalyzer(Analyzer):
             "config.download_sample_if_highlighted", False
         )
         self.obs_path = None
-        self.proxies = self.get_param("config.proxy", None)
-        self.vt = Client(apikey=self.virustotal_key, proxy=self.proxies)
+        self.proxies = self.get_param("config.proxy.https", None)
+        if os.environ.get("REQUESTS_CA_BUNDLE"):
+            os.environ["SSL_CERT_FILE"] = os.environ["REQUESTS_CA_BUNDLE"]
+        self.vt = Client(apikey=self.virustotal_key, proxy=self.proxies, verify_ssl=None, trust_env=True)
 
     def get_file(self, hash):
         self.obs_path = "{}/{}".format(tempfile.gettempdir(), hash)
@@ -323,8 +325,9 @@ class VirusTotalAnalyzer(Analyzer):
                         filepath = self.get_param("file", None, "File is missing")
                         with open(filepath, "rb") as f:
                             self.vt.scan_file(file=f, wait_for_completion=True)
-            except Exception:
-                self.report({"message": "Report not found."})
+            except Exception as e:
+                # self.report({"message": "Report not found."})
+                self.report({"message": str(e)})
                 return
 
             # download if hash, dangerous and not seen by av
