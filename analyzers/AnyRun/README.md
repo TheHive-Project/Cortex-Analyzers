@@ -27,3 +27,4 @@ AnyRun provides a number of parameters that can be modified to do additional/dif
 - Need to analyze something with evasion tactics? `opt_kernel_heavyevasion`
 - Change the timeout settings with `opt_timeout` parameter.
 - Select which folder the analysis starts in with `obj_ext_startfolder` parameter.
+- Select which browser to use for analysis with `obj_ext_browser` parameter.
