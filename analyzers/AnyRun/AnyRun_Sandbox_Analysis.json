@@ -122,7 +122,7 @@
     },
     {
       "name": "obj_ext_browser",
-      "description": "Choose which browser to use. Allowed values: ",
+      "description": "Choose which browser to use. Allowed values: \"Google Chrome\", \"Mozilla Firefox\", \"Opera\", \"Internet Explorer\"",
       "type": "String",
       "multi": false,
       "required": false,
