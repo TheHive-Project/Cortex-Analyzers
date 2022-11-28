@@ -1,7 +1,7 @@
 {
   "name": "AnyRun_Sandbox_Analysis",
-  "version": "1.0",
-  "author": "Andrea Garavaglia, Davide Arcuri, LDO-CERT",
+  "version": "1.1",
+  "author": "Andrea Garavaglia, Davide Arcuri, LDO-CERT; Nate Olsen, WSECU",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Any.Run Sandbox file analysis",
@@ -31,6 +31,94 @@
       "multi": false,
       "required": true,
       "defaultValue": true
+    },
+    {
+      "name": "env_bitness",
+      "description": "default OS bitness; 32 or 64",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    },
+    {
+      "name": "env_version",
+      "description": "Which version of Windows do you want to use by default? allowed values: \"vista\", \"7\", \"8.1\", \"10\"",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "7"
+    },
+    {
+      "name": "env_type",
+      "description": "How much do you want pre-installed in the runtime environment? allowed values: \"clean\", \"office\", \"complete\"",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "complete"
+    },
+    {
+      "name": "opt_network_connect",
+      "description": "Do you want to disable networking? set false to disable",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": true
+    },
+    {
+      "name": "opt_network_fakenet",
+      "description": "FakeNet feature status; set true to enable.",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    },
+    {
+      "name": "opt_network_tor",
+      "description": "TOR using.",
+      "type": "Boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": "false"
+    },
+    {
+      "name": "opt_network_mitm",
+      "description": "HTTPS MITM proxy option.",
+      "type": "Boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": "false"
+    },
+    {
+      "name": "opt_network_geo",
+      "description": "Geo location option. Allowed values: \"fastest\", \"AU\", \"BR\", \"DE\", \"CH\", \"FR\", \"KR\", \"US\", \"RU\", \"GB\", \"IT\"",
+      "type": "String",
+      "multi": false,
+      "required": false,
+      "defaultValue": "fastest"
+    },
+    {
+      "name": "opt_kernel_heavyevasion",
+      "description": "Heavy evasion option.   Default value: false",
+      "type": "Boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": "false"
+    },
+    {
+      "name": "opt_timeout",
+      "description": "Timeout option. Size range: 10-660",
+      "type": "Number",
+      "multi": false,
+      "required": false,
+      "defaultValue": "60"
+    },
+    {
+      "name": "obj_ext_startfolder",
+      "description": "Start object from. Allowed values: \"desktop\", \"home\", \"downloads\", \"appdata\", \"temp\", \"windows\", \"root\",
+      "type": "String",
+      "multi": false,
+      "required": false,
+      "defaultValue": "temp"
     }
   ],
   "registration_required": true,
