@@ -27,6 +27,7 @@ class AnyRunAnalyzer(Analyzer):
         self.opt_kernel_heavyevasion = self.get_param("config.opt_kernel_heavyevasion", None, None)
         self.opt_timeout = self.get_param("config.opt_timeout", None, None)
         self.obj_ext_startfolder = self.get_param("config.obj_ext_startfolder", None, None)
+        self.obj_ext_browser = self.get_param("config.obj_ext_browser", None, None)
 
     def summary(self, raw):
         taxonomies = []
@@ -105,7 +106,8 @@ class AnyRunAnalyzer(Analyzer):
                         "opt_network_mitm": self.opt_network_mitm,
                         "opt_network_geo": self.opt_network_geo,
                         "opt_kernel_heavyevasion": self.opt_kernel_heavyevasion,
-                        "opt_timeout": self.opt_timeout }
+                        "opt_timeout": self.opt_timeout,
+                        "obj_ext_browser": self.obj_ext_browser }
                 while status_code in (None, 429) and tries <= 15:
                     response = requests.post(
                         "{0}/analysis".format(self.url),
