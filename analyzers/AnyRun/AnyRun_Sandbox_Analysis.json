@@ -114,7 +114,7 @@
     },
     {
       "name": "obj_ext_startfolder",
-      "description": "Start object from. Allowed values: \"desktop\", \"home\", \"downloads\", \"appdata\", \"temp\", \"windows\", \"root\",
+      "description": "Start object from. Allowed values: \"desktop\", \"home\", \"downloads\", \"appdata\", \"temp\", \"windows\", \"root\"",
       "type": "String",
       "multi": false,
       "required": false,
