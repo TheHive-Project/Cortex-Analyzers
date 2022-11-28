@@ -119,6 +119,14 @@
       "multi": false,
       "required": false,
       "defaultValue": "temp"
+    },
+    {
+      "name": "obj_ext_browser",
+      "description": "Choose which browser to use. Allowed values: ",
+      "type": "String",
+      "multi": false,
+      "required": false,
+      "defaultValue": "Internet Explorer"
     }
   ],
   "registration_required": true,
