@@ -38,7 +38,7 @@
       "type": "number",
       "multi": false,
       "required": false,
-      "defaultValue": false
+      "defaultValue": 32
     },
     {
       "name": "env_version",
@@ -78,7 +78,7 @@
       "type": "Boolean",
       "multi": false,
       "required": false,
-      "defaultValue": "false"
+      "defaultValue": false
     },
     {
       "name": "opt_network_mitm",
@@ -86,7 +86,7 @@
       "type": "Boolean",
       "multi": false,
       "required": false,
-      "defaultValue": "false"
+      "defaultValue": false
     },
     {
       "name": "opt_network_geo",
@@ -102,7 +102,7 @@
       "type": "Boolean",
       "multi": false,
       "required": false,
-      "defaultValue": "false"
+      "defaultValue": false
     },
     {
       "name": "opt_timeout",
