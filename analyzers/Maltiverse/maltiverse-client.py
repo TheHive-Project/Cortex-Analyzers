@@ -80,7 +80,7 @@ class MaltiverseAnalyzer(Analyzer):
             result = self.m.url_get(data)
             self.report({
                 'original': data,
-                'hash': hash,
+                'hash': result.get("urlchecksum", "-"),
                 'url': result.get("url","-"),
                 'type': result.get("type","-"),
                 'classification': result.get("classification","-"),
