@@ -3,7 +3,6 @@
 from cortexutils.analyzer import Analyzer
 from onyphe_api import Onyphe
 
-
 class OnypheAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
