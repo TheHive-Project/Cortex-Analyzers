@@ -1,0 +1,16 @@
+{
+    "name": "Bluecoat",
+    "version": "0.1",
+    "author": "IFX-CDC Alexander Goedeke",
+    "url": "https://github.com/IFX-CDC/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseConfig": "Bluecoat",
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 0,
+        "service": "search"
+    },
+    "description": "The analyser search for a url in bluecoat.",
+    "dataTypeList": ["domain", "url"],
+    "command": "Bluecoat/bluecoat_analyzer.py"
+}

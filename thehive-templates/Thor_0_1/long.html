@@ -1,0 +1,174 @@
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        <strong>Info</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.startupMessages['Thor Version']">
+            <dt>Thor Version</dt>
+            <dd class="wrap">{{content.startupMessages['Thor Version']}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.startupMessages['Run on system']">
+            <dt>Run on System</dt>
+            <dd class="wrap">{{content.startupMessages['Run on system']}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.startupMessages['Argument List']">
+            <dt>Argument list</dt>
+            <dd class="wrap">{{content.startupMessages['Argument List']}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.startupMessages['Signature Database']">
+            <dt>Signature Database</dt>
+            <dd class="wrap">{{content.startupMessages['Signature Database']}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.startupMessages['Start Time']">
+            <dt>Start Time</dt>
+            <dd class="wrap">{{content.startupMessages['Start Time']}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.startupMessages['Thor Scan finished TIME']">
+            <dt>End Time</dt>
+            <dd class="wrap">{{content.startupMessages['Thor Scan finished TIME']}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.startupMessages['IP Address']">
+            <dt>IP Address</dt>
+            <dd class="wrap">{{content.startupMessages['IP Address']}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.startupMessages['Running as user']">
+            <dt>Run as user</dt>
+            <dd class="wrap">{{content.startupMessages['Running as user']}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.startupMessages['User has admin rights']">
+            <dt>Run with admin rights</dt>
+            <dd class="wrap">{{content.startupMessages['User has admin rights']}}</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.alerts.length > 0">
+    <div class="panel-heading">
+        <strong>Alerts</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>           
+                <tr>
+                    <th>Message</th>
+                    <th>Score</th>
+                    <th>Hashes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="t in content.alerts">
+                    <td ng-if="t.REASON_1">{{t.REASON_1}}<br><b>File:</b> {{t.FILE}}</td>
+                    <td ng-if="!t.REASON_1 && t.MESSAGE">{{t.MESSAGE}}</td>
+                    <td ng-if="!t.REASON_1 && !t.MESSAGE">-</td>
+                    <td>{{t.SCORE}}</td>
+                    <td>
+                        <div class="dropdown" ng-if="t.MD5">
+                            <b>MD5:</b> <i ng-if="t.MD5.value" ng-class="{'text-danger fa fa-bug': t.MD5.status == true, 'text-success fa fa-check-circle': t.MD5.status == false, 'text-info fa fa-question-circle': t.MD5.status === null}">
+                            <a href data-toggle="dropdown">{{t.MD5.value}}</a>
+                                <ul ng-if="t.MD5.events.length != 0" class="dropdown-menu">
+                                    <li class="dropdown-header">MISP events</li>
+                                    <li ng-repeat="event in t.MD5.events">
+                                        <a href="{{event.url}}" target="_blank">{{event.info}} ({{event.date}})</a>
+                                    </li>
+                                </ul>
+                            </i>
+                        </div>
+                        <div class="dropdown" ng-if="t.SHA1">
+                            <b>SHA1:</b> <i ng-if="t.SHA1.value" ng-class="{'text-danger fa fa-bug': t.SHA1.status == true, 'text-success fa fa-check-circle': t.SHA1.status == false, 'text-info fa fa-question-circle': t.SHA1.status === null}">
+                            <a href data-toggle="dropdown">{{t.SHA1.value}}</a>
+                                <ul ng-if="t.SHA1.events.length != 0" class="dropdown-menu">
+                                    <li class="dropdown-header">MISP events</li>
+                                    <li ng-repeat="event in t.SHA1.events">
+                                        <a href="{{event.url}}" target="_blank">{{event.info}} ({{event.date}})</a>
+                                    </li>
+                                </ul>
+                            </i>
+                        </div>
+                        <div class="dropdown" ng-if="t.SHA256">
+                            <b>SHA256:</b> <i ng-if="t.SHA256.value" ng-class="{'text-danger fa fa-bug': t.SHA256.status == true, 'text-success fa fa-check-circle': t.SHA256.status == false, 'text-info fa fa-question-circle': t.SHA256.status === null}">
+                            <a href data-toggle="dropdown">{{t.SHA256.value}}</a>
+                                <ul ng-if="t.SHA256.events.length != 0" class="dropdown-menu">
+                                    <li class="dropdown-header">MISP events</li>
+                                    <li ng-repeat="event in t.SHA256.events">
+                                        <a href="{{event.url}}" target="_blank">{{event.info}} ({{event.date}})</a>
+                                    </li>
+                                </ul>
+                            </i>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.warnings.length > 0">
+    <div class="panel-heading">
+        <strong>Warnings</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>           
+                <tr>
+                    <th>Message</th>
+                    <th>Score</th>
+                    <th>Hashes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="t in content.warnings">
+                    <td ng-if="t.REASON_1">{{t.REASON_1}}<br><b>File:</b> {{t.FILE}}</td>
+                    <td ng-if="!t.REASON_1 && t.MESSAGE">{{t.MESSAGE}}</td>
+                    <td ng-if="!t.REASON_1 && !t.MESSAGE">-</td>
+                    <td>{{t.SCORE}}</td>
+                    <td>
+                        <div class="dropdown" ng-if="t.MD5">
+                            <b>MD5:</b> <i ng-if="t.MD5.value" ng-class="{'text-danger fa fa-bug': t.MD5.status == true, 'text-success fa fa-check-circle': t.MD5.status == false, 'text-info fa fa-question-circle': t.MD5.status === null}">
+                            <a href data-toggle="dropdown">{{t.MD5.value}}</a>
+                                <ul ng-if="t.MD5.events.length != 0" class="dropdown-menu">
+                                    <li class="dropdown-header">MISP events</li>
+                                    <li ng-repeat="event in t.MD5.events">
+                                        <a href="{{event.url}}" target="_blank">{{event.info}} ({{event.date}})</a>
+                                    </li>
+                                </ul>
+                            </i>
+                        </div>
+                        <div class="dropdown" ng-if="t.SHA1">
+                            <b>SHA1:</b> <i ng-if="t.SHA1.value" ng-class="{'text-danger fa fa-bug': t.SHA1.status == true, 'text-success fa fa-check-circle': t.SHA1.status == false, 'text-info fa fa-question-circle': t.SHA1.status === null}">
+                            <a href data-toggle="dropdown">{{t.SHA1.value}}</a>
+                                <ul ng-if="t.SHA1.events.length != 0" class="dropdown-menu">
+                                    <li class="dropdown-header">MISP events</li>
+                                    <li ng-repeat="event in t.SHA1.events">
+                                        <a href="{{event.url}}" target="_blank">{{event.info}} ({{event.date}})</a>
+                                    </li>
+                                </ul>
+                            </i>
+                        </div>
+                        <div class="dropdown" ng-if="t.SHA256">
+                            <b>SHA256:</b> <i ng-if="t.SHA256.value" ng-class="{'text-danger fa fa-bug': t.SHA256.status == true, 'text-success fa fa-check-circle': t.SHA256.status == false, 'text-info fa fa-question-circle': t.SHA256.status === null}">
+                            <a href data-toggle="dropdown">{{t.SHA256.value}}</a>
+                                <ul ng-if="t.SHA256.events.length != 0" class="dropdown-menu">
+                                    <li class="dropdown-header">MISP events</li>
+                                    <li ng-repeat="event in t.SHA256.events">
+                                        <a href="{{event.url}}" target="_blank">{{event.info}} ({{event.date}})</a>
+                                    </li>
+                                </ul>
+                            </i>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

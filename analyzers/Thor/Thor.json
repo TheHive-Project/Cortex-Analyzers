@@ -1,0 +1,14 @@
+{
+    "name": "Thor",
+    "version": "0.1",
+    "author": "IFX-CDC Alexander Goedeke",
+    "url": "https://github.com/IFX-CDC/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseConfig": "Thor",
+    "config": {
+        "check_tlp": false
+    },
+    "description": "The analyser does a MISP search for hashes in the Thor report (use the .txt report)",
+    "dataTypeList": ["file"],
+    "command": "Thor/thor_analyzer.py"
+}

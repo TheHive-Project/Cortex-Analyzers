@@ -1,0 +1,17 @@
+{
+    "name": "MailParser",
+    "version": "1.0",
+    "author": "IFX-CDC Alexander Goedeke",
+    "url": "https://github.com/IFX-CDC/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseConfig":"MailParser",
+    "config": {
+        "check_tlp": false,
+        "service": "analyse"
+    },
+    "description": "Parse Outlook MSG files and extract the main artifacts",
+    "dataTypeList": [
+        "file"
+    ],
+    "command": "MailParser/parse.py"
+}

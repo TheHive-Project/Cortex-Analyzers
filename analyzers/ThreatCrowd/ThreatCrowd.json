@@ -1,0 +1,16 @@
+{
+    "name": "ThreatCrowd",
+    "version": "0.1",
+    "author": "IFX-CDC Alexander Goedeke",
+    "url": "https://github.com/IFX-CDC/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseConfig": "ThreatCrowd",
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 0,
+        "service": "search"
+    },
+    "description": "The analyser search for observables in ThreatCrowd.",
+    "dataTypeList": ["domain", "ip", "email", "file", "url"],
+    "command": "ThreatCrowd/threatcrowd_analyzer.py"
+}
