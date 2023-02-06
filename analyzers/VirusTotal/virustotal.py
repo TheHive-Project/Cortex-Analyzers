@@ -206,7 +206,13 @@ class VirusTotalAnalyzer(Analyzer):
                         "X-Apikey": self.virustotal_key
                         }
             response = requests.get(url, headers=headers)
-            self.report(json.loads(response.text))
+            if response.status_code == 200:
+                self.report(json.loads(response.text))
+            elif response.status_code == 429:
+                # quota exceeded
+                self.error('Quota Exceeded')
+            else:
+                self.error(f'Error throw by VT, status code: {str(response.status_code)}')
         elif self.service == 'relationships':
             limit = self.get_param('parameters.limit', 20)
             cursor = self.get_param('parameters.cursor', None)
@@ -221,7 +227,13 @@ class VirusTotalAnalyzer(Analyzer):
                         "X-Apikey": self.virustotal_key
                         }
             response = requests.get(url, headers=headers)
-            self.report(json.loads(response.text))
+            if response.status_code == 200:
+                self.report(json.loads(response.text))
+            elif response.status_code == 429:
+                # quota exceeded
+                self.error('Quota Exceeded')
+            else:
+                self.error(f'Error throw by VT, status code: {str(response.status_code)}')
 
         else:
             self.error('Invalid service')
