@@ -1,6 +1,5 @@
 cortexutils
 python-magic
-python-magic-bin
 python-magic-debian-bin
 ssdeep
 pyexifinfo
