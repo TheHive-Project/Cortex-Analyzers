@@ -24,7 +24,8 @@ class Crowdsec:
         """
         headers = {
                 "x-api-key": self.api_key ,
-                "accept": "application/json"
+                "accept": "application/json",
+                "User-Agent": "crowdsec-cortex/v1.0.0",
                 }
         url = urljoin(self.base_url, path)
         response = requests.get(url, headers=headers)
