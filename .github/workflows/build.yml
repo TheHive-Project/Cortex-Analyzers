@@ -66,6 +66,7 @@ jobs:
           files: |
             analyzers/analyzers-stable.json
             analyzers/analyzers.json
+            analyzers/report-templates.zip
             responders/responders-stable.json
             responders/responders.json
 
