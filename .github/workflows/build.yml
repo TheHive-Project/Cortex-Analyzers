@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - develop
-      - ci/gh-actions
     tag:
   workflow_dispatch:
   schedule:
