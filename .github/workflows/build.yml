@@ -59,32 +59,16 @@ jobs:
             analyzers/analyzers.json
             analyzers/report-templates.zip
             responders/responders.json
-      - name: Upload devel artifacts
-        if: github.event.name != 'tag'
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.package_host }}
-          username: ${{ secrets.package_user }}
-          key: ${{ secrets.package_key }}
-          source: |
-            analyzers/analyzers-devel.json
-            responders/responders-devel.json
-          target: ${{ secrets.catalog_path }}
-          strip_components: 1
-      - name: Upload stable artifacts
+      - name: Make Release
+        uses: softprops/action-gh-release@v1
         if: github.event.name == 'tag'
-        uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.package_host }}
-          username: ${{ secrets.package_user }}
-          key: ${{ secrets.package_key }}
-          source: |
+          generate_release_notes: true
+          files: |
             analyzers/analyzers-stable.json
             analyzers/analyzers.json
             responders/responders-stable.json
             responders/responders.json
-          target: ${{ secrets.catalog_path }}
-          strip_components: 1
 
   build_docs:
     name: Build documentation
