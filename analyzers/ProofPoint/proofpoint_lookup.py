@@ -67,7 +67,7 @@ class ProofPointForensicsAnalyzer(Analyzer):
 				elif self.data_type == 'hash' and len(self.get_data()) == 64:
 					sha256 = self.get_data()
 				else:
-					sha256 = hashlib.sha256(self.get_data()).hexdigest()
+					sha256 = hashlib.sha256(self.get_data().encode()).hexdigest()
 			else:
 				self.error('unknown service')
 			if sha256 != None:
