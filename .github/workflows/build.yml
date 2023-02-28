@@ -23,7 +23,7 @@ jobs:
         uses: docker://thehiveproject/cortex-neurons-builder:latest
         with:
           args: |
-            --namespace cortexneurons --path analyzers --registry_dockerhub ${{ secrets.REGISTRY_DOCKERHUB }} --registry_harbor ${{ secrets.REGISTRY_HARBOR }} ${{ github.event.name == 'tag' && '--stable' || '' }}
+            --namespace cortexneurons --path analyzers --registry_dockerhub ${{ secrets.REGISTRY_DOCKERHUB }} --registry_harbor ${{ secrets.REGISTRY_HARBOR }} ${{ (github.event.name == 'tag' || github.event.name == 'schedule') && '--stable' || '' }}
 
   build_responders:
     name: Build Responders
@@ -37,7 +37,7 @@ jobs:
         uses: docker://thehiveproject/cortex-neurons-builder:latest
         with:
           args: |
-            --namespace cortexneurons --path responders --registry_dockerhub ${{ secrets.REGISTRY_DOCKERHUB }} --registry_harbor ${{ secrets.REGISTRY_HARBOR }} ${{ github.event.name == 'tag' && '--stable' || '' }}
+            --namespace cortexneurons --path responders --registry_dockerhub ${{ secrets.REGISTRY_DOCKERHUB }} --registry_harbor ${{ secrets.REGISTRY_HARBOR }} ${{ (github.event.name == 'tag' || github.event.name == 'schedule') && '--stable' || '' }}
 
   build_catalog:
     name: Build Catalog
