@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - develop
-    tag:
-      - *
+    tags:
+      - "*"
   workflow_dispatch:
   schedule:
     # Every Month, the first day at 8:42 
