@@ -37,13 +37,12 @@ class EmlParserAnalyzer(Analyzer):
 
     def run(self):
         if self.data_type == 'file':
-            try:
-                parsingResult = parseEml(
-                    self.filepath, self.job_directory, self.wkhtmltoimage, self.sanitized_rendering)
-                self.report(parsingResult)
-            except Exception as e:
-                # self.unexpectedError(e)
-                print(e)
+            # try:
+            parsingResult = parseEml(
+                self.filepath, self.job_directory, self.wkhtmltoimage, self.sanitized_rendering)
+            self.report(parsingResult)
+             except Exception as e:
+                 self.unexpectedError(e)
 
         else:
             self.notSupported()
@@ -145,7 +144,7 @@ def parseEml(filepath, job_directory, wkhtmltoimage, sanitized_rendering):
     headers['bcc'] = decoded_email.get('header').get('header').get('bcc', [])
     headers['reply-to'] = decoded_email.get('header').get('header').get('reply-to', [])
     headers['subject'] = decoded_email.get('header').get('header').get('subject', '')
-    headers['date'] = decoded_email.get('header').get('header').get('date', '')[0]
+    headers['date'] = decoded_email.get('header').get('header').get('date', [''])[0]
     headers['received'] = decoded_email.get('header').get('received')
     # Make dates ready for json
     for h in headers['received']:

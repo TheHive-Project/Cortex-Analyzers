@@ -1,0 +1,109 @@
+name: build
+
+on:
+  push:
+    branches:
+      - develop
+    tag:
+  workflow_dispatch:
+  schedule:
+    # Every Month, the first day at 8:42 
+    - cron: "42 8 1 * *"
+
+jobs:
+  build_analyzers:
+    name: Build Analyzers
+    runs-on: [ ubuntu-latest ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Build analyzers
+        uses: docker://thehiveproject/cortex-neurons-builder:latest
+        with:
+          args: |
+            --namespace cortexneurons --path analyzers --registry_dockerhub ${{ secrets.REGISTRY_DOCKERHUB }} --registry_harbor ${{ secrets.REGISTRY_HARBOR }} ${{ (github.event.name == 'tag' || github.event.name == 'schedule') && '--stable' || '' }}
+
+  build_responders:
+    name: Build Responders
+    runs-on: [ ubuntu-latest ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Build responders
+        uses: docker://thehiveproject/cortex-neurons-builder:latest
+        with:
+          args: |
+            --namespace cortexneurons --path responders --registry_dockerhub ${{ secrets.REGISTRY_DOCKERHUB }} --registry_harbor ${{ secrets.REGISTRY_HARBOR }} ${{ (github.event.name == 'tag' || github.event.name == 'schedule') && '--stable' || '' }}
+
+  build_catalog:
+    name: Build Catalog
+    runs-on: [ ubuntu-latest ]
+    needs: [ build_analyzers, build_responders ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build catalog
+        uses: docker://thehiveproject/neurons-build-catalogs
+      - name: Build report-templates zip package
+        uses: docker://thehiveproject/neurons-build-report-templates
+      - name: Save Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: catalog
+          path: |
+            analyzers/analyzers.json
+            analyzers/report-templates.zip
+            responders/responders.json
+      - name: Make Release
+        uses: softprops/action-gh-release@v1
+        if: github.event.name == 'tag'
+        with:
+          generate_release_notes: true
+          files: |
+            analyzers/analyzers-stable.json
+            analyzers/analyzers.json
+            analyzers/report-templates.zip
+            responders/responders-stable.json
+            responders/responders.json
+
+  build_docs:
+    name: Build documentation
+    runs-on: [ ubuntu-latest ]
+    needs: [build_analyzers, build_responders ]
+    if: github.event.name == 'tag'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Prepare documentation files
+        uses: docker://thehiveproject/doc-builder
+        with:
+          args: --type Cortex-Neurons
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.x"
+          architecture: x64
+      - name: Install requirements
+        run: python3 -m pip install -r utils/test_doc/requirements.txt
+      - name: setup git user
+        run: git config user.name 'github-actions[bot]' && git config user.email 'github-actions[bot]@users.noreply.github.com'
+      - name: Deploy
+        run: python3 -m mkdocs gh-deploy --remote-branch gh-pages --force
+
+  notify:
+    needs: [build_analyzers, build_responders, build_catalog, build_docs ]
+    runs-on: [ ubuntu-latest ]
+    if: always()
+    steps:
+      - name: Slack notification
+        uses: Gamesight/slack-workflow-status@master
+        with:
+          repo_token: ${{secrets.GITHUB_TOKEN}}
+          slack_webhook_url: ${{secrets.SLACK_WEBHOOK_URL}}
+          channel: "#ci-cortex"
+          name: Cortex Analyzers build
+          include_commit_message: true
+          include_jobs: true
