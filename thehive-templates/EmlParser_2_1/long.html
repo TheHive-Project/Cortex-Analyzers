@@ -1,0 +1,486 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        Email message details
+    </div>
+    <div class="panel-body">
+        <uib-tabset active="active">
+            <uib-tab index="0" heading="Overview">
+                <div>
+                    <br>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            HTML preview (screenshots)
+                        </div>
+                        <div class="panel-body">
+                            <dl class="dl-horizontal">
+                                <dt>From:</dt>
+                                <dd ng-if="content.headers.from.length >0"
+                                    ng-repeat="f in content.headers.from">{{f}}</dd>
+                                <dd ng-if="content.headers.from.length ==0">-</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>To:</dt>
+                                <dd ng-if="content.headers.to.length >0"
+                                    ng-repeat="to in content.headers.to">{{to}}</dd>
+                                <dd ng-if="content.headers.to.length ==0">-</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Cc:</dt>
+                                <dd ng-if="content.headers.cc.length >0"
+                                    ng-repeat="cc in content.headers.cc">{{cc
+                                    }}</dd>
+                                <dd ng-if="content.headers.cc.length ==0">-</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Bcc:</dt>
+                                <dd ng-if="content.headers.bcc.length >0"
+                                    ng-repeat="bcc in content.headers.bcc">{{bcc
+                                    }}</dd>
+                                <dd ng-if="content.headers.bcc.length ==0">-</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Reply-To:</dt>
+                                <dd ng-if="content.headers['reply-to'].length >0"
+                                    ng-repeat="rt in content.headers['reply-to']">{{rt}}</dd>
+                                <dd ng-if="content.headers['reply-to'].length ==0">-</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Subject:</dt>
+                                <dd ng-if="content.headers.subject.length >0"
+                                    ng-repeat="s in content.headers.subject">{{s}}</dd>
+                                <dd ng-if="content.headers.subject.length ==0">-</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Date:</dt>
+                                <dd>{{content.headers.date}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Attachments:</dt>
+                                <dd>
+                                    <div ng-if="content.attachments.length > 0"
+                                        ng-repeat="a in content.attachments">
+                                        <i class="fa fa-paperclip" aria-hidden="true">
+                                            {{a.filename}}</i>
+                                    </div>
+                                    <div ng-if="content.attachments == 0">
+                                        no attachment found
+                                    </div>
+                                </dd>
+                            </dl>
+                            <hr>
+                            <div ng-if="content.body.text_html.length > 0"
+                                ng-repeat="h in content.body.text_html">
+                                <div ng-show="h.rendered_html" style="overflow-x:scroll;">
+
+                                    <img style="border: 2px solid #555; width: 100%;" src={{h.rendered_html}}></img>
+                                    <p style="color: grey">
+                                        <b>Content-Type:
+                                        </b>{{h["content_header"]["content-type"][0]}},<b>Content-Transfer-Encoding:
+                                        </b>{{h["content_header"]["content-transfer-encoding"][0]}},
+                                        <b>Content-Disposition:
+                                        </b>{{h["content_header"]["content-disposition"][0]}},
+                                        <b>Content-Description:
+                                        </b>{{h["content_header"]["content-description"][0]}}
+                                    </p>
+                                    <hr ng-if="$index < content.body.text_html.length-1">
+                                </div>
+                                <div ng-show="!h.rendered_html">
+                                    <b> HTML content has been found but can't be previewed. Ensure
+                                        the option is enabled in the Analyzer's configuration.
+                                    </b>
+                                </div>
+                            </div>
+                            <div ng-if="content.body.text_html.length == 0">
+                                <pre
+                                    style="color:black;background-color: inherit; overflow-wrap: break-word;">
+                                NO text/html CONTENT
+                                </pre>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            Plain text preview
+                        </div>
+                        <div class="panel-body">
+                            <dl class="dl-horizontal">
+                                <dt>From:</dt>
+                                <dd ng-if="content.headers.from.length >0"
+                                    ng-repeat="f in content.headers.from">{{f}}</dd>
+                                <dd ng-if="content.headers.from.length ==0">-</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>To:</dt>
+                                <dd ng-if="content.headers.to.length >0"
+                                    ng-repeat="to in content.headers.to">{{to}}</dd>
+                                <dd ng-if="content.headers.to.length ==0">-</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Cc:</dt>
+                                <dd ng-if="content.headers.cc.length >0"
+                                    ng-repeat="cc in content.headers.cc">{{cc
+                                    }}</dd>
+                                <dd ng-if="content.headers.cc.length ==0">-</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Bcc:</dt>
+                                <dd ng-if="content.headers.bcc.length >0"
+                                    ng-repeat="bcc in content.headers.bcc">{{bcc
+                                    }}</dd>
+                                <dd ng-if="content.headers.bcc.length ==0">-</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Reply-To:</dt>
+                                <dd ng-if="content.headers['reply-to'].length >0"
+                                    ng-repeat="rt in content.headers['reply-to']">{{rt}}
+                                </dd>
+                                <dd ng-if="content.headers['reply-to'].length ==0">-</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Subject:</dt>
+                                <dd ng-if="content.headers.subject.length >0"
+                                    ng-repeat="s in content.headers.subject">{{s}}
+                                </dd>
+                                <dd ng-if="content.headers.subject.length ==0">-</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Date:</dt>
+                                <dd>{{content.headers.date}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Attachments:</dt>
+                                <dd>
+                                    <div ng-if="content.attachments.length > 0"
+                                        ng-repeat="a in content.attachments">
+                                        <i class="fa fa-paperclip" aria-hidden="true">
+                                            {{a.filename}}</i>
+                                    </div>
+                                    <div ng-if="content.attachments == 0">
+                                        no attachment found
+                                    </div>
+                                </dd>
+                            </dl>
+                            <hr>
+                            <div ng-if="content.body.text_plain.length > 0"
+                                ng-repeat="p in content.body.text_plain">
+
+                                <pre
+                                    style="color:black;background-color: inherit; white-space: pre-wrap;">
+                                    {{p.content}}
+                                </pre>
+                                <p style="color: grey">
+                                    <b>Content-Type: </b>{{p["content_header"]["content-type"][0]}},
+                                    <b>Content-Transfer-Encoding:
+                                    </b>{{p["content_header"]["content-transfer-encoding"][0]}},
+                                    <b>Content-Disposition:
+                                    </b>{{p["content_header"]["content-disposition"][0]}},
+                                    <b>Content-Description:
+                                    </b>{{p["content_header"]["content-description"][0]}}
+                                </p>
+                                <hr ng-if="$index < content.body.text_plain.length-1">
+                            </div>
+                            <div ng-if="content.body.text_plain.length == 0">
+                                <pre
+                                    style="color:black;background-color: inherit; overflow-wrap: break-word;">
+                                NO text/plain CONTENT
+                                </pre>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+
+            </uib-tab>
+
+            <uib-tab index="1" heading="Detailed information">
+                <br>
+                <!-- Receive headers details -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Receive
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-2">Date</th>
+                                    <th>Details</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="r in content.headers.received | orderBy:'date'">
+                                <tr>
+                                    <td rowspan=4>{{r.date || '-' }}</td>
+                                    <td>
+                                        <dl class="dl-horizontal">
+                                            <dt>
+                                                From:
+                                            </dt>
+                                            <dd>
+                                                <div ng-repeat="f in r.from">
+                                                    {{f || '-'}}
+                                                </div>
+                                            </dd>
+                                        </dl>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <dl class="dl-horizontal">
+                                            <dt>
+                                                By:
+                                            </dt>
+                                            <dd>
+                                                <div ng-repeat="f in r.by">
+                                                    {{f || '-'}}
+                                                </div>
+                                            </dd>
+                                        </dl>
+                                    </td>
+                                </tr>
+                                <tr>
+
+                                    <td>
+                                        <dl class="dl-horizontal">
+                                            <dt>
+                                                For:
+                                            </dt>
+                                            <dd>
+                                                <div ng-repeat="f in r.for">
+                                                    {{f || '-'}}
+                                                </div>
+                                            </dd>
+                                        </dl>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        {{r.src}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <!-- Envelope headers details -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Envelope
+                    </div>
+                    <div class="panel-body">
+                        <dl class="dl-horizontal">
+                            <dt>Return-Path:</dt>
+                            <dd ng-if="content.headers['return-path'].length > 0"
+                                ng-repeat="r in content.headers['return-path']">{{r}}</dd>
+                            <dd ng-if="content.headers['return-path'].length == 0">
+                                -
+                            </dd>
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>Delivered-To:</dt>
+                            <dd ng-if="content.headers['delivered-to'].length > 0"
+                                ng-repeat="d in content.headers['delivered-to']">{{d }}</dd>
+                            <dd ng-if="content.headers['delivered-to'].length == 0">
+                                -
+                            </dd>
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>X-Delivered-To:</dt>
+                            <dd ng-if="content.headers['x-delivered-to'].length > 0"
+                                ng-repeat="x in content.headers['x-delivered-to']">{{x}}</dd>
+                            <dd ng-if="content.headers['x-delivered-to'].length == 0">
+                                -
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <!--  headers details -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Headers
+                    </div>
+                    <div class="panel-body">
+                        <dl class="dl-horizontal">
+                            <dt>From:</dt>
+                            <dd ng-if="content.headers.from.length >0"
+                                ng-repeat="f in content.headers.from">{{f}}</dd>
+                            <dd ng-if="content.headers.from.length ==0">-</dd>
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>To:</dt>
+                            <dd ng-if="content.headers.to.length >0"
+                                ng-repeat="to in content.headers.to">{{to}}</dd>
+                            <dd ng-if="content.headers.to.length ==0">-</dd>
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>Cc:</dt>
+                            <dd ng-if="content.headers.cc.length >0"
+                                ng-repeat="cc in content.headers.cc">{{cc
+                                }}</dd>
+                            <dd ng-if="content.headers.cc.length ==0">-</dd>
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>Bcc:</dt>
+                            <dd ng-if="content.headers.bcc.length >0"
+                                ng-repeat="bcc in content.headers.bcc">{{bcc
+                                }}</dd>
+                            <dd ng-if="content.headers.bcc.length ==0">-</dd>
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>Reply-To:</dt>
+                            <dd ng-if="content.headers['reply-to'].length >0"
+                                ng-repeat="rt in content.headers['reply-to']">{{rt}}
+                            </dd>
+                            <dd ng-if="content.headers['reply-to'].length ==0">-</dd>
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>Subject:</dt>
+                            <dd ng-if="content.headers.subject.length >0"
+                                ng-repeat="s in content.headers.subject">{{s}}
+                            </dd>
+                            <dd ng-if="content.headers.subject.length ==0">-</dd>
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>Date:</dt>
+                            <dd>{{content.headers.date}}</dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <!-- Details about attachments -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Attachments
+                    </div>
+                    <div class="panel-body">
+                        <div ng-if="content.attachments.length == 0">
+                            No attachment found
+                        </div>
+                        <table ng-if="content.attachments.length > 0"
+                            class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-2">Filename</th>
+                                    <th>File information</th>
+
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="a in content.attachments">
+                                <tr>
+                                    <td rowspan=5>{{a.filename}}</td>
+                                    <td>
+                                        <dl class="dl-horizontal">
+                                            <dt>
+                                                Size:
+                                            </dt>
+                                            <dd>
+                                                {{a.size}}
+                                            </dd>
+                                        </dl>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <dl class="dl-horizontal">
+                                            <dt>
+                                                MD5:
+                                            </dt>
+                                            <dd>
+                                                {{a.hash.md5}}
+                                            </dd>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <dl class="dl-horizontal">
+                                            <dt>
+                                                SHA1:
+                                            </dt>
+                                            <dd>
+                                                {{a.hash.sha1}}
+                                            </dd>
+                                        </dl>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <dl class="dl-horizontal">
+                                            <dt>
+                                                SHA256:
+                                            </dt>
+                                            <dd>
+                                                {{a.hash.sha256}}
+                                            </dd>
+                                        </dl>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        {{a.mime_type}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Details about body text/plain -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Body (text/plain)
+                    </div>
+                    <div class="panel-body">
+                        <div ng-if="content.body.text_plain.length == 0">
+                            No text/plain part.
+                        </div>
+                        <dl ng-if="content.body.text_plain.length > 0" class="dl-horizontal"
+                            ng-repeat="t in content.body.text_plain">
+                            <dt>{{h.boundary}}</dt>
+                            <dd>
+                                <pre
+                                    style="white-space:pre-wrap;overflow-y:scroll;max-height: 500px;">{{t.content}}</pre>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <!-- Details about body text/html -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Body (text/html)
+                    </div>
+                    <div class="panel-body">
+                        <div ng-if="content.body.text_html.length == 0">
+                            No text/html part.
+                        </div>
+                        <dl ng-if="content.body.text_html.length > 0" class="dl-horizontal"
+                            ng-repeat="h in content.body.text_html">
+                            <dt>{{t.boundary}}</dt>
+                            <dd>
+                                <pre
+                                    style="white-space:pre-wrap;overflow-y:scroll;max-height: 500px;">{{h.beautified_html}}</pre>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </uib-tab>
+            <uib-tab index="2" heading="Raw email">
+                <br>
+                <pre
+                    style="color:black;background-color: inherit; overflow-wrap: break-word;white-space: pre-wrap;max-height: 700px;">
+                    {{content.raw_email}}
+                </pre>
+            </uib-tab>
+        </uib-tabset>
+
+    </div>
+</div>

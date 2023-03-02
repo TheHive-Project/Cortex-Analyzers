@@ -29,5 +29,19 @@
         "check_tlp": true,
         "max_tlp": 2,
         "auto_extract": false
-    }
+    },
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": true,
+    "service_homepage": "https://www.abuseipdb.com/",
+    "service_logo": {
+        "path": "assets/abuseipdb.png",
+        "caption": "abuseipdb logo"
+    },
+    "screenshots": [
+        {
+            "path": "assets/long_report.png",
+            "caption": "AbuseIPDB: Long report template"
+        }
+    ]
 }

@@ -5,9 +5,7 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "version": "1.0",
   "description": "Get spam score from local SpamAssassin instance",
-  "dataTypeList": [
-    "file"
-  ],
+  "dataTypeList": ["file"],
   "baseConfig": "SpamAssassin",
   "command": "SpamAssassin/spamassassin.py",
   "configurationItems": [
@@ -58,7 +56,7 @@
     },
     {
       "path": "assets/SpamAssassin_short.png",
-      "caption:": "SpamAssassin mini report sample"
+      "caption": "SpamAssassin mini report sample"
     }
   ]
 }

@@ -1,0 +1,84 @@
+{
+    "name": "CISMCAP",
+    "version": "1.0",
+    "author": "Joe Lazaro",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Malicious Code Analysis Platform (MCAP) by the Center for Internet Security (CIS). Submit files for analysis or check feeds for known indicators of compromise for other data types.",
+    "dataTypeList": [
+        "ip",
+        "hash",
+        "url",
+        "domain",
+        "fqdn",
+        "file"
+    ],
+    "command": "CISMCAP/mcap.py",
+    "baseConfig": "CISMCAP",
+    "registration_required": true,
+    "subscription_required": false,
+    "free_subscription": false,
+    "service_homepage": "https://www.cisecurity.org/ms-isac/services",
+    "service_logo": {
+        "path": "assets/cis_mcap_logo.png",
+        "caption": "logo"
+    },
+    "screenshots": [
+        {
+            "path": "assets/CISMCAP_file.png",
+            "caption": "Analyzer report for a file"
+        },
+        {
+            "path": "assets/CISMCAP_IP.png",
+            "caption:": "Analyzer report for an IP address"
+        }
+    ],
+    "configurationItems": [
+        {
+            "name": "key",
+            "description": "API key",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "private_samples",
+            "description": "Submitted samples will not be shared with other members of the portal",
+            "type": "boolean",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "minimum_confidence",
+            "description": "Restrict to IOCs with this confidence score or higher.",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 80
+        },
+        {
+            "name": "minimum_severity",
+            "description": "Restrict to IOCs with this severity score or higher.",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 80
+        },
+        {
+            "name": "polling_interval",
+            "description": "Interval (seconds) between requests for sample status.",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 120
+        },
+        {
+            "name": "max_sample_result_wait",
+            "description": "Maximum time to retry requests for sample status.",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 1000
+        }
+    ]
+}

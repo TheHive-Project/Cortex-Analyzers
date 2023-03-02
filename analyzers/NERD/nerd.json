@@ -27,6 +27,7 @@
   ],
   "registration_required": true,
   "subscription_required": false,
+  "free_subscription": true,
   "service_homepage": "https://nerd.cesnet.cz/",
   "service_logo": {
     "path": "assets/NERD_logo.png",
@@ -39,7 +40,7 @@
     },
     {
       "path": "assets/NERD_short.png",
-      "caption:": "NERD mini report sample"
+      "caption": "NERD mini report sample"
     }
   ]
 }

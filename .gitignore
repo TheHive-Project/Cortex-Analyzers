@@ -6,6 +6,8 @@ thehive-templates/*.sh
 .idea
 .DS_Store
 .vscode
+.venv 
+venv
 
 Cortex-analyzers.iml
 
@@ -16,3 +18,9 @@ lib64
 pyvenv.cfg
 share
 
+test-doc
+analyzers/*/input
+analyzers/*/output
+responders/*/input
+responders/*/output
+analyzers/*/cortexutils

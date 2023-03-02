@@ -19,6 +19,28 @@
       "multi": false,
       "required": false,
       "defaultValue": 60
+    },
+    {
+      "name": "api_key",
+      "description": "Auth token to use when requesting data to Maltiverse",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": ""
+    }
+  ],
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": false,
+  "service_homepage": "https://maltiverse.com/search",
+  "service_logo": {
+    "path": "assets/maltiverse.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report.png",
+      "caption": "Maltiverse: long report"
     }
   ]
 }

@@ -1,0 +1,171 @@
+<div class="report-PT" ng-if="success">
+    <style>
+        .report-PT dl {
+            margin-bottom: 2px;
+        }
+        .fieldlabel {
+            font-size: 10pt;
+            color: #777;
+        }
+        .fieldvalue {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+    </style>
+
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <div ng-if="content.records.length === 0">
+                No Whois data available for this IOC.
+            </div>
+            <div ng-if="content.records.length !== 0" class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>RiskIQ Whois Record</strong>
+                </div>
+                <div class="panel-body">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading"><strong>Primary Contact</strong></div>
+                                        <div class="panel-body">
+                                            <div class='fieldlabel'>Name</div>
+                                            <div class='fieldvalue'>{{content.name}}&nbsp;</div>
+                                            <div class='fieldlabel'>Organization</div>
+                                            <div class='fieldvalue'>{{content.organization}}&nbsp;</div>
+                                            <div class='fieldlabel'>Telephone</div>
+                                            <div class='fieldvalue'>{{content.telephone}}&nbsp;</div>
+                                            <div class='fieldlabel'>Email</div>
+                                            <div class='fieldvalue'>{{content.email}}&nbsp;</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading"><strong>Domain Registration</strong></div>
+                                        <div class="panel-body">
+                                            <div class='fieldlabel'>Registered</div>
+                                            <div class='fieldvalue'>
+                                                {{content.registered}}
+                                                <span style="font-size: 14px;" class="label label-danger" ng-if="content.age < 60">{{content.age}}day<span ng-if="content.age!==1">s</span></span>
+                                                <span style="font-size: 14px;" class="label label-warning" ng-if="content.age >= 60 && content.age < 180">{{content.age}} days</span>
+                                                <span style="font-size: 14px;" class="label label-default" ng-if="content.age >= 180">{{content.age}} days</span>
+                                            </div>
+                                            <div class='fieldlabel'>Expires</div>
+                                            <div class='fieldvalue'>{{content.expiresAt}}&nbsp;</div>
+                                            <div class='fieldlabel'>Registrar</div>
+                                            <div class='fieldvalue'>{{content.registrar}}&nbsp;</div>
+                                            <div class='fieldlabel'>Registry Updated</div>
+                                            <div class='fieldvalue'>{{content.registryUpdatedAt}}&nbsp;</div>
+                                            <div class='fieldlabel'>Name Servers</div>
+                                            <div class='fieldvalue' ng-repeat="ns in content.nameServers">{{ns}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading"><strong>Admin Contact</strong></div>
+                                        <div class="panel-body">
+                                            <div class='fieldlabel'>Name</div>
+                                            <div class='fieldvalue'>{{content.admin.name}}&nbsp;</div>
+                                            <div class='fieldlabel'>Organization</div>
+                                            <div class='fieldvalue'>{{content.admin.organization}}&nbsp;</div>
+                                            <div class='fieldlabel'>Telephone</div>
+                                            <div class='fieldvalue'>{{content.admin.telephone}}&nbsp;</div>
+                                            <div class='fieldlabel'>Email</div>
+                                            <div class='fieldvalue'>{{content.admin.email}}&nbsp;</div>
+                                            <div class='fieldlabel'>State/Province/Region</div>
+                                            <div class='fieldvalue'>{{content.admin.state}}&nbsp;</div>
+                                            <div class='fieldlabel'>Country</div>
+                                            <div class='fieldvalue'>{{content.admin.country}}&nbsp;</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading"><strong>Registrant Contact</strong></div>
+                                        <div class="panel-body">
+                                            <div class='fieldlabel'>Name</div>
+                                            <div class='fieldvalue'>{{content.registrant.name}}&nbsp;</div>
+                                            <div class='fieldlabel'>Organization</div>
+                                            <div class='fieldvalue'>{{content.registrant.organization}}&nbsp;</div>
+                                            <div class='fieldlabel'>Telephone</div>
+                                            <div class='fieldvalue'>{{content.registrant.telephone}}&nbsp;</div>
+                                            <div class='fieldlabel'>Email</div>
+                                            <div class='fieldvalue'>{{content.registrant.email}}&nbsp;</div>
+                                            <div class='fieldlabel'>State/Province/Region</div>
+                                            <div class='fieldvalue'>{{content.registrant.state}}&nbsp;</div>
+                                            <div class='fieldlabel'>Country</div>
+                                            <div class='fieldvalue'>{{content.registrant.country}}&nbsp;</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading"><strong>Tech Contact</strong></div>
+                                        <div class="panel-body">
+                                            <div class='fieldlabel'>Name</div>
+                                            <div class='fieldvalue'>{{content.tech.name}}&nbsp;</div>
+                                            <div class='fieldlabel'>Organization</div>
+                                            <div class='fieldvalue'>{{content.tech.organization}}&nbsp;</div>
+                                            <div class='fieldlabel'>Telephone</div>
+                                            <div class='fieldvalue'>{{content.tech.telephone}}&nbsp;</div>
+                                            <div class='fieldlabel'>Email</div>
+                                            <div class='fieldvalue'>{{content.tech.email}}&nbsp;</div>
+                                            <div class='fieldlabel'>State/Province/Region</div>
+                                            <div class='fieldvalue'>{{content.tech.state}}&nbsp;</div>
+                                            <div class='fieldlabel'>Country</div>
+                                            <div class='fieldvalue'>{{content.tech.country}}&nbsp;</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading"><strong>Billing Contact</strong></div>
+                                        <div class="panel-body">
+                                            <div class='fieldlabel'>Name</div>
+                                            <div class='fieldvalue'>{{content.billing.name}}&nbsp;</div>
+                                            <div class='fieldlabel'>Organization</div>
+                                            <div class='fieldvalue'>{{content.billing.organization}}&nbsp;</div>
+                                            <div class='fieldlabel'>Telephone</div>
+                                            <div class='fieldvalue'>{{content.billing.telephone}}&nbsp;</div>
+                                            <div class='fieldlabel'>Email</div>
+                                            <div class='fieldvalue'>{{content.billing.email}}&nbsp;</div>
+                                            <div class='fieldlabel'>State/Province/Region</div>
+                                            <div class='fieldvalue'>{{content.billing.state}}&nbsp;</div>
+                                            <div class='fieldlabel'>Country</div>
+                                            <div class='fieldvalue'>{{content.billing.country}}&nbsp;</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <strong>Raw Whois Record</strong>
+                                </div>
+                                <div class="panel-body">
+                                    <pre>{{content.rawText}}</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

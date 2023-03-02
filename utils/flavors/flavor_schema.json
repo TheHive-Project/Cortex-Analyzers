@@ -1,0 +1,130 @@
+{
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "pattern": "^[^\\s]*$"
+        },
+        "version": {
+            "type": "string"
+        },
+        "author": {
+            "type": "string"
+        },
+        "url": {
+            "type": "string",
+            "format": "uri"
+        },
+        "license": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "dataTypeList": {
+            "type": "array"
+        },
+        "command": {
+            "type": "string"
+        },
+        "baseConfig": {
+            "type": "string"
+        },
+        "config": {
+            "type": "object",
+            "properties": {
+                "service": {
+                    "type": "string"
+                }
+            }
+        },
+        "configurationItems": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definition/configurationItem"
+            }
+        },
+        "registration_required": {
+            "type": [
+                "boolean",
+                "string"
+            ]
+        },
+        "subscription_required": {
+            "type": [
+                "boolean",
+                "string"
+            ]
+        },
+        "free_subscription": {
+            "type": [
+                "boolean",
+                "string"
+            ]
+        },
+        "service_homepage": {
+            "type": "string"
+        },
+        "service_logo": {
+            "type": "object"
+        },
+        "screenshots": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definition/screenshot"
+            }
+        }
+    },
+    "required": [
+        "name",
+        "version",
+        "author",
+        "url",
+        "license",
+        "description",
+        "dataTypeList",
+        "command",
+        "baseConfig"
+    ],
+    "definition": {
+        "configurationItem": {
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "multi": {
+                    "type": "boolean"
+                },
+                "required": {
+                    "type": "boolean"
+                },
+                "defaultValue": {
+                    "type": ["string", "number","boolean", "array"]
+                }
+            },
+            "required": [
+                "name",
+                "description",
+                "multi",
+                "required" 
+            ]
+        },
+        "screenshot": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string"
+                },
+                "caption": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "path"
+            ]
+        }
+    }
+}

@@ -1,5 +1,6 @@
 cortexutils
 python-magic
+python-magic-debian-bin
 ssdeep
 pyexifinfo
 pefile
@@ -9,3 +10,4 @@ oletools>=0.52
 extract-msg
 IMAPClient
 git+https://github.com/SteveClement/ioc_parser.git
+stringsifter

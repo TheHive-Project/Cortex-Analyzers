@@ -36,7 +36,8 @@
       "description": "Would you like to extract AMP connector GUIDs as artifacts?",
       "type": "boolean",
       "required": false,
-      "defaultValue": false
+      "defaultValue": false,
+      "multi": false
     }
   ]
 }

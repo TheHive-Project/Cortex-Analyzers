@@ -1,7 +1,7 @@
 <div class="report-SecurityTrails" ng-if="success">
   <div class="panel panel-info">
     <div class="panel-heading">
-      emailrep.io lookup ({{ content.mail || "-" }})
+      emailrep.io lookup ({{ content.email || "-" }})
     </div>
     <div class="panel-body">
       <div ng-if="(content | json) === '{}'">
@@ -27,6 +27,10 @@
               <li>{{ profile }}</li>
             </ul>
           </dd>
+        </dl>
+        <dl class="dl-horizontal">
+          <dt>Summary:</dt>
+          <dd class="wrap">{{ content.summary || "-" }}</dd>
         </dl>
       </div>
     </div>

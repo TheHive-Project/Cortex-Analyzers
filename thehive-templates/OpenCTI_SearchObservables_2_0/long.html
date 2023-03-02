@@ -1,0 +1,138 @@
+<div class="panel panel-info" ng-repeat="res in content.results">
+	<div class="panel-heading">
+		<b>OpenCTI {{res.name}}</b> - Report from {{res.url}}
+	</div>
+	<div class="panel-body">
+		<div ng-if="res.observables.length == 0">
+			<dl class="dl-horizontal">
+				<dt><i class="fa fa-warning"></i> No results</dt>
+				<dd>No results from OpenCTI {{res.name}}</dd>
+			</dl>
+		</div>
+		<div ng-if="res.observables.length > 0">
+			<div ng-repeat="observable in res.observables">
+				<dl class="dl-horizontal">
+					<dt>Observable Id:</dt>
+					<dd><a target="_blank" href="{{res.url}}/dashboard/observations/observables/{{observable.id}}">{{observable.id}}</a></dd>
+				</dl>
+				<dl class="dl-horizontal">
+					<dt>Entity Type:</dt>
+					<dd>{{observable.entity_type}}</dd>
+				</dl>
+				<dl class="dl-horizontal">
+					<dt>Created on:</dt>
+					<dd>{{observable.created_at}}</dd>
+				</dl>
+				<dl class="dl-horizontal">
+					<dt>Created by:</dt>
+					<dd><a target="_blank" href="{{res.url}}/dashboard/entities/organizations/{{observable.createdBy.id}}">{{observable.createdBy.name}}</a></dd>
+				</dl>
+				<dl class="dl-horizontal" ng-if="observable.objectMarking.length > 0" >
+					<dt>Marking Definitions:</dt>
+					<dd ng-repeat="md in observable.objectMarking">
+						<span ng-if="md.x_opencti_color==='#ffffff'" class="label"
+						ng-style="{'border':'1px solid','color': '#000000', 'background-color': md.x_opencti_color}">{{md.definition}}
+						</span>
+						<span ng-if="md.x_opencti_color!=='#ffffff'" class="label"
+						ng-style="{'background-color': md.x_opencti_color}">{{md.definition}}
+						</span>
+					</dd>
+				</dl>
+				<dl class="dl-horizontal" ng-if="observable.objectLabel.length > 0" >
+					<dt>Tags:</dt>
+					<dd ng-repeat="label in observable.objectLabel">
+						<span ng-if="label.color==='#ffffff'" class="label"
+						ng-style="{'border':'1px solid','color': '#000000', 'background-color': label.color}">{{label.value}}
+						</span>
+						<span ng-if="label.color!=='#ffffff'" class="label"
+						ng-style="{'background-color': label.color}">{{label.value}}
+						</span>
+					</dd>
+				</dl>
+				<dl class="dl-horizontal" ng-if="observable.externalReferences.length > 0" >
+					<dt>External refs:</dt>
+					<dd ng-repeat="extref in observable.externalReferences">
+						<a target="_blank" href="{{extref.url}}">{{extref.source_name}}</a>
+					</dd>
+				</dl>
+				<dl class="dl-horizontal" ng-if="observable.indicators.length > 0" >
+					<dt>Indicators:</dt>
+					<dd ng-repeat="ind in observable.indicators">
+						<a target="_blank" href="{{res.url}}/dashboard/observations/indicators/{{ind.id}}">{{ind.pattern_type}}:{{ind.pattern}}</a>
+					</dd>
+				</dl>
+				<div ng-repeat="report in observable.reports">
+					<dl class="dl-horizontal">
+						<dt>Report Id:</dt>
+						<dd><a target="_blank" href="{{res.url}}/dashboard/analysis/reports/{{report.id}}">{{report.id}}</a></dd>
+					</dl>
+					<dl class="dl-horizontal">
+						<dt>Report types:</dt>
+						<dd>{{report.report_types}}</dd>
+					</dl>
+					<dl class="dl-horizontal">
+						<dt>Name:</dt>
+						<dd>{{report.name}}</dd>
+					</dl>
+					<dl class="dl-horizontal">
+						<dt>Description:</dt>
+						<dd>{{report.description}}</dd>
+					</dl>
+					<dl class="dl-horizontal">
+						<dt>Published on:</dt>
+						<dd>{{report.published}}</dd>
+					</dl>
+					<dl class="dl-horizontal">
+						<dt>Confidence:</dt>
+						<dd>{{report.confidence}}</dd>
+					</dl>
+					<dl class="dl-horizontal">
+						<dt>Created by:</dt>
+						<dd><a target="_blank" href="{{res.url}}/dashboard/entities/organizations/{{report.createdBy.id}}">{{report.createdBy.name}}</a></dd>
+					</dl>
+					<dl class="dl-horizontal" ng-if="report.objectMarking.length > 0" >
+						<dt>Marking Definitions:</dt>
+						<dd ng-repeat="md in report.objectMarking">
+							<span ng-if="md.x_opencti_color==='#ffffff'" class="label"
+							ng-style="{'border':'1px solid','color': '#000000', 'background-color': md.x_opencti_color}">{{md.definition}}
+							</span>
+							<span ng-if="md.x_opencti_color!=='#ffffff'" class="label"
+							ng-style="{'background-color': md.x_opencti_color}">{{md.definition}}
+							</span>
+						</dd>
+					</dl>
+					<dl class="dl-horizontal" ng-if="report.objectLabel.length > 0" >
+						<dt>Labels:</dt>
+						<dd ng-repeat="label in report.objectLabel">
+							<span ng-if="label.color==='#ffffff'" class="label"
+							ng-style="{'border':'1px solid','color': '#000000', 'background-color': label.color}">{{label.value}}
+							</span>
+							<span ng-if="label.color!=='#ffffff'" class="label"
+							ng-style="{'background-color': label.color}">{{label.value}}
+							</span>
+						</dd>
+					</dl>
+					<dl class="dl-horizontal" ng-if="report.externalReferences.length > 0" >
+						<dt>External refs:</dt>
+						<dd ng-repeat="extref in report.externalReferences">
+							<a target="_blank" href="{{extref.url}}">{{extref.source_name}}</a>
+						</dd>
+					</dl>
+					<hr>
+					<br>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+	<div class="panel-heading">
+		<strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+	</div>
+	<div class="panel-body">
+		{{content.errorMessage}}
+	</div>
+</div>

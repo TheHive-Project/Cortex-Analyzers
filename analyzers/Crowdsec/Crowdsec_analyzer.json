@@ -1,0 +1,40 @@
+{
+    "name": "Crowdsec_Analyzer",
+    "version": "1.0",
+    "author": "CERT-ARKEA",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Query Crowdsec API",
+    "dataTypeList": [
+        "ip"
+    ],
+    "command": "Crowdsec/crowdsec_analyzer.py",
+    "baseConfig": "Crowdsec",
+    "configurationItems": [
+        {
+            "name": "api_key",
+            "description": "Crowdsec API key",
+            "type": "string",
+            "multi": false,
+            "required": true
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": true,
+    "service_homepage": "https://www.crowdsec.net/product/threat-intelligence",
+    "service_logo": {
+        "path": "assets/crowdsec-logo.png",
+        "caption": "logo"
+    },
+    "screenshots": [
+        {
+            "path": "assets/crowdsec-report-long.png",
+            "caption": ""
+        },
+        {
+            "path": "assets/crowdsec-analyzer-result-example.png",
+            "caption": ""
+        }
+    ]
+}

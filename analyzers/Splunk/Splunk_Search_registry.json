@@ -1,17 +1,17 @@
 {
-    "name": "Splunk_Search_Registry",
-    "version": "3.0",
-    "url": "",
-    "author": "Unit777, LetMeR00t",
-    "license": "AGPL-V3",
-    "dataTypeList": ["registry"],
-    "description": "Execute a savedsearch on a Splunk instance with a registry data as argument",
-    "baseConfig": "Splunk",
-    "config": {
-        "check_tlp": false,
-        "max_tlp": 4,
-        "service": "Search_Registry"
-    },
+  "name": "Splunk_Search_Registry",
+  "version": "3.0",
+  "url": "https://www.splunk.com",
+  "author": "Unit777, LetMeR00t",
+  "license": "AGPL-V3",
+  "dataTypeList": ["registry"],
+  "description": "Execute a savedsearch on a Splunk instance with a registry data as argument",
+  "baseConfig": "Splunk",
+  "config": {
+    "check_tlp": false,
+    "max_tlp": 4,
+    "service": "Search_Registry"
+  },
   "configurationItems": [
     {
       "name": "host",
@@ -91,23 +91,23 @@
       "required": false,
       "defaultValue": 1000
     }
-    ],
-    "command": "Splunk/splunk.py",
-    "registration_required": false,
-    "subscription_required": false,
-    "free_subscription": true,
-    "service_logo": {
-      "path": "assets/splunk_registry_logo.png",
-      "caption": "logo"
+  ],
+  "command": "Splunk/splunk.py",
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_logo": {
+    "path": "assets/splunk_registry_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/Splunk_Search_Registry_long.png",
+      "caption": "Splunk_Search_Registry long report sample"
     },
-    "screenshots": [
-      {
-        "path": "assets/Splunk_Search_Registry_long.png",
-        "caption": "Splunk_Search_Registry long report sample"
-      },
-      {
-        "path": "assets/Splunk_Search_Registry_short.png",
-        "caption:": "Splunk_Search_Registry short report sample"
-      }
-   ]
-} 
+    {
+      "path": "assets/Splunk_Search_Registry_short.png",
+      "caption": "Splunk_Search_Registry short report sample"
+    }
+  ]
+}

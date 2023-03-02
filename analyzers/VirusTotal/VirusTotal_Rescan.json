@@ -1,0 +1,59 @@
+{
+  "name": "VirusTotal_Rescan",
+  "version": "3.1",
+  "author": "CERT-LDO",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use VirusTotal to run new analysis on hash.",
+  "dataTypeList": ["hash"],
+  "baseConfig": "VirusTotal",
+  "config": {
+    "service": "rescan"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for Virustotal",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "polling_interval",
+      "description": "Define time interval between two requests attempts for the report",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 60
+    },
+    {
+      "name": "highlighted_antivirus",
+      "description": "Add taxonomy if selected AV don't recognize observable",
+      "type": "string",
+      "multi": true,
+      "required": false
+    },
+    {
+      "name": "download_sample",
+      "description": "Download automatically sample as observable when looking for hash",
+      "type": "boolean",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "download_sample_if_highlighted",
+      "description": "Download automatically sample as observable if highlighted antivirus didn't recognize",
+      "type": "boolean",
+      "multi": false,
+      "required": false
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "service_homepage": "https://www.virustotal.com/",
+  "service_logo": {
+    "path": "assets/virustotal-logo.png",
+    "caption": "logo"
+  },
+  "command": "VirusTotal/virustotal.py"
+}

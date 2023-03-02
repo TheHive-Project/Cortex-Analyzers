@@ -13,11 +13,10 @@ class MaltiverseAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
         self.service = self.get_param('config.service', None, 'Service parameter is missing')
-        # self.username = self.get_param('config.username', None, 'Missing Maltiverse API Username')
-        # self.password = self.get_param('config.password', None, 'Missing Maltiverse API Password')
         self.polling_interval = self.get_param('config.polling_interval', 60)
         self.proxies = self.get_param('config.proxy', None)
-        self.m = Maltiverse()
+        self.api_key = self.get_param('config.api_key', None)
+        self.m = Maltiverse(auth_token=self.api_key)
 
     def maltiverse_query_ip(self, data):
         try:
@@ -81,7 +80,7 @@ class MaltiverseAnalyzer(Analyzer):
             result = self.m.url_get(data)
             self.report({
                 'original': data,
-                'hash': hash,
+                'hash': result.get("urlchecksum", "-"),
                 'url': result.get("url","-"),
                 'type': result.get("type","-"),
                 'classification': result.get("classification","-"),
@@ -108,7 +107,7 @@ class MaltiverseAnalyzer(Analyzer):
                 level = "safe"
             value = "{}".format(raw["classification"])
 
-        
+
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
 
         return {"taxonomies": taxonomies}

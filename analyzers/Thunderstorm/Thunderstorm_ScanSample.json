@@ -1,0 +1,70 @@
+{
+  "name": "THOR_Thunderstorm_ScanSample",
+  "version": "0.3.1",
+  "author": "Florian Roth",
+  "url": "https://github.com/NextronSystems/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Submits sample to an on-premise THOR Thunderstorm web service and processes the scan result",
+  "dataTypeList": ["file"],
+  "command": "Thunderstorm/thunderstorm.py",
+  "baseConfig": "Thunderstorm",
+  "configurationItems": [
+    {
+      "name": "thunderstorm_server",
+      "description": "Thunderstorm Server",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "thunderstorm.nextron-systems.com"
+    },
+    {
+      "name": "thunderstorm_port",
+      "description": "Thunderstorm Port",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 8080
+    },
+    {
+      "name": "thunderstorm_source",
+      "description": "Source System",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "cortex-analyzer"
+    },
+    {
+      "name": "thunderstorm_ssl",
+      "description": "Use an SSL encrypted HTTP connection",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    },
+    {
+      "name": "thunderstorm_ssl_verify",
+      "description": "Verify the SSL certificate of the remote service",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.nextron-systems.com/thor-thunderstorm/",
+  "service_logo": {"path":"assets/thor_thunderstorm_logo.png", "caption": "logo"},
+  "screenshots": [
+    {"path":"assets/THOR_Thunderstorm_ScanSample_long.png",
+      "caption":"THOR Thunderstorm long report sample"
+    },
+    {
+      "path": "assets/THOR_Thunderstorm_ScanSample_short.png",
+      "caption:":"THOR Thunderstorm short report sample"
+    },
+    {"path":"assets/THOR_Thunderstorm_ScanSample_raw.png",
+      "caption":"THOR Thunderstorm raw JSON"
+    }
+  ]
+}

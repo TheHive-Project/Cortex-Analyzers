@@ -1,0 +1,63 @@
+{
+  "name": "Cylance",
+  "author": "Mikael Keri",
+  "license": "AGPL-V3",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "version": "1.0",
+  "description": "Search for a specific hash, if there is a match, coresponding client information",
+  "dataTypeList": ["hash"],
+  "baseConfig": "Cylance",
+   "config": {
+      "check_tlp": true,
+      "max_tlp": 2,
+      "check_pap": true,
+      "max_pap": 2
+   },
+  "command": "Cylance/cylance.py",
+  "configurationItems": [
+  {
+      "name": "ten_id",
+      "description": "Tenant ID",
+      "type": "string",
+      "multi": false,
+      "required": true
+  },
+  {
+      "name": "app_id",
+      "description": "App ID",
+      "type": "string",
+      "multi": false,
+      "required": true
+  },
+  {
+      "name": "app_secret",
+      "description": "App Secret",
+      "type": "string",
+      "multi": false,
+      "required": true
+  },
+  {
+      "name": "region",
+      "description": "Portal region, : NA, US, APN, JP, APS, AU, EU, GOV, SA, SP",
+      "type": "string",
+      "multi": false,
+      "required": true
+   }
+ ],
+ "registration_required": true,
+ "subscription_required": true,
+ "free_subscription": false,
+ "service_homepage": "https://www.blackberry.com/",
+ "service_logo": {"path":"assets/cylance_logo.png", "caption": "logo"},
+ "screenshots": [
+   {"path":"assets/cylance_sample_lookup_long.png",
+     "caption":"Cylance Lookup sample Information full report"
+   },
+   {"path":"assets/cylance_host_lookup_long.png",
+     "caption":"Cylance Lookup sample, client information full report"
+   },
+   {
+     "path": "assets/cylance_sample_lookup_short.png",
+     "caption:":"Cylance Lookup sample mini report"
+   }]
+}

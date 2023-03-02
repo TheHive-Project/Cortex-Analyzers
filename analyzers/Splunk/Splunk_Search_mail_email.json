@@ -1,17 +1,17 @@
 {
-    "name": "Splunk_Search_Mail_Email",
-    "version": "3.0",
-    "url": "",
-    "author": "Unit777, LetMeR00t",
-    "license": "AGPL-V3",
-    "dataTypeList": ["mail","email"],
-    "description": "Execute a savedsearch on a Splunk instance with a mail/email as argument",
-    "baseConfig": "Splunk",
-    "config": {
-        "check_tlp": false,
-        "max_tlp": 4,
-        "service": "Search_Mail_Email"
-    },
+  "name": "Splunk_Search_Mail_Email",
+  "version": "3.0",
+  "url": "https://www.splunk.com",
+  "author": "Unit777, LetMeR00t",
+  "license": "AGPL-V3",
+  "dataTypeList": ["mail", "email"],
+  "description": "Execute a savedsearch on a Splunk instance with a mail/email as argument",
+  "baseConfig": "Splunk",
+  "config": {
+    "check_tlp": false,
+    "max_tlp": 4,
+    "service": "Search_Mail_Email"
+  },
   "configurationItems": [
     {
       "name": "host",
@@ -91,23 +91,23 @@
       "required": false,
       "defaultValue": 1000
     }
-    ],
-    "command": "Splunk/splunk.py",
-    "registration_required": false,
-    "subscription_required": false,
-    "free_subscription": true,
-    "service_logo": {
-      "path": "assets/splunk_mail_logo.png",
-      "caption": "logo"
+  ],
+  "command": "Splunk/splunk.py",
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_logo": {
+    "path": "assets/splunk_mail_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/Splunk_Search_Mail_Email_long.png",
+      "caption": "Splunk_Search_Mail_Email long report sample"
     },
-    "screenshots": [
-      {
-        "path": "assets/Splunk_Search_Mail_Email_long.png",
-        "caption": "Splunk_Search_Mail_Email long report sample"
-      },
-      {
-        "path": "assets/Splunk_Search_Mail_Email_short.png",
-        "caption:": "Splunk_Search_Mail_Email short report sample"
-      }
-    ]
-} 
+    {
+      "path": "assets/Splunk_Search_Mail_Email_short.png",
+      "caption": "Splunk_Search_Mail_Email short report sample"
+    }
+  ]
+}

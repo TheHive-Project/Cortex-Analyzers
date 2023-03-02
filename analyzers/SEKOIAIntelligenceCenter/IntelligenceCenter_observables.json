@@ -1,0 +1,50 @@
+{
+    "name": "SEKOIAIntelligenceCenter_Observables",
+    "version": "1.0",
+    "author": "SEKOIA",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Query the Intelligence Center to retrieve known observables",
+    "dataTypeList": [
+        "domain",
+        "fqdn",
+        "url",
+        "hash",
+        "ip"
+    ],
+    "command": "SEKOIAIntelligenceCenter/sekoia_intelligence_center_analyzer.py",
+    "baseConfig": "SEKOIAIntelligenceCenter",
+    "config": {
+        "service": "observables"
+    },
+    "configurationItems": [
+        {
+            "name": "api_key",
+            "description": "Intelligence center API key",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "url",
+            "description": "Intelligence center URL",
+            "type": "string",
+            "multi": false,
+            "required": false
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://sekoia.io/",
+    "service_logo": {
+        "path": "assets/sekoia_logo.png",
+        "caption": "logo"
+    },
+    "screenshots": [
+        {
+            "path": "assets/SEKOIAIntelligenceCenter_Context_long.png",
+            "caption": "SEKOIAIntelligenceCenter_Context long report sample"
+        }
+    ]
+}

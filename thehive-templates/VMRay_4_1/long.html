@@ -1,0 +1,99 @@
+<div class="panel panel-info" ng-if="success && content.samples.length > 0">
+    <div class="panel-heading">
+        VMRay Report
+    </div>
+    <div class="panel-body" ng-repeat="sample in content.samples">
+        <dl class="dl-horizontal" ng-if="sample.sample_verdict">
+            <dt>Verdict</dt>
+            <dd>
+                <span class="label"
+                    ng-class="{'label-success':sample.sample_verdict === 'clean',
+					'label-danger': sample.sample_verdict==='malicious',
+					'label-warning': sample.sample_verdict==='suspicious',
+					'label-info': sample.sample_verdict!='clean' && sample.sample_verdict!='suspicious' && sample.sample_verdict!='suspicious'}">
+                    {{sample.sample_verdict}}
+                </span>
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Score</dt>
+            <dd>{{sample.sample_score}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Last reputation</dt>
+            <dd>
+                <span class="label" ng-class="{'label-info':sample.sample_last_reputation_severity === 'unknown',
+					'label-danger': sample.sample_last_reputation_severity==='malicious',
+                    'label-success':sample.sample_last_reputation_severity === 'clean',
+					'label-info': sample.sample_last_reputation_severity!='malicious'}">
+                    {{sample.sample_last_reputation_severity}}
+                </span>
+            </dd>
+        </dl>
+        <dl ng-if="sample.sample_webif_url" class="dl-horizontal">
+            <dt>Link to report</dt>
+            <dd><a target="_blank" href="{{sample.sample_webif_url}}">{{sample.sample_webif_url}}</a></dd>
+        </dl>
+        <hr>
+        <dl class="dl-horizontal">
+            <dt>Filename</dt>
+            <dd>{{sample.sample_filename}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Type</dt>
+            <dd>{{sample.sample_type}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Created</dt>
+            <dd>{{sample.sample_created}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>MD5</dt>
+            <dd>{{sample.sample_md5hash}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>SHA1</dt>
+            <dd>{{sample.sample_sha1hash}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>SHA256</dt>
+            <dd>{{sample.sample_sha256hash}}</dd>
+        </dl>
+    </div>
+</div>
+
+
+<div class="panel panel-success" ng-if="success && content.samples.length == 0">
+    <div class="panel-heading">
+        VMRay Report
+    </div>
+    <div class="panel-body">
+        <b>No matches.</b>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        VMRay Report returned with an error
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Error:</dt>
+            <dd>{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="success && content.errors.length > 0">
+    <div class="panel-heading">
+        VMRay Upload returned with an error (reanalyzation deactivated?)
+    </div>
+    <div class="panel-body" ng-repeat="e in content.errors">
+        <dl class="dl-horizontal">
+            <dt><i class="fa fa-warning"></i> Error:</dt>
+            <dd>{{e.error_msg}}</dd>
+            <dt>Filename:</dt>
+            <dd>{{e.submission_filename}}</a></dd>
+        </dl>
+    </div>
+</div>
