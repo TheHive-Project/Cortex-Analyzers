@@ -41,8 +41,8 @@ class EmlParserAnalyzer(Analyzer):
             parsingResult = parseEml(
                 self.filepath, self.job_directory, self.wkhtmltoimage, self.sanitized_rendering)
             self.report(parsingResult)
-             except Exception as e:
-                 self.unexpectedError(e)
+            except Exception as e:
+                self.unexpectedError(e)
 
         else:
             self.notSupported()
