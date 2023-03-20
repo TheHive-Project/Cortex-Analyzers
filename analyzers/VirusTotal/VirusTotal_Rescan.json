@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Use VirusTotal to run new analysis on hash.",
-  "dataTypeList": ["hash"],
+  "dataTypeList": [
+    "hash"
+  ],
   "baseConfig": "VirusTotal",
   "config": {
     "service": "rescan"
@@ -55,5 +57,35 @@
     "path": "assets/virustotal-logo.png",
     "caption": "logo"
   },
-  "command": "VirusTotal/virustotal.py"
+  "command": "VirusTotal/virustotal.py",
+  "checks": [
+    {
+      "input": {
+        "data": "SGVsbG8gV29ybGQ=",
+        "dataType": "hash",
+        "config": {
+          "service": "rescan",
+          "key": "ENV:virTot",
+          "polling_interval": 60,
+          "highlighted_antivirus": "taxonomy",
+          "download_sample": false,
+          "download_sample_if_highlighted": false
+        }
+      },
+      "rules": [
+        {
+          "path": "$.success",
+          "expected": [
+            true
+          ]
+        },
+        {
+          "path": "$.",
+          "expected": [
+            ""
+          ]
+        }
+      ]
+    }
+  ]
 }

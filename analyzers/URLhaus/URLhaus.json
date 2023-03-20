@@ -6,8 +6,41 @@
   "version": "2.0",
   "baseConfig": "URLhaus",
   "description": "Search domains, IPs, URLs or hashes on URLhaus.",
-  "dataTypeList": ["domain", "fqdn", "url", "hash", "ip"],
+  "dataTypeList": [
+    "domain",
+    "fqdn",
+    "url",
+    "hash",
+    "ip"
+  ],
   "command": "URLhaus/URLhaus_analyzer.py",
-  "configurationItems": [
+  "configurationItems": [],
+  "checks": [
+    {
+      "input": {
+        "data": "google.com",
+        "dataType": "domain"
+      },
+      "rules": [
+        {
+          "path": "$.success",
+          "expected": [
+            true
+          ]
+        },
+        {
+          "path": "$.full.query_status",
+          "expected": [
+            "no_results"
+          ]
+        },
+        {
+          "path": "$.full.data_type",
+          "expected": [
+            "domain"
+          ]
+        }
+      ]
+    }
   ]
 }

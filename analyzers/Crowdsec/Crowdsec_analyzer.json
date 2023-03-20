@@ -36,5 +36,50 @@
             "path": "assets/crowdsec-analyzer-result-example.png",
             "caption": ""
         }
+    ],
+    "checks": [
+        {
+            "input": {
+                "data": "8.8.8.8",
+                "dataType": "ip",
+                "config": {
+                    "api_key": "ENV:Crowdsec"
+                }
+            },
+            "rules": [
+                {
+                    "path": "$.success",
+                    "expected": [
+                        true
+                    ]
+                },
+                {
+                    "path": "$.artifacts[*].data",
+                    "expected": [
+                        "8.8.8.0/24",
+                        "dns.google"
+                    ]
+                },
+                {
+                    "path": "$.artifacts[*].dataType",
+                    "expected": [
+                        "ip",
+                        "domain"
+                    ]
+                },
+                {
+                    "path": "$.full.ip",
+                    "expected": [
+                        "8.8.8.8"
+                    ]
+                },
+                {
+                    "path": "$.full.as_name",
+                    "expected": [
+                        "GOOGLE"
+                    ]
+                }
+            ]
+        }
     ]
 }

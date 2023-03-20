@@ -5,7 +5,10 @@
   "author": "torsolaso",
   "license": "AGPL-V3",
   "description": "DomainMailSPFDMARC",
-  "dataTypeList": ["domain", "fqdn"],
+  "dataTypeList": [
+    "domain",
+    "fqdn"
+  ],
   "command": "DomainMailSPFDMARC/domainMailSPFDMARC.py",
   "baseConfig": "DomainMailSPFDMARC",
   "config": {
@@ -23,6 +26,44 @@
     {
       "path": "assets/DomainMailSPFDMARC_short.png",
       "caption": "DomainMailSPFDMARC mini report sample"
+    }
+  ],
+  "checks": [
+    {
+      "input": {
+        "data": "strangebee.com",
+        "dataType": "domain",
+        "config": {
+          "service": "get"
+        }
+      },
+      "rules": [
+        {
+          "path": "$.success",
+          "expected": [
+            true
+          ]
+        },
+        {
+          "path": "$.full.DomainMailSPFDMARC.domain",
+          "expected": [
+            "strangebee.com"
+          ]
+        },
+        {
+          "path": "$.full.DomainMailSPFDMARC.mx.hosts[*].hostname",
+          "expected": [
+            "strangebee-com.mail.protection.outlook.com"
+          ]
+        },
+        {
+          "path": "$.full.DomainMailSPFDMARC.mx.hosts[*].addresses[*]",
+          "expected": [
+            "104.47.24.36",
+            "104.47.25.36"
+          ]
+        }
+      ]
     }
   ]
 }

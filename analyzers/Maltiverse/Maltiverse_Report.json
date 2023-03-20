@@ -5,7 +5,12 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Get the latest Maltiverse report for an hash, domain or an IP address.",
-  "dataTypeList": ["hash", "domain", "ip", "url"],
+  "dataTypeList": [
+    "hash",
+    "domain",
+    "ip",
+    "url"
+  ],
   "command": "Maltiverse/maltiverse-client.py",
   "baseConfig": "Maltiverse",
   "config": {
@@ -41,6 +46,91 @@
     {
       "path": "assets/long_report.png",
       "caption": "Maltiverse: long report"
+    }
+  ],
+  "checks": [
+    {
+      "input": {
+        "data": "8.8.8.8",
+        "dataType": "ip",
+        "config": {
+          "service": "get",
+          "polling_interval": 60,
+          "api_key": ""
+        }
+      },
+      "rules": [
+        {
+          "path": "$.success",
+          "expected": [
+            true
+          ]
+        },
+        {
+          "path": "$.summary.taxonomies[*].level",
+          "expected": [
+            "safe"
+          ]
+        },
+        {
+          "path": "$.summary.taxonomies[*].namespace",
+          "expected": [
+            "Maltiverse"
+          ]
+        },
+        {
+          "path": "$.summary.taxonomies[*].predicate",
+          "expected": [
+            "Report"
+          ]
+        },
+        {
+          "path": "$.summary.taxonomies[*].value",
+          "expected": [
+            "whitelist"
+          ]
+        },
+        {
+          "path": "$.full.ip_addr",
+          "expected": [
+            "8.8.8.8"
+          ]
+        },
+        {
+          "path": "$.full.tag[*]",
+          "expected": [
+            "dns",
+            "reflection",
+            "abuse",
+            "bot",
+            "gh0strat",
+            "port:443",
+            "farfli",
+            "gh0st rat",
+            "pcrat",
+            "phishing",
+            "c&c",
+            "c2",
+            "dga",
+            "open resolver",
+            "https://www.threatminer.org/report.php?q=jpcert_cc blog_ malware tscookie_jp-cert.pdf&y=2018",
+            "doc",
+            "covid19",
+            "coronavirus",
+            "scam",
+            "sector:retail/service",
+            "americanas.com s/a comercio electrnico"
+          ]
+        },
+        {
+          "path": "$.full.email[*]",
+          "expected": [
+            "abuse@aup.lumen.com",
+            "abuse@level3.com",
+            "ipaddressing@level3.com"
+          ]
+        }
+      ]
     }
   ]
 }

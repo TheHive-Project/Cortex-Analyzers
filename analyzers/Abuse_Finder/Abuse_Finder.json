@@ -27,5 +27,51 @@
             "path": "assets/abuse_finder_longreport.png",
             "caption": "Abuse_Finder: Long report template"
         }
+    ],
+    "checks": [
+        {
+            "input": {
+                "data": "strangebee.com",
+                "dataType": "domain"
+            },
+            "rules": [
+                {
+                    "path": "$.success",
+                    "expected": [
+                        true
+                    ]
+                },
+                {
+                    "path": "$.artifacts[*].data",
+                    "expected": [
+                        "abuse@support.gandi.net"
+                    ]
+                },
+                {
+                    "path": "$.artifacts[*].dataType",
+                    "expected": [
+                        "mail"
+                    ]
+                },
+                {
+                    "path": "$.full.abuse_finder.value",
+                    "expected": [
+                        "strangebee.com"
+                    ]
+                },
+                {
+                    "path": "$.full.abuse_finder.names[*]",
+                    "expected": [
+                        "Gandi SAS"
+                    ]
+                },
+                {
+                    "path": "$.full.abuse_finder.abuse[*]",
+                    "expected": [
+                        "abuse@support.gandi.net"
+                    ]
+                }
+            ]
+        }
     ]
 }

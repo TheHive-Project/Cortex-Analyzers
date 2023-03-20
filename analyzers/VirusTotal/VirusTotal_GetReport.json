@@ -5,7 +5,14 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Get the latest VirusTotal report for a file, hash, domain or an IP address.",
-  "dataTypeList": ["file", "hash", "domain", "fqdn", "ip", "url"],
+  "dataTypeList": [
+    "file",
+    "hash",
+    "domain",
+    "fqdn",
+    "ip",
+    "url"
+  ],
   "command": "VirusTotal/virustotal.py",
   "baseConfig": "VirusTotal",
   "config": {
@@ -68,6 +75,33 @@
     {
       "path": "assets/virustotal-scan.png",
       "caption": "VirusTotal: long report"
+    }
+  ],
+  "checks": [
+    {
+      "input": {
+        "file": "catalog.json",
+        "contentType": "'application/json",
+        "filename": "catalog.json",
+        "dataType": "file",
+        "config": {
+          "service": "get",
+          "key": "ENV:virTot",
+          "polling_interval": 60,
+          "rescan_hash_older_than_days": 0,
+          "highlighted_antivirus": "taxonomy",
+          "download_sample": false,
+          "download_sample_if_highlighted": false
+        }
+      },
+      "rules": [
+        {
+          "path": "$.success",
+          "expected": [
+            true
+          ]
+        }
+      ]
     }
   ]
 }
