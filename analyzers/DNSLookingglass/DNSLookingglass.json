@@ -59,6 +59,42 @@
           "expected": [
             "217.70.184.55"
           ]
+        },
+        {
+          "path": "$.full.results[*].answer",
+          "expected": [
+            "217.70.184.55",
+            "217.70.184.55",
+            "217.70.184.55"
+          ]
+        },
+        {
+          "path": "$.full.results[*].status",
+          "expected": [
+            "ok v4 failed v6",
+            "ok v4 failed v6",
+            "ok v4 failed v6"
+          ]
+        },
+        {
+          "path": "$.full.results[*].country",
+          "expected": [
+            "GLOBAL",
+            "GLOBAL",
+            "GLOBAL"
+          ]
+        },
+        {
+          "path": "$.full.hits",
+          "expected": [
+            "DomainExist"
+          ]
+        },
+        {
+          "path": "$.full.count",
+          "expected": [
+            3
+          ]
         }
       ]
     }
