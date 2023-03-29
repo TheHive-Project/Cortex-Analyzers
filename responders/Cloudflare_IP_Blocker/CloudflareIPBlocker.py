@@ -7,7 +7,7 @@ import datetime
 import os
 from cortexutils.responder import Responder
 
-# Initialize Azure Class
+# Initialize Cloudflare Responder Class
 class CloudflareIPBlocker(Responder):
     
     def __init__(self):
@@ -49,7 +49,7 @@ class CloudflareIPBlocker(Responder):
                     self.error('Request failed with the following status: {}'.format(response.status_code))
                 
                 else:
-                    #record time of successful auth token revokation
+                    #record time
                     self.time = datetime.datetime.utcnow()
         
         except Exception as ex:
