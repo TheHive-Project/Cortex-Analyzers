@@ -94,7 +94,6 @@ class OpenCTIAnalyzer(Analyzer):
                     del(report["objectLabelIds"])
                     del(report["parent_types"])
                     del(report["objectsIds"])
-                    del(report["x_opencti_graph_data"])
 
                 observable["reports"] = reports
 
