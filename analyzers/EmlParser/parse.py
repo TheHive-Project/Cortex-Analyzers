@@ -254,7 +254,13 @@ def parseEml(filepath, job_directory, wkhtmltoimage, sanitized_rendering):
         for a in decoded_email.get("attachment"):
             a["mime"] = magic.from_buffer(binascii.a2b_base64(a.get("raw")))
             if isinstance(a.get("raw"), bytes):
-                filepath = os.path.join(job_directory, "output", a.get("filename", ""))
+                path, filename = os.path.split(a.get("filename", ""))
+                if path != "":
+                    os.umask(0)
+                    os.makedirs(
+                        f"{job_directory}/output/{path}", exist_ok=True, mode=0o777
+                    )
+                filepath = os.path.join(job_directory, "output", path, filename)
                 with open(filepath, "wb") as f:
                     f.write(base64.b64decode(a["raw"]))
                 f.close()
