@@ -173,6 +173,7 @@ class MISPClient:
         """
 
         filters = ['Attribute',
+                   'Object',
                    'ShadowAttribute',
                    'Org',
                    'ShadowAttribute',
