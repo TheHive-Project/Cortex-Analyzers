@@ -5,7 +5,7 @@
   "url": "https://github.com/cyberpescadito/Cortex-Analyzers/tree/master/analyzers/LdapQuery",
   "license": "AGPL-V3",
   "description": "Query your LDAP server to harvest informations about an user of your organization",
-  "dataTypeList": ["username", "mail"],
+  "dataTypeList": ["account", "username", "mail"],
   "command": "LdapQuery/ldapQuery.py",
   "baseConfig": "LdapQuery",
   "configurationItems": [
