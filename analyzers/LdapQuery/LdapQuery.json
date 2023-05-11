@@ -1,6 +1,6 @@
 {
   "name": "Ldap_Query",
-  "version": "2.0",
+  "version": "2.1",
   "author": "Florian Perret @cyber_pescadito",
   "url": "https://github.com/cyberpescadito/Cortex-Analyzers/tree/master/analyzers/LdapQuery",
   "license": "AGPL-V3",
@@ -25,7 +25,7 @@
     },
     {
         "name": "LDAP_username",
-        "description": "Usernae of the account that will be used to bind to LDAP server. The Account should have permissions to read ldap objects and attributes.",
+        "description": "Username of the account that will be used to bind to LDAP server. The Account should have permissions to read ldap objects and attributes.",
         "type": "string",
         "multi": false,
         "required": true
