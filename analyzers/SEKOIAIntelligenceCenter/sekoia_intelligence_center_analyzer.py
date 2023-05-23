@@ -53,6 +53,8 @@ class IntelligenceCenterAnalyzer(Analyzer):
             has_threats = any(res.get("x_ic_indicated_threats") for res in raw["results"])
             if has_threats:
                 taxonomies.append(self.build_taxonomy("malicious", "SEKOIA", self.service, value))
+            else:
+                taxonomies.append(self.build_taxonomy("safe", "SEKOIA", self.service, value))
         else:
             taxonomies.append(self.build_taxonomy("malicious", "SEKOIA", self.service, value))
 
