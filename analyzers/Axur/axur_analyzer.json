@@ -3,6 +3,7 @@
   "author": "Axur",
   "version": "1.0.",
   "license": "AGPL-V3",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "description": "Search IPs, domains, hashes or URLs on axur.com",
   "dataTypeList": ["domain", "fqdn", "ip", "url", "hash"],
   "command": "Axur/axur_analyzer.py",

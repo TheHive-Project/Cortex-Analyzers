@@ -17,17 +17,28 @@ class AxurAnalyzer(Analyzer):
         if self.data_type not in ['domain', 'fqdn', 'ip', 'url', 'hash']:
             self.error('Wrong data type')
 
-        url = f'https://api.axur.com/gateway/1.0/ioc/{self.data_type}/{self.get_data()}'
+        url = f'https://api.axur.com/gateway/1.0/ioc-search/{self.data_type}/{self.get_data()}'
 
         try:
-            self.report(requests.get(url, headers={'api_key': self.api_key}).json())
-        except Exception as e:
-            self.error(e)
+            response = requests.get(url, headers={'api_key': self.api_key})
+            response.raise_for_status()
+            self.report(response.json())
+        except requests.HTTPError as http_err:
+            self.error('HTTP error occurred: {}'.format(http_err))
+        except Exception as err:
+            self.error('Error occurred: {}'.format(err))
 
     def summary(self, raw):
-        value = raw.get('Score', 0)
-        level = ['safe', 'suspicious', 'malicious'][value]
-        return {'taxonomies': [self.build_taxonomy(level, 'Axur', 'Score', value)]}
+        taxonomies = []
+        levels = ['info', 'safe', 'suspicious', 'malicious']
+
+        for data in raw:
+            level = levels[data.get('score', 0)]
+            taxonomies.append(
+                self.build_taxonomy(level, 'Axur', data['source'], data.get('hits', 0))
+            )
+
+        return {'taxonomies': taxonomies}
 
 
 if __name__ == '__main__':
