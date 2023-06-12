@@ -1,0 +1,27 @@
+{
+  "name": "Censys_search_Cert",
+  "author": "Marc Nebout, Sekoia.io",
+  "version": "2.0",
+  "license": "AGPL-V3",
+  "url": "https://github.com/CTIMarc/Cortex-Analyzers/tree/master/analyzers/CensysV2",
+  "description": "Search pattern in Censys v2",
+  "dataTypeList": ["other"],
+  "baseConfig": "Censys",
+  "command": "CensysV2/censys_search_cert.py",
+  "configurationItems": [
+    {
+      "name": "uid",
+      "description": "UID for Censys",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "key",
+      "description": "API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}
