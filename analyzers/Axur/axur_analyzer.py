@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 from cortexutils.analyzer import Analyzer
+from urllib.parse import quote_plus
 import requests
 
 
@@ -10,17 +11,18 @@ class AxurAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
         self.api_key = self.get_param(
-            'config.api_key', None, 'Missing API key'
+            'config.api_key', None, 'Missing Axur API key'
         )
 
     def run(self):
         if self.data_type not in ['domain', 'fqdn', 'ip', 'url', 'hash']:
             self.error('Wrong data type')
 
-        url = f'https://api.axur.com/gateway/1.0/ioc-search/{self.data_type}/{self.get_data()}'
+        encoded_data = quote_plus(self.get_data())
+        url = f'https://api.axur.com/gateway/1.0/api/ioc-search/search/{self.data_type}/{encoded_data}'
 
         try:
-            response = requests.get(url, headers={'api_key': self.api_key})
+            response = requests.get(url, headers={'Authorization': f'Bearer {self.api_key}'})
             response.raise_for_status()
             self.report(response.json())
         except requests.HTTPError as http_err:
@@ -32,7 +34,7 @@ class AxurAnalyzer(Analyzer):
         taxonomies = []
         levels = ['info', 'safe', 'suspicious', 'malicious']
 
-        for data in raw:
+        for data in raw['results']:
             level = levels[data.get('score', 0)]
             taxonomies.append(
                 self.build_taxonomy(level, 'Axur', data['source'], data.get('hits', 0))
