@@ -1,0 +1,6 @@
+papermill
+jupyter
+nbconvert
+ipython
+ipykernel
+cortexutils
