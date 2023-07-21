@@ -24,7 +24,7 @@ class AxurAnalyzer(Analyzer):
         try:
             response = requests.get(url, headers={'Authorization': f'Bearer {self.api_key}'})
             response.raise_for_status()
-            self.report(response.json()["results"])
+            self.report(response.json())
         except requests.HTTPError as http_err:
             self.error('HTTP error occurred: {}'.format(http_err))
         except Exception as err:
