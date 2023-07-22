@@ -170,6 +170,33 @@ class Jupyter(Analyzer):
             return self.output_configuration[name]
         else:
             return None
+        
+    def artifacts(self, raw):
+        """This is used to generate new artifacts in TheHive
+
+        Args:
+            raw (nbformat<NotebookNode>): Notebook structure)
+
+        Returns:
+            artifacts (list): Return a list of artifacts to be added to the case
+        """
+
+        artifacts = []
+
+        for notebook in raw["notebooks"]:
+            for cell in notebook["cells"]:
+                if "artifacts" in cell["metadata"]["tags"]:
+                        # Get payload
+                        if len(cell["outputs"]) > 0:
+                            raw_observables = cell["outputs"][0]["text"].split("\n")
+                            for ro in raw_observables:
+                                if ro != "":
+                                    try:
+                                        json_artifact = json.loads(ro)
+                                        artifacts.append(self.build_artifact(data_type=json_artifact.pop("dataType"),data=json_artifact.pop("data"),**json_artifact))
+                                    except json.decoder.JSONDecodeError as e:
+                                        self.error("{0} with input: {1}".format(e,ro))
+        return artifacts
 
     def summary(self, raw):
         taxonomies = []
