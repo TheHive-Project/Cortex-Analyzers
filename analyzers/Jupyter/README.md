@@ -159,11 +159,11 @@ An analysis report (notebook execution exported in HTML) wil be available in The
 
 #### Artifacts
 
-You can return new artifacts/observables from the notebook to TheHive by using a tag named "artifacts" on the code block that will contain the artifacts.
+You can return new artifacts/observables from the notebook to TheHive by using a tag named "`artifacts`" on the code block that will contain the artifacts.
 
 ![Screenshot Jupyter Artifacts](assets/screenshot_jupyter_artifacts.png)
 
-Once you've add the tag to the block, ensure that the code block is given a json output containing information about new artifacts to return. As you can see, you can have several artifacts separated by a newline ("/n"). In this example, we are returning two artifacts.
+Once you've add the tag to the block, ensure that the code block is given json outputs containing information about new artifacts to return. As you can see, you can have several artifacts separated by a newline ("/n"). In this example, we are returning two artifacts.
 
 Within TheHive, you'll be able to see the artifacts proposed to be imported and with the given information:
 
@@ -171,6 +171,21 @@ Within TheHive, you'll be able to see the artifacts proposed to be imported and 
 
 #### Short reports (taxonomies)
 
+Short reports can be built directly from the executed notebooks as artifacts thanks to the tag named "`taxonomies`".
+
+![Screenshot Jupyter Taxonomies](assets/screenshot_jupyter_taxonomies.png)
+
+Once you've add the tag to the block, ensure that the code block is given json outputs containing information about taxonomies to return. As you can see, you can have several taxonomies separated by a newline ("/n"). In this example, we are returning two taxonomies.
+
+![Screenshot TheHive Taxonomies 1](assets/screenshot_thehive_taxonomies1.png)
+![Screenshot TheHive Taxonomies 2](assets/screenshot_thehive_taxonomies2.png)
+
+All taxonomies must follow the same pattern:
+
+- `level`: Indicates the level of the taxonomy (used for the color). Values can be "info", "safe", "suspicious" or "malicious".
+- `namespace`: Indicates the namespace of the taxonomy. We recommand to use the default value set to "Jupyter".
+- `predicate`: Indicates a specific subname for the given namespace.
+- `value`: Indicates the value associated to the predicate.
 
 
 #### Long report
@@ -190,3 +205,5 @@ root#> chown cortex: /home/cortex
 root#> su cortex
 cortex#> ipython kernel install --name "python3" --user
  ```
+
+You can reach the developer directly by email: letmer00t@gmail.com
