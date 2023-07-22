@@ -138,6 +138,8 @@ Here is the description for each parameter:
 
 ## Run the connector
 
+### Inputs
+
 As we are using [Papermill](https://github.com/nteract/papermill), we can parameterize the notebooks before execution.
 The connector will recover the input playbook, find the associated tagged cell with "parameters" and add these four parameters:
 
@@ -152,6 +154,28 @@ Here is an example of what it look like:
 An analysis report (notebook execution exported in HTML) wil be available in TheHive:
 
 ![Screenshot TheHive Report](assets/screenshot_thehive_report.png)
+
+### Outputs
+
+#### Artifacts
+
+You can return new artifacts/observables from the notebook to TheHive by using a tag named "artifacts" on the code block that will contain the artifacts.
+
+![Screenshot Jupyter Artifacts](assets/screenshot_jupyter_artifacts.png)
+
+Once you've add the tag to the block, ensure that the code block is given a json output containing information about new artifacts to return. As you can see, you can have several artifacts separated by a newline ("/n"). In this example, we are returning two artifacts.
+
+Within TheHive, you'll be able to see the artifacts proposed to be imported and with the given information:
+
+![Screenshot TheHive Artifacts](assets/screenshot_thehive_artifacts.png)
+
+#### Short reports (taxonomies)
+
+
+
+#### Long report
+
+The long report template is used to render the notebook execution from a HTML export of the same notebook. In the raw data sent back to TheHive, you can have the all detail of the execution additionally to the HTML embedded code (be sure to set `any_only_html` to False accordingly)
 
 # FAQ
 
