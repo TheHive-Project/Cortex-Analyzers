@@ -175,7 +175,7 @@ class Jupyter(Analyzer):
         """This is used to generate new artifacts in TheHive
 
         Args:
-            raw (nbformat<NotebookNode>): Notebook structure)
+            raw (nbformat<NotebookNode>): Notebook structure
 
         Returns:
             artifacts (list): Return a list of artifacts to be added to the case
@@ -199,104 +199,34 @@ class Jupyter(Analyzer):
         return artifacts
 
     def summary(self, raw):
+        """This is used to generate short reports in TheHive
+
+        Args:
+            raw (nbformat<NotebookNode>): Notebook structure
+
+        Returns:
+            taxonomies (list): Return a list of taxonomies to be added to the observable
+        """
+
         taxonomies = []
-        namespace = "Jupyter"
-        taxonomyResults = {
-            "level": "safe",
-            "namespace": namespace,
-            "predicate": "Results",
-            "value": 0,
-        }
 
-        # (Optional) These taxonomies will be added only if a field "level" is found
-        taxonomyInfo = {
-            "level": "info",
-            "namespace": namespace,
-            "predicate": "Info",
-            "value": 0,
-        }
-        taxonomySafe = {
-            "level": "safe",
-            "namespace": namespace,
-            "predicate": "Safe",
-            "value": 0,
-        }
-        taxonomySuspicious = {
-            "level": "suspicious",
-            "namespace": namespace,
-            "predicate": "Suspicious",
-            "value": 0,
-        }
-        taxonomyMalicious = {
-            "level": "malicious",
-            "namespace": namespace,
-            "predicate": "Malicious",
-            "value": 0,
-        }
-
-        # Process all requests with the given taxonomies
-        for savedsearch in raw["savedsearches"]:
-            taxonomyResults["value"] += savedsearch["resultCount"]
-
-            if "levels" in savedsearch:
-                levels = savedsearch["levels"]
-                taxonomyInfo["value"] += levels["info"]
-                taxonomySafe["value"] += levels["safe"]
-                taxonomySuspicious["value"] += levels["suspicious"]
-                taxonomyMalicious["value"] += levels["malicious"]
-
-        # Add results taxonomy anyway
-        # Change the level if there is any result
-        if taxonomyResults["value"] > 0:
-            taxonomyResults["level"] = "suspicious"
-        else:
-            taxonomyResults["value"] = "None"
-        taxonomies.append(
-            self.build_taxonomy(
-                taxonomyResults["level"],
-                taxonomyResults["namespace"],
-                taxonomyResults["predicate"],
-                taxonomyResults["value"],
-            )
-        )
-
-        # Only add optional taxonomies if they are not null
-        if taxonomyInfo["value"] > 0:
-            taxonomies.append(
-                self.build_taxonomy(
-                    taxonomyInfo["level"],
-                    taxonomyInfo["namespace"],
-                    taxonomyInfo["predicate"],
-                    taxonomyInfo["value"],
-                )
-            )
-        if taxonomySafe["value"] > 0:
-            taxonomies.append(
-                self.build_taxonomy(
-                    taxonomySafe["level"],
-                    taxonomySafe["namespace"],
-                    taxonomySafe["predicate"],
-                    taxonomySafe["value"],
-                )
-            )
-        if taxonomySuspicious["value"] > 0:
-            taxonomies.append(
-                self.build_taxonomy(
-                    taxonomySuspicious["level"],
-                    taxonomySuspicious["namespace"],
-                    taxonomySuspicious["predicate"],
-                    taxonomySuspicious["value"],
-                )
-            )
-        if taxonomyMalicious["value"] > 0:
-            taxonomies.append(
-                self.build_taxonomy(
-                    taxonomyMalicious["level"],
-                    taxonomyMalicious["namespace"],
-                    taxonomyMalicious["predicate"],
-                    taxonomyMalicious["value"],
-                )
-            )
+        for notebook in raw["notebooks"]:
+            for cell in notebook["cells"]:
+                if "taxonomies" in cell["metadata"]["tags"]:
+                        # Get payload
+                        if len(cell["outputs"]) > 0:
+                            raw_observables = cell["outputs"][0]["text"].split("\n")
+                            for ro in raw_observables:
+                                if ro != "":
+                                    try:
+                                        json_taxonomy = json.loads(ro)
+                                        level = json_taxonomy["level"] if "level" in json_taxonomy else "info"
+                                        namespace = json_taxonomy["namespace"] if "namespace" in json_taxonomy else "Jupyter"
+                                        predicate = json_taxonomy["predicate"] if "predicate" in json_taxonomy else self.error("Error: Detected taxonomy '{0}' but no predicate was given".format(json_taxonomy))
+                                        value = json_taxonomy["value"] if "value" in json_taxonomy else self.error("Error: Detected taxonomy '{0}' but no value was given".format(json_taxonomy))
+                                        taxonomies.append(self.build_taxonomy(level=level, namespace=namespace, predicate=predicate, value=value))
+                                    except json.decoder.JSONDecodeError as e:
+                                        self.error("{0} with input: {1}".format(e,ro))
 
         return {"taxonomies": taxonomies}
 
