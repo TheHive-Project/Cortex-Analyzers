@@ -78,6 +78,18 @@ class Jupyter(Analyzer):
             "You must identify if you want to HTML response only for long reports",
         )
 
+        # Initialize parameters
+        self.parameters = {
+            "thehive_organisation": str(
+                self._input["parameters"]["organisation"]
+            ),
+            "thehive_user": str(self._input["parameters"]["user"]),
+            "thehive_observable_type": str(self.data_type),
+            "thehive_observable_value": self.getParam(
+                "data", None, "Data is missing"
+            ),
+        }
+
     def initialize_path(
         self,
         hostname,
@@ -347,16 +359,7 @@ class Jupyter(Analyzer):
             # Parametrize the input notebook to be the output notebook
             nb_output = pm.parameterize.parameterize_notebook(
                 nb_input,
-                parameters={
-                    "thehive_organisation": str(
-                        self._input["parameters"]["organisation"]
-                    ),
-                    "thehive_user": str(self._input["parameters"]["user"]),
-                    "thehive_observable_type": str(self.data_type),
-                    "thehive_observable_value": self.getParam(
-                        "data", None, "Data is missing"
-                    ),
-                },
+                parameters=self.parameters
             )
 
             # Start timer
@@ -561,16 +564,7 @@ class Jupyter(Analyzer):
                     nb_output = pm.execute_notebook(
                         input_path=input_notebook,
                         output_path=output_notebook,
-                        parameters={
-                            "thehive_organisation": str(
-                                self._input["parameters"]["organisation"]
-                            ),
-                            "thehive_user": str(self._input["parameters"]["user"]),
-                            "thehive_observable_type": str(self.data_type),
-                            "thehive_observable_value": self.getParam(
-                                "data", None, "Data is missing"
-                            ),
-                        },
+                        parameters=self.parameters,
                         request_save_on_cell_execute=False,
                         progress_bar=False,
                     )
