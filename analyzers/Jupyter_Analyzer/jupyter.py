@@ -78,6 +78,8 @@ class Jupyter(Analyzer):
             "You must identify if you want to HTML response only for long reports",
         )
 
+        # Use input data as ID
+        self.id = self.getParam("data", None, "Data is missing")
         # Initialize parameters
         self.parameters = {
             "thehive_organisation": str(
@@ -448,7 +450,7 @@ class Jupyter(Analyzer):
                     self.get_conf("output", "server_uri_http_api_contents"),
                     self.output_folder,
                     str(datetime.date.today()),
-                    self.getParam("data", None, "Data is missing"),
+                    self.id,
                     path[1:],
                     self.get_conf("output", "handler_http_service_api_token"),
                 )
@@ -457,7 +459,7 @@ class Jupyter(Analyzer):
                     self.get_conf("output", "handler_http_user"),
                     self.output_folder,
                     str(datetime.date.today()),
-                    self.getParam("data", None, "Data is missing"),
+                    self.id,
                     path[1:],
                 )
             else:
@@ -465,7 +467,7 @@ class Jupyter(Analyzer):
                     self.get_conf("output", "hostname"),
                     self.output_folder,
                     str(datetime.date.today()),
-                    self.getParam("data", None, "Data is missing"),
+                    self.id,
                     path[1:],
                 )
                 output_path_direct = output_path
@@ -525,7 +527,7 @@ class Jupyter(Analyzer):
                         self.get_conf("output", "server_uri_http_api_contents"),
                         self.output_folder,
                         str(datetime.date.today()),
-                        self.getParam("data", None, "Data is missing"),
+                        self.id,
                         path[1:],
                         self.get_conf("output", "handler_http_service_api_token"),
                     )
@@ -534,7 +536,7 @@ class Jupyter(Analyzer):
                         self.get_conf("output", "handler_http_user"),
                         self.output_folder,
                         str(datetime.date.today()),
-                        self.getParam("data", None, "Data is missing"),
+                        self.id,
                         path[1:],
                     )
                 else:
@@ -542,7 +544,7 @@ class Jupyter(Analyzer):
                         self.get_conf("output", "hostname"),
                         self.output_folder,
                         str(datetime.date.today()),
-                        self.getParam("data", None, "Data is missing"),
+                        self.id,
                         path[1:],
                     )
                     output_notebook_direct = output_notebook
