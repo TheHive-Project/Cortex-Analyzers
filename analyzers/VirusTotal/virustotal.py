@@ -167,13 +167,13 @@ class VirusTotalAnalyzer(Analyzer):
             
             if data_type in ["ip_addresses", "domains"]:
                 try:
-                    result["resolutions"] = self.vt.get_object(
+                    result["resolutions"] = self.vt.get_json(
                         "/{}/{}/{}".format(data_type, raw["id"], "resolutions")
-                    ).to_dict()
-                    value = "{} resolution(s)".format(result["meta"]["count"])
-                    if result["meta"]["count"] == 0:
+                    )
+                    value = "{} resolution(s)".format(result["resolutions"]["meta"]["count"])
+                    if result["resolutions"]["meta"]["count"] == 0:
                         level = "safe"
-                    elif result["meta"]["count"] < 5:
+                    elif result["resolutions"]["meta"]["count"] < 5:
                         level = "suspicious"
                     else:
                         level = "malicious"
@@ -181,7 +181,7 @@ class VirusTotalAnalyzer(Analyzer):
                         self.build_taxonomy(level, namespace, predicate, value)
                     )
                 except Exception:
-                    pass  # Premium api key required
+                    pass
 
             if data_type in ["files"]:
                 try:
@@ -202,18 +202,21 @@ class VirusTotalAnalyzer(Analyzer):
                     pass  # Premium api key required
 
             if data_type in ["files", "ip_addresses", "domains"]:
-                if "downloaded_files" in raw["relations"]:
-                    nb_files = raw["relations"]["downloaded_files"]["meta"]["count"]
-                    value = "{} downloaded file(s)".format(nb_files)
-                    if nb_files == 0:
-                        level = "safe"
-                    elif nb_files < 5:
-                        level = "suspicious"
-                    else:
-                        level = "malicious"
-                    taxonomies.append(
-                        self.build_taxonomy(level, namespace, predicate, value)
-                    )
+                try:
+                    if "downloaded_files" in raw["relations"]:
+                        nb_files = raw["relations"]["downloaded_files"]["meta"]["count"]
+                        value = "{} downloaded file(s)".format(nb_files)
+                        if nb_files == 0:
+                            level = "safe"
+                        elif nb_files < 5:
+                            level = "suspicious"
+                        else:
+                            level = "malicious"
+                        taxonomies.append(
+                            self.build_taxonomy(level, namespace, predicate, value)
+                        )
+                except Exception:
+                    pass # Premium api key required
 
         if self.highlighted_antivirus:
             for av in (av for av in self.highlighted_antivirus if av):
