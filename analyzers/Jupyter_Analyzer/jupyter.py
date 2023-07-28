@@ -25,69 +25,69 @@ class Jupyter(Analyzer):
 
         # Initialize configuration objects for notebooks
         self.input_configuration = self.initialize_path(
-            hostname=self.getParam(
+            hostname=self.get_param(
                 "config.input_hostname", None, "Hostname input parameter is missing."
             ),
-            handler_http_service_api_token=self.getParam(
+            handler_http_service_api_token=self.get_param(
                 "config.input_handler_http_service_api_token",
                 None,
                 "[HTTP Handler only] Service API token for input notebook parameter is missing.",
             ),
-            handler_http_is_jupyterhub=self.getParam(
+            handler_http_is_jupyterhub=self.get_param(
                 "config.input_handler_http_is_jupyterhub",
                 None,
                 "[HTTP Handler only] JupyterHub for input notebook boolean parameter is missing.",
             ),
         )
-        self.input_paths = self.getParam(
+        self.input_paths = self.get_param(
             "config.input_paths",
             None,
             "You must provide the list of paths of the notebooks you want to run.",
         )
-        self.input_execute_remotely = self.getParam(
+        self.input_execute_remotely = self.get_param(
             "config.input_handler_http_execute_remotely",
             None,
             "You must specify if you want to run your code locally or remotely",
         )
 
         self.output_configuration = self.initialize_path(
-            hostname=self.getParam(
+            hostname=self.get_param(
                 "config.output_hostname", None, "Hostname output parameter is missing."
             ),
-            handler_http_service_api_token=self.getParam(
+            handler_http_service_api_token=self.get_param(
                 "config.output_handler_http_service_api_token",
                 None,
                 "[HTTP Handler only] Service API token for output notebook parameter is missing.",
             ),
-            handler_http_is_jupyterhub=self.getParam(
+            handler_http_is_jupyterhub=self.get_param(
                 "config.output_handler_http_is_jupyterhub",
                 None,
                 "[HTTP Handler only] JupyterHub for output notebook boolean parameter is missing.",
             ),
         )
-        self.output_folder = self.getParam(
+        self.output_folder = self.get_param(
             "config.output_folder",
             None,
             "You must provide an output folder path in which executed notebooks will be stored",
         )
 
         # Additional parameters
-        self.any_only_html = self.getParam(
+        self.any_only_html = self.get_param(
             "config.any_only_html",
             True,
             "You must identify if you want to HTML response only for long reports",
         )
 
         # Use input data as ID
-        self.id = self.getParam("data", None, "Data is missing")
+        self.id = self.get_param("data", None, "Data is missing")
         # Initialize parameters
         self.parameters = {
             "thehive_organisation": str(
-                self._input["parameters"]["organisation"]
+                self.get_param("parameters", None, "Parameters are missing")["organisation"]
             ),
-            "thehive_user": str(self._input["parameters"]["user"]),
+            "thehive_user": str(self.get_param("parameters", None, "Parameters are missing")["user"]),
             "thehive_observable_type": str(self.data_type),
-            "thehive_observable_value": self.getParam(
+            "thehive_observable_value": self.get_param(
                 "data", None, "Data is missing"
             ),
         }
@@ -128,7 +128,7 @@ class Jupyter(Analyzer):
                 )
 
             # Ensure other mandatory parameters are set
-            user = self.getParam(
+            user = self.get_param(
                 "config.any_handler_http_user",
                 None,
                 "[HTTP Handler only] Service name parameter is missing.",
