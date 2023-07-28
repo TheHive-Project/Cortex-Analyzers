@@ -160,11 +160,24 @@ Report is sent back to TheHive but no support for now to show the report in HTML
 
 You can return operations to be executed from the notebook to TheHive by using a tag named "`operations`" on the code block that will contain the operations.
 
-![Screenshot Jupyter Artifacts](assets/screenshot_jupyter_artifacts.png)
+![Screenshot Jupyter Operations](assets/screenshot_jupyter_operations.png)
 
 Once you've add the tag to the block, ensure that the code block is given json outputs containing information about operations to return. As you can see, you can have several operations separated by a newline ("/n"). In this example, we are returning 10 operations (that might not make sense but it's showing you what you can do).
 
-To give a more detail view on the available actions, you can rely on the above examples or on these models from TheHive: [cortex/connector/src/main/scala/org/thp/thehive/connector/cortex/models/ActionOperation.scala](https://github.com/TheHive-Project/TheHive/blob/main/cortex/connector/src/main/scala/org/thp/thehive/connector/cortex/models/ActionOperation.scala)
+In a nutshell, available actions are:
+
+- `AddTagToArtifact`: Add a new tag to your artifact
+- `AddTagToCase`: Add a new tag to your case
+- `MarkAlertAsRead`: Change alert status to "Ignored"
+- `AddCustomFields`: Add a new custom field to your alert/case. Note that if the custom field already exist, the value will be updated.
+- `AddTagToAlert`: Add a new tag to your alert
+- `CreateTask`: Create a new task
+- `CloseTask`: Close the task
+- `AddLogToTask`: Add a log to your task
+- `AssignCase`: Assign the case
+- `AddArtifactToCase`: Add a new artifact (observable) to the case
+
+In order to have more details on the available actions, you can rely on the above examples or on these models from TheHive: [cortex/connector/src/main/scala/org/thp/thehive/connector/cortex/models/ActionOperation.scala](https://github.com/TheHive-Project/TheHive/blob/main/cortex/connector/src/main/scala/org/thp/thehive/connector/cortex/models/ActionOperation.scala)
 
 # FAQ
 
