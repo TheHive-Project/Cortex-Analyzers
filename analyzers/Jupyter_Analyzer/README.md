@@ -7,7 +7,7 @@ This was designed to run with a running remote JupyterHub instance but you can w
 
 You can run several notebooks at the same time for one observable.
 
-You can setup several Jupyter connectors just with a copy/paste of the file "Jupyter_Run_Notebook.json" file.
+You can setup several Jupyter connectors just with a copy/paste of the file "Jupyter_Run_Notebook_Analyzer.json" file.
 
 # Prerequisites
 
@@ -145,7 +145,7 @@ The connector will recover the input playbook, find the associated tagged cell w
 
 - `thehive_organisation`: This is specifying the organisation in which the connector was executed
 - `thehive_user`: This is specifying which user executed the connector
-- `thehive_obversable_type`: This is indicating the observable type (from the predefined list from TheHive)
+- `thehive_observable_type`: This is indicating the observable type (from the predefined list from TheHive)
 - `thehive_observable_value`: This is indicating the observable value
 
 Here is an example of what it look like:
