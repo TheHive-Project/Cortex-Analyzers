@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # encoding: utf-8
-# Author: Daniel Weiner @dmweiner
+# Author: Daniel Weiner @dmweiner, revised by @jahamilto
 import requests
 import traceback
 import datetime
@@ -22,7 +22,6 @@ class AzureTokenRevoker(Responder):
                 self.user = self.get_param('data.data', None, 'No UPN supplied to revoke credentials for')
                 if not self.user:
                     self.error("No user supplied")
-                base_resource = "https://graph.microsoft.com"
 
                 token_data = {
                     "grant_type": "client_credentials",
