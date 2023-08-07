@@ -40,6 +40,18 @@
         "multi": false,
         "required": false,
         "defaultValue": 12
+        },
+        {"name": "state",
+        "description": "Expected sign in state (used as a taxonomy when sign ins appear outside of this area).",
+        "type": "number",
+        "multi": false,
+        "required": false
+        },
+        {"name": "countryt",
+        "description": "Expected sign in country or region (used as a taxonomy when sign ins appear outside of this area).",
+        "type": "number",
+        "multi": false,
+        "required": false
         }
 
     ]

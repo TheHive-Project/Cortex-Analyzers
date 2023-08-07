@@ -15,6 +15,8 @@ class GetAzureSignIns(Analyzer):
         self.tenant_id = self.get_param('config.tenant_id', None, 'Azure AD Tenant ID Mising')
         self.time_range = self.get_param('config.lookup_range', 7)
         self.lookup_limit = self.get_param('config.lookup_limit', 12)
+        self.state = self.get_param('config.state', None)
+        self.country = self.get_param('config.country', None)
 
 
     def run(self):
@@ -102,9 +104,9 @@ class GetAzureSignIns(Analyzer):
                         location_info = signin["location"]
                         location["city"] = location_info["city"]
                         location["state"] = location_info["state"]
-                        if location["state"] != 'Utah' and success: ex_state += 1
+                        if self.state and location["state"] != self.state and success: ex_state += 1
                         location["countryOrRegion"] = location_info["countryOrRegion"]
-                        if location["countryOrRegion"] != 'US' and success: ex_country += 1
+                        if self.country and location["countryOrRegion"] != self.country and success: ex_country += 1
 
                          
                         cAC = "None"
@@ -124,7 +126,7 @@ class GetAzureSignIns(Analyzer):
                             "appliedConditionalAccessPolicies": cAC
                         })
                     
-                    new_json["sum_stats"] = [risks, ex_state, ex_country]
+                    new_json["sum_stats"] = {"riskySignIns": risks, "externalStateSignIns": ex_state, "foreignSignIns": ex_country}
                     new_json["filterParameters"] = "Top {} signins from the last {} days. Displaying {} signins.".format(self.lookup_limit, self.time_range, len(new_json["signIns"]))
 
                 # Build report to return to Cortex
@@ -137,7 +139,6 @@ class GetAzureSignIns(Analyzer):
             self.error('Incorrect dataType. "mail" expected.')
 
 
-# CHECK WHAT SUMMARY LOOKS LIKE
     def summary(self, raw):
         taxonomies = []
 
@@ -148,9 +149,9 @@ class GetAzureSignIns(Analyzer):
 
         # If the summary stats are present, then add them. If not, don't.
         stats = raw["sum_stats"]
-        if stats[0] != 0: taxonomies.append(self.build_taxonomy('suspicious', 'AzureSignins', 'Risky', stats[0]))
-        if stats[1] != 0: taxonomies.append(self.build_taxonomy('suspicious', 'AzureSignins', 'OutOfState', stats[1]))
-        if stats[2] != 0: taxonomies.append(self.build_taxonomy('malicious', 'AzureSignins', 'ForeignSignIns', stats[2]))
+        if stats["riskySignIns"] != 0: taxonomies.append(self.build_taxonomy('suspicious', 'AzureSignins', 'Risky', stats[0]))
+        if stats["externalStateSignIns"] != 0: taxonomies.append(self.build_taxonomy('suspicious', 'AzureSignins', 'OutOfState', stats[1]))
+        if stats["foreignSignIns"] != 0: taxonomies.append(self.build_taxonomy('malicious', 'AzureSignins', 'ForeignSignIns', stats[2]))
         
 
         return {'taxonomies': taxonomies}

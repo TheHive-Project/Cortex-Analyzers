@@ -31,7 +31,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="r in content.signIns" ng-style="{ 'background-color': r.locationDetails.countryOrRegion == 'US' && r.locationDetails.state != 'Utah' ? '#ebc27c' : r.locationDetails.countryOrRegion != 'US' ? '#eb807c' : 'inherit' }">
+                <!-- <tr ng-repeat="r in content.signIns" ng-style="{ 'background-color': r.locationDetails.countryOrRegion == 'US' && r.locationDetails.state != 'STATE' ? '#ebc27c' : r.locationDetails.countryOrRegion != 'COUNTRY' ? '#eb807c' : 'inherit' }"> -->
+                <tr ng-repeat="r in content.signIns">
                     <td title={{r.id}}>{{r.id | limitTo: 8}}</td>
                     <td>{{r.basicDetails.signInTime}}</td>
                     <td title={{r.basicDetails.result}}>{{r.basicDetails.result | limitTo: 7}}</td>
