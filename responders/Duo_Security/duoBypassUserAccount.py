@@ -42,7 +42,7 @@ class DuoBypassUserAccount(Responder):
             self.error('Incorrect dataType. "username" expected.')
 
     def operations(self, raw):
-        return [self.build_operation('AddTagToArtifact', tag='Duo User: locked')]
+        return [self.build_operation('AddTagToArtifact', tag='Duo User: bypass')]
 
 if __name__ == '__main__':
         DuoBypassUserAccount().run()
