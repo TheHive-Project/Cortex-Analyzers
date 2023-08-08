@@ -137,6 +137,10 @@ Here is the description for each parameter:
  - `output_folder`: [OUTPUT] Folder path in which executed notebooks will be stored. **Output folder must start and end with a "/"**. (Default: /)
  - `any_handler_http_user`: [ANY][HTTP Handler] If you want to use the REST API directly (HTTP handler), you must indicate which user will be used as the reference for having the original notebooks, otherwise don't take this parameter into account.
 
+Here is an example of what it could looks like:
+
+![Cortex Responder Settings example](assets/screenshot_cortex_responder_settings_example.png)
+
 ## Run the connector
 
 ### Inputs

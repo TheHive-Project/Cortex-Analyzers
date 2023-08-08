@@ -136,6 +136,10 @@ Here is the description for each parameter:
  - `any_handler_http_user`: [ANY][HTTP Handler] If you want to use the REST API directly (HTTP handler), you must indicate which user will be used as the reference for having the original notebooks, otherwise don't take this parameter into account.
  - `any_only_html`: [ANY] Indicates if you want only the HTML conversion as a response (not the full detailed payload) (Default: true)
 
+Here is an example of what it could looks like:
+
+![Cortex Analyzer Settings example](assets/screenshot_cortex_analyzer_settings_example.png)
+
 ## Run the connector
 
 ### Inputs
