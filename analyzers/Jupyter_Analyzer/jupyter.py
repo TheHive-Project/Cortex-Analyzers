@@ -166,7 +166,7 @@ class Jupyter(Analyzer):
                     "server_uri_http_api_kernels"
                 ].replace("http://", "ws://")
 
-            return result
+        return result
 
     def get_conf(self, type, name):
         """This is used to recover a configuration parameter from the input or output notebooks setup
