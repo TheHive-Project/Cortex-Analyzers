@@ -134,7 +134,7 @@ Here is the description for each parameter:
  - `output_handler_http_is_jupyterhub`: [OUTPUT][HTTP Handler] If you want to use the REST API to store the output notebook, you must indicate if you're behind a JupyterHub instance or not, otherwise don't take this parameter into account (Default: true)
  - `output_folder`: [OUTPUT] Folder path in which executed notebooks will be stored. **Output folder must start and end with a "/"**. (Default: /)
  - `any_handler_http_user`: [ANY][HTTP Handler] If you want to use the REST API directly (HTTP handler), you must indicate which user will be used as the reference for having the original notebooks, otherwise don't take this parameter into account.
- - `any_only_html`: [ANY] Indicates if you want only the HTML conversion as a response (not the full detailed payload) (Default: true)
+ - `any_generate_html`: [ANY] Indicates if you want only the HTML conversion as a response (not the full detailed payload) (Default: true)
 
 Here is an example of what it could looks like:
 
@@ -194,7 +194,7 @@ All taxonomies must follow the same pattern:
 
 #### Long report
 
-The long report template is used to render the notebook execution from a HTML export of the same notebook. In the raw data sent back to TheHive, you can have the all detail of the execution additionally to the HTML embedded code (be sure to set `any_only_html` to False accordingly)
+The long report template is used to render the notebook execution from a HTML export of the same notebook. In the raw data sent back to TheHive, you can have the all detail of the execution additionally to the HTML embedded code (be sure to set `any_generate_html` to True accordingly). If you don't want to have the render directly in TheHive and lower the size of the response, please set this parameter to False.
 
 # FAQ
 

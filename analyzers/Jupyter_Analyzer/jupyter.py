@@ -72,10 +72,10 @@ class Jupyter(Analyzer):
         )
 
         # Additional parameters
-        self.any_only_html = self.get_param(
-            "config.any_only_html",
+        self.any_generate_html = self.get_param(
+            "config.any_generate_html",
             True,
-            "You must identify if you want to HTML response only for long reports",
+            "You must identify if you want the HTML response included for long reports",
         )
 
         # Use input data as ID
@@ -599,25 +599,14 @@ class Jupyter(Analyzer):
                 # Store the result
                 results.append(nb_output)
 
-        # Convert the content directly to HTML and add it to the payload
-        results_converted = []
-        for nb in results:
-            (body, ressources) = html_exporter.from_notebook_node(nb)
-            # Check if the payload need to be only HTML or full
-            if self.any_only_html is False:
+        # Convert the content directly to HTML and add it to the payload if asked
+        if self.any_generate_html:
+            for nb in results:
+                (body, ressources) = html_exporter.from_notebook_node(nb)
                 nb["html"] = body
-                results_converted.append(nb)
-            else:
-                nb_output = {
-                    "name": nb["name"],
-                    "duration": nb["duration"],
-                    "output_notebook": nb["output_notebook"],
-                    "html": body,
-                }
-                results_converted.append(nb_output)
 
         # Report the results
-        report_results = {"notebooks": results_converted}
+        report_results = {"notebooks": results}
         self.report(report_results)
 
 
