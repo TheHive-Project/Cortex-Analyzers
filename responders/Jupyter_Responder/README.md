@@ -38,8 +38,8 @@ class HttpHandler(object):
     @classmethod
     def write(cls, buf, path):
 +        payload = {"type": "notebook", "format": "json", "path": path}
-+        payload["content"] = buf
-+        result = requests.put(path, json=json.loads(payload))
++        payload["content"] = json.loads(buf)
++        result = requests.put(path, json=payload)
 -        result = requests.put(path, json=json.loads(buf))
         result.raise_for_status()
 
