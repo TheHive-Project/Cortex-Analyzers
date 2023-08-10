@@ -106,8 +106,8 @@
     }
     ,
     {
-      "name": "any_only_html",
-      "description": "[ANY] Indicates if you want only the HTML conversion as a response (not the full detailed payload)",
+      "name": "any_generate_html",
+      "description": "[ANY] Indicates if you want the HTML generation within the response. This setting is helpful if you want to reduce the size of the answer returned by the script and manage the HTML render yourself.",
       "type": "boolean",
       "multi": false,
       "required": false,
