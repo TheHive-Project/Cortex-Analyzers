@@ -197,4 +197,8 @@ root#> su cortex
 cortex#> ipython kernel install --name "python3" --user
  ```
 
+## I have some trouble with the library Papermill and more precisely on the file `papermill/iorw.py`
+
+If you're using a hostname input or output starting with "http(s)", please check that you applied the patch mentionned above as expected. Otherwise, please raise an issue.
+
 You can reach the developer directly by email: letmer00t@gmail.com
