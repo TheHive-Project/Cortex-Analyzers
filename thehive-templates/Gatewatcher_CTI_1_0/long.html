@@ -7,10 +7,10 @@
   </div>
 </div>
 
-<div ng-if="success">
+<div ng-if="success && content.is_on_gw">
   <div class="panel panel-info" ng-repeat="ioc in content.IOCs">
     <div class="panel-heading">
-      <strong>LastInfoSec Report for {{ioc.Type}}: {{ioc.Value}}</strong>
+      <strong>Gatewatcher CTI Report for {{ioc.Type}}: {{ioc.Value}}</strong>
     </div>
     <div class="panel-body">
       <dl class="dl-horizontal" ng-if="ioc.Value == artifact.data && ioc.MD5">
@@ -68,24 +68,37 @@
         <dt>TLP</dt>
         <dd class="wrap">{{ioc.TLP}}</dd>
       </dl>
-      <dl class="dl-horizontal" ng-if="ioc.Relations.length>0">
-        <dt>Relations</dt>
-        <dd class="wrap">{{ioc.Relations.join(", ")}}</dd>
+      <dl class="dl-horizontal" ng-if="ioc.TargetedSectors.length>0">
+        <dt>Targeted Sectors</dt>
+        <dd class="wrap">{{ioc.TargetedSectors.join(", ")}}</dd>
+      </dl>
+      <dl class="dl-horizontal" ng-if="ioc.TargetedCountries.length>0">
+        <dt>Targeted Countries</dt>
+        <dd class="wrap">{{ioc.TargetedCountries.join(", ")}}</dd>
+      </dl>
+      <dl class="dl-horizontal" ng-if="ioc.TargetedPlatforms.length>0">
+        <dt>Targeted Platforms</dt>
+        <dd class="wrap">{{ioc.TargetedPlatforms.join(", ")}}</dd>
+      </dl>
+      <dl class="dl-horizontal" ng-if="ioc.Vulnerabilities.length>0">
+        <dt>Vulnerabilities</dt>
+        <dd class="wrap">{{ioc.Vulnerabilities.join(", ")}}</dd>
       </dl>
       <dl class="dl-horizontal" ng-if="ioc.Tags.length>0">
         <dt>Tags</dt>
         <dd class="wrap">{{ioc.Tags.join(", ")}}</dd>
       </dl>
-      <dl class="dl-horizontal" ng-if="ioc.urls.length>0">
-        <dt>Urls</dt>
-        <dd class="wrap">
-          <ul>
-            <li ng-repeat="url in ioc.urls">
-              {{url.url}} [{{url.tags.join(", ")}}]
-            </li>
-          </ul>
-        </dd>
-      </dl>
+    </div>
+  </div>
+</div>
+
+<div ng-if="success && !content.is_on_gw">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      Gatewatcher CTI Report
+    </div>
+    <div class="panel-body">
+      <span>No match.</span>
     </div>
   </div>
 </div>

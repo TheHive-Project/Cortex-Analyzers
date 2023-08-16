@@ -41,6 +41,7 @@ Create 2 folders named `input` and `output` in the folder of the neuron to test,
     },
     "pap": 2,
     "message": "1"
+    }
 ```
 
 
