@@ -77,7 +77,7 @@
     },
     {
       "name": "output_folder",
-      "description": "[OUTPUT] Folder path in which executed notebooks will be stored",
+      "description": "[OUTPUT] Folder path in which executed notebooks will be stored. This field is supporting datetime format (see 'strftime' function).",
       "type": "string",
       "multi": false,
       "required": true,

@@ -23,6 +23,16 @@ class Jupyter(Responder):
         """Initialize the Jupyter analyzer"""
         Responder.__init__(self)
 
+        # Initialize the ouput folder
+        self.output_folder = self.get_param(
+            "config.output_folder",
+            None,
+            "You must provide an output folder path in which executed notebooks will be stored",
+        )
+        today = datetime.date.today()
+        # Parse the output folder to catch datetime masks
+        self.output_folder = datetime.datetime.strftime(today,self.output_folder)
+
         # Initialize configuration objects for notebooks
         self.input_configuration = self.initialize_path(
             hostname=self.get_param(
@@ -64,11 +74,6 @@ class Jupyter(Responder):
                 None,
                 "[HTTP Handler only] JupyterHub for output notebook boolean parameter is missing.",
             ),
-        )
-        self.output_folder = self.get_param(
-            "config.output_folder",
-            None,
-            "You must provide an output folder path in which executed notebooks will be stored",
         )
 
         # Use input data as ID depending on the type
@@ -169,6 +174,9 @@ class Jupyter(Responder):
                 result["server_uri_ws_api_kernels"] = result[
                     "server_uri_http_api_kernels"
                 ].replace("http://", "ws://")
+
+            # Initialize the ouput path
+            self.create_output_path(hostname=result["server_uri_http_api_contents"],headers=result["handler_http_headers"])
 
         return result
 
@@ -317,6 +325,30 @@ class Jupyter(Responder):
             # wait to poll again
             time.sleep(1)
 
+    def create_output_path(self, hostname, headers=None):
+        """This function is used to create the output path subfolders if they aren't existing yet
+
+        Args:
+            hostname (str): URL of the hostname
+            headers (dict, optional): Headers for the request. Defaults to None.
+        """
+        subpaths = self.output_folder.split("/")
+        new_path = ""
+        for sp in subpaths:
+            new_path += "/{0}".format(sp)
+            # Build the path
+            final_path = "{0}{1}".format(
+                hostname,
+                new_path
+            )
+
+            # Check if folder is existing
+            status_code = requests.get(final_path, headers=headers).status_code
+            # If the folder exists, it will return a status code 200. Otherwise, we will need to create
+            if status_code != 200:
+                # Create the folder
+                requests.put(final_path, json={"name": sp, "type": "directory"}, headers=headers)
+
     @gen.coroutine
     def execute_notebook_remotely(self):
         """This function is used to execute a notebook thanks to a remote Jupyter instance using the REST API and a dedicated websocket
@@ -450,29 +482,26 @@ class Jupyter(Responder):
             # Write the notebook after execution
             # Build output path notebook
             if self.get_conf("output", "handler_type") is HttpHandler:
-                output_path = "{0}{1}{2}-{3}-{4}?token={5}".format(
+                output_path = "{0}/{1}/{2}-{3}?token={4}".format(
                     self.get_conf("output", "server_uri_http_api_contents"),
                     self.output_folder,
-                    str(datetime.date.today()),
                     self.id,
-                    path[1:],
+                    path,
                     self.get_conf("output", "handler_http_service_api_token"),
                 )
-                output_path_direct = "{0}/user/{1}/tree{2}{3}-{4}-{5}".format(
+                output_path_direct = "{0}/user/{1}/tree/{2}/{3}-{4}".format(
                     self.get_conf("output", "hostname"),
                     self.get_conf("output", "handler_http_user"),
                     self.output_folder,
-                    str(datetime.date.today()),
                     self.id,
-                    path[1:],
+                    path,
                 )
             else:
-                output_path = "{0}{1}{2}-{3}-".format(
+                output_path = "{0}/{1}/{2}".format(
                     self.get_conf("output", "hostname"),
                     self.output_folder,
-                    str(datetime.date.today()),
                     self.id,
-                    path[1:],
+                    path,
                 )
                 output_path_direct = output_path
             pm.iorw.write_ipynb(nb_output, output_path)
@@ -527,29 +556,26 @@ class Jupyter(Responder):
 
                 # Build output path notebook
                 if self.get_conf("output", "handler_type") is HttpHandler:
-                    output_notebook = "{0}{1}{2}-{3}-{4}?token={5}".format(
+                    output_notebook = "{0}/{1}/{2}-{3}?token={4}".format(
                         self.get_conf("output", "server_uri_http_api_contents"),
                         self.output_folder,
-                        str(datetime.date.today()),
                         self.id,
-                        path[1:],
+                        path,
                         self.get_conf("output", "handler_http_service_api_token"),
                     )
-                    output_notebook_direct = "{0}/user/{1}/tree{2}{3}-{4}-{5}".format(
+                    output_notebook_direct = "{0}/user/{1}/tree/{2}/{3}-{4}".format(
                         self.get_conf("output", "hostname"),
                         self.get_conf("output", "handler_http_user"),
                         self.output_folder,
-                        str(datetime.date.today()),
                         self.id,
-                        path[1:],
+                        path,
                     )
                 else:
-                    output_notebook = "{0}{1}{2}-{3}-".format(
+                    output_notebook = "{0}/{1}/{2}-".format(
                         self.get_conf("output", "hostname"),
                         self.output_folder,
-                        str(datetime.date.today()),
                         self.id,
-                        path[1:],
+                        path,
                     )
                     output_notebook_direct = output_notebook
 

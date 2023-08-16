@@ -129,10 +129,10 @@ Here is the description for each parameter:
  - `input_handler_http_is_jupyterhub`: [INPUT][HTTP Handler] If you want to use the REST API to get the input notebook, you must indicate if you're behind a JupyterHub instance or not, otherwise don't take this parameter into account (Default: true)
  - `input_handler_http_execute_remotely`: [INPUT][HTTP Handler] If you want to use the REST API to get the input notebook, you must indicate if you want to run your code locally (papermill) or remotely (websocket through HTTP), otherwise don't take this parameter into account
  - `input_paths`: [INPUT] List of paths of the notebooks you want to run
- output_hostname: [OUTPUT] Hostname representing the Jupyter(Hub) instance (or Azure, S3 etc location) to reach to store the output notebook. See https://github.com/nteract/papermill#supported-name-handlers for more information. **Input paths must start with a "/"**.
+ - `output_hostname`: [OUTPUT] Hostname representing the Jupyter(Hub) instance (or Azure, S3 etc location) to reach to store the output notebook. See https://github.com/nteract/papermill#supported-name-handlers for more information.
  - `output_handler_http_service_api_token`: [HTTP Handler] If you want to use the REST API to store the output notebook, you must indicate an API token used by a dedicated service, otherwise don't take this parameter into account
  - `output_handler_http_is_jupyterhub`: [OUTPUT][HTTP Handler] If you want to use the REST API to store the output notebook, you must indicate if you're behind a JupyterHub instance or not, otherwise don't take this parameter into account (Default: true)
- - `output_folder`: [OUTPUT] Folder path in which executed notebooks will be stored. **Output folder must start and end with a "/"**. (Default: /)
+ - `output_folder`: [OUTPUT] Folder path in which executed notebooks will be stored. This field is supporting format code for datetime such as the one used by the `strftime()` function.
  - `any_handler_http_user`: [ANY][HTTP Handler] If you want to use the REST API directly (HTTP handler), you must indicate which user will be used as the reference for having the original notebooks, otherwise don't take this parameter into account.
  - `any_generate_html`: [ANY] Indicates if you want only the HTML conversion as a response (not the full detailed payload) (Default: true)
 
@@ -209,5 +209,9 @@ root#> chown cortex: /home/cortex
 root#> su cortex
 cortex#> ipython kernel install --name "python3" --user
  ```
+
+## I have some trouble with the library Papermill and more precisely on the file `papermill/iorw.py`
+
+If you're using a hostname input or output starting with "http(s)", please check that you applied the patch mentionned above as expected. Otherwise, please raise an issue.
 
 You can reach the developer directly by email: letmer00t@gmail.com
