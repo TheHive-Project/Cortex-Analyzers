@@ -3,7 +3,7 @@ FROM python:3.9
 WORKDIR /worker
 COPY . Jupyter_Responder
 RUN test ! -e Jupyter_Responder/requirements.txt || pip install --no-cache-dir -rJupyter_Responder/requirements.txt
-COPY <<-"EOT" /Jupyter_Responder/papermill_iorw.patch
+RUN cat  <<EOF >  /Jupyter_Responder/papermill_iorw.patch
 --- iorw.py       2023-08-11 05:49:49.302149767 +0000
 +++ iorw.py     2023-08-11 05:48:38.553642098 +0000
 @@ -180,7 +180,7 @@
@@ -26,7 +26,9 @@ COPY <<-"EOT" /Jupyter_Responder/papermill_iorw.patch
          result.raise_for_status()
  
      @classmethod
-EOT
+EOF
+
+
 RUN pip install papermill
 RUN apt update
 RUN apt install patch
