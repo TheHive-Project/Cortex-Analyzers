@@ -1,11 +1,16 @@
 {
-  "name": "Gatewatcher CTI",
+  "name": "Gatewatcher_CTI",
   "version": "1.0",
   "author": "Gatewatcher",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-3.0",
   "description": "Get Gatewatcher CTI Report",
-  "dataTypeList": ["hash", "domain", "fqdn", "url"],
+  "dataTypeList": [
+    "hash",
+    "domain",
+    "fqdn",
+    "url"
+  ],
   "command": "Gatewatcher_CTI/Gatewatcher_CTI.py",
   "baseConfig": "Gatewatcher_CTI",
   "config": {
