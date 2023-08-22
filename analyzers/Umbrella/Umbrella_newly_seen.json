@@ -1,0 +1,23 @@
+{
+  "name": "Umbrella_NewlySeen",
+  "version": "1.0",
+  "author": "CTIMarc",
+  "url": "https://github.com/CTIMarc/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Query the Umbrella API for newly seen domains.",
+  "dataTypeList": ["other"],
+  "command": "Umbrella/Umbrella_investigate.py",
+  "baseConfig": "Umbrella",
+  "config": {
+        "service": "newly_seen"
+  },
+  "configurationItems": [
+    {
+        "name": "bearer_token",
+        "description": "API Bearer token.",
+        "type": "string",
+        "multi": false,
+        "required": true
+    }
+  ]
+}
