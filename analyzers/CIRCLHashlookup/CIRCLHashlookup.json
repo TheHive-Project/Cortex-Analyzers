@@ -1,0 +1,31 @@
+{
+  "name": "CIRCLHashlookup",
+  "author": "Mikael Keri",
+  "license": "AGPL-V3",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "version": "1.1",
+  "description": "CIRCL hashlookup uses a public API to lookup hash values against databases of known good files",
+  "dataTypeList": ["hash"],
+  "baseConfig": "CIRCLHashlookup",
+  "config": {
+      "check_tlp": true,
+      "max_tlp": 2,
+      "check_pap": true,
+      "max_pap": 2
+   },
+  "command": "CIRCLHashlookup/circlhashlookup_analyzer.py",
+   "registration_required": false,
+   "subscription_required": false,
+   "free_subscription": true,
+   "service_homepage": "https://hashlookup.circl.lu/",
+   "service_logo": {"path":"assets/circlhashlookup_logo.png", "caption": "logo"},
+   "screenshots": [
+     {
+       "path": "assets/circlhashlookup_long_report.png",
+       "caption:":"CIRCLHashlookup analyzer full report"
+     },
+     {
+      "path": "assets/circlhashlookup_verdict.png",
+      "caption:":"CIRCLHashlookup analyzer verdict"
+    }]
+}

@@ -1,0 +1,34 @@
+{
+  "name": "EmailRep",
+  "version": "1.0",
+  "author": "Manabu Niseki",
+  "url": "https://github.com/ninoseki/emailrep-analyzer",
+  "license": "MIT",
+  "description": "emailrep.io lookup.",
+  "dataTypeList": ["mail"],
+  "command": "EmailRep/emailrep_analyzer.py",
+  "baseConfig": "EmailRep",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API Key",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ],
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://emailrep.io/",
+  "service_logo": {
+    "path": "assets/emailrep.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report.png",
+      "caption": "Emailrep: long report"
+    }
+  ]
+}

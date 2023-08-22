@@ -1,0 +1,87 @@
+<div class="report-PT" ng-if="success">
+    <style>
+        .report-PT dl {
+            margin-bottom: 2px;
+        }
+        .fieldlabel {
+            font-size: 10pt;
+            color: #777;
+        }
+        .fieldvalue {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+    </style>
+
+
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>RiskIQ PDNS Resolutions</strong>
+                </div>
+                <div class="panel-body">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <div class="fieldlabel">Earliest Available Record</div>
+                                    <div class="fieldvalue">{{content.firstseen}}</div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="fieldlabel">Most Recent Record</div>
+                                    <div class="fieldvalue">{{content.lastseen}}</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <div class="fieldlabel">Query Start Date</div>
+                                    <div class="fieldvalue">{{content.datestart}}</div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="fieldlabel">Query End Date</div>
+                                    <div class="fieldvalue">{{content.dateend}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-info">
+                        <div class="panel-heading"><b>pDNS Resolution History</b></div>
+                        <div class="panel-body">
+                            <table class="table table-hover table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Resolution</th>
+                                        <th>First Seen</th>
+                                        <th>Last Seen</th>
+                                        <th>Sources</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="p in content.records">
+                                        <td class="text-nowrap">{{p.recordtype}}</td>
+                                        <td>{{p.resolve}}</td>
+                                        <td class="text-nowrap">{{p.firstseen}}</td>
+                                        <td class="text-nowrap">{{p.lastseen}}</td>
+                                        <td>
+                                            <span class="text-muted" style="margin-right: 10px;" ng-repeat="s in p.sources">{{s}}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

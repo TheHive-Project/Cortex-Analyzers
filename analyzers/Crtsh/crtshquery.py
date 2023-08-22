@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding: utf-8
 
 import requests
@@ -48,7 +48,7 @@ class CrtshAnalyzer(Analyzer):
         if wildcard:
             url2 = base_url.format("%25{}.".format(domain))
             req2 = requests.get(url2, headers={'User-Agent': ua})
-            if req2.ok:
+            if req2.ok and not req2.headers['content-type'].startswith('text/html'):
                 try:
                     content2 = req2.content.decode('utf-8')
                     data2 = json.loads(content2.replace('}{', '},{'))
@@ -58,17 +58,19 @@ class CrtshAnalyzer(Analyzer):
                     return None
 
         for c in data:
-            det_url = 'https://crt.sh/?q={}&output=json'.format(c['min_cert_id'])
-            try:
-                det_req = requests.get(det_url, headers={'User-Agent': ua})
-                if det_req.status_code == requests.codes.ok:
-                    det_con = det_req.content.decode('utf-8')
-                    sha1 = re.findall(rex, det_con)[0]
-                    c['sha1'] = sha1
-                else:
+            if c.get('min_cert_id'):
+                det_url = 'https://crt.sh/?q={}&output=json'.format(c['min_cert_id'])
+                try:
+                    det_req = requests.get(det_url, headers={'User-Agent': ua})
+                    if det_req.status_code == requests.codes.ok:
+                        det_con = det_req.content.decode('utf-8')
+                        sha1 = re.findall(rex, det_con)[0]
+                        c['sha1'] = sha1
+                    else:
+                        c['sha1'] = ''
+                except:
                     c['sha1'] = ''
-            except:
-                c['sha1'] = ''
+
         return data
 
     def __init__(self):

@@ -1,0 +1,104 @@
+<div class="panel panel-danger" ng-if="!success">
+  <div class="panel-heading">
+    <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+  </div>
+  <div class="panel-body">
+    {{content.errorMessage}}
+  </div>
+</div>
+
+<div ng-if="success && content.is_on_gw">
+  <div class="panel panel-info" ng-repeat="ioc in content.IOCs">
+    <div class="panel-heading">
+      <strong>Gatewatcher CTI Report for {{ioc.Type}}: {{ioc.Value}}</strong>
+    </div>
+    <div class="panel-body">
+      <dl class="dl-horizontal" ng-if="ioc.Value == artifact.data && ioc.MD5">
+        <dt>MD5</dt>
+        <dd class="wrap">{{ioc.MD5}}</dd>
+      </dl>
+      <dl class="dl-horizontal" ng-if="ioc.Value == artifact.data && ioc.SHA1">
+        <dt>SHA1</dt>
+        <dd class="wrap">{{ioc.SHA1}}</dd>
+      </dl>
+      <dl
+        class="dl-horizontal"
+        ng-if="ioc.Value == artifact.data && ioc.SHA256"
+      >
+        <dt>SHA256</dt>
+        <dd class="wrap">{{ioc.SHA256}}</dd>
+      </dl>
+
+      <dl class="dl-horizontal" ng-if="ioc.CreationDate">
+        <dt>Creation Date</dt>
+        <dd class="wrap">{{ioc.CreationDate}}</dd>
+      </dl>
+      <dl class="dl-horizontal" ng-if="ioc.Risk">
+        <dt>Risk</dt>
+        <dd class="wrap">{{ioc.Risk}}</dd>
+      </dl>
+      <dl
+        class="dl-horizontal"
+        ng-if="ioc.description && ioc.description.length>0"
+      >
+        <dt>Description</dt>
+        <dd class="wrap">{{ioc.description}}</dd>
+      </dl>
+      <dl class="dl-horizontal" ng-if="ioc.cwe && ioc.cwe.length>0">
+        <dt>Cwe</dt>
+        <dd class="wrap">{{ioc.Cwe}}</dd>
+      </dl>
+      <dl class="dl-horizontal" ng-if="ioc.filetype">
+        <dt>Filetype</dt>
+        <dd class="wrap">{{ioc.filetype}}</dd>
+      </dl>
+      <dl class="dl-horizontal" ng-if="ioc.Categories.length>0">
+        <dt>Categories</dt>
+        <dd class="wrap">{{ioc.Categories.join(", ")}}</dd>
+      </dl>
+      <dl class="dl-horizontal" ng-if="ioc.Families.length>0">
+        <dt>Families</dt>
+        <dd class="wrap">{{ioc.Families.join(", ")}}</dd>
+      </dl>
+      <dl class="dl-horizontal" ng-if="ioc.TTP.length>0">
+        <dt>TTP</dt>
+        <dd class="wrap">{{ioc.TTP.join(", ")}}</dd>
+      </dl>
+      <dl class="dl-horizontal" ng-if="ioc.TLP">
+        <dt>TLP</dt>
+        <dd class="wrap">{{ioc.TLP}}</dd>
+      </dl>
+      <dl class="dl-horizontal" ng-if="ioc.TargetedSectors.length>0">
+        <dt>Targeted Sectors</dt>
+        <dd class="wrap">{{ioc.TargetedSectors.join(", ")}}</dd>
+      </dl>
+      <dl class="dl-horizontal" ng-if="ioc.TargetedCountries.length>0">
+        <dt>Targeted Countries</dt>
+        <dd class="wrap">{{ioc.TargetedCountries.join(", ")}}</dd>
+      </dl>
+      <dl class="dl-horizontal" ng-if="ioc.TargetedPlatforms.length>0">
+        <dt>Targeted Platforms</dt>
+        <dd class="wrap">{{ioc.TargetedPlatforms.join(", ")}}</dd>
+      </dl>
+      <dl class="dl-horizontal" ng-if="ioc.Vulnerabilities.length>0">
+        <dt>Vulnerabilities</dt>
+        <dd class="wrap">{{ioc.Vulnerabilities.join(", ")}}</dd>
+      </dl>
+      <dl class="dl-horizontal" ng-if="ioc.Tags.length>0">
+        <dt>Tags</dt>
+        <dd class="wrap">{{ioc.Tags.join(", ")}}</dd>
+      </dl>
+    </div>
+  </div>
+</div>
+
+<div ng-if="success && !content.is_on_gw">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      Gatewatcher CTI Report
+    </div>
+    <div class="panel-body">
+      <span>No match.</span>
+    </div>
+  </div>
+</div>

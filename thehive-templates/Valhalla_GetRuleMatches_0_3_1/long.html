@@ -1,0 +1,55 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading"><strong>Valhalla Lookup Failed</strong></div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <td>{{content.errorMessage}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="success && content.status === 'error'">
+    <div class="panel-heading"><strong>Valhalla Lookup Failed</strong></div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <td>{{content.message}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.status === 'empty'">
+    <div class="panel-heading"><strong>Valhalla Rule Matches</strong></div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <td>No YARA rule matches found on Virustotal for that sample.</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="success && content.status === 'success'">
+    <div class="panel-heading"><strong>Valhalla Rule Matches</strong></div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <th>Rule Name</th>
+                <th>Rule Tags</th>
+                <th>Virustotal Scan Timestamp</th>
+                <th>AV Engine Matches</th>
+                <th>AV Engines Total</th>
+            </tr>
+            <tr ng-repeat="result in content.results">
+                <td><a href="https://valhalla.nextron-systems.com/info/rule/{{result.rulename}}"
+                        title="Visit the rule info page">{{result.rulename}}</a></strong></td>
+                <td>{{result.tags.join(", ")}}</td>
+                <td>{{result.timestamp}}</td>
+                <td>{{result.positives}}</td>
+                <td>{{result.total}}</td>
+            </tr>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,55 @@
+{
+  "name": "AnyRun_Sandbox_Analysis",
+  "version": "1.0",
+  "author": "Andrea Garavaglia, Davide Arcuri, LDO-CERT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Any.Run Sandbox file analysis",
+  "dataTypeList": ["file", "url"],
+  "command": "AnyRun/anyrun_analyzer.py",
+  "baseConfig": "AnyRun",
+  "configurationItems": [
+    {
+      "name": "token",
+      "description": "API token",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "privacy_type",
+      "description": "Define the privacy setting (Allowed values: public, bylink, owner)",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "bylink"
+    },
+    {
+      "name": "verify_ssl",
+      "description": "Verify SSL certificate",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://any.run/",
+  "service_logo": {
+      "path": "assets/anyrun.png",
+      "caption": "AnyRun logo"
+  },
+  "screenshots": [
+      {
+          "path": "assets/short_report.png",
+          "caption": "AnyRun: Short report template"
+      },
+    
+      {
+          "path": "assets/long_report.png",
+          "caption": "AnyRun: Long report template"
+      }
+  ]
+}

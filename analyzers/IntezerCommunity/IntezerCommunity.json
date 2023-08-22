@@ -1,0 +1,39 @@
+{
+  "name": "IntezerCommunity",
+  "version": "1.0",
+  "author": "Matteo Lodi",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-v3",
+  "description": "Analyze a possible malicious file with Intezer Analyzer",
+  "dataTypeList": ["file"],
+  "baseConfig": "IntezerCommunity",
+  "command": "IntezerCommunity/intezer_community.py",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for Intezer",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "config": {
+    "check_tlp": true,
+    "max_tlp": 2,
+    "auto_extract": false
+  },
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://analyze.intezer.com/",
+  "service_logo": {
+    "path": "assets/intezer.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report.png",
+      "caption": "Intezer: long report"
+    }
+  ]
+}

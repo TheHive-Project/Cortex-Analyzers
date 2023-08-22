@@ -1,8 +1,8 @@
 class SubmoduleBaseclass(object):
     def __init__(self):
-        self.name = 'This is where the module name should go.'
+        self.name = "This is where the module name should go."
         self.results = []
-        self.summary = {'taxonomies': []}
+        self.summary = {"taxonomies": []}
 
     def get_name(self):
         """
@@ -22,11 +22,11 @@ class SubmoduleBaseclass(object):
         :return: dict
         """
         return {
-                'level': level,
-                'namespace': namespace,
-                'predicate': predicate,
-                'value': value
-                }
+            "level": level,
+            "namespace": namespace,
+            "predicate": predicate,
+            "value": value,
+        }
 
     def check_file(self, **kwargs):
         """
@@ -35,7 +35,7 @@ class SubmoduleBaseclass(object):
         method.
         If this returns true, the analyze_file() function gets called.
 
-        :param file: used for checking compatiblity for a file directly.
+        :param file: used for checking compatibility for a file directly.
         :type file: str
         :param filetype: used for checking compatibility for a file using the filetype string of pyexiftool.fileType().
         :type filetype: str
@@ -52,10 +52,9 @@ class SubmoduleBaseclass(object):
 
         :param path: path to file
         :return:
-        :rtype: dict
+        :rtype: dict and list of observables or None
         """
-        return {}
-
+        return {}, None
 
     def module_summary(self):
         """
@@ -75,7 +74,9 @@ class SubmoduleBaseclass(object):
         :param summary: result dictionary
         :return:
         """
-        self.results.append({
-            "submodule_section_header": subsection_header,
-            "submodule_section_content": results
-        })
+        self.results.append(
+            {
+                "submodule_section_header": subsection_header,
+                "submodule_section_content": results,
+            }
+        )

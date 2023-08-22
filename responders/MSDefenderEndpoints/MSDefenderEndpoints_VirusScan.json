@@ -1,0 +1,60 @@
+{
+  "name": "MSDefender-FullVirusscan",
+  "version": "1.0",
+  "author": "Keijo Korte",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Run full virus scan to machine with Microsoft Defender for Endpoints",
+  "dataTypeList": ["thehive:case_artifact"],
+  "command": "MSDefenderEndpoints/MSDefenderEndpoints.py",
+  "baseConfig": "MSDefenderforEndpoints",
+  "config": {
+    "service": "runFullVirusScan"
+  },
+  "configurationItems": [
+    {
+      "name": "tenantId",
+      "description": "Azure tenant ID",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "abcdef12-ab12-abc12-ab12-abcdef123456"
+    },
+    {
+      "name": "appId",
+      "description": "Azure app ID",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "abcdef12-ab12-abc12-ab12-abcdef123456"
+    },
+    {
+      "name": "appSecret",
+      "description": "Azure app secret",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890="
+    },
+    {
+      "name": "resourceAppIdUri",
+      "description": "Security Center URI, usually doens't need to change",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "https://api.securitycenter.windows.com"
+    },
+    {
+      "name": "oAuthUri",
+      "description": "Azure oAuth2 authentication endpoint",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "https://login.windows.net/"
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://securitycenter.windows.com"
+}

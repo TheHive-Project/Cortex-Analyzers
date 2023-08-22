@@ -1,0 +1,86 @@
+<div class="sekoia-report" ng-if="success">
+    <div ng-if="content.results.length === 0">
+        No results found
+    </div>
+    <h2 ng-if="content.results.length > 0">{{content.results.length}} Context(s)</h2>
+    <div ng-repeat="bundle in content.results track by bundle.id">
+        <h4>{{bundle.id}}</h4>
+        <div ng-if="bundle.objects.length > 0" ng-repeat="item in bundle.objects">
+            <div class="panel panel-info" ng-if="item.type !== 'relationship' && item.type !== 'marking-definition'">
+                <div class="panel-heading">
+                    <strong>{{item.name | fang}}</strong>
+                </div>
+                <div class="panel-body">
+                    <div>
+                        <dl class="dl-horizontal">
+                            <dt>ID</dt>
+                            <dd class="wrap">{{item.id}}</dd>
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>Type</dt>
+                            <dd class="wrap">{{item.type}}<span ng-if="item.x_ic_is_source"> (source)</span><span ng-if="item.x_ic_is_sector"> (sector)</span></dd>
+                        </dl>
+                        <dl class="dl-horizontal" ng-if="item.aliases">
+                            <dt>Aliases</dt>
+                            <dd>
+                                <div ng-if="item.aliases.length === 0">No aliases defined</div>
+                                <div ng-if="item.aliases.length > 0">
+                                    <span class="label label-info" style="margin: 2px;" ng-repeat="alias in item.aliases">{{alias}}</span> 
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>Tags</dt>
+                            <dd>
+                                <span class="label label-danger" style="margin: 2px;" ng-if="item.revoked" >Revoked</span>
+                                <span class="label label-success" style="margin: 2px;" ng-if="!item.revoked" >Not Revoked</span>
+                            </dd>
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>Description</dt>
+                            <dd class="wrap">{{item.description || 'No description' }}</dd>
+                        </dl>
+                        <dl class="dl-horizontal" ng-if="item.type === 'indicator'">
+                            <dt>Pattern</dt>
+                            <dd class="wrap">{{item.pattern }}</dd>
+                        </dl>
+                        <dl class="dl-horizontal" ng-if="item.type === 'indicator'">
+                            <dt>Pattern type</dt>
+                            <dd class="wrap">{{item.pattern_type || 'stix' }}</dd>
+                        </dl>
+                        <dl class="dl-horizontal" ng-if="item.type === 'indicator'">
+                            <dt>Valid from</dt>
+                            <dd class="wrap">{{item.valid_from.split("T")[0] || 'no set' }}</dd>
+                        </dl>
+                        <dl class="dl-horizontal" ng-if="item.type === 'indicator'">
+                            <dt>Valid until</dt>
+                            <dd class="wrap">{{item.valid_until.split("T")[0] || 'no set'  }}</dd>
+                        </dl>
+                        <dl class="dl-horizontal" ng-if="item.kill_chain_phases">
+                            <dt>Kill chain phases</dt>
+                            <dd>
+                                <div ng-if="item.kill_chain_phases.length === 0">No kill chain defined</div>
+                                <div ng-if="item.kill_chain_phases.length > 0">
+                                    <span class="label label-info" style="margin: 2px;" ng-repeat="chain in item.kill_chain_phases">{{chain.phase_name}}</span> 
+                                </div>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> SEKOIA: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

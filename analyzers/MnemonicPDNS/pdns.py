@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding: utf-8
 
 import requests
@@ -10,7 +10,7 @@ class PDNSv3(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
 
-        self.base_url = "https://portal.mnemonic.no/web/api/pdns/v3"
+        self.base_url = "https://api.mnemonic.no/pdns/v3"
         self.apikey = self.get_param("config.key", None)
         self.service = self.get_param('config.service', None, 'Service parameter is missing')
 

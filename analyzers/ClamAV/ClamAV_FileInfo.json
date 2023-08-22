@@ -1,0 +1,13 @@
+{
+  "name": "ClamAV_FileInfo",
+  "version": "1.1",
+  "author": "Brian Laskowski",
+  "url": "https://github.com/Hestat/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use Clamscan with custom rules",
+  "dataTypeList": ["file"],
+  "command": "ClamAV/pyclam_analyzer.py",
+  "baseConfig": "ClamAV"
+  
+}
+

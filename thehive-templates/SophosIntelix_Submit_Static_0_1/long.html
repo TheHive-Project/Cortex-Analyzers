@@ -1,0 +1,403 @@
+<div class="panel panel-danger" ng-if="!success">
+   <div class="panel-heading">
+      <strong>{{artifact.data | fang}}</strong>
+   </div>
+   <div class="panel-body">
+      {{content.errorMessage}}
+   </div>
+</div>
+<div class="panel panel-primary" ng-if="success" ng-init="table_limit = 50">
+   <div class="panel-heading">
+      <strong>Sample Details - First Submitted: {{content.submission}} - Analysis Type: {{content.analysis_type}}</strong>
+   </div>
+   <table class="table table-hover">
+      <tr>
+         <th>File Name</th>
+         <th>SHA1</th>
+         <th>SHA256</th>
+         <th>MIME Type</th>
+         <th>Score</th>
+      </tr>
+      <tr>
+         <td>{{artifact.attachment.name | fang}}</td>
+         <td>{{content.analysis_subject.sha1}}</td>
+         <td>{{content.analysis_subject.sha256}}</td>
+         <td>{{content.analysis_subject.mime_type}}</td>
+         <td>{{content.score}}</td>
+      </tr>
+   </table>
+   <div class="panel panel-info" ng-if="::content.detection">
+      <div class="panel-heading">
+         <strong>Detections</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Positives</th>
+            <th>VT Link</th>
+            <th>Sophos</th>
+            <th>Sophos ML</th>
+            <th>Total</th>
+         </tr>
+         <tr>
+            <td>{{content.detection.positives || "0"}}</td>
+            <td><a href={{content.detection.permalink}} target="_blank">{{content.analysis_subject.sha256}}</a></td>
+            <td>{{content.detection.sophos || "0"}}</td>
+            <td>{{content.detection.sophos_ml || "0"}}</td>
+            <td>{{content.detection.total || "0"}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.reputation">
+      <div class="panel-heading">
+         <strong>Reputation</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Reputation Classification</th>
+            <th>Reputation Score</th>
+            <th>Prevalence</th>
+            <th>First Seen</th>
+            <th>Last Seen</th>
+         </tr>
+         <tr>
+            <td>{{content.reputation.score_string}}</td>
+            <td>{{content.reputation.score}}</td>
+            <td>{{content.reputation.prevalence}}</td>
+            <td>{{content.reputation.first_seen}}</td>
+            <td>{{content.reputation.last_seen}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.pe_analysis.versioninfo">
+      <div class="panel-heading">
+         <strong>Version Info</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Legal Copyright</th>
+            <th>Internal Name</th>
+            <th>File Version</th>
+            <th>Special Build</th>
+            <th>Company Name</th>
+            <th>Legal Trademarks</th>
+            <th>Comments</th>
+            <th>Product Name</th>
+            <th>File Description</th>
+            <th>Product Version</th>
+            <th>Private Build</th>
+            <th>Original Filename</th>
+         </tr>
+         <tr>
+            <td>{{content.pe_analysis.versioninfo.legalcopyright}}</td>
+            <td>{{content.pe_analysis.versioninfo.internalname}}</td>
+            <td>{{content.pe_analysis.versioninfo.fileversion}}</td>
+            <td>{{content.pe_analysis.versioninfo.specialbuild}}</td>
+            <td>{{content.pe_analysis.versioninfo.companyname}}</td>
+            <td>{{content.pe_analysis.versioninfo.legaltrademarks}}</td>
+            <td>{{content.pe_analysis.versioninfo.comments}}</td>
+            <td>{{content.pe_analysis.versioninfo.productname}}</td>
+            <td>{{content.pe_analysis.versioninfo.filedescription}}</td>
+            <td>{{content.pe_analysis.versioninfo.productversion}}</td>
+            <td>{{content.pe_analysis.versioninfo.privatebuild}}</td>
+            <td>{{content.pe_analysis.versioninfo.originalfilename}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.pe_analysis.digisig">
+      <div class="panel-heading">
+         <strong>Digital Signature</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Signing Date</th>
+            <th>Signer</th>
+            <th>Verfified</th>
+            <th>Certificate Source</th>
+            <th>Timestamp</th>
+            <th>Time Signer</th>
+         </tr>
+         <tr>
+            <td>{{content.pe_analysis.digisig.signing_date}}</td>
+            <td>{{content.pe_analysis.digisig.signer | json}}</td>
+            <td>{{content.pe_analysis.digisig.verified}}</td>
+            <td>{{content.pe_analysis.digisig.certificate_source}}</td>
+            <td>{{content.pe_analysis.digisig.timescert.timestamp}}</td>
+            <td>{{content.pe_analysis.digisig.timescert.timesigner | json}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.ml_file.analyses.genetic_analysis.neighbor_info">
+      <div class="panel-heading">
+         <strong>ML File Analysis - Genetic Analysis - Neighbor Info</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>SHA 265</th>
+            <th>Is Malware</th>
+            <th>Score</th>
+            <th>Match Percentage</th>
+            <th>File Path</th>
+         </tr>
+         <tr ng-repeat="(key, neighbor) in content.ml_file.analyses.genetic_analysis.neighbor_info | limitTo:table_limit">
+            <td><a href=https://www.virustotal.com/gui/file/{{key}}/detection target="_blank">{{key}}</a></td>
+            <td>{{neighbor.is_malware}}</td>
+            <td>{{neighbor.score}}</td>
+            <td>{{neighbor.match_percentage}}</td>
+            <td>{{neighbor.filepath}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.ml_file">
+      <div class="panel-heading">
+         <strong>ML File Analysis - Analyzed Counts</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Category</th>
+            <th>Benign</th>
+            <th>Malware</th>
+         </tr>
+         <tr>
+            <td>Feature Intersections</td>
+            <td>{{content.ml_file.analyzed_counts.feature_intersections.benign}}</td>
+            <td>{{content.ml_file.analyzed_counts.feature_intersections.malware}}</td>
+         </tr>
+         <tr>
+            <td>Feature Maliciousness</td>
+            <td>{{content.ml_file.analyzed_counts.feature_maliciousness.benign}}</td>
+            <td>{{content.ml_file.analyzed_counts.feature_maliciousness.malware}}</td>
+         </tr>
+         <tr>
+            <td>Genetic Analysis</td>
+            <td>{{content.ml_file.analyzed_counts.genetic_analysis.benign}}</td>
+            <td>{{content.ml_file.analyzed_counts.genetic_analysis.malware}}</td>
+         </tr>
+         <tr>
+            <td>Black Box</td>
+            <td>{{content.ml_file.analyzed_counts.black_box.benign}}</td>
+            <td>{{content.ml_file.analyzed_counts.black_box.malware}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.ml_file.analyses.feature_intersections">
+      <div class="panel-heading">
+         <strong>ML File Analysis - Feature Intersections</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Category</th>
+            <th>Indicator</th>
+            <th>Description</th>
+            <th>Probability</th>
+            <th>Malware</th>
+            <th>Benign</th>
+         </tr>
+         <tr ng-repeat="is in content.ml_file.analyses.feature_intersections | limitTo:table_limit">
+            <td>{{is.category}}</td>
+            <td>{{is.indicator}}</td>
+            <td>{{is.description}}</td>
+            <td>{{is.probability}}</td>
+            <td>{{is.malware}}</td>
+            <td>{{is.benign}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.ml_file.analyses.feature_maliciousness">
+      <div class="panel-heading">
+         <strong>ML File Analysis - Feature Maliciousness</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Category</th>
+            <th>Indicator</th>
+            <th>Description</th>
+            <th>Probability</th>
+            <th>Malware</th>
+            <th>Benign</th>
+         </tr>
+         <tr ng-repeat="fm in content.ml_file.analyses.feature_maliciousness | limitTo:table_limit">
+            <td>{{fm.category}}</td>
+            <td>{{fm.indicator}}</td>
+            <td>{{fm.description}}</td>
+            <td>{{fm.probability}}</td>
+            <td>{{fm.malware}}</td>
+            <td>{{fm.benign}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.ml_file.analyses.black_box">
+      <div class="panel-heading">
+         <strong>ML File Analysis - Black Box</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Model Version</th>
+            <th>Model Name</th>
+         </tr>
+         <tr>
+            <td>{{content.ml_file.analyses.black_box.model_version}}</td>
+            <td>{{content.ml_file.analyses.black_box.model_name}}</td>
+         </tr>
+      </table>
+      </br>
+      <table class="table table-hover">
+         <tr>
+            <th>Type</th>
+            <th>Raw</th>
+            <th>Score</th>
+         </tr>
+         <tr>
+            <td>Benign</td>
+            <td>{{content.ml_file.analyses.black_box.benign.raw}}</td>
+            <td>{{content.ml_file.analyses.black_box.benign.score}}</td>
+         </tr>
+         <tr>
+            <td>PUA</td>
+            <td>{{content.ml_file.analyses.black_box.pua.raw}}</td>
+            <td>{{content.ml_file.analyses.black_box.pua.score}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.ml_file.overall_scores">
+      <div class="panel-heading">
+         <strong>ML File Analysis - Overall Scores</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Feature Intersections</th>
+            <th>Feature Maliciousness</th>
+            <th>Genetic Analysis</th>
+            <th>Black Box</th>
+            <th>Overall Score</th>
+            <th>ML Aggregate Results</th>
+         </tr>
+         <tr>
+            <td>{{content.ml_file.overall_scores.feature_intersections}}</td>
+            <td>{{content.ml_file.overall_scores.feature_maliciousness}}</td>
+            <td>{{content.ml_file.overall_scores.genetic_analysis}}</td>
+            <td>{{content.ml_file.overall_scores.black_box}}</td>
+            <td>{{content.ml_file.overall_score}}</td>
+            <td>{{content.ml_aggregate_results.overall_score}}</td>
+         </tr>
+      </table>
+      </br>
+   </div>
+   <div class="panel panel-info" ng-if="::content.pe_analysis">
+      <div class="panel-heading">
+         <strong>PE Analysis</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Subsystem</th>
+            <th>Number of Sections</th>
+            <th>File Size</th>
+            <th>Imagebase</th>
+            <th>PDB String</th>
+         </tr>
+         <tr>
+            <td>{{content.pe_analysis.subsystem}}</td>
+            <td>{{content.pe_analysis.numberofsections}}</td>
+            <td>{{content.pe_analysis.filesize}}</td>
+            <td>{{content.pe_analysis.imagebase}}</td>
+            <td>{{content.pe_analysis.pdbstring}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.pe_analysis.sections">
+      <div class="panel-heading">
+         <strong>PE Analysis - Sections</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Number</th>
+            <th>Name</th>
+            <th>Size of Raw Data</th>
+            <th>Entropy</th>
+            <th>Virtual Size</th>
+            <th>Virtual Address</th>
+            <th>Physical Address</th>
+            <th>Characteristics</th>
+         </tr>
+         <tr ng-repeat="section in content.pe_analysis.sections | limitTo:table_limit">
+            <td>{{section.number}}</td>
+            <td>{{section.name}}</td>
+            <td>{{section.sizeofrawdata}}</td>
+            <td>{{section.entropy}}</td>
+            <td>{{section.virtualsize}}</td>
+            <td>{{section.virtualaddress}}</td>
+            <td>{{section.physicaladdress}}</td>
+            <td>{{section.characteristics | json}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.pe_analysis">
+      <div class="panel-heading">
+         <strong>PE Analysis - PE Flags</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Machine ID</th>
+            <th>Timestamp</th>
+            <th>Languages</th>
+            <th>PE Flags</th>
+         </tr>
+         <tr>
+            <td>{{content.pe_analysis.machineid}}</td>
+            <td>{{content.pe_analysis.timedate}}</td>
+            <td>{{content.pe_analysis.languages | json}}</td>
+            <td>{{content.pe_analysis.peflags}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.pe_analysis.export.dllname">
+      <div class="panel-heading">
+         <strong>PE Analysis - Export</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>DLL Name</th>
+            <th>APIs</th>
+         </tr>
+         <tr>
+            <td>{{content.pe_analysis.export.dllname}}</td>
+            <td>{{content.pe_analysis.export.apis}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.pe_analysis.import">
+      <div class="panel-heading">
+         <strong>PE Analysis - Imports</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>DLL Name</th>
+            <th>Import By Ordinal</th>
+            <th>APIs</th>
+         </tr>
+         <tr ng-repeat="dll in content.pe_analysis.import | limitTo:table_limit">
+            <td>{{dll.dllname}}</td>
+            <td>{{dll.importbyordinal}}</td>
+            <td>{{dll.apis | json}}</td>
+         </tr>
+      </table>
+   </div>
+   <div class="panel panel-info" ng-if="::content.pe_analysis.resources">
+      <div class="panel-heading">
+         <strong>PE Analysis - Resources</strong>
+      </div>
+      <table class="table table-hover">
+         <tr>
+            <th>Codepage</th>
+            <th>Type</th>
+            <th>Language</th>
+            <th>Size</th>
+         </tr>
+         <tr ng-repeat="resource in content.pe_analysis.resources | limitTo:table_limit">
+            <td>{{resource.codepage}}</td>
+            <td>{{resource.type}}</td>
+            <td>{{resource.language}}</td>
+            <td>{{resource.size}}</td>
+         </tr>
+      </table>
+   </div>
+</div>

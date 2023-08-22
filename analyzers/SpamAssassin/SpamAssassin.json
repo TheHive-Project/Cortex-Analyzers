@@ -1,0 +1,62 @@
+{
+  "name": "SpamAssassin",
+  "author": "Davide Arcuri - LDO-CERT",
+  "license": "AGPL-V3",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "version": "1.0",
+  "description": "Get spam score from local SpamAssassin instance",
+  "dataTypeList": ["file"],
+  "baseConfig": "SpamAssassin",
+  "command": "SpamAssassin/spamassassin.py",
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "SpamAssassin url",
+      "multi": false,
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "port",
+      "description": "SpamAssassin port",
+      "type": "number",
+      "defaultValue": 783,
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "spam_score",
+      "description": "Minimum score to consider mail as spam",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 5
+    },
+    {
+      "name": "timeout",
+      "description": "Timout for socket operations in seconds",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 20
+    }
+  ],
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": false,
+  "service_homepage": "https://spamassassin.apache.org/",
+  "service_logo": {
+    "path": "assets/SpamAssassin_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/SpamAssassin_long.png",
+      "caption": "SpamAssassin long report sample"
+    },
+    {
+      "path": "assets/SpamAssassin_short.png",
+      "caption": "SpamAssassin mini report sample"
+    }
+  ]
+}

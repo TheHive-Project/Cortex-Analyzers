@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding: utf-8
 import json
 import requests
@@ -34,7 +34,7 @@ class OTXQueryAnalyzer(Analyzer):
         try:
             for section in sections:
                 queryurl = baseurl + section
-                ip_[section] = json.loads(requests.get(queryurl, headers=headers).content)
+                ip_[section] = json.loads(requests.get(queryurl, headers=headers).text)
 
             ip_general = ip_['general']
             ip_geo = ip_['geo']
@@ -64,7 +64,7 @@ class OTXQueryAnalyzer(Analyzer):
         try:
             for section in sections:
                 queryurl = baseurl + section
-                ip_[section] = json.loads(requests.get(queryurl, headers=headers).content)
+                ip_[section] = json.loads(requests.get(queryurl, headers=headers).text)
 
             result = {
                 'pulse_count': ip_.get('general', {}).get('pulse_info', {}).get('count', "0"),
@@ -98,7 +98,7 @@ class OTXQueryAnalyzer(Analyzer):
         try:
             for section in sections:
                 queryurl = baseurl + section
-                ip_[section] = json.loads(requests.get(queryurl, headers=headers).content)
+                ip_[section] = json.loads(requests.get(queryurl, headers=headers).text)
 
             if ip_['analysis']['analysis']:
                 # file has been analyzed before
@@ -134,7 +134,7 @@ class OTXQueryAnalyzer(Analyzer):
 
     def otx_query_url(self, data):
         # urlencode the URL that we are searching for
-        data = urllib.quote_plus(data)
+        data = urllib.parse.quote_plus(data)
         baseurl = "https://otx.alienvault.com:443/api/v1/indicators/url/%s/" % data
         headers = self._get_headers()
         sections = ['general', 'url_list']
@@ -142,7 +142,7 @@ class OTXQueryAnalyzer(Analyzer):
         try:
             for section in sections:
                 queryurl = baseurl + section
-                IP_[section] = json.loads(requests.get(queryurl, headers=headers).content)
+                IP_[section] = json.loads(requests.get(queryurl, headers=headers).text)
 
             self.report({
                 'pulse_count': IP_.get('general', {}).get('pulse_info', {}).get('count', "0"),

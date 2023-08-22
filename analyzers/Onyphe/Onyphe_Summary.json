@@ -1,0 +1,49 @@
+{
+  "name": "Onyphe_Summary",
+  "version": "1.0",
+  "author": "Pierre Baudry, Adrien Barchapt, Andrea Garavaglia, Davide Arcuri",
+  "license": "AGPL-V3",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "description": "Retrieve summary information Onyphe has for given ip, domain or fqdn.",
+  "dataTypeList": ["ip", "domain", "fqdn"],
+  "command": "Onyphe/onyphe_analyzer.py",
+  "baseConfig": "Onyphe",
+  "config": {
+    "service": "summary"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API key to use to connect the service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "verbose_taxonomies",
+      "description": "Set true if you want detailed taxonomies for port, subnet, geoloc, domain",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": false
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://www.onyphe.io",
+  "service_logo": {
+    "path": "assets/onyphe_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/Onyphe_Summary_long.png",
+      "caption": "Onyphe_Summary long report sample"
+    },
+    {
+      "path": "assets/Onyphe_Summary_short.png",
+      "caption": "Onyphe_Summary mini report sample"
+    }
+  ]
+}

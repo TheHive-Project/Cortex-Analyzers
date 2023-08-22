@@ -1,0 +1,83 @@
+<div class="report-PT" ng-if="success">
+    <style>
+        .report-PT dl {
+            margin-bottom: 2px;
+        }
+    </style>
+
+
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <div ng-if="content.records.length === 0">
+                No cookies available for this IOC.
+            </div>
+            <div ng-if="content.records.length !== 0" class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>RiskIQ Host Cookies</strong>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><b>Distinct Domains</b></div>
+                                <div class="panel-body">
+                                    <table class="tabel table-condensed">
+                                        <tr ng-repeat="d in content.distinct_domains">
+                                            <td>{{d}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><b>Distinct Cookie Names</b></div>
+                                <div class="panel-body">
+                                    <table class="tabel table-condensed">
+                                        <tr ng-repeat="d in content.distinct_names">
+                                            <td>{{d}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-info">
+                        <div class="panel-heading"><b>Cookie History</b></div>
+                        <div class="panel-body">
+                            <table class="table table-hover table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Cookie Name</th>
+                                        <th>Cookie Domain</th>
+                                        <th>Host</th>
+                                        <th>First Seen</th>
+                                        <th>Last Seen</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="cook in content.records">
+                                        <td>{{cook.name}}</td>
+                                        <td>{{cook.domain}}</td>
+                                        <td>{{cook.hostname}}</td>
+                                        <td>{{cook.firstseen}}</td>
+                                        <td>{{cook.lastseen}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

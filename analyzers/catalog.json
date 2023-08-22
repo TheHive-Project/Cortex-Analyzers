@@ -3487,24 +3487,15 @@
   "author": "ninoseki",
   "license": "MIT",
   "url": "https://github.com/ninoseki/cortex_urlscan_analyzer",
-  "version": "0.1.2",
+  "version": "0.1.0",
   "description": "Search IPs, domains, hashes or URLs on urlscan.io",
   "dataTypeList": [
     "ip",
     "domain",
     "hash",
-    "url",
-    "other"
+    "url"
   ],
-  "configurationItems": [
-    {
-      "name": "api_key",
-      "description": "Api Key",
-      "type": "string",
-      "multi": false,
-      "required": true
-    }
-  ]
+  "dockerImage": "cortexneurons/urlscan.io_search:0"
 }
 ,
 {

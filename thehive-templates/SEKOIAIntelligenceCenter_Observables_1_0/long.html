@@ -1,0 +1,79 @@
+<div class="sekoia-report" ng-if="success">
+    <div ng-if="content.results.length === 0">
+        No results found
+    </div>
+    <h2 ng-if="content.results.length > 0">{{content.results.length}} Observable(s)</h2>
+    <div class="panel panel-info" ng-if="content.results.length > 0" ng-repeat="observable in content.results track by observable.id">
+        <div class="panel-heading">
+            <strong>{{observable.x_inthreat_short_display | fang}}</strong>
+        </div>
+        <div class="panel-body">
+            <div>
+                <dl class="dl-horizontal">
+                    <dt>ID</dt>
+                    <dd class="wrap">{{item.id}}</dd>
+                </dl>
+                <dl class="dl-horizontal" ng-if="observable.value">
+                    <dt>Value</dt>
+                    <dd class="wrap">{{observable.value | fang}}</dd>
+                </dl>
+                <dl class="dl-horizontal" ng-if="observable.hashes['MD5']">
+                    <dt>MD5</dt>
+                    <dd class="wrap">{{observable.hashes.MD5}}</dd>
+                </dl>
+                <dl class="dl-horizontal" ng-if="observable.hashes['SHA-1']">
+                    <dt>SHA-1</dt>
+                    <dd class="wrap">{{observable.hashes['SHA-1']}}</dd>
+                </dl>
+                <dl class="dl-horizontal" ng-if="observable.hashes['SHA-256']">
+                    <dt>SHA-256</dt>
+                    <dd class="wrap">{{observable.hashes['SHA-256']}}</dd>
+                </dl>
+                <dl class="dl-horizontal" ng-if="observable.hashes['SHA-512']">
+                    <dt>SHA-512</dt>
+                    <dd class="wrap">{{observable.hashes['SHA-512']}}</dd>
+                </dl>
+                <dl class="dl-horizontal" ng-if="observable.hashes['SSDEEP']">
+                    <dt>SSDEEP</dt>
+                    <dd class="wrap">{{observable.hashes['SSDEEP']}}</dd>
+                </dl>
+                <dl class="dl-horizontal" ng-if="observable.x_inthreat_tags">
+                    <dt>Tags</dt>
+                    <dd>
+                        <div ng-if="observable.x_inthreat_tags.length === 0">No tags defined</div>
+                        <div ng-if="observable.x_inthreat_tags.length > 0">
+                            <span class="label label-info" style="margin: 2px;" ng-repeat="tag in observable.x_inthreat_tags">{{tag.name}}</span> 
+                        </div>
+                    </dd>
+                </dl>
+                <dl class="dl-horizontal" ng-if="observable.x_ic_indicated_threats && observable.x_ic_indicated_threats.length > 0">
+                    <dt>Threats</dt>
+                    <dd>
+                        <span class="label label-danger" style="margin: 2px;" ng-repeat="threat in observable.x_ic_indicated_threats">{{threat.name}}</span> 
+                    </dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Created</dt>
+                    <dd class="wrap">{{observable.created}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Modified</dt>
+                    <dd class="wrap">{{observable.modified}}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> SEKOIA: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

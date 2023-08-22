@@ -3,7 +3,7 @@
   "author": "Nils Kuhnert, CERT-Bund",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
+  "version": "2.1",
   "description": "Query multiple MISP instances for events containing an observable.",
   "dataTypeList": [
     "domain",
@@ -13,7 +13,6 @@
     "uri_path",
     "user-agent",
     "hash",
-    "email",
     "mail",
     "mail_subject",
     "registry",
@@ -59,6 +58,25 @@
       "type": "string",
       "multi": true,
       "required": false
+    }
+  ],
+  "config": {
+    "check_tlp": true,
+    "max_tlp": 2,
+    "auto_extract": false
+  },
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://www.misp-project.org/",
+  "service_logo": {
+    "path": "assets/misp.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report.png",
+      "caption": "MISP: long report"
     }
   ]
 }

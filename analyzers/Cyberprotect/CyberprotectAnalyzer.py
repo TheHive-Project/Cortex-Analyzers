@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding: utf-8
 
 import requests
@@ -6,7 +6,7 @@ from cortexutils.analyzer import Analyzer
 
 class CyberprotectAnalyzer(Analyzer):
 
-    URI = "https://threatscore.cyberprotect.fr/api/score/"
+    URL = "https://api.threatscore.cyberprotect.cloud/api/v3/observables/search/by-value"
 
     def __init__(self):
         Analyzer.__init__(self)
@@ -18,25 +18,21 @@ class CyberprotectAnalyzer(Analyzer):
         if self.service == 'ThreatScore':
             level = 'info'
             value = 'not in database'
-            if raw.get('data') and raw.get('scores') and len(raw.get('scores')) > 0:
+            if 'threatscore' in raw:
                 value = 'not analyzed yet'
-                if raw['scores'][0].get('score'):
-                    level = 'safe'
-                    value = raw['scores'][0]['score']
-                    if value >= 0.5:
-                        level = 'malicious'
-                    elif value >= 0.25 and value < 0.5:
-                        level = 'suspicious'
+                if 'value' in raw['threatscore'] and 'level' in raw['threatscore']:
+                    value = raw['threatscore']['value']
+                    level = raw['threatscore']['level']
             taxonomies.append(self.build_taxonomy(level, namespace, self.service, value))
         return {"taxonomies": taxonomies}
 
     def run(self):
         Analyzer.run(self)
-        if self.service == 'ThreatScore' and (self.data_type == 'domain' or self.data_type == 'ip'):
+        if self.service == 'ThreatScore' and (self.data_type == 'domain' or self.data_type == 'hash' or self.data_type == 'ip' or self.data_type == 'url' or self.data_type == 'user-agent'):
             try:
-                response = requests.get("{}{}".format(self.URI, self.get_data()))
+                response = requests.post(self.URL, json = { 'data' : self.get_data() })
                 result = response.json()
-                self.report(result if len(result) > 0 else {})
+                self.report(result)
             except Exception as e:
                 self.unexpectedError(e)
         else:

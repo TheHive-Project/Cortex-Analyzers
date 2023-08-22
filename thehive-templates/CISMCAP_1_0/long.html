@@ -1,0 +1,111 @@
+<style>
+  section.report td,
+  section.report th {
+    border: 1px solid rgb(141, 159, 68);
+    padding: 8px;
+  }
+
+  section.report th,
+  section.report td.header {
+    background-color: rgb(209, 224, 181);
+    font-weight: bold;
+    font-size: larger;
+  }
+</style>
+<section class="report">
+  <!-- Success -->
+  <div class="panel panel-primary" ng-if="success">
+    <div class="panel-heading">MCAP Report</div>
+    <div class="panel-body" ng-if="content.sample_status">
+      <table>
+        <caption>
+          Sample Analysis Status
+        </caption>
+        <tbody>
+          <tr>
+            <td class="header">Status</td>
+            <td>{{content.sample_status.status}}</td>
+          </tr>
+          <tr>
+            <td class="header">Hashes/ID</td>
+            <td>
+              MD5: {{content.sample_status.md5}}<br />
+              SHA-1: {{content.sample_status.sha1}}<br />
+              SHA-256: {{content.sample_status.sha256}}
+            </td>
+          </tr>
+          <tr>
+            <td class="header">Analysis Date/Time</td>
+            <td>
+              Submitted: {{content.sample_status.submitted_at}}<br />
+              Started: {{content.sample_status.started_at}}<br />
+              Completed: {{content.sample_status.completed_at}}
+            </td>
+          </tr>
+          <tr>
+            <td class="header">VM</td>
+            <td>{{content.sample_status.vm}} ({{content.sample_status.os}})</td>
+          </tr>
+          <tr>
+            <td class="header">Private</td>
+            <td>{{content.sample_status.private}}</td>
+          </tr>
+          <tr>
+            <td class="header">Tags</td>
+            <td>{{content.sample_status.tags}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="panel-body" ng-if="content.iocs.length === 0">
+      <p class="lead">No IOC were returned</p>
+    </div>
+    <div class="panel-body" ng-if="content.iocs.length > 0">
+      <table class="table-striped">
+        <thead>
+          <tr>
+            <th>IOC</th>
+            <th>Severity</th>
+            <th>Confidence</th>
+            <th>Data</th>
+            <th>Hashes</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="ioc in content.iocs">
+            <td>{{ioc.ioc}}</td>
+            <td>{{ioc.severity}}</td>
+            <td>{{ioc.confidence}}</td>
+            <td>
+              <span ng-if="ioc.path !== undefined"> Path: {{ioc.path}} </span>
+              <span ng-if="ioc.domain !== undefined">
+                Domain: {{ioc.domain}}
+              </span>
+              <span ng-if="ioc.url !== undefined"> URL: {{ioc.url}} </span>
+              <span ng-if="ioc.port !== undefined"> Port: {{ioc.port || "n/a"}} </span>
+            </td>
+            <td>
+              SHA-256: {{ioc.sample_sha256 || ioc.artifact_sha256}}<br />
+              MD5: {{ioc.artifact_sha256 || "n/a"}}
+            </td>
+            <td>{{ioc.timestamp}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- General error  -->
+  <div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+      <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+      <dl class="dl-horizontal" ng-if="content.errorMessage">
+        <dt><i class="fa fa-warning"></i> MCAP:</dt>
+        <dd class="wrap">{{content.errorMessage}}</dd>
+      </dl>
+    </div>
+  </div>
+</section>

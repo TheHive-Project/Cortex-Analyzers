@@ -1,0 +1,113 @@
+{
+  "name": "Splunk_Search_Domain_FQDN",
+  "version": "3.0",
+  "url": "https://www.splunk.com",
+  "author": "Unit777, LetMeR00t",
+  "license": "AGPL-V3",
+  "dataTypeList": ["domain", "fqdn"],
+  "description": "Execute a savedsearch on a Splunk instance with a domain or a FQDN as argument",
+  "baseConfig": "Splunk",
+  "config": {
+    "check_tlp": false,
+    "max_tlp": 4,
+    "service": "Search_Domain_FQDN"
+  },
+  "configurationItems": [
+    {
+      "name": "host",
+      "description": "Splunk API host or IP",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "port",
+      "description": "Splunk API port",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "port_gui",
+      "description": "Splunk GUI port",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "username",
+      "description": "User account used for searches",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "password",
+      "description": "User password of the previous mentionned account",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "application",
+      "description": "Spunk application in which the saved searches are stored",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "owner",
+      "description": "Username that corresponds to the owner of the saved searches",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "saved_searches",
+      "description": "Name of the saved searches to use",
+      "type": "string",
+      "multi": true,
+      "required": true
+    },
+    {
+      "name": "earliest_time",
+      "description": "If not empty, this will set the earliest time of the searches",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "latest_time",
+      "description": "If not empty, this will set the latest time of the searches",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "max_count",
+      "description": "Maximum number of results to return for a search",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 1000
+    }
+  ],
+  "command": "Splunk/splunk.py",
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_logo": {
+    "path": "assets/splunk_domain_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/Splunk_Search_Domain_FQDN_long.png",
+      "caption": "Splunk_Search_Domain_FQDN long report sample"
+    },
+    {
+      "path": "assets/Splunk_Search_Domain_FQDN_short.png",
+      "caption": "Splunk_Search_Domain_FQDN short report sample"
+    }
+  ]
+}

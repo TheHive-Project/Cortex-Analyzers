@@ -1,0 +1,31 @@
+	<div class="panel panel-danger" ng-if="!success">
+   <div class="panel-heading">
+      <strong>{{artifact.data | fang}}</strong>
+   </div>
+   <div class="panel-body">
+      {{content.errorMessage}}
+   </div>
+</div>
+<div class="panel panel-primary" ng-if="success">
+   <div class="panel-info">
+      <div class="panel-heading">
+         <strong>Report for {{artifact.data | fang}} </strong>
+      </div>
+      <div class="panel-body">
+         <dl ng-if="::['domain', 'fqdn', 'url'].indexOf(artifact.dataType) != -1">
+            <dt>Productivity Category</dt>
+            <dd>{{content.prod_category || "No Data"}}</dd>
+            <dt>Security Category</dt>
+            <dd>{{content.sec_category || "No Data"}}</dd>
+            <dt>Risk Level</dt>
+            <dd>{{content.risk_level || "No Data"}}</dd>
+         </dl>
+      </div>
+      <div class="panel-body">
+         <dl ng-if="::artifact.dataType === 'hash'">
+            <dt>File Classification</dt>
+            <dd>{{content.classification || "No Data"}}</dd>
+         </dl>
+      </div>
+   </div>
+</div> 

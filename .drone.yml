@@ -1,116 +1,159 @@
 ---
 kind: pipeline
+type: docker
 name: default
+
+# Build and publish docker images for analyzers
 
 steps:
   - name: build analyzers for release
-    image: thehiveproject/cortex-worker-builder
+    image: thehiveproject/cortex-neurons-builder
     settings:
       worker_path: analyzers
       namespace: cortexneurons
-      user: {from_secret: docker_username}
-      password: {from_secret: docker_password}
+      registry_dockerhub: {from_secret: registry_dockerhub}
+      registry_harbor: {from_secret: registry_harbor}
       stable: true
     when:
       event: [tag]
+
+  - name: build analyzers for snapshot
+    image: thehiveproject/cortex-neurons-builder
+    settings:
+      worker_path: analyzers
+      namespace: cortexneurons
+      registry_dockerhub: {from_secret: registry_dockerhub}
+      registry_harbor: {from_secret: registry_harbor}
+    when:
+      branch: [develop]
+
+# Build and publish docker images for responders
 
   - name: build responders for release
-    image: thehiveproject/cortex-worker-builder
+    image: thehiveproject/cortex-neurons-builder
     settings:
       worker_path: responders
       namespace: cortexneurons
-      user: {from_secret: docker_username}
-      password: {from_secret: docker_password}
+      registry_dockerhub: {from_secret: registry_dockerhub}
+      registry_harbor: {from_secret: registry_harbor}
       stable: true
     when:
       event: [tag]
 
-  - name: build snapshot analyzers
-    image: thehiveproject/cortex-worker-builder
-    settings:
-      worker_path: analyzers
-      namespace: cortexneurons
-      user: {from_secret: docker_username}
-      password: {from_secret: docker_password}
-    when:
-      event: {exclude: [tag]}
-
-  - name: build snapshot responders
-    image: thehiveproject/cortex-worker-builder
+  - name: build responders for snapshot
+    image: thehiveproject/cortex-neurons-builder
     settings:
       worker_path: responders
       namespace: cortexneurons
-      user: {from_secret: docker_username}
-      password: {from_secret: docker_password}
+      registry_dockerhub: {from_secret: registry_dockerhub}
+      registry_harbor: {from_secret: registry_harbor}
     when:
-      event: {exclude: [tag]}
+      branch: [develop]
 
-  - name: build catalogs
+# Build and publish catalogs for docker images
+
+  - name: build stable catalogs
     image: thehiveproject/neurons-build-catalogs
-  
-  - name: upload catalogs to bintray
-    image: thehiveproject/drone-bintray
-    settings:
-      user: {from_secret: bintray_user}
-      key: {from_secret: bintray_key}
-      subject: thehive-project
-      package: catalogs
-      version: latest
-      override: 1
-      publish: 1
-    commands:
-    - |
-      export PLUGIN_USER
-      export PLUGIN_KEY
-      export PLUGIN_SUBJECT
-      export PLUGIN_PACKAGE
-      export PLUGIN_VERSION
-      export PLUGIN_OVERRIDE
-      export PLUGIN_PUBLISH
-      upload \
-      --file analyzers/analyzers.json \
-      --repo cortexneurons
-      upload \
-      --file analyzers/analyzers-stable.json \
-      --repo cortexneurons
-      upload \
-      --file responders/responders.json \
-      --repo cortexneurons
-      upload \
-      --file responders/responders-stable.json \
-      --repo cortexneurons
     when:
       event: [tag]
 
-  - name: upload devel catalogs to bintray
-    image: thehiveproject/drone-bintray
+  - name: build report-templates zip package
+    image: thehiveproject/neurons-build-report-templates
+    when:
+      event: [tag]
+
+  - name: upload catalogs and report-templates package to package server
+    image: appleboy/drone-scp
     settings:
-      user: {from_secret: bintray_user}
-      key: {from_secret: bintray_key}
-      subject: thehive-project
-      package: catalogs
-      version: latest
-      override: 1
-      publish: 1
+      host: {from_secret: package_host}
+      username: {from_secret: package_user}
+      key: {from_secret: package_key}
+      target: {from_secret: catalog_path}
+      source:
+        - analyzers/analyzers.json
+        - analyzers/analyzers-stable.json
+        - responders/responders.json
+        - responders/responders-stable.json
+      strip_components: 1
+    when:
+      event: [tag]
+
+  - name: build devel catalogs
+    image: thehiveproject/neurons-build-catalogs
+    when:
+      branch: [develop]
+
+  - name: upload devel catalogs to package server
+    image: appleboy/drone-scp
+    settings:
+      host: {from_secret: package_host}
+      username: {from_secret: package_user}
+      key: {from_secret: package_key}
+      target: {from_secret: catalog_path}
+      source:
+        - analyzers/analyzers-devel.json
+        - responders/responders-devel.json
+      strip_components: 1
+    when:
+      branch: [develop]
+
+# Build and publish Documentation
+
+  - name: Prepare documentation files
+    image: thehiveproject/doc-builder
+    settings:
+      type: Cortex-Neurons
+    when:
+      event: [tag]
+
+  - name: Publish documentation
+    image: thehiveproject/mkdocs
+    settings:
+      token: {from_secret: github_token}
+    when:
+      event: [tag]
+
+  - name: rebuild all analyzers periodically
+    image: thehiveproject/cortex-neurons-builder
+    settings:
+      worker_path: analyzers
+      namespace: cortexneurons
+      registry_dockerhub: {from_secret: registry_dockerhub}
+      registry_harbor: {from_secret: registry_harbor}
+      stable: true
+      force: true
+    when:
+      event: [cron]
+
+  - name: rebuild all responders periodically
+    image: thehiveproject/cortex-neurons-builder
+    settings:
+      worker_path: responders
+      namespace: cortexneurons
+      registry_dockerhub: {from_secret: registry_dockerhub}
+      registry_harbor: {from_secret: registry_harbor}
+      stable: true
+      force: true
+    when:
+      event: [cron]
+
+  - name: send message
+    image: thehiveproject/drone_keybase
+    settings:
+      username: {from_secret: keybase_username}
+      paperkey: {from_secret: keybase_paperkey}
+      channel: {from_secret: keybase_channel}
     commands:
     - |
-      export PLUGIN_USER
-      export PLUGIN_KEY
-      export PLUGIN_SUBJECT
-      export PLUGIN_PACKAGE
-      export PLUGIN_VERSION
-      export PLUGIN_OVERRIDE
-      export PLUGIN_PUBLISH
-      upload \
-      --file analyzers/analyzers-devel.json \
-      --repo cortexneurons
-
-      upload \
-      --file responders/responders-devel.json \
-      --repo cortexneurons
+      keybase oneshot -u "$PLUGIN_USERNAME" --paperkey "$PLUGIN_PAPERKEY"
+      URL="$DRONE_SYSTEM_PROTO://$DRONE_SYSTEM_HOST/$DRONE_REPO/$DRONE_BUILD_NUMBER"
+      if [ $DRONE_BUILD_STATUS = "success" ]
+      then
+        keybase chat send "$PLUGIN_CHANNEL" ":white_check_mark: $DRONE_REPO: build succeeded $URL"
+      else
+        keybase chat send "$PLUGIN_CHANNEL" ":x: $DRONE_REPO: build failed $URL"
+      fi
     when:
-      event:
-        branch:
-        - develop
-        event:
-        - push
+      status:
+      - success
+      - failure

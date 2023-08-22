@@ -1,0 +1,50 @@
+{
+    "name": "Virustotal_Downloader",
+    "version": "0.1",
+    "author": "Mario Henkel @hariomenkel",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Download a file from Virustotal by its hash",
+    "dataTypeList": [
+        "thehive:case_artifact"
+    ],
+    "command": "VirustotalDownloader/VirustotalDownloader.py",
+    "baseConfig": "VirustotalDownloader",
+    "configurationItems": [
+        {
+            "name": "virustotal_apikey",
+            "description": "Virustotal API key which should be used to download files",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "thehive_url",
+            "description": "URL pointing to your TheHive installation, e.g. 'http://127.0.0.1:9000'",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "thehive_apikey",
+            "description": "TheHive API key which is used to add the downloaded file back to the alert/case",
+            "type": "string",
+            "multi": false,
+            "required": true
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://virustotal.com",
+    "service_logo": {
+        "path": "",
+        "caption": "logo"
+    },
+    "screenshots": [
+        {
+            "path": "",
+            "caption": ""
+        }
+    ]
+}

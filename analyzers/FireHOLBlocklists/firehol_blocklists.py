@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import ipaddress
 import os
@@ -108,7 +108,7 @@ class FireholBlocklistsAnalyzer(Analyzer):
                                              'file_date': file_date.get(netsetname)})
                                 break
                         except ValueError as e:
-                            self.error('ValueError occured. Used values: ipnetwork {}, ip to check {}, file {}.'
+                            self.error('ValueError occurred. Used values: ipnetwork {}, ip to check {}, file {}.'
                                        'Error message: {}'.format(l, ip, netset, e))
 
         return hits

@@ -1,11 +1,31 @@
 {
-  "name": "Abuse_Finder",
-  "version": "2.0",
-  "author": "CERT-BDF",
-  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-  "license": "AGPL-V3",
-  "description": "Find abuse contacts associated with domain names, URLs, IPs and email addresses.",
-  "dataTypeList": ["ip", "domain", "url", "mail"],
-  "baseConfig": "Abuse_Finder",
-  "command": "Abuse_Finder/abusefinder.py"
+    "name": "Abuse_Finder",
+    "version": "3.0",
+    "author": "CERT-BDF",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Find abuse contacts associated with domain names, URLs, IPs and email addresses.",
+    "dataTypeList": [
+        "ip",
+        "domain",
+        "fqdn",
+        "url",
+        "mail"
+    ],
+    "baseConfig": "Abuse_Finder",
+    "command": "Abuse_Finder/abusefinder.py",
+    "registration_required": false,
+    "subscription_required": false,
+    "free_subscription": false,
+    "service_homepage": "https://github.com/certsocietegenerale/abuse_finder",
+    "service_logo": {
+        "path": "",
+        "caption": ""
+    },
+    "screenshots": [
+        {
+            "path": "assets/abuse_finder_longreport.png",
+            "caption": "Abuse_Finder: Long report template"
+        }
+    ]
 }

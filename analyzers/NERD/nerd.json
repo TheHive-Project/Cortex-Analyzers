@@ -1,0 +1,46 @@
+{
+  "name": "NERD",
+  "version": "1.0",
+  "author": "Vaclav Bartos, CESNET",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get Reputation score and other basic information from Network Entity Reputation Database (NERD)",
+  "dataTypeList": ["ip"],
+  "baseConfig": "NERD",
+  "command": "NERD/nerd_analyzer.py",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "url",
+      "description": "Base URL of the NERD instance",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "https://nerd.cesnet.cz/nerd/"
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://nerd.cesnet.cz/",
+  "service_logo": {
+    "path": "assets/NERD_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/NERD_long.png",
+      "caption": "NERD long report sample"
+    },
+    {
+      "path": "assets/NERD_short.png",
+      "caption": "NERD mini report sample"
+    }
+  ]
+}

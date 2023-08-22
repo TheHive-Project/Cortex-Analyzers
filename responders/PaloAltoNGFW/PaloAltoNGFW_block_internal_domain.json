@@ -1,0 +1,56 @@
+{
+  "name": "PaloAltoNGFW_block_internal_domain",
+  "version": "2.0.0",
+  "author": "Maxim Konakin, OSCD Initiative",
+  "url": "https://www.paloaltonetworks.com/",
+  "license": "AGPL-V3",
+  "description": "Block internal domain",
+  "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
+  "command": "PaloAltoNGFW/block_internal_domain.py",
+  "baseConfig": "PaloAltoNGFW_main",
+  "configurationItems": [
+    {
+      "name": "Hostname_PaloAltoNGFW",
+      "description": "Hostname PaloAltoNGFW",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "User_PaloAltoNGFW",
+      "description": "User PaloAltoNGFW",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "Password_PaloAltoNGFW",
+      "description": "User PaloAltoNGFW",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "Security_rule_for_block_internal_domain",
+      "description": "Name internal security rule for domains",
+      "type": "string",
+      "multi": false,
+      "required": true,
+	  "defaultValue": "TheHive Block internal Domain"
+    },
+	{
+        "name": "TheHive_instance",
+        "description": "URL of the TheHive instance to query",
+        "type": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "name": "TheHive_API_key",
+        "description": "TheHive API key with read access",
+        "type": "string",
+        "multi": false,
+        "required": true
+      }
+  ]
+}

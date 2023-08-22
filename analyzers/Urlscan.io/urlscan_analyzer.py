@@ -6,18 +6,28 @@ from urlscan import Urlscan, UrlscanException
 class UrlscanAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
-        self.api_key = self.get_param("config.api_key", None, 'Missing Urlscan API key')
+        self.service = self.get_param('config.service', None, 'Service parameter is missing')
+        if self.service == 'scan':
+            self.api_key = self.get_param('config.key', None, 'Missing URLScan API key')
 
-    def search(self, indicator, api_key, search_after=None):
+    def search(self, indicator):
         """
         Searches for a website using the indicator
-        :param api_key:
-        :param search_after:
         :param indicator: domain, ip, hash, url
         :type indicator: str
         :return: dict
         """
-        res = Urlscan(indicator, api_key).search(search_after=search_after)
+        res = Urlscan(indicator).search()
+        return res
+
+    def scan(self, indicator):
+        """
+        Scans a website for indicators
+        :param indicator: url
+        :type indicator: str
+        :return: dict
+        """
+        res = Urlscan(indicator).scan(self.api_key)
         return res
 
     def run(self):

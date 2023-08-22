@@ -1,0 +1,20 @@
+{
+  "name": "KasperskyThreatIntelligencePortal",
+  "version": "1.0",
+  "author": "Peter Juhas",
+  "url": "https://github.com/pjuhas/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Analyze IP address, domain or hash via Kaspersky Threat Intelligence Portal",
+  "dataTypeList": ["ip", "domain", "hash"],
+  "baseConfig": "KasperskyTIP",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for Kaspersky Threat Intelligence Portal",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "command": "KasperskyTIP/KasperskyTIP.py"
+}

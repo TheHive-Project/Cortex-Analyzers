@@ -2,7 +2,7 @@
 # encoding: utf-8
 
 from cortexutils.analyzer import Analyzer
-import ipinfo
+from ipinfo import IPinfoException, IPinfo
 
 
 class IPinfoAnalyzer(Analyzer):
@@ -32,6 +32,62 @@ class IPinfoAnalyzer(Analyzer):
                     self.build_taxonomy(
                         level, namespace, "ASN", asn.get("asn"))
                 )
+            if asn and asn.get("type"):
+                taxonomies.append(
+                    self.build_taxonomy(
+                        level, namespace, "ASNType", asn.get("type"))
+                )
+            company = raw.get("company")
+            if company and company.get("name"):
+                taxonomies.append(
+                    self.build_taxonomy(
+                        level, namespace, "Company", company.get("name"))
+                )
+            privacy = raw.get("privacy")
+            if privacy and privacy.get("vpn"):
+                taxonomies.append(
+                    self.build_taxonomy(
+                        level, namespace, "VPN", privacy.get("vpn"))
+                )
+            if privacy and privacy.get("tor"):
+                taxonomies.append(
+                    self.build_taxonomy(
+                        level, namespace, "TOR", privacy.get("tor"))
+                )
+            if privacy and privacy.get("proxy"):
+                taxonomies.append(
+                    self.build_taxonomy(
+                        level, namespace, "Proxy", privacy.get("proxy"))
+                )
+            if privacy and privacy.get("relay"):
+                taxonomies.append(
+                    self.build_taxonomy(
+                        level, namespace, "Relay", privacy.get("relay"))
+                )
+            if privacy and privacy.get("hosting"):
+                taxonomies.append(
+                    self.build_taxonomy(
+                        level, namespace, "Hosting", privacy.get("hosting"))
+                )
+            if privacy and privacy.get("service"):
+                taxonomies.append(
+                    self.build_taxonomy(
+                        level, namespace, "PrivacyService", privacy.get("service"))
+                )
+
+        elif self.service == "hosted_domains":
+            total = 0
+            if "domains" in raw:
+                total = len(raw["domains"])
+
+            if total < 2:
+                value = "{} record".format(total)
+            else:
+                value = "{} records".format(total)
+
+            taxonomies.append(
+                self.build_taxonomy(level, namespace, "HostedDomains", value)
+            )
 
         return {"taxonomies": taxonomies}
 
@@ -39,16 +95,19 @@ class IPinfoAnalyzer(Analyzer):
         data = self.get_data()
 
         try:
-            handler = ipinfo.getHandler(access_token=self.api_key,ip_address=data)
+            ipinfo = IPinfo(api_key=self.api_key)
 
             if self.service == "details":
-                result = handler.getDetails(data)
-                self.report(result.all)
+                result = ipinfo.details(data)
+                self.report(result)
+            elif self.service == "hosted_domains":
+                result = ipinfo.hosted_domains(data)
+                self.report(result)
             else:
                 self.error("Unknown IPinfo service")
 
-        except :
-            self.error("Error")
+        except IPinfoException as e:
+            self.error(str(e))
 
 
 if __name__ == "__main__":
