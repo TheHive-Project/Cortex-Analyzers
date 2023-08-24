@@ -10,26 +10,26 @@ class UrlscanAnalyzer(Analyzer):
         if self.service == 'scan' or self.service == 'search':
             self.api_key = self.get_param('config.key', None, 'Missing URLScan API key')
 
-    def search(self, indicator):
+    def search(self, indicator, api_key, search_after):
         """
         Searches for a website using the indicator
         :param indicator: domain, ip, hash, url
-        :type indicator: str
-        :return: dict
-        """
-        res = Urlscan(indicator).search()
-        return res
-
-    def scan(self, indicator, api_key, search_after=None):
-        """
-        Scans a website for indicators
-        :param indicator: url
         :type indicator: str
         :type api_key: str
         :type search_after: str
         :return: dict
         """
         res = Urlscan(indicator, api_key).search(search_after=search_after)
+        return res
+
+    def scan(self, indicator):
+        """
+        Scans a website for indicators
+        :param indicator: url
+        :type indicator: str
+        :return: dict
+        """
+        res = Urlscan(indicator).scan(self.api_key)
         return res
 
     def run(self):
