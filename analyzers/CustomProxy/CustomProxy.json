@@ -1,0 +1,22 @@
+{
+  "name": "CustomProxy",
+  "author": "CTIMarc",
+  "license": "AGPL-V3",
+  "url": "https://github.com/CTIMarc/Cortex-Analyzers",
+  "version": "1.0",
+  "baseConfig": "CustomProxy",
+  "config": {
+  },
+  "description": "Query a custom proxy",
+  "dataTypeList": ["url"],
+  "command": "CustomProxy/custom_proxy.py",
+  "configurationItems": [
+    {
+      "name": "base_url",
+      "description": "Base url of the proxy",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}
