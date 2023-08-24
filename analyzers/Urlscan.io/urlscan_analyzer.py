@@ -20,14 +20,16 @@ class UrlscanAnalyzer(Analyzer):
         res = Urlscan(indicator).search()
         return res
 
-    def scan(self, indicator):
+    def scan(self, indicator, api_key, search_after=None):
         """
         Scans a website for indicators
         :param indicator: url
         :type indicator: str
+        :type api_key: str
+        :type search_after: str
         :return: dict
         """
-        res = Urlscan(indicator).scan(self.api_key)
+        res = Urlscan(indicator, api_key).search(search_after=search_after)
         return res
 
     def run(self):
@@ -37,16 +39,17 @@ class UrlscanAnalyzer(Analyzer):
         else:
             query = self.get_data()
 
-        try:
-            if self.data_type in targets:
-                search_after = self.get_param('parameters.search_after', None, None)
-                self.report({
-                    'type': self.data_type,
-                    'query': query+". Search after: " + str(search_after),
-                    'indicator': self.search(query, self.api_key, search_after=search_after)
-                })
-        except UrlscanException as err:
-            self.error(str(err))
+        if self.service == 'search':
+            try:
+                if self.data_type in targets:
+                    search_after = self.get_param('parameters.search_after', None, None)
+                    self.report({
+                        'type': self.data_type,
+                        'query': query+". Search after: " + str(search_after),
+                        'indicator': self.search(query, self.api_key, search_after=search_after)
+                    })
+            except UrlscanException as err:
+                self.error(str(err))
 
     def summary(self, raw):
         taxonomies = []
