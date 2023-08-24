@@ -7,7 +7,7 @@ class UrlscanAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
         self.service = self.get_param('config.service', None, 'Service parameter is missing')
-        if self.service == 'scan':
+        if self.service == 'scan' or self.service == 'search':
             self.api_key = self.get_param('config.key', None, 'Missing URLScan API key')
 
     def search(self, indicator):

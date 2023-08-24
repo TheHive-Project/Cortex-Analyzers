@@ -8,6 +8,9 @@
   "description": "Search IPs, domains, hashes or URLs on urlscan.io",
   "dataTypeList": ["ip", "domain", "hash", "url", "other"],
   "command": "Urlscan.io/urlscan_analyzer.py",
+  "config": {
+    "service":"search"
+  },
   "configurationItems": [
     {
       "name": "key",
