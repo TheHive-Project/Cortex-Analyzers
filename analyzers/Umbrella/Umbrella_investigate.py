@@ -21,7 +21,7 @@ class UmbrellaAnalyzer(Analyzer):
             if r.status_code == 200:
                 return json.loads(r.text)
             else:
-                self.error('API query failed. Check parameters.')
+                self.error(f'API query failed: {r.content.decode()}')
         except Exception as e:
             self.unexpectedError(e)
 
