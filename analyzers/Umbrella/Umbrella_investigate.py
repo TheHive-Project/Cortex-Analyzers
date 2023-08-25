@@ -11,9 +11,9 @@ class UmbrellaAnalyzer(Analyzer):
         self.service = self.get_param('config.service', None, 'Service parameter is missing')
         self.bearer_token = self.get_param('config.bearer_token', None, 'bearer_token is missing')
 
-    def umbrella_newly_seen(self, search, timeframe):
+    def umbrella_newly_seen(self, search, timeframe, offset):
         base_url = "https://investigate.api.umbrella.com/search/"
-        url = f"{base_url}/{search}/?includecategory=false&limit=100&start={timeframe}"
+        url = f"{base_url}/{search}/?includecategory=false&limit=100&start={timeframe}&offset={offset}"
         print(url)
         try:
             r = requests.get(url, headers={'Authorization': f'Bearer {self.bearer_token}'})
@@ -39,7 +39,8 @@ class UmbrellaAnalyzer(Analyzer):
         if self.service == 'newly_seen':
             data = self.get_param('data', None, 'Data is missing')
             timeframe = self.get_param('timeframe', "-1days")
-            r = self.umbrella_newly_seen(data, timeframe)
+            offset = self.get_param('offset', "0")
+            r = self.umbrella_newly_seen(data, timeframe, offset)
             self.report(r)
         else:
             self.error('Invalid service name')
