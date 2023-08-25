@@ -13,7 +13,7 @@ class UmbrellaAnalyzer(Analyzer):
 
     def umbrella_newly_seen(self, search, timeframe, offset):
         base_url = "https://investigate.api.umbrella.com/search/"
-        if offset > 0:
+        if int(offset) > 0:
             url = f"{base_url}/{search}/?includecategory=false&limit=100&start={timeframe}&offset={offset}"
         else:
             url = f"{base_url}/{search}/?includecategory=false&limit=100&start={timeframe}"
