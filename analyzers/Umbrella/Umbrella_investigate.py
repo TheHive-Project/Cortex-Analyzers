@@ -31,7 +31,7 @@ class UmbrellaAnalyzer(Analyzer):
         level = "info"
         namespace = "Investigate"
         if self.service == 'newly_seen':
-            value = "{}".format(raw['full']['totalResults'])
+            value = "{}".format(raw['totalResults'])
             taxonomies.append(self.build_taxonomy(level, namespace, 'nb_results', value))
 
         return {'taxonomies': taxonomies}
