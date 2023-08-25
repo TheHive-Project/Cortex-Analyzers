@@ -13,11 +13,12 @@ class UmbrellaAnalyzer(Analyzer):
 
     def umbrella_newly_seen(self, search, timeframe, offset):
         base_url = "https://investigate.api.umbrella.com/search/"
-        url = f"{base_url}/{search}/?includecategory=false&limit=100&start={timeframe}&offset={offset}"
-        print(url)
+        if offset > 0:
+            url = f"{base_url}/{search}/?includecategory=false&limit=100&start={timeframe}&offset={offset}"
+        else:
+            url = f"{base_url}/{search}/?includecategory=false&limit=100&start={timeframe}"
         try:
             r = requests.get(url, headers={'Authorization': f'Bearer {self.bearer_token}'})
-            print(self.bearer_token)
             if r.status_code == 200:
                 return json.loads(r.text)
             else:
