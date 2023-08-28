@@ -20,14 +20,14 @@
     "configurationItems": [
         {
             "name": "api_key",
-            "description": "Intelligence center API key",
+            "description": "API key",
             "type": "string",
             "multi": false,
             "required": true
         },
         {
             "name": "url",
-            "description": "Intelligence center URL",
+            "description": "Base URL (default to https://app.sekoia.io)",
             "type": "string",
             "multi": false,
             "required": false
