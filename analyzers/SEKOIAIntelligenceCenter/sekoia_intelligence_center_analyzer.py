@@ -8,7 +8,6 @@ from requests import HTTPError
 
 
 class IntelligenceCenterAnalyzer(Analyzer):
-
     TYPES_MAPPING = {
         "url": "url",
         "domain": "domain-name",
@@ -22,7 +21,11 @@ class IntelligenceCenterAnalyzer(Analyzer):
     @property
     def url(self):
         if self.service == "observables":
-            return "{}/api/v2/inthreat/observables/search?with_indicated_threats=1".format(self.base_url)
+            return (
+                "{}/api/v2/inthreat/observables/search?with_indicated_threats=1".format(
+                    self.base_url
+                )
+            )
         path = ""
         if self.service == "context":
             path = "/context"
@@ -30,7 +33,9 @@ class IntelligenceCenterAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.service = self.get_param("config.service", None, "Service parameter is missing")
+        self.service = self.get_param(
+            "config.service", None, "Service parameter is missing"
+        )
         self.api_key = self.get_param("config.api_key", None, "Missing Api Key")
         self.base_url = self.get_param("config.url", self.DEFAULT_URL)
         if not self.base_url:
@@ -48,13 +53,25 @@ class IntelligenceCenterAnalyzer(Analyzer):
 
         taxonomies = []
         if count == 0:
-            taxonomies.append(self.build_taxonomy("safe", "SEKOIA", self.service, value))
+            taxonomies.append(
+                self.build_taxonomy("safe", "SEKOIA", self.service, value)
+            )
         elif self.service == "observables":
-            has_threats = any(res.get("x_ic_indicated_threats") for res in raw["results"])
+            has_threats = any(
+                res.get("x_ic_indicated_threats") for res in raw["results"]
+            )
             if has_threats:
-                taxonomies.append(self.build_taxonomy("malicious", "SEKOIA", self.service, value))
+                taxonomies.append(
+                    self.build_taxonomy("malicious", "SEKOIA", self.service, value)
+                )
+            else:
+                taxonomies.append(
+                    self.build_taxonomy("safe", "SEKOIA", self.service, value)
+                )
         else:
-            taxonomies.append(self.build_taxonomy("malicious", "SEKOIA", self.service, value))
+            taxonomies.append(
+                self.build_taxonomy("malicious", "SEKOIA", self.service, value)
+            )
 
         return {"taxonomies": taxonomies}
 
@@ -93,13 +110,17 @@ class IntelligenceCenterAnalyzer(Analyzer):
                 )
             if ex.response.status_code == 429:
                 self.error("Quota exhausted.")
-            self.error("API returned with the error code {}".format(str(ex.response.status_code)))
+            self.error(
+                "API returned with the error code {}".format(
+                    str(ex.response.status_code)
+                )
+            )
 
     def _send_request(self, payload):
         headers = {"Authorization": "Bearer {}".format(self.api_key)}
         if self.service == "observables":
             response = requests.post(self.url, json=payload, headers=headers)
-        else: 
+        else:
             response = requests.get(self.url, params=payload, headers=headers)
         response.raise_for_status()
         return response.json()["items"]

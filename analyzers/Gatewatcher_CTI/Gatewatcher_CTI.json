@@ -1,0 +1,62 @@
+{
+  "name": "Gatewatcher_CTI",
+  "version": "1.0",
+  "author": "Gatewatcher",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-3.0",
+  "description": "Get Gatewatcher CTI Report",
+  "dataTypeList": [
+    "hash",
+    "domain",
+    "fqdn",
+    "url"
+  ],
+  "command": "Gatewatcher_CTI/Gatewatcher_CTI.py",
+  "baseConfig": "Gatewatcher_CTI",
+  "config": {
+    "service": "get_report"
+  },
+  "configurationItems": [
+    {
+      "name": "apiKey",
+      "description": "Gatewatcher CTI Api Key.",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "extendedReport",
+      "description": "Show reports for relations.",
+      "type": "boolean",
+      "required": true,
+      "multi": false,
+      "defaultValue": true
+    },
+    {
+      "name": "maxRelations",
+      "description": "Max relation reports to display if you have enabled the extendReport option. Set -1 to show all report",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 50
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.gatewatcher.com/",
+  "service_logo": {
+    "path": "assets/Gatewatcher_CTI_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/Gatewatcher_CTI_long.png",
+      "caption": "Gatewatcher CTI long report sample"
+    },
+    {
+      "path": "assets/Gatewatcher_CTI_short.png",
+      "caption:": "Gatewatcher CTI mini report sample"
+    }
+  ]
+}

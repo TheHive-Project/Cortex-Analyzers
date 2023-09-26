@@ -1,0 +1,13 @@
+{
+  "name": "Test",
+  "version": "1.0",
+  "author": "Jerome Leonard",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "test",
+  "dataTypeList": ["thehive:case", "thehive:alert", "thehive:case_task"],
+  "command": "Test/test.py",
+  "baseConfig": "Test",
+  "configurationItems": [
+  ]
+}
