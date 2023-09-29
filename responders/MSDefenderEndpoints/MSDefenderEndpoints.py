@@ -31,7 +31,7 @@ class MSDefenderEndpoints(Responder):
 
    def run(self):
         Responder.run(self)
-        url = "{}{}/oauth2/token".format(
+        url = "{}/{}/oauth2/token".format(
             self.msdefenderOAuthUri,self.msdefenderTenantId
             )
 
@@ -77,7 +77,8 @@ class MSDefenderEndpoints(Responder):
                 if response.status_code == 200:
                     jsonResponse = response.json()
                     if len(response.content) > 100:
-                        return jsonResponse["value"][0]["aadDeviceId"]
+                        if jsonResponse["value"][0]["aadDeviceId"] is None:
+                           return jsonResponse["value"][0]["id"]
                     else:
                         self.error({'message': "Can't get hostname from Microsoft API"})
             except requests.exceptions.RequestException as e:
