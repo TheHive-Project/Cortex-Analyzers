@@ -155,6 +155,74 @@ class MSDefenderEndpoints(Responder):
             except requests.exceptions.RequestException as e:
                 self.error({'message': e})
 
+
+        def restrictAppExecution(machineId):
+            '''
+            example
+            POST https://api.securitycenter.windows.com/api/machines/{id}/restrictCodeExecution
+            '''
+            url = 'https://api.securitycenter.windows.com/api/machines/{}/restrictCodeExecution'.format(machineId)
+            body = {
+                'Comment': 'Restrict code execution due to TheHive case {}'.format(self.caseId)
+                }
+
+            try:
+                response = self.msdefenderSession.post(url=url, json=body)
+                if response.status_code == 201:
+                    self.report({'message': "Restricted app execution on machine: " + self.observable })
+                elif response.status_code == 400 and "ActiveRequestAlreadyExists" in response.content.decode("utf-8"):
+                    self.report({'message': "Error restricting app execution on machine: ActiveRequestAlreadyExists"})
+                else:
+                    self.error({'message': "Can't restrict app execution"})
+            except requests.exceptions.RequestException as e:
+                self.error({'message': e})
+
+        
+        def unrestrictAppExecution(machineId):
+            '''
+            example
+            POST https://api.securitycenter.windows.com/api/machines/{id}/unrestrictCodeExecution
+            '''
+            url = 'https://api.securitycenter.windows.com/api/machines/{}/unrestrictCodeExecution'.format(machineId)
+            body = {
+                'Comment': '"Remove code execution restriction since machine was cleaned and validated due to TheHive case {}'.format(self.caseId)
+                }
+
+            try:
+                response = self.msdefenderSession.post(url=url, json=body)
+                if response.status_code == 201:
+                    self.report({'message': "Removed app execution restriction on machine: " + self.observable })
+                elif response.status_code == 400 and "ActiveRequestAlreadyExists" in response.content.decode("utf-8"):
+                    self.report({'message': "Error removing app execution restriction on machine: ActiveRequestAlreadyExists"})
+                else:
+                    self.error({'message': "Can't unrestrict app execution"})
+            except requests.exceptions.RequestException as e:
+                self.error({'message': e})
+
+        
+        def startAutoInvestigation(machineId):
+            '''
+            example
+            POST https://api.securitycenter.windows.com/api/machines/{id}/startInvestigation
+            '''
+            url = 'https://api.securitycenter.windows.com/api/machines/{}/startInvestigation'.format(machineId)
+
+            body = {
+                'Comment': 'Start investigation due to TheHive case {}'.format(self.caseId)
+                }
+
+            try:
+                response = self.msdefenderSession.post(url=url, json=body)
+                if response.status_code == 201:
+                    self.report({'message': "Started Auto Investigation on : " + self.observable })
+                elif response.status_code == 400 and "ActiveRequestAlreadyExists" in response.content.decode("utf-8"):
+                    self.report({'message': "Error lauching auto investigation on machine: ActiveRequestAlreadyExists"})
+                else:
+                    self.error({'message': "Error auto investigation on machine"})
+            except requests.exceptions.RequestException as e:
+                self.error({'message': e})
+
+
         def pushCustomIocAlert(ipAddress):
             action="Alert"
             url = 'https://api.securitycenter.windows.com/api/indicators'
@@ -195,13 +263,19 @@ class MSDefenderEndpoints(Responder):
             except requests.exceptions.RequestException as e:
                 self.error({'message': e})
 
-        # print("blop")
+
         if self.service == "isolateMachine":
             isolateMachine(getMachineId(self.observable))
         elif self.service == "unisolateMachine":
             unisolateMachine(getMachineId(self.observable))
         elif self.service == "runFullVirusScan":
             runFullVirusScan(getMachineId(self.observable))
+        elif self.service == "restrictAppExecution":
+            restrictAppExecution(getMachineId(self.observable))
+        elif self.service == "unrestrictAppExecution":
+            unrestrictAppExecution(getMachineId(self.observable))
+        elif self.service == "startAutoInvestigation":
+            startAutoInvestigation(getMachineId(self.observable))
         elif self.service == "pushIOCBlock":
             pushCustomIocBlock(self.observable)
         elif self.service == "pushIOCAlert":
