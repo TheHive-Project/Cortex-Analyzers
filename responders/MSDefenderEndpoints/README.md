@@ -37,7 +37,7 @@ In the registration form:
 ##### API permission
 
 On your new application page, click API Permissions > Add permission > APIs my organization uses > type **WindowsDefenderATP** and click on WindowsDefenderATP
-Choose Application permissions, select **Alert.Read.All** AND **TI.ReadWrite.All** AND **Machine.ReadAll** AND **Machine.Isolate** AND **Machine.Scan** > Click on Add permissions.
+Choose Application permissions, select **Alert.Read.All** AND **TI.ReadWrite.All** AND **Machine.ReadAll** AND **Machine.Isolate** AND **Machine.Scan** AND **Machine.RestrictExecution** > Click on Add permissions.
 
 After clicking the Add Permissions button, on the next screen we need to grant consent for the permission to take effect.
 Press the "Grant admin consent for {your tenant name}" button.
