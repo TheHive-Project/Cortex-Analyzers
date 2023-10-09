@@ -7,7 +7,7 @@ import json
 import datetime
 
 class MSDefenderEndpoints(Responder):
-   def __init__(self):
+    def __init__(self):
         Responder.__init__(self)
         self.msdefenderTenantId = self.get_param('config.tenantId', None, 'TenantId missing!')
         self.msdefenderAppId = self.get_param('config.appId', None, 'AppId missing!')
@@ -29,7 +29,7 @@ class MSDefenderEndpoints(Responder):
             }
         )
 
-   def run(self):
+    def run(self):
         Responder.run(self)
         url = "{}/{}/oauth2/token".format(
             self.msdefenderOAuthUri,self.msdefenderTenantId
@@ -223,16 +223,34 @@ class MSDefenderEndpoints(Responder):
                 self.error({'message': e})
 
 
-        def pushCustomIocAlert(ipAddress):
-            action="Alert"
+        def pushCustomIocAlert(observable):
+            
+            if self.observableType == 'ip':
+                indicatorType = 'IpAddress'
+            elif self.observableType == 'url':
+                indicatorType = 'Url'
+            elif self.observableType == 'domain':
+                indicatorType = 'DomainName'
+            elif self.observableType == 'hash':
+                if len(observable) == 32:
+                    indicatorType = 'FileMd5'
+                elif len(observable) == 40:
+                    indicatorType = 'FileSha1'
+                elif len(observable) == 64:
+                    indicatorType = 'FileSha256'
+                else:
+                    self.report({'message':"Observable is not a valid hash"})
+            else:
+                self.error({'message':"Observable type must be ip, url, domain or hash"})
+            
             url = 'https://api.securitycenter.windows.com/api/indicators'
             body = {
-                'indicatorValue': ipAddress,
-                'indicatorType': 'IpAddress',
-                'action': action,
-                'title': self.caseTitle,
+                'indicatorValue': observable,
+                'indicatorType': indicatorType,
+                'action': 'Alert',
+                'title': "TheHive IOC: {}".format(self.caseTitle),
                 'severity': 'High',
-                'description': self.caseTitle,
+                'description': "TheHive case: {} - caseId {}".format(self.caseTitle,self.caseId),
                 'recommendedActions': 'N/A'
             }
 
@@ -243,13 +261,31 @@ class MSDefenderEndpoints(Responder):
             except requests.exceptions.RequestException as e:
                 self.error({'message': e})
 
-        def pushCustomIocBlock(ipAddress):
-            action="AlertAndBlock"
+        def pushCustomIocBlock(observable):
+
+            if self.observableType == 'ip':
+                indicatorType = 'IpAddress'
+            elif self.observableType == 'url':
+                indicatorType = 'Url'
+            elif self.observableType == 'domain':
+                indicatorType = 'DomainName'
+            elif self.observableType == 'hash':
+                if len(observable) == 32:
+                    indicatorType = 'FileMd5'
+                elif len(observable) == 40:
+                    indicatorType = 'FileSha1'
+                elif len(observable) == 64:
+                    indicatorType = 'FileSha256'
+                else:
+                    self.report({'message':"Observable is not a valid hash"})
+            else:
+                self.error({'message':"Observable type must be ip, url, domain or hash"})
+
             url = 'https://api.securitycenter.windows.com/api/indicators'
             body = {
-                'indicatorValue' : ipAddress,
-                'indicatorType' : 'IpAddress',
-                'action' : action,
+                'indicatorValue' : observable,
+                'indicatorType' : indicatorType,
+                'action' : 'AlertAndBlock',
                 'title' : "TheHive IOC: {}".format(self.caseTitle),
                 'severity' : 'High',
                 'description' : "TheHive case: {} - caseId {}".format(self.caseTitle,self.caseId),
@@ -283,7 +319,7 @@ class MSDefenderEndpoints(Responder):
         else:
             self.error({'message': "Unidentified service"})
 
-   def operations(self, raw):
+    def operations(self, raw):
         self.build_operation('AddTagToCase', tag='MSDefenderResponder:run')
         if self.service == "isolateMachine":
             return [self.build_operation("AddTagToArtifact", tag="MsDefender:isolated")]
