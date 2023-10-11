@@ -4,7 +4,10 @@
 
 * Isolate machine
 * Unisolate machine
+* Restrict App Execution on a machine
+* Remove app restriction on a machine
 * Run full antivirus scan
+* Run an automated scan
 * Push IoC to Microsoft defender
   * Alert
   * BlockAndAlert
