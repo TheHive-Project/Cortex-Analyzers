@@ -327,6 +327,10 @@ class MSDefenderEndpoints(Responder):
             return [self.build_operation("AddTagToArtifact", tag="MsDefender:fullVirusScan")]
         elif self.service == "unisolateMachine":
             return [self.build_operation("AddTagToArtifact", tag="MsDefender:unIsolated")]
+        elif self.service == "restrictAppExecution":
+            return [self.build_operation("AddTagToArtifact", tag="MsDefender:restrictedAppExec")]
+        elif self.service == "unrestrictAppExecution":
+            return [self.build_operation("AddTagToArtifact", tag="MsDefender:unrestrictedAppExec")]
 
 if __name__ == '__main__':
     
