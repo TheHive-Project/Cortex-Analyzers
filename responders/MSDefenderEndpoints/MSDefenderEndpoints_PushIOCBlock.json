@@ -1,7 +1,7 @@
 {
   "name": "MSDefender-PushIOC-Block",
-  "version": "1.0",
-  "author": "Keijo Korte",
+  "version": "2.0",
+  "author": "Keijo Korte, Louis-Maximilien Dupouy",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Push IOC to Defender client. Blocking mode",
