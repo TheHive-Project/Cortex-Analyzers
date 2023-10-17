@@ -28,7 +28,7 @@ class CurstomProxy(Analyzer):
             else:
                 self.error("Unknown method")
         except Exception as e:
-            self.error(f"Error trying to contact {self.base_url}")
+            self.error(f"Error trying to contact {self.base_url + module + '/' + url}")
         else:
             to_check = req.json()
 
@@ -52,11 +52,11 @@ class CurstomProxy(Analyzer):
         Analyzer.run(self)
 
         try:
-            method = self.get_param('method', 'GET')
-            module = self.get_param('module', "get-tor")
+            method = self.get_param('parameters.method', default='GET')
+            module = self.get_param('parameters.module', default="get-tor")
             url = self.get_param('data', None, 'Data param is missing')
-            headers = self.get_param('headers', {})
-            post_data = self.get_param('post_data', {})
+            headers = self.get_param('parameters.headers', default={})
+            post_data = self.get_param('parameters.post_data', default={})
             self.report(self.do_request(method, module, url, headers, post_data))
         except Exception as e:
             self.unexpectedError(e)
