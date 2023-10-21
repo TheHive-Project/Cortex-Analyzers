@@ -83,12 +83,19 @@ class DShieldAnalyzer(Analyzer):
                 results['firstseen'] = info['mindate'] if isinstance(info['mindate'], str) else 'None'
                 results['updated'] = info['updated'] if isinstance(info['updated'], str) else 'None'
                 results['comment'] = info['comment'] if isinstance(info['comment'], str) else 'None'
-                results['asabusecontact'] = info['asabusecontact'] if isinstance(info['asabusecontact'], str) else 'Unknown'
-                results['as'] = info['as']
-                results['asname'] = info['asname']
-                results['ascountry'] = info['ascountry']
-                results['assize'] = info['assize']
-                results['network'] = info['network']
+                if 'asabusecontact' in info:                    
+                    results['asabusecontact'] = info['asabusecontact'] if isinstance(info['asabusecontact'], str) else 'Unknown'
+                if 'as' in info:
+                    results['as'] = info['as']
+                if 'asname' in info:
+                    results['asname'] = info['asname']
+                if 'ascountry' in info:
+                    results['ascountry'] = info['ascountry']
+                if 'assize' in info:
+                    results['assize'] = info['assize']
+                if 'network' in info:
+                    results['network'] = info['network']
+
                 results['threatfeedscount'] = 0
                 if 'threatfeeds' not in info:
                     results['threatfeeds'] = ''
