@@ -61,7 +61,7 @@ class VirustotalDownloader(Responder):
 
                     file_observable = CaseObservable(
                         dataType="file",
-                        data=[filename],
+                        data=filename,
                         tlp=self.get_param("data.tlp"),
                         ioc=True,
                         tags=[
@@ -75,7 +75,7 @@ class VirustotalDownloader(Responder):
                 else:
                     file_observable = CaseObservable(
                         dataType="file",
-                        data=[f.name],
+                        data=f.name,
                         tlp=self.get_param("data.tlp"),
                         ioc=True,
                         tags=[
