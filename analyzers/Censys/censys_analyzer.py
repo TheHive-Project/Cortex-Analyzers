@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 from cortexutils.analyzer import Analyzer
-from censys.certificates import CensysCertificates
-from censys.ipv4 import CensysIPv4
-from censys.websites import CensysWebsites
-from censys.exceptions import (
+from censys.search import (
+    CensysCertificates,
+    CensysIPv4,
+    CensysWebsites,
+)
+from censys.common.exceptions import (
     CensysNotFoundException,
     CensysRateLimitExceededException,
     CensysUnauthorizedException,
 )
-
 
 class CensysAnalyzer(Analyzer):
     def __init__(self):
