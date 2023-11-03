@@ -19,5 +19,9 @@
   ],
   "registration_required": true,
   "subscription_required": true,
-  "service_homepage": "https://www.recordedfuture.com/"
+  "service_homepage": "https://www.recordedfuture.com/",
+  "service_logo": {
+    "path": "assets/recordedfuture-logo.png",
+    "caption": "logo"
+  }
 }
