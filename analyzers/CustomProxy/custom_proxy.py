@@ -54,6 +54,7 @@ class CurstomProxy(Analyzer):
         try:
             method = self.get_param('parameters.method', default='GET')
             module = self.get_param('parameters.module', default="get-tor")
+            module = self.get_param('parameters.path', default="")
             url = self.get_param('data', None, 'Data param is missing')
             headers = self.get_param('parameters.headers', default={})
             post_data = self.get_param('parameters.post_data', default={})
