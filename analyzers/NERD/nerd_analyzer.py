@@ -19,6 +19,7 @@ tag_map = {
     'tor': ('Tor exit node', 'info'),
     'spam': ('Spam', 'malicious'),
     'reserved_ip': ('Reserved IP', 'info'),
+    'whitelist': ("Whitelisted", 'safe'),
 }
 
 
@@ -41,6 +42,9 @@ class NERDAnalyzer(Analyzer):
             # Reputation score (set level/color according to the score)
             rep = round(raw['rep'], 3)
             rep_level = 'safe' if rep < 0.02 else ('suspicious' if rep <= 0.5 else 'malicious')
+            # if the IP is on whitelist, keep the "rep" number as is, but override level to "safe", so it shows as green
+            if any(t[0] == "Whitelisted" for t in raw['translated_tags']):
+                rep_level = 'safe'
             taxonomies.append(self.build_taxonomy(rep_level, 'NERD', 'Rep', rep))
 
             # Number of blacklists
@@ -82,7 +86,7 @@ class NERDAnalyzer(Analyzer):
             self.error("Unexpected or invalid response received from server (can't parse as JSON). A possible reason can be wrong URL.")
             return
 
-        if resp.status_code == 404:
+        if resp.status_code == 404 and data.get("error") == "IP address not found":
             # IP not found in NERD's DB (i.e. it wasn't reported as malicious)
             self.report({
                 'rep': 0.0,
