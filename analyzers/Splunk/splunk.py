@@ -27,6 +27,7 @@ class Splunk(Analyzer):
         self.EARLIEST = self.getParam('config.earliest_time', None)
         self.LATEST = self.getParam('config.latest_time', None)
         self.MAX_COUNT = self.getParam('config.max_count', None)
+        self.language = self.getParam('config.splunk_language', None)
 
     # Create a Service instance and log in
     def SplunkConnect(self):
@@ -82,7 +83,7 @@ class Splunk(Analyzer):
 
 
                    finally:
-                       jobs[saved_search]["link"] = "http://"+self.HOST+":"+self.PORT_GUI+"/fr-FR/app/"+self.APP+"/search?sid="+job["sid"]
+                       jobs[saved_search]["link"] = "http://"+self.HOST+":"+self.PORT_GUI+"/"+self.language+"/app/"+self.APP+"/search?sid="+job["sid"]
                        jobs[saved_search]["eventCount"] = int(job["eventCount"])
                        jobs[saved_search]["resultCount"] = int(job["resultCount"])
                        jobs[saved_search]["searchEarliestTime"] = datetime.utcfromtimestamp(round(float(job["searchEarliestTime"]))).strftime("%c")

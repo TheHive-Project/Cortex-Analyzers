@@ -1,6 +1,6 @@
 {
   "name": "Splunk_Search_IP",
-  "version": "3.0",
+  "version": "3.1",
   "url": "",
   "author": "Unit777, LetMeR00t",
   "license": "AGPL-V3",
@@ -90,6 +90,14 @@
       "multi": false,
       "required": false,
       "defaultValue": 1000
+    },
+    {
+      "name": "splunk_language",
+      "description": "Language of your splunk instance. The language has an impact on the splunk URL to access some information. Eg: fr-FR",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "en-EN"
     }
   ],
   "command": "Splunk/splunk.py",
