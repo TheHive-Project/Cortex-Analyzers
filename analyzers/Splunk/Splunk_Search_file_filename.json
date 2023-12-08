@@ -97,7 +97,7 @@
       "type": "string",
       "multi": false,
       "required": true,
-      "defaultValue": "en-EN"
+      "defaultValue": "en-GB"
     }
   ],
   "command": "Splunk/splunk.py",
