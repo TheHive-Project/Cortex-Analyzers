@@ -1,0 +1,160 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success">
+	<div class="panel-heading">
+		<strong>Summary</strong>
+	</div>
+	<div class="panel-body">
+		<dl class="dl-horizontal" ng-if="content.errortext">
+			<dt><i class="fa fa-warning"></i> ERROR: </dt>
+			<dd class="wrap">{{content.errortext}}&nbsp;</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Risk Score</dt>
+			<dd>{{content.Risk_Score}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+            <dt>Criticality</dt>
+            <dd>{{content.Criticality_Label}} ({{content.Criticality}})</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Risk Summary</dt>
+            <dd>{{content.Risk_Summary}}</dd>
+		</dl>
+		<a href="{{content.Intel_Card}}" target="_blank" class="btn btn-primary" role="button">Intelligence Card</a>
+	</div>
+	<div class="panel-heading">
+		<strong>Recorded Future AI Insights</strong>
+	</div>
+	<div class="panel-body">
+		<dl class="dl-horizontal">
+			<dt>AI Insights</dt>
+			<dd>{{content.AI_Insights}}</dd>
+		</dl>
+	</div>
+	<div class="panel-heading">
+        <strong>Triggered Risk Rules</strong>
+    </div>
+    <div class="panel-body">
+		<table class="table table-hover">
+			<tr>
+				<th>Criticality</th>
+                <th>Risk Rule</th>
+                <th>Evidence Details</th>
+			</tr>
+			<tr ng-repeat="evidence in content.Risk_Details">
+				<td>
+					<span ng-style="{'font-weight': 'bold'}" 
+						ng-class="{'text-success': evidence.criticality == 0, 'text-warning': evidence.criticality > 0 && evidence.criticality <= 2, 'text-danger': evidence.criticality > 2}">
+                        {{evidence.criticalityLabel}}
+                    </span>
+				</td>
+				<td>{{evidence.rule}}</td>
+				<td class="wrap">{{evidence.evidenceString}}</td>
+			</tr>
+		</table>
+	</div>
+	<div class="panel-heading">
+        <strong>Links: Actors, Tools & TTPs</strong>
+    </div>
+	<div class="panel-body">
+		<dl class="dl-horizontal">
+			<dt>Threat Actor</dt>
+			<dd class="wrap" ng-repeat="lta in content.Links_Threat_Actors">{{lta}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Malware</dt>
+			<dd class="wrap" ng-repeat="ltm in content.Links_Tools_Malware">{{ltm}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>MITRE ATT&CK Identifier</dt>
+			<dd class="wrap" ng-repeat="lttpm in content.Links_TTPs_Mitre">{{lttpm}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Attack Vector</dt>
+			<dd class="wrap" ng-repeat="lttpav in content.Links_TTPs_Attack_Vector">{{lttpav}}</dd>
+		</dl>
+	</div>
+	<div class="panel-heading">
+        <strong>Links: Indicators & Detection Rules</strong>
+    </div>
+	<div class="panel-body">
+		<dl class="dl-horizontal">
+			<dt>IP Address</dt>
+			<dd class="wrap" ng-repeat="liip in content.Links_Indicators_IP">{{liip}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Domain</dt>
+			<dd class="wrap" ng-repeat="lid in content.Links_Indicators_Domain">{{lid}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>URL</dt>
+			<dd class="wrap" ng-repeat="liu in content.Links_Indicators_URL">{{liu}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Hash</dt>
+			<dd class="wrap" ng-repeat="lih in content.Links_Indicators_Hash">{{lih}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Malware Signature</dt>
+			<dd class="wrap" ng-repeat="ldms in content.Links_Detection_Malware_Sig">{{ldms}}</dd>
+		</dl>
+	</div>
+	<div class="panel-heading">
+        <strong>Links: Victims & Exploit Targets</strong>
+    </div>
+	<div class="panel-body">
+		<dl class="dl-horizontal">
+			<dt>Victim Organization</dt>
+			<dd class="wrap" ng-repeat="lvo in content.Links_Victims_Org">{{lvo}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Victim IP Address</dt>
+			<dd class="wrap" ng-repeat="lvi in content.Links_Victims_IP">{{lvi}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Vulnerability</dt>
+			<dd class="wrap" ng-repeat="lev in content.Links_Exploit_Vuln">{{lev}}</dd>
+		</dl>
+	</div>
+	<div class="panel-heading">
+        <strong>Related Context</strong>
+    </div>
+	<div class="panel-body">
+		<dl class="dl-horizontal">
+			<dt>Related Threat Actor</dt>
+			<dd class="wrap" ng-repeat="ta in content.Threat_Actor">{{ta}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Related Attack Vector</dt>
+			<dd class="wrap" ng-repeat="av in content.Attack_Vector">{{av}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Malware Category</dt>
+			<dd class="wrap" ng-repeat="mc in content.Malware_Category">{{mc}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Malware Family</dt>
+			<dd class="wrap" ng-repeat="mf in content.Malware_Family">{{mf}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Related IPs</dt>
+			<dd class="wrap" ng-repeat="ip in content.Related_IPs">{{ip}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Related Domains</dt>
+			<dd class="wrap" ng-repeat="domain in content.Related_Domains">{{domain}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Related Hashes</dt>
+			<dd class="wrap" ng-repeat="hash in content.Related_Hashes">{{hash}}</dd>
+		</dl>
+	</div>
+</div>
