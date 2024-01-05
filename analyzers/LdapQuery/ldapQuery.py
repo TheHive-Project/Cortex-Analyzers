@@ -18,14 +18,9 @@ class LdapQuery(Analyzer):
         username = self.get_param("config.LDAP_username", None, "username is missing")
         password = self.get_param("config.LDAP_password", None, "password is missing")
         self.base_dn = self.get_param("config.base_DN", None, "base_dn is missing")
-        uid_search_field = self.get_param(
+        self.search_field = self.get_param(
             "config.uid_search_field", None, "uid_search_field is missing"
         )
-        if self.data_type == "mail":
-            self.search_field = "mail"
-        else:
-            self.search_field = uid_search_field
-
         self.attributes = self.get_param(
             "config.attributes", None, "Missing attributes list to report"
         )
@@ -74,7 +69,12 @@ class LdapQuery(Analyzer):
         try:
 
             data = self.get_param("data", None, "Data is missing")
-            q = "({}={})".format(self.search_field, data)
+
+            if len(self.search_field) == 1:
+                q = "({}={})".format(self.search_field, data)
+            else:
+                search_fields = [f"({field}={data})" for field in self.search_field]
+                q = f"(|{search_fields.join('')})"
 
             self.connection.search(self.base_dn, q, SUBTREE, attributes=self.attributes)
             responses = self.connection.response
