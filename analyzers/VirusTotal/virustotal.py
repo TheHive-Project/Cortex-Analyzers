@@ -16,6 +16,7 @@ from datetime import datetime
 from vt import Client, error
 from cortexutils.analyzer import Analyzer
 from base64 import urlsafe_b64encode, b64decode
+from vt.object import WhistleBlowerDict
 
 
 class VirusTotalAnalyzer(Analyzer):
@@ -362,8 +363,15 @@ class VirusTotalAnalyzer(Analyzer):
         else:
             self.error("Invalid service")
         results['iocs'] = iocs
-        self.report(results)
+        self.report(self.convert_WhistleBlowerDict_to_dict(results))
 
+    def convert_WhistleBlowerDict_to_dict(self, o):
+        if isinstance(o, (dict, WhistleBlowerDict)):
+            return {k: self.convert_WhistleBlowerDict_to_dict(v) for k, v in o.items()}
+        elif isinstance(o, (list, tuple)):
+            return [self.convert_WhistleBlowerDict_to_dict(v) for v in o]
+        else:
+            return o
     def get_yararuleset(self, results, iocs):
         for yara_result in results["attributes"].get( "crowdsourced_yara_results", []):
             yara_ruleset = self.vt.get_object(
