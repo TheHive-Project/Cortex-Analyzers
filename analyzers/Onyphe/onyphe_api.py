@@ -49,10 +49,23 @@ class Onyphe:
             url_path = "/api/v2/summary/ip/{ip}".format(ip=data)
         elif datatype == 'domain':
             url_path = "/api/v2/summary/domain/{domain}".format(domain=data)        
-        elif datatype == 'hostname':
+        elif datatype == 'fqdn':
             url_path = "/api/v2/summary/hostname/{hostname}".format(hostname=data)                 
         return self._request(path=url_path)
 
+    
+    def search(self, data: str, datatype: str, category: str):
+        """Return data from specified category using Search API and the provided data as the OQL filter. 
+        """
+        if datatype == 'ip':
+            url_path = "/api/v2/search/?q=category:{category}+ip:{ip}".format(category=category,ip=data)
+        elif datatype == 'domain':
+            url_path = "/api/v2/search/?q=category:{category}+domain:{domain}".format(category=category,domain=data)        
+        elif datatype == 'fqdn':
+            url_path = "/api/v2/search/?q=category:{category}+hostname:{hostname}".format(category=category,hostname=data)                 
+        elif datatype == 'hash':
+            url_path = "/api/v2/search/?q=category:{category}+fingerprint.sha256:{hash}".format(category=category,hash=data)                 
+        return self._request(path=url_path)
 
 class APIError(Exception):
     """This exception gets raised when the returned error code is non-zero positive"""
