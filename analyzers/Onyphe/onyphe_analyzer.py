@@ -13,13 +13,13 @@ class OnypheAnalyzer(Analyzer):
         self.onyphe_key = self.get_param("config.key", None, "Missing Onyphe API key")
         self.onyphe_client = None
         self.onyphe_category = self.get_param("config.category", "datascan") #Not used for Summary Analyzer
-        self.auto_import = self.get_param("config.auto_import", "false") 
+        self.auto_import = self.get_param("config.auto_import", False) 
         self.verbose_taxonomies = self.get_param("config.verbose_taxonomies", False) #Only used for Summary Analyzer
         self.polling_interval = self.get_param("config.polling_interval", 60)
 
     def summary(self, raw):
         taxonomies = []
-        namespace = "Onyphe"
+        namespace = "ONYPHE"
 
         if self.service == "search" and self.onyphe_category == "vulnscan":
             #report number of CVEs
