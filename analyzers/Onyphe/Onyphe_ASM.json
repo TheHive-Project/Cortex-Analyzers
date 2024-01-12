@@ -1,15 +1,15 @@
 {
-  "name": "Onyphe_Search",
+  "name": "Onyphe_ASM",
   "version": "1.0",
   "author": "Pierre Baudry, Adrien Barchapt, Andrea Garavaglia, Davide Arcuri, James Atack",
   "license": "AGPL-V3",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-  "description": "Retrieve results from ONYPHE Search API for a given ip, domain, fqdn or hash (sha256 TLS fingerprint) from specified category",
+  "description": "Retrieve results from ONYPHE Search API for a given ip, domain or fqdn from specified category",
   "dataTypeList": ["ip", "domain", "fqdn", "hash"],
   "command": "Onyphe/onyphe_analyzer.py",
   "baseConfig": "Onyphe",
   "config": {
-    "service": "search"
+    "service": "asm"
   },
   "configurationItems": [
     {
@@ -20,20 +20,20 @@
       "required": true
     },
     {
-      "name": "category",
-      "description": "Specify ONYPHE category to be used for search API (default datascan)",
-      "type": "string",
-      "multi": false,
-      "required": true,
-      "defaultValue": "datascan"
-    },
-    {
       "name": "time_filter",
       "description": "Specify ONYPHE time filter to be used for searches (see https://www.onyphe.io/docs/onyphe-query-language)",
       "type": "string",
       "multi": false,
-      "required": true,
+      "required": false,
       "defaultValue": "-since:1M"
+    },
+    {
+      "name": "fields_filter",
+      "description": "[!!Advanced!!] Modify ONYPHE fields to return in raw data (see https://www.onyphe.io/docs/onyphe-query-language)",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "ip,port,protocol,tag,tls,cpe,cve,hostname,domain,alternativeip,forward,url,organization,transport,organization,device.class,device.product,device.productvendor,device.productversion,product,productvendor,productversion"
     },
     {
       "name": "auto_import",
@@ -41,7 +41,7 @@
       "type": "boolean",
       "multi": false,
       "required": true,
-      "defaultValue": false
+      "defaultValue": true
     }
   ],
   "registration_required": true,

@@ -12,7 +12,8 @@ class OnypheAnalyzer(Analyzer):
         )
         self.onyphe_key = self.get_param("config.key", None, "Missing Onyphe API key")
         self.onyphe_client = None
-        self.onyphe_category = self.get_param("config.category", "datascan") #Not used for Summary Analyzer
+        self.onyphe_category = self.get_param("config.category", "datascan") #only used for Search service
+        self.time_filter = self.get_param("config.time_filter", "-since:1M") 
         self.auto_import = self.get_param("config.auto_import", False) 
         self.verbose_taxonomies = self.get_param("config.verbose_taxonomies", False) #Only used for Summary Analyzer
         self.polling_interval = self.get_param("config.polling_interval", 60)
@@ -98,6 +99,33 @@ class OnypheAnalyzer(Analyzer):
             else:
                 taxonomies.append(
                     self.build_taxonomy("info", namespace, "Services", "No services found",)
+                )
+        
+        elif self.service == "asm":
+            #report number of unique risks/ports/services
+            
+            reportlist = []
+                        
+            for odoc in raw["results"]:
+                if "forward" in odoc:
+                    assetport = str(odoc["ip"]) + ":" + str(odoc["port"]) + ":" + str(odoc["forward"])
+                else:
+                    assetport = str(odoc["ip"]) + ":" + str(odoc["port"])
+                if not assetport in reportlist:
+                    reportlist.append(assetport)
+
+            if len(reportlist) > 0:
+                taxonomies.append(
+                    self.build_taxonomy(
+                        "suspicious",
+                        namespace,
+                        "Risk",
+                        "{} risks found".format(len(reportlist)),
+                    )
+                )
+            else:
+                taxonomies.append(
+                    self.build_taxonomy("info", namespace, "Risk", "No risks found",)
                 )
         
         elif self.service == "summary" and not self.verbose_taxonomies:
@@ -247,14 +275,11 @@ class OnypheAnalyzer(Analyzer):
 
         return {"taxonomies": taxonomies}
 
-    def search(self, raw):
-        return raw["results"]
-
     def artifacts(self, raw):
         artifacts = []
         dedup = {}
         
-        if self.service == "search":
+        if self.service != "summary":
             for odoc in raw["results"]:
                 if "forward" in odoc:
                     dedup_key = str(odoc["ip"]) + ":" + str(odoc["port"]) + ":" + str(odoc["forward"])
@@ -269,7 +294,7 @@ class OnypheAnalyzer(Analyzer):
                         newasset = False
                 
                 if newasset:
-                    if self.onyphe_category == "riskscan": #category riskscan, so artifacts are risks
+                    if odoc["@category"] == "riskscan": #category riskscan, so artifacts are risks
                         otags=["onyphe:risk"]
                         if self.auto_import:
                             otags.append("autoImport:true")
@@ -306,7 +331,7 @@ class OnypheAnalyzer(Analyzer):
                                     "ip", str(odoc["ip"]), tags=otags
                                     )
                                 )
-                    elif self.onyphe_category == "vulnscan": #category vulnscan, so artifacts are cves
+                    elif odoc["@category"] == "vulnscan": #category vulnscan, so artifacts are cves
                         if "cve" in odoc:
                             otags=["onyphe:cve"]
                             if self.auto_import:
@@ -344,12 +369,45 @@ class OnypheAnalyzer(Analyzer):
                                         "ip", str(odoc["ip"]), tags=otags
                                         )
                                     )
-                    elif self.onyphe_category == "datascan" or self.onyphe_category == "onionscan": #category datascan, so artifacts is all results
+                    elif odoc["@category"] == "datascan" or odoc["@category"] == "onionscan": #category datascan, so artifacts is all results
                         otags=["onyphe:asset"]
                         if self.auto_import:
                             otags.append("autoImport:true")
                         otags.append(str(odoc["protocol"]))
                         otags.append(str(odoc["transport"]) + "/" + str(odoc["port"]))
+                        if "tag" in odoc:
+                            for ta in odoc["tag"]:
+                                otags.append(str(ta))   
+                        if self.data_type == "ip": #datatype is IP, so create fqdn artifacts
+                            if "hostname" in odoc:
+                                for fqdns in odoc["hostname"]:
+                                    artifacts.append(
+                                        self.build_artifact(
+                                            "fqdn", str(fqdns), tags=otags
+                                            )
+                                        )            
+                            elif "reverse" in odoc: #no hostnames so use reverse if possible
+                                artifacts.append(
+                                    self.build_artifact(
+                                        "fqdn", odoc["reverse"], tags=otags
+                                        )
+                                    )                       
+                            else: #no hostnames or reverse so use ip, but user can't import as observable exists :(
+                                artifacts.append(
+                                    self.build_artifact(
+                                        "ip", str(odoc["ip"]), tags=otags
+                                        )
+                                    )
+                        else:
+                            artifacts.append(
+                                self.build_artifact(
+                                    "ip", str(odoc["ip"]), tags=otags
+                                    )
+                                )
+                    elif odoc["@category"] == "threatlist":
+                        otags=["onyphe:threat"]
+                        if self.auto_import:
+                            otags.append("autoImport:true")
                         if "tag" in odoc:
                             for ta in odoc["tag"]:
                                 otags.append(str(ta))   
@@ -422,7 +480,16 @@ class OnypheAnalyzer(Analyzer):
             data = self.get_param("data", None, "Data is missing")
             
             if self.service == "search":
-                results = self.onyphe_client.search(data, self.data_type,self.onyphe_category)
+                results = self.onyphe_client.search(data, self.data_type,self.onyphe_category,self.time_filter)
+                results["category"] = self.onyphe_category
+                results["total_category"] = len(results["results"])
+            
+            elif self.service == "asm":
+                self.onyphe_category = "riskscan" #ASM service so force category to riskscan
+                self.fields_filter = self.get_param("config.fields_filter", "ip,port,protocol,tag,tls,cpe,cve,hostname,domain,alternativeip,forward,url,organization,transport,organization,device.class,device.product,device.productvendor,device.productversion,product,productvendor,productversion") 
+                asmfilter = self.time_filter + "+-fields:" + self.fields_filter #Fields filter is faster and saves space in The Hive database.
+                results = self.onyphe_client.search(data, self.data_type,self.onyphe_category,asmfilter.replace(",","%2C"))
+                #results = self.onyphe_client.search(data, self.data_type,self.onyphe_category,self.time_filter)
                 results["category"] = self.onyphe_category
                 results["total_category"] = len(results["results"])
             
