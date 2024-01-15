@@ -40,7 +40,7 @@
                 <dt>Domain:</dt>
                 <dd><span ng-repeat="d in r.domain">{{ d }}<br></span></dd>
             </dl>
-            <dl class="dl-horizontal">
+            <dl ng-if="r.alternativeip" class="dl-horizontal">
                 <dt>Alternative IP(s):</dt>
                 <dd><span ng-repeat="ip in r.alternativeip">{{ ip }}<br></span></dd>
             </dl>
