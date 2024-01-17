@@ -36,7 +36,7 @@ class Splunk(Analyzer):
             self.service = client.connect(
                 host=self.HOST,
                 port=self.PORT,
-                protocol=self.PROTOCOL
+                protocol=self.PROTOCOL,
                 username=self.USERNAME,
                 password=self.PASSWORD,
                 owner=self.OWNER,
