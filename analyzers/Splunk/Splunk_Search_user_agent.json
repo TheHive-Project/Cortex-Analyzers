@@ -28,6 +28,14 @@
       "required": true
     },
     {
+      "name": "protocol",
+      "description": "Splunk protocol (http or https)",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "https"
+    },
+    {
       "name": "port_gui",
       "description": "Splunk GUI port",
       "type": "string",
