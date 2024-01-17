@@ -18,7 +18,7 @@ class Splunk(Analyzer):
         Analyzer.__init__(self)
         self.HOST = self.getParam('config.host', None, 'Host parameter is missing')
         self.PORT = self.getParam('config.port', None, 'Port parameter is missing')
-        self.PROTOCOL = self.getParam('config.protocol', None, 'https')
+        self.PROTOCOL = self.getParam('config.protocol', None, 'Protocol is missing')
         self.PORT_GUI = self.getParam('config.port_gui', None, 'GUI port parameter is missing')
         self.USERNAME = self.getParam('config.username', None, 'Username parameter is missing')
         self.PASSWORD = self.getParam('config.password', None, 'Password parameter is missing')
