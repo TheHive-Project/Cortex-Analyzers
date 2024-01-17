@@ -18,6 +18,7 @@ class Splunk(Analyzer):
         Analyzer.__init__(self)
         self.HOST = self.getParam('config.host', None, 'Host parameter is missing')
         self.PORT = self.getParam('config.port', None, 'Port parameter is missing')
+        self.PROTOCOL = self.getParam('config.protocol', None, 'https')
         self.PORT_GUI = self.getParam('config.port_gui', None, 'GUI port parameter is missing')
         self.USERNAME = self.getParam('config.username', None, 'Username parameter is missing')
         self.PASSWORD = self.getParam('config.password', None, 'Password parameter is missing')
@@ -83,7 +84,7 @@ class Splunk(Analyzer):
 
 
                    finally:
-                       jobs[saved_search]["link"] = "http://"+self.HOST+":"+self.PORT_GUI+"/"+self.language+"/app/"+self.APP+"/search?sid="+job["sid"]
+                       jobs[saved_search]["link"] = self.PROTOCOL + "://"+self.HOST+":"+self.PORT_GUI+"/"+self.language+"/app/"+self.APP+"/search?sid="+job["sid"]
                        jobs[saved_search]["eventCount"] = int(job["eventCount"])
                        jobs[saved_search]["resultCount"] = int(job["resultCount"])
                        jobs[saved_search]["searchEarliestTime"] = datetime.utcfromtimestamp(round(float(job["searchEarliestTime"]))).strftime("%c")
