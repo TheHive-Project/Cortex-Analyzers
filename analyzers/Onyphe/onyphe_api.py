@@ -50,7 +50,7 @@ class Onyphe:
         elif datatype == 'domain':
             url_path = "/api/v2/summary/domain/{domain}".format(domain=data)        
         elif datatype == 'fqdn':
-            url_path = "/api/v2/summary/hostname/{hostname}".format(hostname=data)                 
+            url_path = "/api/v2/summary/hostname/{hostname}".format(hostname=data)
         return self._request(path=url_path)
 
     

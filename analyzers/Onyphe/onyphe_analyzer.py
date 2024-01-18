@@ -3,6 +3,7 @@
 from cortexutils.analyzer import Analyzer
 from onyphe_api import Onyphe
 from datetime import datetime
+#from tld import get_fld # TODO FLD/subdomains check
 
 class OnypheAnalyzer(Analyzer):
     def __init__(self):
@@ -15,14 +16,14 @@ class OnypheAnalyzer(Analyzer):
         self.onyphe_category = self.get_param("config.category", "datascan") #only used for Search service
         self.time_filter = self.get_param("config.time_filter", "-since:1M") 
         self.auto_import = self.get_param("config.auto_import", False) 
-        self.verbose_taxonomies = self.get_param("config.verbose_taxonomies", False) #Only used for Summary Analyzer
+        self.verbose_taxonomies = self.get_param("config.verbose_taxonomies", False) #Only used for Summary service
         self.polling_interval = self.get_param("config.polling_interval", 60)
 
     def summary(self, raw):
         taxonomies = []
         namespace = "ONYPHE"
 
-        if self.service == "search" and self.onyphe_category == "vulnscan":
+        if (self.service == "search" and self.onyphe_category == "vulnscan") or self.service == "vulnscan":
             #report number of CVEs
             
             reportlist = []
@@ -128,7 +129,7 @@ class OnypheAnalyzer(Analyzer):
                     self.build_taxonomy("info", namespace, "Risk", "No risks found",)
                 )
         
-        elif self.service == "summary" and not self.verbose_taxonomies:
+        elif (self.service == "summary" and not self.verbose_taxonomies) or self.service == "threatlist":
 
             threatlist = list(
                 set(
@@ -281,10 +282,14 @@ class OnypheAnalyzer(Analyzer):
         
         if self.service != "summary":
             for odoc in raw["results"]:
-                if "forward" in odoc:
+                if ("forward" in odoc and "port" in odoc):
                     dedup_key = str(odoc["ip"]) + ":" + str(odoc["port"]) + ":" + str(odoc["forward"])
-                else:
+                elif "port" in odoc:
                     dedup_key = str(odoc["ip"]) + ":" + str(odoc["port"])
+                elif "threatlist" in odoc:
+                    dedup_key = str(odoc["ip"]) + ":" + str(odoc["threatlist"])  #dedup key for threatlist, as no port in that category                  
+                else:
+                    dedup_key = str(odoc["ip"])
                 
                 newasset = True
                 if dedup_key in dedup:
@@ -436,7 +441,7 @@ class OnypheAnalyzer(Analyzer):
                                 self.build_artifact(
                                     "ip", str(odoc["ip"]), tags=otags
                                     )
-                                )
+                                )   
                     else: #category other, so assuming resolver / hostname enumeration
                         otags=["onyphe:" + self.onyphe_category]
                         if self.auto_import: #YOLO
@@ -493,6 +498,23 @@ class OnypheAnalyzer(Analyzer):
                 results["category"] = self.onyphe_category
                 results["total_category"] = len(results["results"])
             
+            elif self.service == "vulnscan":
+                self.onyphe_category = "vulnscan" 
+                
+                vulnfilter = self.time_filter
+                if self.get_param("config.only_vulnerable", True):
+                    vulnfilter += "+-exists:cve"
+                results = self.onyphe_client.search(data, self.data_type,self.onyphe_category,vulnfilter)
+                results["category"] = self.onyphe_category
+                results["total_category"] = len(results["results"])
+            
+            elif self.service == "threatlist":
+                self.onyphe_category = "threatlist" 
+                
+                results = self.onyphe_client.search(data, self.data_type,self.onyphe_category,self.time_filter)
+                results["category"] = self.onyphe_category
+                results["total_category"] = len(results["results"])
+                        
             elif self.service == "summary":
                 results = self.onyphe_client.summary(data, self.data_type)
                 results["totals_category"] = {
