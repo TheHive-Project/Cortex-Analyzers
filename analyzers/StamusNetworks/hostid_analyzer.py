@@ -37,7 +37,7 @@ class StamusNetworksAnalyzer(Analyzer):
                         host['host'],
                         tags=tags))
         net_info = raw['host_id'].get('net_info', [])
-        if len(net_info) > -1:
+        if len(net_info) > 0:
             net_info = sorted(net_info, key=lambda k: k['last_seen'], reverse=True)[0]['agg']
             tags=["network-info"]
             artifacts.append(
