@@ -1,0 +1,247 @@
+<div class="panel panel-info" ng-if="success">
+	<div class="panel-heading">
+		Onyphe Summary - <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+	</div>
+	<div class="panel-body">
+		<table class="table" ng-if="content.totals_category.threatlist > 0 ">
+            <thead>
+                <th>IPv6</th>
+                <th>Subnet</th>
+                <th>Threat list</th>
+                <th>Seen date</th>
+            </thead>
+            <tbody ng-repeat="r in content.results | orderBy:'-seen_date'">
+                <tr ng-if="r['@category'] == 'threatlist' ">
+                    <td>{{r.ipv6}}</td>
+                    <td>{{r.subnet}}</td>
+                    <td><b>{{r.threatlist}}</b></td>
+                    <td>{{r.seen_date}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.totals_category.threats > 0 ">
+    <div class="panel-heading">
+        Threats</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <th>IPv6</th>
+                <th>Subnet</th>
+                <th>Threat list</th>
+                <th>Seen date</th>
+            </thead>
+            <tbody ng-repeat="r in content.results | orderBy:'-seen_date'">
+                <tr ng-if="r['@category'] == 'threats' ">
+                    <td>{{r.ipv6}}</td>
+                    <td>{{r.subnet}}</td>
+                    <td><b>{{r.threatlist}}</b></td>
+                    <td>{{r.seen_date}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.totals_category.geoloc > 0 ">
+    <div class="panel-heading">
+        Geolocate
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <th>ASN</th>
+                <th>City</th>
+                <th>Country</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Organization</th>
+                <th>IPv4</th>
+                <th>IPv6</th>
+                <th>Subnet</th>
+
+            </thead>
+            <tbody ng-repeat="r in content.results | orderBy:'-seen_date'">
+                <tr ng-if="r['@category'] == 'geoloc' ">
+                    <td>{{r.asn}}</td>
+                    <td>{{r.city}}</td>
+                    <td>{{r.country_name}}/{{r.country}}</td>
+                    <td>{{r.latitude}}</td>
+                    <td>{{r.longitude}}</td>
+                    <td>{{r.organisation}}</td>
+                    <td>{{r.ip}}</td>
+                    <td>{{r.ipv6}}</td>
+                    <td>{{r.subnet}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.totals_category.inetnum > 0 ">
+    <div class="panel-heading">
+        inetnum
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <th>ASN</th>
+                <th>Country</th>
+                <th>Subnet</th>
+                <th>Organisation</th>
+                <th>Location</th>
+                <th>Netname</th>
+                <th>Seen Date</th>
+                <th>Source</th>
+            </thead>
+            <tbody ng-repeat="r in content.results | orderBy:'-seen_date'">
+                <tr ng-if="r['@category'] == 'inetnum' ">
+                    <td>{{r.asn}}</td>
+                    <td>{{r.country}}</td>
+                    <td>{{r.subnet}}</td>
+                    <td>{{r.organization}}</td>
+                    <td>{{r.location}}</td>
+                    <td>{{r.netname}}</td>
+                    <td>{{r.seen_date}}</td>
+                    <td>{{r.source}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.totals_category.ports > 0 ">
+    <div class="panel-heading">
+        Ports
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <th>ASN</th>
+                <th>Country</th>
+                <th>IPv4</th>
+                <th>Organisation</th>
+                <th>Location</th>
+                <th>OS</th>
+                <th>Port</th>
+                <th>Seen date</th>
+            </thead>
+            <tbody ng-repeat="r in content.results | orderBy:'-seen_date'">
+                <tr ng-if="r['@category'] == 'ports' ">
+                    <td>{{r.asn}}</td>
+                    <td>{{r.country}}</td>
+                    <td>{{r.ip}}</td>
+                    <td>{{r.organization}}</td>
+                    <td>{{r.location}}</td>
+                    <td>{{r.os}}</td>
+                    <td>{{r.port}}</td>
+                    <td>{{r.seen_date}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.totals_category.reverse > 0 ">
+    <div class="panel-heading">
+        Reverse</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <th>Domain</th>
+                <th>IPv4</th>
+                <th>IPv6</th>
+                <th>Reverse</th>
+                <th>Seen date</th>
+            </thead>
+            <tbody ng-repeat="r in content.results | orderBy:'-seen_date'">
+                <tr ng-if="r['@category'] == 'reverse' ">
+                    <td>{{r.domain}}</td>
+                    <td>{{r.ip}}</td>
+                    <td>{{r.ipv6}}</td>
+                    <td>{{r.reverse}}</td>
+                    <td>{{r.seen_date}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.totals_category.datascan > 0 ">
+    <div class="panel-heading">
+        DataScan
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <th>ASN</th>
+                <th>Country</th>
+                <th>IPv4</th>
+                <th>Organisation</th>
+                <th>Location</th>
+                <th>Port</th>
+                <th>Protocol</th>
+                <th>OS</th>
+                <th>Product</th>
+                <th>Product Version</th>
+                <th>Seen Date</th>
+                <th>Data MD5</th>
+            </thead>
+            <tbody ng-repeat="r in content.results | orderBy:'-seen_date'">
+                <tr ng-if="r['@category'] == 'datascan' ">
+                    <td class="wrap">{{r.asn}}</td>
+                    <td class="wrap">{{r.country}}</td>
+                    <td class="wrap">{{r.ip}}</td>
+                    <td class="wrap">{{r.organization}}</td>
+                    <td class="wrap">{{r.location}}</td>
+                    <td class="wrap">{{r.port}}</td>
+                    <td class="wrap">{{r.protocol}}</td>
+                    <td class="wrap">{{r.os}}</td>
+                    <td class="wrap">{{r.product}}</td>
+                    <td class="wrap">{{r.productversion}}</td>
+                    <td class="wrap">{{r.seen_date}}</td>
+                    <td class="wrap">{{r.datamd5}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="panel panel-info" ng-if="success && content.totals_category.forward > 0 ">
+    <div class="panel-heading">
+        Forward
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <th>Domain</th>
+                <th>IPv4</th>
+                <th>IPv6</th>
+                <th>Seen date</th>
+            </thead>
+            <tbody ng-repeat="r in content.results | orderBy:'-seen_date'">
+                <tr ng-if="r['@category'] == 'forward' ">
+                    <td>{{r.domain}}</td>
+                    <td>{{r.ip}}</td>
+                    <td>{{r.ipv6}}</td>
+                    <td>{{r.seen_date}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
