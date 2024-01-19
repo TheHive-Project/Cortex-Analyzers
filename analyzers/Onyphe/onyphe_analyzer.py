@@ -3,7 +3,7 @@
 from cortexutils.analyzer import Analyzer
 from onyphe_api import Onyphe
 from datetime import datetime
-
+#from tld import get_fld # TODO FLD/subdomains check
 
 class OnypheAnalyzer(Analyzer):
     def __init__(self):
@@ -13,14 +13,123 @@ class OnypheAnalyzer(Analyzer):
         )
         self.onyphe_key = self.get_param("config.key", None, "Missing Onyphe API key")
         self.onyphe_client = None
-        self.verbose_taxonomies = self.get_param("config.verbose_taxonomies", False)
+        self.onyphe_category = self.get_param("config.category", "datascan") #only used for Search service
+        self.time_filter = self.get_param("config.time_filter", "-since:1M") 
+        self.auto_import = self.get_param("config.auto_import", False) 
+        self.verbose_taxonomies = self.get_param("config.verbose_taxonomies", False) #Only used for Summary service
         self.polling_interval = self.get_param("config.polling_interval", 60)
 
     def summary(self, raw):
         taxonomies = []
-        namespace = "Onyphe"
+        namespace = "ONYPHE"
 
-        if not self.verbose_taxonomies:
+        if (self.service == "search" and self.onyphe_category == "vulnscan") or self.service == "vulnscan":
+            #report number of CVEs
+            
+            reportlist = []
+            
+            for odoc in raw["results"]:
+                if "cve" in odoc:
+                    for cve in odoc["cve"]:
+                        if cve not in reportlist:
+                            reportlist.append(cve)
+
+            if len(reportlist) > 0:
+                taxonomies.append(
+                    self.build_taxonomy(
+                        "malicious",
+                        namespace,
+                        "CVE",
+                        "{} CVE found".format(len(reportlist)),
+                    )
+                )
+            else:
+                taxonomies.append(
+                    self.build_taxonomy("info", namespace, "CVE", "No CVE found",)
+                )
+                
+        elif self.service == "search" and self.onyphe_category == "riskscan":
+            #report number of unique risks/ports/services
+            
+            reportlist = []
+                        
+            for odoc in raw["results"]:
+                if "forward" in odoc:
+                    assetport = str(odoc["ip"]) + ":" + str(odoc["port"]) + ":" + str(odoc["forward"])
+                else:
+                    assetport = str(odoc["ip"]) + ":" + str(odoc["port"])
+                if not assetport in reportlist:
+                    reportlist.append(assetport)
+
+            if len(reportlist) > 0:
+                taxonomies.append(
+                    self.build_taxonomy(
+                        "suspicious",
+                        namespace,
+                        "Risk",
+                        "{} risks found".format(len(reportlist)),
+                    )
+                )
+            else:
+                taxonomies.append(
+                    self.build_taxonomy("info", namespace, "Risk", "No risks found",)
+                )
+                
+        elif self.service == "search" and self.onyphe_category == "datascan":
+            #report number of unique ports/services
+            
+            reportlist = []
+                        
+            for odoc in raw["results"]:
+                if "forward" in odoc:
+                    assetport = str(odoc["ip"]) + ":" + str(odoc["port"]) + ":" + str(odoc["forward"])
+                else:
+                    assetport = str(odoc["ip"]) + ":" + str(odoc["port"])
+                if not assetport in reportlist:
+                    reportlist.append(assetport)
+
+            if len(reportlist) > 0:
+                taxonomies.append(
+                    self.build_taxonomy(
+                        "info",
+                        namespace,
+                        "Services",
+                        "{} services found".format(len(reportlist)),
+                    )
+                )
+            else:
+                taxonomies.append(
+                    self.build_taxonomy("info", namespace, "Services", "No services found",)
+                )
+        
+        elif self.service == "asm":
+            #report number of unique risks/ports/services
+            
+            reportlist = []
+                        
+            for odoc in raw["results"]:
+                if "forward" in odoc:
+                    assetport = str(odoc["ip"]) + ":" + str(odoc["port"]) + ":" + str(odoc["forward"])
+                else:
+                    assetport = str(odoc["ip"]) + ":" + str(odoc["port"])
+                if not assetport in reportlist:
+                    reportlist.append(assetport)
+
+            if len(reportlist) > 0:
+                taxonomies.append(
+                    self.build_taxonomy(
+                        "suspicious",
+                        namespace,
+                        "Risk",
+                        "{} risks found".format(len(reportlist)),
+                    )
+                )
+            else:
+                taxonomies.append(
+                    self.build_taxonomy("info", namespace, "Risk", "No risks found",)
+                )
+        
+        elif (self.service == "summary" and not self.verbose_taxonomies) or self.service == "threatlist":
 
             threatlist = list(
                 set(
@@ -45,7 +154,8 @@ class OnypheAnalyzer(Analyzer):
                 taxonomies.append(
                     self.build_taxonomy("info", namespace, "Threat", "No threat found",)
                 )
-        else:
+                
+        elif self.service == "summary" and self.verbose_taxonomies:
 
             output_data = {
                 "threatlist": {},
@@ -166,27 +276,262 @@ class OnypheAnalyzer(Analyzer):
 
         return {"taxonomies": taxonomies}
 
+    def artifacts(self, raw):
+        artifacts = []
+        dedup = {}
+        
+        if self.service != "summary":
+            for odoc in raw["results"]:
+                if ("forward" in odoc and "port" in odoc):
+                    dedup_key = str(odoc["ip"]) + ":" + str(odoc["port"]) + ":" + str(odoc["forward"])
+                elif "port" in odoc:
+                    dedup_key = str(odoc["ip"]) + ":" + str(odoc["port"])
+                elif "threatlist" in odoc:
+                    dedup_key = str(odoc["ip"]) + ":" + str(odoc["threatlist"])  #dedup key for threatlist, as no port in that category                  
+                else:
+                    dedup_key = str(odoc["ip"])
+                
+                newasset = True
+                if dedup_key in dedup:
+                    newdate = datetime.strptime(odoc["seen_date"], "%Y-%m-%d")
+                    olddate = datetime.strptime(dedup[dedup_key], "%Y-%m-%d")
+                    if olddate > newdate:
+                        newasset = False
+                
+                if newasset:
+                    if odoc["@category"] == "riskscan": #category riskscan, so artifacts are risks
+                        otags=["onyphe:risk"]
+                        if self.auto_import:
+                            otags.append("autoImport:true")
+                        for ta in odoc["tag"]:
+                            otags.append(str(ta))
+                        if "cve" in odoc:
+                            for cve in odoc["cve"]:
+                                otags.append(str(cve))
+                        otags.append(str(odoc["protocol"]))
+                        otags.append(str(odoc["transport"]) + "/" + str(odoc["port"]))    
+                        if self.data_type == "ip": #datatype is IP, so create fqdn artifacts
+                            if "hostname" in odoc:
+                                for fqdns in odoc["hostname"]:
+                                    artifacts.append(
+                                        self.build_artifact(
+                                            "fqdn", str(fqdns), tags=otags
+                                            )
+                                        )            
+                            elif "reverse" in odoc: #no hostnames so use reverse if possible
+                                artifacts.append(
+                                    self.build_artifact(
+                                        "fqdn", odoc["reverse"], tags=otags
+                                        )
+                                    )                       
+                            else: #no hostnames or reverse so use ip, but user can't import as observable exists :(
+                                artifacts.append(
+                                    self.build_artifact(
+                                        "ip", str(odoc["ip"]), tags=otags
+                                        )
+                                    )
+                        else:
+                            artifacts.append(
+                                self.build_artifact(
+                                    "ip", str(odoc["ip"]), tags=otags
+                                    )
+                                )
+                    elif odoc["@category"] == "vulnscan": #category vulnscan, so artifacts are cves
+                        if "cve" in odoc:
+                            otags=["onyphe:cve"]
+                            if self.auto_import:
+                                otags.append("autoImport:true")
+                            for cve in odoc["cve"]:
+                                otags.append(str(cve))
+                            if "tag" in odoc:
+                                for ta in odoc["tag"]:
+                                    otags.append(str(ta))   
+                            otags.append(str(odoc["protocol"]))
+                            otags.append(str(odoc["transport"]) + "/" + str(odoc["port"]))    
+                            if self.data_type == "ip": #datatype is IP, so create fqdn artifacts
+                                if "hostname" in odoc:
+                                    for fqdns in odoc["hostname"]:
+                                        artifacts.append(
+                                            self.build_artifact(
+                                                "fqdn", str(fqdns), tags=otags
+                                                )
+                                            )            
+                                elif "reverse" in odoc: #no hostnames so use reverse if possible
+                                    artifacts.append(
+                                        self.build_artifact(
+                                            "fqdn", odoc["reverse"], tags=otags
+                                            )
+                                        )                       
+                                else: #no hostnames or reverse so use ip, but user can't import as observable exists :(
+                                    artifacts.append(
+                                        self.build_artifact(
+                                            "ip", str(odoc["ip"]), tags=otags
+                                            )
+                                        )
+                            else:
+                                artifacts.append(
+                                    self.build_artifact(
+                                        "ip", str(odoc["ip"]), tags=otags
+                                        )
+                                    )
+                    elif odoc["@category"] == "datascan" or odoc["@category"] == "onionscan": #category datascan, so artifacts is all results
+                        otags=["onyphe:asset"]
+                        if self.auto_import:
+                            otags.append("autoImport:true")
+                        otags.append(str(odoc["protocol"]))
+                        otags.append(str(odoc["transport"]) + "/" + str(odoc["port"]))
+                        if "tag" in odoc:
+                            for ta in odoc["tag"]:
+                                otags.append(str(ta))   
+                        if self.data_type == "ip": #datatype is IP, so create fqdn artifacts
+                            if "hostname" in odoc:
+                                for fqdns in odoc["hostname"]:
+                                    artifacts.append(
+                                        self.build_artifact(
+                                            "fqdn", str(fqdns), tags=otags
+                                            )
+                                        )            
+                            elif "reverse" in odoc: #no hostnames so use reverse if possible
+                                artifacts.append(
+                                    self.build_artifact(
+                                        "fqdn", odoc["reverse"], tags=otags
+                                        )
+                                    )                       
+                            else: #no hostnames or reverse so use ip, but user can't import as observable exists :(
+                                artifacts.append(
+                                    self.build_artifact(
+                                        "ip", str(odoc["ip"]), tags=otags
+                                        )
+                                    )
+                        else:
+                            artifacts.append(
+                                self.build_artifact(
+                                    "ip", str(odoc["ip"]), tags=otags
+                                    )
+                                )
+                    elif odoc["@category"] == "threatlist":
+                        otags=["onyphe:threat"]
+                        if self.auto_import:
+                            otags.append("autoImport:true")
+                        if "tag" in odoc:
+                            for ta in odoc["tag"]:
+                                otags.append(str(ta))   
+                        if self.data_type == "ip": #datatype is IP, so create fqdn artifacts
+                            if "hostname" in odoc:
+                                for fqdns in odoc["hostname"]:
+                                    artifacts.append(
+                                        self.build_artifact(
+                                            "fqdn", str(fqdns), tags=otags
+                                            )
+                                        )            
+                            elif "reverse" in odoc: #no hostnames so use reverse if possible
+                                artifacts.append(
+                                    self.build_artifact(
+                                        "fqdn", odoc["reverse"], tags=otags
+                                        )
+                                    )                       
+                            else: #no hostnames or reverse so use ip, but user can't import as observable exists :(
+                                artifacts.append(
+                                    self.build_artifact(
+                                        "ip", str(odoc["ip"]), tags=otags
+                                        )
+                                    )
+                        else:
+                            artifacts.append(
+                                self.build_artifact(
+                                    "ip", str(odoc["ip"]), tags=otags
+                                    )
+                                )   
+                    else: #category other, so assuming resolver / hostname enumeration
+                        otags=["onyphe:" + self.onyphe_category]
+                        if self.auto_import: #YOLO
+                            otags.append("autoImport:true")
+                        if "tag" in odoc:
+                            for ta in odoc["tag"]:
+                                otags.append(str(ta))   
+                        if self.data_type == "ip": #datatype is IP, so create fqdn artifacts
+                            if "hostname" in odoc:
+                                for fqdns in odoc["hostname"]:
+                                    artifacts.append(
+                                        self.build_artifact(
+                                            "fqdn", str(fqdns), tags=otags
+                                            )
+                                        )            
+                            elif "reverse" in odoc: #no hostnames so use reverse if possible
+                                artifacts.append(
+                                    self.build_artifact(
+                                        "fqdn", odoc["reverse"], tags=otags
+                                        )
+                                    )                       
+                            else: #no hostnames or reverse so use ip, but user can't import as observable exists :(
+                                artifacts.append(
+                                    self.build_artifact(
+                                        "ip", str(odoc["ip"]), tags=otags
+                                        )
+                                    )
+                        else:
+                            artifacts.append(
+                                self.build_artifact(
+                                    "ip", str(odoc["ip"]), tags=otags
+                                    )
+                                )
+                    dedup[dedup_key] = str(odoc["seen_date"])
+        return artifacts
+
     def run(self):
         Analyzer.run(self)
         try:
             self.onyphe_client = Onyphe(self.onyphe_key)
             data = self.get_param("data", None, "Data is missing")
-            results = self.onyphe_client.summary(data, self.data_type)
-            results["totals_category"] = {
-                k: len(
-                    [x for x in results["results"] if x["@category"] == k]
-                )
-                for k in [
-                    "threatlist",
-                    "threats",
-                    "geoloc",
-                    "inetnum",
-                    "ports",
-                    "reverse",
-                    "datascan",
-                    "forward",
-                ]
-            }
+            
+            if self.service == "search":
+                results = self.onyphe_client.search(data, self.data_type,self.onyphe_category,self.time_filter)
+                results["category"] = self.onyphe_category
+                results["total_category"] = len(results["results"])
+            
+            elif self.service == "asm":
+                self.onyphe_category = "riskscan" #ASM service so force category to riskscan
+                self.fields_filter = self.get_param("config.fields_filter", "ip,port,protocol,tag,tls,cpe,cve,hostname,domain,alternativeip,forward,url,organization,transport,organization,device.class,device.product,device.productvendor,device.productversion,product,productvendor,productversion") 
+                asmfilter = self.time_filter + "+-fields:" + self.fields_filter #Fields filter is faster and saves space in The Hive database.
+                results = self.onyphe_client.search(data, self.data_type,self.onyphe_category,asmfilter.replace(",","%2C"))
+                #results = self.onyphe_client.search(data, self.data_type,self.onyphe_category,self.time_filter)
+                results["category"] = self.onyphe_category
+                results["total_category"] = len(results["results"])
+            
+            elif self.service == "vulnscan":
+                self.onyphe_category = "vulnscan" 
+                
+                vulnfilter = self.time_filter
+                if self.get_param("config.only_vulnerable", True):
+                    vulnfilter += "+-exists:cve"
+                results = self.onyphe_client.search(data, self.data_type,self.onyphe_category,vulnfilter)
+                results["category"] = self.onyphe_category
+                results["total_category"] = len(results["results"])
+            
+            elif self.service == "threatlist":
+                self.onyphe_category = "threatlist" 
+                
+                results = self.onyphe_client.search(data, self.data_type,self.onyphe_category,self.time_filter)
+                results["category"] = self.onyphe_category
+                results["total_category"] = len(results["results"])
+                        
+            elif self.service == "summary":
+                results = self.onyphe_client.summary(data, self.data_type)
+                results["totals_category"] = {
+                    k: len(
+                        [x for x in results["results"] if x["@category"] == k]
+                    )
+                    for k in [
+                        "threatlist",
+                        "threats",
+                        "geoloc",
+                        "inetnum",
+                        "ports",
+                        "reverse",
+                        "datascan",
+                        "forward",
+                    ]
+                }
 
             self.report(results)
 
