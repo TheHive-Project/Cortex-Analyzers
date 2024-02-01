@@ -54,12 +54,12 @@
   },
   "screenshots": [
     {
-      "path": "assets/Onyphe_Summary_long.png",
-      "caption": "Onyphe_Summary long report sample"
+      "path": "assets/ONYPHE_Search_long.png",
+      "caption": "ONYPHE Search report sample (IPs obscured)"
     },
     {
-      "path": "assets/Onyphe_Summary_short.png",
-      "caption": "Onyphe_Summary mini report sample"
+      "path": "assets/ONYPHE_Search_short.png",
+      "caption": "ONYPHE Search mini report showing no. of open ports"
     }
   ]
 }

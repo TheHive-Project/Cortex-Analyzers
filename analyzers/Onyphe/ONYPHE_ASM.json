@@ -54,12 +54,12 @@
   },
   "screenshots": [
     {
-      "path": "assets/Onyphe_Summary_long.png",
-      "caption": "Onyphe_Summary long report sample"
+      "path": "assets/ONYPHE_ASM_long.png",
+      "caption": "ONYPHE ASM report sample (IPs obscured) with click to expand accordion."
     },
     {
-      "path": "assets/Onyphe_Summary_short.png",
-      "caption": "Onyphe_Summary mini report sample"
+      "path": "assets/ONYPHE_ASM_short.png",
+      "caption": "ONYPHE ASM mini report showing no. of risks"
     }
   ]
 }

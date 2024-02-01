@@ -54,12 +54,12 @@
   },
   "screenshots": [
     {
-      "path": "assets/Onyphe_Summary_long.png",
-      "caption": "Onyphe_Summary long report sample"
+      "path": "assets/ONYPHE_Vulnscan_long.png",
+      "caption": "ONYPHE Vulnscan report sample (IPs obscured)"
     },
     {
-      "path": "assets/Onyphe_Summary_short.png",
-      "caption": "Onyphe_Summary mini report sample"
+      "path": "assets/ONYPHE_Vulnscan_short.png",
+      "caption": "ONYPHE Vulnscan mini report showing no. of CVEs"
     }
   ]
 }
