@@ -10,11 +10,15 @@ class PhishtankAnalyzer(Analyzer):
         Analyzer.__init__(self)
         self.phishtank_key = self.get_param('config.key', None,
                                             'Missing PhishTank API key')
+        self.phishtank_useragent = self.get_param('config.useragent', None,
+                                            'Missing PhishTank UserAgent')
 
     def phishtank_checkurl(self, data):
         url = 'https://checkurl.phishtank.com/checkurl/'
         postdata = {'url': data, 'format': 'json', 'app_key': self.phishtank_key}
-        r = requests.post(url, data=postdata)
+        r = requests.post(url, data=postdata, headers = {
+            'User-Agent': f'phishtank/[{self.phishtank_useragent}]'
+        })
         return r.json()
 
     def summary(self, raw):
