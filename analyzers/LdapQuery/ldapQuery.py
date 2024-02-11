@@ -4,7 +4,7 @@ import json
 from cortexutils.analyzer import Analyzer
 import ldap3
 from ldap3 import Server, Connection, SIMPLE, SYNC, SUBTREE, ALL
-
+import datetime
 
 class LdapQuery(Analyzer):
     def __init__(self):
@@ -90,6 +90,11 @@ class LdapQuery(Analyzer):
                         users.append(user)
 
             self.connection.unbind()
+            
+            for user in users:
+                for key, value in user.items():
+                    if isinstance(value, datetime.datetime):
+                        user[key] = str(value)
 
             self.report({"results": users})
         except Exception as e:
