@@ -4,7 +4,7 @@
     "author": "Joe Lazaro",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "description": "Add entries to the Tenant Allow/Block List in the Microsoft 365 Defender",
+    "description": "Block external email addresses or domains in Microsoft 365 Defender, add entries to the Tenant Allow/Block List. This will prevent communication with users in your organization (sending or receiving mail).",
     "dataTypeList": [
         "thehive:case_artifact"
     ],

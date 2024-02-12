@@ -1,10 +1,10 @@
 {
     "name": "MSDefenderOffice365_unblock_url",
     "version": "1.0",
-    "author": "Joe Lazaro",
+    "author": "Joe Lazaro, Patrick Stanullo",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "description": "Add entries to the Tenant Allow/Block List in the Microsoft 365 Defender",
+    "description": "Unblock a domain from the Tenant Allow/Block List in the Microsoft 365 Defender",
     "dataTypeList": [
         "thehive:case_artifact"
     ],

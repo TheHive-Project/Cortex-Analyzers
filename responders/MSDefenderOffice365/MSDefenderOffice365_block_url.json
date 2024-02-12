@@ -1,10 +1,10 @@
 {
     "name": "MSDefenderOffice365_block_url",
     "version": "1.0",
-    "author": "Joe Lazaro",
+    "author": "Joe Lazaro, Patrick Stanullo",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "description": "Add entries to the Tenant Allow/Block List in the Microsoft 365 Defender",
+    "description": "Block a domain (URL) in Microsoft 365 Defender, add entries to the Tenant Allow/Block List. This will prevent users from accessing the webpage and receiving emails containing the URL.",
     "dataTypeList": [
         "thehive:case_artifact"
     ],
