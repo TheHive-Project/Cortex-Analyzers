@@ -22,7 +22,7 @@ Connect-ExchangeOnline @connectSplat
 
 $allResults = @()
 ForEach ($entry in $entries) {
-    $result = Remove-TenantAllowBlockListItems -ListType Sender -Entries $entry | ConvertTo-Json
+    $result = Remove-TenantAllowBlockListItems -ListType Url -Entries $entry | ConvertTo-Json
     $allResults += @{
         entry = $entry;
         result = $result;

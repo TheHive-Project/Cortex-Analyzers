@@ -44,7 +44,7 @@ class MsDefenderOffice365Responder(Responder):
         if not isinstance(o_data, list):
             o_data = [o_data]
 
-        if observable['dataType'] not in ['domain', 'fqdn', 'mail']:
+        if observable['dataType'] not in ['domain', 'fqdn', 'mail', 'url']:
             self.error(f"Data type {observable['dataType']} not supported.")
 
         try:
