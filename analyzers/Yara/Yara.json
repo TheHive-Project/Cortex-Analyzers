@@ -1,0 +1,20 @@
+{
+  "name": "Yara",
+  "author": "Nils Kuhnert, CERT-Bund",
+  "license": "AGPL-V3",
+  "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+  "version": "2.0",
+  "description": "Check files against YARA rules.",
+  "dataTypeList": ["file"],
+  "command": "Yara/yara_analyzer.py",
+  "baseConfig": "Yara",
+  "configurationItems": [
+    {
+      "name": "rules",
+      "description": "Define the path rules folder",
+      "type": "string",
+      "multi": true,
+      "required": true
+    }
+  ]
+}

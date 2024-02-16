@@ -1,0 +1,21 @@
+{
+  "name": "CERTatPassiveDNS",
+  "author": "Nils Kuhnert, CERT-Bund",
+  "license": "AGPL-V3",
+  "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+  "version": "2.0",
+  "description": "Checks CERT.at Passive DNS for a given domain.",
+  "dataTypeList": ["domain", "fqdn", "ip"],
+  "baseConfig": "CERTatPassiveDNS",
+  "command": "CERTatPassiveDNS/certat_passivedns.py",
+  "configurationItems": [
+    {
+      "name": "limit",
+      "description": "Define the maximum number of results per request",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 100
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "name": "Hashdd_Detail",
+  "version": "2.0",
+  "author": "iosonogio, dadokkio",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPLv3",
+  "description": "Determine whether a hash is good or bad; if good then list what it is.",
+  "dataTypeList": ["hash"],
+  "baseConfig": "Hashdd",
+  "config": {
+    "service": "detail"
+  },
+  "command": "Hashdd/Hashdd.py",
+  "configurationItems": [
+    {
+      "name": "api_key",
+      "description": "API key for hashdd",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://www.hashdd.com/",
+  "service_logo": {
+    "path": "assets/hashdd.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report.png",
+      "caption": "Hashdd: long report"
+    }
+  ]
+}

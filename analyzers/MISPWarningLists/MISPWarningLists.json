@@ -1,0 +1,46 @@
+{
+  "name": "MISPWarningLists",
+  "author": "Nils Kuhnert, CERT-Bund",
+  "license": "AGPL-V3",
+  "url": "https://github.com/BSI-CERT-Bund/misp-warninglists-analyzer",
+  "version": "2.0",
+  "description": "Check IoCs/Observables against MISP Warninglists to filter false positives.",
+  "dataTypeList": ["ip", "hash", "domain", "fqdn", "url"],
+  "baseConfig": "MISPWarningLists",
+  "command": "MISPWarningLists/mispwarninglists.py",
+  "configurationItems": [
+    {
+      "name": "path",
+      "description": "path to Warninglists folder",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "conn",
+      "description": "sqlalchemy connection string",
+      "multi": false,
+      "required": false,
+      "type": "string"
+    }
+  ],
+  "config": {
+    "check_tlp": true,
+    "max_tlp": 2,
+    "auto_extract": false
+  },
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": false,
+  "service_homepage": "https://github.com/MISP/misp-warninglists",
+  "service_logo": {
+    "path": "assets/misp.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report.png",
+      "caption": "MISPWarningLists: long report"
+    }
+  ]
+}

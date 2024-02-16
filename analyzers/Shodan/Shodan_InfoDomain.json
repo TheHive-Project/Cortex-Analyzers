@@ -1,0 +1,23 @@
+{
+  "name": "Shodan_InfoDomain",
+  "version": "1.0",
+  "author": "ANSSI",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
+  "license": "AGPL-V3",
+  "description": "Retrieve key Shodan information on a domain.",
+  "dataTypeList": ["domain", "fqdn"],
+  "command": "Shodan/shodan_analyzer.py",
+  "baseConfig": "Shodan",
+  "config": {
+      "service": "info_domain"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}

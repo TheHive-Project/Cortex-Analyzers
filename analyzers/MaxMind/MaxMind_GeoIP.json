@@ -1,12 +1,11 @@
 {
-    "name": "MaxMind_GeoIP",
-    "version": "2.0",
-    "config": {
-        "check_tlp": false,
-        "max_tlp": 3,
-        "service": ""
-    },
-    "description": "MaxMind: Geolocation",
-    "dataTypeList": ["ip"],
-    "command": "MaxMind/geo.py"
+  "name": "MaxMind_GeoIP",
+  "version": "4.0",
+  "author": "CERT-BDF",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use MaxMind to geolocate an IP address.",
+  "dataTypeList": ["ip"],
+  "baseConfig": "MaxMind",
+  "command": "MaxMind/geo.py"
 }

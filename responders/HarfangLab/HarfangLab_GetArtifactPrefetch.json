@@ -1,0 +1,40 @@
+{
+  "name": "HarfangLab-GetArtifactPrefetch",
+  "version": "1.0",
+  "author": "HarfangLab Product Team",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get prefetches artifact",
+  "dataTypeList": [
+    "thehive:case"
+  ],
+  "command": "HarfangLab/HarfangLab.py",
+  "baseConfig": "HarfangLab",
+  "config": {
+    "service": "getArtifactPrefetch"
+  },
+  "configurationItems": [
+    {
+      "name": "apiURL",
+      "description": "HarfangLab EDR API URL",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "https://hurukai:8443/"
+    },
+    {
+      "name": "apiKey",
+      "description": "HarfangLab EDR API Key",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "0123456789abcdef"
+    }
+  ],
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_logo": {
+    "path": "assets/HarfangLab_logo.png",
+    "caption": "logo"
+  }
+}

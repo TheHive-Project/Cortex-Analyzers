@@ -1,0 +1,13 @@
+cortexutils
+python-magic
+python-magic-debian-bin
+ssdeep
+pyexifinfo
+pefile
+git+https://github.com/AnyMaster/pehashng
+git+https://github.com/Rafiot/pdfid.git
+oletools>=0.52
+extract-msg
+IMAPClient
+git+https://github.com/SteveClement/ioc_parser.git
+stringsifter

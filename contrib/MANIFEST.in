@@ -1,5 +1,0 @@
-include *.py
-include LICENSE
-exclude requirements.txt
-exclude README.md
-recursive-include cortexutils *.py

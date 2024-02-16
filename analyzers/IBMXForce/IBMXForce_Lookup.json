@@ -1,0 +1,50 @@
+{
+  "name": "IBMXForce_Lookup",
+  "version": "1.0",
+  "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
+  "url": "https://github.com/LDO-CERT/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Query domains, IPs, hashes and URLs against IBM X-Force threat intelligence sharing platform.",
+  "dataTypeList": [
+    "domain",
+    "ip",
+    "hash",
+    "url"
+  ],
+  "baseConfig": "IBMXForce",
+  "config": {
+    "service": "query"
+  },
+  "command": "IBMXForce/ibmxforce_lookup.py",
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "X-Force API URL",
+      "required": true,
+      "multi": false,
+      "type": "string"
+    },
+    {
+      "name": "key",
+      "description": "X-Force API Key",
+      "required": true,
+      "multi": false,
+      "type": "string"
+    },
+    {
+      "name": "pwd",
+      "description": "X-Force API Password",
+      "required": true,
+      "multi": false,
+      "type": "string"
+    },
+    {
+      "name": "verify",
+      "description": "Enable/Disable certificate verification",
+      "required": false,
+      "multi": false,
+      "type": "boolean",
+      "default": true
+    }
+  ]
+}

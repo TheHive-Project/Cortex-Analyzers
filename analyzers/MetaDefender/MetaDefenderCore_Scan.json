@@ -1,0 +1,38 @@
+{
+  "name": "MetaDefenderCore_Scan",
+  "version": "1.0",
+  "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Scan a file with MetaDefender Core",
+  "dataTypeList": ["file"],
+  "command": "MetaDefender/metadefender_lookup.py",
+  "baseConfig": "MetaDefender",
+  "config": {
+    "service": "scan_core"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for MetaDefender",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "url",
+      "description": "url address for MetaDefender server",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "polling",
+      "description": "Define time interval between two requests attempts for the report",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 10
+    }
+  ]
+}

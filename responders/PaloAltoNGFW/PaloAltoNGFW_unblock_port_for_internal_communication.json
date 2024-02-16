@@ -1,0 +1,56 @@
+{
+  "name": "PaloAltoNGFW_unblock_port_for_internal_communication",
+  "version": "1.0.0",
+  "author": "Maxim Konakin, OSCD Initiative",
+  "url": "https://www.paloaltonetworks.com/",
+  "license": "AGPL-V3",
+  "description": "Unblock internal port communication",
+  "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
+  "command": "PaloAltoNGFW/unblock_port_for_internal_communication.py",
+  "baseConfig": "PaloAltoNGFW_main",
+  "configurationItems": [
+    {
+      "name": "Hostname_PaloAltoNGFW",
+      "description": "Hostname PaloAltoNGFW",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "User_PaloAltoNGFW",
+      "description": "User PaloAltoNGFW",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "Password_PaloAltoNGFW",
+      "description": "User PaloAltoNGFW",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "Service_group_for_internal_port_communication",
+      "description": "Name internal Service Group for port communication",
+      "type": "string",
+      "multi": false,
+      "required": true,
+	  "defaultValue": "TheHive Block list for internal port communication"
+    },
+    {
+      "name": "TheHive_instance",
+      "description": "URL of the TheHive instance to query",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+	  "name": "TheHive_API_key",
+	  "description": "TheHive API key with read access",
+	  "type": "string",
+	  "multi": false,
+	  "required": true
+    }
+  ]
+}

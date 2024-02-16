@@ -1,0 +1,70 @@
+<div class="report-WOT" ng-if="success">
+    <style>
+        .report-WOT dl {
+            margin-bottom: 2px;
+        }
+    </style>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>General Information for {{content.target}}</strong>
+        </div>
+        <div class="panel-body">
+
+            <div ng-if="content.safety">
+                <h4>Safety</h4>
+                <dl class="dl-horizontal">
+                    <dt>Status</dt>
+                    <dd>{{content.safety.status}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Reputations</dt>
+                    <dd>{{content.safety.reputations}}</dd>
+                </dl>   
+                <dl class="dl-horizontal">
+                    <dt>Confidence</dt>
+                    <dd>{{content.safety.confidence}}</dd>
+                </dl>                   
+            </div>
+
+            <div ng-if="content.childSafety">
+                <h4>Child Safety</h4>
+                <dl class="dl-horizontal">
+                    <dt>Reputation</dt>
+                    <dd>{{content.childSafety.reputations}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Confidence</dt>
+                    <dd>{{content.childSafety.confidence}}</dd>
+                </dl>   
+            </div>
+
+            <div ng-if="content.blackList">
+                <h4>Blacklists</h4>
+                <p><span class="label label-primary" ng-repeat="blk in content.blackList">{{blk}}</span></p>
+            </div>           
+
+            <div ng-if="content.categories">
+                <h4>Categories</h4>
+                <br>
+                <dl class="dl-horizontal" ng-repeat="ctg in content.categories">
+                    <dt>{{ctg.name}}</dt>
+                    <dd>Confidence: {{ctg.confidence}}</dd>
+                </dl>
+            </div>  
+
+        </div>
+    </div>
+
+</div>
+
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

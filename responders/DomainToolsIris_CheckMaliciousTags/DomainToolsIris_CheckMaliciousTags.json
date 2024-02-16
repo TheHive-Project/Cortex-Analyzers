@@ -1,0 +1,20 @@
+{
+  "name": "DomainToolsIris_CheckMaliciousTags",
+  "version": "1.0",
+  "author": "DomainTools",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Add Tag saying that the observable and case have a malicious tag in their Iris Tags.",
+  "dataTypeList": ["thehive:case_artifact"],
+  "command": "DomainToolsIris_CheckMaliciousTags/domaintoolsiris_responder.py",
+  "baseConfig": "DomainToolsIris",
+  "configurationItems": [
+    {
+      "name": "monitored_iris_tags",
+      "description": "Monitored Iris tags.",
+      "type": "string",
+      "multi": true,
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,188 @@
+<div class="report-ELK" ng-if="success">
+    <style>
+        .report-ELK dl {
+            margin-bottom: 2px;
+        }
+        .backgroundTable tr:nth-child(even) {background-color: #f2f2f2;}
+        .backgroundTableodd tr:nth-child(odd) {background-color: #f2f2f2;}
+        
+        .backgroundTable th, .backgroundTableodd th {
+            background: white;
+            position: sticky;
+            top: -2px;
+            box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+        }
+        .timelineTable th {
+            background: white;
+            position: sticky;
+            top: -15px;
+            box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+        .timelineTable tbody tr:hover td, .backgroundTable tbody tr:hover td, .backgroundTableodd tbody tr:hover td {
+        background-color: #d9edf7;
+        }
+        .timelineTable td {
+            max-width:200px;
+        }
+        .timelineTable tr {
+            max-height:100px;
+        }
+    </style>
+    
+    <script>
+        function copyToClipboard() {
+         var copyText = document.getElementById("querystringtext");
+          copyText.select();
+          copyText.setSelectionRange(0, 99999);
+          document.execCommand("copy");
+        }
+    </script>
+    
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Matches</strong>
+        </div>
+        <div class="panel-body">
+            <table style="table-layout:fixed;">
+                <tbody>
+                    <tr>
+                        <td>
+                            <h3>{{content.info.hitcount}} Hit(s)</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="width:auto;"><button onclick="copyToClipboard()" class="btn btn-success btn-sm"><i class="fa fa-copy"></i> Copy query to clipboard</button></div>
+                            <div id="querystring" style="opacity:0;width:0;height:0;"><textarea id="querystringtext">{{content.info.querystring}}</textarea></div>
+                        </td>
+                    </tr>
+                    <tr><td>&nbsp;</td></tr>
+                    <tr>
+                        <td>
+                            <dl class="dl-horizontal">
+                                <dt style="width:auto;" ng-if="content.info.dashboard">Kibana Dashboard: </dt>
+                                <dd style="margin-left:0;" ng-if="content.info.dashboard"><a href="{{content.info.query}}" target="_blank">{{content.info.dashboard}}</a></dd>
+                                <dd style="color:red;margin-left:0;">{{content.info.error}}</dd>
+                                <dd style="color:red;margin-left:0;" ng-if="content.total.includes('gte')">*Number of logs exceed maximum. All hits are not shown. See Kibana for more logs...</dd>
+                            </dl>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="display:block;overflow:auto;height:250px;">
+                                <table class="table table-hover backgroundTable" style="border: 1px solid #d9edf7;table-layout:fixed;">
+                                    <thead>
+                                        <th>{{content.info.userhitcount}} User(s)</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="user in content.info.uniqueusers track by $index">
+                                            <td>{{user}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>   
+                        <td>
+                            <div style="display:block;overflow:auto;height:250px;">
+                                <table class="table table-hover backgroundTableodd" style="border: 1px solid #d9edf7;table-layout:fixed;">
+                                    <thead>
+                                        <th>{{content.info.devicehitcount}} Device(s)</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="device in content.info.uniquedevices track by $index">
+                                            <td>{{device}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+        <div class="panel panel-info" ng-if="content.hits[0].hitindex">
+            <div class="panel-heading">
+                <strong>Timeline</strong>
+            </div>
+            <div class="panel-body" style="display:block;height:750px;overflow:auto;">
+                <table class="table table-hover backgroundTable timelineTable">
+                    <thead>
+                        <th>Time</th>
+                        <th>User</th>
+                        <th>Device</th>
+                        <th>Parent <i class="fa fa-arrow-right"></i> Process</th>
+                        <th>Process Args</th>
+                        <th>Url</th>
+                        <th>Dns Question Name</th>
+                        <th>Dns Resolved IP</th>
+                        <th>Source IP:Port</th>
+                        <th>Destination IP:Port</th>
+                        <th>Rule Category</th>
+                        <th>Index</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="hit in content.hits track by $index">
+                            <td>
+                                {{hit.time}}
+                            </td>
+                            <td style="overflow:auto" ng-if="hit.user_name">
+                                {{hit.user_name}}
+                            </td>
+                            <td style="overflow:auto" ng-if="!hit.user_name">
+                                {{hit.source_user_name}}
+                            </td>
+                            <td style="overflow:auto">
+                                {{hit.host_name}}
+                            </td>
+                            <td style="overflow:auto">
+                                {{hit.process_parent_name}} <i class="fa fa-arrow-right" ng-if="hit.process_parent_name && hit.process_name"></i> {{hit.process_name}}
+                            </td>
+                            <td style="overflow:auto">
+                                {{hit.process_args[1]}}
+                            </td>
+                            <td ng-if="url_full" style="overflow:auto">
+                                {{hit.url_full.toString()}}
+                            </td>
+                            <td ng-if="!url_full" style="overflow:auto">
+                                {{hit.url_domain.toString()}}{{hit.url_path.toString()}}
+                            </td>
+                            <td style="overflow:auto">
+                                {{hit.dns_question_name.toString()}}
+                            </td>
+                            <td style="overflow:auto">
+                                {{hit.dns_resolvedip.toString()}}
+                            </td>
+                            <td style="overflow:auto">
+                                {{hit.source_ip}}<i ng-if="hit.source_ip && hit.source_port">:</i>{{hit.source_port}}
+                            </td>
+                            <td style="overflow:auto">
+                                {{hit.destination_ip}}<i ng-if="hit.destination_ip && hit.destination_port">:</i>{{hit.destination_port}}
+                            </td>
+                            <td style="overflow:auto">
+                                {{hit.rule_category}}
+                            </td>
+                            <td style="overflow:auto">
+                                {{hit.hitindex}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+            <br/>
+            <hr>
+            <br/>
+    </div>
+
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

@@ -1,0 +1,125 @@
+<div ng-if="success">
+    <div ng-if="content.DomainGeneralInfo">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <strong>Summary</strong>
+            </div>
+            <div class="panel-body">
+                <dl class="dl-horizontal" ng-if="content.Zone">
+                    <dt>Zone</dt>
+                    <dd>{{content.Zone}}</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="panel panel-info" ng-if="::content.DomainGeneralInfo">
+            <div class="panel-heading">
+                <strong>Informations about domain.</strong>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <tr>
+                        <th>Files count</th>
+                        <th>Urls count</th>
+                        <th>Hits count</th>
+                        <th>Domain</th>
+                        <th>IPv4 count</th>
+                    </tr>
+                    <tr>
+                        <td>{{::content.DomainGeneralInfo.FilesCount}}</td>
+                        <td>{{::content.DomainGeneralInfo.UrlsCount}}</td>
+                        <td>{{::content.DomainGeneralInfo.HitsCount}}</td>
+                        <td>{{::content.DomainGeneralInfo.Domain}}</td>
+                        <td>{{::content.DomainGeneralInfo.Ipv4Count}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-info" ng-if="::content.DomainWhoIsInfo">
+            <div class="panel-heading">
+                <strong>WhoIS informations about domain.</strong>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <tr>
+                        <th>Domain name</th>
+                        <th>Created</th>
+                        <th>Updated</th>
+                        <th>Expires</th>
+                        <th>Registration organization</th>
+                    </tr>
+                    <tr>
+                        <td>{{::content.DomainWhoIsInfo.DomainName}}</td>
+                        <td>{{::content.DomainWhoIsInfo.Created}}</td>
+                        <td>{{::content.DomainWhoIsInfo.Updated}}</td>
+                        <td>{{::content.DomainWhoIsInfo.Expires}}</td>
+                        <td>{{::content.DomainWhoIsInfo.RegistrationOrganization}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="content.IpGeneralInfo">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <strong>Summary</strong>
+            </div>
+            <div class="panel-body">
+                <dl class="dl-horizontal" ng-if="content.Zone">
+                    <dt>Zone</dt>
+                    <dd class="wrap">{{content.Zone}}</dd>
+                </dl>
+                <dl class="dl-horizontal" ng-if="content.IpGeneralInfo.CountryCode">
+                    <dt>Country</dt>
+                    <dd class="wrap">{{content.IpGeneralInfo.CountryCode}}</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="panel panel-info" ng-if="content.IpWhoIs">
+            <div class="panel-heading">
+                <strong>Informations about IP.</strong>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <tr>
+                        <th>Range start</th>
+                        <th>Range end</th>
+                        <th>Created</th>
+                        <th>Changed</th>
+                        <th>Name</th>
+                        <th>Descripiton</th>
+                    </tr>
+                    <tr>
+                        <td>{{content.IpWhoIs.Net.RangeStart}}</td>
+                        <td>{{content.IpWhoIs.Net.RangeEnd}}</td>
+                        <td>{{content.IpWhoIs.Net.Created}}</td>
+                        <td>{{content.IpWhoIs.Net.Changed}}</td>
+                        <td>{{content.IpWhoIs.Net.Name}}</td>
+                        <td>{{content.IpWhoIs.Net.Description}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div ng-switch-default>
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+            </div>
+            <div class="panel-body">
+                {{content.verbose_msg}}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

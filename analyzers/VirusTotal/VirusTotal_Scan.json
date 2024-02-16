@@ -1,13 +1,45 @@
 {
-    "name": "VirusTotal_Scan",
-    "version": "2.0",
-    "description": "VirusTotal scan file or url",
-    "dataTypeList": ["file", "url"],
-    "baseConfig": "VirusTotal",
-    "config": {
-        "check_tlp": true,
-        "service": "scan",
-        "max_tlp": 1
+  "name": "VirusTotal_Scan",
+  "version": "3.1",
+  "author": "CERT-BDF, StrangeBee",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use VirusTotal to scan a file or URL.",
+  "dataTypeList": ["file", "url"],
+  "baseConfig": "VirusTotal",
+  "config": {
+    "service": "scan"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for Virustotal",
+      "type": "string",
+      "multi": false,
+      "required": true
     },
-    "command": "VirusTotal/virustotal.py"
+    {
+      "name": "polling_interval",
+      "description": "Define time interval between two requests attempts for the report",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 60
+    },
+    {
+      "name": "highlighted_antivirus",
+      "description": "Add taxonomy if selected AV don't recognize observable",
+      "type": "string",
+      "multi": true,
+      "required": false
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": false,
+  "service_homepage": "https://www.virustotal.com/",
+  "service_logo": {
+    "path": "assets/virustotal-logo.png",
+    "caption": "logo"
+  },
+  "command": "VirusTotal/virustotal.py"
 }

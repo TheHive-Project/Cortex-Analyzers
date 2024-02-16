@@ -1,0 +1,111 @@
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+<div class="report-PayloadSecuritySandbox" ng-if="success">
+    <style>
+        .report-PayloadSecuritySandbox dl {
+            margin-bottom: 2px;
+        }
+        .smaller {
+			width: 25%;
+		}
+    </style>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>PayloadSecurity File Report</strong>
+        </div>
+        <div class="panel-body">
+            <h4>File information</h4>
+                <br>
+				<dl class="dl-horizontal">
+                    <dt>Analysis Date</dt>
+                    <dd>{{content.analysis_start_time}}</dd>
+                </dl>
+				<dl class="dl-horizontal">
+                    <dt>Submit Name</dt>
+                    <dd><a ng-href={{content.reporturl}}>{{content.submitname}}</a></dd>
+                </dl>
+				<dl class="dl-horizontal">
+                    <dt>File Hash</dt>
+                    <dd>{{content.sha256}}</dd>
+                </dl>
+				<div ng-if="content.classification_tags && content.classification_tags.length > 0">
+					<dl class="dl-horizontal">
+						<dt>Tagged as</dt>
+						<dd><li ng-repeat="tag in ::content.classification_tags">{{tag}}</li></dd>
+					</dl>
+				</div>
+                <dl class="dl-horizontal">
+                    <dt>File Type</dt>
+                    <dd>{{content.type}}</dd>
+                </dl>
+				<dl class="dl-horizontal">
+                    <dt>Threat Score</dt>
+                    <dd>
+                        <span ng-class="{'label-info': content.threatscore<=50, 'label-warning': content.threatscore>50 && content.threatscore<=70, 'label-danger': content.threatscore >70}">
+                            {{content.threatscore}}
+                        </span>
+                    </dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Verdict</dt>
+                    <dd>{{content.verdict}}</dd>
+                </dl>
+				<div ng-if="content.vxfamily && content.vxfamily != null">
+					<dl class="dl-horizontal">
+						<dt>Malware Family</dt>
+						<dd>{{content.vxfamily}}</dd>
+					</dl>
+				</div>
+				<dl class="dl-horizontal">
+                    <dt>Total Signatures</dt>
+                    <dd>{{content.total_signatures}}</dd>
+                </dl>
+				<div ng-if="content.avdetect && content.avdetect != null">
+					<dl class="dl-horizontal">
+						<dt>AV Detect</dt>
+						<dd>{{content.avdetect}}</dd>
+					</dl>
+				</div>
+				<div ng-if="content.targeturl && content.targeturl != null">
+					<dl class="dl-horizontal">
+						<dt>Target Url</dt>
+						<dd>{{content.targeturl}}</dd>
+					</dl>
+				</div>
+				<div ng-if="content.hosts && content.hosts.length > 0">
+					<dl class="dl-horizontal">
+						<dt>Contacted Host</dt>
+						<dd><li ng-repeat="host in ::content.hosts">{{host}}</li></dd>
+					</dl>
+				</div>
+				<div ng-if="content.domains && content.domains.length > 0">
+					<dl class="dl-horizontal">
+						<dt>Dns Requests</dt>
+						<dd><li ng-repeat="domain in ::content.domains">{{domain}}</li></dd>
+					</dl>
+				</div>
+        </div>
+    </div>
+	<div ng-if="content.screenshots && content.screenshots.length > 0">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<strong>Screenshots</strong>
+			</div>
+			<div class="panel-body">
+				<dl class="dl-horizontal" ng-repeat="screenshot in content.screenshots track by $index">
+				    <dt>{{screenshot.name}}</dt>
+                    <dd><img class="img-responsive smaller" ng-src="data:image/JPEG;base64,{{screenshot.image}}"></dd>
+				    <br>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>

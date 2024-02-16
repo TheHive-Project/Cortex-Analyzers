@@ -1,0 +1,62 @@
+{
+  "name": "Ldap_Query",
+  "version": "2.0",
+  "author": "Florian Perret @cyber_pescadito",
+  "url": "https://github.com/cyberpescadito/Cortex-Analyzers/tree/master/analyzers/LdapQuery",
+  "license": "AGPL-V3",
+  "description": "Query your LDAP server to harvest informations about an user of your organization",
+  "dataTypeList": ["username", "mail"],
+  "command": "LdapQuery/ldapQuery.py",
+  "baseConfig": "LdapQuery",
+  "configurationItems": [
+    {
+        "name": "LDAP_address",
+        "description": "Should contain the protocol. Eg: ldaps://myldap.myorg.com",
+        "type": "string",
+        "multi": false,
+        "required": true
+    },
+    {
+        "name": "LDAP_port",
+        "description": "Should contain the ldap port. Eg: 389 or 636",
+        "type": "string",
+        "multi": false,
+        "required": true
+    },
+    {
+        "name": "LDAP_username",
+        "description": "Usernae of the account that will be used to bind to LDAP server. The Account should have permissions to read ldap objects and attributes.",
+        "type": "string",
+        "multi": false,
+        "required": true
+    },
+    {
+        "name": "LDAP_password",
+        "description": "Password of the account used to bind to LDAP server.",
+        "type": "string",
+        "multi": false,
+        "required": true
+    },
+    {
+        "name": "base_DN",
+        "description": "The base DN to use in your LDAP. Eg: dc=myorg,dc=com",
+        "type": "string",
+        "multi": false,
+        "required": true
+    },
+    {
+        "name": "uid_search_field",
+        "description": "Specify here the field to use when searching by username. Eg: uid or sAMAccountName",
+        "type": "string",
+        "multi": false,
+        "required": true
+    },
+    {
+        "name": "attributes",
+        "description": "Specify here the attributes you want to harvest. Eg: mail",
+        "type": "string",
+        "multi": true,
+        "required": true
+    }
+  ]
+}

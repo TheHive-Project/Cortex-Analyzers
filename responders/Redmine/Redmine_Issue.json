@@ -1,0 +1,88 @@
+{
+  "name": "Redmine_Issue",
+  "version": "1.0",
+  "author": "Marc-André DOLL",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Create a redmine issue from a case",
+  "dataTypeList": [
+    "thehive:case",
+    "thehive:case_task"
+  ],
+  "command": "Redmine/redmine.py",
+  "baseConfig": "Redmine",
+  "configurationItems": [
+    {
+      "name": "instance_name",
+      "description": "Name of the Redmine instance",
+      "multi": false,
+      "required": false,
+      "type": "string",
+      "defaultValue": "redmine"
+    },
+    {
+      "name": "url",
+      "description": "URL where to find the Redmine API",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "username",
+      "description": "Username to log into Redmine",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "password",
+      "description": "Password to log into Redmine",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "project_field",
+      "description": "Name of the custom field containing the Redmine project to use when creating the issue",
+      "multi": false,
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "tracker_field",
+      "description": "Name of the custom field containing the Redmine tracker to use when creating the issue",
+      "multi": false,
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "assignee_field",
+      "description": "Name of the custom field containing the Redmine assignee to use when creating the issue",
+      "multi": false,
+      "required": false,
+      "type": "string"
+    },
+    {
+      "name": "reference_field",
+      "description": "Name of the case custom field in which to store the opened issue. If not defined, this information will not be stored",
+      "type": "string",
+      "required": false,
+      "multi": false
+    },
+    {
+      "name": "opening_status",
+      "description": "Status used when opening a Redmine issue (if not defined here, will use the default opening status from the Redmine Workflow)",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "closing_task",
+      "description": "Closing the task after successfully creating the Redmine issue",
+      "type": "boolean",
+      "multi": false,
+      "defaultValue": false,
+      "required": false
+    }
+  ]
+}

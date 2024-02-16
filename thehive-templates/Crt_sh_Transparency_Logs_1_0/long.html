@@ -1,0 +1,34 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        crt.sh data of <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+		<!-- Domain details -->
+        <p ng-if="content.certobj.result.length == 0">
+            No result found.
+        </p>
+        <dl class="dl-horizontal" ng-repeat="r in content.certobj.result | orderBy:['+not_before','-not_after']">
+            <dt>Name:</dt>
+            <dd class="wrap">{{r.name_value}}</dd>
+            <dt>SHA1:</dt>
+            <dd class="wrap"><a href="https://crt.sh/?id={{r.min_cert_id}}">{{r.sha1}}</a></dd>
+            <dt>Issuer:</dt>
+            <dd class="wrap">{{r.issuer_name}}</dd>
+            <dt>Not Before:</dt>
+            <dd class="wrap">{{r.not_before}}</dd>
+            <dt>Not After:</dt>
+			<dd class="wrap">{{r.not_after}}</dd>
+        <hr>
+        </dl>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+

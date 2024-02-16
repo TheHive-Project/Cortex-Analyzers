@@ -1,0 +1,119 @@
+<!-- Error -->
+<div class="panel panel-danger" ng-if="!success" >
+  <div class="panel-heading" >
+    <strong>Error while running the service</strong>
+   </div>
+   <div class="panel-body">
+    <pre>{{content.errorMessage}}</pre>
+   </div>
+</div>
+
+<!-- Success: Summary -->
+<div class="panel panel-info" ng-if="success">
+  <div class="panel-heading">
+    Cyberprotect Threatscore <a href="https://console.threatscore.cyberprotect.cloud/search?query={{artifact.data}}" target="_blank"><i class="fa fa-external-link"></i></a>
+    <br/>
+    Report for <strong>{{artifact.data | fang}}</strong>
+  </div>
+  <div class="panel-body" ng-if="content.error">
+    <h2>{{content.error.message}}</h2>
+  </div>
+  <div class="panel-body" ng-if="!content.error">
+    <p>
+      <span ng-if="content.threatscore.categories.length > 0">
+        Categories:&nbsp;
+        <span ng-repeat="category in content.threatscore.categories">
+          <span class="label label-default">
+            {{category.replace("_"," ") | uppercase}}
+          </span>&nbsp;
+        </span>
+        <br/>
+      </span>
+      Indicators:&nbsp;
+      <span class="label" ng-class="{'label-danger': content.threatscore.indicators.blocklist, 'label-default': !content.threatscore.indicators.blocklist}">
+        <span ng-if="content.threatscore.indicators.blocklist">
+          Blocklist
+        </span>
+        <del ng-if="!content.threatscore.indicators.blocklist">
+          Blocklist
+        </del>
+      </span>&nbsp;
+      <span class="label" ng-class="{'label-danger': content.threatscore.indicators.attack, 'label-default': !content.threatscore.indicators.attack}">
+        <span ng-if="content.threatscore.indicators.attack">
+          Attack
+        </span>
+        <del ng-if="!content.threatscore.indicators.attack">
+          Attack
+        </del>
+      </span>&nbsp;
+      <span class="label" ng-class="{'label-danger': content.threatscore.indicators.scan, 'label-default': !content.threatscore.indicators.scan}">
+        <span ng-if="content.threatscore.indicators.scan">
+          Scan
+        </span>
+        <del ng-if="!content.threatscore.indicators.scan">
+          Scan
+        </del>
+      </span>&nbsp;
+      <span class="label" ng-class="{'label-danger': content.threatscore.indicators.compromission, 'label-default': !content.threatscore.indicators.compromission}">
+        <span ng-if="content.threatscore.indicators.compromission">
+          Compromission
+        </span>
+        <del ng-if="!content.threatscore.indicators.compromission">
+          Compromission
+        </del>
+      </span>
+      <br/>
+      <span ng-if="content.observable.geo && content.observable.geo.country_name">
+        Location:&nbsp;
+        <span ng-if="content.observable.geo && content.observable.geo.city_name">{{content.observable.geo.city_name}},
+        </span>{{content.observable.geo.country_name}}
+        <br/>
+      </span>
+      <span ng-if="content.observable.as">
+        AS:&nbsp;{{content.observable.as.asn}}
+        <span ng-if="content.observable.as.organization_name">&nbsp;({{content.observable.as.organization_name}})</span>
+        <br/>
+      </span>
+      <span ng-if="content.observable.last_seen">
+        First seen:&nbsp;<span title="first seen">{{content.observable.first_seen | date: 'medium'}}</span>
+        <br/>
+        Last seen:&nbsp;<span title="last seen">{{content.observable.last_seen | date: 'medium'}}</span>
+      </span>
+    </p>
+  </div>
+</div>
+
+<!-- Success: Analysis -->
+<div class="panel panel-info" ng-if="success && !content.error">
+  <div class="panel-heading">
+    Analysis
+  </div>
+  <div class="panel-body" ng-if="content.analysis && content.analysis.length > 0">
+    <h3 ng-if="content.threatscore.level">
+      Threat score of <span ng-class="{'text-success': content.threatscore.level === 'safe', 'text-warning': content.threatscore.level === 'suspicious', 'text-danger': content.threatscore.level === 'malicious'}">{{content.threatscore.value * 100 | number:1.0-0}}%</span>
+    </h3>
+    <br />
+    <table class="table table-bordered panel">
+      <thead>
+        <th>ID</th>
+        <th>Date</th>
+        <th>Threat Level</th>
+      </thead>
+      <tbody>
+        <tr ng-repeat="a in content.analysis">
+          <td>{{a.id}}</td>
+          <td>{{a.date | date : 'medium'}}</td>
+          <td ng-if="!a.score && a.score !== 0" class="text-info"><strong>Info</strong></td>
+          <td ng-if="a.score || a.score === 0">
+            <span class="text-success" ng-if="a.score < 0.25"><strong>Safe</strong></span>
+            <span class="text-warning" ng-if="a.score >= 0.25 && a.score < 0.5"><strong>Suspicious</strong></span>
+            <span class="text-danger" ng-if="a.score >= 0.5"><strong>Malicious</span>
+          </td>
+        </tr>	
+      </tbody>
+    </table>
+  </div>
+  <div class="panel-body" ng-if="!content.analysis || content.analysis.length == 0">
+    <h2>Not analyzed yet</h2>
+  </div>
+</div>

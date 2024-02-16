@@ -1,0 +1,198 @@
+<div class="panel panel-info" ng-if="success && content.query_status === 'ok'">
+    <div class="panel-heading">
+        URLhaus search results for
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <div ng-if="content.query_status === 'ok' && content.data_type === 'url'">
+            <dl class="dl-horizontal">
+                <dt>ID</dt>
+                <dd class="wrap">{{content.id}}</dd>
+                <dt>URLhaus reference</dt>
+                <dd class="wrap"><a href="{{content.urlhaus_reference}}" target="_blank">Open URLhaus entry
+                    {{content.id}}</a></dd>
+                <dt>URL</dt>
+                <dd class="wrap">{{content.url | fang}}</dd>
+                <dt>Threat</dt>
+                <dd><span class="label label-danger">{{content.threat}}</span></dd>
+                <dt>Date added (UTC)</dt>
+                <dd>{{content.date_added}}</dd>
+                <dt>Status</dt>
+                <dd class="wrap">
+                    <span ng-if="content.url_status === 'offline'" class="label label-success">Offline</span>
+                    <span ng-if="content.url_status === 'online'" class="label label-success">Online</span>
+                </dd>
+                <dt>Blacklists</dt>
+                <dd>
+                    <span ng-repeat="(bl, status) in content.blacklists">
+                            <span ng-if="status === 'not listed'" class="label label-success">{{bl}}: {{status}}</span>
+                            <span ng-if="status !== 'not listed'" class="label label-warning">{{bl}}: {{status}}</span>
+                    </span>
+                </dd>
+                <dt>Tags</dt>
+                <dd>
+                    <span ng-repeat="tag in content.tags">
+                        <span class="label label-info">{{tag}}</span>
+                    </span>
+                </dd>
+                <dt>Reporter</dt>
+                <dd>
+                    <span ng-if="content.reporter === 'unknown'" class="label label-secondary">Unknown</span>
+                    <a href="https://twitter.com/{{content.reporter}}" target="_blank"><span
+                            ng-if="content.reporter !== 'unknown'"
+                            class="label label-primary">@{{content.reporter}}</span></a>
+                </dd>
+                <dt>Payloads</dt>
+                <dd>
+                    <span ng-if="content.payloads.length == 0">None</span>
+                    <table class="table" ng-if="content.payloads.length > 0">
+                        <thead>
+                        <th>First seen</th>
+                        <th>Filename</th>
+                        <th>Filetype</th>
+                        <th>Size</th>
+                        <th>Hashes</th>
+                        <th>VirusTotal</th>
+                        </thead>
+                        <tbody ng-repeat="payload in content.payloads">
+                        <tr>
+                            <td>{{payload.firstseen}}</td>
+                            <td>{{payload.filename}}</td>
+                            <td>{{payload.content_type}}</td>
+                            <td>{{payload.response_size}}</td>
+                            <td>md5: {{payload.response_md5}}<br/>sha256: {{payload.response_sha256}}</td>
+                            <td><a href="{{payload.virustotal.link}}" target="_blank">{{payload.virustotal.result}}</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+        </div>
+        <div ng-if="content.query_status === 'ok' && (content.data_type === 'domain' || content.data_type === 'ip')">
+            <dl class="dl-horizontal">
+                <dt>URLhaus reference</dt>
+                <dd class="wrap"><a href="{{content.urlhaus_reference}}" target="_blank">Open URLhaus entry
+                    {{content.id}}</a></dd>
+                <dt>Host</dt>
+                <dd>{{content.host | fang}}</dd>
+                <dt>First seen (UTC)</dt>
+                <dd>{{content.firstseen}}</dd>
+                <dt>Blacklists</dt>
+                <dd>
+                    <span ng-repeat="(bl, status) in content.blacklists">
+                            <span ng-if="status === 'not listed'" class="label label-success">{{bl}}: {{status}}</span>
+                            <span ng-if="status !== 'not listed'" class="label label-warning">{{bl}}: {{status}}</span>
+                    </span>
+                </dd>
+                <dt>URLs</dt>
+                <dd>
+                    <span ng-if="content.urls.length == 0">None</span>
+                    <table class="table" ng-if="content.urls.length > 0">
+                        <thead>
+                        <th>Date added</th>
+                        <th>URL</th>
+                        <th>Tags</th>
+                        <th>Threat</th>
+                        <th>Reporter</th>
+                        <th>URLhaus reference</th>
+                        </thead>
+                        <tbody ng-repeat="url in content.urls">
+                        <tr>
+                            <td>{{url.date_added}}</td>
+                            <td>{{url.url | fang}}</td>
+                            <td>
+                                <div ng-repeat="tag in url.tags">
+                                    <span class="label label-info">{{tag}}</span>
+                                </div>
+                            </td>
+                            <td><span ng-if="url.threat" class="label label-danger">{{url.threat}}</span></td>
+                            <td>
+                                <span ng-if="url.reporter === 'anonymous'"
+                                      class="label label-secondary">Anonymous</span>
+                                <a href="https://twitter.com/{{url.reporter}}" target="_blank"><span
+                                        class="label label-primary">@{{url.reporter}}</span></a>
+                            </td>
+                            <td><a href="{{url.urlhaus_reference}}" target="_blank">{{url.id}}</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+        </div>
+        <div ng-if="content.query_status === 'ok' && content.data_type === 'hash'">
+            <dl class="dl-horizontal">
+                <dt>Hashes</dt>
+                <dd class="wrap">md5: {{content.md5_hash}}<br />sha256: {{content.sha256_hash}}</dd>
+                <dt>First seen (UTC)</dt>
+                <dd>{{content.firstseen}}</dd>
+                <dt>Last seen (UTC)</dt>
+                <dd>{{content.lastseen}}</dd>
+                <dt>Filetype</dt>
+                <dd>{{content.content_type}}</dd>
+                <dt>Signature</dt>
+                <dd><span class="label label-primary">{{content.signature}}</span></dd>
+                <dt>VirusTotal</dt>
+                <dd><a href="{{content.virustotal.link}}" target="_blank">{{content.virustotal.result}}</a></dd>
+                <dt>URLs</dt>
+                <dd>
+                    <span ng-if="content.urls.length == 0">None</span>
+                    <table class="table" ng-if="content.urls.length > 0">
+                        <thead>
+                        <th>First seen</th>
+                        <th>Last seen</th>
+                        <th>Filename</th>
+                        <th>URL</th>
+                        <th>Status</th>
+                        <th>URLhaus reference</th>
+                        </thead>
+                        <tbody ng-repeat="url in content.urls">
+                        <tr>
+                            <td>{{url.firstseen}}</td>
+                            <td>{{url.lastseen}}</td>
+                            <td>{{url.filename}}</td>
+                            <td>{{url.url | fang}}</td>
+                            <td>
+                                <span ng-if="url.url_status === 'offline'" class="label label-success">Offline</span>
+                                <span ng-if="url.url_status === 'online'" class="label label-danger">Online</span>
+                                <span ng-if="url.url_status !== 'online' && url.url_status !== 'offline'" class="label label-secondary">Unknown</span>
+                            </td>
+                            <td><a href="{{url.urlhaus_reference}}" target="_blank">{{url.url_id}}</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<!-- No results -->
+<div class="panel panel-danger" ng-if="content.query_status !== 'ok'">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>
+                <i class="fa fa-warning"></i> URLhaus:
+            </dt>
+            <dd class="wrap">No results</dd>
+        </dl>
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt>
+                <i class="fa fa-warning"></i> URLhaus:
+            </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

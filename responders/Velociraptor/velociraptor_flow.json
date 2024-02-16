@@ -1,0 +1,50 @@
+{
+  "name": "Velociraptor_Flow",
+  "version": "0.1",
+  "author": "Wes Lambert",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Run Velociraptor flow",
+  "dataTypeList": ["thehive:case_artifact"],
+  "command": "Velociraptor/velociraptor_flow.py",
+  "baseConfig": "Velociraptor",
+  "configurationItems": [
+    {
+      "name": "velociraptor_client_config",
+      "description": "Path to API client config file",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": ""
+    },
+    {
+      "name": "velociraptor_artifact",
+      "description": "Artifact to collect",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": ""
+    },
+    {
+      "name": "upload_flow_results",
+      "description": "Upload the results of a flow as an observable",
+      "type": "boolean",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "thehive_url",
+      "description": "URL pointing to your TheHive installation, e.g. 'http://127.0.0.1:9000'",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "thehive_apikey",
+      "description": "TheHive API key (used to add the downloaded file back to the alert/case)",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+    "name": "CIRCLPassiveDNS",
+    "author": "Nils Kuhnert, CERT-Bund",
+    "license": "AGPL-V3",
+    "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+    "version": "2.0",
+    "description": "Check CIRCL's Passive DNS for a given domain or URL.",
+    "dataTypeList": [
+        "domain",
+        "url",
+        "ip"
+    ],
+    "baseConfig": "CIRCL",
+    "command": "CIRCLPassiveDNS/circl_passivedns.py",
+    "configurationItems": [
+        {
+            "name": "user",
+            "description": "Username",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "password",
+            "description": "Password",
+            "type": "string",
+            "multi": false,
+            "required": true
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": true,
+    "service_homepage": "https://www.circl.lu/services/passive-dns/",
+    "service_logo": {
+        "path": "assets/passivedns.png",
+        "caption": "logo"
+    },
+    "screenshots": [
+        {
+            "path": "assets/sc-short-circlpassivedns.png",
+            "caption": "CIRCLPassiveDNS: short report"
+        },
+        {
+            "path": "assets/sc-long-circlpassivedns.png",
+            "caption": "CIRCLPassiveDNS: long report"
+        }
+    ]
+}

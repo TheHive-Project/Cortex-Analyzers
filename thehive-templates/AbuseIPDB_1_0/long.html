@@ -1,0 +1,55 @@
+	<div class="panel panel-danger" ng-if="success && content.values[0].data.reports.length > 0">
+		<div class="panel-heading">
+			AbuseIPDB Report for {{ content.values[0].data.ipAddress }}
+		</div>
+		<div class="panel-body">
+			<table class="table table-striped" ng-if="content.values">
+				<thead>
+					<tr>
+						<th>Reported Date</th>
+						<th>Abuse Confidence Score</th>
+						<th>ISO Code</th>
+						<th>Country</th>
+						<th>Whitelisted</th>
+						<th>Categories</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="r in content.values[0].data.reports | orderBy:'-reportedAt'">
+						<td>{{r.reportedAt}}</td>
+						<td><span class="text" 
+							ng-class="{ 'text-danger': content.values[0].data.abuseConfidenceScore >=70 ,'text-warning': content.values[0].data.abuseConfidenceScore < 70, 'text-success': content.values[0].data.abuseConfidenceScore == 0}">{{content.values[0].data.abuseConfidenceScore}}</span></td>
+						<td>{{r.reporterCountryCode}}</td>
+						<td>{{r.reporterCountryName}}</td>
+						<td>{{content.values[0].data.isWhitelisted}}</td>
+						<td>
+							<span ng-repeat="c in r.categories_strings"><span class="label label-primary">{{c}}</span> </span>
+						</td>
+					</tr>					
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="panel panel-success" ng-if="success && content.values[0].data.reports.length == 0">
+		<div class="panel-heading">
+			AbuseIPDB Report
+		</div>
+		<div class="panel-body">
+			<span>No matches.</span>
+		</div>
+	</div>
+
+	<!-- General error  -->
+	<div class="panel panel-danger" ng-if="!success">
+		<div class="panel-heading">
+			<strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+		</div>
+		<div class="panel-body">
+			<dl class="dl-horizontal" ng-if="content.errorMessage">
+				<dt><i class="fa fa-warning"></i> AbuseIPDB:</dt>
+				<dd class="wrap">{{content.errorMessage}}</dd>
+			</dl>
+		</div>
+	</div>
+
+

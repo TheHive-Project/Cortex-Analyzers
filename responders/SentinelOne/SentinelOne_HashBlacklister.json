@@ -1,0 +1,47 @@
+{
+    "name": "SentinelOne_Hash_Blacklister",
+    "version": "1.0",
+    "author": "Joe Vasquez",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Add SHA1 hash to SentinelOne Blacklist via API v2.1.",
+    "dataTypeList": [
+        "thehive:case_artifact"
+    ],
+    "config": {
+        "service": "s1_blacklist"
+    },
+    "command": "SentinelOne/SentinelOne.py",
+    "baseConfig": "SentinelOne",
+    "configurationItems": [
+        {
+            "name": "s1_console_url",
+            "description": "Console URL",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "s1_api_key",
+            "description": "API Key, don't forget this will expire!",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "s1_account_id",
+            "description": "Account ID",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "s1_blacklist_ostype",
+            "description": "OS type, must be one of the following: macos, windows, linux, or windows_legacy.  Default is windows",
+            "type": "string",
+            "multi": false,
+            "default": "windows",
+            "required": false
+        }
+    ]
+}

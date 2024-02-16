@@ -1,0 +1,4 @@
+cortexutils
+requests
+pan-os-python
+thehive4py

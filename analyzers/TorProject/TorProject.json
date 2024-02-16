@@ -1,0 +1,36 @@
+{
+  "name": "TorProject",
+  "author": "Marc-André DOLL, STARC by EXAPROBE",
+  "license": "AGPL-V3",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "version": "1.0",
+  "description": "Query https://check.torproject.org/exit-addresses for TOR exit nodes IP addresses.",
+  "dataTypeList": ["ip"],
+  "command": "TorProject/tor_project_analyzer.py",
+  "baseConfig": "TorProject",
+  "configurationItems": [
+    {
+      "name": "ttl",
+      "description": "Define the TTL",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 86400
+    },
+    {
+      "name": "cache.duration",
+      "description": "Define the cache duration",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 3600
+    },
+    {
+      "name": "cache.root",
+      "description": "Define the path to the stored data",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ]
+}

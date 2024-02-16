@@ -1,0 +1,27 @@
+{
+  "name": "ThreatGrid",
+  "license": "MIT",
+  "author": "Cisco Security",
+  "url": "https://github.com/CiscoSecurity",
+  "version": "1.0",
+  "description": "Threat Grid Sandbox",
+  "dataTypeList": ["file", "url", "hash"],
+  "command": "ThreatGrid/ThreatGrid.py",
+  "baseConfig": "ThreatGrid",
+  "configurationItems": [
+    {
+      "name": "tg_host",
+      "description": "Threat Grid Host",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "api_key",
+      "description": "Threat Grid API Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}

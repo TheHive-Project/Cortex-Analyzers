@@ -1,0 +1,17 @@
+{
+  "name": "GoogleDNS_resolve",
+  "version": "1.0.0",
+  "author": "CERT-LaPoste",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Request Google DNS over HTTPS service",
+  "dataTypeList": ["domain", "ip", "fqdn"],
+  "command": "GoogleDNS/GoogleDNS_resolve.py",
+  "baseConfig": "GoogleDNS",
+  "config": {
+    "service": "get"
+  },
+  "configurationItems": [
+
+  ]
+}

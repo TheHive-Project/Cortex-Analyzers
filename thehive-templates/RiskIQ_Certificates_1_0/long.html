@@ -1,0 +1,96 @@
+<div class="report-PT" ng-if="success">
+    <style>
+        .report-PT dl {
+            margin-bottom: 2px;
+        }
+        .fieldlabel {
+            font-size: 10pt;
+            color: #777;
+        }
+        .fieldvalue {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+    </style>
+
+
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <div ng-if="content.records.length === 0">
+                No certificates available for this IOC.
+            </div>
+            <div ng-if="content.records.length !== 0" class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>RiskIQ TLS/SSL Certificates</strong>
+                </div>
+                <div class="panel-body">
+                    <div class="panel" ng-repeat="cert in content.records">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading"><strong>Certificate</strong></div>
+                                    <div class="panel-body">
+                                        <div ng-repeat="(key,value) in cert">
+                                            <div ng-if="((key | limitTo : 6) !== 'issuer') && ((key | limitTo : 7) !== 'subject') " class="col-xs-6">
+                                                <div class='fieldlabel'>{{key}}</div>
+                                                <div class='fieldvalue'>
+                                                    <span ng-if="value!==''">{{value}}</span>
+                                                    <span ng-if="value===''" style="padding-left: 10px;">&mdash;</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading"><strong>Subject</strong></div>
+                                        <div class="panel-body">
+                                            <div ng-repeat="(key,value) in cert">
+                                                <div ng-if="(key | limitTo : 7) === 'subject'">
+                                                    <div class='fieldlabel'>{{key|limitTo:50:7}}</div>
+                                                    <div class='fieldvalue'>
+                                                        <span ng-if="value!==''">{{value}}</span>
+                                                        <span ng-if="value===''" style="padding-left: 10px;">&mdash;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading"><strong>Issuer</strong></div>
+                                        <div class="panel-body">
+                                            <div ng-repeat="(key,value) in cert">
+                                                <div ng-if="(key | limitTo : 6) === 'issuer'">
+                                                    <div class='fieldlabel'>{{key|limitTo:50:6}}</div>
+                                                    <div class='fieldvalue'>
+                                                        <span ng-if="value!==''">{{value}}</span>
+                                                        <span ng-if="value===''" style="padding-left: 10px;">&mdash;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

@@ -1,0 +1,95 @@
+{
+    "name": "Elasticsearch_Analysis",
+    "author": "Nick Prokop",
+    "license": "MIT",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "version": "1.0",
+    "description": "Search for IoCs in Elasticsearch",
+    "dataTypeList": ["url", "domain", "ip", "hash", "filename", "fqdn"],
+    "command": "Elasticsearch/elk.py",
+    "baseConfig": "Elasticsearch",
+    "configurationItems": [
+     {
+        "name": "endpoints",
+        "description": "Define the Elasticsearch endpoints",
+        "type": "string",
+        "multi": true,
+        "required": true,
+        "defaultValue": ["http://127.0.0.1:9200"]
+      },
+      {
+        "name": "keys",
+        "description": "Set the Elasticsearch api keys for each endpoint. Note: Use api key or basic auth, but not both.",
+        "type": "string",
+        "multi": true,
+        "required": false
+      },
+	  {
+        "name": "users",
+        "description": "Set the Elasticsearch users for each endpoint. Note: Use api key or basic auth, but not both.",
+        "type": "string",
+        "multi": true,
+        "required": false
+      },
+	  {
+        "name": "passwords",
+        "description": "Set the Elasticsearch passwords for each endpoint. Note: Use api key or basic auth, but not both.",
+        "type": "string",
+        "multi": true,
+        "required": false
+      },
+      {
+        "name": "kibana",
+        "description": "Define the kibana address",
+        "type": "string",
+        "multi": false,
+        "required": false
+      },
+      {
+        "name": "dashboard",
+        "description": "Set the kibana dashboard id that will be linked in the report",
+        "type": "string",
+        "multi": false,
+        "required": false
+      },
+      {
+        "name": "index",
+        "description": "Define the Elasticsearch indices to use",
+        "type": "string",
+        "multi": true,
+        "required": true,
+        "defaultValue": ["apm-*-transaction*","auditbeat-*","endgame-*","filebeat-*","packetbeat-*","winlogbeat-*"]
+      },
+      {
+        "name": "field",
+        "description": "Define the fields to query",
+        "type": "string",
+        "multi": true,
+        "required": true,
+        "defaultValue": ["destination.ip","dll.hash.md5","dll.hash.sha256","dns.question.name","dns.resolved_ip","file.hash.md5","file.hash.sha256","file.name","hash.md5","hash.sha256","process.args","process.hash.md5","process.hash.sha256","process.parent.hash.md5","process.parent.hash.sha256","source.ip","url.domain","url.full"]
+      },
+      {
+        "name": "size",
+        "description": "Define the number of hits per index to return",
+        "type": "string",
+        "multi": false,
+        "required": true,
+        "defaultValue": "10"
+      },
+      {
+        "name": "verifyssl",
+        "description": "Verify SSL certificate",
+        "type": "boolean",
+        "multi": false,
+        "required": true,
+        "defaultValue": true
+      },
+      {
+        "name": "cert_path",
+        "description": "Path to the CA on the system used to check server certificate",
+        "type": "string",
+        "multi": false,
+        "required": false
+      }
+    ]
+  }

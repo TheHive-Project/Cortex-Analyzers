@@ -1,0 +1,56 @@
+{
+  "name": "DomainToolsIris_Investigate",
+  "version": "1.0",
+  "author": "DomainTools",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use DomainTools Iris API to investigate a domain.",
+  "dataTypeList": ["domain"],
+  "command": "DomainToolsIris/domaintoolsiris_analyzer.py",
+  "baseConfig": "DomainToolsIris",
+  "config": {
+      "service": "investigate-domain"
+  },
+  "configurationItems": [
+    {
+      "name": "username",
+      "description": "DomainTools Iris API credentials",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "key",
+      "description": "DomainTools Iris API credentials",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "pivot_count_threshold",
+      "description": "Pivot count threshold.",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 500
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.domaintools.com",
+  "service_logo": {
+    "path": "assets/domaintools_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/DomainToolsIris_Investigate_long.png",
+      "caption": "DomainToolsIris_Investigate long report sample"
+    },
+    {
+      "path": "assets/DomainToolsIris_Investigate_short.png",
+      "caption": "DomainToolsIris_Investigate mini report sample"
+    }
+  ]
+}

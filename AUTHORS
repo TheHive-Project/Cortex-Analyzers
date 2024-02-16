@@ -1,27 +1,104 @@
-Authors
--------
-
-* Thomas Franco <toom@thehive-project.org> (lead developer, back-end)
-* Saâd Kadhi <saad@thehive-project.org> (project leader, product management & design)
-* Jérôme Leonard <jerome@thehive-project.org> (developer, analyzers)
-
-Contributors
-------------
+# Authors
 
 * Nabil Adouani
-* CERT Banque de France (CERT-BDF)
+* Thomas Franco
+* Jérôme Leonard
 
-Contributed Analyzers
----------------------
+# Contributors
 
-* Fortiguard : Eric Capuano
-* Hippocampe : Danni Co
-* MsgParser : Mehdi Aschy
-* OTXQuery : Eric Capuano
-* PassiveTotal : Antoine Brodin
-* PhishingInitiative : Rémi Pointel
-* PhishTank : Eric Capuano
+* Abdelkader Ben Ali
+* Adrien Barchapt
+* Andrea Garavaglia (LDO-CERT)
+* ANSSI
+* brandon@backscatter.io
+* Brandon Dixon (9bplus)
+* Brian Laskowski
+* CERT Arkéa 
+* CERT-BDF
+* CERT-LaPoste
+* CERT-LDO
+* Cisco Security
+* Cisco Umbrella Research @opendns
+* crackytsi
+* Daniel Weiner @dmweiner
+* Daniil Yugoslavskiy (Tieto)
+* Danni Co
+* Davide Arcuri (LDO-CERT)
+* David Strassegger @oscd_initiative
+* Dennis Perto, Conscia
+* Dmitry Uchakin, Vulners team
+* DomainTools
+* Emmanuel Torquato
+* Equate Technologies
+* Eric Capuano
+* etz69
+* Florian Perret @cyber_pescadito
+* Florian Roth
+* @frikkylikeme
+* Gabriel Antonio da Silva
+* Guillaume Rousse
+* Ignacio Rodriguez Paez
+* iosonogio, dadokkio
+* Joe Lazaro
+* Joel Snape @ Nettitude
+* Joe Vasquez
+* KAPSCH-CDC
+* Keijo Korte
+* Kyle Parrish
+* LastInfoSec
+* LetMeR00t
+* Manabu Niseki, @ninoseki
+* Manuel Krucker
+* Marc-André DOLL (STARC by EXAPROBE)
+* Mario Henkel @hariomenkel
+* Mark Kikta, RedLegg Cybersecurity Solutions
+* Matteo Lodi
+* Matt Erasmus, Jonas Hergenhahn
+* Maxim Konakin (OSCD Initiative)
+* Mehdy Aschy
+* Michael
+* Michael Davis, REN-ISAC
+* Michael Hornung (Expeditors International of Washington, Inc.)
+* Michael Stensrud (Nordic Financial CERT)
+* Mikael Keri
+* Nclose
+* Nick Prokop
+* Nicolas Mattiocco
+* Nils Kuhnert (CERT-Bund)
+* ninoseki
+* Kyle Parrish (@arnydo)
+* ottimo
+* Peter Juhas
+* pettai@sunet.se, SUNET
+* ph34tur3
+* Pierre Baudry
+* Pierre Lalet
+* Rémi Allain, Cyberprotect
+* Remi Pointel
+* RiskIQ
+* Robert Nixon
+* Sebastian Schmerl - Computacenter
+* Sebastien Larinier @Sebdraven
+* SEKOIA
+* Simon Lavigne
+* Mikael Keri
+* SOL
+* Stamus Networks
+* StrangeBee
+* Sven Kutzer / Gyorgy Acs, @oscd_initiative
+* TheHive-Project
+* torsolaso
+* Unit777
+* LetMeR00t
+* Vaclav Bartos (CESNET)
+* Wes Lambert (Security Onion Solutions)
+* Xavier Xavier (SANS ISC)
 
-Copyright (C) 2016-2017 Thomas Franco
-Copyright (C) 2016-2017 Saâd Kadhi
-Copyright (C) 2016-2017 Jérôme Leonard
+---
+Copyright (C) 2017-2022 Nabil Adouani
+
+Copyright (C) 2014-2022 Thomas Franco
+
+Copyright (C) 2014-2019 Saâd Kadhi
+
+Copyright (C) 2014-2022 Jérôme Leonard

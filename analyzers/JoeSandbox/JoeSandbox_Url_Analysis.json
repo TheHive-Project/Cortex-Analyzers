@@ -1,0 +1,46 @@
+{
+  "name": "JoeSandbox_Url_Analysis",
+  "version": "2.0",
+  "author": "CERT-BDF",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Joe Sandbox URL analysis.",
+  "dataTypeList": ["url"],
+  "command": "JoeSandbox/joesandbox_analyzer.py",
+  "baseConfig": "JoeSandbox",
+  "config": {
+      "service": "url_analysis"
+  },
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "URL of JoeSandbox service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "key",
+      "description": "API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "analysistimeout",
+      "description": "Analysis timeout (seconds)",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 1800
+    },
+    {
+      "name": "networktimeout",
+      "description": "Network timeout (second)",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 30
+    }
+  ]
+}

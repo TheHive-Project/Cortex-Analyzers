@@ -1,0 +1,53 @@
+<!-- Success -->
+<div class="panel panel-info" ng-if="success">
+
+    <style>
+        dl.dl-horizontal {
+            margin-bottom: 1px;
+        }
+
+        .dl-horizontal dt {
+            width: 300px;
+        }
+
+        .dl-horizontal dd {
+            margin-left: 310px;
+        }
+    </style>
+
+
+
+    <div class="panel-heading">
+        Hashdd report for <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+
+        <div ng-repeat="result in content.search_results">
+            <dl class="dl-horizontal" ng-if="$index == 0">
+                <dt>Knowlevel:</dt>
+                <dd class="wrap">{{result.knownlevel}}</dd>
+                <dt>MD5:</dt>
+                <dd class="wrap">{{result.details.hashdd_md5}}</dd>
+                <dt>SHA1:</dt>
+                <dd class="wrap">{{result.details.hashdd_sha1}}</dd>
+                <dt>CRC32:</dt>
+                <dd class="wrap">{{result.details.hashdd_crc32}}</dd>
+                <dt>Size:</dt>
+                <dd class="wrap">{{result.details.hashdd_size}}</dd>
+                <dt>Results:</dt>
+                <dd class="wrap">{{content.search_results.length}}</dd>
+            </dl>
+        </div>
+
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

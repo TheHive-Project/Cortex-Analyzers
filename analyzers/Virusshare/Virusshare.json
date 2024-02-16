@@ -1,0 +1,39 @@
+{
+  "name": "Virusshare",
+  "author": "Nils Kuhnert, CERT-Bund",
+  "license": "AGPL-V3",
+  "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+  "version": "2.0",
+  "description": "Search for MD5 hashes in Virusshare.com hash list",
+  "dataTypeList": ["hash", "file"],
+  "command": "Virusshare/virusshare.py",
+  "baseConfig": "Virusshare",
+  "configurationItems": [
+    {
+      "name": "path",
+      "description": "Define the path to the stored data",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ],
+  "config": {
+    "check_tlp": true,
+    "max_tlp": 2,
+    "auto_extract": false
+  },
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": false,
+  "service_homepage": "https://virusshare.com/",
+  "service_logo": {
+    "path": "assets/virusshare.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report.png",
+      "caption": "VirusShare: long report"
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+<div class="report-PT" ng-if="success">
+    <style>
+        .report-PT dl {
+            margin-bottom: 2px;
+        }
+    </style>
+
+
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <div ng-if="content.records.length === 0">
+                No parent hostpairs available for this IOC.
+            </div>
+            <div ng-if="content.records.length !== 0" class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>RiskIQ Parent Hostpairs</strong>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><b>Distinct Hosts</b></div>
+                                <div class="panel-body">
+                                    <table class="tabel table-condensed">
+                                        <tr ng-repeat="d in content.distinct_hosts">
+                                            <td>{{d}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="panel panel-info">
+                                <div class="panel-heading"><b>Distinct Causes</b></div>
+                                <div class="panel-body">
+                                    <table class="tabel table-condensed">
+                                        <tr ng-repeat="d in content.distinct_causes">
+                                            <td>{{d}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-info">
+                        <div class="panel-heading"><b>Parent Hostpair History</b></div>
+                        <div class="panel-body">
+                            <table class="table table-hover table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Cause</th>
+                                        <th>Parent</th>
+                                        <th>First Seen</th>
+                                        <th>Last Seen</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="hp in content.records">
+                                        <td>{{hp.cause}}</td>
+                                        <td>{{hp.parent}}</td>
+                                        <td>{{hp.firstseen}}</td>
+                                        <td>{{hp.lastseen}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

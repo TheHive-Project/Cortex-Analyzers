@@ -1,0 +1,23 @@
+{
+  "name": "Shodan_ReverseDNS",
+  "version": "1.0",
+  "author": "ANSSI",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
+  "license": "AGPL-V3",
+  "description": "Retrieve ip reverse DNS resolutions on Shodan.",
+  "dataTypeList": ["ip"],
+  "command": "Shodan/shodan_analyzer.py",
+  "baseConfig": "Shodan",
+  "config": {
+      "service": "reverse_dns"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}

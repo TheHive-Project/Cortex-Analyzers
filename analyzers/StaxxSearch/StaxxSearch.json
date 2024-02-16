@@ -1,0 +1,57 @@
+{
+    "name": "StaxxSearch",
+    "author": "Robert Nixon",
+    "license": "AGPL-V3",
+    "url": "https://github.com/robertnixon2003/Cortex-Analyzers",
+    "version": "1.0",
+    "description": "Fetch observable details from an Anomali STAXX instance.",
+    "dataTypeList": ["domain", "fqdn", "ip", "url", "hash", "mail"],
+    "command": "StaxxSearch/staxx-cortex.py",
+    "baseConfig": "staxx",
+    "configurationItems": [
+      {
+        "name": "auth_url",
+        "description": "Define the URL of the auth endpoint",
+        "type": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "name": "query_url",
+        "description": "Define the URL of the intelligence endpoint",
+        "type": "string",
+        "multi": false,
+        "required": true
+      },
+
+      {
+          "name": "username",
+          "description": "STAXX User Name",
+          "type": "string",
+          "multi": false,
+          "required": true
+      },
+      {
+        "name": "password",
+        "description": "STAXX Password",
+        "type": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "name": "cert_check",
+        "description": "Verify server certificate",
+        "type": "boolean",
+        "multi": false,
+        "required": true,
+        "defaultValue": true
+    },
+    {
+        "name": "cert_path",
+        "description": "Path to the CA on the system used to check the server certificate",
+        "type": "string",
+        "multi": true,
+        "required": false
+    }
+    ]
+  }

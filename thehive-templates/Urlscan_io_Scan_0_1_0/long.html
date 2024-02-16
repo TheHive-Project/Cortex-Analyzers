@@ -1,0 +1,117 @@
+<div class="panel panel-info" ng-if="::content.indicator.page">
+    <div class="panel-heading">
+        Urlscan.io Scan - General info
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Url</dt>
+            <dd class="wrap">{{content.indicator.page.url}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Domain</dt>
+            <dd class="wrap">{{content.indicator.page.domain}}</dd>
+        </dl>        
+        <dl class="dl-horizontal">
+            <dt>Report</dt>
+            <dd class="wrap">
+                <a href="{{content.indicator.task.reportURL}}" target="_blank">
+                    {{content.indicator.task.reportURL}}
+                </a>
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Ip</dt>
+            <dd class="wrap">{{content.indicator.page.ip}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Country</dt>
+            <dd class="wrap">{{content.indicator.page.country}} - {{content.indicator.page.city}}</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="::content.indicator.verdicts">
+    <div class="panel-heading">
+        Verdicts
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Community score:</dt>
+            <dd class="wrap">
+                {{content.indicator.verdicts.community.score}}
+                [Malicious votes: {{content.indicator.verdicts.community.votesMalicious}}/{{content.indicator.verdicts.community.votesTotal}}]
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Engines score:</dt>
+            <dd class="wrap">
+                {{content.indicator.verdicts.engines.score}}
+                [Malicious engines: {{content.indicator.verdicts.engines.maliciousTotal}}/{{content.indicator.verdicts.engines.enginesTotal}}]
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Urlscan score:</dt>
+            <dd class="wrap">
+                {{content.indicator.verdicts.urlscan.score}} 
+                <span class="label label-danger" ng-if="content.indicator.verdicts.urlscan.malicious">
+                    [malicious]
+                </span>
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Overall score:</dt>
+            <dd class="wrap">
+                {{content.indicator.verdicts.overall.score}} 
+                <span class="label label-danger" ng-if="content.indicator.verdicts.urlscan.malicious">
+                    [malicious]
+                </span>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="::content.indicator.lists">
+    <div class="panel-heading">
+        Items found
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>IP</th>
+                    <th>asns</th>
+                    <th>Countries</th>
+                    <th>Hashes</th>
+                    <th>Servers</th>
+                    <th>Urls</th>
+                    <th>Domains</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{content.indicator.lists.ips.length}}</td>
+                    <td>{{content.indicator.lists.asns.length}}</td>
+                    <td>{{content.indicator.lists.countries.length}}</td>
+                    <td>{{content.indicator.lists.hashes.length}}</td>
+                    <td>{{content.indicator.lists.servers.length}}</td>
+                    <td>{{content.indicator.lists.urls.length}}</td>
+                    <td>{{content.indicator.lists.domains.length}}</td>
+                </tr>
+            </tbody>         
+        </table>                         
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt>
+                <i class="fa fa-warning"></i> urlscan.io: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

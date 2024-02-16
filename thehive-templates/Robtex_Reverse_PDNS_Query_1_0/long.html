@@ -1,0 +1,35 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        Robtex reverse pDNS query for <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+            <th>Type</th>
+            <th>Domain</th>
+            <th>First seen</th>
+            <th>Last seen</th>
+            <th>Count</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="hit in content.rpdns | orderBy:'-time_last'">
+                <td>{{hit.rrtype}}</td>
+                <td>{{hit.rrname}}</td>
+                <td>{{hit.time_first * 1000 | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>
+                <td>{{hit.time_last * 1000 | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>
+                <td>{{hit.count}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

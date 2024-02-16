@@ -1,0 +1,48 @@
+{
+    "name": "SentinelOne_DeepVisibility_DNSQuery",
+    "version": "1.0",
+    "author": "Joe Vasquez",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Query Sentinel One Deep Visibility API v2.1 for hosts that have requested DNS lookups for a domain/URL/FQDN.",
+    "dataTypeList": [
+        "url",
+        "domain",
+        "fqdn"
+    ],
+    "baseConfig": "SentinelOne",
+    "command": "SentinelOne/SentinelOne.py",
+    "config": {
+        "service": "dns-lookups"
+    },
+    "configurationItems": [
+        {
+            "name": "s1_console_url",
+            "description": "Console URL",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "s1_api_key",
+            "description": "API Key, don't forget this will expire!",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "s1_account_id",
+            "description": "Account ID",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "hours_ago",
+            "description": "Number of hours ago for the fromDate of the query.  ToDate will be now. Default is 12.",
+            "type": "number",
+            "multi": false,
+            "required": false
+        }
+    ]
+}

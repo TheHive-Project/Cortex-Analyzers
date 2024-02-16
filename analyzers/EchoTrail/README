@@ -1,0 +1,5 @@
+EchoTrail Insights data helps security analysts understand the big picture of how processes typically behave on Windows endpoints by taking a Windows filename or hash and providing several unique pieces of analytical context including prevalence & rank scores, process ancestry, behavioral analysis, and security analysis. This enables analysts to move faster, and with more efficiency, allowing them to make more informed decisions.
+
+See https://www.echotrail.io/products/insights/ for details on the features of the report.
+
+This analyzer will accept a "hash" or "filename" observable and query the EchoTrail API for any known information about that file. A nicely formatted report is then shown in TheHive.

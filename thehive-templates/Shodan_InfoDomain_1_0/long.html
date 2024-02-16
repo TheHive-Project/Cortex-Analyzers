@@ -1,0 +1,71 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        Domain Information of  <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>ASN</dt>
+            <dd>
+                {{content.info_domain.asn.join(', ') || '-'}}
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>ISP</dt>
+            <dd>
+                <span ng-if="content.info_domain.isp.length === 0">-</span>
+                <ul class="list-unstyled">
+                    <li data-ng-repeat=" i in content.info_domain.isp">{{i}}</li>
+                </ul>
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Domains</dt>
+            <dd>
+                <span ng-if="content.info_domain.all_domains.length === 0">-</span>
+                <ul class="list-unstyled">
+                    <li data-ng-repeat="i in content.info_domain.all_domains">{{i | fang}}</li>
+                </ul>
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Ports</dt>
+            <dd>
+                {{content.info_domain.ports.join(', ') || '-'}}
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Orgs</dt>
+            <dd>
+                <span ng-if="content.info_domain.orgs.length === 0">-</span>
+                <ul class="list-unstyled">
+                    <li data-ng-repeat="i in content.info_domain.orgs">{{i}}</li>
+                </ul>
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Transports</dt>
+            <dd>
+                {{content.info_domain.transports.join(', ') || '-'}}
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>IPs</dt>
+            <dd>
+                <span ng-if="content.info_domain.ips.length === 0">-</span>
+                <ul class="list-unstyled">
+                    <li data-ng-repeat="i in content.info_domain.ips">{{i | fang}}</li>
+                </ul>
+            </dd>
+        </dl>
+
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

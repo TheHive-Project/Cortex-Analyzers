@@ -1,0 +1,86 @@
+{
+  "name": "IVRE",
+  "version": "1.0",
+  "author": "Pierre Lalet",
+  "license": "AGPL-V3",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "service_homepage": "https://ivre.rocks/",
+  "description": "Fetch details from an IVRE instance.",
+  "dataTypeList": [
+    "autonomous-system",
+    "certificate_hash",
+    "domain",
+    "fqdn",
+    "ip",
+    "network",
+    "port",
+    "user-agent"
+  ],
+  "command": "IVRE/ivre_analyzer.py",
+  "baseConfig": "IVRE",
+  "configurationItems": [
+    {
+      "name": "use_data",
+      "description": "Use data from the data purpose (MaxMind)",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "use_passive",
+      "description": "Use data from the passive purpose",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "use_scans",
+      "description": "Use data from the scans (nmap) purpose",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "db_url",
+      "description": "The URL of the IVRE database (e.g., mongodb://host/ivre or http://host/cgi); defaults to using IVRE's configuration",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "db_url_data",
+      "description": "The URL of the IVRE database for the data purpose (e.g., maxmind:///usr/share/ivre/geoip or http://host/cgi); defaults to using IVRE's configuration",
+      "type": "string",
+      "multi": false,
+	"required": false
+    },
+    {
+      "name": "db_url_passive",
+      "description": "The URL of the IVRE database for the passive purpose (e.g., mongodb://host/ivre or http://host/cgi); defaults to using IVRE's configuration",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "db_url_scans",
+      "description": "The URL of the IVRE database for the scans (nmap) purpose (e.g., mongodb://host/ivre or http://host/cgi); defaults to using IVRE's configuration",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ],
+  "config": {
+    "check_tlp": false,
+    "max_tlp": 3,
+    "check_pap": false,
+    "max_pap": 3,
+    "auto_extract": false
+  },
+  "service_logo": {
+    "path": "assets/ivre_logo.png",
+    "caption": "Logo"
+  }
+}

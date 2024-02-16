@@ -1,0 +1,179 @@
+<!-- Success case -->
+<div ng-if="success">
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<strong>{{name}} report</strong>
+		</div>
+		<div class="panel-body">
+		 
+			<h4>IBM X-Force information for {{artifact.data | fang}}</h4>
+
+			<dl class="dl-horizontal">
+				<dt>Score</dt>
+				<dd><span class="label label-primary">{{content.score_value}}</span></dd>
+			</dl>
+			<dl class="dl-horizontal" ng-if="content.families.length > 0">
+				<dt>Families</dt>
+				<dd ng-repeat="family in content.families">{{family}}</dd>
+			</dl>
+			<dl class="dl-horizontal" ng-if="content.cats.length > 0">
+				<dt>Categories</dt>
+				<dd ng-repeat="cat in content.cats">{{cat}}</dd>
+			</dl>
+		</div>
+	</div>
+
+
+	<div class="panel panel-info" ng-if="content.subjects_info.length > 0" ng-init="content.subjects_info_limit = 5">
+		<div class="panel-heading">
+			<strong>Subjects Info</strong>
+			<span class="pull-right" ng-if="::content.subjects_info.length > 5">
+				<a ng-if="content.subjects_info_limit == 5" href="" ng-click="content.subjects_info_limit = content.subjects_info.length">View All ({{::content.subjects_info.length}})</a>
+				<a ng-if="content.subjects_info_limit > 5"  href="" ng-click="content.subjects_info_limit = 5">View All ({{::content.subjects_info.length}})</a>
+			</span>
+		</div>
+		<div class="panel-body">
+			<table class="table table-hover">
+				<tr>show all
+					<th>Subject</th>
+					<th>Count</th>
+					<th>Sender IPs</th>
+					<th>Date</th>
+				</tr>
+				<tr ng-repeat="obj in content.subjects_info | limitTo:content.subjects_info_limit">
+					<td>{{obj[0]}}</td>
+					<td>{{obj[1]}}</td>
+					<td><span ng-repeat="ip in obj[2]">{{ip}}<br/></span></td>
+					<td>{{obj[3]}}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	
+	<div class="panel panel-info" ng-if="content.emails_info.length > 0" ng-init="content.emails_info_limit = 5">
+		<div class="panel-heading">
+			<strong>Emails Info</strong>
+			
+			<span class="pull-right" ng-if="::content.emails_info.length > 5">
+				<a  ng-if="content.emails_info_limit == 5" href="" ng-click="emails_info_limit = content.emails_info.length">View All ({{::content.emails_info.length}})</a>
+				<a  ng-if="content.emails_info_limit > 5" href="" ng-click="emails_info_limit = 5">View All ({{::content.emails_info.length}})</a>
+			</span>
+		</div>
+		<div class="panel-body">
+			<table class="table table-hover">
+				<tr>
+					<th>Attachment</th>
+					<th>Sender IP</th>
+					<th>Sender domain</th>
+					<th>Date</th>
+				</tr>
+				<tr ng-repeat="obj in content.emails_info | limitTo:content.emails_info_limit">
+					<td>{{obj[2]}}</td>
+					<td>{{obj[1]}}</td>
+					<td>{{obj[0]}}</td>
+					<td>{{obj[3]}}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	
+	<div class="panel panel-info" ng-if="content.dns.length > 0" ng-init="content.dns_limit = 5">
+		<div class="panel-heading">
+			<strong>DNS Info</strong>
+			<span class="pull-right" ng-if="::content.dns.length > 5">
+				<a ng-if="content.dns_limit == 5" href="" ng-click="content.dns_limit = content.dns.length">View All ({{::content.dns.length}})</a>
+				<a ng-if="content.dns_limit > 5" href="" ng-click="content.dns_limit = 5">View All ({{::content.dns.length}})</a>
+			</span>
+		</div>
+		<div class="panel-body">
+			<table class="table table-hover">
+				<tr>
+					<th>First</th>
+					<th>Last</th>
+					<th>Value</th>
+				</tr>
+				<tr ng-repeat="obj in content.dns | limitTo:content.dns_limit">
+					<td>{{obj[0]}}</td>
+					<td>{{obj[1]}}</td>
+					<td>{{obj[2]}}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<div class="panel panel-info" ng-if="content.malware.length > 0" ng-init="content.malware_limit = 5">
+		<div class="panel-heading">
+			<strong>Malware Info</strong>
+			<span class="pull-right" ng-if="::content.malware.length > 5">
+				<a ng-if="content.malware_limit == 5" href="" ng-click="content.malware_limit = content.malware.length">View All ({{::content.malware.length}})</a>
+				<a ng-if="content.malware_limit > 5" href="" ng-click="content.malware_limit = 5">View All ({{::content.malware.length}})</a>
+			</span>
+		</div>
+		<div class="panel-body">
+			<table class="table table-hover">
+				<tr>
+					<th>Type</th>
+					<th>Count</th>
+					<th>Seen At</th>
+					<th>Md5</th>
+					<th>Uri</th>
+					<th>Origin</th>
+					<th>Families</th>
+				</tr>
+				<tr ng-repeat="obj in content.malware | limitTo:content.malware_limit">
+					<td>{{obj.type}}</td>
+					<td>{{obj.count}}</td>
+					<td>{{obj.firstseen}} - {{obj.lastseen}}</td>
+					<td>{{obj.md5}}</td>
+					<td>{{obj.uri}}</td>
+					<td>{{obj.origin}}</td>
+					<td><span ng-repeat="fam in obj.family">{{fam}}<br/></span></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<div class="panel panel-info" ng-if="content.history.length > 0" ng-init="content.history_limit = 5">
+		<div class="panel-heading">
+			<strong>History Info</strong>
+			<span class="pull-right" ng-if="::content.history.length > 5">
+				<a ng-if="content.history_limit == 5" href="" ng-click="content.history_limit = content.history.length">View All ({{::content.history.length}})</a>
+				<a ng-if="content.history_limit > 5" href="" ng-click="content.history_limit = 5">View All ({{::content.history.length}})</a>
+			</span>
+		</div>
+		<div class="panel-body">
+			<table class="table table-hover">
+				<tr>
+					<th>Score</th>
+					<th>Date</th>
+					<th>Country</th>
+					<th>Ip</th>
+					<th>AS</th>
+					<th>Categories</th>
+					<th>Deleted</th>
+				</tr>
+				<tr ng-repeat="obj in content.history | limitTo:content.history_limit">
+					<td><h4><span class="label" ng-class="obj.score < 4 ? 'label-success' : obj.score < 7 ? 'label-warning' : 'label-danger'">{{obj.score}}</span><h4></td>
+					<td>{{obj.day}}</td>
+					<td>{{obj.country}}</td>
+					<td>{{obj.ip}}</td>
+					<td>{{obj.ans}}</td>
+					<td><span ng-repeat="cat in obj.cats">{{cat.name}}: {{cat.score}}<br/></span></td>
+					<td>{{obj.deleted}}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+</div>
+
+<!-- Failure case -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

@@ -1,0 +1,32 @@
+{
+  "name": "DNS_Lookingglass",
+  "version": "1.0",
+  "author": "Dennis Perto, Conscia",
+  "url": "https://github.com/xme/thehive/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Query the SANS ISC Global DNS Lookingglass API to check a domain name for resolved IP addresses.",
+  "dataTypeList": ["domain", "fqdn"],
+  "command": "DNSLookingglass/DNSLookingglass_lookup.py",
+  "baseConfig": "DNSLookingglass.json",
+  "config": {
+    "service": "query"
+  },
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": false,
+  "service_homepage": "https://isc.sans.edu/",
+  "service_logo": {
+    "path": "assets/dshield.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/DNS_Lookingglass_long.png",
+      "caption": "DNS Lookingglass: Long report template"
+    },
+    {
+      "path": "assets/DNS_Lookingglass_artifacts.png",
+      "caption": "DNS Lookingglass: artifacts"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "name": "GoogleSafebrowsing",
+  "author": "Nils Kuhnert, CERT-Bund",
+  "license": "AGPL-V3",
+  "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+  "version": "2.0",
+  "description": "Use Google Safebrowing to check URLs and domain names.",
+  "dataTypeList": ["url", "domain"],
+  "baseConfig": "GoogleSafebrowsing",
+  "command": "GoogleSafebrowsing/safebrowsing_analyzer.py",
+  "configurationItems": [
+    {
+      "name": "client_id",
+      "description": "Client identifier",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "cortex"
+    },
+    {
+      "name": "key",
+      "description": "API key",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ]
+}

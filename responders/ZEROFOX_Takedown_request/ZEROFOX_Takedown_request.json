@@ -1,0 +1,29 @@
+{
+  "name": "ZEROFOX_Takedown_request",
+  "version": "1.0",
+  "author": "TheHive-Project",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Request for a takedown regarding the alert in Zerofox",
+  "dataTypeList": ["thehive:case"],
+  "command": "ZEROFOX_Takedown_request/ZEROFOX_Takedown_request.py",
+  "baseConfig": "ZEROFOX",
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "URL for Zerofox API",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "https://api.zerofox.com/1.0"
+    },
+    {
+      "name": "api",
+      "description": "Key API for Zerofox",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": ""
+    }
+  ]
+}

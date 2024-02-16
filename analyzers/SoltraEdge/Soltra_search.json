@@ -1,0 +1,47 @@
+{
+    "name": "SoltraEdge",
+    "version": "1.0",
+    "author": "Michael Stensrud, Nordic Financial CERT",
+    "url": "http://soltra.com/en/",
+    "license" : "AGPL-V3",
+    "description": "Query against Soltra Edge.",
+    "dataTypeList": ["domain", "ip", "url", "fqdn", "uri_path","user-agent", "hash", "mail", "mail_subject" , "registry", "regexp", "other", "filename"],
+    "command": "SoltraEdge/soltra.py",
+    "baseConfig": "Soltra_Edge",
+    "config": {
+        "check_tlp": true,
+        "service": "search"
+    },
+    "configurationItems": [
+        {
+          "name": "token",
+          "description": "Define the Token Key",
+          "type": "string",
+          "multi": false,
+          "required": true
+        },
+        {
+            "name": "username",
+            "description": "Define the Username",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "base_url",
+            "description": "Base API URL for Soltra Edge Server. (Example: https://test.soltra.com/api/stix)",
+            "type": "string",
+            "multi": false,
+            "required": true,
+            "defaultValue": "https://feed.yourdomain./api/stix"
+        },
+        {
+            "name": "verify_ssl",
+            "description": "Verify server certificate",
+            "type": "boolean",
+            "multi": false,
+            "required": true,
+            "defaultValue": true
+        }
+    ]
+}

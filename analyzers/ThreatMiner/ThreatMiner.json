@@ -1,0 +1,11 @@
+{
+  "name": "ThreatMiner",
+  "version": "1.0",
+  "author": "Peter Juhas",
+  "url": "https://github.com/pjuhas/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "WHOIS queries from threatminer.org",
+  "dataTypeList": ["ip", "domain"],
+  "baseConfig": "ThreatMiner",
+  "command": "ThreatMiner/ThreatMiner.py"
+}

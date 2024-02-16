@@ -1,0 +1,23 @@
+{
+  "name": "CheckPhish",
+  "version": "1.0",
+  "author": "Peter Juhas",
+  "url": "https://github.com/pjuhas/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "service_homepage": "https://checkphish.ai",
+  "description": "Check url address via CheckPhish using jobID returned from CheckPhish_Submit",
+  "dataTypeList": [
+    "string"
+  ],
+  "baseConfig": "CheckPhish",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Api key for CheckPhish",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "command": "CheckPhish/CheckPhish.py"
+}

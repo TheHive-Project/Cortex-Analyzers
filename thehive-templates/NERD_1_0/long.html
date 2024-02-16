@@ -1,0 +1,52 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        NERD information for <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body" ng-if="content.message">
+        <p>{{content.message}}</p>
+        <p>Current info at: <a href="{{content.nerd_url}}" target="_blank">{{content.nerd_url}}</a></p>
+    </div>
+    <div class="panel-body" ng-if="!content.message">
+        <dl class="dl-horizontal">
+            <dt class="text-bold">
+                Reputation score
+                <sup style="color: #999" title="A score computed from the number of recent alerts, their age, and the number of distinct sources (0.0 = no alerts, 1.0 = lots of alerts from multiple sources)">(?)</sup>
+            </dt>
+            <dd><span style="color: hsl({{ (100 - 100*content.rep | number: 2) }}, 85%, 50%); margin-right: 5px">&#x2B24;</span>{{content.rep | number: 3}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt class="text-bold">Hostname</dt>
+            <dd>{{content.hostname || "&mdash;"}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt class="text-bold">Blacklists</dt>
+            <dd>{{content.blacklists.join(", ") || "&mdash;"}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt class="text-bold">Tags</dt>
+            <dd>
+                <span ng-repeat="t in content.translated_tags" class="label" style="margin-right: 5px" ng-class="{'info': 'label-info', 'safe': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[t[1]]">{{t[0]}}</span>
+                <span ng-if="!content.translated_tags.length">&mdash;</span>
+            </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt class="text-bold">ASN</dt>
+            <dd>{{content.asn.join(", ") || "unknown"}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt class="text-bold">Country</dt>
+            <dd>{{content.country || "unknown"}}</dd>
+        </dl>
+        <p>Full info at: <a href="{{content.nerd_url}}" target="_blank">{{content.nerd_url}}</a></p>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

@@ -1,0 +1,11 @@
+{
+  "name": "IP-API",
+  "version": "1.0",
+  "author": "Peter Juhas",
+  "url": "https://github.com/pjuhas/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Check IP address or domain using ip-api.com",
+  "dataTypeList": ["ip", "domain"],
+  "baseConfig": "IP-API",
+  "command": "IP-API/IP-API.py"
+}

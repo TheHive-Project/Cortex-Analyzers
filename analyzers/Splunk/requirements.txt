@@ -1,0 +1,2 @@
+splunk-sdk
+cortexutils

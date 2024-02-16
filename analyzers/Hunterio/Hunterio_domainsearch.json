@@ -1,0 +1,38 @@
+{
+  "name": "Hunterio_DomainSearch",
+  "author": "Rémi Allain, Cyberprotect",
+  "license": "AGPL-V3",
+  "url": "https://github.com/Cyberprotect/Cortex-Analyzers",
+  "version": "1.0",
+  "description": "hunter.io is a service to find email addresses from a domain.",
+  "dataTypeList": ["domain", "fqdn"],
+  "command": "Hunterio/hunterio_analyzer.py",
+  "baseConfig": "Hunterio",
+  "config": {
+    "service": "domainsearch",
+    "check_tlp": false
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "api key of hunter.io",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://hunter.io/",
+  "service_logo": {
+    "path": "assets/hunter.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report.png",
+      "caption": "Hunter: long report"
+    }
+  ]
+}

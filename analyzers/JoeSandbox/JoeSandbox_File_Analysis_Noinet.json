@@ -1,0 +1,83 @@
+{
+  "name": "JoeSandbox_File_Analysis_Noinet",
+  "version": "3.0",
+  "author": "CERT-BDF",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Joe Sandbox file analysis without Internet access.",
+  "dataTypeList": ["file"],
+  "command": "JoeSandbox/joesandbox_analyzer.py",
+  "baseConfig": "JoeSandbox",
+  "config": {
+      "service": "file_analysis_noinet"
+  },
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "URL of JoeSandbox service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "key",
+      "description": "API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "analysistimeout",
+      "description": "Analysis timeout (seconds)",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 1800
+    },
+    {
+      "name": "networktimeout",
+      "description": "Network timeout (second)",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 30
+    },
+    {
+      "name": "HTML_report",
+      "description": "Download HTML report",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": false 
+    },
+	{
+      "name": "images",
+      "description": "Allow images in the report",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": false 
+    },
+	{
+	  "name": "observables",
+      "description": "Creat observables form report",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": false 
+	}
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+
+  "screenshots": [
+    {
+      "path": "assets/HTML_report.png",
+      "caption": "EmlParser: HTML report"
+    },
+    {
+      "path": "assets/images_preview.png",
+      "caption": "EmlParser: images preview"
+    }
+  ]  
+}

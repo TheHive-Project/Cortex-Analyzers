@@ -1,0 +1,91 @@
+{
+  "name": "RT4-CreateTicket",
+  "version": "1.0",
+  "author": "Michael Davis, REN-ISAC",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers/tree/master/responders/RT4",
+  "license": "MIT",
+  "description": "Cortex Responder to create a ticket in RT4 from TheHive observables or alerts",
+  "dataTypeList": ["thehive:case_artifact", "thehive:alert", "thehive:case"],
+  "command": "RT4/rt4.py",
+  "baseConfig": "RT4",
+  "configurationItems": [
+    {
+      "name": "server",
+      "description": "RT4 Base URL, e.g., https://rt.domain.local",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "username",
+      "description": "RT4 username for authentication",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "password",
+      "description": "RT4 password for user account",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "Queue",
+      "description": "Default queue in which to create new tickets",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "General"
+    },
+    {
+      "name": "Owner",
+      "description": "Default owner to assign newly created tickets (optional)",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "Status",
+      "description": "Default ticket status to assign newly created tickets (optional)",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "custom_field_list",
+      "description": "Name:Value of Custom Fields in RT to set on every ticket created (e.g.: 'How Reported:TheHive' sets CF.{How Reported} = TheHive on every new ticket)",
+      "type": "string",
+      "multi": true,
+      "required": false
+    },
+    {
+      "name": "tag_to_template_map",
+      "description": "Mapping table of tags to templates (e.g.: 'phishing:phish_letter' maps anything tagged as 'phishing' to the 'phish_letter' template)",
+      "type": "string",
+      "multi": true,
+      "required": true
+    },
+    {
+      "name": "thehive_cf_rtticket",
+      "description": "Name of a case custom field in TheHive in which RT ticket #s will be saved upon successful case-level Responder run (optional)",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "thehive_url",
+      "description": "TheHive Base URL, e.g., https://thehive.domain.local:9000 (optional: only needed to process Cases)",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "thehive_token",
+      "description": "TheHive API token for authentication (optional: only needed to process Cases)",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ]
+}

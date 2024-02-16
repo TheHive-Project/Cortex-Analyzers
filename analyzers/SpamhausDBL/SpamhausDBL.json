@@ -1,0 +1,15 @@
+{
+    "name": "SpamhausDBL",
+    "version": "1.0",
+    "author": "Wes Lambert",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Perform domain lookup to Spamhaus DBL",
+    "dataTypeList": ["domain", "fqdn"],
+    "baseConfig": "SpamhausDBL",
+    "config": {
+       "service": "DBLLookup"
+    },
+    "command": "SpamhausDBL/spamhausdbl.py",
+    "configurationItems": []
+}

@@ -1,0 +1,30 @@
+{
+  "name": "Crt_sh_Transparency_Logs",
+  "author": "crackytsi",
+  "license": "AGPL-V3",
+  "url": "https://crt.sh",
+  "version": "1.0",
+  "baseConfig": "Crtsh",
+  "config": {
+    "check_tlp": false,
+    "max_tlp": 3
+  },
+  "description": "Query domains against the certificate transparency lists available at crt.sh.",
+  "dataTypeList": ["domain"],
+  "command": "Crtsh/crtshquery.py",
+  "configurationItems": [],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://crt.sh/",
+  "service_logo": {
+    "path": "assets/logo.png",
+    "caption": "Sectigo logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report.png",
+      "caption": "Crt: Long report template"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "Hashdd_Status",
+  "version": "2.0",
+  "author": "iosonogio, dadokkio",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPLv3",
+  "description": "Determine whether a hash is good or bad.",
+  "dataTypeList": ["hash"],
+  "baseConfig": "Hashdd",
+  "config": {
+    "service": "status"
+  },
+  "command": "Hashdd/Hashdd.py",
+  "configurationItems": [
+    {
+      "name": "api_key",
+      "description": "API key for hashdd",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ]
+}

@@ -1,9 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding: utf-8
 
-import sys
-import json
-import codecs
 from lib.msgParser import Message
 from cortexutils.analyzer import Analyzer
 
@@ -13,17 +10,21 @@ class MsgParserAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
 
-        self.filename = self.getParam('attachment.name', 'noname.ext')
-        self.filepath = self.getParam('file', None, 'File is missing')
+        self.filename = self.get_param('filename', 'noname.ext')
+        self.filepath = self.get_param('file', None, 'File is missing')
 
     def summary(self, raw):
-        result = {
-            "attachments": 0
-        }
-        if("attachments" in raw):
-            result["attachments"] = len(raw["attachments"])
+        taxonomies = []
+        level = "info"
+        namespace = "MsgParser"
+        predicate = "Attachments"
+        value = "0"
 
-        return result
+        if "attachments" in raw:
+            value = len(raw["attachments"])
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+
+        return {"taxonomies": taxonomies}
 
     def run(self):
         if self.data_type == 'file':

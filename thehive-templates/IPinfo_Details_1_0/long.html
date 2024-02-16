@@ -1,0 +1,51 @@
+<div class="report" ng-if="success">
+  <div class="panel panel-info">
+    <div class="panel-heading">IPinfo details ({{ content.ip || "-" }})</div>
+    <div class="panel-body">
+      <div ng-if="(content | json) === '{}'">
+        No data found
+      </div>
+      <div ng-if="(content | json) !== '{}'">
+        <dl class=" dl-horizontal">
+          <dt>Hostname:</dt>
+          <dd class="wrap">{{ content.hostname || "-" }}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+          <dt>Country:</dt>
+          <dd class="wrap">{{ content.country || "-" }}</dd>
+        </dl>
+        <div ng-if="content.asn !== {}">
+          <dl class="dl-horizontal">
+            <dt>ASN:</dt>
+            <dd class="wrap">
+              {{ content.asn.asn || "-" }} / {{ content.asn.name || "-" }}
+            </dd>
+          </dl>
+          <dl class="dl-horizontal">
+            <dt>Route:</dt>
+            <dd class="wrap">{{ content.asn.route || "-" }}</dd>
+          </dl>
+          <dl class="dl-horizontal">
+            <dt>Type:</dt>
+            <dd class="wrap">{{ content.asn.type || "-" }}</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+  <div class="panel-heading">
+    <strong>{{ artifact.data | fang }}</strong>
+  </div>
+  <div class="panel-body">
+    <dl class="dl-horizontal" ng-if="content.errorMessage">
+      <dt>
+        <i class="fa fa-warning"></i>
+      </dt>
+      <dd class="wrap">{{ content.errorMessage }}</dd>
+    </dl>
+  </div>
+</div>

@@ -1,0 +1,264 @@
+<style>
+    td.critical {
+        color: #fff;
+        background-color: #cf2030 !important;
+        fill: #cf2030;
+    }
+
+    td.high {
+        color: #fff;
+        background-color: #ff7300 !important;
+        fill: #ff7300;
+    }
+
+    td.medium {
+        color: #000;
+        background-color: #fc0 !important;
+        fill: #fc0;
+    }
+
+    td.low {
+        color: #fff;
+        background-color: #b8c5db !important;
+        fill: #b8c5db;
+    }
+
+    .odns-verdict {
+        display: inline-block;
+        border-radius: 5px;
+        margin: 1px 5px 1px 0;
+        padding: 0 10px;
+    }
+
+    .malicious {
+        color: #fff;
+        background-color: #cf2030;
+    }
+
+    .indeterminate {
+        color: #39393b;
+        background-color: #fc0;
+    }
+
+    .innocuous {
+        color: #fff;
+        background-color: #6cc04a;
+    }
+
+    .capitalize {
+       text-transform: capitalize;
+    }
+</style>
+
+<!-- Success -->
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        Summary
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6">
+              <dl class="dl-horizontal">
+                  <dt>Threat Score</dt>
+                  <dd class="wrap">{{content.threat.threat_score}}</dd>
+              </dl>
+            </div>
+            <div class="col-md-6">
+                <dl class="dl-horizontal" ng-if="content.summary.times_seen">
+                    <dt>Times Seen</dt>
+                    <dd class="wrap">{{content.summary.times_seen}}</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <dl class="dl-horizontal" ng-if="content.status.id">
+                    <dt>Sample ID</dt>
+                    <dd class="wrap">{{content.status.id}}</dd>
+                </dl>
+            </div>
+            <div class="col-md-6">
+                <dl class="dl-horizontal" ng-if="content.summary.first_seen">
+                    <dt>First Seen</dt>
+                    <dd class="wrap">{{content.summary.first_seen}}</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <dl class="dl-horizontal" ng-if="content.metadata.sandcastle_env.display_name">
+                    <dt>OS</dt>
+                    <dd class="wrap">{{content.metadata.sandcastle_env.display_name}}</dd>
+                </dl>
+            </div>
+            <div class="col-md-6">
+                <dl class="dl-horizontal" ng-if="content.summary.last_seen">
+                    <dt>Last Seen</dt>
+                    <dd class="wrap">{{content.summary.last_seen}}</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <dl class="dl-horizontal" ng-if="content.summary.run_start">
+                    <dt>Started</dt>
+                    <dd class="wrap">{{content.summary.run_start}}</dd>
+                </dl>
+            </div>
+            <div class="col-md-6">
+                <dl class="dl-horizontal" ng-if="content.summary.magic_type">
+                    <dt>Magic Type</dt>
+                    <dd class="wrap">{{content.summary.magic_type}}</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <dl class="dl-horizontal" ng-if="content.summary.run_stop">
+                    <dt>Ended</dt>
+                    <dd class="wrap">{{content.summary.run_stop}}</dd>
+                </dl>
+            </div>
+            <div class="col-md-6">
+                <dl class="dl-horizontal" ng-if="content.status.sha256">
+                    <dt>SHA256</dt>
+                    <dd class="wrap">{{content.status.sha256}}</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <dl class="dl-horizontal" ng-if="content.status.id">
+                    <dt>Threat Grid</dt>
+                    <dd>
+                        <i class="fa fa-search"></i>
+                        <a ng-href="https://{{content.host}}/samples/{{content.status.id}}" target="panacea">
+                            View Full Report</a>
+                    </dd>
+                </dl>
+            </div>
+            <div class="col-md-6">
+                <dl class="dl-horizontal" ng-if="content.status.sha1">
+                    <dt>SHA1</dt>
+                    <dd class="wrap">{{content.status.sha1}}</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <dl class="dl-horizontal">
+                    <!-- FREE CELL -->
+                </dl>
+            </div>
+            <div class="col-md-6">
+                <dl class="dl-horizontal" ng-if="content.status.md5">
+                    <dt>MD5</dt>
+                    <dd class="wrap">{{content.status.md5}}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="content.iocs">
+    <div class="panel-heading">
+        <strong>Behavioral Indicators ({{content.iocs.length}})</strong>
+    </div>
+    <div class="panel-body">
+
+        <table class="table table-hover">
+            <tr>
+                <th>Title</th>
+                <th>Catagories</th>
+                <th>ATT&CK</th>
+                <th>Tags</th>
+                <th>Hits</th>
+                <th style="width: 85px">Score</th>
+            </tr>
+            <tr ng-repeat="ioc_data in content.iocs | orderBy:'-(severity*confidence)/100'" ng-init="score = ((ioc_data.severity * ioc_data.confidence) / 100 | number:0)">
+                <td>
+                    <a ng-href="https://{{content.host}}/mask/samples/{{content.status.id}}#indicator-row-{{ioc_data.ioc}}" target="panacea">
+                        {{ioc_data.title}}
+                    </a>
+                </td>
+                <td><span data-ng-repeat="category in ioc_data.category">{{category}} {{$last ? '' : ', '}}</span></td>
+                <td><span data-ng-repeat="tactic in ioc_data['mitre-tactics']">{{tactic}} {{$last ? '' : ', '}}</span></td>
+                <td><span data-ng-repeat="tag in ioc_data.tags">{{tag}} {{$last ? '' : ', '}}</span></td>
+                <td style="text-align: center;">{{ioc_data.hits}}</td>
+                <td style="text-align: center;" ng-class="{'critical' : score >= 90, 'high' : score < 90 && score >= 75, 'medium' : score < 75 && score >= 50, 'low' : score < 50}">
+                    {{score}}
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="content.domains">
+    <div class="panel-heading">
+        <strong>Domains ({{content.summary.domains}})</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <th>Domain</th>
+                <th>Content Categories</th>
+                <th>Security Categories</th>
+                <th>Umbrella Status</th>
+            </tr>
+            <tr ng-repeat="(domain, domain_data) in content.domains">
+                <td>{{domain}}</td>
+                <td><span data-ng-repeat="category in domain_data.content_categories">{{category}} {{$last ? '' : ', '}}</span></td>
+                <td><span data-ng-repeat="category in domain_data.security_categories">{{category}} {{$last ? '' : ', '}}</span></td>
+                <td><div ng-class="['odns-verdict', domain_data.status]"><span class="capitalize">{{domain_data.status}}</span></div></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="content.network">
+    <div class="panel-heading">
+        <strong>TCP/IP Streams ({{content.summary.stream_count}})</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <th>Stream</th>
+                <th>Src. IP</th>
+                <th>Src. Port</th>
+                <th>Dest. IP</th>
+                <th>Dest. Port</th>
+                <th>Transport</th>
+                <th>Packets</th>
+                <th>Bytes</th>
+            </tr>
+            <tr ng-repeat="(stream_num, stream) in content.network">
+                <td>
+                    <a ng-href="https://{{content.host}}/mask/samples/{{content.status.id}}#tcpIp-row-{{stream_num}}" target="panacea">
+                        {{stream_num}}
+                    </a>
+                    <span ng-if="stream.service">&nbsp&nbsp({{stream.service | uppercase}})</span>
+                </td>
+                <td>{{stream.src}}</td>
+                <td>{{stream.src_port}}</td>
+                <td>{{stream.dst}}</td>
+                <td>{{stream.dst_port}}</td>
+                <td>{{stream.transport}}</td>
+                <td>{{stream.packets}}</td>
+                <td>{{stream.bytes}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> Threat Grid: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
