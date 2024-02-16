@@ -1,5 +1,5 @@
-requests~=2.24.0
-cortexutils~=2.0.0
+requests
+cortexutils
 urllib3
-oauthlib~=3.1.0
+oauthlib
 requests-oauthlib
