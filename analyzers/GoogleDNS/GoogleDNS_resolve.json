@@ -5,13 +5,46 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Request Google DNS over HTTPS service",
-  "dataTypeList": ["domain", "ip", "fqdn"],
+  "dataTypeList": [
+    "domain",
+    "ip",
+    "fqdn"
+  ],
   "command": "GoogleDNS/GoogleDNS_resolve.py",
   "baseConfig": "GoogleDNS",
   "config": {
     "service": "get"
   },
-  "configurationItems": [
-
+  "configurationItems": [],
+  "checks": [
+    {
+      "input": {
+        "data": "strangebee.com",
+        "dataType": "domain",
+        "config": {
+          "service": "get"
+        }
+      },
+      "rules": [
+        {
+          "path": "$.success",
+          "expected": [
+            true
+          ]
+        },
+        {
+          "path": "$.artifacts[*].data",
+          "expected": [
+            "217.70.184.55"
+          ]
+        },
+        {
+          "path": "$.full.Status",
+          "expected": [
+            "No Error"
+          ]
+        }
+      ]
+    }
   ]
 }
