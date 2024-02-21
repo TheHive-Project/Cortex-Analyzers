@@ -50,8 +50,8 @@ class GatewatcherCTI(Analyzer):
                     has_max = False
                 total_found_relations = 0
                 for item in info["message"][0]["IOCs"]:
-                    if total_found_relations == len(relations) or \
-                    (has_max and total_found_relations >= self.max_relations):
+                    if (total_found_relations == len(relations) or
+                            (has_max and total_found_relations >= self.max_relations)):
                         break
 
                     if item["IocId"] in relations:
@@ -65,14 +65,16 @@ class GatewatcherCTI(Analyzer):
                         elif item["Type"] in ["URL", "Host", "MD5", "SHA1", "SHA256"]:
                             records["IOCs"].append(item)
 
-            additional = {k : v for k, v in additional.items() if v is not None}
+            additional = {k: v for k, v in additional.items() if v is not None}
             main.update(additional)
             records["IOCs"].insert(0, main)
+            if len(records["IOCs"]) == 1 and records["IOCs"][0]["Risk"].lower() == "unknown":
+                records["is_on_gw"] = False
 
         self.report(records)
 
     def check_response(self, response):
-        if response.status_code not in [200,422]:
+        if response.status_code not in [200, 422]:
             try:
                 result = response.json()
                 if (
@@ -102,19 +104,18 @@ class GatewatcherCTI(Analyzer):
         level = "info"
         namespace = "Gatewatcher CTI"
         predicate = "GetReport"
-        value = "Not found"
+        value = "not found"
         data = next(
             (ioc for ioc in raw["IOCs"] if ioc["Value"] == self.observable_value), None
         )
         if data is not None:
             level = data["Risk"].lower()
             if level == "malicious":
-                value = 86
+                value = 100
             elif level == "high suspicious":
-                value = 71
-                level = "suspicious"
-            else:
-                value = 31
+                value = 75
+            elif level == "suspicious":
+                value = 60
 
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         return {"taxonomies": taxonomies}
