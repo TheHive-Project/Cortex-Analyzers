@@ -16,7 +16,7 @@ class Shuffle(Responder):
         headers = {
             "Authorization": "Bearer %s"  % self.api_key
         }
-        r = requests.post(parsed_url, headers=headers)
+        r = requests.post(parsed_url, json=self.get_data(), headers=headers)
         if r.status_code == 200:
             self.report({"Message": "Executed workflow"})
         else:
