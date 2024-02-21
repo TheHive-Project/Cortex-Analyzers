@@ -1,2 +1,4 @@
 cortexutils
-requests
+crowdstrike-falconpy
+datetime
+python-dateutil
