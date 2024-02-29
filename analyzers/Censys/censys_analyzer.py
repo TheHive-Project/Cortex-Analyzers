@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 from cortexutils.analyzer import Analyzer
-from censys.certificates import CensysCertificates
-from censys.ipv4 import CensysIPv4
-from censys.websites import CensysWebsites
-from censys.exceptions import (
+from censys.search import CensysHosts
+from censys.common.exceptions import (
     CensysNotFoundException,
     CensysRateLimitExceededException,
     CensysUnauthorizedException,
@@ -45,8 +43,8 @@ class CensysAnalyzer(Analyzer):
         :type ip: str
         :return: dict
         """
-        c = CensysIPv4(api_id=self.__uid, api_secret=self.__api_key)
-        return c.view(ip)
+        c = CensysHosts(api_id=self.__uid, api_secret=self.__api_key)
+        return c.search("ip: " + ip, per_page=1, pages=1)()[0]
 
     def search_certificate(self, hash):
         """
@@ -56,8 +54,8 @@ class CensysAnalyzer(Analyzer):
         :type hash: str
         :return: dict
         """
-        c = CensysCertificates(api_id=self.__uid, api_secret=self.__api_key)
-        return c.view(hash)
+        c = CensysHosts(api_id=self.__uid, api_secret=self.__api_key)
+        return c.search("certificate: " + hash, per_page=1, pages=1)()[0]
 
     def search_website(self, dom):
         """
@@ -66,8 +64,8 @@ class CensysAnalyzer(Analyzer):
         :type dom: str
         :return: dict
         """
-        c = CensysWebsites(api_id=self.__uid, api_secret=self.__api_key)
-        return c.view(dom)
+        c = CensyshOSTs(api_id=self.__uid, api_secret=self.__api_key)
+        return c.search("dns.name: " + dom, per_page=1, pages=1)()[0]
 
     def search_ipv4(self, search):
         """
@@ -76,8 +74,8 @@ class CensysAnalyzer(Analyzer):
         :type search: str
         :return: dict
         """
-        c = CensysIPv4(api_id=self.__uid, api_secret=self.__api_key)
-        return [x for x in c.search(search, fields=self.__fields,  max_records=self.__max_records, flatten=self.__flatten)]
+        c = CensysHosts(api_id=self.__uid, api_secret=self.__api_key)
+        return [x for x in c.search("ip: " + search, per_page=1, pages=1)()[0]]
 
     def run(self):
         try:
@@ -114,7 +112,8 @@ class CensysAnalyzer(Analyzer):
         taxonomies = []
         if 'ip' in raw:
             raw = raw['ip']
-            service_count = len(raw.get('protocols', []))
+            service_count = len(raw.get('services', []))
+            print(service_count)
             heartbleed = raw.get('443', {}).get('https', {}).get('heartbleed', {}).get('heartbleed_vulnerable', False)
             taxonomies.append(self.build_taxonomy('info', 'Censys', 'OpenServices', service_count))
             if heartbleed:
