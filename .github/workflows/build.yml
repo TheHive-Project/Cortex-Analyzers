@@ -51,9 +51,44 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Build catalog
-        uses: docker://thehiveproject/neurons-build-catalogs
+        uses: sergeysova/jq-action@v2
+        with:
+          cmd: |
+            build_catalog() {
+              DIR=$1
+              echo '[' > ${DIR}/${DIR}.json
+              echo '[' > ${DIR}/${DIR}-devel.json
+              echo '[' > ${DIR}/${DIR}-stable.json
+
+              first=1
+              for JSON in ${DIR}/*/*.json
+              do
+                if test -z "${first}"
+                then
+                  echo ',' >> ${DIR}/${DIR}.json
+                  echo ',' >> ${DIR}/${DIR}-devel.json
+                  echo ',' >> ${DIR}/${DIR}-stable.json
+                else
+                  first=
+                fi
+
+                  jq 'del(.command) + { dockerImage: ("docker.io/cortexneurons/" + (.name | ascii_downcase) + ":devel") }' ${JSON} >> ${DIR}/${DIR}-devel.json
+                  jq 'del(.command) + { dockerImage: ("docker.io/cortexneurons/" + (.name | ascii_downcase) + ":" + .version) }' ${JSON} >> ${DIR}/${DIR}-stable.json
+                  jq 'del(.command) + { dockerImage: ("docker.io/cortexneurons/" + (.name | ascii_downcase) + ":" + (.version | split("."))[0]) }' ${JSON} >> ${DIR}/${DIR}.json
+              done
+
+              echo ']' >> ${DIR}/${DIR}.json
+              echo ']' >> ${DIR}/${DIR}-devel.json
+              echo ']' >> ${DIR}/${DIR}-stable.json
+            }
+
+            build_catalog analyzers
+            build_catalog responders
       - name: Build report-templates zip package
-        uses: docker://thehiveproject/neurons-build-report-templates
+        uses: montudor/action-zip@v1.0.0
+        with:
+          args:
+            cd thehive-templates && zip -r ../analyzers/report-templates.zip *
       - name: Save Artifacts
         uses: actions/upload-artifact@v3
         with:
