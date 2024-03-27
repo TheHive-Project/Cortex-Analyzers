@@ -28,15 +28,12 @@ class CurstomProxy(Analyzer):
             else:
                 self.error("Unknown method")
         except Exception as e:
-            self.error(f"Error trying to contact {self.base_url + module + '/' + url}")
+            self.error(f"Error trying to contact {self.base_url + module + '/' + url}: {repr(e)}")
         else:
             to_check = req.json()
 
-            if "status" in to_check and to_check["status"] != 0:
-                results = to_check
-                return results
-            else:
-                self.error(f"Contact was not made for: {self.base_url + module + '/' + url}: {to_check}")
+            results = to_check
+            return results
 
     def summary(self, raw):
         taxonomies = []
@@ -60,7 +57,6 @@ class CurstomProxy(Analyzer):
             self.report(self.do_request(method, module, url, headers, post_data))
         except Exception as e:
             self.unexpectedError(e)
-
 
 
 if __name__ == '__main__':

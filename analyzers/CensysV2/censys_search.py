@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 from cortexutils.analyzer import Analyzer
 from censys.search import CensysHosts
-from censys.common.exceptions import CensysNotFoundException, CensysUnauthorizedException, CensysRateLimitExceededException
+from censys.common.exceptions import CensysNotFoundException, CensysUnauthorizedException, \
+    CensysRateLimitExceededException
 
 
 class CensysAnalyzer(Analyzer):
@@ -45,14 +46,19 @@ class CensysAnalyzer(Analyzer):
         h.DEFAULT_TIMEOUT = 60
         h.timeout = 60
         results = []
-        for page in h.search(search, per_page=self.__per_page,  pages=self.__pages):
+        virtual_hosts = self.get_param('parameters.virtual_hosts', 'EXCLUDE', None)
+        for page in h.search(search, per_page=self.__per_page, pages=self.__pages,
+                             fields=["last_updated_at", "ip", "services.port",
+                                     "services.tls.certificates.leaf_data.signature.self_signed",
+                                     "services.tls.certificates.leaf_data.subject.common_name"],
+                             virtual_hosts=virtual_hosts):
             results = results + page
         return results
 
     def run(self):
         try:
             if self.data_type == 'other':
-                matches=self.search(self.get_data())
+                matches = self.search(self.get_data())
                 self.report({
                     'matches': list(matches)
                 })
