@@ -78,13 +78,14 @@ class OpenCTIAnalyzer(Analyzer):
 
                 # Get a list of reports containing this observable
                 reports = opencti["api_client"].report.list(
-                    filters=[
-                        {
-                            "key": "objectContains",
-                            "values": [observable["id"]],
-                        }
-                    ]
-                )
+                       filters={
+                            "mode": "and",
+                            "filters": [{"key": "objects", "values": [observable["id"]]}],
+                            "filterGroups": [],
+                                },
+                            orderBy="published",
+                            orderMode="asc",
+                        )
 
                 # Strip reports data for lighter output.
                 for report in reports:
