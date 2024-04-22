@@ -1,0 +1,40 @@
+<div class="panel panel-info" ng-if="!content.results">No Data</div>
+
+<div class="panel panel-info" ng-repeat="res in content.results.entities">
+  <div class="panel-heading">{{res.type}} - {{res.title}}</div>
+  <div class="panel-body">
+    <dl class="dl-horizontal">
+      <dt>ID:</dt>
+      <dd>
+        <a target="_blank" href="{{content.results.url}}/entity/{{res.id}}"
+          >{{res.type}}--{{res.id}}</a
+        >
+      </dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Entity Type:</dt>
+      <dd>{{res.type}}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Timestamp:</dt>
+      <dd>{{res.timestamp}}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Source Name:</dt>
+      <dd>{{res.source_name}}</dd>
+    </dl>
+    <dl class="dl-horizontal" ng-if="res.tags.length > 0">
+        <dt>Tags:</dt>
+      <dd><ul><li ng-repeat="tag in ::res.tags | orderBy:'toString()'">{{tag}}</li></ul></dd>
+    </dl>
+  </div>
+</div>
+
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+  <div class="panel-heading">
+    <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+  </div>
+  <div class="panel-body">{{content.errorMessage}}</div>
+</div>
