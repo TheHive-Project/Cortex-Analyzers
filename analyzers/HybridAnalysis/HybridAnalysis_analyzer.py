@@ -1,3 +1,24 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+According to data from official site [1], VxStream Sandbox Public API allows you to analyze:
+
+- hash
+- filename
+- host / ip (some problems on API side for now)
+- domain / fqdn (some problems on API side for now)
+
+[1] https://www.hybrid-analysis.com/apikeys/info
+"""
+
+import hashlib
+import requests
+import time
+
+from requests.auth import HTTPBasicAuth
+from cortexutils.analyzer import Analyzer
+
+
 class VxStreamSandboxAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
@@ -8,6 +29,10 @@ class VxStreamSandboxAnalyzer(Analyzer):
 
     def summary(self, raw_report):
         taxonomies = []
+
+        # default values
+        level = "info"
+        namespace = "HybridAnalysis"
         predicate = "Threat level"
         value = "No verdict"
 
@@ -50,6 +75,22 @@ class VxStreamSandboxAnalyzer(Analyzer):
 
             # create shield badge for short.html
             if report_verdict == 'malicious':
+                level = 'malicious'
+                value = "Malicious"
+            elif report_verdict == 'suspicious':
+                level = 'suspicious'
+                value = "Suspicious"
+            elif report_verdict == 'whitelisted':
+                level = 'safe'
+                value = "Whitelisted"
+            elif report_verdict == 'no specific threat':
+                level = 'info'
+                value = "No Specific Threat"
+        else:
+            level = 'info'
+            value = "Unknown"
+
+        taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         return {"taxonomies": taxonomies}
 
     def run(self):
@@ -97,6 +138,11 @@ class VxStreamSandboxAnalyzer(Analyzer):
                         self.error(r.json()["validation_errors"][0]["errors"][0])
                 else:
                     error = False
+
+            self.report({'results': r.json()})
+
+        except ValueError as e:
+            self.unexpectedError(e)
 
 
 if __name__ == '__main__':
