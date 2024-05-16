@@ -50,7 +50,7 @@ class CensysAnalyzer(Analyzer):
         for page in h.search(search, per_page=self.__per_page, pages=self.__pages,
                              fields=["last_updated_at", "ip", "services.port",
                                      "services.tls.certificates.leaf_data.signature.self_signed",
-                                     "services.tls.certificates.leaf_data.subject.common_name"],
+                                     "services.tls.certificates.leaf_data.subject.common_name", "services.tls.certificates.leaf_data.issuer.common_name"],
                              virtual_hosts=virtual_hosts):
             results = results + page
         return results
