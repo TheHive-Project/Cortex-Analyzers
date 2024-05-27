@@ -23,7 +23,7 @@ class TorBlutmagieClient:
         self.cache_duration = cache_duration
         if self.cache_duration > 0:
             self.cache = Cache(cache_root)
-        self.url = 'http://torstatus.blutmagie.de/query_export.php/Tor_query_EXPORT.csv'
+        self.url = 'https://torstatus.rueckgr.at/query_export.php/Tor_query_EXPORT.csv'
 
     __cache_key = __name__ + ':raw_data'
 
