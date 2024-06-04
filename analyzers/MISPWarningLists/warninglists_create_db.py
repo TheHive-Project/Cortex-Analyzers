@@ -20,7 +20,7 @@ from sqlalchemy.dialects.postgresql import CIDR
 conn_string = "<insert_postgres_conn_strin>"
 warninglists_path = "misp-warninglists/**/list.json"
 
-engine = create_engine(conn_string, use_batch_mode=True)
+engine = create_engine(conn_string))
 conn = engine.connect()
 
 # UPDATE TLD FROM MOZILLA
@@ -148,7 +148,10 @@ except:
 
 
 # CHECK IF OLD RELEASE ARE IN DB
-s = select([warninglists.c.list_name, warninglists.c.list_version]).distinct()
+try:
+    s = select([warninglists.c.list_name, warninglists.c.list_version]).distinct()
+except sqlalchemy.exc.ArgumentError:
+    s = select(warninglists.c.list_name, warninglists.c.list_version).distinct()
 last_versions = [x for x in conn.execute(s)]
 print(f"{len(last_versions)} list already available in db")
 
