@@ -14,6 +14,8 @@ class AbuseIPDBAnalyzer(Analyzer):
     def extract_abuse_ipdb_category(category_number):
         # Reference: https://www.abuseipdb.com/categories
         mapping = {
+            "1": "DNS Compromise",
+            "2": "DNS Poisoning",
             "3": "Fraud Orders",
             "4": "DDOS Attack",
             "5": "FTP Brute-Force",
@@ -36,7 +38,7 @@ class AbuseIPDBAnalyzer(Analyzer):
             "22": "SSH",
             "23": "IoT Targeted",
         }
-        return mapping.get(str(category_number), 'unknown category')
+        return mapping.get(str(category_number), 'Unknown Category')
 
     def run(self):
 
@@ -76,11 +78,38 @@ class AbuseIPDBAnalyzer(Analyzer):
         except Exception as e:
             self.unexpectedError(e)
 
-    def summary(self, raw):
-        taxonomies = []
 
-        if raw and 'values' in raw and raw['values'][0]['data']['totalReports'] > 0 :
-            taxonomies.append(self.build_taxonomy('malicious', 'AbuseIPDB', 'Records', raw['values'][0]['data']['totalReports']))
+    def summary(self, raw):
+        taxonomies = []  # level, namespace, predicate, value
+
+        is_whitelisted = False
+        data = {}
+        if raw and 'values' in raw:
+            data = raw['values'][0]['data']
+        else:
+            return {'taxonomies': []}
+
+        if data.get('isWhitelisted', False):
+            is_whitelisted = True
+            taxonomies.append(self.build_taxonomy('info', 'AbuseIPDB', 'Is Whitelist', 'True'))
+
+        if data.get('isTor', False):
+            taxonomies.append(self.build_taxonomy('info', 'AbuseIPDB', 'Is Tor', 'True'))
+
+        if 'usageType' in data:
+            taxonomies.append(self.build_taxonomy('info', 'AbuseIPDB', 'Usage Type', data['usageType']))
+
+        if 'abuseConfidenceScore' in data:
+            if data['abuseConfidenceScore'] > 0:
+                taxonomies.append(self.build_taxonomy('suspicious', 'AbuseIPDB', 'Abuse Confidence Score', data['abuseConfidenceScore']))
+            else:
+                taxonomies.append(self.build_taxonomy('safe', 'AbuseIPDB', 'Abuse Confidence Score', 0))
+
+        if data['totalReports'] > 0 :
+            if is_whitelisted:
+                taxonomies.append(self.build_taxonomy('info', 'AbuseIPDB', 'Records', data['totalReports']))
+            else:
+                taxonomies.append(self.build_taxonomy('malicious', 'AbuseIPDB', 'Records', data['totalReports']))
         else:
             taxonomies.append(self.build_taxonomy('safe', 'AbuseIPDB', 'Records', 0))
 
