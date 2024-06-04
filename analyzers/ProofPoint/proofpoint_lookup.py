@@ -64,7 +64,11 @@ class ProofPointForensicsAnalyzer(Analyzer):
 					filename = self.get_param('attachment.name', 'noname.ext')
 					filepath = self.get_param('file', None, 'File is missing')
 					with open(filepath, "rb") as f:
-						digest = hashlib.file_digest(f, "sha256")
+						try:
+							digest = hashlib.file_digest(f, "sha256")
+						except AttributeError:
+							# python 3.9
+							digest = hashlib.sha256(open(filepath, 'r').read())
 					sha256 = digest.hexdigest()
 				elif self.data_type == 'hash' and len(self.get_data()) == 64:
 					sha256 = self.get_data()
