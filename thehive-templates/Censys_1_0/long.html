@@ -1,0 +1,145 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        Censys.io information for <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+        <div class="message" ng-if="content.message">
+            {{content.message}}
+        </div>
+        <div class="ip-results" ng-if="content.ip">
+            <dl class="dl-horizontal">
+                <dt class="text-bold">IP</dt>
+                <dd>{{content.ip.ip}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt class="text-bold">Last update</dt>
+                <dd>{{content.ip.updated_at}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt class="text-bold">Location</dt>
+                <dd>
+                    {{content.ip.location.continent}} - {{content.ip.location.country}} - {{content.ip.location.province}} - {{content.ip.location.city}}
+                </dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt class="text-bold">AS</dt>
+                <dd>{{content.ip.autonomous_system.asn}}: {{content.ip.autonomous_system.name}}</dd>
+            </dl>
+            <div ng-repeat="protocol in content.ip.ports">
+                <dl class="dl-horizontal">
+                    <dt>Info on port {{protocol}}</dt>
+                    <dd>
+                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-{{protocol}}" aria-expanded="false" aria-controls="collapse-{{protocol}}">
+                            Show/hide
+                        </button>
+                        <br />
+                        <div class="collapse" id="collapse-{{protocol}}">
+                            <pre style="overflow-x:scroll;">{{content.ip[protocol] | json}}</pre>
+                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-{{protocol}}" aria-expanded="false" aria-controls="collapse-{{protocol}}">
+                                Show/hide
+                            </button>
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="hash-results" ng-if="content.cert">
+            <dl class="dl-horizontal">
+                <dt>Metadata</dt>
+                <dd>
+                    <p>Source: {{content.cert.metadata.source}}</p>
+                    <p>Added at: {{content.cert.metadata.added_at}}</p>
+                    <p>Updated at: {{content.cert.metadata.updated_at}}</p>
+                </dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Added to CT</dt>
+                <dd>
+                    <p>Comodo Mammoth<br />{{content.cert.ct.comodo_mammoth.added_to_ct_at}}</p>
+                    <p>Comodo Sabre<br />{{content.cert.ct.comodo_sabre.added_to_ct_at}}</p>
+                    <p>Google Pilot<br />{{content.cert.ct.google_pilot.added_to_ct_at}}</p>
+                    <p>Google Rocketeer<br />{{content.cert.ct.google_rocketeer.added_to_ct_at}}</p>
+                    <p>Symantec WS CT<br />{{content.cert.ct.symantec_ws_ct.added_to_ct_at}}</p>
+                </dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Issuer</dt>
+                <dd>
+                    <p ng-repeat="cn in content.cert.parsed.issuer.common_name">{{cn}}</p>
+                </dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Validity</dt>
+                <dd>
+                    <p>Valid since: {{content.cert.parsed.validity.start}}</p>
+                    <p>Valid until: {{content.cert.parsed.validity.end}}</p>
+                </dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Full certificate data</dt>
+                <dd>
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-certdata" aria-expanded="false" aria-controls="collapse-certdata">
+                        Show/hide
+                    </button>
+                    <br />
+                    <div class="collapse" id="collapse-certdata">
+                        <div class="card card-body">
+                            <pre style="overflow-x:scroll;">{{content.cert | json}}</pre>
+                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-certdata" aria-expanded="false" aria-controls="collapse-certdata">
+                                Show/hide
+                              </button>
+                        </div>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+        <div class="website-results" ng-if="content.website">
+
+            <dl class="dl-horizontal">
+                <dt>Domain</dt>
+                <dd>{{content.website.domain}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Last update</dt>
+                <dd>{{content.website.updated_at}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Location</dt>
+                <dd>
+                    {{content.website.location.continent}} - {{content.website.location.country}} - {{content.website.location.province}} - {{content.website.location.city}}
+                </dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>AS</dt>
+                <dd>{{content.website.autonomous_system.asn}}: {{content.website.autonomous_system.name}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-repeat="protocol in content.website.ports">
+                <dt>Info on port {{protocol}}</dt>
+                <dd>
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-{{protocol}}" aria-expanded="false" aria-controls="collapse-{{protocol}}">
+                        Show/hide
+                    </button>
+                    <br />
+                    <div class="collapse" id="collapse-{{protocol}}">
+                        <div class="card card-body">
+                            <pre style="overflow-x:scroll;">{{content.website[protocol] | json}}</pre>
+                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-{{protocol}}" aria-expanded="false" aria-controls="collapse-{{protocol}}">
+                                Show/hide
+                              </button>
+                        </div>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

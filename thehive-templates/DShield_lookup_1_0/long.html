@@ -1,0 +1,104 @@
+<div class="report-FILEInfo" ng-if="success">
+    <style>
+        .report-FILEInfo dl {
+            margin-bottom: 2px;
+        }
+
+    </style>
+
+  <div class="panel panel-info">
+      <div class="panel-heading">
+          <strong>DShield IP Reputation Summary</strong>
+      </div>
+      <div class="panel-body">
+          <div ng-if="content[artifact.data].length === 0">
+              No records found
+          </div>
+          <div>
+              <dl class="dl-horizontal">
+                <dt>IP: </dt>
+                <dd class="wrap">{{content.ip|| "-"}}</dd>
+              </dl>
+               <dl class="dl-horizontal">
+                <dt>Reputation: </dt>
+                <dd class="wrap">{{content.reputation || "-"}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>Network: </dt>
+                <dd class="wrap">{{content.network || "-"}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>AS: </dt>
+                <dd class="wrap">{{content.as || "-"}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>AS Name: </dt>
+                <dd class="wrap">{{content.asname || "-"}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>AS Country: </dt>
+                <dd class="wrap">{{content.ascountry || "-"}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>AS Abuse Contact: </dt>
+                <dd class="wrap">{{content.asabusecontact || "-"}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>Number of Attacks: </dt>
+                <dd class="wrap">{{content.count || "-"}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>Unique Attacked Hosts: </dt>
+                <dd class="wrap">{{content.attacks || "-"}}</dd>
+              </dl>
+               <dl class="dl-horizontal">
+                <dt>First Reported Attack: </dt>
+                <dd class="wrap">{{content.firstseen || "-"}}</dd>
+              </dl>
+               <dl class="dl-horizontal">
+                <dt>Last Reported Attacks: </dt>
+                <dd class="wrap">{{content.lastseen || "-"}}</dd>
+              </dl>
+               <dl class="dl-horizontal">
+                <dt>Risk Level: </dt>
+                <dd class="wrap">{{content.maxrisk || "-"}}</dd>
+              </dl>
+               <dl class="dl-horizontal">
+                <dt>Comment: </dt>
+                <dd class="wrap">{{content.comment || "-"}}</dd>
+              </dl>
+               <dl class="dl-horizontal">
+                <dt>Threat Feeds: </dt>
+                <dd class="wrap">{{content.threatfeedscount || "-"}}</dd>
+              </dl>
+            </div>
+        </div>
+  </div>
+
+  <div class="panel panel-info" ng-if="success">
+      <div class="panel-heading">
+          <strong>Threat Feeds</strong>
+      </div>
+      <div class="panel-body">
+          <div ng-if="content[artifact.threatfeeds].length === 0">
+              No threat feed found
+          </div>
+          <div>
+            <dl class="dl-horizontal" ng-repeat="(key, value) in content.threatfeeds">
+              <dt>{{key}}</dt>
+              <dd class="wrap">First Seen: {{value.firstseen || "-"}}</dd>
+              <dd class="wrap">Last Seen: {{value.lastseen || "-"}}</dd>
+            </dl>
+          </div>
+      </div>
+  </div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

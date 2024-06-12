@@ -1,0 +1,56 @@
+{
+  "name": "CuckooSandbox_File_Analysis_Inet",
+  "version": "1.2",
+  "author": "Andrea Garavaglia, LDO-CERT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Cuckoo Sandbox file analysis with Internet access.",
+  "dataTypeList": ["file"],
+  "command": "CuckooSandbox/cuckoosandbox_analyzer.py",
+  "baseConfig": "CuckooSandbox",
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "URL",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "token",
+      "description": "API token",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "verifyssl",
+      "description": "Verify SSL certificate",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "cert_path",
+      "description": "Path to the CA on the system used to check server certificate",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ],
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": false,
+  "service_homepage": "https://cuckoosandbox.org/",
+  "service_logo": {
+    "path": "assets/cuckoosandbox.png",
+    "caption": "CuckooSandbox logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report.png",
+      "caption": "CuckooSandbox: Long report template"
+    }
+  ]
+}

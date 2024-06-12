@@ -1,0 +1,42 @@
+{
+  "name": "<NAME_WITHOUT_SPACE>",
+  "version": "<0.1>",
+  "author": "<Name of authors>",
+  "url": "<URL for example https://github.com/TheHive-Project/Cortex-Analyzers>",
+  "license": "<License, for example AGPL-V3>",
+  "description": "<Description of the flavor>",
+  "dataTypeList": [
+    "<Choose the right types for this flavor>",
+    "thehive:alert",
+    "thehive:case",
+    "thehive:case_task",
+    "thehive:case_task_log",
+    "thehive:case_artifact"
+  ],
+  "command": "<ResponderFolder/program.py>",
+  "baseConfig": "<Name of the Global responder configuration where common configuration items will be found>",
+  "configurationItems": [
+    {
+      "name": "name_of_the_configuration_item",
+      "description": "<Description for this item>",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": ""
+    }
+  ],
+  "registration_required": "can be true, false or N/A",
+  "subscription_required": "can be true, false or N/A",
+  "free_subscription": "can be true, false or N/A",
+  "service_homepage": "URL of the service if exist",
+  "service_logo": {
+    "path": "<path to an optional logo in the Responder folder like assets/logo.png>",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "<path to an optional screenshot in the Responder folder like assets/screenshot1.png>",
+      "caption": ""
+    }
+  ]
+}

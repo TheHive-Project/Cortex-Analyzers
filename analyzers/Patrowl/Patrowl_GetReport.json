@@ -1,0 +1,52 @@
+{
+    "name": "Patrowl_GetReport",
+    "version": "1.0",
+    "author": "Nicolas Mattiocco",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Get the current Patrowl report for a fdqn, a domain or an IP address.",
+    "dataTypeList": [
+        "fqdn",
+        "domain",
+        "ip"
+    ],
+    "baseConfig": "Patrowl",
+    "config": {
+        "service": "getreport"
+    },
+    "configurationItems": [
+        {
+            "name": "url",
+            "description": "Define the PatrOwl url",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "api_key",
+            "description": "Define the PatrOwl API Key",
+            "type": "string",
+            "multi": false,
+            "required": true
+        }
+    ],
+    "command": "Patrowl/patrowl.py",
+    "registration_required": false,
+    "subscription_required": false,
+    "free_subscription": false,
+    "service_homepage": "https://patrowl.io/home",
+    "service_logo": {
+        "path": "assets/logo.png",
+        "caption": "logo"
+    },
+    "screenshots": [
+        {
+            "path": "assets/patrowl-minireport.png",
+            "caption": "Patrowl_GetReport: short report template"
+        },
+        {
+            "path": "assets/patrowl-longreport.png",
+            "caption": "Patrowl_GetReport: long report template"
+        }
+    ]
+}

@@ -1,0 +1,44 @@
+{
+  "name": "AMPforEndpoints_MoveGUID",
+  "version": "1.0",
+  "author": "Cisco Security",
+  "url": "https://github.com/CiscoSecurity",
+  "license": "MIT",
+  "description": "Move an AMP for Endpoints connector GUID to a different Group",
+  "dataTypeList": ["thehive:case_artifact"],
+  "command": "AMPforEndpoints/AMPforEndpoints.py",
+  "baseConfig": "AMPforEndpoints",
+  "config": {
+    "service": "moveguid"
+  },
+  "configurationItems": [
+    {
+      "name": "amp_cloud",
+      "description": "FQDN of the AMP for Endpoints cloud to interact with",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "client_id",
+      "description": "Client ID for AMP for Endpoints",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "api_key",
+      "description": "API Key for AMP for Endpoints",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "group_guid",
+      "description": "AMP for Endpoints Group GUID for the group connectors will be moved to",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}

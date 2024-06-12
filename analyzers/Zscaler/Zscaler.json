@@ -1,0 +1,76 @@
+{
+  "name": "Zscaler",
+  "author": "Simon Lavigne, Mikael Keri",
+  "license": "AGPL-V3",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "version": "1.3",
+  "description": "Check Zscaler category for a domain, fqdn, IP address or FQDN. This analyzer requires a paid subscription to Zscaler ZIA",
+  "dataTypeList": ["ip", "domain", "url", "fqdn"],
+  "baseConfig": "Zscaler",
+  "config": {
+      "check_tlp": true,
+      "max_tlp": 2,
+      "check_pap": true,
+      "max_pap": 2
+   },
+  "command": "Zscaler/zscaler.py",
+  "configurationItems": [
+    {
+      "name": "username",
+      "description": "Zscaler username",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "password",
+      "description": "Zscaler password",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "api_key",
+      "description": "API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "base_uri",
+      "description": "The base URL of your Zscaler subscription",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "malicious_categories",
+      "description": "List of Zscaler categories to be considered as malicious",
+      "type": "string",
+      "multi": true,
+      "required": true,
+      "defaultValue": ["PHISHING", "MALWARE_SITE", "BOTNET", "SPYWARE_OR_ADWARE", "ADSPYWARE_SITES", "ADWARE_OR_SPYWARE", "CRYPTOMINING", "WEB_SPAM", "MALICIOUS_TLD"]
+    },
+    {
+      "name": "suspicious_categories",
+      "description": "List of Zscaler categories to be considered as suspicious",
+      "type": "string",
+      "multi": true,
+      "required": true,
+      "defaultValue": ["SHAREWARE_DOWNLOAD", "REMOTE_ACCESS", "MISCELLANEOUS_OR_UNKNOWN", "NEWLY_REG_DOMAINS", "OTHER_ILLEGAL_OR_QUESTIONABLE", "COPYRIGHT_INFRINGEMENT", "GAMBLING", "COMPUTER_HACKING", "ANONYMIZER", "MISCELLANEOUS_OR_UNKNOWN", "DNS_OVER_HTTPS", "ENCR_WEB_CONTENT"]
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.zscaler.com/",
+  "service_logo": {"path":"assets/zscaler_logo.png", "caption": "logo"},
+  "screenshots": [
+    {"path":"assets/zscaler_url_lookup_long.png",
+      "caption":"Zscaler Lookup sample Information full report"
+    },
+    {
+      "path": "assets/zscaler_url_lookup_short.png",
+      "caption:":"Zscaler Lookup sample mini report"
+    }]
+}

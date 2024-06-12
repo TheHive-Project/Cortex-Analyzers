@@ -1,0 +1,52 @@
+{
+  "name": "Mailer",
+  "version": "1.0",
+  "author": "CERT-BDF",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Send an email with information from a TheHive case or alert",
+  "dataTypeList": ["thehive:case", "thehive:alert", "thehive:case_task"],
+  "command": "Mailer/mailer.py",
+  "baseConfig": "Mailer",
+  "configurationItems": [
+    {
+      "name": "from",
+      "description": "email address from which the mail is send",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "smtp_host",
+      "description": "SMTP server used to send mail",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "localhost"
+    },
+    {
+      "name": "smtp_port",
+      "description": "SMTP server port",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 25
+    },
+    {
+      "name": "smtp_user",
+      "description": "SMTP server user",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "user"
+    },
+    {
+      "name": "smtp_pwd",
+      "description": "SMTP server password",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "pwd"
+    }
+  ]
+}

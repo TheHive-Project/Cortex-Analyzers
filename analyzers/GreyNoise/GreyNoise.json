@@ -1,0 +1,46 @@
+{
+  "name": "GreyNoise",
+  "version": "3.1",
+  "author": "Nclose",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "APLv2",
+  "description": "Determine whether an IP has known scanning activity using GreyNoise.",
+  "dataTypeList": ["ip"],
+  "baseConfig": "GreyNoise",
+  "command": "GreyNoise/greynoisev3.py",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for GreyNoise",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "api_type",
+      "description": "API Type to Match Key, either 'enterprise' or 'community'",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ],
+  "config": {
+    "check_tlp": true,
+    "max_tlp": 2,
+    "auto_extract": false
+  },
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://viz.greynoise.io/",
+  "service_logo": {
+    "path": "assets/greynoise.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report.png",
+      "caption": "GreyNoise: long report"
+    }
+  ]
+}

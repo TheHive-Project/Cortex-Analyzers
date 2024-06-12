@@ -1,0 +1,68 @@
+<div class="sekoia-report" ng-if="success">
+    <div ng-if="content.results.length === 0">
+        No results found
+    </div>
+    <h2 ng-if="content.results.length > 0">{{content.results.length}} Indicator(s)</h2>
+    <div class="panel panel-info" ng-if="content.results.length > 0" ng-repeat="indicator in content.results track by indicator.id">
+        <div class="panel-heading">
+            <strong>{{indicator.name | fang}}</strong>
+        </div>
+        <div class="panel-body">
+            <div>
+                <dl class="dl-horizontal">
+                    <dt>ID</dt>
+                    <dd class="wrap">{{item.id}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Tags</dt>
+                    <dd>
+                        <span class="label label-danger" style="margin: 2px;" ng-if="item.revoked" >Revoked</span>
+                        <span class="label label-success" style="margin: 2px;" ng-if="!item.revoked" >Not Revoked</span>
+                    </dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Description</dt>
+                    <dd class="wrap">{{indicator.description || 'No description' }}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Pattern</dt>
+                    <dd class="wrap">{{indicator.pattern }}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Pattern type</dt>
+                    <dd class="wrap">{{indicator.pattern_type || 'stix' }}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Valid from</dt>
+                    <dd class="wrap">{{indicator.valid_from.split("T")[0] || 'no set' }}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Valid until</dt>
+                    <dd class="wrap">{{indicator.valid_until.split("T")[0] || 'no set'  }}</dd>
+                </dl>
+                <dl class="dl-horizontal" ng-if="indicator.kill_chain_phases">
+                    <dt>Kill chain phases</dt>
+                    <dd>
+                        <div ng-if="indicator.kill_chain_phases.length === 0">No kill chain defined</div>
+                        <div ng-if="indicator.kill_chain_phases.length > 0">
+                            <span class="label label-info" style="margin: 2px;" ng-repeat="chain in indicator.kill_chain_phases">{{chain.phase_name}}</span> 
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> SEKOIA: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

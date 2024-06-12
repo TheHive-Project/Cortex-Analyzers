@@ -1,0 +1,76 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        <a href="https://hunter.io" target="_blank">hunter.io</a> domain search to find email addresses
+        <br /> Report for
+        <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body" ng-if="content.meta">
+
+        <h4 class="dl-horizontal">{{content.meta.results}} addresses found.</h4>
+
+        <div ng-if="content.data && content.data.emails.length > 0">
+
+            <h5>
+                Pattern : {{content.data.pattern}}
+            </h5>
+
+            <h5>
+                Organization: {{content.data.organization}}
+            </h5>
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Type</th>
+                    <th>Twitter</th>
+                    <th>LinkedIn</th>
+                    <th>Phone</th>
+                    <th>Confidence</th>
+                    <th>Sources</th>
+                </tr>
+                <tr ng-repeat="email in ::content.data.emails">
+                    <td class="text-info">{{email.value}}</td>
+                    <td>{{email.fisrtname}} {{email.lastname}}</td>
+                    <td>{{email.position}}</td>
+                    <td>{{email.type}}</td>
+                    <td><a ng-if="email.twitter" href="https://twitter.com/{{email.twitter}}"
+                            target="_blank">{{email.twitter}}</a></td>
+                    <td><a ng-if="email.linkedin" href="{{email.linkedin}}" target="_blank">{{email.linkedin}}</a></td>
+                    <td>{{email.phone_number}}</td>
+                    <td>
+                        <span class="label label-default">{{email.confidence}}</span>
+                    </td>
+                    <td>
+                        <ul>
+                            <li ng-repeat="src in ::email.sources">{{src.domain}}</li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="panel-body" ng-if="!content.meta">
+            No results found
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="content.errors">
+    <div class="panel-heading">
+        <strong>Error during query submission</strong>
+    </div>
+    <div class="panel-body">
+        <p ng-repeat="error in content.errors">{{error.details}}</p>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

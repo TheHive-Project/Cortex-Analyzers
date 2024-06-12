@@ -1,0 +1,21 @@
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>VirusTotal GetReport: download failed</strong>
+    </div>
+    <div class="panel-body">
+        <strong>The file could not be downloaded. Check if your VirusTotal API key is linked to an Entreprise account.</strong>
+    </div>
+</div>
+
+<!-- Success -->
+<div ng-switch="content.response_code" ng-if="success">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>VirusTotal GetReport: Success</strong>
+        </div>
+        <div class="panel-body">
+            The file has been downloaded successfully and automatically added in the report and the Case.
+        </div>
+    </div>
+</div>

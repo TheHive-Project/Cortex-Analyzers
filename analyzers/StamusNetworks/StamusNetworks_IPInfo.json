@@ -1,0 +1,44 @@
+{
+  "name": "StamusNetworks_HostID",
+  "version": "1.0",
+  "author": "Stamus Networks",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get information from your Scirius Security Platform for an IP address.",
+  "dataTypeList": ["ip"],
+  "command": "StamusNetworks/hostid_analyzer.py",
+  "baseConfig": "StamusNetworks",
+  "config": {
+    "service": "get"
+  },
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "Base URL of Scirius Security Platform",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "key",
+      "description": "API key for Scirius Security Platform",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "ssl_verify",
+      "description": "Verify TLS certificate when connection to Scirius Security Platform",
+      "type": "boolean",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "tenant",
+      "description": "Tenant value for organization in Scirius Security Platform",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ]
+}

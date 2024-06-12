@@ -1,0 +1,179 @@
+<div class="report-JoeSandbox" ng-if="success">
+    <style>
+        .report-JoeSandbox dl {
+            margin-bottom: 2px;
+        }
+
+    </style>
+
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>General Information</strong>
+        </div>
+        <div class="panel-body">
+
+            <h4>Joe Sandbox</h4>
+                <br>
+                <dl class="dl-horizontal" ng-if="content.version">
+                    <dt>Version</dt>
+                    <dd>{{content.version}}</dd>
+                </dl>
+                <dl class="dl-horizontal" nf-if="content.arch">
+                    <dt>Arch</dt>
+                    <dd>{{content.arch}}</dd>
+                </dl>
+                <dl class="dl-horizontal" nf-if="content.system">
+                    <dt>System</dt>
+                    <dd>{{content.system}}</dd>
+                </dl>
+                <dl class="dl-horizontal" ng-if="content.cookbook">
+                    <dt>Cookbook</dt>
+                    <dd>{{content.cookbook}}</dd>
+                </dl>
+                <dl class="dl-horizontal" ng-if="content.startdate">
+                    <dt>Start date and time</dt>
+                    <dd>{{content.startdate}} {{content.starttime}} (Joe Sandbox time)</dd>
+                </dl>
+
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Analysis</strong>
+        </div>
+        <div class="panel-body">
+
+            <div >
+                <h4>Signatures</h4>
+                <br>
+                <dl ng-if="content.signatures.signare && content.signatures.signare.entries" class="dl-horizontal" ng-repeat="l in content.signatures.signare track by $index">
+                    <dd>{{l}}<dd>
+                </dl>
+                <dl ng-if="content.signatures.signare && !content.signatures.signare.entries" class="dl-horizontal">
+                    <dd>{{content.signatures.signare}}<dd>
+                </dl>
+            </div>
+            <div ng-if="!content.signatures">
+                No suspicious signature reported
+            </div>
+            <hr>
+            <div ng-if="content.contacted">
+                <h4>Remote connections</h4>
+                <br>
+                <div ng-repeat="(k,v) in content.contacted">
+                    <div ng-if="k == 'domains'">
+                        <h5>domains</h5>
+                        <dl class="dl-horizontal" ng-repeat="e in v.domain">
+                            <dt ng-if="e.ip">{{e.ip}}</dt>
+                            <dd ng-if="e.name">{{e.name}}</dd>
+                        </dl>
+                    </div>
+
+                    <div ng-if="k === 'ips'">
+                        <h5>IP addresses</h5>
+                        <dl class="dl-horizontal" ng-if="v.ip.substr">
+                            <dd>
+                                {{v.ip}}
+                            </dd>
+                        </dl>
+                        <dl class="dl-horizontal" ng-if="!v.ip.substr" ng-repeat="ip in v.ip">
+                            <dd ng-if="!ip.substr">
+                                <span ng-if="ip['@malicious'] === 'true'" class="text-danger"><i class="fa fa-thumbs-down"></i>
+                                </span>
+                                <span ng-if="ip['@malicious'] === 'false'" class="text-success"><i class="fa fa-thumbs-up"></i>
+                                </span>
+                                {{ip.$}}
+                            </dd>
+                            <dd ng-if="ip.substr">
+                                {{ip}}
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <hr>
+            </div>
+
+            <div >
+                <h4>Dropped files</h4>
+                <br>
+                <div ng-if="content.dropped.file" ng-repeat="f in content.dropped.file">
+                    <h5>{{f.name}}</h5>
+                    <dl class="dl-horizontal" ng-repeat="(k,v) in f" ng-if="k !== 'name'">
+                        <dt>{{k}}</dt>
+                        <dd>{{v}}</dd>
+                    </dl>
+                </div>
+                <div ng-if="!content.dropped.file">
+                    No dropped file reported
+                </div>
+            </div>
+
+            <hr>
+            <div ng-if="content.confidence">
+                <h4>Confidence</h4>
+                <br>
+                <dl class="dl-horizontal">
+                    <dt>Score</dt>
+                    <dd>{{content.confidence.score}}/{{content.confidence.maxscore}}</dd>
+                </dl>
+            </div>
+            <hr>
+            <br>
+
+            <div ng-if="content.detection">
+                <h4>Maliciousness</h4>
+                <br>
+                <dl class="dl-horizontal">
+                    <dt>Score</dt>
+                    <dd>{{content.detection.score}}/{{content.detection.maxscore}}</dd>
+                    <dd>
+                        <div ng-repeat="(k,v) in content.detection">
+                            <span ng-switch="k">
+                                <span ng-switch-when="clean" class="label label-success" ng-if="v === true">
+                                    Clean
+                                </span>
+                                <span ng-switch-when="malicious" class="label label-danger" ng-if="v === true">
+                                    Malicious
+                                </span>
+                                <span ng-switch-when="suspicious" class="label label-danger" ng-if="v === true">
+                                    Suspicious
+                                </span>
+                            </span>
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="panel panel-info" ng-if="content.htmlreport || content.pdfreport">
+        <div class="panel-heading">
+            <strong>Reports</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>HTML report</dt>
+                <dd>{{content.htmlreport}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>PDF report</dt>
+                <dd>{{content.pdfreport}}</dd>
+            </dl>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

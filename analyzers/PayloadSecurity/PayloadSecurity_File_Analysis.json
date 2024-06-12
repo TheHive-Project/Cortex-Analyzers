@@ -1,0 +1,58 @@
+{
+  "name": "PayloadSecurity_File_Analysis",
+  "version": "1.0",
+  "author": "Emmanuel Torquato",
+  "url": "https://github.com/notset/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "PayloadSecurity Sandbox File Analysis",
+  "dataTypeList": ["file"],
+  "command": "PayloadSecurity/payloadsecurity_analyzer.py",
+  "baseConfig": "PayloadSecurity",
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "Define the url of the service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "key",
+      "description": "Define the API key used to connect the service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "secret",
+      "description": "Define the secret used to connect the service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "environmentId",
+      "description": "Define the environment Id used by the service",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 100
+    },
+    {
+      "name": "timeout",
+      "description": "Define the timeout of requests to the service",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 15
+    },
+    {
+      "name": "verifyssl",
+      "description": "Verify SSL certificate",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    }
+  ]
+}

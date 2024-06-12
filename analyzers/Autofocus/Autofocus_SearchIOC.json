@@ -1,0 +1,23 @@
+{
+    "name": "Autofocus_SearchIOC",
+    "version": "1.0",
+    "author": "ANSSI",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseConfig": "Autofocus",
+    "config": {
+        "service": "search_ioc"
+    },
+    "description": "Search samples in Autofocus based on a single IOC",
+    "dataTypeList": ["domain","fqdn","user-agent","imphash","ip","mutex","tag","url"],
+    "command": "Autofocus/analyzer.py",
+    "configurationItems": [
+        {
+          "name": "apikey",
+          "description": "Autofocus API key",
+          "type": "string",
+          "multi": false,
+          "required": true
+        }
+    ]
+}

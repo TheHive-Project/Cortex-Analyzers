@@ -1,0 +1,42 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        Geolocation of <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <th>Country</th>
+                <td>{{content.country | ellipsis:130}}</td>
+            </tr>
+            <tr>
+                <th>Code</th>
+                <td>{{content.countryCode | ellipsis:130}}</td>
+            </tr>
+            <tr>
+                <th>City</th>
+                <td>{{content.city | ellipsis:130}}</td>
+            </tr>
+            <tr>
+                <th>ZIP</th>
+                <td>{{content.zip | ellipsis:130}}</td>
+            </tr>
+            <tr>
+                <th>ISP</th>
+                <td>{{content.isp | ellipsis:130}}</td>
+            </tr>
+            <tr>
+                <th>ORG</th>
+                <td>{{content.org | ellipsis:130}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

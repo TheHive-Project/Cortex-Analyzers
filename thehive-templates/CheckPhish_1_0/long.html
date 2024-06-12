@@ -1,0 +1,42 @@
+<div class="panel panel-info" ng-if="::content">
+    <div class="panel-heading">
+        <strong>Summary</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <th>Description</th>
+                <th>Data</th>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td>{{content.disposition | ellipsis:130}}</td>
+            </tr>
+            <tr>
+                <td>URL</td>
+                <td>
+                    <span>
+                        <i class="fa fa-search"></i>
+                        <a ng-href={{content.insights}} target="_blank">View Full Report</a>
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt>
+                <i class="fa fa-warning"></i> urlscan.io:
+            </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
+

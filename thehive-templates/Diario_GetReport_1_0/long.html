@@ -1,0 +1,70 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        Diario information for <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+        <div class="document-results" ng-if="content.sha256">
+            <dl class="dl-horizontal">
+                <dt class="text-bold" ng-if="content.type">Type</dt>
+                <dd>{{content.type}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt class="text-bold">Document Type</dt>
+                <dd>{{content.documentType}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt class="text-bold">Status</dt>
+                <dd>{{content.status}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt class="text-bold">Prediction</dt>
+                <dd>{{content.prediction}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt class="text-bold">MD5</dt>
+                <dd>{{content.md5}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt class="text-bold">SHA1</dt>
+                <dd>{{content.sha1}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt class="text-bold">SHA256</dt>
+                <dd>{{content.sha256}}</dd>
+            </dl>
+            <div ng-repeat="protocol in content.ip.ports">
+                <dl class="dl-horizontal">
+                    <dt>Info on port {{protocol}}</dt>
+                    <dd>
+                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-{{protocol}}" aria-expanded="false" aria-controls="collapse-{{protocol}}">
+                            Show/hide
+                        </button>
+                        <br />
+                        <div class="collapse" id="collapse-{{protocol}}">
+                            <pre style="overflow-x:scroll;">{{content.ip[protocol] | json}}</pre>
+                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-{{protocol}}" aria-expanded="false" aria-controls="collapse-{{protocol}}">
+                                Show/hide
+                            </button>
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="document-results" ng-if="content.message">
+            <dl class="dl-horizontal">
+                <dt class="text-bold">Message</dt>
+                <dd>{{content.message}}</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

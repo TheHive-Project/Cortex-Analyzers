@@ -1,0 +1,36 @@
+<div class="panel panel-info" ng-if="success">
+
+    <div class="panel-heading">
+        SpamAssassin score for <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <h4>Final Score</h4>
+        <dl class="dl-horizontal">
+            <dt>Score</dt>
+            <dd>{{content.score}} </dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Is Spam?</dt>
+            <dd><span ng-if="content.is_spam" class="label label-warning">true</span><span ng-if="!content.is_spam" class="label label-primary">false</span></dd>
+        </dl>
+        <hr>
+        <h4>Score Detail</h4>
+        <dl class="dl-horizontal" ng-if="content.values.length > 0" ng-repeat="value in content.values">
+            <dt>{{value.name}}</dt>
+            <dd>{{value.description}} [+{{value.partscore}}]</dd>
+        </dl>
+    </div>
+</div>
+
+<!-- on error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        SpamAssassin score <b>Error</b>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Error: </dt>
+            <dd>{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

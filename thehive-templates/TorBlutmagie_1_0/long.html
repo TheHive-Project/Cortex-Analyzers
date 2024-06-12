@@ -1,0 +1,45 @@
+<div class="panel panel-warning" ng-if="success && content.nodes.length > 0">
+	<div class="panel-heading">
+		Tor nodes - {{artifact.data | fang}}
+	</div>
+	<div class="panel-body">
+		<div ng-repeat="n in content.nodes" class="panel panel-default">
+      <div class="panel-heading">
+        {{n.name}}
+      </div>
+      <div class="panel-body">
+        <dl class="dl-horizontal">
+          <dt>Address</dt>
+          <dd>{{n.hostname | fang}} ({{n.ip | fang}})</dd>
+          <dt>AS</dt>
+          <dd>{{n.as_name}} ({{n.as_number}})</dd>
+          <dt>Country</dt>
+          <dd>{{n.country_code}}</dd>
+        </dl>
+        <span>
+          <i class="fa fa-search"></i>
+          <a ng-href="http://torstatus.blutmagie.de/cgi-bin/whois.pl?ip={{n.ip}}" target="_blank">WHOIS</a>
+        </span>
+      </div>
+    </div>
+	</div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.nodes.length == 0">
+	<div class="panel-heading">
+		Tor nodes - {{artifact.data | fang}}
+	</div>
+	<div class="panel-body">
+		<b>No matches.</b>
+	</div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

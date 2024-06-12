@@ -1,0 +1,31 @@
+{
+  "name": "PassiveTotal_Components",
+  "version": "2.0",
+  "author": "Brandon Dixon (9bplus)",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "PassiveTotal Components Lookup.",
+  "dataTypeList": ["domain", "fqdn", "ip"],
+  "command": "PassiveTotal/passivetotal_analyzer.py",
+  "baseConfig": "PassiveTotal",
+  "config": {
+    "service": "components",
+    "auto_extract": true
+  },
+  "configurationItems": [
+    {
+      "name": "username",
+      "description": "Define the username of the account used to connect the service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "key",
+      "description": "Define the API key to use to connect the service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "name": "EmergingThreats_IPInfo",
+  "version": "1.0",
+  "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
+  "url": "https://github.com/dadokkio/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Retrieve ET reputation, related malware, and IDS requests for a given IP address.",
+  "dataTypeList": ["ip"],
+  "command": "EmergingThreats/emergingthreats_analyzer.py",
+  "baseConfig": "EmergingThreats",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "config": {
+    "check_tlp": true,
+    "max_tlp": 2,
+    "auto_extract": false
+  },
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://threatintel.proofpoint.com/",
+  "service_logo": {
+    "path": "assets/proofpoint.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report_ip.png",
+      "caption": "EmergingThreats: IP long report"
+    }
+  ]
+}

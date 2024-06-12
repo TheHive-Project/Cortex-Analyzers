@@ -1,0 +1,41 @@
+{
+  "name": "Censys",
+  "author": "Nils Kuhnert, CERT-Bund",
+  "license": "AGPL-V3",
+  "url": "https://github.com/BSI-CERT-Bund/censys-analyzer",
+  "version": "1.0",
+  "description": "Check IPs, certificate hashes or domains against censys.io.",
+  "dataTypeList": ["ip", "hash", "domain", "other"],
+  "baseConfig": "Censys",
+  "command": "Censys/censys_analyzer.py",
+  "configurationItems": [
+    {
+      "name": "uid",
+      "description": "UID for Censys",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "key",
+      "description": "API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://censys.io/",
+  "service_logo": {
+    "path": "assets/censys.png",
+    "caption": "Censys logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report.png",
+      "caption": "Censys: Long report template"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "name": "Triage",
+  "author": "Mikael Keri",
+  "license": "AGPL-V3",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "version": "1.0",
+  "description": "Submit artifacts to the Triage sandbox service. This analyzer requires a paid subscription",
+  "dataTypeList": ["ip", "url", "file"],
+  "baseConfig": "Triage",
+  "config": {
+      "check_tlp": true,
+      "max_tlp": 2,
+      "check_pap": true,
+      "max_pap": 2
+   },
+  "command": "Triage/triage_analyzer.py",
+  "configurationItems": [
+    {
+      "name": "api_key",
+      "description": "API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "timeout",
+      "description": "Sandbox run timeout in seconds (default: 200)",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "zip_pw",
+      "description": "Zip archive password",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+   ],
+   "registration_required": true,
+   "subscription_required": true,
+   "free_subscription": false,
+   "service_homepage": "https://tria.ge",
+   "service_logo": {"path":"assets/triage_logo.png", "caption": "logo"},
+   "screenshots": [
+     {"path":"assets/triage_cortex_settings.png",
+       "caption":"Triage analyzer cortex setting"
+     },
+     {
+       "path": "assets/triage_long_report.png",
+       "caption:":"Triage analyzer full report"
+     },
+     {
+      "path": "assets/triage_verdict.png",
+      "caption:":"Triage analyzer verdict"
+    }]
+}

@@ -1,0 +1,24 @@
+{% block CF_Classification %}
+phishing
+{% endblock %}
+
+{% block Subject %}
+** Alert ** Phishing Site Targeting Your Users
+{% endblock %}
+
+
+{% block Text %}
+We have discovered the following potential phishing site(s) targeting your users:
+
+Domain(s):
+{{ indicator_list }}
+
+We've noticed bad people trying to do bad things. Be on the lookout for nefarious d'er-do-wells from the above domain(s).
+
+On behalf of the Great SOC Team,
+
+--
+team@greatsoc.tld
+24x7 Watch Desk +1(555)555-1234
+https://www.greatsoc.tld
+{% endblock %}

@@ -1,0 +1,62 @@
+{
+  "author": "RiskIQ",
+  "baseConfig": "RiskIQ",
+  "command": "RiskIQ/_responder.py",
+  "config": {
+    "service": "PushArtifactToProject"
+  },
+  "configurationItems": [
+    {
+      "description": "API username of the RiskIQ Illuminate or PassiveTotal account (usually an email address)",
+      "multi": false,
+      "name": "username",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "description": "API key of the RiskIQ Illuminate or PassiveTotal account",
+      "multi": false,
+      "name": "api_key",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "defaultValue": "analyst",
+      "description": "Visiblity for new RiskIQ Illuminate projects (analyst, team, or public).",
+      "multi": false,
+      "name": "project_visibility",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "defaultValue": "Hive:",
+      "description": "Prefix to add when auto-generating project names from case names.",
+      "multi": false,
+      "name": "project_prefix",
+      "required": false,
+      "type": "string"
+    },
+    {
+      "description": "Tag to apply to artifact in TheHive when is has been pushed to a RiskIQ Illuminate Project (leave blank to skip tagging).",
+      "multi": false,
+      "name": "thehive_artifact_tag",
+      "required": false,
+      "type": "string"
+    },
+    {
+      "description": "Tag to apply to artifact in RiskIQ Illuminate when is has been pushed to an Illuminate Project (leave blank to skip tagging).",
+      "multi": false,
+      "name": "riq_artifact_tag",
+      "required": false,
+      "type": "string"
+    }
+  ],
+  "dataTypeList": [
+    "thehive:case_artifact"
+  ],
+  "description": "Push a case to a RiskIQ Illuminate project.",
+  "license": "AGPL-V3",
+  "name": "RiskIQ_PushArtifactToProject",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "version": "1.0"
+}

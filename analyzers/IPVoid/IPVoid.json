@@ -1,0 +1,25 @@
+{
+    "name": "IPVoid",
+    "version": "1.0",
+    "author": "Joel Snape @ Nettitude",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-v3",
+    "description": "Determine whether an IP is present on any of the feeds consumed by IPVoid",
+    "dataTypeList": ["ip"],
+    "baseConfig": "IPVoid",
+    "command": "IPVoid/ipvoid.py",
+    "configurationItems": [
+      {
+        "name": "key",
+        "description": "API key for IPVoid",
+        "type": "string",
+        "multi": false,
+        "required": true
+      }
+    ],
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 2,
+        "auto_extract": false
+    }
+}

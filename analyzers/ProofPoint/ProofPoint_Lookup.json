@@ -1,0 +1,48 @@
+{
+  "name": "ProofPoint_Lookup",
+  "version": "1.0",
+  "author": "Emmanuel Torquato",
+  "url": "https://github.com/CERT-BDF/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Check URL, file, SHA256 against ProofPoint forensics",
+  "dataTypeList": ["url", "file", "hash"],
+  "baseConfig": "ProofPoint",
+  "config": {
+    "service": "query",
+    "max_tlp": 1,
+    "check_tlp": true
+  },
+  "command": "ProofPoint/proofpoint_lookup.py",
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "URL of the Proofpoint API, the default should be okay.",
+      "type": "string",
+      "required": true,
+      "defaultValue": "https://tap-api-v2.proofpoint.com",
+      "multi": false
+    },
+    {
+      "name": "apikey",
+      "description": "API key to use",
+      "type": "string",
+      "required": true,
+      "multi": false
+    },
+    {
+      "name": "secret",
+      "description": "Secret to the API key",
+      "type": "string",
+      "required": true,
+      "multi": false
+    },
+    {
+      "name": "verifyssl",
+      "description": "Verify server's SSL certificate",
+      "type": "boolean",
+      "defaultValue": true,
+      "required": false,
+      "multi": false
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+<div class="report-PT" ng-if="success">
+    <style>
+        .report-PT dl {
+            margin-bottom: 2px;
+        }
+    </style>
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>RiskIQ Illuminate Available Datasets</strong>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="panel panel-{{ content.resolutions==0 ? 'default' : 'info' }}">
+                        <div class="panel-heading text-center">
+                            pDNS
+                        </div>
+                        <div class="panel-body text-center">
+                            <h3>{{content.resolutions}}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="panel panel-{{ content.certificates==0 ? 'default' : 'info' }}">
+                        <div class="panel-heading text-center">
+                            TLS/SSL
+                        </div>
+                        <div class="panel-body text-center">
+                            <h3>{{content.certificates}}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="panel panel-{{ content.articles==0 ? 'default' : 'danger' }} ">
+                        <div class="panel-heading text-center">
+                            Articles
+                        </div>
+                        <div class="panel-body text-center">
+                            <h3>{{content.articles}}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="panel panel-{{ content.projects==0 ? 'default' : 'warning' }} ">
+                        <div class="panel-heading text-center">
+                            Projects
+                        </div>
+                        <div class="panel-body text-center">
+                            <h3>{{content.projects}}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="panel panel-{{ content.malware_hashes==0 ? 'default' : 'danger' }} ">
+                        <div class="panel-heading text-center">
+                            Malware
+                        </div>
+                        <div class="panel-body text-center">
+                            <h3>{{content.malware_hashes}}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="content.trackers" class="col-md-2">
+                    <div class="panel panel-{{ content.trackers==0 ? 'default' : 'info' }} ">
+                        <div class="panel-heading text-center">
+                            Trackers
+                        </div>
+                        <div class="panel-body text-center">
+                            <h3>{{content.trackers}}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="content.components"  class="col-md-2">
+                    <div class="panel panel-{{ content.components==0 ? 'default' : 'info' }} ">
+                        <div class="panel-heading text-center">
+                            Components
+                        </div>
+                        <div class="panel-body text-center">
+                            <h3>{{content.components}}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="content.cookies"  class="col-md-2">
+                    <div class="panel panel-{{ content.cookies==0 ? 'default' : 'info' }} ">
+                        <div class="panel-heading text-center">
+                            Cookies
+                        </div>
+                        <div class="panel-body text-center">
+                            <h3>{{content.cookies}}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="content.hostpairs"  class="col-md-2">
+                    <div class="panel panel-{{ content.hostpairs==0 ? 'default' : 'info' }} ">
+                        <div class="panel-heading text-center">
+                            Host Pairs
+                        </div>
+                        <div class="panel-body text-center">
+                            <h3>{{content.hostpairs}}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="content.services" class="col-md-2">
+                    <div class="panel panel-{{ content.services==0 ? 'default' : 'info' }} ">
+                        <div class="panel-heading text-center">
+                            Services
+                        </div>
+                        <div class="panel-body text-center">
+                            <h3>{{content.services}}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

@@ -1,0 +1,34 @@
+{
+  "name": "QRadar_Auto_Closing_Offense",
+  "version": "1.0",
+  "author": "Florian Perret",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Closing the QRadar Offense associated to your case in one clic !",
+  "dataTypeList": ["thehive:case"],
+  "command": "QRadarAutoClose/QRadarAutoClose.py",
+  "baseConfig": "QRadarAutoClose",
+  "configurationItems": [
+    {
+      "name": "QRadar_API_Key",
+      "description": "A QRadar API key with sufficent rights to close an offense",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "QRadar_Url",
+      "description": "URL of your QRadar API, must be accessible from Cortex server. eg: myqradar.myorg.com/api/siem/offenses",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "Cert_Path",
+      "description": "If you need a certificate to authentificate to your QRadar API, please provide the path here",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ]
+}

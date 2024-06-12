@@ -1,0 +1,247 @@
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+           <style>
+            #mapid { width: 800px;height: 600px; }
+        </style>
+
+        
+<div class="report-EmergingThreats" ng-if="success">
+
+    <div class="panel panel-info" ng-if="content.reputation && content.reputation != '-' && content.reputation != 'Error'">
+        <div class="panel-heading">
+            <strong>Reputation</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal" ng-repeat="reputation in content.reputation track by $index">
+                <dt>{{ reputation.category }}</dt>
+                <dd class="wrap">{{ reputation.score }}</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.events && content.events != '-' && content.events != 'Error'">
+        <div class="panel-heading">
+            <strong>Events</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <th>Count</th>
+                    <th>Date</th>
+                    <th>Domain</th>
+                    <th>Sid</th>
+                    <th>Signature</th>
+                    <th>Source</th>
+                </tr>
+                <tr ng-repeat="events in content.events track by $index">
+                    <td align="right">{{ events.count }}</td>
+                    <td>{{ events.date }}</td>
+                    <td align="center">{{ events.domain || '-' }} </td>
+                    <td>{{ events.sid }}</td>
+                    <td>{{ events.signature }}</td>
+                    <td>{{ events.source }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.geoloc && content.geoloc != '-' && content.geoloc != 'Error'">
+        <div class="panel-heading">
+            <strong>Geoloc</strong>
+        </div>
+      
+        <div class="panel-body">
+            <div ng-repeat="geo in content.geoloc track by $index">
+                <dl class="dl-horizontal">
+                    <dt>City</dt>
+                    <dd class="wrap">{{ geo.city }}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>country</dt>
+                    <dd class="wrap">{{ geo.country }} [{{ geo.country_code }}]</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>IP</dt>
+                    <dd class="wrap">{{ geo.ip }}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Coordinates<dt>
+                    <dd class="wrap"><span class="geo_lat">{{ geo.latitude }}</span> / <span class="geo_lon">{{ geo.longitude }}</span></dd>
+                </dl>
+            </div>
+                
+            <div id="mapid"></div>
+        
+                <script>
+                   
+                $(document).ready(function(){
+                    setTimeout(function(){
+                    
+                            var lat = $(".geo_lat").map(function(){return parseInt($(this).text());}).get();
+                            var lon = $(".geo_lon").map(function(){return parseInt($(this).text());}).get();
+                            var mymap = L.map('mapid', {center:[0,0], zoom:3});
+                            L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+                                tileSize: 512,
+                                maxZoom: 18,
+                                zoomOffset: -1,
+                                id: 'mapbox/streets-v11'
+                            }).addTo(mymap);
+                            
+							var group = new L.featureGroup().addTo(mymap);
+
+							$.each( lon, function( index, value ){
+                                marker = L.marker([lat[index] , lon[index]]);
+                                marker.addTo(group);
+                            });
+                            
+                            mymap.fitBounds(group.getBounds(),{maxZoom: 4});
+                            
+                    }, 3000);
+                });
+
+         
+                </script>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.ips && content.ips != '-' && content.ips != 'Error'">
+        <div class="panel-heading">
+            <strong>IPs</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <th>IP</th>
+                    <th>First seen</th>
+                    <th>Last seen</th>
+                </tr>
+                <tr ng-repeat="ip in content.ips  | orderBy:'-last_seen'">
+                    <td>{{ ip.ip }}</td>
+                    <td>{{ ip.first_seen }}</td>
+                    <td>{{ ip.last_seen }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.domains && content.domains != '-' && content.domains != 'Error'">
+        <div class="panel-heading">
+            <strong>Domains</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <th>Name</th>
+                    <th>First seen</th>
+                    <th>Last seen</th>
+                </tr>
+                <tr ng-repeat="domain in content.domains  | orderBy:'-last_seen'">
+                    <td>{{ domain.domain }}</td>
+                    <td>{{ domain.first_seen }}</td>
+                    <td>{{ domain.last_seen }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.samples && content.samples != '-' && content.samples != 'Error'">
+        <div class="panel-heading">
+            <strong>Samples</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <th>Source</th>
+                    <th>First seen</th>
+                    <th>Last seen</th>
+                </tr>
+                <tr ng-repeat="sample in content.samples | orderBy:'-last_seen'">
+                    <td>{{ sample.source }}</td>
+                    <td>{{ sample.first_seen }}</td>
+                    <td>{{ sample.last_seen }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.nameservers && content.nameservers != '-' && content.nameservers != 'Error'">
+        <div class="panel-heading">
+            <strong>Nameservers</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <th>Server</th>
+                    <th>First seen</th>
+                    <th>Last seen</th>
+                </tr>
+                <tr ng-repeat="nameserver in content.nameservers | orderBy:'-last_seen' ">
+                    <td>{{ nameserver.server }}</td>
+                    <td>{{ nameserver.first_seen }}</td>
+                    <td>{{ nameserver.last_seen }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.reputation && content.reputation != '-' && content.reputation != 'Error'">
+        <div class="panel-heading">
+            <strong>Urls</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal" ng-repeat="url in content.urls track by $index">
+                <dd class="wrap">{{ url }}</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.whois && content.whois != '-' && content.whois != 'Error'">
+        <div class="panel-heading">
+            <strong>Whois</strong>
+        </div>
+        <div class="panel-body">
+            <h4>Domain</h4>
+            <dl class="dl-horizontal">
+                <dd class="wrap">{{ content.whois.domain }}</dd>
+            </dl>
+            <h4>Registrant</h4>
+            <dl class="dl-horizontal">
+                <dt>Created</dt>
+                <dd class="wrap">{{ content.whois.registrant.created }}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Expires</dt>
+                <dd class="wrap">{{ content.whois.registrant.expires }}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Updated</dt>
+                <dd class="wrap">{{ content.whois.registrant.updated }}</dd>
+            </dl>            
+            <h4>Registrar</h4>
+            <dl class="dl-horizontal">
+                <dt>Country</dt>
+                <dd class="wrap">{{ content.whois.registrar.country }}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Name</dt>
+                <dd class="wrap">{{ content.whois.registrar.name }}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Website</dt>
+                <dd class="wrap">{{ content.whois.registrar.website }}</dd>
+            </dl>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

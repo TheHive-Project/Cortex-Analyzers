@@ -1,0 +1,37 @@
+{
+  "name": "NSRL",
+  "author": "Andrea Garavaglia, Davide Arcuri - LDO-CERT",
+  "license": "AGPL-V3",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "version": "1.0",
+  "description": "Query NSRL",
+  "dataTypeList": [
+    "hash",
+    "filename"
+  ],
+  "baseConfig": "NSRL",
+  "command": "NSRL/nsrl.py",
+  "configurationItems": [
+    {
+      "name": "conn",
+      "description": "sqlalchemy connection string",
+      "multi": false,
+      "required": false,
+      "type": "string"
+    },
+    {
+      "name": "grep_path",
+      "description": "path of grep",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "nsrl_folder",
+      "description": "path of NSRL folder",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ]
+}

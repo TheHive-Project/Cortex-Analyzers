@@ -1,0 +1,23 @@
+{
+  "name": "Shodan_Host",
+  "version": "1.0",
+  "author": "Sebastien Larinier @Sebdraven",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
+  "license": "AGPL-V3",
+  "description": "Retrieve key Shodan information on an IP address.",
+  "dataTypeList": ["ip"],
+  "command": "Shodan/shodan_analyzer.py",
+  "baseConfig": "Shodan",
+  "config": {
+      "service": "host"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}

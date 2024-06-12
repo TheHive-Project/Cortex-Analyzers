@@ -1,0 +1,59 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+<div>
+    
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Summary</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal" ng-if="content.lookup_results">
+                <dt>Detected by</dt>
+                <dd class="wrap">{{content.lookup_results.detected_by}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.address">
+                <dt>Address</dt>
+                <dd class="wrap">{{content.address}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.geo_info">
+                <dt>Geo Info</dt>
+                <dd class="wrap">{{content.geo_info.country.name}} {{content.geo_info.city.name}} <span ng-if="content.geo_info.continent.name">{{content.geo_info.continent.name}}</span></dd>
+            </dl>            
+        </div>
+    </div>
+ 
+
+    <div class="panel panel-info" ng-if="content.lookup_results.sources">
+        <div class="panel-heading">
+            <strong>Sources</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <th>Provider</th>
+                    <th>Detect time</th>
+                    <th>Update time</th>
+                    <th>Assessment</th>
+                </tr>
+                <tr ng-repeat="obj in content.lookup_results.sources">
+                    <td>
+                        <span class="label label-success" ng-if="obj.status == 5"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span>
+                        <span class="label label-danger" ng-if="obj.status == 1"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span>
+                        {{obj.provider}}
+                    </td>
+                    <td>{{obj.detect_time}}</td>
+                    <td>{{obj.update_time}}</td>
+                    <td>{{obj.assessment}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>

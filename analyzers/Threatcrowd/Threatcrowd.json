@@ -1,0 +1,20 @@
+{
+    "name": "Threatcrowd",
+    "author": "Rémi Allain, Cyberprotect",
+    "license": "AGPL-V3",
+    "url": "https://github.com/Cyberprotect/Cortex-Analyzers",
+    "version": "1.0",
+    "description": "Look up domains, mail and IP addresses on ThreatCrowd.",
+    "dataTypeList": [
+        "mail",
+        "ip",
+        "domain",
+        "fqdn"
+    ],
+    "command": "Threatcrowd/threatcrowd_analyzer.py",
+    "baseConfig": "Threatcrowd",
+    "config": {
+        "check_tlp": false,
+        "service": "get"
+    }
+}

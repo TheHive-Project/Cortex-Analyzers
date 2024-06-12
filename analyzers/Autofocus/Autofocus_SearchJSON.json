@@ -1,0 +1,23 @@
+{
+    "name": "Autofocus_SearchJSON",
+    "version": "1.0",
+    "author": "ANSSI",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseConfig": "Autofocus",
+    "config": {
+        "service": "search_json"
+    },
+    "description": "Search samples in Autofocus with a full search query in JSON",
+    "dataTypeList": ["other"],
+    "command": "Autofocus/analyzer.py",
+    "configurationItems": [
+        {
+          "name": "apikey",
+          "description": "Autofocus API key",
+          "type": "string",
+          "multi": false,
+          "required": true
+        }
+    ]
+}

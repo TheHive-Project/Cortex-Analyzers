@@ -1,0 +1,92 @@
+<!-- Success case -->
+<div ng-if="success">
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<strong>{{name}} report</strong>
+		</div>
+		<div class="panel-body">
+
+			<h4>FireEye iSIGHT information for {{artifact.data | fang}}</h4>
+
+			<dl class="dl-horizontal">
+				<dt>Level</dt>
+				<dd>{{content.level}}</dd>
+			</dl>
+			<dl class="dl-horizontal" ng-if="content.domain.length > 0">
+				<dt>Domains</dt>
+				<dd ng-repeat="domain in content.domain">{{domain}}</dd>
+			</dl>			
+			<dl class="dl-horizontal" ng-if="content.ip.length > 0">
+				<dt>Ips</dt>
+				<dd ng-repeat="ip in content.ip">{{ip}}</dd>
+			</dl>			
+			<dl class="dl-horizontal" ng-if="content.md5.length > 0">
+				<dt>Md5</dt>
+				<dd ng-repeat="md5 in content.md5">{{md5}}</dd>
+			</dl>
+			<dl class="dl-horizontal" ng-if="content.sha1.length > 0">
+				<dt>Sha1</dt>
+				<dd ng-repeat="sha1 in content.sha1">{{sha1}}</dd>
+			</dl>		
+			<dl class="dl-horizontal" ng-if="content.sha256.length > 0">
+				<dt>Sha256</dt>
+				<dd ng-repeat="sha256 in content.sha256">{{sha256}}</dd>
+			</dl>	
+			<dl class="dl-horizontal" ng-if="content.fileName.length > 0">
+				<dt>fileName</dt>
+				<dd ng-repeat="fileName in content.fileName">{{fileName}}</dd>
+			</dl>
+			<dl class="dl-horizontal" ng-if="content.filename.length > 0">
+				<dt>File Name</dt>
+				<dd ng-repeat="filename in content.filename">{{filename}}</dd>
+			</dl>	
+			<dl class="dl-horizontal" ng-if="content.size.length > 0">
+				<dt>File Size</dt>
+				<dd ng-repeat="type in content.size">{{type}}</dd>
+			</dl>	
+			<dl class="dl-horizontal" ng-if="content.packer.length > 0">
+				<dt>File Packers</dt>
+				<dd ng-repeat="packer in content.packer">{{packer}}</dd>
+			</dl>
+			<dl class="dl-horizontal" ng-if="content.actor.length > 0">
+				<dt>Actor</dt>
+				<dd ng-repeat="actor in content.actor">{{actor}}</dd>
+			</dl>
+		</div>
+	</div>
+
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<strong>Reports</strong>
+		</div>
+		<div class="panel-body">
+			<table class="table table-hover">
+				<tr>
+					<th>Title</th>
+					<th>Intelligence Type</th>
+					<th>Threat Scape</th>
+					<th>Web Link</th>
+					<th>Observation Time</th>
+				</tr>
+				<tr ng-repeat="report in content.report_data">
+					<td>{{report.title}}</td>
+					<td>{{report.intelligenceType}}</td>
+					<td>{{report.threatScape}}</td>
+					<td><a href="{{report.webLink}}" target="_blank">  <span class="glyphicon glyphicon-file" aria-hidden="true"></span></a></td>
+					<td>{{report.observationTime}}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+</div>
+
+<!-- Failure case -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

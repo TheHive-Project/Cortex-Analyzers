@@ -1,0 +1,29 @@
+{
+  "name": "Cyberprotect_ThreatScore",
+  "author": "Rémi Allain, Cyberprotect",
+  "license": "AGPL-V3",
+  "url": "https://github.com/Cyberprotect/Cortex-Analyzers",
+  "version": "3.0",
+  "description": "ThreatScore is a cyber threat scoring system provided by Cyberprotect",
+  "dataTypeList": ["domain", "hash", "ip", "url", "user-agent"],
+  "command": "Cyberprotect/CyberprotectAnalyzer.py",
+  "baseConfig": "Cyberprotect",
+  "config": {
+    "service": "ThreatScore",
+    "check_tlp": true
+  },
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": false,
+  "service_homepage": "https://console.threatscore.cyberprotect.cloud/",
+  "service_logo": {
+    "path": "assets/threatscore.jpg",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report.png",
+      "caption": "cyberprotect: long report"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "PhishingInitiative_Scan",
+  "version": "1.0",
+  "author": "Remi Pointel",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use Phishing Initiative to scan a URL.",
+  "dataTypeList": ["url"],
+  "baseConfig": "PhishingInitiative",
+  "command": "PhishingInitiative/phishinginitiative.py",
+  "config": {
+    "service": "scan"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://phishing-initiative.fr/",
+  "service_logo": {
+    "path": "assets/phishing-initiative.png",
+    "caption": "logo"
+  },
+  "screenshots": []
+}

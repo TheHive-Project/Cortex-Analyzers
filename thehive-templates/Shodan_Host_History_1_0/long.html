@@ -1,0 +1,62 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        Host Information of  <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>ASN</dt>
+            <dd>{{content.host.asn || '-'}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>ISP</dt>
+            <dd>{{content.host.isp || '-'}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Hostnames</dt>
+            <dd>{{content.host.hostnames.join(', ')  || '-'}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Country</dt>
+            <dd>{{content.host.country_name || '-'}} (<strong>{{content.host.country_code || '-'}}</strong>)</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Ports</dt>
+            <dd>{{content.host.ports.join(', ') || '-'}}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Last update</dt>
+            <dd>{{content.host.last_update || '-'}}</dd>
+        </dl>
+
+        <dl class="dl-horizontal">
+            <dt>Geolocation</dt>
+            <dd>
+                <strong>Latitude:</strong> {{content.host.latitude || '-'}}, <strong>Longitude:</strong> {{content.host.longitude || '-'}} <br>
+                <a ng-href="http://google.com/maps/place/{{content.host.latitude}},{{content.host.longitude}}" target="_blank">Open in Google Maps</a>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        CVE summary of  <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <span ng-repeat="data in content.host.data" ng-if="content.host.vulns">
+            <dl class="dl-horizontal">
+                <dt ng-repeat-start="(vuln, info) in data.vulns"><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name={{vuln}}" target="_blank">{{vuln}}</a></dt>
+                <dd ng-repeat-end=>{{info.summary}}</dd>
+            </dl>
+        </span>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

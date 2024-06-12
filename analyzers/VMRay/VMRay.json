@@ -1,0 +1,165 @@
+{
+  "name": "VMRay",
+  "license": "AGPL-V3",
+  "author": "Nils Kuhnert, CERT-Bund",
+  "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
+  "version": "4.1",
+  "description": "VMRay Sandbox file and URL analysis.",
+  "dataTypeList": [
+    "hash",
+    "file",
+    "url"
+  ],
+  "command": "VMRay/vmray.py",
+  "baseConfig": "VMRay",
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "Define the URL of the service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "key",
+      "description": "Define the API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "certverify",
+      "description": "Verify certificates",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": true
+    },
+    {
+      "name": "certpath",
+      "description": "Path to certificate file, in case of self-signed etc.",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "verdict_only",
+      "description": "If set to true, only the verdict (or the score for VMRay versions < 4.0) will be added as labels.",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    },
+    {
+      "name": "query_retry_wait",
+      "description": "The amount of seconds to wait before trying to fetch the results.",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 10
+    },
+    {
+      "name": "recursive_sample_limit",
+      "description": "The maximum amount of recursive samples which will be analyzed. 0 disables recursion.",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 10
+    },
+    {
+      "name": "reanalyze",
+      "description": "If set to true, known samples will be re-analyzed on submission. This is enabled by default.",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": true
+    },
+    {
+      "name": "shareable",
+      "description": "If set to true, the hash of the sample will be shared with VirusTotal if the TLP level is white or green.",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    },
+    {
+      "name": "archive_password",
+      "description": "The password that will be used to extract archives.",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "malware"
+    },
+    {
+      "name": "archive_compound_sample",
+      "description": "If set to true, files inside archives are treated as a single, compound sample. Otherwise, each file is treated as its own sample.",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": false
+    },
+    {
+      "name": "max_jobs",
+      "description": "Limits the amount of jobs that can be created by jobrules for a submission.",
+      "type": "number",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "enable_reputation",
+      "description": "If set to true, reputation lookups will be performed for submitted samples and analysis artifacts (file hash and URL lookups) by the VMRay cloud reputation service and additional third party services. The user analyzer setting is used as default value for this parameter.",
+      "type": "boolean",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "enable_whois",
+      "description": "If set to true, domains seen during analyses are queried with external WHOIS service. The user analyzer setting is used as default value for this parameter.",
+      "type": "boolean",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "analyzer_mode",
+      "description": "Specifies which types of analyzers will be used for analyzing this sample. Supported strings are 'reputation', 'reputation_static', 'reputation_static_dynamic', 'static_dynamic', and 'static'. The user analyzer setting is used as default value for this parameter.",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "known_malicious",
+      "description": "If set to true, triage will be used to pre-filter known malicious samples by results of reputation lookup (if allowed) and static analysis. The user analyzer setting is used as default value for this parameter.",
+      "type": "boolean",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "known_benign",
+      "description": "If set to true, triage will be used to pre-filter known benign samples by results of reputation lookup (if allowed) and static analysis. The user analyzer setting is used as default value for this parameter.",
+      "type": "boolean",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "tags",
+      "description": "Tags to attach to the sample.",
+      "type": "string",
+      "multi": true,
+      "required": false
+    },
+    {
+      "name": "timeout",
+      "description": "Analysis timeout in seconds.",
+      "type": "number",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "net_scheme_name",
+      "description": "Name of the network schema.",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ]
+}

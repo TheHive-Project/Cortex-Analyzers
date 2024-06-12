@@ -1,0 +1,44 @@
+{
+  "name": "AMPforEndpoints_SCDAdd",
+  "version": "1.0",
+  "author": "Cisco Security",
+  "url": "https://github.com/CiscoSecurity",
+  "license": "MIT",
+  "description": "Add a SHA256 to an AMP for Endpoints Simple Custom Detection list",
+  "dataTypeList": ["thehive:case_artifact"],
+  "command": "AMPforEndpoints/AMPforEndpoints.py",
+  "baseConfig": "AMPforEndpoints",
+  "config": {
+    "service": "scdadd"
+  },
+  "configurationItems": [
+    {
+      "name": "amp_cloud",
+      "description": "FQDN of the AMP for Endpoints cloud to interact with",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "client_id",
+      "description": "Client ID for AMP for Endpoints",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "api_key",
+      "description": "API Key for AMP for Endpoints",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "scd_guid",
+      "description": "AMP for Endpoints Simple Custom Detection GUID",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}

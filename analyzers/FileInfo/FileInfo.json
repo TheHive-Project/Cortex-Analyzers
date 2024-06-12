@@ -1,0 +1,69 @@
+{
+  "name": "FileInfo",
+  "version": "8.0",
+  "author": "TheHive-Project",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Parse files in several formats such as OLE and OpenXML to detect VBA macros, extract their source code, generate useful information on PE, PDF files...",
+  "dataTypeList": ["file"],
+  "baseConfig": "FileInfo",
+  "command": "FileInfo/fileinfo_analyzer.py",
+  "configurationItems": [
+    {
+      "name": "manalyze_enable",
+      "description": "Wether to enable manalyze submodule or not.",
+      "type": "boolean",
+      "required": true,
+      "multi": false,
+      "defaultValue": false
+    },
+    {
+      "name": "manalyze_enable_docker",
+      "description": "Use docker to run Manalyze. Can be used only if not using the docker image of FileInfo",
+      "type": "boolean",
+      "required": false,
+      "multi": false,
+      "defaultValue": false
+    },
+    {
+      "name": "manalyze_enable_binary",
+      "description": "Use local binary to run Manalyze. Need to compile it before!",
+      "type": "boolean",
+      "required": false,
+      "multi": false,
+      "defaultValue": true
+    },
+    {
+      "name": "manalyze_binary_path",
+      "description": "Path to the Manalyze binary that was compiled before. Keep the default value if using the docker image of FileInfo ",
+      "type": "string",
+      "required": false,
+      "multi": false,
+      "defaultValue": "/worker/Manalyze/bin/manalyze"
+    },
+    {
+      "name": "floss_enable",
+      "description": "Enable the use of FireEye FLARE FLOSS",
+      "type": "boolean",
+      "required": false,
+      "multi": false,
+      "default": false
+    },
+    {
+      "name": "floss_binary_path",
+      "description": "Path to the FLOSS binary.",
+      "type": "string",
+      "required": false,
+      "multi": false,
+      "default": "/usr/bin/floss"
+    },
+    {
+      "name": "floss_minimal_string_length",
+      "description": "Length of strings must be in order to be considered.",
+      "type": "number",
+      "required": false,
+      "multi": false,
+      "default": 4
+    }
+  ]
+}

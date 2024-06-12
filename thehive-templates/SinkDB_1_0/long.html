@@ -1,0 +1,103 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        SinkDB information for <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+      <dl class="dl-horizontal">
+        <dt>Status</dt>
+        <dd>
+            <p style="font-size: 1.5em;">
+                <span class="label label-warning" ng-if="content.Sinkhole.length > 0">
+                    Artifact is sinkholed.
+
+                <table class="table" ng-if="content.Sinkhole.length !== 0 ">
+                    <thead>
+                        <th>SinkDB ID</th>
+                        <th>SinkDB URL</th>
+                        <th>Type</th>
+                        <th>Classification</th>
+                        <th>Operator</th>
+                    </thead>
+                    <tbody ng-repeat="r in content.Sinkhole | orderBy:'-date_added'">
+                            <tr>
+                                <td>{{r.id}}</td>
+                                <td>{{r.sinkdb_reference}}</td>
+                                <td>{{r.type}}</td>
+                                <td>{{r.classification}}</td>
+                                <td>{{r.operator}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </span>
+                <span class="label label-success" ng-if="content.Sinkhole.length == 0">
+                    Artifact is <strong>not</strong> sinkholed.
+                </span>
+            </p>
+            <p style="font-size: 1.5em;">
+                <span class="label label-warning" ng-if="content.Phishing.length > 0">
+                    Artifact is part of a phishing awareness Campaign.
+
+                <table class="table" ng-if="content.Phishing.length !== 0 ">
+                    <thead>
+                        <th>SinkDB ID</th>
+                        <th>SinkDB URL</th>
+                        <th>Type</th>
+                        <th>Classification</th>
+                        <th>Operator</th>
+                    </thead>
+                    <tbody ng-repeat="r in content.Phishing | orderBy:'-date_added'">
+                            <tr>
+                                <td>{{r.id}}</td>
+                                <td>{{r.sinkdb_reference}}</td>
+                                <td>{{r.type}}</td>
+                                <td>{{r.classification}}</td>
+                                <td>{{r.operator}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </span>
+                <span class="label label-success" ng-if="content.Phishing.length == 0">
+                    Artifact is <strong>not</strong> part of a phishing awareness campaign.
+                </span>
+            </p>
+            <p style="font-size: 1.5em;">
+                <span class="label label-warning" ng-if="content.Scanner.length > 0">
+                    Artifact is a scanner.
+
+                <table class="table" ng-if="content.Scanner.length !== 0 ">
+                    <thead>
+                        <th>SinkDB ID</th>
+                        <th>SinkDB URL</th>
+                        <th>Type</th>
+                        <th>Classification</th>
+                        <th>Operator</th>
+                    </thead>
+                    <tbody ng-repeat="r in content.Scanner | orderBy:'-date_added'">
+                            <tr>
+                                <td>{{r.id}}</td>
+                                <td>{{r.sinkdb_reference}}</td>
+                                <td>{{r.type}}</td>
+                                <td>{{r.classification}}</td>
+                                <td>{{r.operator}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </span>
+                <span class="label label-success" ng-if="content.Scanner.length == 0">
+                    Artifact is <strong>not</strong> a scanner.
+                </span>
+            </p>
+        </dd>
+      </dl>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

@@ -1,0 +1,23 @@
+{
+    "name": "Autofocus_GetSampleAnalysis",
+    "version": "1.0",
+    "author": "ANSSI",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseConfig": "Autofocus",
+    "config": {
+        "service": "get_sample_analysis"
+    },
+    "description": "Get full analysis from a sample based on its hash",
+    "dataTypeList": ["hash"],
+    "command": "Autofocus/analyzer.py",
+    "configurationItems": [
+        {
+          "name": "apikey",
+          "description": "Autofocus API key",
+          "type": "string",
+          "multi": false,
+          "required": true
+        }
+    ]
+}

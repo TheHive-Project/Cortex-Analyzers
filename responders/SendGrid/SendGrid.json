@@ -1,0 +1,27 @@
+{
+  "name": "SendGrid",
+  "version": "1.0",
+  "author": "Equate Technologies",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Send an email with information from a TheHive case or alert via SendGrid API over HTTPS",
+  "dataTypeList": ["thehive:case", "thehive:alert"],
+  "command": "SendGrid/SendGrid.py",
+  "baseConfig": "SendGrid",
+  "configurationItems": [
+    {
+      "name": "from",
+      "description": "Email address to use as the From: field",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "api_key",
+      "description": "SendGrid API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}

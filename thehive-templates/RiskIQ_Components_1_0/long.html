@@ -1,0 +1,54 @@
+<div class="report-PT" ng-if="success">
+    <style>
+        .report-PT dl {
+            margin-bottom: 2px;
+        }
+    </style>
+
+
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <div ng-if="content.records.length === 0">
+                No web components available for this IOC.
+            </div>
+            <div ng-if="content.records.length !== 0" class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>RiskIQ Web Components</strong>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Component</th>
+                                <th>Version</th>
+                                <th>Host</th>
+                                <th>First Seen</th>
+                                <th>Last Seen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="comp in content.records">
+                                <td>{{comp.category}}</td>
+                                <td>{{comp.label}}</td>
+                                <td>{{comp.version}}</td>
+                                <td>{{comp.hostname}}</td>
+                                <td>{{comp.firstseen}}</td>
+                                <td>{{comp.lastseen}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

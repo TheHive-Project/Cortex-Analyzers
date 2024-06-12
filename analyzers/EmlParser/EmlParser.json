@@ -1,0 +1,53 @@
+{
+    "name": "EmlParser",
+    "version": "2.1",
+    "author": "StrangeBee",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseConfig": "EmlParser",
+    "config": {
+        "check_tlp": false,
+        "max_tlp": 3,
+        "service": ""
+    },
+    "description": "Parse and visualise EML email message. Submit a .eml formatted file and extract some useful information.",
+    "dataTypeList": [
+        "file"
+    ],
+    "command": "EmlParser/parse.py",
+    "configurationItems": [
+        {
+            "name": "email_visualisation",
+            "description": "Enable email visualisation in report. This option requires the program `wkhtmltoimage` and installation of `wkhtmltopdf` package on the system. Docker image has this program installed. Refer to the documentation for more information. ",
+            "type": "boolean",
+            "defaultValue": false,
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "wkhtmltoimage_path",
+            "description": "Path of wkhtmltoimage program on the system. This program is required to generate visualisation of the message as it seen in mail client program. If using Docker image, use default configuration.",
+            "defaultValue": "/usr/bin/wkhtmltoimage",
+            "type": "string",
+            "multi": false,
+            "required": true
+        }
+    ],
+    "registration_required": false,
+    "subscription_required": false,
+    "service_homepage": "https://www.strangebee.com",
+    "service_logo": {
+        "path": "assets/sb-logo.jpg",
+        "caption": "StrangeBee logo"
+    },
+    "screenshots": [
+        {
+            "path": "assets/emlparser-short.png",
+            "caption": "EmlParser: short report"
+        },
+        {
+            "path": "assets/emlparser-long.png",
+            "caption": "EmlParser: long report"
+        }
+    ]
+}

@@ -1,0 +1,85 @@
+{
+    "name": "Minemeld",
+    "version": "1.0",
+    "author": "Wes Lambert, Security Onion Solutions",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Submit indicator to Minemeld",
+    "dataTypeList": [
+        "thehive:case_artifact"
+    ],
+    "command": "Minemeld/minemeld.py",
+    "baseConfig": "Minemeld",
+    "configurationItems": [
+        {
+            "name": "minemeld_url",
+            "description": "URL for Minemeld instance",
+            "type": "string",
+            "multi": false,
+            "required": true,
+            "defaultValue": "https://x.x.x.x"
+        },
+        {
+            "name": "minemeld_user",
+            "description": "User for Minemeld",
+            "type": "string",
+            "multi": false,
+            "required": true,
+            "defaultValue": "apiuser"
+        },
+        {
+            "name": "minemeld_password",
+            "description": "Password for Minemeld",
+            "type": "string",
+            "multi": false,
+            "required": true,
+            "defaultValue": "password"
+        },
+        {
+            "name": "minemeld_indicator_list",
+            "description": "Name of indicator list to which indicators will be added",
+            "type": "string",
+            "multi": false,
+            "required": true,
+            "defaultValue": "my_block_list"
+        },
+        {
+            "name": "minemeld_share_level",
+            "description": "Share level for indicator",
+            "type": "string",
+            "multi": false,
+            "required": true,
+            "defaultValue": "red"
+        },
+        {
+            "name": "minemeld_confidence",
+            "description": "Confidence level for indicator",
+            "type": "string",
+            "multi": false,
+            "required": true,
+            "defaultValue": "100"
+        },
+        {
+            "name": "minemeld_ttl",
+            "description": "TTL for indicator",
+            "type": "string",
+            "multi": false,
+            "required": true,
+            "defaultValue": "86400"
+        }
+    ],
+    "registration_required": false,
+    "subscription_required": false,
+    "free_subscription": false,
+    "service_homepage": "https://github.com/PaloAltoNetworks/minemeld",
+    "service_logo": {
+        "path": "assets/MM-logo.png",
+        "caption": "logo"
+    },
+    "screenshots": [
+        {
+            "path": "",
+            "caption": ""
+        }
+    ]
+}

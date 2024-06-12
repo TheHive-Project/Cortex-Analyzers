@@ -1,0 +1,16 @@
+<div class="panel panel-info">
+    <div class="panel-heading">
+        Spamhaus DBL Lookup Results
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <th>Return Code</th>
+                <th>Classification</th>
+            </tr>
+                <td>{{content.return_code | ellipsis:40}}</td>
+                <td>{{content.classification}}</a></td>
+            </tr>
+        </table>
+    </div>
+</div>

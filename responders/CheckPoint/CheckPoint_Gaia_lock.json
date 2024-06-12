@@ -1,0 +1,65 @@
+{
+  "name": "CheckPoint_Lock",
+  "version": "1.0",
+  "author": "@dadokkio LDO-CERT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Lock ip on CheckPoint Gaia",
+  "dataTypeList": ["thehive:case_artifact"],
+  "command": "CheckPoint/checkpoint.py",
+  "baseConfig": "CheckPoint", 
+  "config": {
+    "service": "lock"
+  },  
+  "configurationItems": [
+    {
+      "name": "server",
+      "description": "Checkpoint API server",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "username",
+      "description": "CheckPoint username",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "password",
+      "description": "CheckPoint password",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "group_name",
+      "description": "CheckPoint group name ip will be added/removed from",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "exclusions",
+      "description": "ip/subnet that cannot be locked or unlocked",
+      "type": "string",
+      "multi": true,
+      "required": false
+    },
+    {
+      "name": "added_tag",
+      "description": "Tag added to observable when adding to FW",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "removed_tag",
+      "description": "Tag added to observable when removing from FW",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ]
+}

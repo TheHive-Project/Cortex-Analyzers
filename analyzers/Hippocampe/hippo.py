@@ -1,9 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # encoding: utf-8
 import sys
-import os
 import json
-import codecs
 import urllib2
 from cortexutils.analyzer import Analyzer
 
@@ -12,35 +10,48 @@ class HippoAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.url = self.getParam('config.url', None, 'Missing URL for Hippocampe API')
-        self.service = self.getParam('config.service', None, 'Service parameter is missing')
+        self.url = self.get_param('config.url', None, 'Missing URL for Hippocampe API')
+        self.service = self.get_param('config.service', None, 'Service parameter is missing')
 
-    def moreSummary(self, raw):
-        data = self.getData()
-        result = {}
-        result[data] = 0
+    def more_summary(self, raw):
+        data = self.get_data()
+        result = {
+            data: 0
+        }
 
-        if(data in raw):
-            result[data] = len(raw[data])
+        if data in raw:
+            result[data] = len(raw.get(data))
 
         return result
 
-    def scoreSummary(self, raw):
-        data = self.getData()
+    def score_summary(self, raw):
+        data = self.get_data()
         result = {}
-        if(data in raw):
-            result[data] = raw[data]["hipposcore"]
-
+        if data in raw:
+            result[data] = raw.get(data).get("hipposcore")
         return result
 
     def summary(self, raw):
-        if (self.service == 'hipposcore'):
-            return self.scoreSummary(raw)
-        elif (self.service == 'more'):
-            return self.moreSummary(raw)
+        taxonomies = []
+        level = "safe"
+        namespace = "Hippocampe"
+        predicate = "Score"
+
+        if self.service == 'hipposcore':
+            value = self.score_summary(raw)[self.get_data()]
+            if value > 0:
+                level = "malicious"
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
+        elif self.service == 'more':
+            value = self.more_summary(raw)[self.get_data()]
+            if value > 0:
+                level = "malicious"
+            taxonomies.append(self.build_taxonomy(level, namespace, predicate, "{} record(s)".format(value)))
+
+        return {"taxonomies": taxonomies}
 
     def run(self):
-        data = self.getData()
+        data = self.get_data()
 
         value = {
             data: {
@@ -51,9 +62,8 @@ class HippoAnalyzer(Analyzer):
         post_data = json_data.encode('utf-8')
         headers = {'Content-Type': 'application/json'}
 
-        response = {}
         try:
-            request = urllib2.Request(self.url + self.service, post_data, headers)
+            request = urllib2.Request('{}/hippocampe/api/v1.0/{}'.format(self.url, self.service), post_data, headers)
             response = urllib2.urlopen(request)
             report = json.loads(response.read())
 

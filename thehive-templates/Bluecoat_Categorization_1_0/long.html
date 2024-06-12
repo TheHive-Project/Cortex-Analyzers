@@ -1,0 +1,29 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        Bluecoat information for <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Domain</dt>
+            <dd>{{content.host}}</dd>
+            <dt>Category</dt>
+            <dd>
+                <a href="https://sitereview.bluecoat.com/catdesc.jsp?catnum={{content.id}}" target=_blank>
+                    {{content.category}} ({{content.id}})
+                </a>
+            </dd>
+            <dt>Review age</dt>
+            <dd>{{content.date}}</dd>
+        </dl>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

@@ -1,0 +1,94 @@
+{
+  "name": "Jupyter_Run_Notebook_Responder",
+  "version": "1.0",
+  "author": "Alexandre Demeyer",
+  "url": "https://jupyter.org/",
+  "license": "AGPL-V3",
+  "description": "Execute a parameterized notebook in Jupyter",
+  "dataTypeList": ["thehive:case","thehive:case_artifact","thehive:alert","thehive:case_task","thehive:case_task_log"],
+  "command": "Jupyter_Responder/jupyter.py",
+  "baseConfig": "Jupyter", 
+  "config": {
+    "service": "Run_Notebook",
+    "check_tlp": true,
+    "max_tlp": 4,
+    "check_pap": true,
+    "max_pap": 3
+  },  
+  "configurationItems": [
+    {
+      "name": "input_hostname",
+      "description": "[INPUT] Hostname representing the Jupyter(Hub) instance (or Azure, S3 etc location) to reach to get the input notebook. See https://github.com/nteract/papermill#supported-name-handlers for more information.",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "input_handler_http_service_api_token",
+      "description": "[HTTP Handler] If you want to use the REST API to get the input notebook, you must indicate an API token used by a dedicated service, otherwise don't take this parameter into account",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "input_handler_http_is_jupyterhub",
+      "description": "[INPUT][HTTP Handler] If you want to use the REST API to get the input notebook, you must indicate if you're behind a JupyterHub instance or not, otherwise don't take this parameter into account",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": true
+    },
+    {
+      "name": "input_handler_http_execute_remotely",
+      "description": "[INPUT][HTTP Handler] If you want to use the REST API to get the input notebook, you must indicate if you want to run your code locally (papermill) or remotely (websocket through HTTP), otherwise don't take this parameter into account",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    },
+    {
+      "name": "input_paths",
+      "description": "[INPUT] List of paths of the notebooks you want to run",
+      "type": "string",
+      "multi": true,
+      "required": true
+    },
+    {
+      "name": "output_hostname",
+      "description": "[OUTPUT] Hostname representing the Jupyter(Hub) instance (or Azure, S3 etc location) to reach to store the output notebook. See https://github.com/nteract/papermill#supported-name-handlers for more information.",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "output_handler_http_service_api_token",
+      "description": "[HTTP Handler] If you want to use the REST API to store the output notebook, you must indicate an API token used by a dedicated service, otherwise don't take this parameter into account",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "output_handler_http_is_jupyterhub",
+      "description": "[OUTPUT][HTTP Handler] If you want to use the REST API to store the output notebook, you must indicate if you're behind a JupyterHub instance or not, otherwise don't take this parameter into account",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": true
+    },
+    {
+      "name": "output_folder",
+      "description": "[OUTPUT] Folder path in which executed notebooks will be stored. This field is supporting datetime format (see 'strftime' function).",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "/"
+    },
+    {
+      "name": "any_handler_http_user",
+      "description": "[ANY][HTTP Handler] If you want to use the REST API directly (HTTP handler), you must indicate which user will be used as the reference for having the original notebooks, otherwise don't take this parameter into account.",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ]
+}

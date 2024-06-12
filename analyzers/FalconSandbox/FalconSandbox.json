@@ -1,0 +1,39 @@
+{
+  "name": "FalconSandbox",
+  "version": "1.0",
+  "author": "Sebastian Schmerl - Computacenter",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-v3",
+  "description": "Submit observables to the Crowdstrike FalconX Sandbox",
+  "dataTypeList": ["file"],
+  "command": "FalconSandbox/FalconSandbox.py",
+  "baseConfig": "FalconSandbox",
+  "configurationItems": [
+    {
+      "name": "API_Base_Url",
+      "description": "Crowdstrike Api Base Url",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "default":"https://api.crowdstrike.com"
+    },
+    {
+      "name": "Client_ID",
+      "description": "Crowdstrike Api ClientID",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "Client_Secret",
+      "description": "Crowdstrike Api Client Secret",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.crowdstrike.com"
+}

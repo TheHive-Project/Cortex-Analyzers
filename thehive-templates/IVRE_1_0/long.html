@@ -1,0 +1,260 @@
+<div class="panel panel-info" ng-if="success && content.data">
+  <div class="panel-heading">
+    IVRE / data for <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+  </div>
+  <div class="panel-body">
+    <div ng-if="content.data.as_num">
+      AS#{{content.data.as_num}} / {{content.data.as_name}}
+    </div>
+    <div ng-if="content.data.country_code">
+      {{content.data.country_code}} / {{content.data.country_name}}
+    </div>
+    <div ng-if="content.data.region_code" ng-repeat="reg in content.data.region_code">
+      {{reg}} / {{content.data.region_name[$index]}}
+    </div>
+    <div ng-if="content.data.city">
+      {{content.data.city}}
+    </div>
+  </div>
+</div>
+
+<!-- resultats specifiques ProcessorIp ProcessorNet ProcessorAsnum -->
+
+<div class="panel panel-info" ng-if="success && content.scans">
+  <div class="panel-heading">
+    IVRE / scans for <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+  </div>
+  <div class="panel-body" ng-switch="artifact.dataType">
+    <span ng-switch-when="ip">
+      <div>
+	Results from {{content.scans.firstseen}} to {{content.scans.lastseen}}
+      </div>
+      <div ng-if="content.scans.sources">
+	Sources: {{content.scans.sources.join(' / ')}}
+      </div>
+      <div ng-if="content.scans.categories">
+	Categories: {{content.scans.categories.join(' / ')}}
+      </div>
+      <div ng-if="content.scans.hostnames">
+	Hostnames: {{content.scans.hostnames.join(' / ')}}
+      </div>
+      <div ng-if="content.scans.vulnerabilities" class="text-danger">
+	<p>Vulnerabilities</p>
+	<dl class="dl-horizontal">
+	  <dt>Vulnerabilities</dt>
+	  <dd>
+	    <ul>
+	      <li ng-repeat="vuln in content.scans.vulnerabilities">{{vuln}}</li>
+	    </ul>
+	  </dd>
+	</dl>
+      </div>
+      <div ng-if="content.scans.openports">
+	<p>Ports, services &amp; products</p>
+	<dl class="dl-horizontal">
+	  <dt>Open ports</dt>
+	  <dd>{{content.scans.openports.join(' / ')}}</dd>
+	  <dt ng-if-start="content.scans.services">Services</dt>
+	  <dd ng-if-end=>{{content.scans.services.join(' / ')}}</dd>
+	  <dt ng-if-start="content.scans.products">Products</dt>
+	  <dd ng-if-end=>{{content.scans.products.join(' / ')}}</dd>
+      </div>
+      <div ng-if="content.scans.certs">
+	<p>Certificates:</p>
+	<dl ng-repeat="cert in content.scans.certs" class="dl-horizontal">
+	  <dt>Subject</dt>
+	  <dd>{{cert.subject}}</dd>
+	  <dt>Issuer</dt>
+	  <dd>{{cert.issuer}}</dd>
+	  <dt>MD5</dt>
+	  <dd>{{cert.md5}}</dd>
+	  <dt>SHA1</dt>
+	  <dd>{{cert.sha1}}</dd>
+	  <dt>SHA256</dt>
+	  <dd>{{cert.sha256}}</dd>
+	</dl>
+      </div>
+    </span>
+    <span ng-switch-when="network|autonomous-system" ng-repeat="res in content.scans">
+      <div>
+	Results from {{res.firstseen}} to {{res.lastseen}}
+      </div>
+      <div ng-if="res.sources">
+	Sources: {{res.sources.join(' / ')}}
+      </div>
+      <div ng-if="res.categories">
+	Categories: {{res.categories.join(' / ')}}
+      </div>
+      <div ng-if="res.hostnames">
+	Hostnames: {{res.hostnames.join(' / ')}}
+      </div>
+      <div ng-if="res.vulnerabilities" class="text-danger">
+	<p>Vulnerabilities</p>
+	<dl class="dl-horizontal">
+	  <dt>Vulnerabilities</dt>
+	  <dd>
+	    <ul>
+	      <li ng-repeat="vuln in res.vulnerabilities">{{vuln}}</li>
+	    </ul>
+	  </dd>
+	</dl>
+      </div>
+      <div ng-if="res.openports">
+	<p>Ports, services &amp; products</p>
+	<dl class="dl-horizontal">
+	  <dt>Open ports</dt>
+	  <dd>{{res.openports.join(' / ')}}</dd>
+	  <dt ng-if-start="res.services">Services</dt>
+	  <dd ng-if-end=>{{res.services.join(' / ')}}</dd>
+	  <dt ng-if-start="res.products">Products</dt>
+	  <dd ng-if-end=>{{res.products.join(' / ')}}</dd>
+      </div>
+      <div ng-if="res.certs">
+	<p>Certificates:</p>
+	<dl ng-repeat="cert in res.certs" class="dl-horizontal">
+	  <dt>Subject</dt>
+	  <dd>{{cert.subject}}</dd>
+	  <dt>Issuer</dt>
+	  <dd>{{cert.issuer}}</dd>
+	  <dt>MD5</dt>
+	  <dd>{{cert.md5}}</dd>
+	  <dt>SHA1</dt>
+	  <dd>{{cert.sha1}}</dd>
+	  <dt>SHA256</dt>
+	  <dd>{{cert.sha256}}</dd>
+	</dl>
+      </div>
+    </span>
+    <span ng-switch-default=>
+      <div>
+	<ul>
+	  <li ng-repeat="res in content.scans">{{res}}</li>
+	</ul>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.passive">
+  <div class="panel-heading">
+    IVRE / passive for <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+  </div>
+  <div class="panel-body" ng-switch="artifact.dataType">
+    <span ng-switch-when="ip">
+      <div>
+	Results from {{content.passive.firstseen}} to {{content.passive.lastseen}}
+      </div>
+      <div ng-if="content.passive.sources">
+	Sources: {{content.passive.sources.join(' / ')}}
+      </div>
+      <div ng-if="content.passive.categories">
+	Categories: {{content.passive.categories.join(' / ')}}
+      </div>
+      <div ng-if="content.passive.hostnames">
+	Hostnames: {{content.passive.hostnames.join(' / ')}}
+      </div>
+      <div ng-if="content.passive.vulnerabilities" class="text-danger">
+	<p>Vulnerabilities</p>
+	<dl class="dl-horizontal">
+	  <dt>Vulnerabilities</dt>
+	  <dd>
+	    <ul>
+	      <li ng-repeat="vuln in content.passive.vulnerabilities">{{vuln}}</li>
+	    </ul>
+	  </dd>
+	</dl>
+      </div>
+      <div ng-if="content.passive.openports">
+	<p>Ports, services &amp; products</p>
+	<dl class="dl-horizontal">
+	  <dt>Open ports</dt>
+	  <dd>{{content.passive.openports.join(' / ')}}</dd>
+	  <dt ng-if-start="content.passive.services">Services</dt>
+	  <dd ng-if-end=>{{content.passive.services.join(' / ')}}</dd>
+	  <dt ng-if-start="content.passive.products">Products</dt>
+	  <dd ng-if-end=>{{content.passive.products.join(' / ')}}</dd>
+      </div>
+      <div ng-if="content.passive.certs">
+	<p>Certificates:</p>
+	<dl ng-repeat="cert in content.passive.certs" class="dl-horizontal">
+	  <dt>Subject</dt>
+	  <dd>{{cert.subject}}</dd>
+	  <dt>Issuer</dt>
+	  <dd>{{cert.issuer}}</dd>
+	  <dt>MD5</dt>
+	  <dd>{{cert.md5}}</dd>
+	  <dt>SHA1</dt>
+	  <dd>{{cert.sha1}}</dd>
+	  <dt>SHA256</dt>
+	  <dd>{{cert.sha256}}</dd>
+	</dl>
+      </div>
+    </span>
+    <span ng-switch-when="network|autonomous-system" ng-repeat="res in content.passive">
+      <div>
+	Results from {{res.firstseen}} to {{res.lastseen}}
+      </div>
+      <div ng-if="res.sources">
+	Sources: {{res.sources.join(' / ')}}
+      </div>
+      <div ng-if="res.categories">
+	Categories: {{res.categories.join(' / ')}}
+      </div>
+      <div ng-if="res.hostnames">
+	Hostnames: {{res.hostnames.join(' / ')}}
+      </div>
+      <div ng-if="res.vulnerabilities" class="text-danger">
+	<p>Vulnerabilities</p>
+	<dl class="dl-horizontal">
+	  <dt>Vulnerabilities</dt>
+	  <dd>
+	    <ul>
+	      <li ng-repeat="vuln in res.vulnerabilities">{{vuln}}</li>
+	    </ul>
+	  </dd>
+	</dl>
+      </div>
+      <div ng-if="res.openports">
+	<p>Ports, services &amp; products</p>
+	<dl class="dl-horizontal">
+	  <dt>Open ports</dt>
+	  <dd>{{res.openports.join(' / ')}}</dd>
+	  <dt ng-if-start="res.services">Services</dt>
+	  <dd ng-if-end=>{{res.services.join(' / ')}}</dd>
+	  <dt ng-if-start="res.products">Products</dt>
+	  <dd ng-if-end=>{{res.products.join(' / ')}}</dd>
+      </div>
+      <div ng-if="res.certs">
+	<p>Certificates:</p>
+	<dl ng-repeat="cert in res.certs" class="dl-horizontal">
+	  <dt>Subject</dt>
+	  <dd>{{cert.subject}}</dd>
+	  <dt>Issuer</dt>
+	  <dd>{{cert.issuer}}</dd>
+	  <dt>MD5</dt>
+	  <dd>{{cert.md5}}</dd>
+	  <dt>SHA1</dt>
+	  <dd>{{cert.sha1}}</dd>
+	  <dt>SHA256</dt>
+	  <dd>{{cert.sha256}}</dd>
+	</dl>
+      </div>
+    </span>
+    <span ng-switch-default=>
+      <div>
+	<ul>
+	  <li ng-repeat="res in content.passive">{{res}}</li>
+	</ul>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+  <div class="panel-heading">
+    IVRE / error for <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+  </div>
+  <div class="panel-body">
+    {{content.errorMessage}}
+  </div>
+</div>

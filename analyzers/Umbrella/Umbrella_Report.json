@@ -1,0 +1,45 @@
+{
+  "name": "Umbrella_Report",
+  "version": "1.0",
+  "author": "Kyle Parrish",
+  "url": "https://github.com/arnydo/thehive/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Query the Umbrella Reporting API for recent DNS queries and their status.",
+  "dataTypeList": ["domain", "fqdn"],
+  "command": "Umbrella/Umbrella.py",
+  "baseConfig": "Umbrella",
+  "config": {
+        "service": "get"
+  },
+  "configurationItems": [
+    {
+        "name": "api_key",
+        "description": "Api Key provided by Umbrella Admin Console.",
+        "type": "string",
+        "multi": false,
+        "required": true
+    },
+    {
+        "name": "api_secret",
+        "description": "Api Secret provided by Umbrella Admin Console.",
+        "type": "string",
+        "multi": false,
+        "required": true
+    },
+    {
+        "name": "organization_id",
+        "description": "Organization ID provided by Umbrella Admin Console.",
+        "type": "string",
+        "multi": false,
+        "required": true
+    },
+    {
+        "name": "query_limit",
+        "description": "Maximum number of results to return.",
+        "type": "number",
+        "multi": false,
+        "required": false,
+        "default": 20
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+    "name": "MSDefenderOffice365_block",
+    "version": "1.0",
+    "author": "Joe Lazaro",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Add entries to the Tenant Allow/Block List in the Microsoft 365 Defender",
+    "dataTypeList": [
+        "thehive:case_artifact"
+    ],
+    "command": "MSDefenderOffice365/ms_defender_office.py",
+    "baseConfig": "MSDefenderOffice365",
+    "config": {
+        "service": "block"
+    },
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://learn.microsoft.com/en-us/microsoft-365/security/office-365-security/defender-for-office-365?view=o365-worldwide",
+    "service_logo": {
+        "path": "assets/MicrosoftDefenderForOffice365_logo.png",
+        "caption": "logo"
+    },
+    "screenshots": [
+        {
+            "path": "assets/MSDefenderOffice365_Block.png",
+            "caption": "Example responder action result"
+        }
+    ],
+    "configurationItems": [
+        {
+            "name": "certificate_base64",
+            "description": "Base64-encoded PFX certificate to be used for certificate-based authentication.",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "certificate_password",
+            "description": "Password for the certificate used to authenticate",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "app_id",
+            "description": "The application ID of the service principal that's used in certificate based authentication",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "organization",
+            "description": "Tenant ID. Example: something.onmicrosoft.com",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "block_expiration_days",
+            "description": "How many days out should we set the expiration? A value <= 0 means to set no expiration.",
+            "type": "number",
+            "multi": false,
+            "required": true,
+            "defaultValue": 0
+        }
+    ]
+}

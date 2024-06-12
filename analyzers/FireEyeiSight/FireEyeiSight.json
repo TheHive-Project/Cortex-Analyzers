@@ -1,0 +1,46 @@
+{
+    "name": "FireEyeiSight",
+    "version": "1.0",
+    "author": "Davide Arcuri and Andrea Garavaglia, LDO-CERT",
+    "url": "https://github.com/LDO-CERT/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Query domains, IPs, hashes and URLs on FireEye's iSIGHT threat intelligence service.",
+    "dataTypeList": ["domain", "ip", "hash", "url"],
+    "baseConfig": "FireEyeiSight",
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 2,
+        "service": "query"
+    },
+    "command": "FireEyeiSight/fireeyeisight_lookup.py",
+    "configurationItems": [
+        {
+            "name": "key",
+            "description": "API key for FireEye iSIGHT.",
+            "required": true,
+            "type": "string",
+            "multi": false
+        },
+        {
+            "name": "pwd",
+            "description": "Password associated to the API key.",
+            "required": true,
+            "type": "string",
+            "multi": false
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://intelligence.fireeye.com/",
+    "service_logo": {
+        "path": "assets/fireeyeisight.png",
+        "caption": "FireEyeiSight logo"
+    },
+    "screenshots": [
+        {
+            "path": "assets/long_report.png",
+            "caption": "FireEyeiSight: Long report template"
+        }
+    ]
+}

@@ -1,0 +1,551 @@
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>VirusTotal GetReport</strong>
+    </div>
+    <div class="panel-body">{{content.errorMessage}}</div>
+</div>
+
+<!-- Success -->
+<div ng-switch="content.response_code" ng-if="success">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Summary</strong>
+        </div>
+        <div class="panel-body">
+            <div class="row" style="margin-bottom: 1em">
+                <div class="text-center col-md-6">
+                    <dl
+                            class="dl-horizontal"
+                            ng-if="content.message"
+                    >
+                        <dt>Message</dt>
+                        <dd class="wrap">
+                            {{content.message}}
+                        </dd>
+                    </dl>
+                    <dl
+                            class="dl-horizontal"
+                            ng-if="content.attributes.last_analysis_stats"
+                            ng-init="stats = content.attributes.last_analysis_stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
+                    >
+                        <dt>Malicious</dt>
+                        <dd class="wrap">
+                            <strong style="color: #fa541c">{{content.attributes.last_analysis_stats.malicious}}</strong>/{{total}}
+                        </dd>
+                    </dl>
+                    <dl
+                            class="dl-horizontal"
+                            ng-if="content.attributes.last_analysis_stats"
+                            ng-init="stats = content.attributes.last_analysis_stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
+                    >
+                        <dt>Suspicious</dt>
+                        <dd class="wrap">
+                            <strong style="color: #ffa940">{{content.attributes.last_analysis_stats.suspicious}}</strong>/{{total}}
+                        </dd>
+                    </dl>
+                    <dl
+                            class="dl-horizontal"
+                            ng-if="content.attributes.last_analysis_stats"
+                            ng-init="stats = content.attributes.last_analysis_stats;
+                                     others = stats.type-unsupported + stats.confirmed-timeout + stats.timeout + stats.failure + stats.undetected;
+                                     total = others + stats.harmless + stats.malicious + stats.suspicious"
+                    >
+                        <dt>Undefined</dt>
+                        <dd class="wrap">
+                            <strong class="text-info">{{others}}</strong>/{{total}}
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="dl-horizontal" ng-if="content.attributes.size">
+                        <dt>Size</dt>
+                        <dd class="wrap">{{content.attributes.size}}B</dd>
+                    </dl>
+                    <dl class="dl-horizontal" ng-if="content.attributes.last_analysis_date">
+                        <dt>Last analysis date</dt>
+                        <dd class="wrap">
+                            {{content.attributes.last_analysis_date*1000 | date: 'yyyy-MM-dd HH:mm:ss'}}
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="row">
+                <dl class="dl-horizontal" ng-if="content.attributes.names">
+                    <dt>Names</dt>
+                    <dd class="wrap" ng-repeat="name in content.attributes.names">{{name}}</dd>
+                </dl>
+                <dl class="dl-horizontal" ng-if="content.attributes.url">
+                    <dt>Url</dt>
+                    <dd class="wrap">{{content.attributes.url}}</dd>
+                </dl>
+                <dl class="dl-horizontal" ng-if="content.id && content.type != 'domain' && content.type != 'fqdn'">
+                    <dt>SHA-256</dt>
+                    <dd class="wrap">{{content.id}}</dd>
+                </dl>
+                <div class="col-md-6 text-center"
+                     ng-if="content.id && (content.type == 'domain' || content.type ==  'fqdn')">
+                    <dl class="dl-horizontal">
+                        <dt>Resolution</dt>
+                        <dd class="wrap">{{content.id}}</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="row">
+                <dl class="dl-horizontal" ng-if="content.attributes.last_analysis_results">
+                    <dt>VirusTotal Report</dt>
+                    <dd>
+                        <a
+                                ng-href="{{'https://www.virustotal.com/gui/search/'+content.id}}"
+                                target="_blank"
+                                ng-if="content.type != 'url'"
+                        >
+                            https://www.virustotal.com/gui/search/{{content.id}}
+                        </a>
+                        <a
+                                ng-href="{{'https://www.virustotal.com/gui/url/'+content.id}}"
+                                target="_blank"
+                                ng-if="content.type == 'url'"
+                        >
+                            https://www.virustotal.com/gui/url/{{content.id}}
+                        </a>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.attributes.crowdsourced_yara_results">
+        <div class="panel-heading">
+            <strong>Crowdsourced YARA results</strong>
+        </div>
+        <div class="panel-body">
+            <div ng-repeat="result in content.attributes.crowdsourced_yara_results">
+                <div class="row" style="margin-bottom: 1em">
+                    <div class="text-center col-md-1">
+                        <i class="fa fa-exclamation-triangle" style="color: #ffa940"></i>
+                    </div>
+                    <div class="col-md-11">
+                        Matches rule <span style="color: #ffa940">{{result.rule_name}}</span> by
+                        <i>{{result.author}}</i> from {{result.ruleset_name}} at
+                        <a style="color: black; text-decoration: underline" target="_blank" ng-href="{{result.source}}"
+                        >{{result.source}}</a
+                        >
+                        <br/>
+                        <span style="color: #666666">
+                            <div class="row" style="margin-bottom: 1em">
+                                <div class="text-center col-md-1" style="width:0%; padding-right:0.5%">
+                                    <i class="fa fa-info-circle"></i>
+                                </div>
+                                <div class="col-md-11">
+                                    {{result.description}}
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.attributes.crowdsourced_ids_stats">
+        <div class="panel-heading">
+            <strong>Crowdsourced IDS stats</strong>
+        </div>
+        <div class="panel-body">
+            <div class="row text-center" style="font-weight: bold">
+                <div class="col-md-3 text-success">LOW: {{content.attributes.crowdsourced_ids_stats.low}}</div>
+                <div class="col-md-3 text-info">INFO: {{content.attributes.crowdsourced_ids_stats.info}}</div>
+                <div class="col-md-3" style="color: #ffa940">
+                    MEDIUM: {{content.attributes.crowdsourced_ids_stats.medium}}
+                </div>
+                <div class="col-md-3 text-danger">HIGH: {{content.attributes.crowdsourced_ids_stats.high}}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.attributes.crowdsourced_ids_results">
+        <div class="panel-heading">
+            <strong>Crowdsourced IDS results</strong>
+        </div>
+        <div class="panel-body">
+            <div ng-repeat="result in content.attributes.crowdsourced_ids_results">
+                <div class="row" style="margin-bottom: 1em">
+                    <div class="text-center col-md-1">
+                        <i class="fa fa-exclamation-triangle mt-auto mb-auto"
+                           ng-class="result.alert_severity == 'high' ? 'text-danger' : (scanner.category == 'medium' ? 'text-warning' : (scanner.category == 'low' ? 'text-success' : 'text-info' ))">
+                        </i>
+                    </div>
+
+                    <div class="col-md-11">
+                        Matches rule <span style="color: #ffa940">{{result.rule_msg}}</span> from {{result.rule_source}}
+                        at
+                        <a style="color: black; text-decoration: underline" target="_blank" ng-href="{{result.source}}"
+                        >{{result.rule_url}}</a
+                        >
+                        <br/>
+                        <span style="color: #666666">
+                            <div class="row" style="margin-bottom: 1em">
+                                <div class="text-center col-md-1" style="width:0%; padding-right:0.5%">
+                                <i class="fa fa-info-circle"></i>
+                                </div>
+                                <div class="col-md-11">
+                                    <strong>Category: </strong>{{result.rule_category}}
+                                    <div>
+                                        <strong>Destinations: </strong>
+                                        <span ng-repeat="data in result.alert_context" style="margin-right:5%">
+                                            {{data.dest_ip}}:{{data.dest_port}} 
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.attributes.sandbox_verdicts">
+        <div class="panel-heading">
+            <strong>Sandbox Verdicts</strong>
+        </div>
+        <div class="panel-body">
+            <div ng-repeat="verdict in content.attributes.sandbox_verdicts">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div><strong>{{verdict.sandbox_name}}</strong></div>
+                    </div>
+                    <div class="col-md-4">
+                        <dl class="dl-horizontal">
+                            <dt>Category</dt>
+                            <dd class="wrap">{{verdict.category}}</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>Classification(s)</dt>
+                            <dd class="wrap" ng-repeat="classification in verdict.malware_classification">
+                                {{classification}}
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <hr ng-if="verdict == content.attributes.sandbox_verdicts.at(-1)"
+                    style="background-color: #d8ecf6; height: 1px;">
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.relations.contacted_urls.meta.count > 0">
+        <div class="panel-heading row">
+            <div class="col-md-6">
+                <strong>Contacted URLs</strong>
+            </div>
+            <div class="col-md-6 text-right" ng-if="content.relations.contacted_urls.meta.count > 10">
+                (Last 10)
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Scanned</th>
+                    <th scope="col">Detections</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">URL</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="url in content.relations.contacted_urls.data">
+                    <td>
+                        <strong>{{url.attributes.last_analysis_date*1000 | date: 'yyyy-MM-dd'}}</strong>
+                    </td>
+                    <td
+                            ng-init="stats = url.attributes.last_analysis_stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
+                    >
+                        <strong ng-class="url.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
+                            {{url.attributes.last_analysis_stats.malicious || "0"}}
+                        </strong> / {{total}}
+                    </td>
+                    <td>{{url.attributes.last_http_response_code || "-"}}</td>
+                    <td>{{url.attributes.url || "-"}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.relations.contacted_domains.meta.count > 0">
+        <div class="panel-heading row">
+            <div class="col-md-6">
+                <strong>Contacted Domains</strong>
+            </div>
+            <div class="col-md-6 text-right" ng-if="content.relations.contacted_domains.meta.count > 10">
+                (Last 10)
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Domain</th>
+                    <th scope="col">Detections</th>
+                    <th scope="col">Created</th>
+                    <th scope="col">Registrar</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="domain in content.relations.contacted_domains.data">
+                    <td>
+                        <strong>{{domain.id}}</strong>
+                    </td>
+                    <td
+                            ng-init="stats = domain.attributes.last_analysis_stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
+                    >
+                        <strong ng-class="domain.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
+                            {{domain.attributes.last_analysis_stats.malicious || "0"}}
+                        </strong> / {{total}}
+                    </td>
+                    <td ng-if="domain.attributes.creation_date">{{domain.attributes.creation_date*1000 | date:
+                        'yyyy-MM-dd'}}
+                    </td>
+                    <td ng-if="!domain.attributes.creation_date">-</td>
+                    <td>{{domain.attributes.registrar || "-"}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.relations.last_serving_ip_address.meta.count > 0">
+        <div class="panel-heading">
+            <strong>Last Serving IP Address</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">IP</th>
+                    <th scope="col">Detections</th>
+                    <th scope="col">Autonomous System</th>
+                    <th scope="col">Country</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-init="ip = content.relations.last_serving_ip_address.data">
+                    <td>
+                        <strong>{{ip.id}}</strong>
+                    </td>
+                    <td
+                            ng-init="stats = ip.attributes.last_analysis_stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
+                    >
+                        <strong ng-class="ip.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
+                            {{ip.attributes.last_analysis_stats.malicious || "0"}}
+                        </strong> / {{total}}
+                    </td>
+                    <td>{{ip.attributes.asn || "-"}}</td>
+                    <td>{{ip.attributes.country || "-"}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.relations.contacted_ips.meta.count > 0">
+        <div class="panel-heading row">
+            <div class="col-md-6">
+                <strong>Contacted IP Addresses</strong>
+            </div>
+            <div class="col-md-6 text-right" ng-if="content.relations.contacted_ips.meta.count > 10">
+                (Last 10)
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">IP</th>
+                    <th scope="col">Detections</th>
+                    <th scope="col">Autonomous System</th>
+                    <th scope="col">Country</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="ip in content.relations.contacted_ips.data">
+                    <td>
+                        <strong>{{ip.id}}</strong>
+                    </td>
+                    <td
+                            ng-init="stats = ip.attributes.last_analysis_stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
+                    >
+                        <strong ng-class="ip.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
+                            {{ip.attributes.last_analysis_stats.malicious || "0"}}
+                        </strong> / {{total}}
+                    </td>
+                    <td>{{ip.attributes.asn || "-"}}</td>
+                    <td>{{ip.attributes.country || "-"}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.relations.urls.meta.count > 0">
+        <div class="panel-heading row">
+            <div class="col-md-6">
+                <strong>Detected URLs</strong>
+            </div>
+            <div class="col-md-6 text-right" ng-if="content.relations.urls.meta.count > 10">
+                (Last 10)
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Scanned</th>
+                    <th scope="col">Detections</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">URL</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="url in content.relations.urls.data">
+                    <td>
+                        <strong>{{url.attributes.last_analysis_date*1000 | date: 'yyyy-MM-dd'}}</strong>
+                    </td>
+                    <td
+                            ng-init="stats = url.attributes.last_analysis_stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
+                    >
+                        <strong ng-class="url.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
+                            {{url.attributes.last_analysis_stats.malicious || "0"}}
+                        </strong> / {{total}}
+                    </td>
+                    <td>{{url.attributes.last_http_response_code || "-"}}</td>
+                    <td>{{url.attributes.url || "-"}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.relations.downloaded_files.meta.count > 0">
+        <div class="panel-heading row">
+            <div class="col-md-6">
+                <strong>Detected files downloaded from this domain</strong>
+            </div>
+            <div class="col-md-6 text-right" ng-if="content.relations.downloaded_files.meta.count > 10">
+                (Last 10)
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Scanned</th>
+                    <th scope="col">Detections</th>
+                    <th scope="col">SHA256</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="file in content.relations.downloaded_files.data">
+                    <td>
+                        <strong>{{file.attributes.last_analysis_date*1000 | date: 'yyyy-MM-dd'}}</strong>
+                    </td>
+                    <td
+                            ng-init="stats = file.attributes.last_analysis_stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
+                    >
+                        <strong ng-class="file.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
+                            {{file.attributes.last_analysis_stats.malicious || "0"}}
+                        </strong> / {{total}}
+                    </td>
+                    <td>{{file.attributes.sha256 || "-"}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.relations.referrer_files.meta.count > 0">
+        <div class="panel-heading row">
+            <div class="col-md-6">
+                <strong>Detected files which refer to this domain</strong>
+            </div>
+            <div class="col-md-6 text-right" ng-if="content.relations.referrer_files.meta.count > 10">
+                (Last 10)
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Scanned</th>
+                    <th scope="col">Detections</th>
+                    <th scope="col">SHA256</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="file in content.relations.referrer_files.data">
+                    <td>
+                        <strong>{{file.attributes.last_analysis_date*1000 | date: 'yyyy-MM-dd'}}</strong>
+                    </td>
+                    <td
+                            ng-init="stats = file.attributes.last_analysis_stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
+                    >
+                        <strong ng-class="file.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
+                            {{file.attributes.last_analysis_stats.malicious || "0"}}
+                        </strong> / {{total}}
+                    </td>
+                    <td>{{file.attributes.sha256 || "-"}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.attributes.last_analysis_results">
+        <div class="panel-heading">
+            <strong>Scans</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Scanner</th>
+                    <th scope="col">Detected</th>
+                    <th scope="col" ng-if="content.type == 'url'">Result</th>
+                    <th scope="col">Method</th>
+                    <th scope="col" ng-if="content.type != 'url'">Update</th>
+                    <th scope="col" ng-if="content.type != 'url'">Version</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="scanner in content.attributes.last_analysis_results">
+                    <td>
+                        <strong>{{scanner.engine_name}}</strong>
+                    </td>
+                    <td>
+                        <i
+                                ng-class="scanner.category == 'malicious' ? 'text-danger fa fa-bug' : (scanner.category == 'suspicious' ? 'text-warning fa fa-bug' : (scanner.category == 'harmless' ? 'text-success fa fa-check-circle' : 'text-info fa fa-question-circle' ))"
+                        >
+                        </i>
+                    </td>
+                    <td
+                            ng-if="content.type == 'url'"
+                            ng-class="{'text-danger': scanner.category == 'malicious', 'text-warning': scanner.category == 'suspicious', 'text-success': scanner.category == 'harmless', 'text-info': scanner.category == 'failure' && scanner.category == 'undetected' && scanner.category == 'type-unsupported' }"
+                            class="wrap"
+                    >
+                        {{scanner.result || "null"}}
+                    </td>
+                    <td>{{scanner.method || "null"}}</td>
+                    <td ng-if="content.type != 'url'">
+                        {{scanner.engine_update.slice(0,4)+"/"+scanner.engine_update.slice(4,6)+"/"+scanner.engine_update.slice(6,8)}}
+                    </td>
+                    <td ng-if="content.type != 'url'">{{scanner.engine_version || ""}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
