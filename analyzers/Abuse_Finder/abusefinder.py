@@ -15,16 +15,16 @@ logging.getLogger("tldextract").setLevel(logging.CRITICAL)
 class AbuseFinderAnalyzer(Analyzer):
 
     def summary(self, raw):
-
         taxonomies = []
-        if raw['abuse_finder'] and raw['abuse_finder'].get('abuse'):
-            for abuse in raw['abuse_finder']['abuse']:
-                taxonomies.append(self.build_taxonomy("info", "Abuse_Finder", "Address", abuse))
-        else:
-            taxonomies.append(self.build_taxonomy("info", "Abuse_Finder", "Address", "None"))
-            return {"taxonomies": taxonomies}
-        
-        return {}
+        try:
+            if raw and raw['abuse_finder'].get('abuse'):
+                for abuse in raw['abuse_finder']['abuse']:
+                    taxonomies.append(self.build_taxonomy("info", "Abuse_Finder", "Address", abuse))
+            else:
+                taxonomies.append(self.build_taxonomy("info", "Abuse_Finder", "Address", "None"))
+        except:
+            pass
+        return {"taxonomies": taxonomies}
 
     def abuse(self):
         if self.data_type == "ip":

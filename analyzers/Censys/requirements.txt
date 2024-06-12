@@ -1,2 +1,3 @@
 cortexutils
-censys==1.1.1
+argcomplete
+censys==2.2.11

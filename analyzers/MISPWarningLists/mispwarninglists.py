@@ -161,18 +161,19 @@ class MISPWarninglistsAnalyzer(Analyzer):
                         "SELECT list_name, list_version, concat(subdomain, '.', domain, '.', tld) as value  FROM warninglists WHERE (subdomain = '%s' or subdomain = '*') and domain = '%s' and tld = '%s'"
                         % (subdomain, domain, tld)
                     )
-            values = self.engine.execute(sql)
+            with self.engine.connect() as conn:
+                values = conn.execute(db.text(sql))
+                if values.rowcount > 0:
+                    for row in values:
+                        results.append(
+                            {
+                                key: value
+                                for (key, value) in zip(
+                                    ["list_name", "list_version", "value"], row
+                                )
+                            }
+                        )
             self.engine.dispose()
-            if values.rowcount > 0:
-                for row in values:
-                    results.append(
-                        {
-                            key: value
-                            for (key, value) in zip(
-                                ["list_name", "list_version", "value"], row
-                            )
-                        }
-                    )
             self.report({"results": results, "mode": "db", "is_uptodate": "N/A"})
 
     def summary(self, raw):
