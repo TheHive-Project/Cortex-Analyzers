@@ -1,0 +1,32 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+      URL decode result
+    </div>
+    <div class="panel-body">
+      <div>
+        Original URL: <strong>{{artifact.data | fang}}</strong>
+      </div>
+      <p ng-if="content.invalid">
+        {{ content.invalid }}
+      </p>
+      <p ng-if="content.undecodable">
+        <pre>{{ content.undecodable }}</pre>
+      </p>
+      <p ng-if="content.decoded_url">
+        Decoded result: <strong>{{content.decoded_url | fang}}</strong>
+      </p>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+  <div class="panel-heading">
+    Error in decoding
+  </div>
+  <div class="panel-body">
+    <div>
+      Original URL: <strong>{{artifact.data | fang}}</strong>
+    </div>
+    {{content.errorMessage}}
+  </div>
+</div>
+
