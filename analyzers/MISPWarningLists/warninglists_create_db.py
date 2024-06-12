@@ -18,8 +18,8 @@ from sqlalchemy import Table, Column, Integer, String, MetaData, Index, create_e
 from sqlalchemy.sql import select
 from sqlalchemy.dialects.postgresql import CIDR
 
-conn_string = "postgresql+psycopg2://cortex:password@localhost:5432/warninglists"
-warninglists_path = "/opt/misp-warninglists/**/list.json"
+conn_string = "<insert_postgres_conn_strin>"
+warninglists_path = "misp-warninglists/**/list.json"
 
 engine = create_engine(conn_string)
 conn = engine.connect()
