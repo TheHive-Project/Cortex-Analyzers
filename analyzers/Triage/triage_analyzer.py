@@ -22,7 +22,7 @@ class TriageAnalyzer(Analyzer):
         else:
             self.timeout = 200
 
-        self.url = 'https://private.tria.ge/api'
+        self.url = self.get_param('config.api_url', 'https://private.tria.ge/api', 'Triage API URL is missing')
 
     def summary(self, raw):
          taxonomies = []
