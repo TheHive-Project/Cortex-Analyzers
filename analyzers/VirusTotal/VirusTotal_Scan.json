@@ -5,7 +5,10 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Use VirusTotal to scan a file or URL.",
-  "dataTypeList": ["file", "url"],
+  "dataTypeList": [
+    "file",
+    "url"
+  ],
   "baseConfig": "VirusTotal",
   "config": {
     "service": "scan"
@@ -41,5 +44,40 @@
     "path": "assets/virustotal-logo.png",
     "caption": "logo"
   },
-  "command": "VirusTotal/virustotal.py"
+  "command": "VirusTotal/virustotal.py",
+  "checks": [
+    {
+      "input": {
+        "file": "catalog.json",
+        "contentType": "application/json",
+        "filename": "catalog.json",
+        "dataType": "file",
+        "config": {
+          "service": "scan",
+          "key": "ENV:virTot",
+          "polling_interval": 60
+        }
+      },
+      "rules": [
+        {
+          "path": "$.success",
+          "expected": [
+            true
+          ]
+        },
+        {
+          "path": "$.full.type",
+          "expected": [
+            "analysis"
+          ]
+        },
+        {
+          "path": "$.full.attributes.status",
+          "expected": [
+            "completed"
+          ]
+        }
+      ]
+    }
+  ]
 }
