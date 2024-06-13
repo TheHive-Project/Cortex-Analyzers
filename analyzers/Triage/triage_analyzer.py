@@ -87,25 +87,32 @@ class TriageAnalyzer(Analyzer):
         return retrive
 
     def run(self):
+        # strip api from the base URL
+        base_url = self.url.rstrip('api')
+        if self.data_type == 'ip' or self.data_type == 'url':
+            data = self.get_param('data', None, 'Data is missing')
 
-            if self.data_type == 'ip' or self.data_type == 'url':
-                data = self.get_param('data', None, 'Data is missing')
-
-                if ':' in data:
-                    result = self.url_submit(data)
-                    self.report({'result': result})
-                else:
-                    self.error('Schema is missing')
-
-            elif self.data_type == 'file':
-                filepath = self.get_param('file', None, 'File is missing')
-                filename = self.get_param('filename', basename(filepath))
-
-                result = self.file_submit(filename, filepath)
-
-                self.report({'result': result})
+            if ':' in data:
+                result = self.url_submit(data)
+                self.report({
+                    'result': result,
+                    'url': base_url
+                    })
             else:
-               data = self.get_param('data', None, 'Data is missing')
+                self.error('Schema is missing')
+
+        elif self.data_type == 'file':
+            filepath = self.get_param('file', None, 'File is missing')
+            filename = self.get_param('filename', basename(filepath))
+
+            result = self.file_submit(filename, filepath)
+
+            self.report({
+                    'result': result,
+                    'url': base_url
+                    })
+        else:
+            data = self.get_param('data', None, 'Data is missing')
 
 if __name__ == '__main__':
     TriageAnalyzer().run()
