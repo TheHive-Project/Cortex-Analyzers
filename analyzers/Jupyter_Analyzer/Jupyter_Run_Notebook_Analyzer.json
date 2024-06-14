@@ -18,7 +18,8 @@
     "registry",
     "regexp",
     "other",
-    "filename"
+    "filename",
+    "mail-subject"
   ],
   "description": "Execute a parameterized notebook in Jupyter",
   "baseConfig": "Jupyter",
