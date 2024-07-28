@@ -26,7 +26,7 @@ class SpamhausDBLAnalyzer(Analyzer):
    
     def run(self):
         try:
-            lookup = dns.resolver.query(self.observable + '.dbl.spamhaus.org')
+            lookup = dns.resolver.resolve(self.observable + '.dbl.spamhaus.org')
             return_code = str(lookup[0])
             # Check return code for result info
             # Reference here: https://www.spamhaus.org/faq/section/Spamhaus%20DBL#291
