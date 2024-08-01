@@ -89,8 +89,9 @@ class UrlscanAnalyzer(Analyzer):
                     matches = []
 
                     for result in search_json["results"]:
+                        result_json = self.result(result['_id'], self.api_key)
                         scan_date = result['task']['time']
-                        res = process_result(result, filter_type, filter)
+                        res = process_result(result_json, filter_type, filter)
                         matches.append({'scan_date': scan_date, 'url': res})
                         time.sleep(0.8)
 
