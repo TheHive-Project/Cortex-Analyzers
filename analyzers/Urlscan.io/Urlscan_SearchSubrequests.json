@@ -1,0 +1,23 @@
+{
+  "name": "Urlscan.io_Search_Subrequests",
+  "author": "CTI_Marc",
+  "license": "MIT",
+  "url": "https://github.com/CTIMarc/Cortex-Analyzers",
+  "version": "0.1",
+  "baseConfig": "Urlscan.io",
+  "description": "Search a filter in subrequests",
+  "dataTypeList": ["other"],
+  "command": "Urlscan.io/urlscan_analyzer.py",
+  "config": {
+    "service":"search_subrequests"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Api Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}

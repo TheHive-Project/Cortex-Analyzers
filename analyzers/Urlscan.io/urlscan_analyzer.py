@@ -1,6 +1,24 @@
 #!/usr/bin/env python3
 from cortexutils.analyzer import Analyzer
 from urlscan import Urlscan, UrlscanException
+import jmespath
+import time
+import re
+
+
+def process_result(full_result, rtype, filter):
+    # filter = "data.requests[].request.redirectResponse | @[?headers.location == 'https://google.com/404/'].url | [0]"
+    match = None
+    if rtype == "jmespath":
+        match = jmespath.search(filter, full_result)
+    elif rtype == "pattern":
+        re1 = re.compile(filter)
+        for url in full_result['lists']['urls']:
+            matching = re1.match(url)
+            if matching:
+                match = matching.group(0)
+
+    return match
 
 
 class UrlscanAnalyzer(Analyzer):
@@ -10,7 +28,7 @@ class UrlscanAnalyzer(Analyzer):
         if self.service == 'scan' or self.service == 'search':
             self.api_key = self.get_param('config.key', None, 'Missing URLScan API key')
 
-    def search(self, indicator, api_key, search_after):
+    def search(self, indicator, api_key, search_after=None):
         """
         Searches for a website using the indicator
         :param indicator: domain, ip, hash, url
@@ -20,6 +38,17 @@ class UrlscanAnalyzer(Analyzer):
         :return: dict
         """
         res = Urlscan(indicator, api_key).search(search_after=search_after)
+        return res
+
+    def result(self, result_id, api_key):
+        """
+        Searches for a website using the indicator
+        :param indicator: domain, ip, hash, url
+        :type result_id: str
+        :type api_key: str
+        :return: dict
+        """
+        res = Urlscan(api_key=api_key).result(result_id)
         return res
 
     def scan(self, indicator):
@@ -33,7 +62,7 @@ class UrlscanAnalyzer(Analyzer):
         return res
 
     def run(self):
-        targets = ['ip', 'domain', 'hash', 'url','other']
+        targets = ['ip', 'domain', 'hash', 'url', 'other']
         if self.data_type == 'url':
             query = '"{}"'.format(self.get_data())
         else:
@@ -45,8 +74,30 @@ class UrlscanAnalyzer(Analyzer):
                     search_after = self.get_param('parameters.search_after', None, None)
                     self.report({
                         'type': self.data_type,
-                        'query': query+". Search after: " + str(search_after),
+                        'query': query + ". Search after: " + str(search_after),
                         'indicator': self.search(query, self.api_key, search_after=search_after)
+                    })
+            except UrlscanException as err:
+                self.error(str(err))
+
+        if self.service == 'search_subrequests':
+            try:
+                if self.data_type in targets:
+                    filter_type = self.get_param('parameters.type', "pattern", None)
+                    filter = self.get_param('parameters.filter', None, None)
+                    search_json = self.search(query, self.api_key)
+                    scan_date = search_json['task']['time']
+                    matches = []
+
+                    for result in search_json["results"]:
+                        res = process_result(result, filter_type, filter)
+                        matches.append({'scan_date': scan_date, 'url': res})
+                        time.sleep(0.8)
+
+                    self.report({
+                        'type': self.data_type,
+                        'query': f"Search `{filter}` on {query}.",
+                        'matches': matches
                     })
             except UrlscanException as err:
                 self.error(str(err))

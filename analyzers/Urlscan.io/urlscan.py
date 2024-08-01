@@ -12,10 +12,10 @@ class UrlscanException(Exception):
 
 
 class Urlscan:
-    def __init__(self, query="",api_key=""):
+    def __init__(self, query="", api_key=""):
         assert len(query) > 0, "Query must be defined"
         self.query = query
-        self.headers={"API-Key": api_key}
+        self.headers = {"API-Key": api_key}
 
     def search(self, search_after=None):
 
@@ -26,6 +26,13 @@ class Urlscan:
         else:
             payload = {"q": self.query}
         r = requests.get("https://urlscan.io/api/v1/search/", params=payload, verify=False, headers=self.headers)
+        if r.status_code == 200:
+            return r.json()
+        else:
+            raise UrlscanException("urlscan.io returns %s" % r.status_code)
+
+    def result(self, result_id):
+        r = requests.get(f"https://urlscan.io/api/v1/result/{result_id}/", verify=False, headers=self.headers)
         if r.status_code == 200:
             return r.json()
         else:
@@ -45,7 +52,7 @@ class Urlscan:
 
             finished = False
             tries = 0
-            while tries <= 15:        
+            while tries <= 15:
                 submission_req = requests.get(submission_url)
                 if submission_req.status_code == 200:
                     return submission_req.json()
