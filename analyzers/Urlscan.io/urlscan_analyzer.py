@@ -86,10 +86,10 @@ class UrlscanAnalyzer(Analyzer):
                     filter_type = self.get_param('parameters.type', "pattern", None)
                     filter = self.get_param('parameters.filter', None, None)
                     search_json = self.search(query, self.api_key)
-                    scan_date = search_json['task']['time']
                     matches = []
 
                     for result in search_json["results"]:
+                        scan_date = search_json['task']['time']
                         res = process_result(result, filter_type, filter)
                         matches.append({'scan_date': scan_date, 'url': res})
                         time.sleep(0.8)
