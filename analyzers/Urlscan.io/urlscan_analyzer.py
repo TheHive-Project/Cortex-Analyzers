@@ -13,7 +13,7 @@ def process_result(full_result, rtype, filter):
         match = jmespath.search(filter, full_result)
     elif rtype == "pattern":
         re1 = re.compile(filter)
-        for url in full_result['data']['lists']['urls']:
+        for url in full_result['lists']['urls']:
             matching = re1.match(url)
             if matching:
                 match = matching.group(0)
