@@ -25,7 +25,7 @@ class UrlscanAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
         self.service = self.get_param('config.service', None, 'Service parameter is missing')
-        if self.service == 'scan' or self.service == 'search':
+        if self.service == 'scan' or self.service == 'search' or self.service == 'search_subrequests':
             self.api_key = self.get_param('config.key', None, 'Missing URLScan API key')
 
     def search(self, indicator, api_key, search_after=None):
@@ -48,7 +48,7 @@ class UrlscanAnalyzer(Analyzer):
         :type api_key: str
         :return: dict
         """
-        res = Urlscan(api_key=api_key).result(result_id)
+        res = Urlscan(result_id, api_key).result(result_id)
         return res
 
     def scan(self, indicator):
