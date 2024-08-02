@@ -82,7 +82,7 @@ class UrlscanAnalyzer(Analyzer):
         if self.service == 'search_subrequests':
             try:
                 if self.data_type in targets:
-                    filter_type = self.get_param('parameters.type', "pattern", None)
+                    filter_type = self.get_param('parameters.rtype', "pattern", None)
                     rfilter = self.get_param('parameters.filter', None, None)
                     search_json = self.search(query, self.api_key)
                     self.report({
