@@ -104,11 +104,12 @@ class UrlscanAnalyzer(Analyzer):
                         scan_date = result['task']['time']
                         submitted_url = result['task']['url']
 
-                        matches.append({'scan_date': scan_date,
-                                        'submitted_url': submitted_url,
-                                        'ioc': res,
-                                        'result_id': result['_id']}
-                                       )
+                        if res:
+                            matches.append({'scan_date': scan_date,
+                                            'submitted_url': submitted_url,
+                                            'ioc': res,
+                                            'result_id': result['_id']}
+                                           )
                         time.sleep(0.8)
 
                     self.report({
