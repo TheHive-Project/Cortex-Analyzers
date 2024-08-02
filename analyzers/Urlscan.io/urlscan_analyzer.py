@@ -86,6 +86,11 @@ class UrlscanAnalyzer(Analyzer):
                     filter_type = self.get_param('parameters.type', "pattern", None)
                     filter = self.get_param('parameters.filter', None, None)
                     search_json = self.search(query, self.api_key)
+                    self.report({
+                        'type': self.data_type,
+                        'query': query,
+                        'indicator': search_json
+                    })
                     matches = []
 
                     for result in search_json["results"]:
@@ -111,7 +116,12 @@ class UrlscanAnalyzer(Analyzer):
         namespace = "urlscan.io"
         predicate = "Search"
 
-        total = raw["indicator"]["total"]
+        if self.service == 'search':
+            total = raw["indicator"]["total"]
+        elif self.service == 'search_subrequests':
+            total = len(raw["matches"])
+        else:
+            total = 0
         if total <= 1:
             level = 'suspicious' if total == 1 else 'info'
             value = total
