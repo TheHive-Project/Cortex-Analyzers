@@ -6,13 +6,12 @@ import time
 import re
 
 
-def process_result(full_result, rtype, filter):
-    # filter = "data.requests[].request.redirectResponse | @[?headers.location == 'https://google.com/404/'].url | [0]"
+def process_result(full_result, rtype, rfilter):
     match = None
     if rtype == "jmespath":
-        match = jmespath.search(filter, full_result)
+        match = jmespath.search(rfilter, full_result)
     elif rtype == "pattern":
-        re1 = re.compile(filter)
+        re1 = re.compile(rfilter)
         for url in full_result['lists']['urls']:
             matching = re1.match(url)
             if matching:
@@ -95,11 +94,20 @@ class UrlscanAnalyzer(Analyzer):
 
                     for result in search_json["results"]:
                         result_json = self.result(result['_id'], self.api_key)
+                        self.report({
+                            'type': self.data_type,
+                            'query': result['_id'],
+                            'indicator': result_json
+                        })
                         scan_date = result['task']['time']
                         submitted_url = result['task']['url']
 
                         res = process_result(result_json, filter_type, filter)
-                        matches.append({'scan_date': scan_date, 'submitted_url': submitted_url, 'ioc': res})
+                        matches.append({'scan_date': scan_date,
+                                        'submitted_url': submitted_url,
+                                        'ioc': res,
+                                        'result_id': result['_id']}
+                                       )
                         time.sleep(0.8)
 
                     self.report({
