@@ -83,7 +83,7 @@ class UrlscanAnalyzer(Analyzer):
             try:
                 if self.data_type in targets:
                     filter_type = self.get_param('parameters.type', "pattern", None)
-                    filter = self.get_param('parameters.filter', None, None)
+                    rfilter = self.get_param('parameters.filter', None, None)
                     search_json = self.search(query, self.api_key)
                     self.report({
                         'type': self.data_type,
@@ -94,6 +94,8 @@ class UrlscanAnalyzer(Analyzer):
 
                     for result in search_json["results"]:
                         result_json = self.result(result['_id'], self.api_key)
+                        res = process_result(result_json, filter_type, rfilter)
+
                         self.report({
                             'type': self.data_type,
                             'query': result['_id'],
@@ -102,7 +104,6 @@ class UrlscanAnalyzer(Analyzer):
                         scan_date = result['task']['time']
                         submitted_url = result['task']['url']
 
-                        res = process_result(result_json, filter_type, filter)
                         matches.append({'scan_date': scan_date,
                                         'submitted_url': submitted_url,
                                         'ioc': res,
@@ -112,7 +113,7 @@ class UrlscanAnalyzer(Analyzer):
 
                     self.report({
                         'type': self.data_type,
-                        'query': f"Search `{filter}` on {query}.",
+                        'query': f"Search `{rfilter}` on {query}.",
                         'matches': matches
                     })
             except UrlscanException as err:
