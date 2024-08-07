@@ -85,22 +85,12 @@ class UrlscanAnalyzer(Analyzer):
                     filter_type = self.get_param('parameters.rtype', "pattern", None)
                     rfilter = self.get_param('parameters.filter', None, None)
                     search_json = self.search(query, self.api_key)
-                    self.report({
-                        'type': self.data_type,
-                        'query': query,
-                        'indicator': search_json
-                    })
                     matches = []
 
                     for result in search_json["results"]:
                         result_json = self.result(result['_id'], self.api_key)
                         res = process_result(result_json, filter_type, rfilter)
 
-                        self.report({
-                            'type': self.data_type,
-                            'query': result['_id'],
-                            'indicator': result_json
-                        })
                         scan_date = result['task']['time']
                         submitted_url = result['task']['url']
 
