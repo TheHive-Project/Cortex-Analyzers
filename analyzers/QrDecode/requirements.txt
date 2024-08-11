@@ -1,0 +1,4 @@
+cortexutils
+pyzbar
+pdf2image
+pillow
