@@ -2,6 +2,8 @@
 
 Check [CrowdSec](https://www.crowdsec.net/) Threat Intelligence about an ip address.
 
+For further information, please consult the [official documentation](https://doc.crowdsec.net/u/cti_api/integration_thehive/).
+
 Running the analyzer will expose the result as taxonomies in the short report displayed in the ip observable.
 
 ![short result example](./assets/crowdsec-analyzer-result-example.png)
