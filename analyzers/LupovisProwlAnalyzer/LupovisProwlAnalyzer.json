@@ -1,1 +1,27 @@
-
+{
+  "name": "LupovisProwlAnalyzer",
+  "description": "Analyzer for IP reputation using Lupovis Prowl API",
+  "author": "Lyle Docherty",
+  "version": "1.1",
+  "url": "https://api.prowl.lupovis.io",
+  "license": "AGPL-V3",
+  "dataTypeList": [
+    "ip"
+  ],
+  "baseConfig": "LupovisProwl",
+  "config": {
+    "service": "query",
+    "url": "https://api.prowl.lupovis.io/GetIPReputation?ip="
+  },
+  "command": "LupovisProwlAnalyzer/LupovisProwlAnalyzer.py",
+  "configurationItems": [
+    {
+      "name": "prowl_api_key",
+      "description": "API key for Lupovis Prowl",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "<Enter Your API Key Here>"
+    }
+  ]
+}
