@@ -198,9 +198,9 @@ class VirusTotalAnalyzer(Analyzer):
             cursor = self.get_param('parameters.cursor',None)
             data = urllib.parse.quote_plus(self.get_data())
             if cursor:
-                url = f"""https://www.virustotal.com/api/v3/intelligence/search?descriptors_only=true&cursor={cursor}&limit={str(limit)}&query={data}"""
+                url = f"""https://www.virustotal.com/api/v3/intelligence/search?cursor={cursor}&limit={str(limit)}&query={data}"""
             else:
-                url = f"""https://www.virustotal.com/api/v3/intelligence/search?descriptors_only=true&limit={str(limit)}&query={data}"""
+                url = f"""https://www.virustotal.com/api/v3/intelligence/search?limit={str(limit)}&query={data}"""
             headers = {
                         "Accept": "application/json",
                         "X-Apikey": self.virustotal_key
