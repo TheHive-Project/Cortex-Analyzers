@@ -17,30 +17,48 @@ jobs:
     runs-on: [ ubuntu-latest ]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Build analyzers
-        uses: docker://thehiveproject/cortex-neurons-builder:latest
+      - name: Checkout neurons builder
+        uses: actions/checkout@v4
         with:
-          driver-opts: image=moby/buildkit:v0.12.0
-          args: |
-            --namespace cortexneurons --path analyzers --registry_dockerhub ${{ secrets.REGISTRY_DOCKERHUB }} --registry_harbor ${{ secrets.REGISTRY_HARBOR }} ${{ (startsWith(github.ref, 'refs/tags') || github.event_name == 'schedule') && '--stable' || '' }}
+          repository: TheHive-Project/cortex-neurons-builder
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: install python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Build analyzers
+        run: |
+          python build.py --namespace cortexneurons --path analyzers --registry_dockerhub ${{ secrets.REGISTRY_DOCKERHUB }} --registry_harbor ${{ secrets.REGISTRY_HARBOR }} ${{ (startsWith(github.ref, 'refs/tags') || github.event_name == 'schedule') && '--stable' || '' }}
 
   build_responders:
     name: Build Responders
     runs-on: [ ubuntu-latest ]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Build responders
-        uses: docker://thehiveproject/cortex-neurons-builder:latest
+      - name: Checkout neurons builder
+        uses: actions/checkout@v4
         with:
-          driver-opts: image=moby/buildkit:v0.12.0
-          args: |
-            --namespace cortexneurons --path responders --registry_dockerhub ${{ secrets.REGISTRY_DOCKERHUB }} --registry_harbor ${{ secrets.REGISTRY_HARBOR }} ${{ (startsWith(github.ref, 'refs/tags') || github.event_name == 'schedule') && '--stable' || '' }}
+          repository: TheHive-Project/cortex-neurons-builder
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: install python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Build responders
+        run: |
+          python build.py --namespace cortexneurons --path responders --registry_dockerhub ${{ secrets.REGISTRY_DOCKERHUB }} --registry_harbor ${{ secrets.REGISTRY_HARBOR }} ${{ (startsWith(github.ref, 'refs/tags') || github.event_name == 'schedule') && '--stable' || '' }}
 
   build_catalog:
     name: Build Catalog
@@ -51,9 +69,42 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Build catalog
-        uses: docker://thehiveproject/neurons-build-catalogs
+        run: |
+          build_catalog() {
+            DIR=$1
+            echo '[' > ${DIR}/${DIR}.json
+            echo '[' > ${DIR}/${DIR}-devel.json
+            echo '[' > ${DIR}/${DIR}-stable.json
+
+            first=1
+            for JSON in ${DIR}/*/*.json
+            do
+                if test -z "${first}"
+                then
+              echo ',' >> ${DIR}/${DIR}.json
+              echo ',' >> ${DIR}/${DIR}-devel.json
+              echo ',' >> ${DIR}/${DIR}-stable.json
+                else
+              first=
+                fi
+
+                jq 'del(.command) + { dockerImage: ("docker.io/cortexneurons/" + (.name | ascii_downcase) + ":devel") }' ${JSON} >> ${DIR}/${DIR}-devel.json
+                jq 'del(.command) + { dockerImage: ("docker.io/cortexneurons/" + (.name | ascii_downcase) + ":" + .version) }' ${JSON} >> ${DIR}/${DIR}-stable.json
+                jq 'del(.command) + { dockerImage: ("docker.io/cortexneurons/" + (.name | ascii_downcase) + ":" + (.version | split("."))[0]) }' ${JSON} >> ${DIR}/${DIR}.json
+            done
+
+            echo ']' >> ${DIR}/${DIR}.json
+            echo ']' >> ${DIR}/${DIR}-devel.json
+            echo ']' >> ${DIR}/${DIR}-stable.json
+          }
+
+          build_catalog analyzers
+          build_catalog responders
+      - name: Install zip
+        uses: montudor/action-zip@v1
       - name: Build report-templates zip package
-        uses: docker://thehiveproject/neurons-build-report-templates
+        run: zip -r ../analyzers/report-templates.zip *
+        working-directory: thehive-templates
       - name: Save Artifacts
         uses: actions/upload-artifact@v3
         with:
