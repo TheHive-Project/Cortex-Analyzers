@@ -13,8 +13,9 @@ class PhishtankAnalyzer(Analyzer):
 
     def phishtank_checkurl(self, data):
         url = 'https://checkurl.phishtank.com/checkurl/'
+        postheaders = {"User-Agent": "phishtank/cortex"}
         postdata = {'url': data, 'format': 'json', 'app_key': self.phishtank_key}
-        r = requests.post(url, data=postdata)
+        r = requests.post(url, headers=postheaders, data=postdata)
         return r.json()
 
     def summary(self, raw):
