@@ -23,5 +23,8 @@
       "required": true,
       "defaultValue": "<Enter Your API Key Here>"
     }
-  ]
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "service_homepage": "https://prowl.lupovis.io"
 }
