@@ -47,5 +47,9 @@
             "default": "quick",
             "required": true
         }
-    ]
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://www.binalyze.com/air"
 }
