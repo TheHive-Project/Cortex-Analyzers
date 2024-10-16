@@ -38,5 +38,9 @@
       "multi": false,
       "required": false
     }
-  ]
+  ],
+  "registration_required": true,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://www.telegram.org"
 }
