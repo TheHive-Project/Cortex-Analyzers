@@ -14,6 +14,7 @@ According to data from official site [1], VxStream Sandbox Public API allows you
 import hashlib
 import requests
 import time
+from datetime import datetime
 
 from requests.auth import HTTPBasicAuth
 from cortexutils.analyzer import Analyzer
