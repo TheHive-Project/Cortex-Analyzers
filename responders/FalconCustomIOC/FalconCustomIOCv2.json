@@ -1,0 +1,90 @@
+{
+  "name": "Crowdstrike_Falcon_Custom_IOC",
+  "version": "2.0",
+  "author": "Nicolas Criton",
+  "url": "https://www.crowdstrike.com/blog/tech-center/consume-ioc-and-threat-feeds/",
+  "license": "AGPL-v3",
+  "description": "Submit observables to the Crowdstrike Falcon Custom IOC API",
+  "dataTypeList": ["thehive:alert","thehive:case_artifact"],
+  "command": "FalconCustomIOC/FalconCustomIOCv2.py",
+  "baseConfig": "FalconCustomIOCv2",
+  "configurationItems": [
+    {
+      "name": "falconapi_endpoint",
+      "description": "CrowdStrike API endpoints: US-1 | US-2 | US-GOV-1 | EU-1",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "falconapi_clientid",
+      "description": "Crowdstrike Falcon Client ID Oauth2 API client",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "falconapi_key",
+      "description": "Crowdstrike Falcon Oauth2 API Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+    "name": "domain_block_expiration_days",
+    "description": "How many days should we block the domain IOCs sent? Default: 30",
+    "type": "number",
+    "multi": false,
+    "required": false,
+    "defaultValue": 30
+    },
+    {
+    "name": "ip_block_expiration_days",
+    "description": "How many days should we block the ip IOCs sent? Default: 30",
+    "type": "number",
+    "multi": false,
+    "required": false,
+    "defaultValue": 30
+    },
+    {
+    "name": "hash_block_expiration_days",
+    "description": "How many days should we block the hash IOCs sent? Default: 30",
+    "type": "number",
+    "multi": false,
+    "required": false,
+    "defaultValue": 30
+    },
+    {
+    "name": "action_to_take",
+    "description": "How the IOCs should be handled by Falcon ? Choose between 'no_action' or 'detect' -> no_action: Save the indicator for future use, but take no action / detect: Enable detections for the indicator at the selected severity (Default: detect)",
+    "type": "string",
+    "multi": false,
+    "required": false,
+    "defaultValue": "detect"
+    },
+    {
+    "name": "severity_level",
+    "description": "Severity level when IOCs are ingested by Falcon CustomIOC: informational / low / medium / high / critical - Default: high",
+    "type": "string",
+    "multi": false,
+    "required": false,
+    "defaultValue": "high"
+    },
+    {
+    "name": "tag_added_to_cs",
+    "description": "Tag added to the IOC in Falcon platform - Default: Cortex Incident - FalconCustomIOC",
+    "type": "string",
+    "multi": false,
+    "required": false,
+    "defaultValue": "Cortex Incident - FalconCustomIOC"
+    },
+    {
+    "name": "tag_added_to_thehive",
+    "description": "Tag added to the IOC in TheHive platform - Default: Falcon:Custom IOC Uploaded",
+    "type": "string",
+    "multi": false,
+    "required": false,
+    "defaultValue": "Falcon:Custom IOC Uploaded"
+    }
+  ]
+}
