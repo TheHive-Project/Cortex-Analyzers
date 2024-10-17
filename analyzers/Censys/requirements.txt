@@ -1,2 +1,2 @@
 cortexutils
-censys==1.1.1
+censys==2.2.11
