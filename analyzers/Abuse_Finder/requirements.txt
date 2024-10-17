@@ -1,4 +1,3 @@
 cortexutils
-git+https://github.com/monoidic/ipwhois.git
 abuse_finder
 future
