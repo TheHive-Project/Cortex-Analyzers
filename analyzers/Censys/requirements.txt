@@ -1,3 +1,2 @@
 cortexutils
-argcomplete
 censys==2.2.11
