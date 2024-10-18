@@ -35,7 +35,7 @@ class VxStreamSandboxAnalyzer(Analyzer):
         level = "info"
         namespace = "HybridAnalysis"
         predicate = "Threat level"
-        value = "No verdict"
+        value = "Unknown"
 
         verdicts = {
             "no specific threat": 0,
@@ -56,21 +56,29 @@ class VxStreamSandboxAnalyzer(Analyzer):
             # In some cases, HA returns a verdict with "No specific threat" but the one just before (few seconds) from the same scan and different tool was tagued malicious
             last_verdict_time = None
             last_verdict = None
+            highest_threat_score = None
 
             for minireport in minireports:
                 if minireport["verdict"] is not None:
-                     if (last_verdict_time == None):
-                         last_verdict_time = int((datetime.timestamp(datetime.strptime(minireport["analysis_start_time"][:10]+minireport["analysis_start_time"][11:19], "%Y-%m-%d%H:%M:%S"))))
-                         last_verdict = minireport["verdict"]
-                     else:
-                         new_verdict_time = int((datetime.timestamp(datetime.strptime(minireport["analysis_start_time"][:10]+minireport["analysis_start_time"][11:19], "%Y-%m-%d%H:%M:%S"))))
-                         if (abs(last_verdict_time - new_verdict_time) <= 3600):
-                             last_verdict_time = new_verdict_time
-                             try:
-                                 if (verdicts[minireport["verdict"]] > verdicts[last_verdict]):
-                                     last_verdict =  minireport["verdict"]
-                             except:
-                                 continue
+                    if last_verdict_time is None:
+                        last_verdict_time = int(datetime.timestamp(datetime.strptime(minireport["analysis_start_time"][:10] + minireport["analysis_start_time"][11:19], "%Y-%m-%d%H:%M:%S")))
+                        last_verdict = minireport["verdict"]
+                        # Set the initial threat score
+                        highest_threat_score = minireport.get("threat_score")
+                    else:
+                        new_verdict_time = int(datetime.timestamp(datetime.strptime(minireport["analysis_start_time"][:10] + minireport["analysis_start_time"][11:19], "%Y-%m-%d%H:%M:%S")))
+                        if abs(last_verdict_time - new_verdict_time) <= 3600:
+                            last_verdict_time = new_verdict_time
+                            try:
+                                if verdicts[minireport["verdict"]] > verdicts[last_verdict]:
+                                    last_verdict = minireport["verdict"]
+                            except KeyError:
+                                continue
+                    # Update the highest threat score if the current one is greater
+                    current_threat_score = minireport.get("threat_score")
+                    if current_threat_score is not None:
+                        if highest_threat_score is None or current_threat_score > highest_threat_score:
+                            highest_threat_score = current_threat_score
 
             report_verdict = last_verdict
 
@@ -87,6 +95,11 @@ class VxStreamSandboxAnalyzer(Analyzer):
             elif report_verdict == 'no specific threat':
                 level = 'info'
                 value = "No Specific Threat"
+
+            # Add the highest threat score if available
+            if highest_threat_score is not None:
+                value = f"{value} (Threat Score: {highest_threat_score})"
+
         else:
             level = 'info'
             value = "Unknown"
