@@ -1,47 +1,128 @@
 {
-    "name": "AbuseIPDB",
-    "version": "1.0",
-    "author": "Matteo Lodi",
-    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-    "license": "AGPL-v3",
-    "description": "Determine whether an IP was reported or not as malicious by AbuseIPDB",
-    "dataTypeList": ["ip"],
-    "baseConfig": "AbuseIPDB",
-    "command": "AbuseIPDB/abuseipdb.py",
-    "configurationItems": [
-      {
-        "name": "key",
-        "description": "API key for AbuseIPDB",
-        "type": "string",
-        "multi": false,
-        "required": true
-      },
-      {
-        "name": "days",
-        "description": "Check for IP Reports in the last X days",
-        "type": "number",
-        "multi": false,
-        "required": false,
-        "defaultValue": 30
-      }
-    ],
-    "config": {
-        "check_tlp": true,
-        "max_tlp": 2,
-        "auto_extract": false
+  "name": "AbuseIPDB",
+  "version": "1.0",
+  "author": "Matteo Lodi",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-v3",
+  "description": "Determine whether an IP was reported or not as malicious by AbuseIPDB",
+  "dataTypeList": [
+    "ip"
+  ],
+  "baseConfig": "AbuseIPDB",
+  "command": "AbuseIPDB/abuseipdb.py",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for AbuseIPDB",
+      "type": "string",
+      "multi": false,
+      "required": true
     },
-    "registration_required": true,
-    "subscription_required": true,
-    "free_subscription": true,
-    "service_homepage": "https://www.abuseipdb.com/",
-    "service_logo": {
-        "path": "assets/abuseipdb.png",
-        "caption": "abuseipdb logo"
-    },
-    "screenshots": [
-        {
-            "path": "assets/long_report.png",
-            "caption": "AbuseIPDB: Long report template"
+    {
+      "name": "days",
+      "description": "Check for IP Reports in the last X days",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 30
+    }
+  ],
+  "config": {
+    "check_tlp": true,
+    "max_tlp": 2,
+    "auto_extract": false
+  },
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://www.abuseipdb.com/",
+  "service_logo": {
+    "path": "assets/abuseipdb.png",
+    "caption": "abuseipdb logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report.png",
+      "caption": "AbuseIPDB: Long report template"
+    }
+  ],
+  "checks": [
+    {
+      "input": {
+        "data": "8.8.8.8",
+        "dataType": "ip",
+        "config": {
+          "key": "ENV:AbuseIPDB",
+          "days": 30,
+          "check_tlp": true,
+          "max_tlp": 2,
+          "auto_extract": false
         }
-    ]
+      },
+      "rules": [
+        {
+          "path": "$.success",
+          "expected": [
+            true
+          ]
+        },
+        {
+          "path": "$.summary.taxonomies[*].level",
+          "expected": [
+            "malicious"
+          ]
+        },
+        {
+          "path": "$.summary.taxonomies[*].namespace",
+          "expected": [
+            "AbuseIPDB"
+          ]
+        },
+        {
+          "path": "$.summary.taxonomies[*].predicate",
+          "expected": [
+            "Records"
+          ]
+        },
+        {
+          "path": "$.summary.taxonomies[*].value",
+          "expected": [
+            22
+          ]
+        },
+        {
+          "path": "$.full.values[*].data.ipAddress",
+          "expected": [
+            "8.8.8.8"
+          ]
+        },
+        {
+          "path": "$.full.values[*].data.usageType",
+          "expected": [
+            "Data Center/Web Hosting/Transit"
+          ]
+        },
+        {
+          "path": "$.full.values[*].data.domain",
+          "expected": [
+            "google.com"
+          ]
+        },
+        {
+          "path": "$.full.values[*].categories_strings[*]",
+          "expected": [
+            "Port Scan",
+            "Hacking",
+            "Brute Force",
+            "Exploited Host",
+            "SSH",
+            "unknown category",
+            "Web App Attack",
+            "IoT Targeted",
+            "Web Spam"
+          ]
+        }
+      ]
+    }
+  ]
 }

@@ -5,7 +5,10 @@
   "url": "https://github.com/xme/thehive/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Query the SANS ISC Global DNS Lookingglass API to check a domain name for resolved IP addresses.",
-  "dataTypeList": ["domain", "fqdn"],
+  "dataTypeList": [
+    "domain",
+    "fqdn"
+  ],
   "command": "DNSLookingglass/DNSLookingglass_lookup.py",
   "baseConfig": "DNSLookingglass.json",
   "config": {
@@ -27,6 +30,73 @@
     {
       "path": "assets/DNS_Lookingglass_artifacts.png",
       "caption": "DNS Lookingglass: artifacts"
+    }
+  ],
+  "checks": [
+    {
+      "input": {
+        "data": "strangebee.com",
+        "dataType": "domain",
+        "config": {
+          "service": "query"
+        }
+      },
+      "rules": [
+        {
+          "path": "$.success",
+          "expected": [
+            true
+          ]
+        },
+        {
+          "path": "$.artifacts[*].dataType",
+          "expected": [
+            "ip"
+          ]
+        },
+        {
+          "path": "$.artifacts[*].data",
+          "expected": [
+            "217.70.184.55"
+          ]
+        },
+        {
+          "path": "$.full.results[*].answer",
+          "expected": [
+            "217.70.184.55",
+            "217.70.184.55",
+            "217.70.184.55"
+          ]
+        },
+        {
+          "path": "$.full.results[*].status",
+          "expected": [
+            "ok v4 failed v6",
+            "ok v4 failed v6",
+            "ok v4 failed v6"
+          ]
+        },
+        {
+          "path": "$.full.results[*].country",
+          "expected": [
+            "GLOBAL",
+            "GLOBAL",
+            "GLOBAL"
+          ]
+        },
+        {
+          "path": "$.full.hits",
+          "expected": [
+            "DomainExist"
+          ]
+        },
+        {
+          "path": "$.full.count",
+          "expected": [
+            3
+          ]
+        }
+      ]
     }
   ]
 }

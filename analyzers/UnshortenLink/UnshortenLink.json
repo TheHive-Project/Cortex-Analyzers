@@ -5,7 +5,53 @@
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
     "description": "Use UnshortenLink to reveal the real URL.",
-    "dataTypeList": ["url"],
+    "dataTypeList": [
+        "url"
+    ],
     "baseConfig": "UnshortenLink",
-    "command": "UnshortenLink/unshortenlink.py"
+    "command": "UnshortenLink/unshortenlink.py",
+    "checks": [
+        {
+            "input": {
+                "data": "https://t.ly/ROWb?",
+                "dataType": "url",
+                "config": {
+                    "check_tlp": false,
+                    "service": "get"
+                }
+            },
+            "rules": [
+                {
+                    "path": "$.success",
+                    "expected": [
+                        true
+                    ]
+                },
+                {
+                    "path": "$.artifacts[*].type",
+                    "expected": [
+                        "url"
+                    ]
+                },
+                {
+                    "path": "$.artifacts[*].value",
+                    "expected": [
+                        "https://www.strangebee.com/services/"
+                    ]
+                },
+                {
+                    "path": "$.full.found",
+                    "expected": [
+                        true
+                    ]
+                },
+                {
+                    "path": "$.full.url",
+                    "expected": [
+                        "https://www.strangebee.com/services/"
+                    ]
+                }
+            ]
+        }
+    ]
 }

@@ -5,7 +5,9 @@
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
   "version": "2.0",
   "description": "Check IP addresses against the FireHOL blocklists",
-  "dataTypeList": ["ip"],
+  "dataTypeList": [
+    "ip"
+  ],
   "baseConfig": "FireHOLBlocklists",
   "command": "FireHOLBlocklists/firehol_blocklists.py",
   "configurationItems": [
@@ -29,6 +31,55 @@
     {
       "path": "assets/long_report.png",
       "caption": "FireHOL Blocklists: long report"
+    }
+  ],
+  "checks": [
+    {
+      "input": {
+        "data": "8.8.8.8",
+        "dataType": "ip",
+        "config": {
+          "blocklistpath": "blocklist"
+        }
+      },
+      "rules": [
+        {
+          "path": "$.success",
+          "expected": [
+            true
+          ]
+        },
+        {
+          "path": "$.summary.taxonomies[*].level",
+          "expected": [
+            "safe"
+          ]
+        },
+        {
+          "path": "$.summary.taxonomies[*].namespace",
+          "expected": [
+            "Firehol"
+          ]
+        },
+        {
+          "path": "$.summary.taxonomies[*].predicate",
+          "expected": [
+            "Blocklists"
+          ]
+        },
+        {
+          "path": "$.summary.taxonomies[*].value",
+          "expected": [
+            "0 hit"
+          ]
+        },
+        {
+          "path": "$.full.count",
+          "expected": [
+            0
+          ]
+        }
+      ]
     }
   ]
 }
