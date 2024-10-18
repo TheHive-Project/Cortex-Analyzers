@@ -1,0 +1,46 @@
+{
+    "name": "AWSInvokeLambda",
+    "version": "1.0",
+    "author": "nusantara-self",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Invoke an AWS Lambda function",
+    "dataTypeList": ["thehive:case", "thehive:alert", "thehive:case_artifact", "thehive:task"],
+    "command": "AWSInvokeLambda/AWSInvokeLambda.py",
+    "baseConfig": "AWSInvokeLambda",
+    "configurationItems": [
+      {
+        "name": "aws_access_key_id",
+        "description": "AWS Access Key ID",
+        "type": "string",
+        "multi": false,
+        "required": true,
+        "defaultValue": ""
+      },
+      {
+        "name": "aws_secret_access_key",
+        "description": "AWS Secret Access Key",
+        "type": "string",
+        "multi": false,
+        "required": true,
+        "defaultValue": ""
+      },
+      {
+        "name": "aws_region",
+        "description": "AWS Region",
+        "type": "string",
+        "multi": false,
+        "required": true,
+        "defaultValue": "us-east-1"
+      },
+      {
+        "name": "lambda_function_name",
+        "description": "Name of the AWS Lambda function to invoke",
+        "type": "string",
+        "multi": false,
+        "required": true,
+        "defaultValue": ""
+      }
+    ]
+  }
+  
