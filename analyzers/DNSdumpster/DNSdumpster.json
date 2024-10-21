@@ -1,0 +1,16 @@
+{
+  "name": "DNSdumpster_report",
+  "version": "1.0",
+  "author": "Keijo Korte - @korteke",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Query domain information from DNSdumpster.com.",
+  "dataTypeList": ["domain"],
+  "command": "DNSdumpster/dnsdumpster.py",
+  "baseConfig": "DNSdumpster",
+  "configurationItems": [],
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": false,
+  "service_homepage": "https://dnsdumpster.com"
+}
