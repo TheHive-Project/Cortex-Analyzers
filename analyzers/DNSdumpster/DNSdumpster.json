@@ -12,9 +12,5 @@
   "registration_required": false,
   "subscription_required": false,
   "free_subscription": false,
-  "service_homepage": "https://dnsdumpster.com",
-  "service_logo": {
-    "path": "assets/hackertarget-logo.png",
-    "caption": "hackertarget logo"
-  }
+  "service_homepage": "https://dnsdumpster.com"
 }
