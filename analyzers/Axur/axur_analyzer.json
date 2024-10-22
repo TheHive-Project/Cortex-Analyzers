@@ -1,7 +1,7 @@
 {
   "name": "Axur",
   "author": "Axur",
-  "version": "1.0.",
+  "version": "1.0",
   "license": "AGPL-V3",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "description": "Search IPs, domains, hashes or URLs on axur.com",
@@ -16,5 +16,9 @@
       "multi": false,
       "required": true
     }
-  ]
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.axur.com"
 }
