@@ -142,19 +142,21 @@ class GetEntraIDSignIns(Analyzer):
     def summary(self, raw):
         taxonomies = []
 
-        if len(raw['signIns']) == 0:
-            taxonomies.append(self.build_taxonomy('info', 'AzureSignins', 'SignIns', 'None'))
+        if len(raw.get('signIns', [])) == 0:
+            taxonomies.append(self.build_taxonomy('info', 'EntraIDSignins', 'SignIns', 'None'))
         else:
-            taxonomies.append(self.build_taxonomy('safe', 'AzureSignins', 'Count', len(raw['signIns'])))
+            taxonomies.append(self.build_taxonomy('safe', 'EntraIDSignins', 'Count', len(raw['signIns'])))
 
-        # If the summary stats are present, then add them. If not, don't.
-        stats = raw["sum_stats"]
-        if stats["riskySignIns"] != 0: taxonomies.append(self.build_taxonomy('suspicious', 'AzureSignins', 'Risky', stats[0]))
-        if stats["externalStateSignIns"] != 0: taxonomies.append(self.build_taxonomy('suspicious', 'AzureSignins', 'OutOfState', stats[1]))
-        if stats["foreignSignIns"] != 0: taxonomies.append(self.build_taxonomy('malicious', 'AzureSignins', 'ForeignSignIns', stats[2]))
-        
+        stats = raw.get("sum_stats", {})
+        if stats.get("riskySignIns", 0) != 0:
+            taxonomies.append(self.build_taxonomy('suspicious', 'EntraIDSignins', 'Risky', stats["riskySignIns"]))
+        if stats.get("externalStateSignIns", 0) != 0:
+            taxonomies.append(self.build_taxonomy('suspicious', 'EntraIDSignins', 'OutOfState', stats["externalStateSignIns"]))
+        if stats.get("foreignSignIns", 0) != 0:
+            taxonomies.append(self.build_taxonomy('malicious', 'EntraIDSignins', 'ForeignSignIns', stats["foreignSignIns"]))
 
         return {'taxonomies': taxonomies}
+
 
 if __name__ == '__main__':
     GetEntraIDSignIns().run()
