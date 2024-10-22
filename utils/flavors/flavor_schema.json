@@ -95,6 +95,9 @@
                 "description": {
                     "type": "string"
                 },
+                "type": {
+                    "type": "string"
+                },
                 "multi": {
                     "type": "boolean"
                 },
@@ -109,6 +112,7 @@
                 "name",
                 "description",
                 "multi",
+                "type",
                 "required" 
             ]
         },
