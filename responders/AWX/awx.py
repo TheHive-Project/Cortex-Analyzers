@@ -2,8 +2,6 @@
 from cortexutils.responder import Responder
 import requests
 import json
-from thehive4py.api import TheHiveApi
-from thehive4py.models import Case, CaseObservable
 
 class AWX(Responder):
     def __init__(self):
