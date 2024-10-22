@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from cortexutils.analyzer import Analyzer
 
 # Initialize Azure Class
-class GetEntraIDSignIns(Analyzer):
+class MSEntraID(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
         self.client_id = self.get_param('config.client_id', None, 'Microsoft Entra ID Application ID/Client ID Missing')
@@ -143,20 +143,20 @@ class GetEntraIDSignIns(Analyzer):
         taxonomies = []
 
         if len(raw.get('signIns', [])) == 0:
-            taxonomies.append(self.build_taxonomy('info', 'EntraIDSignins', 'SignIns', 'None'))
+            taxonomies.append(self.build_taxonomy('info', 'MSEntraIDSignins', 'SignIns', 'None'))
         else:
-            taxonomies.append(self.build_taxonomy('safe', 'EntraIDSignins', 'Count', len(raw['signIns'])))
+            taxonomies.append(self.build_taxonomy('safe', 'MSEntraIDSignins', 'Count', len(raw['signIns'])))
 
         stats = raw.get("sum_stats", {})
         if stats.get("riskySignIns", 0) != 0:
-            taxonomies.append(self.build_taxonomy('suspicious', 'EntraIDSignins', 'Risky', stats["riskySignIns"]))
+            taxonomies.append(self.build_taxonomy('suspicious', 'MSEntraIDSignins', 'Risky', stats["riskySignIns"]))
         if stats.get("externalStateSignIns", 0) != 0:
-            taxonomies.append(self.build_taxonomy('suspicious', 'EntraIDSignins', 'OutOfState', stats["externalStateSignIns"]))
+            taxonomies.append(self.build_taxonomy('suspicious', 'MSEntraIDSignins', 'OutOfState', stats["externalStateSignIns"]))
         if stats.get("foreignSignIns", 0) != 0:
-            taxonomies.append(self.build_taxonomy('malicious', 'EntraIDSignins', 'ForeignSignIns', stats["foreignSignIns"]))
+            taxonomies.append(self.build_taxonomy('malicious', 'MSEntraIDSignins', 'ForeignSignIns', stats["foreignSignIns"]))
 
         return {'taxonomies': taxonomies}
 
 
 if __name__ == '__main__':
-    GetEntraIDSignIns().run()
+    MSEntraID().run()
