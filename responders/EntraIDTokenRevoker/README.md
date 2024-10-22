@@ -1,15 +1,15 @@
-## Azure Sign In Token Revoker Responder
+## Microsoft Entra ID Sign In Token Revoker Responder
 
-This responder allows you to revoke the session tokens for an Azure AD user. Requires the UPN of the account in question, which should be entered as a "mail" oberservable in TheHive. 
+This responder allows you to revoke the session tokens for an Microsoft Entra ID user. Requires the UPN of the account in question, which should be entered as a "mail" observable in TheHive.
 
 ### Config
 
 To enable the responder, you need three values:
-1. Azure Tenant ID
+1. Microsoft Entra ID Tenant ID
 2. Application ID
 3. Application Secret
 
-The first two values can be found at any time in the application's Overview page in the Azure portal. The secret must be generated and then stored in a safe place, as it is only fully visible when you first make it. 
+The first two values can be found at any time in the application's Overview page in the Microsoft Entra ID portal. The secret must be generated and then stored in a safe place, as it is only fully visible when you first make it.
 
 ## Setup
 
@@ -20,7 +20,7 @@ User account with the Global Administrator Role (most of the steps can be done w
 ### Steps
 
 #### Creation
-1. Navigate to the [Azure Portal](https://portal.azure.com) and sign in with the relevant administrator account.
+1. Navigate to the [Microsoft Entra ID Portal](https://entra.microsoft.com/) and sign in with the relevant administrator account.
 2. Navigate to App Registrations, and create a new registration.
 3. Provide a display name (this can be anything, and can be changed later). Click Register.
 

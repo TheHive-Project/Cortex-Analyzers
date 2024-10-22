@@ -1,15 +1,15 @@
-## Azure Sign In Retreiver
+## Microsoft Entra ID Sign In Retriever
 
-This responder allows you to revoke the session tokens for an Azure AD user. Requires the UPN of the account in question, which should be entered as a "mail" oberservable in TheHive. 
+This responder allows you to revoke the session tokens for an Microsoft Entra ID user. Requires the UPN of the account in question, which should be entered as a "mail" oberservable in TheHive. 
 
 ### Config
 
 To enable the responder, you *need* three values:
-1. Azure Tenant ID
+1. Microsoft Entra ID Tenant ID
 2. Application ID
 3. Application Secret
 
-The first two values can be found at any time in the application's Overview page in the Azure portal. The secret must be generated and then stored in a safe place, as it is only fully visible when you first make it. 
+The first two values can be found at any time in the application's Overview page in the Microsoft Entra ID portal. The secret must be generated and then stored in a safe place, as it is only fully visible when you first make it. 
 
 You can also specify the limits for how far back the analyzer requests sign ins. You can specify time and count for how many sign ins get returned.
 
@@ -24,7 +24,7 @@ User account with the Global Administrator Role (most of the steps can be done w
 ### Steps
 
 #### Creation
-1. Navigate to the [Azure Portal](https://portal.azure.com) and sign in with the relevant administrator account.
+1. Navigate to the [Microsoft Entra ID Portal](https://entra.microsoft.com/) and sign in with the relevant administrator account.
 2. Navigate to App Registrations, and create a new registration.
 3. Provide a display name (this can be anything, and can be changed later). Click Register.
 
@@ -46,4 +46,4 @@ It is possible to add a color coding system to the long report as viewed from Th
 
 ### Example
 
-Let's say you are in an organization where almost all of your users will be signing in from a single state. You could color code the table so that out-of-state sign ins are highlighted yellow, and out-of-country sign ins are highlighted in red. To enable customization like this, you must modify this analyzer's long.html to check for values within the full JSON report using the ng-style tag in the *table body > table row* element. An example exists as a comment in the long.html file at line 34. 
+Let's say you are in an organization where almost all of your users will be signing in from a single state. You could color code the table so that out-of-state sign ins are highlighted yellow, and out-of-country sign ins are highlighted in red. To enable customization like this, you must modify this analyzer's long.html to check for values within the full JSON report using the ng-style tag in the *table body > table row* element. An example exists as a comment in the long.html file at line 34.

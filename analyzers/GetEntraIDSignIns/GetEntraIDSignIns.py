@@ -7,12 +7,12 @@ from datetime import datetime, timedelta
 from cortexutils.analyzer import Analyzer
 
 # Initialize Azure Class
-class GetAzureSignIns(Analyzer):
+class GetEntraIDSignIns(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
-        self.client_id = self.get_param('config.client_id', None, 'Azure AD Application ID/Client ID Missing')
-        self.client_secret = self.get_param('config.client_secret', None, 'Azure AD Registered Application Client Secret Missing')
-        self.tenant_id = self.get_param('config.tenant_id', None, 'Azure AD Tenant ID Mising')
+        self.client_id = self.get_param('config.client_id', None, 'Microsoft Entra ID Application ID/Client ID Missing')
+        self.client_secret = self.get_param('config.client_secret', None, 'Microsoft Entra ID Registered Application Client Secret Missing')
+        self.tenant_id = self.get_param('config.tenant_id', None, 'Microsoft Entra ID Tenant ID Mising')
         self.time_range = self.get_param('config.lookup_range', 7)
         self.lookup_limit = self.get_param('config.lookup_limit', 12)
         self.state = self.get_param('config.state', None)
@@ -142,19 +142,21 @@ class GetAzureSignIns(Analyzer):
     def summary(self, raw):
         taxonomies = []
 
-        if len(raw['signIns']) == 0:
-            taxonomies.append(self.build_taxonomy('info', 'AzureSignins', 'SignIns', 'None'))
+        if len(raw.get('signIns', [])) == 0:
+            taxonomies.append(self.build_taxonomy('info', 'EntraIDSignins', 'SignIns', 'None'))
         else:
-            taxonomies.append(self.build_taxonomy('safe', 'AzureSignins', 'Count', len(raw['signIns'])))
+            taxonomies.append(self.build_taxonomy('safe', 'EntraIDSignins', 'Count', len(raw['signIns'])))
 
-        # If the summary stats are present, then add them. If not, don't.
-        stats = raw["sum_stats"]
-        if stats["riskySignIns"] != 0: taxonomies.append(self.build_taxonomy('suspicious', 'AzureSignins', 'Risky', stats[0]))
-        if stats["externalStateSignIns"] != 0: taxonomies.append(self.build_taxonomy('suspicious', 'AzureSignins', 'OutOfState', stats[1]))
-        if stats["foreignSignIns"] != 0: taxonomies.append(self.build_taxonomy('malicious', 'AzureSignins', 'ForeignSignIns', stats[2]))
-        
+        stats = raw.get("sum_stats", {})
+        if stats.get("riskySignIns", 0) != 0:
+            taxonomies.append(self.build_taxonomy('suspicious', 'EntraIDSignins', 'Risky', stats["riskySignIns"]))
+        if stats.get("externalStateSignIns", 0) != 0:
+            taxonomies.append(self.build_taxonomy('suspicious', 'EntraIDSignins', 'OutOfState', stats["externalStateSignIns"]))
+        if stats.get("foreignSignIns", 0) != 0:
+            taxonomies.append(self.build_taxonomy('malicious', 'EntraIDSignins', 'ForeignSignIns', stats["foreignSignIns"]))
 
         return {'taxonomies': taxonomies}
 
+
 if __name__ == '__main__':
-    GetAzureSignIns().run()
+    GetEntraIDSignIns().run()

@@ -1,28 +1,28 @@
 {
-    "name": "GetAzureSignIns",
+    "name": "GetEntraIDSignIns",
     "version": "1.0",
     "author": "@jahamilto",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "description": "Pull all Azure sign ins for a user within the specified amount of time.",
+    "description": "Pull all Microsoft Entra ID sign ins for a user within the specified amount of time.",
     "dataTypeList": ["mail"],
-    "command": "GetAzureSignIns/GetAzureSignIns.py",
-    "baseConfig": "GetAzureSignIns",
+    "command": "GetEntraIDSignIns/GetEntraIDSignIns.py",
+    "baseConfig": "GetEntraIDSignIns",
     "configurationItems": [
         {"name": "tenant_id",
-        "description": "Azure Directory/Tenant ID",
+        "description": "Microsoft Entra ID Tenant ID",
         "type": "string",
         "multi": false,
         "required": true
         },
         {"name": "client_id",
-        "description": "Client ID/Application ID of Azure AD Registered App",
+        "description": "Client ID/Application ID of Microsoft Entra ID Registered App",
         "type": "string",
         "multi": false,
         "required": true
         },
         {"name": "client_secret",
-        "description": "Secret for Azure AD Registered Application",
+        "description": "Secret for Microsoft Entra ID Registered Application",
         "type": "string",
         "multi": false,
         "required": true
@@ -53,7 +53,9 @@
         "multi": false,
         "required": false
         }
-
-    ]
-
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://www.microsoft.com/security/business/identity-access/microsoft-entra-id"
 }
