@@ -23,6 +23,7 @@
             "description": "Create taxonomy for reputation",
             "type": "boolean",
             "multi": false,
+            "required": true,
             "defaultValue": true
         },
         {
@@ -30,6 +31,7 @@
             "description": "Create taxonomy for AS name",
             "type": "boolean",
             "multi": false,
+            "required": true,
             "defaultValue": false
         },
         {
@@ -37,6 +39,7 @@
             "description": "Create taxonomy for IP range score",
             "type": "boolean",
             "multi": false,
+            "required": true,
             "defaultValue": false
         },
         {
@@ -44,6 +47,7 @@
             "description": "Create taxonomy for last seen date",
             "type": "boolean",
             "multi": false,
+            "required": true,
             "defaultValue": false
         },
         {
@@ -51,6 +55,7 @@
             "description": "Create taxonomy for attack details",
             "type": "boolean",
             "multi": false,
+            "required": true,
             "defaultValue": false
         },
         {
@@ -58,6 +63,7 @@
             "description": "Create taxonomy for behaviors",
             "type": "boolean",
             "multi": false,
+            "required": true,
             "defaultValue": true
         },
         {
@@ -65,6 +71,7 @@
             "description": "Create taxonomy for mitre techniques",
             "type": "boolean",
             "multi": false,
+            "required": true,
             "defaultValue": false
         },
         {
@@ -72,6 +79,7 @@
             "description": "Create taxonomy for cves",
             "type": "boolean",
             "multi": false,
+            "required": true,
             "defaultValue": true
         },
         {
@@ -79,6 +87,7 @@
             "description": "Create taxonomy for not found IP",
             "type": "boolean",
             "multi": false,
+            "required": true,
             "defaultValue": true
         }
     ],
