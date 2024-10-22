@@ -1,13 +1,13 @@
 {
-    "name": "EntraIDTokenRevoker",
+    "name": "MSEntraID_TokenRevoker",
     "version": "1.1",
     "author": "Daniel Weiner @dmweiner, revised by @jahamilto",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
     "description": "Revoke all Microsoft Entra ID authentication session tokens for a User Principal Name.",
     "dataTypeList": ["thehive:case_artifact"],
-    "command": "EntraIDTokenRevoker/EntraIDTokenRevoker.py",
-    "baseConfig": "EntraIDTokenRevoker",
+    "command": "MSEntraID/MSEntraID.py",
+    "baseConfig": "MSEntraID",
     "configurationItems": [
         {"name": "tenant_id",
         "description": "Microsoft Entra ID Tenant ID",

@@ -7,7 +7,7 @@ import datetime
 from cortexutils.responder import Responder
 
 # Initialize Azure Class
-class EntraIDTokenRevoker(Responder):
+class MSEntraID(Responder):
     def __init__(self):
         Responder.__init__(self)
         self.client_id = self.get_param('config.client_id', None, 'Microsoft Entra ID Application ID/Client ID Missing')
@@ -67,4 +67,4 @@ class EntraIDTokenRevoker(Responder):
 
 
 if __name__ == '__main__':
-    EntraIDTokenRevoker().run()
+    MSEntraID().run()

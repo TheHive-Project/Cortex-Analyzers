@@ -1,13 +1,13 @@
 {
-    "name": "GetEntraIDSignIns",
+    "name": "MSEntraID_GetSignIns",
     "version": "1.0",
     "author": "@jahamilto",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
     "description": "Pull all Microsoft Entra ID sign ins for a user within the specified amount of time.",
     "dataTypeList": ["mail"],
-    "command": "GetEntraIDSignIns/GetEntraIDSignIns.py",
-    "baseConfig": "GetEntraIDSignIns",
+    "command": "MSEntraID/MSEntraID.py",
+    "baseConfig": "MSEntraID",
     "configurationItems": [
         {"name": "tenant_id",
         "description": "Microsoft Entra ID Tenant ID",
