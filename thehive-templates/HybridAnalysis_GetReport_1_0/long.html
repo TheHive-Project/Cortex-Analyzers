@@ -13,6 +13,13 @@
     Related Reports
   </div>
 
+  <!-- Check if results array is empty -->
+  <div class="panel-body" ng-if="content.results && content.results.length === 0">
+    <div class="alert alert-info">
+      No results were returned.
+    </div>
+  </div>
+  
   <!-- Iterate over each result in results array -->
   <div class="panel-body">
     <div ng-repeat="report in content.results" ng-if="report">
