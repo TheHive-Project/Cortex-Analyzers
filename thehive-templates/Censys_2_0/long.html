@@ -1,0 +1,217 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+      Censys.io information for <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+      <div class="message" ng-if="content.message">
+        {{content.message}}
+      </div>
+      <!-- IP Results -->
+      <div class="ip-results" ng-if="content.ip && content.ip.length > 0">
+          <!-- Iterate over each IP object in the array -->
+          <div ng-repeat="(ipIndex, ipData) in content.ip">
+              <dl class="dl-horizontal">
+                  <dt class="text-bold">IP</dt>
+                  <dd>{{ipData.ip}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                  <dt class="text-bold">Last update</dt>
+                  <dd>{{ipData.last_updated_at | date:'medium'}}</dd>
+              </dl>
+              <dl class="dl-horizontal">
+                  <dt class="text-bold">Location</dt>
+                  <dd>
+                      {{ipData.location.continent}} - {{ipData.location.country}} - {{ipData.location.province}} - {{ipData.location.city}}
+                  </dd>
+              </dl>
+              <dl class="dl-horizontal">
+                  <dt class="text-bold">AS</dt>
+                  <dd>{{ipData.autonomous_system.asn}}: {{ipData.autonomous_system.name}}</dd>
+              </dl>
+              <!-- Reverse DNS -->
+              <dl class="dl-horizontal" ng-if="ipData.dns && ipData.dns.reverse_dns">
+                  <dt class="text-bold">Reverse DNS</dt>
+                  <dd>{{ipData.dns.reverse_dns.names.join(', ')}}</dd>
+              </dl>
+              <!-- Services -->
+              <div ng-if="ipData.services && ipData.services.length > 0">
+                  <h4>Services</h4>
+                  <dl class="dl-horizontal" ng-repeat="(serviceIndex, service) in ipData.services">
+                      <dt>Info on port {{service.port}}</dt>
+                      <dd>
+                          <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-{{ipIndex}}-{{serviceIndex}}" aria-expanded="false" aria-controls="collapse-{{ipIndex}}-{{serviceIndex}}">
+                              Show/hide
+                          </button>
+                          <br />
+                          <div class="collapse" id="collapse-{{ipIndex}}-{{serviceIndex}}">
+                              <pre style="overflow-x:scroll;">{{service | json}}</pre>
+                          </div>
+                      </dd>
+                  </dl>
+              </div>
+              <hr />
+          </div>
+      </div>
+  
+  
+      <!-- Hash Results -->
+      <div class="hash-results" ng-if="content.cert">
+          <!-- Metadata -->
+          <dl class="dl-horizontal">
+              <dt>Metadata</dt>
+              <dd>
+                  <p>Added at: {{content.cert.added_at}}</p>
+                  <p>Modified at: {{content.cert.modified_at}}</p>
+                  <p>Validated at: {{content.cert.validated_at}}</p>
+              </dd>
+          </dl>
+          
+            <!-- Fingerprints -->
+            <dl class="dl-horizontal">
+                <dt>Fingerprints</dt>
+                <dd>
+                    <p>SHA-256: {{content.cert.fingerprint_sha256}}</p>
+                    <p>SHA-1: {{content.cert.fingerprint_sha1}}</p>
+                    <p>MD5: {{content.cert.fingerprint_md5}}</p>
+                </dd>
+            </dl>
+        
+            <!-- Validation Level -->
+            <dl class="dl-horizontal">
+                <dt>Validation Level</dt>
+                <dd>{{content.cert.validation_level}}</dd>
+            </dl>
+        
+            <!-- Labels -->
+            <dl class="dl-horizontal">
+                <dt>Labels</dt>
+                <dd>{{content.cert.labels.join(', ')}}</dd>
+            </dl>
+        
+            <!-- Subject Alternative Names -->
+            <dl class="dl-horizontal">
+                <dt>Subject Alternative Names</dt>
+                <dd>
+                    <p ng-repeat="dnsName in content.cert.parsed.extensions.subject_alt_name.dns_names">{{dnsName}}</p>
+                </dd>
+            </dl>
+        
+            <!-- Signed Certificate Timestamps -->
+            <dl class="dl-horizontal">
+                <dt>Signed Certificate Timestamps</dt>
+                <dd>
+                    <div ng-repeat="sct in content.cert.parsed.extensions.signed_certificate_timestamps">
+                        <p>Log ID: {{sct.log_id}}</p>
+                        <p>Timestamp: {{sct.timestamp | date:'medium'}}</p>
+                        <p>Version: {{sct.version}}</p>
+                        <br>
+                    </div>
+                </dd>
+            </dl>
+        
+            <!-- Issuer -->
+            <dl class="dl-horizontal">
+                <dt>Issuer</dt>
+                <dd>
+                    <p ng-repeat="cn in content.cert.parsed.issuer.common_name">{{cn}}</p>
+                </dd>
+            </dl>
+        
+            <!-- Validity -->
+            <dl class="dl-horizontal">
+                <dt>Validity</dt>
+                <dd>
+                    <p>Valid since: {{content.cert.parsed.validity_period.not_before | date:'medium'}}</p>
+                    <p>Valid until: {{content.cert.parsed.validity_period.not_after | date:'medium'}}</p>
+                </dd>
+            </dl>
+        
+            <!-- Full Certificate Data -->
+            <dl class="dl-horizontal">
+                <dt>Full Certificate Data</dt>
+                <dd>
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-certdata" aria-expanded="false" aria-controls="collapse-certdata">
+                        Show/hide
+                    </button>
+                    <br />
+                    <div class="collapse" id="collapse-certdata">
+                        <div class="card card-body">
+                            <pre style="overflow-x:scroll;">{{content.cert | json}}</pre>
+                        </div>
+                    </div>
+                </dd>
+            </dl>
+      </div>
+  
+  
+      <!-- Website Results -->
+      <div class="website-results" ng-if="content.website && content.website.length > 0">
+        <!-- Iterate over the website array -->
+        <div ng-repeat="(siteIndex, site) in content.website">
+          <dl class="dl-horizontal">
+            <dt>Domain</dt>
+            <dd>{{site.domain || 'N/A'}}</dd>
+          </dl>
+          <dl class="dl-horizontal">
+            <dt>IP</dt>
+            <dd>{{site.ip}}</dd>
+          </dl>
+          <dl class="dl-horizontal">
+            <dt>Last update</dt>
+            <dd>{{site.last_updated_at | date:'medium'}}</dd>
+          </dl>
+          <dl class="dl-horizontal">
+            <dt>Location</dt>
+            <dd>
+              {{site.location.continent}} - {{site.location.country}} - {{site.location.province}} - {{site.location.city}}
+            </dd>
+          </dl>
+          <dl class="dl-horizontal">
+            <dt>AS</dt>
+            <dd>{{site.autonomous_system.asn}}: {{site.autonomous_system.name}}</dd>
+          </dl>
+          <dl class="dl-horizontal">
+            <dt>Reverse DNS</dt>
+            <dd>{{site.dns.reverse_dns.names.join(', ')}}</dd>
+          </dl>
+  
+          <!-- Services -->
+          <div class="website-services" ng-if="site.services && site.services.length > 0">
+            <h4>Services</h4>
+            <dl class="dl-horizontal" ng-repeat="(serviceIndex, service) in site.services">
+              <dt>Info on service {{service.port}}</dt>
+              <dd>
+                <button
+                  class="btn btn-primary"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#collapse-{{siteIndex}}-{{serviceIndex}}"
+                  aria-expanded="false"
+                  aria-controls="collapse-{{siteIndex}}-{{serviceIndex}}">
+                  Show/hide
+                </button>
+                <br />
+                <div class="collapse" id="collapse-{{siteIndex}}-{{serviceIndex}}">
+                  <div class="card card-body">
+                    <pre style="overflow-x:scroll;">{{service | json}}</pre>
+                  </div>
+                </div>
+              </dd>
+            </dl>
+          </div>
+  
+          <hr/>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- General error -->
+  <div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+      <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+      {{content.errorMessage}}
+    </div>
+  </div>
