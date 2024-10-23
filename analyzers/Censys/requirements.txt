@@ -1,2 +1,3 @@
 cortexutils
-censys==2.2.11
+censys~=2.2
+iocextract
