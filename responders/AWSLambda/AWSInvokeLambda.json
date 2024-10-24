@@ -1,13 +1,13 @@
 {
-    "name": "AWSInvokeLambda",
+    "name": "AWSLambda_InvokeFunction",
     "version": "1.0",
     "author": "nusantara-self",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "description": "Invoke an AWS Lambda function",
+    "description": "Invokes the configured AWS Lambda function",
     "dataTypeList": ["thehive:case", "thehive:alert", "thehive:case_artifact", "thehive:task"],
-    "command": "AWSInvokeLambda/AWSInvokeLambda.py",
-    "baseConfig": "AWSInvokeLambda",
+    "command": "AWSLambda/AWSInvokeLambda.py",
+    "baseConfig": "AWSLambda",
     "configurationItems": [
       {
         "name": "aws_access_key_id",
@@ -40,7 +40,31 @@
         "multi": false,
         "required": true,
         "defaultValue": ""
+      },
+      {
+        "name": "invocation_type",
+        "description": "Invocation type for the lambda function. Default is 'RequestResponse'. Change to 'Event' for asynchronous invocation.",
+        "type": "string",
+        "multi": false,
+        "required": true,
+        "defaultValue": "RequestResponse"
+      },
+      {
+        "name": "add_tag_to_case",
+        "description": "Add a tag to case mentioning the AWS Lambda function that was invoked",
+        "type": "boolean",
+        "multi": false,
+        "required": true,
+        "defaultValue": true
       }
-    ]
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://aws.amazon.com/lambda/",
+    "service_logo": {
+      "path": "assets/awslambda.png",
+      "caption": "AWS Lambda logo"
+    }
   }
   
