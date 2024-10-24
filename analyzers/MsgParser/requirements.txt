@@ -1,2 +1,5 @@
 cortexutils
 olefile
+extract-msg
+iocextract
+outlook-msg
