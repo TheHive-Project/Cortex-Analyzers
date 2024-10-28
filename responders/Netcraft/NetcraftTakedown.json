@@ -1,10 +1,10 @@
 {
-  "name": "Netcraft Takedown Phishing URL",
+  "name": "Netcraft_TakedownPhishingURL",
   "version": "1.0",
   "author": "Keijo Korte - @korteke",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Submit URL to Netcrafts Takedown API.",
+  "description": "Submit URL to Netcraft's Takedown API.",
   "dataTypeList": ["thehive:case_artifact"],
   "command": "Netcraft/Netcraft.py",
   "baseConfig": "Netcraft",
@@ -44,5 +44,9 @@
       "required": true,
       "defaultValue": "https://takedown.netcraft.com/authorise.php"
     }
-  ]
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.netcraft.com/cybercrime/countermeasures/"
 }
