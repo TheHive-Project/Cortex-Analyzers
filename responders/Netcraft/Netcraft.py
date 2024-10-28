@@ -50,7 +50,7 @@ class NetcraftReporter(Responder):
                 if response.status_code == 200:
                     self.report({'message': 'Takedown request sent to Netcraft. Message: {}'.format(response.text)})
                 elif response.status_code == 401:
-                    self.error({'message': 'Failed authentication. Check API-Key. Message: {}'.format(response.text)})
+                    self.error('Failed authentication. Check API-Key. Message: {}'.format(response.text))
                 else:
                     self.error('Failed to submit takedown request. Error code: {}. Error message: {}'
                                .format(response.status_code, response.text))
