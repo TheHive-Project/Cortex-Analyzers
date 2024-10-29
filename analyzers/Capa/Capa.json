@@ -20,5 +20,19 @@
       "required": true,
       "defaultValue": "/Cortex-Analyzers/analyzers/Capa/capa"
     }
+    ],
+    "registration_required": false,
+    "subscription_required": false,
+    "free_subscription": false,
+    "service_homepage": "https://github.com/mandiant/capa",
+    "service_logo": {
+      "path": "assets/capa.png",
+      "caption": "CAPA logo"
+    },
+    "screenshots": [
+      {
+        "path": "assets/long_report.png",
+        "caption": "CAPA: Long report template"
+      }
     ]
 }
