@@ -1,0 +1,52 @@
+{
+  "name": "AWX_StartJob",
+  "version": "1.0",
+  "author": "Tim Muehlhausen",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Start a job on AWX",
+  "dataTypeList": ["thehive:case_artifact"],
+  "command": "AWX/awx.py",
+  "baseConfig": "AWX",
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "The URL to your AWX instance, expl. https://awx.intern.foo.de",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "username",
+      "description": "The AWX user",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "password",
+      "description": "The AWX user password",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "cert_path",
+      "description": "If you need a certificate to authentificate to your AWX, expl. /etc/ssl/certs/foo.de.pem",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "workflow_id",
+      "description": "The ID of the workflow to execute",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": false,
+  "service_homepage": "https://www.ansible.com/awx/"
+}
