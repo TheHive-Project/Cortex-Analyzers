@@ -6,6 +6,7 @@
 
 **Closed issues:**
 
+- \[FR\] JAMF Protect Prevent list responder [\#1292](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1292)
 - \[FR\] Add AWS Lambda responder [\#1289](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1289)
 - \[FR\] Censys Analyzer v2 [\#1287](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1287)
 - \[FR\] Fix the version of TheHive4py dependencies in existing responders [\#1281](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1281)
@@ -20,6 +21,7 @@
 - \[FR\] Added capabilities/features for Microsoft Defender for Endpoint responder [\#1229](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1229)
 - \[Bug\] Fortiguard parser error [\#1228](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1228)
 - \[FR\]Binalyze AIR responder [\#1218](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1218)
+- AWX Responder [\#1213](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1213)
 - \[Bug\]\[URLhaus\_2\_0\] - Empty summary for positive results [\#1210](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1210)
 - Add a responder to send case information to Telegram [\#1132](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1132)
 - \[FR\] Add Microsoft 365 Defender responder for Tenant Allow/Block List [\#1102](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1102)
@@ -30,6 +32,7 @@
 - \[FR\] Okta User Lookup Analyzer [\#1047](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1047)
 - Abuse\_Finder\_3\_0 \[KeyError: '\\s'\] [\#940](https://github.com/TheHive-Project/Cortex-Analyzers/issues/940)
 - TorBlutmagie\_1\_0 doesn't work \[Bug\] [\#829](https://github.com/TheHive-Project/Cortex-Analyzers/issues/829)
+- New Analyzer: Fireeye Capa \(WIP\) [\#822](https://github.com/TheHive-Project/Cortex-Analyzers/issues/822)
 
 ## [3.3.7](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.3.7) (2024-04-11)
 
