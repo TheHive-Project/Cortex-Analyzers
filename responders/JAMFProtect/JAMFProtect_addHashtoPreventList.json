@@ -1,7 +1,7 @@
 {
   "name": "JAMFProtect_addHashtoPreventList",
   "version": "1.0",
-  "author": "StrangeBee",
+  "author": "nusantara-self, StrangeBee",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Add IOC to JAMF Protect - creates a custom prevent list for a hash",
