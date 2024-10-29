@@ -14,11 +14,11 @@
     "configurationItems": [
      {
       "name": "capa_path",
-      "description": "Path to Capa binary",
+      "description": "Path to Capa binary (if installed locally, should be /opt/Cortex-Analyzers/analyzers/Capa/capa)",
       "type": "string",
       "multi": false,
       "required": true,
-      "defaultValue": "/Cortex-Analyzers/analyzers/Capa/capa"
+      "defaultValue": "/worker/Capa/capa"
     }
     ],
     "registration_required": false,
