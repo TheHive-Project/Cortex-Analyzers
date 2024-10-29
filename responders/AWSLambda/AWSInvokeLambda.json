@@ -1,7 +1,7 @@
 {
     "name": "AWSLambda_InvokeFunction",
     "version": "1.0",
-    "author": "nusantara-self",
+    "author": "nusantara-self,StrangeBee",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
     "description": "Invokes the configured AWS Lambda function",
