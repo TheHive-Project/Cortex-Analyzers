@@ -1,7 +1,7 @@
 {
   "name": "JAMFProtect_removeHashfromPreventList",
   "version": "1.0",
-  "author": "StrangeBee",
+  "author": "nusantara-self, StrangeBee",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Remove IOC on JAMF Protect - removes associated custom prevent list(s) containing the hash",
