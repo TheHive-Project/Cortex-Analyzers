@@ -1,0 +1,62 @@
+<style>
+   pre.input {
+   color: #a94442;
+   border: none;
+   font-size: 10px;
+   white-space: pre-wrap;
+   background-color: #f9f1f1;
+   }
+   pre.output {
+   border: none;
+   font-size: 10px;
+   word-wrap: break-word;
+   word-break: break-all;
+   white-space: pre-wrap;
+   background-color: black;
+   }
+</style>
+<div class="panel panel-info">
+   <div class="panel-heading">Capa Analysis Results</div>
+   <div class="panel-body">
+      <table class="table">
+         <thead>
+            <tr>
+               <th>Capability</th>
+               <th>ATT&CK ID</th>
+               <th>ATT&CK Tactic</th>
+               <th>ATT&CK Technique</th>
+               <th>ATT&CK Subtechnique</th>
+               <th>Rule Path</th>
+               <th>Examples</th>
+            </tr>
+         </thead>
+         <tbody ng-repeat="(key, rule) in content.rules">
+            <tr>
+               <td>{{rule.meta.name}}</td>
+               <td>
+                  <span ng-if="rule.meta.attack.length > 0">
+                  <a href="https://attack.mitre.org/techniques/{{rule.meta.attack[0].id.split('.')[0]}}/{{rule.meta.attack[0].id.split('.')[1]}}">
+                  {{rule.meta.attack[0].id}}
+                  </a>
+                  </span>
+               </td>
+               <td>
+                  <span ng-if="rule.meta.attack.length > 0">{{rule.meta.attack[0].tactic}}</span>
+               </td>
+               <td>
+                  <span ng-if="rule.meta.attack.length > 0">{{rule.meta.attack[0].technique}}</span>
+               </td>
+               <td>
+                  <span ng-if="rule.meta.attack.length > 0">{{rule.meta.attack[0].subtechnique || 'N/A'}}</span>
+               </td>
+               <td class="wrap">
+                  <a href="https://github.com/mandiant/capa-rules/tree/master{{rule.meta.namespace}}">
+                  {{rule.meta.namespace}}
+                  </a>
+               </td>
+               <td class="wrap">{{rule.meta.examples.join(', ')}}</td>
+            </tr>
+         </tbody>
+      </table>
+   </div>
+</div>

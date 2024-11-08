@@ -1,0 +1,46 @@
+{
+  "name": "Telegram",
+  "version": "1.0",
+  "author": "Alex Kolnik, PS Cloud Services, @ps_kz",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Send a message to Telegram with information from TheHive case",
+  "dataTypeList": ["thehive:case"],
+  "command": "Telegram/telegram.py",
+  "baseConfig": "Telegram",
+  "configurationItems": [
+    {
+      "name": "api_token",
+      "description": "The token is a string, like 110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw, which is required to authorize the bot and send requests to the Bot API",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "chat_id",
+      "description": "ID of the chat or channel to which the message will be sent",
+      "type": "number",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "date_format",
+      "description": "https://www.geeksforgeeks.org/python-datetime-strptime-function/",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "%d.%m.%Y %H:%M"
+    },
+    {
+      "name": "tag",
+      "description": "Tag name to be assigned to the case",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://www.telegram.org"
+}

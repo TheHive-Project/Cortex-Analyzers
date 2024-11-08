@@ -1,0 +1,31 @@
+{
+  "name": "OktaUserLookup",
+  "author": "Martin Jaan Leesment",
+  "license": "AGPL-V3",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "version": "1.0",
+  "description": "Okta User Lookup is an analyzer for TheHive to enrich mail observables from data through the Okta users API",
+  "dataTypeList": ["mail"],
+  "baseConfig": "OktaUserLookup",
+  "configurationItems": [
+    {
+        "name": "OktaOrgUrl",
+        "description": "Must contain your okta organisation URL. Eg: https://<yourcompany>.okta.com",
+        "type": "string",
+        "multi": false,
+        "required": true
+    },
+    {
+        "name": "OktaToken",
+        "description": "Must contain the Okta access token.",
+        "type": "string",
+        "multi": false,
+        "required": true
+    }
+  ],
+  "command": "OktaUserLookup/oktauserlookup_analyzer.py",
+  "registration_required": true,
+  "subscription_required": false,
+  "free_subscription": false,
+  "service_homepage": "https://developer.okta.com/docs/reference/api/users/"
+}

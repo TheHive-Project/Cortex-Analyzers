@@ -1,0 +1,11 @@
+{
+  "name": "QrDecode",
+  "version": "1.0",
+  "author": "THA-CERT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Extracts data from one or more QR codes.",
+  "dataTypeList": ["file"],
+  "command": "QrDecode/qrdecode.py",
+  "baseConfig": "QrDecode"
+}

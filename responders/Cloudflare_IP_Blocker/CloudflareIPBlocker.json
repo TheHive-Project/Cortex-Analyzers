@@ -1,0 +1,38 @@
+{
+    "name": "Cloudflare_IP_Blocker",
+    "version": "1.0",
+    "author": "Nick Babkin @nickbabkin",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Block IP Address on Account level in Cloudflare",
+    "dataTypeList": ["thehive:case_artifact"],
+    "command": "Cloudflare_IP_Blocker/CloudflareIPBlocker.py",
+    "baseConfig": "CloudflareIPBlocker",
+    "configurationItems": [
+        {
+            "name": "cloudflare_api_key",
+            "description": "Cloudflare API Key",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "cloudflare_account_ids",
+            "description": "Cloudflare Account IDs to block IP address in",
+            "type": "string",
+            "multi": true,
+            "required": true
+          },
+        {
+            "name": "cloudflare_action",
+            "description": "Cloudflare Action: block, challenge, whitelist, js_challenge or managed_challenge",
+            "type": "string",
+            "multi": false,
+            "required": true
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://www.cloudflare.com"
+}

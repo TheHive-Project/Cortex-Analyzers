@@ -1,0 +1,199 @@
+<style>
+    .label {
+        margin-right: 3px;
+    }
+</style>
+
+<div class="panel panel-danger" ng-if="!success || !content.ip">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.message || 'Error while retrieving information'}}
+    </div>
+</div>
+
+<div ng-if="success && content.ip">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>CrowdSec</strong> record for "{{artifact.data}}"
+            <br/>
+            <div class="row-no-gutters" ng-if="content.reputation">
+                <div class="col-md-2">
+                    <span style="vertical-align: middle; padding-right:0.5rem;">Reputation</span><span
+                        style="text-transform: capitalize;" class="label label-default"
+                        ng-class="{
+                                'label-danger': content.reputation === 'malicious',
+                                'label-warning': content.reputation === 'suspicious'
+                              }"
+                        title="{{content.reputation}}">
+                            {{content.reputation}}
+                        </span>
+                </div>
+            </div>
+            <br/><br/>
+            <a target="_blank" href="https://app.crowdsec.net/cti/{{artifact.data}}">View more on app.crowdsec.net</a>
+        </div>
+        <div class="panel-body">
+            <div class="row" ng-if="content.confidence || content.location">
+                <div class="col-md-6" ng-if="content.confidence">
+                    <dl class="dl-horizontal">
+                        <dt>Crowd Confidence</dt>
+                        <dd style="text-transform: capitalize;" class="wrap">
+                            {{content.confidence}}
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-md-6" ng-if="content.location">
+                    <dl class="dl-horizontal">
+                        <dt>Location</dt>
+                        <dd class="wrap">{{content.location.city}} {{content.location.country}}</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="row" ng-if="content.history.first_seen || content.history.last_seen">
+                <div class="col-md-6" ng-if="content.history.first_seen">
+                    <dl class="dl-horizontal">
+                        <dt>First seen</dt>
+                        <dd class="wrap">{{content.history.first_seen}}</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6" ng-if="content.history.last_seen">
+                    <dl class="dl-horizontal">
+                        <dt>Last seen</dt>
+                        <dd class="wrap">{{content.history.last_seen}}</dd>
+                    </dl>
+                </div>
+            </div>
+            <dl class="dl-horizontal" ng-if="content.behaviors || content.cves">
+                <dt>Known For</dt>
+                <dd class="wrap" style="display: flex; flex-wrap: wrap; padding-top:0.5rem">
+                    <span class="label label-default label-danger" title="{{b.description}}"
+                          ng-if="content.behaviors && content.behaviors.length > 0"
+                          ng-repeat="b in ::content.behaviors" style="margin-bottom: 5px;">
+                        {{b.label}}
+                    </span>
+                    <span class="label label-default label-danger"
+                          ng-if="content.cves && content.cves.length > 0"
+                          ng-repeat="cve in content.cves" style="margin-bottom: 5px;"
+                          title="{{cve}}">
+                            <a style="color:#FFF;text-decoration: underline" target="_blank" href="https://nvd.nist.gov/vuln/detail/{{cve}}">{{cve}}</a>
+                    </span>
+                </dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.mitre_techniques">
+                <dt>MITRE</dt>
+                <dd class="wrap" style="display: flex; flex-wrap: wrap; padding-top:0.5rem">
+                    <span class="label label-default label-danger" title="{{m.description}}"
+                          ng-repeat="m in ::content.mitre_techniques" style="margin-bottom: 5px;">
+                       <a ng-if="m.name" style="color:#FFF;text-decoration: underline" target="_blank"
+                         ng-href="{{m.name.startsWith('TA') ? 'https://attack.mitre.org/tactics/' + m.name : 'https://attack.mitre.org/techniques/' + m.name}}">
+                        {{m.label}}
+                      </a>
+                    </span>
+                </dd>
+            </dl>
+            <br>
+            <hr>
+            <dl class="dl-horizontal" ng-if="content.reverse_dns">
+                <dt>Reverse DNS</dt>
+                <dd class="wrap">{{content.reverse_dns}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.ip_range">
+                <dt>Range</dt>
+                <dd class="wrap">{{content.ip_range}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.as_name">
+                <dt>Autonomous System</dt>
+                <dd class="wrap">{{content.as_name}}</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Attack details</strong>
+        </div>
+        <dl class="dl-horizontal"
+            ng-if="content.classifications.classifications && content.classifications.classifications.length > 0">
+            <dt>Classification</dt>
+            <dd class="wrap" style="display: flex; flex-wrap: wrap; padding-top: 0.5rem;">
+                    <span class="label label-default label-info" title="{{c.description}}"
+                          ng-repeat="c in ::content.classifications.classifications">
+                        {{c.label}}
+                    </span>
+            </dd>
+        </dl>
+        <dl class="dl-horizontal"
+            ng-if="content.classifications.false_positives && content.classifications.false_positives.length > 0">
+            <dt>False Positive</dt>
+            <dd class="wrap">
+                <span class="label label-default" title="{{fp.description}}"
+                      ng-repeat="fp in ::content.classifications.false_positives">
+                    {{fp.label}}
+                </span>
+            </dd>
+        </dl>
+        <hr>
+        <dl class="dl-horizontal" ng-if="content.attack_details && content.attack_details.length > 0">
+            <dt>Attacks</dt>
+            <dd class="wrap" style="display: flex; flex-wrap: wrap; padding-top: 0.5rem">
+                <span class="label label-default label-danger" title="{{a.description}}"
+                      ng-repeat="a in ::content.attack_details" style="margin-bottom: 5px;">
+                    {{a.label}}
+                </span>
+            </dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.target_countries">
+            <dt>Top Targeted countries</dt>
+            <dd class="wrap">
+                <span class="label label-default label-info"
+                      ng-repeat="(country, percent) in content.target_countries"
+                      title="{{country}}: {{percent}}%">
+                        {{country}}: {{percent}}%
+                </span>
+            </dd>
+        </dl>
+        <div class="panel-body">
+            <p>Aggressiveness (0 to 5)</p>
+            <table class="table table-hover">
+                <tr>
+                    <th>Overall</th>
+                    <th>Last day</th>
+                    <th>Last week</th>
+                    <th>Last month</th>
+                </tr>
+                <tr>
+                    <td>{{content.scores.overall.aggressiveness}}</td>
+                    <td>{{content.scores.last_day.aggressiveness}}</td>
+                    <td>{{content.scores.last_week.aggressiveness}}</td>
+                    <td>{{content.scores.last_month.aggressiveness}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Blocklists containing this IP</strong>
+        </div>
+        <div class="panel-body">
+            <div ng-if="content.references && content.references.length > 0">
+                <div ng-repeat="r in ::content.references">
+                    <div>
+                        <strong>{{r.label}}</strong>
+                    </div>
+                    <div>
+                        {{r.description}}
+                    </div>
+                    <hr>
+                </div>
+            </div>
+            <div ng-if="!content.references || content.references.length === 0">
+                <strong>No blocklists found for this IP</strong>
+            </div>
+        </div>
+    </div>
+
+
+</div>

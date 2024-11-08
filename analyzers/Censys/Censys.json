@@ -1,16 +1,16 @@
 {
   "name": "Censys",
-  "author": "Nils Kuhnert, CERT-Bund",
+  "author": "Nils Kuhnert, CERT-Bund; nusantara-self, StrangeBee",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/censys-analyzer",
-  "version": "1.0",
+  "version": "2.0",
   "description": "Check IPs, certificate hashes or domains against censys.io.",
-  "dataTypeList": ["ip", "hash", "domain", "other"],
+  "dataTypeList": ["ip", "hash", "domain"],
   "baseConfig": "Censys",
   "command": "Censys/censys_analyzer.py",
   "configurationItems": [
     {
-      "name": "uid",
+      "name": "uid",  
       "description": "UID for Censys",
       "type": "string",
       "multi": false,
@@ -22,6 +22,14 @@
       "type": "string",
       "multi": false,
       "required": true
+    },
+    {
+      "name": "max_records",
+      "description": "Maximum number of records for domains",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultvalue": 10
     }
   ],
   "registration_required": true,

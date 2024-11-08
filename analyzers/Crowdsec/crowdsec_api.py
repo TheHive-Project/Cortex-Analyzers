@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-from requests.compat import urljoin
+import json
+
 import requests
+from requests.compat import urljoin
 
 
 class Crowdsec:
@@ -10,7 +12,7 @@ class Crowdsec:
     """
 
     def __init__(self, key: str):
-        """Intializes the API object
+        """Initializes the API object
         :param key: The Crowdsec API key
         :type key: str
         """
@@ -23,10 +25,10 @@ class Crowdsec:
         :type path: str
         """
         headers = {
-                "x-api-key": self.api_key ,
-                "accept": "application/json",
-                "User-Agent": "crowdsec-cortex/v1.0.0",
-                }
+            "x-api-key": self.api_key,
+            "accept": "application/json",
+            "User-Agent": "crowdsec-cortex/v1.1.0",
+        }
         url = urljoin(self.base_url, path)
         response = requests.get(url, headers=headers)
 
@@ -34,15 +36,14 @@ class Crowdsec:
             raise APIRateLimiting(response.text)
         try:
             response_data = response.json()
-        except:
+        except json.JSONDecodeError:
             raise APIError("Couldn't parse response JSON")
 
         return response_data
 
     def summary(self, data: str, datatype: str):
-        """Return a summary of all information we have for the given IPv{4,6} address. 
-        """
-        if datatype == 'ip':
+        """Return a summary of all information we have for the given IPv{4,6} address."""
+        if datatype == "ip":
             url_path = "/v2/smoke/{ip}".format(ip=data)
         return self._request(path=url_path)
 
@@ -65,4 +66,3 @@ class APIRateLimiting(Exception):
 
     def __str__(self):
         return self.value
-

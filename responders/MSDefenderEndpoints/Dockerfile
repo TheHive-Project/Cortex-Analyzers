@@ -17,5 +17,5 @@
 FROM python:3
 WORKDIR /worker
 COPY . MSDefenderEndpoints
-RUN test ! -e MSDefenderEndpoints/requirements.txt || pip install --no-cache-dir -rMSDefenderEndpoints/requirements.txt
+RUN test ! -e MSDefenderEndpoints/requirements.txt || pip install --no-cache-dir -r MSDefenderEndpoints/requirements.txt
 ENTRYPOINT MSDefenderEndpoints/MSDefenderEndpoints.py
