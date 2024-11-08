@@ -15,7 +15,7 @@ With **TheHive version 5.0.14 and above** and **Cortex version 3.1.7 and above**
 
 This notification can be seen in the *bottom left* corner of your TheHive interface.
 
-![TheHive Notification for new analyzers/responders](../images/cortex-thehive-analyzers-upgrade-notification.png){ width=20% }
+![TheHive Notification for new analyzers/responders](../images/cortex-thehive-analyzers-upgrade-notification.png)
 
 Clicking on it will open a drawer indicating if there are any obsolete analyzers or responders.
 
