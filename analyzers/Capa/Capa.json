@@ -1,7 +1,7 @@
 {
     "name": "Capa",
     "version": "1.0",
-    "author": "Wes Lambert",
+    "author": "Wes Lambert; nusantara-self, StrangeBee",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
     "description": "Analyze files with Capa",
