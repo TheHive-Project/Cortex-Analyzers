@@ -1,0 +1,140 @@
+<!-- Vulnerabilities Linked to Hostname -->
+<div ng-if="content.message.length > 0" ng-repeat="vulnerability in content.message" class="panel panel-warning">
+    <div class="panel-heading">
+        <strong><i class="fa fa-bug"></i> Vulnerability ID: {{ vulnerability["vulnerability_id"] }}</strong>
+    </div>
+    <div class="panel-body">
+        <!-- General Information -->
+        <table class="table table-bordered">
+            <tr>
+                <td><strong>Status</strong></td>
+                <td>{{ vulnerability["status"] }}</td>
+            </tr>
+            <tr>
+                <td><strong>Confidence</strong></td>
+                <td>{{ vulnerability["confidence"] }}</td>
+            </tr>
+            <tr>
+                <td><strong>Created Timestamp</strong></td>
+                <td>{{ vulnerability["created_timestamp"] }}</td>
+            </tr>
+            <tr>
+                <td><strong>Updated Timestamp</strong></td>
+                <td>{{ vulnerability["updated_timestamp"] }}</td>
+            </tr>
+        </table>
+
+        <!-- CVE Details -->
+        <h5><i class="fa fa-info-circle"></i> CVE Details</h5>
+        <table class="table table-striped">
+            <tr>
+                <td><strong>CVE ID</strong></td>
+                <td>
+                    <a ng-href="https://nvd.nist.gov/vuln/detail/{{ vulnerability['cve']['id'] }}" target="_blank">
+                        {{ vulnerability["cve"]["id"] }}
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Base Score</strong></td>
+                <td>{{ vulnerability["cve"]["base_score"] }}</td>
+            </tr>
+            <tr>
+                <td><strong>Severity</strong></td>
+                <td>
+                    <span class="label" ng-class="{
+                        'label-info': vulnerability['cve']['severity'] === 'LOW',
+                        'label-warning': vulnerability['cve']['severity'] === 'MEDIUM',
+                        'label-danger': vulnerability['cve']['severity'] === 'HIGH',
+                        'label-danger': vulnerability['cve']['severity'] === 'CRITICAL'
+                    }">
+                      {{ vulnerability["cve"]["severity"] }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Exploitability Score</strong></td>
+                <td>{{ vulnerability["cve"]["exploitability_score"] }}</td>
+            </tr>
+            <tr>
+                <td><strong>Impact Score</strong></td>
+                <td>{{ vulnerability["cve"]["impact_score"] }}</td>
+            </tr>
+            <tr>
+                <td><strong>Vector</strong></td>
+                <td>{{ vulnerability["cve"]["vector"] }}</td>
+            </tr>
+            <tr>
+                <td><strong>Published Date</strong></td>
+                <td>{{ vulnerability["cve"]["published_date"] }}</td>
+            </tr>
+            <tr>
+                <td><strong>Description</strong></td>
+                <td>{{ vulnerability["cve"]["description"] }}</td>
+            </tr>
+            <tr>
+                <td><strong>References</strong></td>
+                <td>
+                    <ul>
+                        <li ng-repeat="reference in vulnerability['cve']['references']">
+                            <a href="{{ reference }}" target="_blank">{{ reference }}</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>CWEs</strong></td>
+                <td>
+                    <ul>
+                        <li ng-repeat="cwe in vulnerability['cve']['cwes']">
+                            {{ cwe }}
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Host Information -->
+        <h5><i class="fa fa-server"></i> Host Information</h5>
+        <table class="table table-bordered">
+            <tr>
+                <td><strong>Asset Criticality</strong></td>
+                <td>{{ vulnerability["host_info"]["asset_criticality"] || "Unassigned" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Internet Exposure</strong></td>
+                <td>{{ vulnerability["host_info"]["internet_exposure"] }}</td>
+            </tr>
+        </table>
+
+        <!-- Remediation Actions -->
+        <div ng-if="vulnerability.remediation.entities.length > 0">
+            <h5><i class="fa fa-wrench"></i> Remediation Actions</h5>
+            <ul>
+                <li ng-repeat="action in vulnerability['remediation']['entities']">
+                    {{ action["action"] }}
+                </li>
+            </ul>
+        </div>
+        <div ng-if="vulnerability.remediation.entities.length === 0">
+            <p>No remediation actions provided.</p>
+        </div>
+    </div>
+</div>
+
+<!-- No Vulnerabilities -->
+<div ng-if="content.message.length === 0" class="alert alert-info">
+    <i class="fa fa-info-circle"></i> No vulnerabilities linked to the hostname were found.
+</div>
+
+<!-- Errors -->
+<div class="panel panel-danger" ng-if="content.errors.length > 0">
+    <div class="panel-heading">
+        <strong><i class="fa fa-exclamation-triangle"></i> Errors</strong>
+    </div>
+    <div class="panel-body">
+        <ul>
+            <li ng-repeat="error in content.errors">{{ error }}</li>
+        </ul>
+    </div>
+</div>
