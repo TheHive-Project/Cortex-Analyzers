@@ -1,0 +1,220 @@
+<!-- Meta Information -->
+<div class="panel panel-info">
+    <div class="panel-heading" style="background-color: #17a2b8; color: white;">
+        <strong><i class="fa fa-info-circle"></i> Meta Information</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-bordered">
+            <tr>
+                <td><strong>Query Time</strong></td>
+                <td>{{ content["meta"]["query_time"] }} seconds</td>
+            </tr>
+            <tr>
+                <td><strong>Powered By</strong></td>
+                <td>{{ content["meta"]["powered_by"] }}</td>
+            </tr>
+            <tr>
+                <td><strong>Trace ID</strong></td>
+                <td>{{ content["meta"]["trace_id"] }}</td>
+            </tr>
+            <tr>
+                <td><strong>Quota</strong></td>
+                <td>
+                    Total: {{ content["meta"]["quota"]["total"] }}, 
+                    Used: {{ content["meta"]["quota"]["used"] }}, 
+                    In Progress: {{ content["meta"]["quota"]["in_progress"] }}
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- Resources -->
+<div ng-repeat="resource in content.resources" class="panel panel-primary">
+    <div class="panel-heading" style="background-color: #007bff; color: white;">
+        <strong><i class="fa fa-database"></i> Resource ID: {{ resource.id }}</strong>
+    </div>
+    <div class="panel-body">
+
+        <!-- Sandbox -->
+        <div ng-repeat="sandbox in resource.sandbox">
+            <h4 style="color: #007bff; border-bottom: 2px solid #007bff;">Sandbox Analysis</h4>
+
+            <!-- File Details -->
+            <div>
+                <h5><i class="fa fa-file"></i> File Details</h5>
+                <table class="table table-bordered">
+                    <tr>
+                        <td><strong>File Name</strong></td>
+                        <td>{{ sandbox.submit_name || 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>File Size</strong></td>
+                        <td>{{ sandbox.file_size || 'N/A' }} bytes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>File Type</strong></td>
+                        <td>{{ sandbox.file_type || 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SHA256</strong></td>
+                        <td>{{ sandbox.sha256 || 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Environment</strong></td>
+                        <td>{{ sandbox.environment_description || 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Verdict</strong></td>
+                        <td>
+                            <span class="label" ng-class="{
+                                'label-danger': sandbox.verdict === 'malicious',
+                                'label-warning': sandbox.verdict === 'suspicious',
+                                'label-success': sandbox.verdict === 'clean',
+                                'label-success': sandbox.verdict === 'no specific threat'
+                            }">
+                                {{ sandbox.verdict || 'N/A' }}
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Threat Indicators -->
+            <div>
+                <h5><i class="fa fa-shield-alt"></i> Threat Indicators</h5>
+                <div>
+                    <strong>File Metadata Analysis:</strong>
+                    <ul ng-if="sandbox.file_metadata.file_analysis.length > 0">
+                        <li ng-repeat="metadata in sandbox.file_metadata.file_analysis">{{ metadata }}</li>
+                    </ul>
+                    <p ng-if="sandbox.file_metadata.file_analysis.length === 0">No file metadata analysis available.</p>
+                </div>
+            </div>
+
+            <!-- MITRE ATT&CK Techniques -->
+            <div ng-if="sandbox.mitre_attacks.length > 0">
+                <h5><i class="fa fa-crosshairs"></i> MITRE ATT&CK Techniques</h5>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Tactic</th>
+                            <th>Technique</th>
+                            <th>Attack ID</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="attack in sandbox.mitre_attacks">
+                            <td>{{ attack.tactic }}</td>
+                            <td>{{ attack.technique }}</td>
+                            <td><a href="{{ attack.attack_id_wiki }}" target="_blank">{{ attack.attack_id }}</a></td>
+                            <td>
+                                <ul>
+                                    <li ng-repeat="info in attack.informative_identifiers">{{ info }}</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p ng-if="sandbox.mitre_attacks.length === 0">No MITRE ATT&CK techniques reported.</p>
+            
+            <!-- Malquery -->
+            <div ng-if="resource.malquery.length > 0">
+                <h5><i class="fa fa-search"></i> Malquery Analysis</h5>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Input</th>
+                            <th>Verdict</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="malquery in resource.malquery">
+                            <td>{{ malquery.type }}</td>
+                            <td>{{ malquery.input }}</td>
+                            <td>
+                                <span class="label" ng-class="{
+                                    'label-danger': malquery.verdict === 'malicious',
+                                    'label-warning': malquery.verdict === 'suspicious',
+                                    'label-success': malquery.verdict === 'clean'
+                                }">
+                                    {{ malquery.verdict }}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p ng-if="resource.malquery.length === 0">No malquery results available.</p>
+            
+            <!-- Extracted Files -->
+            <div>
+                <h5><i class="fa fa-archive"></i> Extracted Files</h5>
+                <table class="table table-striped table-bordered" ng-if="sandbox.extracted_files.length > 0">
+                    <thead>
+                        <tr>
+                            <th>File Name</th>
+                            <th>Path</th>
+                            <th>SHA256</th>
+                            <th>Size</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="file in sandbox.extracted_files">
+                            <td>{{ file.name }}</td>
+                            <td>{{ file.file_path }}</td>
+                            <td>{{ file.sha256 }}</td>
+                            <td>{{ file.file_size || 'N/A' }} bytes</td>
+                            <td>{{ file.description || 'N/A' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p ng-if="!sandbox.extracted_files || sandbox.extracted_files.length === 0">No extracted files found.</p>
+            </div>
+            
+            <!-- Threat Graph -->
+            <div>
+                <h5><i class="fa fa-network-wired"></i> Threat Graph Indicators</h5>
+                <table class="table table-bordered" ng-if="resource.threat_graph.indicators.length > 0">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Value</th>
+                            <th>Global Prevalence</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="indicator in resource.threat_graph.indicators">
+                            <td>{{ indicator.type }}</td>
+                            <td>{{ indicator.value }}</td>
+                            <td>{{ indicator.global_prevalence }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p ng-if="resource.threat_graph.indicators.length === 0">No threat graph indicators found.</p>
+            </div>
+            
+            <!-- IntelX -->
+            <div ng-if="resource.intelx">
+                <h5><i class="fa fa-shield-alt"></i> IntelX Information</h5>
+                <p><strong>SHA256:</strong> {{ resource.intelx.sha256 }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Errors -->
+<div class="panel panel-danger" ng-if="content.errors.length > 0">
+    <div class="panel-heading">
+        <strong><i class="fa fa-exclamation-circle"></i> Errors</strong>
+    </div>
+    <div class="panel-body">
+        <ul>
+            <li ng-repeat="error in content.errors">{{ error }}</li>
+        </ul>
+    </div>
+</div>

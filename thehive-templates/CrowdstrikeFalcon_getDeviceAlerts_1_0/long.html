@@ -1,0 +1,83 @@
+<!-- Alerts -->
+<div>
+    <div class="panel panel-warning" ng-if="content.message && content.message.length > 0" ng-repeat="alert in content.message">
+        <div class="panel-heading">
+            <strong>
+                <i class="fa fa-exclamation-triangle"></i> Alert - {{ alert["description"] }}
+            </strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <td><strong>Timestamp</strong></td>
+                    <td>{{ alert["timestamp"] }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Status</strong></td>
+                    <td><strong>{{ alert["status"] | uppercase }}</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>User Name</strong></td>
+                    <td>{{ alert["user_name"] }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Severity</strong></td>
+                    <td>
+                        <span class="label" ng-class="{
+                            'label-danger': alert['severity_name'] === 'Critical' || alert['severity_name'] === 'High',
+                            'label-warning': alert['severity_name'] === 'Medium',
+                            'label-info': alert['severity_name'] === 'Low'
+                        }">
+                            {{ alert["severity_name"] }} ({{ alert["severity"] }})
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Scenario</strong></td>
+                    <td>{{ alert["scenario"] }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Filename</strong></td>
+                    <td>{{ alert["filename"] }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Filepath</strong></td>
+                    <td>{{ alert["filepath"] }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Command Line</strong></td>
+                    <td><code>{{ alert["cmdline"] }}</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Confidence</strong></td>
+                    <td>
+                        <progress value="{{ alert['confidence'] }}" max="100"></progress>
+                        {{ alert["confidence"] }}%
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- No Alerts -->
+    <div class="panel panel-info" ng-if="!content.message || content.message.length === 0">
+        <div class="panel-heading">
+            <strong><i class="fa fa-info-circle"></i> No Alerts</strong>
+        </div>
+        <div class="panel-body">
+            <p>No alerts are available for this resource at the moment.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Errors -->
+<div class="panel panel-danger" ng-if="content.errors && content.errors.length > 0">
+    <div class="panel-heading">
+        <strong><i class="fa fa-times-circle"></i> Errors</strong>
+    </div>
+    <div class="panel-body">
+        <ul>
+            <li ng-repeat="error in content.errors">{{ error }}</li>
+        </ul>
+    </div>
+</div>

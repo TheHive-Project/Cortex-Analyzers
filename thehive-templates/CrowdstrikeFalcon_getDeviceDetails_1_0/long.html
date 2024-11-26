@@ -1,0 +1,170 @@
+<!-- Device Details -->
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <strong><i class="fa fa-desktop"></i> Device Details</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-bordered">
+            <tr>
+                <td><strong>Device ID</strong></td>
+                <td>{{ content["device_id"] || "N/A" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Hostname</strong></td>
+                <td>{{ content["hostname"] || "N/A" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Platform</strong></td>
+                <td>{{ content["platform_name"] || "N/A" }} (ID: {{ content["platform_id"] || "N/A" }})</td>
+            </tr>
+            <tr>
+                <td><strong>OS Version</strong></td>
+                <td>{{ content["os_version"] || "N/A" }} (Build: {{ content["os_build"] || "N/A" }})</td>
+            </tr>
+            <tr>
+                <td><strong>Agent Version</strong></td>
+                <td>{{ content["agent_version"] || "N/A" }}</td>
+            </tr>
+            <tr>
+                <td><strong>External IP</strong></td>
+                <td>{{ content["external_ip"] || "N/A" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Local IP</strong></td>
+                <td>{{ content["local_ip"] || "N/A" }}</td>
+            </tr>
+            <tr>
+                <td><strong>MAC Address</strong></td>
+                <td>{{ content["mac_address"] || "N/A" }}</td>
+            </tr>
+            <tr>
+                <td><strong>System Manufacturer</strong></td>
+                <td>{{ content["system_manufacturer"] || "N/A" }}</td>
+            </tr>
+            <tr>
+                <td><strong>System Product Name</strong></td>
+                <td>{{ content["system_product_name"] || "N/A" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Serial Number</strong></td>
+                <td>{{ content["serial_number"] || "N/A" }}</td>
+            </tr>
+            <tr>
+                <td><strong>First Seen</strong></td>
+                <td>{{ content["first_seen"] || "N/A" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Last Seen</strong></td>
+                <td>{{ content["last_seen"] || "N/A" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Provision Status</strong></td>
+                <td>{{ content["provision_status"] || "N/A" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Status</strong></td>
+                <td>{{ content["status"] || "N/A" }}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- Last Login Details -->
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <strong><i class="fa fa-user-circle"></i> Last Login Details</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-bordered">
+            <tr>
+                <td><strong>Last Login User</strong></td>
+                <td>{{ content["last_login_user"] || "N/A" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Last Login UID</strong></td>
+                <td>{{ content["last_login_uid"] || "N/A" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Last Login User SID</strong></td>
+                <td>{{ content["last_login_user_sid"] || "N/A" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Last Login Timestamp</strong></td>
+                <td>{{ content["last_login_timestamp"] || "N/A" }}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- Additional Device Information -->
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <strong><i class="fa fa-cogs"></i> Additional Device Information</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <td><strong>Reduced Functionality Mode</strong></td>
+                <td>
+                    <span class="label" ng-class="{
+                        'label-success': content.reduced_functionality_mode === 'no',
+                        'label-danger': content.reduced_functionality_mode === 'yes'
+                    }">
+                        {{ content.reduced_functionality_mode | uppercase }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>RTR State</strong></td>
+                <td>
+                    <span class="label" ng-class="{
+                        'label-success': content.rtr_state === 'enabled',
+                        'label-danger': content.rtr_state === 'disabled'
+                    }">
+                        {{ content.rtr_state | uppercase }}
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- Meta Information -->
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <strong><i class="fa fa-info-circle"></i> Meta Information</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-bordered">
+            <tr>
+                <td><strong>Version</strong></td>
+                <td>{{ content["meta"]["version"] || "N/A" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Version String</strong></td>
+                <td>{{ content["meta"]["version_string"] || "N/A" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Modified Timestamp</strong></td>
+                <td>{{ content["modified_timestamp"] || "N/A" }}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- No Data -->
+<div class="alert alert-info" ng-if="!content.device_id && !content.hostname">
+    <strong><i class="fa fa-info-circle"></i> No Device Details Available</strong>
+</div>
+
+<!-- Errors -->
+<div class="panel panel-danger" ng-if="content.errors.length > 0">
+    <div class="panel-heading">
+        <strong><i class="fa fa-exclamation-circle"></i> Errors</strong>
+    </div>
+    <div class="panel-body">
+        <ul>
+            <li ng-repeat="error in content.errors">{{ error }}</li>
+        </ul>
+    </div>
+</div>
