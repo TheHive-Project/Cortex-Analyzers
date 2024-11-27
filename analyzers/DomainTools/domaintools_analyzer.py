@@ -5,11 +5,11 @@ from domaintools.exceptions import NotFoundException
 from domaintools.exceptions import NotAuthorizedException
 from domaintools.exceptions import ServiceUnavailableException
 
-
 from domaintools import API
 
-
 from cortexutils.analyzer import Analyzer
+
+import ssl
 
 
 class DomainToolsAnalyzer(Analyzer):
@@ -28,7 +28,15 @@ class DomainToolsAnalyzer(Analyzer):
         if (self.service == 'reverse-ip' and self.data_type == 'ip'):
             self.service = 'host-domains'
 
-        api = API(self.get_param('config.username'), self.get_param('config.key'))
+        if self.get_param('config.cacerts'):
+            cert_data = ssl.PEM_cert_to_DER_cert(self.get_param('config.cacerts'))
+            ssl_context = ssl.create_default_context()
+            ssl_context.load_verify_locations(cadata=cert_data)
+        else:
+            ssl_context = True
+
+        api = API(self.get_param('config.username'), self.get_param('config.key'),
+                  proxy=self.get_param('config.proxy_https').split('://')['1'], verify_ssl=ssl_context)
 
         if self.service == 'reverse-ip' and self.data_type in ['domain', 'ip', 'fqdn']:
             response = api.reverse_ip(data).response()
@@ -42,12 +50,12 @@ class DomainToolsAnalyzer(Analyzer):
         elif self.service == 'whois/history' and self.data_type == 'domain':
             response = api.whois_history(data).response()
 
-        elif self.service == 'whois/parsed' and self.data_type in ['domain','ip']:
+        elif self.service == 'whois/parsed' and self.data_type in ['domain', 'ip']:
             response = api.parsed_whois(data).response()
 
         elif self.service == 'hosting-history' and self.data_type == 'domain':
             response = api.hosting_history(data).response()
-        
+
         elif self.service == 'risk_evidence' and self.data_type in ['domain', 'fqdn']:
             response = api.risk_evidence(data).response()
 
@@ -66,14 +74,13 @@ class DomainToolsAnalyzer(Analyzer):
 
         return response
 
-
     def summary(self, raw):
 
         r = {
             "service": self.service,
             "dataType": self.data_type
         }
-        
+
         if "ip_addresses" in raw:
             if type(raw["ip_addresses"]) == dict:
                 r["ip"] = {
@@ -128,7 +135,7 @@ class DomainToolsAnalyzer(Analyzer):
         if r["service"] in ["reverse-ip", "host-domains"]:
             taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_IP",
                                                   "{}, {} domains".format(r["ip"]["address"],
-                                                                              r["ip"]["domain_count"])))
+                                                                          r["ip"]["domain_count"])))
 
         if r["service"] == "name-server-domains":
             taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_Name_Server",
@@ -137,8 +144,8 @@ class DomainToolsAnalyzer(Analyzer):
         if r["service"] == "reverse-whois":
             taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_Whois",
                                                   "curr:{} / hist:{} domains".format(r["domain_count"]["current"],
-                                                                                         r["domain_count"][
-                                                                                             "historic"])))
+                                                                                     r["domain_count"][
+                                                                                         "historic"])))
 
         if r["service"] == "reverse-ip-whois":
             taxonomies.append(self.build_taxonomy("info", "DT", "Reverse_IP_Whois",
@@ -147,12 +154,13 @@ class DomainToolsAnalyzer(Analyzer):
         if r["service"] == "hosting-history":
             taxonomies.append(self.build_taxonomy("info", "DT", "Hosting_History",
                                                   "registrars:{} / ips:{} / ns:{}".format(r["registrar_history"],
-                                                                                              r["ip_history"],
-                                                                                                  r["ns_history"])))
+                                                                                          r["ip_history"],
+                                                                                          r["ns_history"])))
 
         if r["service"] == "whois/history":
             taxonomies.append(self.build_taxonomy("info", "DT", "Whois_History",
-                                                  "{} {}".format(r["record_count"], "records" if r["record_count"] > 1 else "record")))
+                                                  "{} {}".format(r["record_count"],
+                                                                 "records" if r["record_count"] > 1 else "record")))
 
         if r["service"] == "whois/parsed" or r['service'] == "whois":
             if r["registrar"]:
@@ -160,7 +168,6 @@ class DomainToolsAnalyzer(Analyzer):
             if r["registrant"]:
                 taxonomies.append(
                     self.build_taxonomy("info", "DT", "Whois", "REGISTRANT:{}".format(r["registrant"])))
-
 
         if "risk_score" in r:
             risk_service = "Risk"
