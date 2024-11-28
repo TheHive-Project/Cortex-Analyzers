@@ -5,7 +5,58 @@
   "url": "https://github.com/pjuhas/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "WHOIS queries from threatminer.org",
-  "dataTypeList": ["ip", "domain"],
+  "dataTypeList": [
+    "ip",
+    "domain"
+  ],
   "baseConfig": "ThreatMiner",
-  "command": "ThreatMiner/ThreatMiner.py"
+  "command": "ThreatMiner/ThreatMiner.py",
+  "checks": [
+    {
+      "input": {
+        "data": "8.8.8.8",
+        "dataType": "ip"
+      },
+      "rules": [
+        {
+          "path": "$.success",
+          "expected": [
+            true
+          ]
+        },
+        {
+          "path": "$.artifacts[*].dataType",
+          "expected": [
+            "ip",
+            "domain"
+          ]
+        },
+        {
+          "path": "$.artifacts[*].data",
+          "expected": [
+            "8.8.8.0/24",
+            "google.com"
+          ]
+        },
+        {
+          "path": "$.full.status_code",
+          "expected": [
+            "200"
+          ]
+        },
+        {
+          "path": "$.full.status_message",
+          "expected": [
+            "Results found."
+          ]
+        },
+        {
+          "path": "$.full.results[*].org_name",
+          "expected": [
+            "Google Inc."
+          ]
+        }
+      ]
+    }
+  ]
 }

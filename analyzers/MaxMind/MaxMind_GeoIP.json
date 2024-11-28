@@ -5,7 +5,61 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Use MaxMind to geolocate an IP address.",
-  "dataTypeList": ["ip"],
+  "dataTypeList": [
+    "ip"
+  ],
   "baseConfig": "MaxMind",
-  "command": "MaxMind/geo.py"
+  "command": "MaxMind/geo.py",
+  "checks": [
+    {
+      "input": {
+        "data": "8.8.8.8",
+        "dataType": "ip"
+      },
+      "rules": [
+        {
+          "path": "$.success",
+          "expected": [
+            true
+          ]
+        },
+        {
+          "path": "$.full.city.name",
+          "expected": [
+            "Mountain View"
+          ]
+        },
+        {
+          "path": "$.full.continent.name",
+          "expected": [
+            "North America"
+          ]
+        },
+        {
+          "path": "$.full.country.name",
+          "expected": [
+            "United States"
+          ]
+        },
+        {
+          "path": "$.full.location.time_zone",
+          "expected": [
+            "America/Los_Angeles"
+          ]
+        },
+        {
+          "path": "$.full.registered_country.name",
+          "expected": [
+            "United States"
+          ]
+        },
+        {
+          "path": "$.full.subdivisions.name",
+          "expected": [
+            "California"
+          ]
+        }
+      ]
+    }
+  ]
 }

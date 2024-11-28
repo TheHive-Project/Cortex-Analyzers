@@ -5,7 +5,13 @@
   "url": "https://github.com/Cyberprotect/Cortex-Analyzers",
   "version": "3.0",
   "description": "ThreatScore is a cyber threat scoring system provided by Cyberprotect",
-  "dataTypeList": ["domain", "hash", "ip", "url", "user-agent"],
+  "dataTypeList": [
+    "domain",
+    "hash",
+    "ip",
+    "url",
+    "user-agent"
+  ],
   "command": "Cyberprotect/CyberprotectAnalyzer.py",
   "baseConfig": "Cyberprotect",
   "config": {
@@ -24,6 +30,66 @@
     {
       "path": "assets/long_report.png",
       "caption": "cyberprotect: long report"
+    }
+  ],
+  "checks": [
+    {
+      "input": {
+        "data": "8.8.8.8",
+        "dataType": "ip",
+        "config": {
+          "service": "ThreatScore",
+          "check_tlp": true
+        }
+      },
+      "rules": [
+        {
+          "path": "$.success",
+          "expected": [
+            true
+          ]
+        },
+        {
+          "path": "$.full.threatscore.categories[*]",
+          "expected": [
+            "blocklist",
+            "general_business",
+            "malicious_host",
+            "spam",
+            "malspam"
+          ]
+        },
+        {
+          "path": "$.full.threatscore.indicators.blocklist",
+          "expected": [
+            true
+          ]
+        },
+        {
+          "path": "$.full.threatscore.indicators.compromission",
+          "expected": [
+            true
+          ]
+        },
+        {
+          "path": "$.full.threatscore.value",
+          "expected": [
+            0.44026315789473686
+          ]
+        },
+        {
+          "path": "$.full.threatscore.level",
+          "expected": [
+            "suspicious"
+          ]
+        },
+        {
+          "path": "$.full.tags[*]",
+          "expected": [
+            "dns"
+          ]
+        }
+      ]
     }
   ]
 }

@@ -5,7 +5,62 @@
   "url": "https://github.com/pjuhas/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Check IP address or domain using ip-api.com",
-  "dataTypeList": ["ip", "domain"],
+  "dataTypeList": [
+    "ip",
+    "domain"
+  ],
   "baseConfig": "IP-API",
-  "command": "IP-API/IP-API.py"
+  "command": "IP-API/IP-API.py",
+  "checks": [
+    {
+      "input": {
+        "data": "8.8.8.8",
+        "dataType": "ip"
+      },
+      "rules": [
+        {
+          "path": "$.success",
+          "expected": [
+            true
+          ]
+        },
+        {
+          "path": "$.full.status",
+          "expected": [
+            "success"
+          ]
+        },
+        {
+          "path": "$.full.country",
+          "expected": [
+            "United States"
+          ]
+        },
+        {
+          "path": "$.full.regionName",
+          "expected": [
+            "Virginia"
+          ]
+        },
+        {
+          "path": "$.full.city",
+          "expected": [
+            "Ashburn"
+          ]
+        },
+        {
+          "path": "$.full.org",
+          "expected": [
+            "Google Public DNS"
+          ]
+        },
+        {
+          "path": "$.full.query",
+          "expected": [
+            "8.8.8.8"
+          ]
+        }
+      ]
+    }
+  ]
 }
