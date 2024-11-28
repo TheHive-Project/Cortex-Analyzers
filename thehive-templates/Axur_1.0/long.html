@@ -1,0 +1,71 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        <strong>Axur IOC Search Results</strong>
+    </div>
+    <div class="panel-body">
+        <div ng-repeat="result in content" class="panel panel-default">
+            <div class="panel-heading">
+                <strong>{{result.source}}</strong>
+            </div>
+            <div class="panel-body">
+                <dl class="dl-horizontal">
+                    <dt>Source</dt>
+                    <dd class="wrap">{{result.source || "-"}}</dd>
+
+                    <dt>Hits</dt>
+                    <dd class="wrap">{{result.hits || "-"}}</dd>
+
+                    <dt>Score</dt>
+                    <dd class="wrap">{{result.score || "-"}}</dd>
+                </dl>
+
+                <div ng-repeat="context in result.context">
+                    <hr>
+
+                    <div ng-if="result.source == 'ioc-feed'">
+                        <dl class="dl-horizontal">
+                            <dt>Tags</dt>
+                            <dd class="wrap">{{context.tags.join(', ') || "-"}}</dd>
+
+                            <dt>Detection</dt>
+                            <dd class="wrap">{{context.detection || "-"}}</dd>
+                        </dl>
+                    </div>
+
+                    <div ng-if="result.source == 'explore'">
+                        <dl class="dl-horizontal">
+                            <dt>Content</dt>
+                            <dd class="wrap">{{context.content || "-"}}</dd>
+
+                            <dt>Detection</dt>
+                            <dd class="wrap">{{context.detection || "-"}}</dd>
+                        </dl>
+                    </div>
+
+                    <div ng-if="result.source == 'malicious-urls'">
+                        <dl class="dl-horizontal">
+                            <dt>Risk Level</dt>
+                            <dd class="wrap">{{context.riskLevel || "-"}}</dd>
+
+                            <dt>Collector Name</dt>
+                            <dd class="wrap">{{context['collector-name'] || "-"}}</dd>
+
+                            <dt>Detection</dt>
+                            <dd class="wrap">{{context.detection || "-"}}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>Error</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
