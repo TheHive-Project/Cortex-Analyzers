@@ -1,8 +1,8 @@
 # Changelog
 
-## [3.3.9](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.3.9) (2024-11-26)
+## [3.4.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.0) (2024-11-26)
 
-[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.3.8...3.3.9)
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.3.8...3.4.0)
 
 **Closed issues:**
 
