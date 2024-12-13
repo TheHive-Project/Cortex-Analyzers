@@ -34,7 +34,7 @@
   ],
   "registration_required": true,
   "subscription_required": true,
-  "free_subscription": true,
+  "free_subscription": false,
   "service_homepage": "https://censys.io/",
   "service_logo": {
     "path": "assets/censys.png",
