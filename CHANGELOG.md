@@ -1,12 +1,17 @@
 # Changelog
 
-## [3.4.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.0) (2024-11-26)
+## [3.4.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.0) (2024-12-09)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.3.8...3.4.0)
 
 **Closed issues:**
 
 - \[FR\] Enhance Crowdstrike Falcon integration with TheHive  [\#1296](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1296)
+
+**Merged pull requests:**
+
+- Multiple Analyzers & Responders for CrowdstrikeFalcon [\#1297](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1297) ([nusantara-self](https://github.com/nusantara-self))
+- Capa Analyzer - Code improvements [\#1295](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1295) ([nusantara-self](https://github.com/nusantara-self))
 
 ## [3.3.8](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.3.8) (2024-11-08)
 
@@ -460,7 +465,7 @@
 - Upgrade OpenCTI analyzer to v4 + add fuzzy search flavor [\#928](https://github.com/TheHive-Project/Cortex-Analyzers/pull/928) ([amr-cossi](https://github.com/amr-cossi))
 - Add IVRE Analyzer [\#923](https://github.com/TheHive-Project/Cortex-Analyzers/pull/923) ([p-l-](https://github.com/p-l-))
 - Feature/mail incident status [\#921](https://github.com/TheHive-Project/Cortex-Analyzers/pull/921) ([mkcorpc](https://github.com/mkcorpc))
-- \[OSCD Initiative\] Add Azure Authentication Token Revokation Responder [\#906](https://github.com/TheHive-Project/Cortex-Analyzers/pull/906) ([Dmweiner](https://github.com/Dmweiner))
+- \[OSCD Initiative\] Add Azure Authentication Token Revokation Responder [\#906](https://github.com/TheHive-Project/Cortex-Analyzers/pull/906) ([districtofpaige](https://github.com/districtofpaige))
 - FIX issue \#896 [\#897](https://github.com/TheHive-Project/Cortex-Analyzers/pull/897) ([ipfyx](https://github.com/ipfyx))
 - \[Bug\] MineMeld responder domain IOC incorrect type \#892 [\#893](https://github.com/TheHive-Project/Cortex-Analyzers/pull/893) ([colin-stubbs](https://github.com/colin-stubbs))
 - \[OSCD Initiative\] add Gmail responder [\#891](https://github.com/TheHive-Project/Cortex-Analyzers/pull/891) ([strassi](https://github.com/strassi))
