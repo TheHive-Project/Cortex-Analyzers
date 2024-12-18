@@ -40,7 +40,7 @@
   "registration_required": true,
   "subscription_required": true,
   "free_subscription": false,
-  "service_homepage": "https://www.duskrise.com/cluster25_platform",
+  "service_homepage": "https://www.duskrise.com/the-c25-intelligence/",
   "service_logo": {"path":"assets/cluster25_logo.png", "caption": "logo"},
   "screenshots": [
     {"path":"assets/short_report_sample.png",
