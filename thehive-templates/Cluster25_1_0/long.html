@@ -1,0 +1,402 @@
+<div class="panel panel-info">
+    <div class="panel-heading">
+        General Info
+    </div>
+    <dl class="dl-horizontal">
+        <dt>Indicator:</dt>
+        <dd>{{content.indicator}}</dd>
+        <dt>Indicator Type:</dt>
+        <dd>{{content.indicator_type}}</dd>
+        <dt>First Seen:</dt>
+        <dd>{{content.first_seen}}</dd>
+        <dt>Last Seen:</dt>
+        <dd>{{content.last_seen}}</dd>
+        <dt>Whitelisted:</dt>
+        <dd>{{content.whitelisted}}</dd>
+        <dt>Score:</dt>
+        <dd>{{content.score}}/100</dd>
+        <dt>Harmless:</dt>
+        <dd>{{content.stats.harmless}}/100</dd>
+        <dt>Malicious:</dt>
+        <dd>{{content.stats.malicious}}/100</dd>
+        <dt>Suspicious:</dt>
+        <dd>{{content.stats.suspicious}}/100</dd>
+        <dt>Undetected:</dt>
+        <dd>{{content.stats.undetected}}/100</dd>
+        <dt>Is Known:</dt>
+        <dd>{{content.is_known}}</dd>
+        <dt>Actors:</dt>
+        <dd><span ng-if="content.actors" ng-repeat="actor in content.actors"
+                  class="label label-info">{{actor.name}}</span></dd>
+        <dt>Tags:</dt>
+        <dd><span ng-if="content.tags" ng-repeat="tag in content.tags" class="label label-info">{{tag.name}}</span></dd>
+        <dt>Related Indicators By File:</dt>
+        <dd><span ng-if="content.related_indicators.by_file"
+                  ng-repeat="indicator in content.related_indicators.by_file.indicators" class="label label-info">{{indicator.value}}</span>
+        </dd>
+        <dt>Related Indicators By Content:</dt>
+        <dd><span ng-if="content.related_indicators.by_content"
+                  ng-repeat="indicator in content.related_indicators.by_content.indicators" class="label label-info">{{indicator.value}}</span>
+        </dd>
+        <dt>Related Indicators Contexts:</dt>
+        <dd><span ng-if="content.related_contexts" ng-repeat="contex in content.related_contexts"
+                  class="label label-info">{{contex.title}}</span></dd>
+        <dt>Created:</dt>
+        <dd>{{content.created_dt}}</dd>
+        <dt>Modified:</dt>
+        <dd>{{content.modified_dt}}</dd>
+        <dt>Attacker Activities:</dt>
+        <dd><span ng-if="content.attacker_activities" ng-repeat="activity in content.attacker_activities"
+                  class="label label-info">{{activity.actorip}}</span></dd>
+        <dt>Targeted Sectors:</dt>
+        <dd><span ng-if="content.targeted_sectors" ng-repeat="sector in content.targeted_sectors"
+                  class="label label-info">{{sector}}</span></dd>
+        <dt>Targeted Countries:</dt>
+        <dd><span ng-if="content.targeted_countries" ng-repeat="activity in content.targeted_countries"
+                  class="label label-info">{{country}}</span></dd>
+        <dt>Guessed Types:</dt>
+        <dd><span ng-if="content.guessed_types" ng-repeat="type in content.guessed_types"
+                  class="label label-info">{{type}}</span></dd>
+    </dl>
+</div>
+<div class="panel panel-info">
+    <div class="panel-heading" ng-if="content.file_info">
+        File Info
+    </div>
+    <dl class="dl-horizontal" ng-if="content.file_info">
+        <dt>Md5:</dt>
+        <dd>{{content.file_info.md5}}</dd>
+        <dt>Sha1:</dt>
+        <dd>{{content.file_info.sha1}}</dd>
+        <dt>Sha256:</dt>
+        <dd>{{content.file_info.md5}}</dd>
+        <dt>Ssdeep:</dt>
+        <dd>{{content.file_info.ssdeep}}</dd>
+        <dt>Type Description:</dt>
+        <dd>{{content.file_info.type_description}}</dd>
+        <dt>Names:</dt>
+        <dd><span ng-if="content.file_info.names" ng-repeat="name in content.file_info.names" class="label label-info">{{name}}</span>
+        </dd>
+        <dt>Size:</dt>
+        <dd>{{content.file_info.size}}</dd>
+    </dl>
+    <div class="panel-heading" ng-if="content.cve_info">
+        Cve Info
+    </div>
+    <dl class="dl-horizontal" ng-if="content.cve_info">
+        <dt>Id:</dt>
+        <dd>{{content.cve_info.md5}}</dd>
+        <dt>Published Date:</dt>
+        <dd>{{content.cve_info.published_date}}</dd>
+        <dt>Last Modified Date:</dt>
+        <dd>{{content.cve_info.last_modified_date}}</dd>
+        <dt>Description:</dt>
+        <dd>{{content.cve_info.description}}</dd>
+        <dt>References:</dt>
+        <dd><span ng-if="content.cve_info.references" ng-repeat="reference in content.cve_info.references"
+                  class="label label-info">{{reference}}</span></dd>
+    </dl>
+    <div class="panel-heading" ng-if="content.asn_info">
+        Asn Info
+    </div>
+    <dl class="dl-horizontal" ng-if="content.asn_info">
+        <dt>Organization:</dt>
+        <dd>{{content.asn_info.organization}}</dd>
+        <dt>Name:</dt>
+        <dd>{{content.asn_info.name}}</dd>
+        <dt>Registry:</dt>
+        <dd>{{content.asn_info.registry}}</dd>
+        <dt>Registered Country:</dt>
+        <dd>{{content.asn_info.registered_country}}</dd>
+        <dt>Registered Country Name:</dt>
+        <dd>{{content.asn_info.registered_country_name}}</dd>
+        <dt>Registration Date</dt>
+        <dd>{{content.asn_info.registration_dt}}</dd>
+        <dt>Registration Last Change</dt>
+        <dd>{{content.asn_info.registration_dt}}</dd>
+        <dt>Total Ipv4:</dt>
+        <dd>{{content.asn_info.total_ipv4}}</dd>
+    </dl>
+    <div class="panel-heading" ng-if="content.btcaddress_info">
+        Bitcoin Address Info
+    </div>
+    <dl class="dl-horizontal" ng-if="content.btcaddress_info">
+        <dt>Total Received:</dt>
+        <dd>{{content.btcaddress_info.total_received}}</dd>
+        <dt>Total Sent:</dt>
+        <dd>{{content.btcaddress_info.total_sent}}</dd>
+        <dt>Balance:</dt>
+        <dd>{{content.btcaddress_info.balance}}</dd>
+        <dt>Transaction Number:</dt>
+        <dd>{{content.btcaddress_info.transation_number}}</dd>
+        <dt>Report Count:</dt>
+        <dd>{{content.btcaddress_info.report_count}}</dd>
+        <dt>Report First Seen</dt>
+        <dd>{{content.btcaddress_info.report_first_seen}}</dd>
+        <dt>Report Last Seen</dt>
+        <dd>{{content.btcaddress_info.report_last_seen}}</dd>
+        <dt>Recent:</dt>
+        <dd><span ng-if="content.btcaddress_info.recent" ng-repeat="recent in content.btcaddress.recent"
+                  class="label label-info">Abuse type: {{recent.abuse_type}}  Description: {{recent.description}}</span>
+        </dd>
+    </dl>
+    <div class="panel-heading" ng-if="content.family_info">
+        Family Info
+    </div>
+    <dl class="dl-horizontal" ng-if="content.family_info">
+        <dt>Family Name:</dt>
+        <dd>{{content.family_info.family_name}}</dd>
+        <dt>Hits:</dt>
+        <dd><span ng-if="content.family_info.hits" ng-repeat="hit in content.family_info.hit" class="label label-info">On {{hit.seen_dt}} there were: {{hit.hits}} hits</span>
+        </dd>
+    </dl>
+    <div class="panel-heading" ng-if="content.communicating_files">
+        Communicating Files
+    </div>
+    <dl class="dl-horizontal" ng-if="content.communicating_files">
+        <span ng-if="content.communicating_files" ng-repeat="file in content.communicating_files"
+              class="label label-info">
+            <h5>Communicating File {{$index}}</h5>
+            <dt>Md5:</dt><dd>{{file.md5}}</dd>
+            <dt>Sha1:</dt><dd>{{file.sha1}}</dd>
+            <dt>Sha256:</dt><dd>{{file.md5}}</dd>
+            <dt>Ssdeep:</dt><dd>{{file.ssdeep}}</dd>
+            <dt>Type Description:</dt><dd>{{file.type_description}}</dd>
+            <dt>Names:</dt><dd><span ng-if="file.names" ng-repeat="name in file.names"
+                                     class="label label-info">{{name}}</span></dd>
+            <dt>Size:</dt><dd>{{file.size}}</dd>
+        </span>
+    </dl>
+    <div class="panel-heading" ng-if="content.contacted_ips">
+        Contacted Ips
+    </div>
+    <dl class="dl-horizontal" ng-if="content.contacted_ips">
+        <span ng-if="content.contacted_ips" ng-repeat="ip in content.contacted_ips" class="label label-info">
+            <h5>Contacted Ip {{$index}}</h5>
+            <dt>Asn:</dt><dd>{{ip.asn}}</dd>
+            <dt>As Owner:</dt><dd>{{ip.as_owner}}</dd>
+            <dt>country:</dt><dd>{{ip.country}}</dd>
+        </span>
+    </dl>
+    <div class="panel-heading" ng-if="content.contacted_domains">
+        Contacted Domains
+    </div>
+    <dl class="dl-horizontal" ng-if="content.contacted_domains">
+        <span ng-if="content.contacted_domains" ng-repeat="domain in content.contacted_domains"
+              class="label label-info">
+            <h5>Contacted Domain {{$index}}</h5>
+            <dt>Registrar:</dt><dd>{{domain.registrar}}</dd>
+        </span>
+    </dl>
+    </dl>
+    <div class="panel-heading" ng-if="content.contacted_urls">
+        Contacted Urls
+    </div>
+    <dl class="dl-horizontal" ng-if="content.contacted_urls">
+        <span ng-if="content.contacted_urls" ng-repeat="url in content.contacted_urls" class="label label-info">
+            <h5>Contacted Url {{$index}}</h5>
+            <dt>Value:</dt><dd>{{url.value}}</dd>
+        </span>
+    </dl>
+    <div class="panel-heading" ng-if="content.dropped_files">
+        Dropped Files
+    </div>
+    <dl class="dl-horizontal" ng-if="content.dropped_files">
+        <span ng-if="content.dropped_files" ng-repeat="file in content.dropped_files" class="label label-info">
+            <h5>Communicating File {{$index}}</h5>
+            <dt>Md5:</dt><dd>{{file.md5}}</dd>
+            <dt>Sha1:</dt><dd>{{file.sha1}}</dd>
+            <dt>Sha256:</dt><dd>{{file.md5}}</dd>
+            <dt>Ssdeep:</dt><dd>{{file.ssdeep}}</dd>
+            <dt>Type Description:</dt><dd>{{file.type_description}}</dd>
+            <dt>Names:</dt><dd><span ng-if="file.names" ng-repeat="name in file.names"
+                                     class="label label-info">{{name}}</span></dd>
+            <dt>Size:</dt><dd>{{file.size}}</dd>
+        </span>
+    </dl>
+    <div class="panel-heading" ng-if="content.passive_dns.resolutions">
+        Passive Dns
+    </div>
+    <dl class="dl-horizontal" ng-if="content.passive_dns.resolutions">
+        <span ng-if="content.passive_dns.resolutions" ng-repeat="res in content.passive_dns.resolutions"
+              class="label label-info">
+            <h5>Resolution {{$index}}</h5>
+            <dt>Record Name:</dt><dd>{{res.record_name}}</dd>
+            <dt>Record Value:</dt><dd>{{res.record_value}}</dd>
+            <dt>Record Type:</dt><dd>{{res.record_type}}</dd>
+            <dt>First Seen:</dt><dd>{{res.first_seen}}</dd>
+            <dt>Last Seen:</dt><dd>{{res.last_seen}}</dd>
+            <dt>Country Name:</dt><dd>{{res.country_name}}</dd>
+        </span>
+    </dl>
+    <div class="panel-heading" ng-if="content.whois">
+        Who Is
+    </div>
+    <dl class="dl-horizontal" ng-if="content.whois">
+        <dt>Ip:</dt>
+        <dd>{{content.whois.ip}}</dd>
+        <dt>Created Date:</dt>
+        <dd>{{content.whois.created_date}}</dd>
+        <dt>Updated Date:</dt>
+        <dd>{{content.whois.updated_date}}</dd>
+        <dt>Expires Date:</dt>
+        <dd>{{content.whois.expires_date}}</dd>
+        <dt>Registrant Name:</dt>
+        <dd>{{content.whois.registrant.name}}</dd>
+        <dt>Registrant Organization:</dt>
+        <dd>{{content.whois.registrant.organization}}</dd>
+        <dt>Registrant Street1:</dt>
+        <dd>{{content.whois.registrant.street1}}</dd>
+        <dt>Registrant Street2:</dt>
+        <dd>{{content.whois.registrant.street2}}</dd>
+        <dt>Registrant City:</dt>
+        <dd>{{content.whois.registrant.city}}</dd>
+        <dt>Registrant State:</dt>
+        <dd>{{content.whois.registrant.state}}</dd>
+        <dt>Registrant Country:</dt>
+        <dd>{{content.whois.registrant.country}}</dd>
+        <dt>Registrant Postal Code:</dt>
+        <dd>{{content.whois.registrant.postal_code}}</dd>
+        <dt>Registrant Raw Text:</dt>
+        <dd>{{content.whois.registrant.raw_text}}</dd>
+        <dt>Registrar Name:</dt>
+        <dd>{{content.whois.registrar_name}}</dd>
+        <dt>Name Servers Hostnames:</dt>
+        <dd><span ng-repeat="hostname in content.whois.name_servers_hostnames">{{hostname}}</span></dd>
+        <dt>Name Servers Ips:</dt>
+        <dd><span ng-repeat="ip in content.whois.name_servers_ips">{{ip}}</span></dd>
+        <dt>Email Provider:</dt>
+        <dd>{{content.whois.email_provider}}</dd>
+        <dt>Email Registrant:</dt>
+        <dd>{{content.whois.email_registrant}}</dd>
+        <dt>Status:</dt>
+        <dd>{{content.whois.status}}</dd>
+        </span>
+    </dl>
+    <div class="panel-heading" ng-if="content.intelligence.botnets">
+        Botnets
+    </div>
+    <dl class="dl-horizontal" ng-if="content.intelligence.botnets">
+        <dt>Total:</dt>
+        <dd>{{content.intelligence.botnets.total}}</dd>
+        <dt>Events:</dt>
+        <span ng-if="content.intelligence.botnets.events" ng-repeat="event in content.intelligence.botnets.events"
+              class="label label-info">
+            <h5>Event {{$index}}</h5>
+            <dt>Name:</dt><dd>{{event.name}}</dd>
+            <dt>Country:</dt><dd>{{event.country}}</dd>
+            <dt>Date Collect:</dt><dd>{{event.date_collect}}</dd>
+            <dt>Created:</dt><dd>{{event.created_dt}}</dd>
+            <dt>Domain:</dt><dd>{{event.domain}}</dd>
+            <dt>GeoIp:</dt><dd>{{event.geoip.ip}}</dd>
+            <dt>Ip:</dt><dd>{{event.ip}}</dd>
+            <dt>Isp:</dt><dd>{{event.isp}}</dd>
+            <dt>Source:</dt><dd>{{event.source}}</dd>
+            <dt>System:</dt><dd>{{event.system}}</dd>
+            <dt>Password:</dt><dd>{{event.password}}</dd>
+            <dt>Prefix:</dt><dd>{{event.prefix}}</dd>
+            <dt>Solved:</dt><dd>{{event.solved}}</dd>
+            <dt>Username:</dt><dd>{{event.username}}</dd>
+            <dt>Country Name:</dt><dd>{{res.country_name}}</dd>
+        </span>
+    </dl>
+    <div class="panel-heading" ng-if="content.intelligence.darknet">
+        Darknet Bots
+    </div>
+    <dl class="dl-horizontal" ng-if="content.intelligence.darknet.bots">
+        <span ng-if="content.intelligence.darknet.bots" ng-repeat="bot in content.intelligence.darknet.bots"
+              class="label label-info">
+            <h5>Bot {{$index}}</h5>
+            <dt>Bot Name:</dt><dd>{{bot.bot_name}}</dd>
+            <dt>Bot Country:</dt><dd>{{bot.bot_country}}</dd>
+            <dt>Bot Installed:</dt><dd>{{bot.bot_installed}}</dd>
+            <dt>Bot OS:</dt><dd>{{bot.bot_os}}</dd>
+            <dt>Forum Name:</dt><dd>{{bot.forum_name}}</dd>
+            <dt>Resource Name:</dt><dd>{{thread.resource_name}}</dd>
+            <dt>Created:</dt><dd>{{bot.created_dt}}</dd>
+            <dt>Keyword</dt>:</dt>
+            <dd>{{bot.keyword}}</dd>
+            <dt>Solved:</dt><dd>{{thread.solved}}</dd>
+            <dt>Type:</dt><dd>{{thread.type}}</dd>
+            <dt>Url:</dt><dd>{{thread.url}}</dd>
+        </span>
+    </dl>
+    <div class="panel-heading" ng-if="content.intelligence.darknet.threads">
+        Darknet Threads
+    </div>
+    <dl class="dl-horizontal" ng-if="content.intelligence.darknet.threads">
+        <span ng-if="content.intelligence.darknet.threads" ng-repeat="thread in content.intelligence.darknet.threads"
+              class="label label-info">
+            <h5>Thread {{$index}}</h5>
+            <dt>Name:</dt><dd>{{thread.name}}</dd>
+            <dt>Author:</dt><dd>{{thread.author}}</dd>
+            <dt>Created:</dt><dd>{{thread.created_dt}}</dd>
+            <dt>Forum Name:</dt><dd>{{thread.forum_name}}</dd>
+            <dt>Keyword:</dt><dd>{{thread.keyword}}</dd>
+            <dt>Post Content:</dt><dd>{{thread.post_content}}</dd>
+            <dt>Resource Name:</dt><dd>{{thread.resource_name}}</dd>
+            <dt>Solved:</dt><dd>{{thread.solved}}</dd>
+            <dt>Type:</dt><dd>{{thread.type}}</dd>
+            <dt>Url:</dt><dd>{{thread.url}}</dd>
+        </span>
+    </dl>
+    <div class="panel-heading" ng-if="content.intelligence.darknet.sellers">
+        Darknet Sellers
+    </div>
+    <dl class="dl-horizontal" ng-if="content.intelligence.darknet.sellers">
+        <span ng-if="content.intelligence.darknet.sellers" ng-repeat="seller in content.intelligence.darknet.sellers"
+              class="label label-info">
+            <h5>Seller {{$index}}</h5>
+            <dt>Account Country:</dt><dd>{{seller.account_country}}</dd>
+            <dt>Account Description:</dt><dd>{{seller.account_description}}</dd>
+            <dt>Account Resource:</dt><dd>{{seller.account_resource}}</dd>
+            <dt>Account Seller:</dt><dd>{{seller.account_seller}}</dd>
+            <dt>Created</dt><dd>{{seller.created_dt}}</dd>
+            <dt>Forum Name:</dt><dd>{{seller.forum_name}}</dd>
+            <dt>Keyword:</dt><dd>{{seller.keyword}}</dd>
+            <dt>Resource Name:</dt><dd>{{seller.resource_name}}</dd>
+            <dt>Solved:</dt><dd>{{thread.solved}}</dd>
+            <dt>Type:</dt><dd>{{thread.type}}</dd>
+        </span>
+    </dl>
+    <div class="panel-heading" ng-if="content.intelligence.credentials">
+        Credentials
+    </div>
+    <dl class="dl-horizontal" ng-if="content.intelligence.botnets">
+
+        <dt>Total:</dt>
+        <dd>{{content.intelligence.botnets.total}}</dd>
+        <dt>Events:</dt>
+        <span ng-if="content.intelligence.credentials.credentials"
+              ng-repeat="event in content.intelligence.credentials.credentials"
+              class="label label-info">
+            <h5>Credential {{$index}}</h5>
+            <dt>Url:</dt><dd>{{credential.url}}</dd>
+            <dt>Fqdn:</dt><dd>{{credential.fqdn}}</dd>
+            <dt>Source:</dt><dd>{{credential.source}}</dd>
+            <dt>Username:</dt><dd>{{credential.username}}</dd>
+            <dt>Password</dt>:</dt>
+            <dd>{{credential.password}}</dd>
+            <dt>Dumpdate:</dt><dd>{{credential.dumpdate}}</dd>
+            <dt>Created</dt><dd>{{credential.created_dt}}</dd>
+            <dt>Keyword:</dt><dd>{{credential.keyword}}</dd>
+            <dt>File Path:</dt><dd>{{credential.file_path}}</dd>
+            <dt>Ip</dt><dd>{{credential.ip}}</dd>
+            <dt>Solved</dt><dd>{{credential.solved}}</dd>
+        </span>
+    </dl>
+    <div class="panel-heading" ng-if="content.dns_resolutions.resolutions">
+        Dns Resolutions
+    </div>
+    <dl class="dl-horizontal" ng-if="content.dns_resolutions.resolutions">
+        <span ng-if="content.dns_resolutions.resolutions" ng-repeat="res in content.dns_resolutions.resolutions"
+              class="label label-info">
+            <h5>Resolution {{$index}}</h5>
+            <dt>Domain:</dt><dd>{{res.domain}}</dd>
+            <dt>Country Code:</dt><dd>{{res.country_code}}</dd>
+            <dt>QType:</dt><dd>{{res.qtype}}</dd>
+            <dt>Timestamp:</dt><dd>{{res.timestamp}}</dd>
+        </span>
+    </dl>
+
+</div>
