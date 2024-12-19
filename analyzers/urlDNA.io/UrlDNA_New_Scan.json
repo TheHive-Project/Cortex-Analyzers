@@ -3,11 +3,11 @@
   "author": "urlDNA.io (@urldna)",
   "license": "MIT",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-  "version": "0.1.0",
+  "version": "1.0",
   "description": "Perform a new scan on urlDNA.io",
   "dataTypeList": ["url"],
-  "command": "UrlDna/urldna_analyzer.py",
-  "baseConfig": "UrlDNA",
+  "command": "UrlDNA.io/urldna_analyzer.py",
+  "baseConfig": "UrlDNA.io",
   "config": {
     "service":"new_scan"
   },
@@ -68,6 +68,9 @@
       "multi": false,
       "required": false
     }
-	
-  ]
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://urldna.io/"
 }
