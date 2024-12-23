@@ -18,7 +18,11 @@ class CrowdstrikeFalcon_getDeviceAlerts(Analyzer):
         if self.data_type == 'hostname':
             try:
                 auth = OAuth2(client_id=self.client_id, client_secret=self.client_secret)
-                alerts = Alerts(auth_object=auth)
+                # Define the custom header
+                extra_headers = {
+                    "User-Agent": "strangebee-thehive/1.0"
+                }
+                alerts = Alerts(auth_object=auth, ext_headers=extra_headers)
                 hostname = self.get_data()
                 message = "No alerts found."
                 filtered_alert_list = []
