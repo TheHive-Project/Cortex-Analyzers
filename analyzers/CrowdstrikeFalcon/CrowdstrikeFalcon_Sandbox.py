@@ -49,8 +49,12 @@ class CrowdstrikeFalcon_Sandbox(Analyzer):
 
             with open(filepath, "rb") as sample:
                 auth = OAuth2(client_id=self.client_id, client_secret=self.client_secret)
-                samples = SampleUploads(auth_object=auth)
-                sandbox = FalconXSandbox(auth_object=auth)
+                # Define the custom header
+                extra_headers = {
+                    "User-Agent": "strangebee-thehive/1.0"
+                }
+                samples = SampleUploads(auth_object=auth, ext_headers=extra_headers)
+                sandbox = FalconXSandbox(auth_object=auth, ext_headers=extra_headers)
                 response = samples.upload_sample(file_data=sample.read(),
                                 file_name=filename,
                                 comment=comment,
