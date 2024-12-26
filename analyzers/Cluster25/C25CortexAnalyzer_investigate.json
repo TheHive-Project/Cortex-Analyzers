@@ -1,0 +1,53 @@
+ {
+  "name": "C25CortexAnalyzer_Investigate",
+  "version": "1.0",
+  "author": "Cluster25",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use Cluster25's CTI API to investigate an observable.",
+  "dataTypeList": ["domain", "file", "hash", "ip", "mail", "url"],
+  "command": "c25-cortex-analyzer/c25_cortex_analyzer.py",
+  "baseConfig": "c25-cortex-analyzer",
+  "config": {
+      "check_tlp": false,
+      "check_pap": false,
+      "auto_extract_artifacts": true,
+      "service": "investigate"
+  },
+  "configurationItems": [
+    {
+      "name": "client_id",
+      "description": "Cluster25 CTI API credentials",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "client_key",
+      "description": "Cluster25 CTI API credentials",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "base_url",
+      "description": "Cluster25 CTI API base url",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.duskrise.com/the-c25-intelligence/",
+  "service_logo": {"path":"assets/cluster25_logo.png", "caption": "logo"},
+  "screenshots": [
+    {"path":"assets/short_report_sample.png",
+      "caption":"report sample"
+    },
+    {
+      "path": "assets/long_report_sample.png",
+      "caption:":"report sample"
+    }]
+}

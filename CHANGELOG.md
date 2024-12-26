@@ -1,5 +1,26 @@
 # Changelog
 
+## [3.4.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.2) (2024-12-24)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.4.1...3.4.2)
+
+**Closed issues:**
+
+- \[FR\] CrowdStrike Falcon - Implement TheHive custom user-agent [\#1306](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1306)
+- \[FR\] Analyzer for observable validation [\#1305](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1305)
+- \[FR\] New Analyzer: Axur Ioc's \(WIP\) [\#1190](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1190)
+
+## [3.4.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.1) (2024-12-17)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.4.0...3.4.1)
+
+**Merged pull requests:**
+
+- Capa Analyzer - auto-download latest capa binary [\#1301](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1301) ([nusantara-self](https://github.com/nusantara-self))
+- Domaintools dependency issues [\#1300](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1300) ([nusantara-self](https://github.com/nusantara-self))
+- Fix anyrun\_analyzer.py for submit file [\#1299](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1299) ([winl0gon](https://github.com/winl0gon))
+- add proxies to phishtank\_checkurl.py [\#1298](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1298) ([Labuiga](https://github.com/Labuiga))
+
 ## [3.4.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.0) (2024-12-09)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.3.8...3.4.0)

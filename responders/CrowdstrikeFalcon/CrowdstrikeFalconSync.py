@@ -11,11 +11,13 @@ class CrowdstrikeFalconSync(Responder):
         self.service = self.get_param("config.service", None)
         self.custom_field_name_alert_id = self.get_param("config.custom_field_name_alert_id")
         self.custom_field_name_incident_id = self.get_param("config.custom_field_name_incident_id")
-        self.alert_client = Alerts(client_id=self.client_id, client_secret=self.client_secret)
-        self.incident_client = Incidents(client_id=self.client_id, client_secret=self.client_secret)
 
     def run(self):
         if self.service == "sync":
+            # Define the custom headers
+            extra_headers = {
+                "User-Agent": "strangebee-thehive/1.0"
+            }
             #data = self.get_param("data", None, "Can't get case ID")
             current_stage = self.get_param("data.stage", None, "Can't get case or alert stage")
             detection_id = self.get_param(f"data.customFieldValues.{self.custom_field_name_alert_id}", None)
@@ -48,6 +50,7 @@ class CrowdstrikeFalconSync(Responder):
 
             # Update the CrowdStrike alert status
             if detection_id:
+                alert_client = Alerts(client_id=self.client_id, client_secret=self.client_secret, ext_headers=extra_headers)
                 # Determine the corresponding CrowdStrike alert status
                 cs_status_alert = status_mapping_alert[current_stage]
                 if isinstance(detection_id,str):
@@ -62,11 +65,12 @@ class CrowdstrikeFalconSync(Responder):
                         }
                     ]
                 }
-                alert_response = self.alert_client.update_alerts_v3(body=alert_body)
+                alert_response = alert_client.update_alerts_v3(body=alert_body)
                 alert_status_code = alert_response.get('status_code', None)
 
                 
             if incident_id:
+                incident_client = Incidents(client_id=self.client_id, client_secret=self.client_secret, ext_headers=extra_headers)
                 # Determine the corresponding CrowdStrike incident status
                 cs_status_incident = status_mapping_incident[current_stage]
                 if isinstance(incident_id,str):
@@ -82,7 +86,7 @@ class CrowdstrikeFalconSync(Responder):
                     ]
                 }
 
-                incident_response = self.incident_client.perform_incident_action(body=incident_body)
+                incident_response = incident_client.perform_incident_action(body=incident_body)
                 incident_status_code = incident_response.get('status_code', None)
 
 

@@ -19,8 +19,12 @@ class CrowdstrikeFalcon_GetDeviceVulnerabilities(Analyzer):
         Analyzer.run(self)
         if self.data_type == 'hostname':
             try:
+                # Define the custom header
+                extra_headers = {
+                    "User-Agent": "strangebee-thehive/1.0"
+                }
                 auth = OAuth2(client_id=self.client_id, client_secret=self.client_secret)
-                hosts = Hosts(auth_object=auth)
+                hosts = Hosts(auth_object=auth, ext_headers=extra_headers)
                 hostname = self.get_data()
 
                 # Search for the device ID using the hostname
@@ -35,7 +39,7 @@ class CrowdstrikeFalcon_GetDeviceVulnerabilities(Analyzer):
                 if device_ids:
                     device_id = device_ids[0]
                     # Get detailed asset information using the device ID
-                spotlight = SpotlightVulnerabilities(auth_object=auth)
+                spotlight = SpotlightVulnerabilities(auth_object=auth, ext_headers=extra_headers)
                 host_vulns = spotlight.query_vulnerabilities_combined(parameters={"filter": f"aid:'{device_id}'+status:!'closed'"})
                 host_vulns = host_vulns["body"]["resources"]
                 #print(host_vulns)

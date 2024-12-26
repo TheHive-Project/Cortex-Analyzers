@@ -17,7 +17,11 @@ class CrowdstrikeFalcon_getDeviceDetails(Analyzer):
         if self.data_type == 'hostname':
             try:
                 auth = OAuth2(client_id=self.client_id, client_secret=self.client_secret)
-                hosts = Hosts(auth_object=auth)
+                # Define the custom header
+                extra_headers = {
+                    "User-Agent": "strangebee-thehive/1.0"
+                }
+                hosts = Hosts(auth_object=auth, ext_headers=extra_headers)
                 hostname = self.get_data()
 
                 # Search for the device ID using the hostname

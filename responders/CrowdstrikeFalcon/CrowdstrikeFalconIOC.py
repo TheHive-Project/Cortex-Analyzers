@@ -78,8 +78,12 @@ class CrowdstrikeFalconIOC(Responder):
             case_id = self.get_param("data.case.id", None, "Can't get case ID")
             description = f"Pushed from TheHive - {case_title} - {case_id}"
 
+            # Define the custom headers
+            extra_headers = {
+                "User-Agent": "strangebee-thehive/1.0"
+            }
             # Create the IOC service object
-            ioc = IOC(client_id=self.client_id, client_secret=self.client_secret)
+            ioc = IOC(client_id=self.client_id, client_secret=self.client_secret, ext_headers=extra_headers)
 
             # Determine if the IOC applies globally or to specific host groups
             ioc_kwargs = {
@@ -117,7 +121,13 @@ class CrowdstrikeFalconIOC(Responder):
             
             filter = f"_all:~'{ioc_value}'"
 
-            ioc = IOC(client_id=self.client_id, client_secret=self.client_secret)
+
+            # Define the custom headers
+            extra_headers = {
+                "User-Agent": "strangebee-thehive/1.0"
+            }
+            # Create the IOC service object
+            ioc = IOC(client_id=self.client_id, client_secret=self.client_secret, ext_headers=extra_headers)
             # Search for the IOC by value
             response = ioc.indicator_search(filter=filter,offset=0, limit=200)
                 

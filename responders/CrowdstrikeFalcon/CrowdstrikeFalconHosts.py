@@ -14,8 +14,12 @@ class CrowdstrikeFalconHosts(Responder):
         Responder.run(self)
         hostname = self.get_param("data.data", None)
         #self.report({'message': f"Host {device_name}"})
+        # Define the custom headers
+        extra_headers = {
+            "User-Agent": "strangebee-thehive/1.0"
+        }
         auth = OAuth2(client_id=self.client_id, client_secret=self.client_secret)
-        hosts = Hosts(auth_object=auth)
+        hosts = Hosts(auth_object=auth, ext_headers=extra_headers)
         
         # Search for the device ID using the hostname
         if self.service == "unhide_host":
