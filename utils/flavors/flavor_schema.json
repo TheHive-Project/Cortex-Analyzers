@@ -34,7 +34,10 @@
             "type": "object",
             "properties": {
                 "service": {
-                    "type": "string"
+                    "type": [
+                        "number",
+                        "string"
+                    ]
                 }
             }
         },
