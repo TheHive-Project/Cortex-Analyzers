@@ -10,6 +10,7 @@ class CrowdstrikeFalcon_getDeviceAlerts(Analyzer):
         Analyzer.__init__(self)
         self.client_id = self.get_param("config.client_id")
         self.client_secret = self.get_param("config.client_secret")
+        self.base_url = self.get_param("config.base_url", "https://api.crowdstrike.com")
         self.alert_fields = self.get_param("config.alert_fields")
         self.days_before = self.get_param("config.days_before")
 
@@ -17,7 +18,7 @@ class CrowdstrikeFalcon_getDeviceAlerts(Analyzer):
         Analyzer.run(self)
         if self.data_type == 'hostname':
             try:
-                auth = OAuth2(client_id=self.client_id, client_secret=self.client_secret)
+                auth = OAuth2(client_id=self.client_id, client_secret=self.client_secret, base_url=self.base_url)
                 # Define the custom header
                 extra_headers = {
                     "User-Agent": "strangebee-thehive/1.0"

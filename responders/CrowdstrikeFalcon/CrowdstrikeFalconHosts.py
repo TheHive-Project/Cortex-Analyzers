@@ -9,6 +9,8 @@ class CrowdstrikeFalconHosts(Responder):
         self.client_id = self.get_param("config.client_id")
         self.client_secret = self.get_param("config.client_secret")
         self.service = self.get_param("config.service", None)
+        self.base_url = self.get_param("config.base_url", "https://api.crowdstrike.com")
+
 
     def run(self):
         Responder.run(self)
@@ -18,7 +20,7 @@ class CrowdstrikeFalconHosts(Responder):
         extra_headers = {
             "User-Agent": "strangebee-thehive/1.0"
         }
-        auth = OAuth2(client_id=self.client_id, client_secret=self.client_secret)
+        auth = OAuth2(client_id=self.client_id, client_secret=self.client_secret, base_url=self.base_url)
         hosts = Hosts(auth_object=auth, ext_headers=extra_headers)
         
         # Search for the device ID using the hostname
