@@ -1,6 +1,19 @@
 # Changelog
 
-## [3.4.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.2) (2024-12-24)
+## [3.4.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.2) (2025-01-16)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.4.2...3.4.3)
+
+**Closed issues:**
+
+- \[FR\] Crowdstrike Falcon: support custom base URL [\#1306](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1309)
+
+**Merged pull requests:**
+
+- Crowdstrike Falcon - Custom Base URL support [\#1310](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1310) ([nusantara-self](https://github.com/nusantara-self))
+- utils improvements [\#1311](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1311) ([nusantara-self](https://github.com/nusantara-self))
+
+## [3.4.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.2) (2024-12-26)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.4.1...3.4.2)
 
@@ -9,6 +22,13 @@
 - \[FR\] CrowdStrike Falcon - Implement TheHive custom user-agent [\#1306](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1306)
 - \[FR\] Analyzer for observable validation [\#1305](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1305)
 - \[FR\] New Analyzer: Axur Ioc's \(WIP\) [\#1190](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1190)
+
+**Merged pull requests:**
+
+- Add ValidateObservable analyzer [\#1308](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1308) ([nusantara-self](https://github.com/nusantara-self))
+- CrowdStrike Falcon - Implement TheHive custom user-agent across integrations [\#1307](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1307) ([nusantara-self](https://github.com/nusantara-self))
+- feat\(c25\): adds cluster25's cortex analyzer [\#1241](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1241) ([Mv35](https://github.com/Mv35))
+- Implemented Axur ioc's analyzer [\#1191](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1191) ([Paulovgarcia](https://github.com/Paulovgarcia))
 
 ## [3.4.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.1) (2024-12-17)
 
