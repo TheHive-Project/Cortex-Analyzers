@@ -2,7 +2,7 @@
 
 from cortexutils.responder import Responder
 import requests
-from falconpy import IOC
+from falconpy import OAuth2, IOC
 from datetime import datetime, timedelta
 import re
 from urllib.parse import urlparse
@@ -12,6 +12,7 @@ class CrowdstrikeFalconIOC(Responder):
         Responder.__init__(self)
         self.client_id = self.get_param("config.client_id")
         self.client_secret = self.get_param("config.client_secret")
+        self.base_url = self.get_param("config.base_url", "https://api.crowdstrike.com")
         self.service = self.get_param("config.service", None)
         self.platform_list = self.get_param("config.platform_list", [])
         self.host_groups_list = self.get_param("config.host_groups_list", [])
@@ -83,7 +84,8 @@ class CrowdstrikeFalconIOC(Responder):
                 "User-Agent": "strangebee-thehive/1.0"
             }
             # Create the IOC service object
-            ioc = IOC(client_id=self.client_id, client_secret=self.client_secret, ext_headers=extra_headers)
+            auth = OAuth2(client_id=self.client_id, client_secret=self.client_secret, base_url=self.base_url)
+            ioc = IOC(auth_object=auth, ext_headers=extra_headers)
 
             # Determine if the IOC applies globally or to specific host groups
             ioc_kwargs = {
@@ -127,7 +129,8 @@ class CrowdstrikeFalconIOC(Responder):
                 "User-Agent": "strangebee-thehive/1.0"
             }
             # Create the IOC service object
-            ioc = IOC(client_id=self.client_id, client_secret=self.client_secret, ext_headers=extra_headers)
+            auth = OAuth2(client_id=self.client_id, client_secret=self.client_secret, base_url=self.base_url)
+            ioc = IOC(auth_object=auth, ext_headers=extra_headers)
             # Search for the IOC by value
             response = ioc.indicator_search(filter=filter,offset=0, limit=200)
                 

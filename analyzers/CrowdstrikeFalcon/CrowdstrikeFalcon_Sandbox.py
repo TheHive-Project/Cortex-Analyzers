@@ -15,6 +15,7 @@ class CrowdstrikeFalcon_Sandbox(Analyzer):
         self.filepath = self.getParam("file", None, "File is missing")
         self.client_id = self.get_param("config.client_id")
         self.client_secret = self.get_param("config.client_secret")
+        self.base_url = self.get_param("config.base_url", "https://api.crowdstrike.com")
         self.environment = self.get_param("config.service", 160)
         self.network_settings = self.get_param("config.network_settings", "default")
         self.action_script = self.get_param("config.action_script", "default")
@@ -48,7 +49,7 @@ class CrowdstrikeFalcon_Sandbox(Analyzer):
             }
 
             with open(filepath, "rb") as sample:
-                auth = OAuth2(client_id=self.client_id, client_secret=self.client_secret)
+                auth = OAuth2(client_id=self.client_id, client_secret=self.client_secret, base_url=self.base_url)
                 # Define the custom header
                 extra_headers = {
                     "User-Agent": "strangebee-thehive/1.0"

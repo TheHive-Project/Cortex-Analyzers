@@ -13,49 +13,49 @@ The **ValidateObservable** analyzer is designed to validate multiple observable 
 ## Supported Data Types / Features
 1. **IP Addresses**
 
-- Validates individual IPs and CIDR ranges.
-- Flags reserved, private, and loopback IPs with appropriate notes.
+    - Validates individual IPs and CIDR ranges.
+    - Flags reserved, private, and loopback IPs with appropriate notes.
 
 2. **Domains**
 
-- Detects valid domain names.
-- Flags domains using Punycode (e.g., xn--) as suspicious.
-- Identifies unusual characters in domain names.
+    - Detects valid domain names.
+    - Flags domains using Punycode (e.g., xn--) as suspicious.
+    - Identifies unusual characters in domain names.
 
 3. **URLs**
 
-- Validates URLs with or without schemes.
-- Flags URLs containing Punycode domains or unusual characters as suspicious.
-- Detects malformed URLs.
+    - Validates URLs with or without schemes.
+    - Flags URLs containing Punycode domains or unusual characters as suspicious.
+    - Detects malformed URLs.
 
 4. **Fully Qualified Domain Names (FQDNs)**
 
-- Validates FQDNs for proper structure and length.
-- Flags FQDNs using Punycode and unusual characters as suspicious.
+    - Validates FQDNs for proper structure and length.
+    - Flags FQDNs using Punycode and unusual characters as suspicious.
 
 5. **Emails**
 
-- Checks email structure for validity.
-- Detects unusual characters in email addresses.
-- Validates against length constraints.
+    - Checks email structure for validity.
+    - Detects unusual characters in email addresses.
+    - Validates against length constraints.
 
 6. **File Hashes**
 
-- Validates MD5, SHA1, SHA256, and SHA512 hash formats.
+    - Validates MD5, SHA1, SHA256, and SHA512 hash formats.
 
 7. **Filenames**
 
-- Flags invalid characters in filenames (<, >, :, |, etc.).
-- Detects multiple extensions (for example, .txt.exe) as suspicious.
-- Identifies Unicode bidirectional override characters (U+202E, etc.) to prevent obfuscated extensions.
+    - Flags invalid characters in filenames (<, >, :, |, etc.).
+    - Detects multiple extensions (for example, .txt.exe) as suspicious.
+    - Identifies Unicode bidirectional override characters (U+202E, etc.) to prevent obfuscated extensions.
 
 8. **URI Paths**
 
-- Ensures paths start with / and are well-formed.
+    - Ensures paths start with / and are well-formed.
 
 9. **User Agents**
 
-- Checks for excessive length and control characters.
+    - Checks for excessive length and control characters.
 
 ## Special Features
 

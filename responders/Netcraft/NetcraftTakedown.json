@@ -34,7 +34,9 @@
       "name": "useUserPass",
       "description": "Use User and Password authentication",
       "type": "boolean",
-      "multi": false
+      "multi": false,
+      "required": true,
+      "defaultValue": false
     },
     {
       "name": "takedown_url",

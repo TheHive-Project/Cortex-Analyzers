@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
 from cortexutils.responder import Responder
-from falconpy import Alerts, Incidents
+from falconpy import OAuth2, Alerts, Incidents
 
 class CrowdstrikeFalconSync(Responder):
     def __init__(self):
         Responder.__init__(self)
         self.client_id = self.get_param("config.client_id")
         self.client_secret = self.get_param("config.client_secret")
+        self.base_url = self.get_param("config.base_url", "https://api.crowdstrike.com")
         self.service = self.get_param("config.service", None)
         self.custom_field_name_alert_id = self.get_param("config.custom_field_name_alert_id")
         self.custom_field_name_incident_id = self.get_param("config.custom_field_name_incident_id")
@@ -47,10 +48,11 @@ class CrowdstrikeFalconSync(Responder):
             if current_stage not in status_mapping_alert:
                 self.error(f"Unknown case status: {current_stage}")
 
+            auth = OAuth2(client_id=self.client_id, client_secret=self.client_secret, base_url=self.base_url)
 
             # Update the CrowdStrike alert status
             if detection_id:
-                alert_client = Alerts(client_id=self.client_id, client_secret=self.client_secret, ext_headers=extra_headers)
+                alert_client = Alerts(auth_object=auth, ext_headers=extra_headers)
                 # Determine the corresponding CrowdStrike alert status
                 cs_status_alert = status_mapping_alert[current_stage]
                 if isinstance(detection_id,str):
@@ -70,7 +72,7 @@ class CrowdstrikeFalconSync(Responder):
 
                 
             if incident_id:
-                incident_client = Incidents(client_id=self.client_id, client_secret=self.client_secret, ext_headers=extra_headers)
+                incident_client = Incidents(auth_object=auth, ext_headers=extra_headers)
                 # Determine the corresponding CrowdStrike incident status
                 cs_status_incident = status_mapping_incident[current_stage]
                 if isinstance(incident_id,str):
