@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from cortexutils.analyzer import Analyzer
 from pycti import OpenCTIApiClient
+import traceback
 
 class OpenCTIAnalyzer(Analyzer):
     """Searches for given Observables in configured OpenCTI instances. All standard data types are supported."""
@@ -36,7 +37,7 @@ class OpenCTIAnalyzer(Analyzer):
                         )
                     })
             except Exception as e:
-                self.error(str(e))
+                self.error(f"Error: {str(e)} -- {traceback.format_exc()}")
 
     def summary(self, raw):
         taxonomies = []
