@@ -246,6 +246,118 @@ class MSEntraID(Analyzer):
                         "displayName": group.get("displayName", "Unknown")
                     })
 
+            # MFA Methods
+            mfa_url = f"{base_url}users/{self.user}/authentication/methods"
+            mfa_r = requests.get(mfa_url, headers=headers)
+
+            if mfa_r.status_code == 200:
+                mfa_data = mfa_r.json().get("value", [])
+                mfa_methods = []
+
+                for method in mfa_data:
+                    method_odata_type = method.get("@odata.type", "").lower()
+                    
+                    # Default structure
+                    parsed_method = {
+                        "id": method.get("id", "N/A"),
+                        "odataType": method_odata_type,    # Full OData type
+                        "methodType": "Unknown"
+                    }
+
+                    if "phoneauthenticationmethod" in method_odata_type:
+                        # https://learn.microsoft.com/en-us/graph/api/resources/phoneauthenticationmethod
+                        parsed_method["methodType"]      = "phone"
+                        parsed_method["phoneNumber"]      = method.get("phoneNumber", "N/A")
+                        parsed_method["phoneType"]        = method.get("phoneType", "N/A")
+                        parsed_method["smsSignInState"]   = method.get("smsSignInState", "N/A")
+                        parsed_method["isDefault"]        = method.get("isDefault", "N/A")
+
+                    elif "microsoftauthenticatorauthenticationmethod" in method_odata_type:
+                        # https://learn.microsoft.com/en-us/graph/api/resources/microsoftauthenticatorauthenticationmethod
+                        parsed_method["methodType"]                 = "microsoftAuthenticator"
+                        parsed_method["displayName"]                = method.get("displayName", "N/A")
+                        parsed_method["deviceTag"]                  = method.get("deviceTag", "N/A")
+                        parsed_method["phoneAppVersion"]            = method.get("phoneAppVersion", "N/A")
+                        parsed_method["isDefault"]                  = method.get("isDefault", "N/A")
+                        parsed_method["isRegisteredForPasswordless"] = method.get("isRegisteredForPasswordless", "N/A")
+
+                    elif "passwordlessmicrosoftauthenticatorauthenticationmethod" in method_odata_type:
+                        # https://learn.microsoft.com/en-us/graph/api/resources/passwordlessmicrosoftauthenticatorauthenticationmethod
+                        parsed_method["methodType"]                 = "passwordlessMicrosoftAuthenticator"
+                        parsed_method["displayName"]                = method.get("displayName", "N/A")
+                        parsed_method["deviceTag"]                  = method.get("deviceTag", "N/A")
+                        parsed_method["phoneAppVersion"]            = method.get("phoneAppVersion", "N/A")
+                        parsed_method["isDefault"]                  = method.get("isDefault", "N/A")
+                        parsed_method["isRegisteredForPasswordless"] = method.get("isRegisteredForPasswordless", "N/A")
+
+                    elif "fido2authenticationmethod" in method_odata_type:
+                        # https://learn.microsoft.com/en-us/graph/api/resources/fido2authenticationmethod
+                        parsed_method["methodType"]                 = "fido2"
+                        parsed_method["displayName"]                = method.get("displayName", "N/A")
+                        parsed_method["aaGuid"]                     = method.get("aaGuid", "N/A")
+                        parsed_method["attestationCertificates"]    = method.get("attestationCertificates", [])
+                        parsed_method["attestationLevel"]           = method.get("attestationLevel", "N/A")
+                        parsed_method["createdDateTime"]            = method.get("createdDateTime", "N/A")
+                        parsed_method["isSelfServiceRegistration"]  = method.get("isSelfServiceRegistration", "N/A")
+                        parsed_method["isSystemProtected"]          = method.get("isSystemProtected", "N/A")
+
+                    elif "windowshelloforbusinessauthenticationmethod" in method_odata_type:
+                        # https://learn.microsoft.com/en-us/graph/api/resources/windowshelloforbusinessauthenticationmethod
+                        parsed_method["methodType"]         = "windowsHelloForBusiness"
+                        parsed_method["displayName"]         = method.get("displayName", "N/A")
+                        parsed_method["keyStrength"]         = method.get("keyStrength", "N/A")
+                        parsed_method["creationDateTime"]    = method.get("creationDateTime", "N/A")
+                        parsed_method["isDefault"]           = method.get("isDefault", "N/A")
+                        parsed_method["isSystemProtected"]   = method.get("isSystemProtected", "N/A")
+
+                    elif "emailauthenticationmethod" in method_odata_type:
+                        # https://learn.microsoft.com/en-us/graph/api/resources/emailauthenticationmethod
+                        parsed_method["methodType"]   = "email"
+                        parsed_method["emailAddress"] = method.get("emailAddress", "N/A")
+
+                    elif "softwareoathauthenticationmethod" in method_odata_type:
+                        # https://learn.microsoft.com/en-us/graph/api/resources/softwareoathauthenticationmethod
+                        parsed_method["methodType"]      = "softwareOath"
+                        parsed_method["secretKey"]       = method.get("secretKey", "N/A")
+                        parsed_method["creationDateTime"] = method.get("createdDateTime", "N/A")
+
+                    elif "temporaryaccesspassauthenticationmethod" in method_odata_type:
+                        # https://learn.microsoft.com/en-us/graph/api/resources/temporaryaccesspassauthenticationmethod
+                        parsed_method["methodType"]       = "temporaryAccessPass"
+                        parsed_method["startDateTime"]    = method.get("startDateTime", "N/A")
+                        parsed_method["createdDateTime"]  = method.get("createdDateTime", "N/A")
+                        parsed_method["lifetimeInMinutes"] = method.get("lifetimeInMinutes", "N/A")
+                        parsed_method["isUsable"]         = method.get("isUsable", "N/A")
+                        parsed_method["isUsableOnce"]     = method.get("isUsableOnce", "N/A")
+
+                    elif "x509certificateauthenticationmethod" in method_odata_type:
+                        # https://learn.microsoft.com/en-us/graph/api/resources/x509certificateauthenticationmethod
+                        parsed_method["methodType"]           = "x509Certificate"
+                        parsed_method["certificateUserIds"]   = method.get("certificateUserIds", [])
+                        parsed_method["createdDateTime"]      = method.get("createdDateTime", "N/A")
+                        parsed_method["displayName"]          = method.get("displayName", "N/A")
+
+                    elif "passwordauthenticationmethod" in method_odata_type:
+                        # https://learn.microsoft.com/en-us/graph/api/resources/passwordauthenticationmethod
+                        parsed_method["methodType"]       = "password"
+                        parsed_method["createdDateTime"]  = method.get("createdDateTime", "N/A")
+
+                    else:
+                        # Fallback value
+                        parsed_method["methodType"] = "other-or-unknown"
+
+                    mfa_methods.append(parsed_method)
+
+                user_details["mfaMethods"] = mfa_methods
+
+            else:
+                # no self.error() if there is permission issue
+                user_details["mfaMethods"] = []
+                user_details["mfaError"] = (
+                    f"Failed to retrieve MFA methods (HTTP {mfa_r.status_code}). "
+                    f"Details: {mfa_r.content.decode('utf-8', errors='replace')}"
+                )
+
             self.report(user_details)
 
         except Exception as ex:
