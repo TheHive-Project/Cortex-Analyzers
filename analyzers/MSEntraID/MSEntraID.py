@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # encoding: utf-8
-# Author: @jahamilto
+# Author: @jahamilto; nusatanra-self, StrangeBee
 import requests
 import traceback
 from datetime import datetime, timedelta
@@ -17,144 +17,281 @@ class MSEntraID(Analyzer):
         self.lookup_limit = self.get_param('config.lookup_limit', 12)
         self.state = self.get_param('config.state', None)
         self.country = self.get_param('config.country', None)
+        self.service = self.get_param('config.service', None)
+        self.params_list = self.get_param('config.params_list', [])
 
+    def authenticate(self):
+        token_data = {
+            "grant_type": "client_credentials",
+            'client_id': self.client_id,
+            'client_secret': self.client_secret,
+            'scope': 'https://graph.microsoft.com/.default'
+        }
 
+        redirect_uri = f"https://login.microsoftonline.com/{self.tenant_id}/oauth2/v2.0/token"
+        token_r = requests.post(redirect_uri, data=token_data)
+
+        if token_r.status_code != 200:
+            self.error(f'Failure to obtain Azure access token: {token_r.content}')
+
+        return token_r.json().get('access_token')
+
+    def handle_get_signins(self, headers, base_url):
+        """
+        Retrieve sign-in logs for a userPrincipalName within a specified time range.
+        """
+        if self.data_type != 'mail':
+            self.error('Incorrect dataType. "mail" expected.')
+
+        try:
+            self.user = self.get_data()
+            if not self.user:
+                self.error("No user supplied")
+
+            # Build the filter time
+            filter_time = datetime.utcnow() - timedelta(days=self.time_range)
+            format_time = filter_time.strftime('%Y-%m-%dT00:00:00Z')
+
+            # Query sign-in logs
+            endpoint = (
+                f"auditLogs/signIns?$filter=startsWith(userPrincipalName,'{self.user}') "
+                f"and createdDateTime ge {format_time}&$top={self.lookup_limit}"
+            )
+            r = requests.get(base_url + endpoint, headers=headers)
+
+            if r.status_code != 200:
+                self.error(f"Failure to pull sign-ins for user {self.user}: {r.content}")
+
+            signins_data = r.json().get('value', [])
+
+            new_json = {
+                "filterParameters": None,
+                "signIns": []
+            }
+
+            # Counters for summary
+            risks = 0
+            ex_state = 0
+            ex_country = 0
+
+            for signin in signins_data:
+                # Basic details
+                basic_details = {}
+                basic_details["signInTime"] = signin.get("createdDateTime", "N/A")
+                basic_details["ip"] = signin.get("ipAddress", "N/A")
+                basic_details["appName"] = signin.get("appDisplayName", "N/A")
+                basic_details["clientApp"] = signin.get("clientAppUsed", "N/A")
+                basic_details["resourceName"] = signin.get("resourceDisplayName", "N/A")
+
+                # Determine success/failure
+                success = False
+                status_info = signin.get("status", {})
+                if status_info.get("errorCode") == 0:
+                    basic_details["result"] = "Success"
+                    success = True
+                else:
+                    failure_reason = status_info.get("failureReason", "")
+                    basic_details["result"] = f"Failure: {failure_reason}" if failure_reason else "Failure"
+
+                # Risk level
+                basic_details["riskLevel"] = signin.get("riskLevelDuringSignIn", "none")
+                if basic_details["riskLevel"] != "none" and success:
+                    risks += 1
+
+                # Device details
+                device_info = signin.get("deviceDetail", {})
+                device_details = {
+                    "id": device_info.get("deviceId") or "Not Available",
+                    "deviceName": device_info.get("displayName") or "Not Available",
+                    "operatingSystem": device_info.get("operatingSystem", "N/A")
+                }
+
+                # Location details
+                location_info = signin.get("location", {})
+                location_details = {
+                    "city": location_info.get("city", "N/A"),
+                    "state": location_info.get("state", "N/A"),
+                    "countryOrRegion": location_info.get("countryOrRegion", "N/A")
+                }
+
+                # If sign-in was successful, check if it differs from specified state/country
+                if success:
+                    if self.state and location_details["state"] != self.state:
+                        ex_state += 1
+                    if self.country and location_details["countryOrRegion"] != self.country:
+                        ex_country += 1
+
+                # Applied Conditional Access Policies
+                applied_policies = signin.get("appliedConditionalAccessPolicies", [])
+                cAC = "None"
+                for pol in applied_policies:
+                    if pol.get("result") == "success":
+                        policy_name = pol.get("displayName", "Unknown")
+                        if cAC == "None":
+                            cAC = policy_name
+                        else:
+                            cAC += f", {policy_name}"
+
+                new_json["signIns"].append({
+                    "id": signin.get("id", "N/A"),
+                    "basicDetails": basic_details,
+                    "deviceDetails": device_details,
+                    "locationDetails": location_details,
+                    "appliedConditionalAccessPolicies": cAC
+                })
+
+            # Summary stats
+            new_json["sum_stats"] = {
+                "riskySignIns": risks,
+                "externalStateSignIns": ex_state,
+                "foreignSignIns": ex_country
+            }
+
+            new_json["filterParameters"] = (
+                f"Top {self.lookup_limit} signins from the last {self.time_range} days. "
+                f"Displaying {len(new_json['signIns'])} signins."
+            )
+
+            self.report(new_json)
+
+        except Exception as ex:
+            self.error(traceback.format_exc())
+
+    def handle_get_userinfo(self, headers, base_url):
+        """Fetch comprehensive user information from Microsoft Entra ID, including manager, license details, and group memberships."""
+        if self.data_type != 'mail':
+            self.error('Incorrect dataType. "mail" expected.')
+
+        try:
+            self.user = self.get_data()
+            if not self.user:
+                self.error("No user supplied")
+
+            # Use select to retrieve many user attributes. Adjust as needed.
+            params = {
+                        "$select": ",".join(self.params_list)
+                    }
+
+            user_info_url = f"{base_url}users/{self.user}"
+#            user_info_url = f"{base_url}users/{self.user}"
+
+            user_response = requests.get(user_info_url, headers=headers, params=params)
+
+            if user_response.status_code != 200:
+                self.error(f"Failed to fetch user info: {user_response.content}")
+
+            user_data = user_response.json()
+
+            # Construct user details dictionary
+            user_details = {
+                "businessPhones": user_data.get("businessPhones", []),
+                "givenName": user_data.get("givenName", "N/A"),
+                "surname": user_data.get("surname", "N/A"),
+                "displayName": user_data.get("displayName", "N/A"),
+                "jobTitle": user_data.get("jobTitle", "N/A"),
+                "mail": user_data.get("mail", "N/A"),
+                "mobilePhone": user_data.get("mobilePhone", "N/A"),
+                "officeLocation": user_data.get("officeLocation", "N/A"),
+                "department": user_data.get("department", "N/A"),
+                "accountEnabled": user_data.get("accountEnabled", "N/A"),
+                "onPremisesSyncEnabled": user_data.get("onPremisesSyncEnabled", "N/A"),
+                "onPremisesLastSyncDateTime": user_data.get("onPremisesLastSyncDateTime", "N/A"),
+                "onPremisesSecurityIdentifier": user_data.get("onPremisesSecurityIdentifier", "N/A"),
+                "proxyAddresses": user_data.get("proxyAddresses", []),
+                "usageLocation": user_data.get("usageLocation", "N/A"),
+                "userType": user_data.get("userType", "N/A"),
+                "userPrincipalName": user_data.get("userPrincipalName", "N/A"),
+                "createdDateTime": user_data.get("createdDateTime", "N/A"),
+                "lastSignInDateTime": user_data.get("signInActivity", {}).get("lastSignInDateTime", "N/A"),
+                "manager": None,  # to be populated below
+                "assignedLicenses": [],  # to be populated via licenseDetails
+                "memberOf": []
+            }
+
+            # Fetch user's manager
+            manager_url = f"{base_url}users/{self.user}/manager?$select=id,displayName,userPrincipalName"
+            manager_resp = requests.get(manager_url, headers=headers)
+            if manager_resp.status_code == 200:
+                manager_data = manager_resp.json()
+                # Check if we actually got a manager object
+                if not manager_data.get("error"):
+                    user_details["manager"] = {
+                        "id": manager_data.get("id", "N/A"),
+                        "displayName": manager_data.get("displayName", "N/A"),
+                        "userPrincipalName": manager_data.get("userPrincipalName", "N/A")
+                    }
+            
+            # Fetch user's license details
+            license_url = f"{base_url}users/{self.user}/licenseDetails"
+            license_resp = requests.get(license_url, headers=headers)
+            if license_resp.status_code == 200:
+                license_data = license_resp.json().get("value", [])
+                # Each item in license_data has info about assignedLicenses
+                # We can store them or parse them further.
+                for lic in license_data:
+                    user_details["assignedLicenses"].append({
+                        "skuId": lic.get("skuId", "N/A"),
+                        "skuPartNumber": lic.get("skuPartNumber", "N/A"),
+                        "servicePlans": lic.get("servicePlans", [])
+                    })
+
+            # Fetch user's group memberships
+            member_of_url = f"{base_url}users/{self.user}/memberOf"
+            member_of_response = requests.get(member_of_url, headers=headers)
+            if member_of_response.status_code == 200:
+                memberships = member_of_response.json().get("value", [])
+                for group in memberships:
+                    user_details["memberOf"].append({
+                        "id": group.get("id", "N/A"),
+                        "displayName": group.get("displayName", "Unknown")
+                    })
+
+            self.report(user_details)
+
+        except Exception as ex:
+            self.error(traceback.format_exc())
+    
     def run(self):
         Analyzer.run(self)
 
-        if self.data_type == 'mail':
-            try:
-                self.user = self.get_data()
-                if not self.user:
-                    self.error("No user supplied")
-                
+        token = self.authenticate()
+        headers = { 'Authorization': f'Bearer {token}' }
+        base_url = 'https://graph.microsoft.com/v1.0/'
 
-                token_data = {
-                    "grant_type": "client_credentials",
-                    'client_id': self.client_id,
-                    'client_secret': self.client_secret,
-                    'resource': 'https://graph.microsoft.com',
-                    'scope': 'https://graph.microsoft.com'
-                    }
-                
-                filter_time = datetime.utcnow() - timedelta(days=self.time_range)
-                format_time = str("{}T00:00:00Z".format(filter_time.strftime("%Y-%m-%d")))
-
-
-
-                #Authenticate to the graph api 
-
-                redirect_uri = "https://login.microsoftonline.com/{}/oauth2/token".format(self.tenant_id)
-                token_r = requests.post(redirect_uri, data=token_data)
-                token = token_r.json().get('access_token')
-
-                if token_r.status_code != 200:
-                    self.error('Failure to obtain azure access token: {}'.format(token_r.content))
-
-                # Set headers for future requests
-                headers = {
-                    'Authorization': 'Bearer {}'.format(token)
-                }
-
-                base_url = 'https://graph.microsoft.com/v1.0/'
-                
-                r = requests.get(base_url + "auditLogs/signIns?$filter=startsWith(userPrincipalName,'{}') and createdDateTime ge {}&$top={}".format(self.user, format_time, self.lookup_limit), headers=headers)
-
-                # Check API results
-                if r.status_code != 200:
-                    self.error('Failure to pull sign ins of user {}: {}'.format(self.user, r.content))
-                else:
-                    full_json = r.json()['value']
-
-                    new_json = {
-                        "filterParameters": None,
-                        "signIns": []
-                    }
-
-                    # Summary statistics
-                    risks = ex_state = ex_country = 0
-
-                    for signin in full_json:
-
-                        success = False
-
-                        details = {}
-                        details["signInTime"] = signin["createdDateTime"]
-                        details["ip"] = signin["ipAddress"]
-                        details["appName"] = signin["appDisplayName"]
-                        details["clientApp"] = signin["clientAppUsed"]
-                        details["resourceName"] = signin["resourceDisplayName"]
-                        # Check how to format status result
-                        if signin["status"]["errorCode"] == 0:
-                            details["result"] = "Success"
-                            success = True
-                        else:
-                            details["result"] = "Failure: " + signin["status"]["failureReason"]
-                        details["riskLevel"] = signin["riskLevelDuringSignIn"]
-                        #Increase risk counter
-                        if details["riskLevel"] != 'none' and success: risks += 1
-                        
-                        device = {}
-                        device_info = signin["deviceDetail"]
-                        device["id"] = "Not Available" if device_info["deviceId"] == "" else device_info["deviceId"]
-                        device["deviceName"] = "Not Available" if device_info["displayName"] == "" else device_info["displayName"]
-                        device["operatingSystem"] = device_info["operatingSystem"]
-
-                        location = {}
-                        location_info = signin["location"]
-                        location["city"] = location_info["city"]
-                        location["state"] = location_info["state"]
-                        if self.state and location["state"] != self.state and success: ex_state += 1
-                        location["countryOrRegion"] = location_info["countryOrRegion"]
-                        if self.country and location["countryOrRegion"] != self.country and success: ex_country += 1
-
-                         
-                        cAC = "None"
-                        for policies in signin["appliedConditionalAccessPolicies"]:
-                            if policies["result"] == "success":
-                                if cAC == 'None':
-                                    cAC = policies["displayName"]
-                                else:
-                                    cAC += (", " + policies["displayName"])
-                            
-
-                        new_json["signIns"].append({
-                            "id": signin["id"],
-                            "basicDetails": dict(details), 
-                            "deviceDetails": dict(device), 
-                            "locationDetails": dict(location),
-                            "appliedConditionalAccessPolicies": cAC
-                        })
-                    
-                    new_json["sum_stats"] = {"riskySignIns": risks, "externalStateSignIns": ex_state, "foreignSignIns": ex_country}
-                    new_json["filterParameters"] = "Top {} signins from the last {} days. Displaying {} signins.".format(self.lookup_limit, self.time_range, len(new_json["signIns"]))
-
-                # Build report to return to Cortex
-                self.report(new_json)
-                                
-            except Exception as ex:
-                self.error(traceback.format_exc())
-                
+        # Decide which service to run
+        if self.service == "getSignIns":
+            self.handle_get_signins(headers, base_url)
+        elif self.service == "getUserInfo":
+            self.handle_get_userinfo(headers, base_url)
         else:
-            self.error('Incorrect dataType. "mail" expected.')
-
+            self.error({"message": "Unidentified service"})
 
     def summary(self, raw):
         taxonomies = []
+        if self.service == "getSignIns":
+            if len(raw.get('signIns', [])) == 0:
+                taxonomies.append(self.build_taxonomy('info', 'MSEntraIDSignins', 'SignIns', 'None'))
+            else:
+                taxonomies.append(self.build_taxonomy('safe', 'MSEntraIDSignins', 'Count', len(raw['signIns'])))
 
-        if len(raw.get('signIns', [])) == 0:
-            taxonomies.append(self.build_taxonomy('info', 'MSEntraIDSignins', 'SignIns', 'None'))
-        else:
-            taxonomies.append(self.build_taxonomy('safe', 'MSEntraIDSignins', 'Count', len(raw['signIns'])))
-
-        stats = raw.get("sum_stats", {})
-        if stats.get("riskySignIns", 0) != 0:
-            taxonomies.append(self.build_taxonomy('suspicious', 'MSEntraIDSignins', 'Risky', stats["riskySignIns"]))
-        if stats.get("externalStateSignIns", 0) != 0:
-            taxonomies.append(self.build_taxonomy('suspicious', 'MSEntraIDSignins', 'OutOfState', stats["externalStateSignIns"]))
-        if stats.get("foreignSignIns", 0) != 0:
-            taxonomies.append(self.build_taxonomy('malicious', 'MSEntraIDSignins', 'ForeignSignIns', stats["foreignSignIns"]))
-
+            stats = raw.get("sum_stats", {})
+            if stats.get("riskySignIns", 0) != 0:
+                taxonomies.append(self.build_taxonomy('suspicious', 'MSEntraIDSignins', 'Risky', stats["riskySignIns"]))
+            if stats.get("externalStateSignIns", 0) != 0:
+                taxonomies.append(self.build_taxonomy('suspicious', 'MSEntraIDSignins', 'OutOfState', stats["externalStateSignIns"]))
+            if stats.get("foreignSignIns", 0) != 0:
+                taxonomies.append(self.build_taxonomy('malicious', 'MSEntraIDSignins', 'ForeignSignIns', stats["foreignSignIns"]))
+        
+        elif self.service == "getUserInfo":
+            if raw.get('userPrincipalName'):
+                                taxonomies.append(
+                                    self.build_taxonomy(
+                                        "info",
+                                        "MSEntraIDUserInfo",
+                                        "UPN",
+                                        raw["userPrincipalName"]
+                                    )
+                                )
         return {'taxonomies': taxonomies}
 
 
