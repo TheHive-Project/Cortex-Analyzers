@@ -8,6 +8,9 @@
     "dataTypeList": ["mail"],
     "command": "MSEntraID/MSEntraID.py",
     "baseConfig": "MSEntraID",
+    "config": {
+        "service": "getSignIns"
+    },
     "configurationItems": [
         {"name": "tenant_id",
         "description": "Microsoft Entra ID Tenant ID",
