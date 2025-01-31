@@ -362,7 +362,64 @@ class MSEntraID(Analyzer):
 
         except Exception as ex:
             self.error(traceback.format_exc())
-    
+
+    def handle_get_device_by_hostname(self, headers, base_url):
+        """
+        Retrieves enrolled device(s) from Intune by deviceName (hostname).
+        Reference: https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-list
+        """
+        if self.data_type != 'hostname':
+            self.error('Incorrect dataType. "hostname" expected.')
+        
+        try:
+            device_name = self.get_data()  # The 'data' in TheHive is the hostname
+            if not device_name:
+                self.error("No device name supplied")
+
+            endpoint = (
+                "deviceManagement/managedDevices?"
+                f"$filter=startswith(deviceName,'{device_name}')"
+            )
+            r = requests.get(base_url + endpoint, headers=headers)
+
+            if r.status_code != 200:
+                self.error(f"Failure to pull device(s) by name '{device_name}': {r.content}")
+
+            devices_data = r.json().get('value', [])
+            self.report({"query": device_name, "devices": devices_data})
+
+        except Exception as ex:
+            self.error(traceback.format_exc())
+
+    def handle_get_device_by_mail(self, headers, base_url):
+        """
+        Retrieves enrolled device(s) from Intune by userPrincipalName.
+        Reference: https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-list
+        """
+        
+        if self.data_type != 'mail':
+            self.error('Incorrect dataType. "mail" expected.')
+        user_upn = self.get_data()  # The 'data' in TheHive is the user principal name (mail)
+        try:
+            if not user_upn:
+                self.error("No user UPN supplied")
+
+            endpoint = (
+                "deviceManagement/managedDevices?"
+                f"$filter=startswith(userPrincipalName,'{user_upn}')"
+            )
+            r = requests.get(base_url + endpoint, headers=headers)
+
+            if r.status_code != 200:
+                self.error(f"Failure to pull device(s) by user '{user_upn}': {r.content}")
+
+            devices_data = r.json().get('value', [])
+            self.report({"query": user_upn, "devices": devices_data})
+        
+        except Exception as ex:
+            self.error(traceback.format_exc())
+           
+
     def run(self):
         Analyzer.run(self)
 
@@ -375,6 +432,10 @@ class MSEntraID(Analyzer):
             self.handle_get_signins(headers, base_url)
         elif self.service == "getUserInfo":
             self.handle_get_userinfo(headers, base_url)
+        elif self.service == "getDeviceByHostname":
+            self.handle_get_device_by_hostname(headers, base_url)
+        elif self.service == "getDeviceByMail":
+            self.handle_get_device_by_mail(headers, base_url)
         else:
             self.error({"message": "Unidentified service"})
 
@@ -404,6 +465,12 @@ class MSEntraID(Analyzer):
                                         raw["userPrincipalName"]
                                     )
                                 )
+        elif self.service in ["getDeviceByName", "getDeviceByUser"]:
+            devices = raw.get('devices', [])
+            if devices:
+                taxonomies.append(self.build_taxonomy('safe', 'IntuneDevices', 'Count', len(devices)))
+            else:
+                taxonomies.append(self.build_taxonomy('info', 'IntuneDevices', 'Devices', 'None'))
         return {'taxonomies': taxonomies}
 
 
