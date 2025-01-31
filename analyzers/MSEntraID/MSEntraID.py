@@ -362,6 +362,56 @@ class MSEntraID(Analyzer):
 
         except Exception as ex:
             self.error(traceback.format_exc())
+
+    def handle_get_directoryAuditLogs(self, headers, base_url):
+        """
+        Retrieves Directory Audit logs from Microsoft Entra ID (Azure AD).
+        Reference: https://learn.microsoft.com/en-us/graph/api/directoryaudit-list
+        """
+        if self.data_type != 'mail':
+            self.error('Incorrect dataType. "mail" expected.')
+        try:
+            # Pull the userPrincipalName from the observable data (data_type=mail)
+            user_upn = self.get_data()
+            if not user_upn:
+                self.error("No user principal name supplied for directory audit logs")
+            # Calculate time range (past X days)
+            filter_time = datetime.utcnow() - timedelta(days=self.time_range)
+            filter_time_str = filter_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+
+            # Build endpoint
+            # Example: GET /auditLogs/directoryAudits?$filter=activityDateTime ge 2023-01-01T00:00:00Z&$top=12
+            endpoint = (
+                "auditLogs/directoryAudits?"
+                f"$filter=activityDateTime ge {filter_time_str} "
+                f"and initiatedBy/user/userPrincipalName eq '{user_upn}'"
+                f"&$top={self.lookup_limit}"
+            )
+
+            # Perform the GET request
+            r = requests.get(base_url + endpoint, headers=headers)
+            if r.status_code != 200:
+                self.error(f"Failure to fetch directory audit logs: {r.content}")
+
+            # Parse the returned JSON
+            audit_data = r.json().get('value', [])
+
+            # Build the result object
+            result = {
+                "filterParameters": {
+                    "timeRangeDays": self.time_range,
+                    "lookupLimit": self.lookup_limit,
+                    "startTime": filter_time_str
+                },
+                "directoryAudits": audit_data
+            }
+
+            # Return the results to TheHive
+            self.report(result)
+
+        except Exception as ex:
+            self.error(traceback.format_exc())
+
     
     def run(self):
         Analyzer.run(self)
@@ -375,6 +425,8 @@ class MSEntraID(Analyzer):
             self.handle_get_signins(headers, base_url)
         elif self.service == "getUserInfo":
             self.handle_get_userinfo(headers, base_url)
+        elif self.service == "getDirectoryAuditLogs":
+            self.handle_get_directoryAuditLogs(headers, base_url)
         else:
             self.error({"message": "Unidentified service"})
 
