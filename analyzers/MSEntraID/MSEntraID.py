@@ -456,6 +456,10 @@ class MSEntraID(Analyzer):
                                         raw["userPrincipalName"]
                                     )
                                 )
+        elif self.service == "getDirectoryAuditLogs":
+            # Get the count of directory audit logs
+            count = len(raw.get("directoryAudits", []))
+            taxonomies.append(self.build_taxonomy('info', 'MSEntraIDAuditLogs', 'count', count))
         return {'taxonomies': taxonomies}
 
 
