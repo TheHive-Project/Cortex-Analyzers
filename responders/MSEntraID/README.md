@@ -45,17 +45,30 @@ The first two values can be found at any time in the application's ***Overview**
 
 #### API Permissions
 7. Navigate to **API permissions**.
-8. Add the `Directory.ReadWrite.All` and `User.ReadWrite.All` permissions (Microsoft Graph API, application permissions).
-9. Using a GA account, select the "`Grant admin consent for *TENANTNAME*`" button.
-10. Place the relevant values into the config within Cortex.
+8. Add the following Microsoft Graph API application permissions:
+   - **Option A (Broader Permissions):**
+     - `Directory.ReadWrite.All`
+     - `User.ReadWrite.All`
+     
+     *(These permissions cover all responder functionalities.)*
+     
+   - **Option B (Least Privileged – Recommended):**
+     - For the **Token Revoker** responder: `User.RevokeSessions.All`
+     - For the **Enable User** and **Disable User** responders:
+       - `User.EnableDisableAccount.All`
+       - `User.Read.All`
+     - For the **Password Reset** responders: `User-PasswordProfile.ReadWrite.All`
 
-*Note: You may use less permissive permissions, such as `User.RevokeSessions.All` for tokenRevoker and so on. Please see the below references*
+9. Using a Global Administrator account, click the "`Grant admin consent for [TENANTNAME]`" button.
+10. Enter the corresponding values (`tenant_id`, `client_id`, `client_secret`) into your responders Cortex configuration.
+
+*Note: For enhanced security, it is recommended to use the least privileged permissions (Option B) that are sufficient for your use case. Please refer to the [Microsoft Graph Permissions Reference](https://learn.microsoft.com/en-us/graph/permissions-reference) for further details.*
 
 
 ### References
 
 - [Microsoft Graph API - Revoke Sign-In Sessions](https://learn.microsoft.com/en-us/graph/api/user-revokesigninsessions?view=graph-rest-1.0)
 
-- [Microsoft Graph API - Reset Password](https://learn.microsoft.com/en-us/graph/api/authenticationmethod-resetpassword?view=graph-rest-1.0)
+- [Microsoft Graph API - Update User](https://learn.microsoft.com/en-us/graph/api/user-update?view=graph-rest-1.0&tabs=http)
 
 - [Microsoft Graph Permissions Reference](https://learn.microsoft.com/en-us/graph/permissions-reference)
