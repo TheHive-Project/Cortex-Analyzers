@@ -5,6 +5,8 @@ import requests
 import traceback
 from datetime import datetime, timedelta
 from cortexutils.analyzer import Analyzer
+import re
+#import json
 
 # Initialize Azure Class
 class MSEntraID(Analyzer):
@@ -513,6 +515,41 @@ class MSEntraID(Analyzer):
             taxonomies.append(self.build_taxonomy('info', 'MSEntraIDManagedDevices', 'count', count))
         return {'taxonomies': taxonomies}
 
+    def artifacts(self, raw):
+        artifacts = []
+        raw_str = str(raw)
+
+        # Attempt to parse the raw data as JSON to later capture structured fields
+        #try:
+        #    data = json.loads(raw_str)
+        #except Exception:
+        #    data = None
+
+        extracted_data = self.get_data()  # Store observed value
+        observed_type = self.data_type    # Store expected data type
+
+        # Extract IPv4 addresses
+        ipv4_regex = r'\b(?:\d{1,3}\.){3}\d{1,3}\b'
+        ipv4s = re.findall(ipv4_regex, raw_str)
+        for ip in set(ipv4s):
+            if not (observed_type == "ip" and extracted_data == ip):
+                artifacts.append(self.build_artifact('ip', ip))
+
+        # Extract IPv6 addresses
+        ipv6_regex = r'\b(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}\b'
+        ipv6s = re.findall(ipv6_regex, raw_str)
+        for ip in set(ipv6s):
+            if not (observed_type == "ip" and extracted_data == ip):
+                artifacts.append(self.build_artifact('ip', ip))
+
+        # Extract email addresses
+        email_regex = r'[\w\.-]+@[\w\.-]+\.\w+'
+        emails = re.findall(email_regex, raw_str)
+        for email in set(emails):
+            if not (observed_type == "mail" and extracted_data == email):
+                artifacts.append(self.build_artifact('mail', email))
+
+        return artifacts
 
 if __name__ == '__main__':
     MSEntraID().run()
