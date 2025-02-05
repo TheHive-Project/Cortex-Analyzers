@@ -412,6 +412,51 @@ class MSEntraID(Analyzer):
         except Exception as ex:
             self.error(traceback.format_exc())
 
+    def handle_get_devices(self, headers, base_url):
+        """
+        Retrieves enrolled device(s) from Intune by either:
+        - deviceName (hostname) if self.data_type == 'hostname', or
+        - userPrincipalName (mail) if self.data_type == 'mail'.
+        
+        Reference: https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-list
+        """
+        try:
+            # Check if the data_type is valid
+            if self.data_type not in ['hostname', 'mail']:
+                self.error('Incorrect dataType. Expected "hostname" or "mail".')
+            
+            # Get the query value from the observable data
+            query_value = self.get_data()
+            if not query_value:
+                if self.data_type == 'hostname':
+                    self.error("No device name supplied")
+                else:
+                    self.error("No user UPN supplied")
+            
+            # Build the appropriate endpoint based on the observable type
+            if self.data_type == 'hostname':
+                endpoint = (
+                    "deviceManagement/managedDevices?"
+                    f"$filter=startswith(deviceName,'{query_value}')"
+                )
+            elif self.data_type == 'mail':
+                endpoint = (
+                    "deviceManagement/managedDevices?"
+                    f"$filter=startswith(userPrincipalName,'{query_value}')"
+                )
+            
+            # Perform the GET request
+            r = requests.get(base_url + endpoint, headers=headers)
+            if r.status_code != 200:
+                self.error(f"Failure to pull device(s) for query '{query_value}': {r.content}")
+            
+            # Parse and report the results
+            devices_data = r.json().get('value', [])
+            self.report({"query": query_value, "devices": devices_data})
+        
+        except Exception as ex:
+            self.error(traceback.format_exc())
+
     
     def run(self):
         Analyzer.run(self)
@@ -427,6 +472,8 @@ class MSEntraID(Analyzer):
             self.handle_get_userinfo(headers, base_url)
         elif self.service == "getDirectoryAuditLogs":
             self.handle_get_directoryAuditLogs(headers, base_url)
+        elif self.service == "getManagedDevicesInfo":
+            self.handle_get_devices(headers, base_url)
         else:
             self.error({"message": "Unidentified service"})
 
@@ -460,6 +507,10 @@ class MSEntraID(Analyzer):
             # Get the count of directory audit logs
             count = len(raw.get("directoryAudits", []))
             taxonomies.append(self.build_taxonomy('info', 'MSEntraIDAuditLogs', 'count', count))
+        elif self.service == "getManagedDevicesInfo":
+            # Get the count of devices returned.
+            count = len(raw.get("devices", []))
+            taxonomies.append(self.build_taxonomy('info', 'MSEntraIDManagedDevices', 'count', count))
         return {'taxonomies': taxonomies}
 
 

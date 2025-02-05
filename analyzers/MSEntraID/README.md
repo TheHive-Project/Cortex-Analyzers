@@ -15,7 +15,7 @@ This repository provides a set of **Cortex** analyzers to enrich your investigat
         - [getSignIns / Microsoft Entra ID Sign In Retriever](#getsignins--microsoft-entra-id-sign-in-retriever)  
         - [getUserInfo](#getuserinfo)  
         - [getDirectoryAuditLogs](#getdirectoryauditlogs)  
-        - [getManagedDeviceInfo](#getmanageddeviceinfo-intune)  
+        - [getManagedDevicesInfo](#getmanageddevicesinfo-requires-ms-intune)  
 5. [Customization](#customization)  
 6. [General Notes on Permissions](#general-notes-on-permissions)  
 7. [References](#references)
@@ -40,7 +40,7 @@ All analyzers share these config fields:
 - **`client_id`**: Application (client) ID of your Azure AD app registration  
 - **`client_secret`**: Client Secret generated for that app  
 - **`tenant_id`**: Azure AD Tenant ID  
-- **`service`**: Which analyzer action to run, hardcoded (such as `getSignIns`, `getUserInfo`, `getDirectoryAuditLogs`, `getManagedDeviceInfo`)  
+- **`service`**: Which analyzer action to run, hardcoded (such as `getSignIns`, `getUserInfo`, `getDirectoryAuditLogs`, `getManagedDevicesInfo`)  
 
 Additional parameters (such as **lookup_range**, **lookup_limit**, **state**, **country**) appear in certain analyzers. They allow you to define:
 
@@ -150,7 +150,7 @@ Retrieves **Directory Audit** records—administrative and policy changes made w
 - Run on TheHive’s observable of type `mail` 
 - Analyzer fetches directory audit logs for that user over the last X days.
 
-### getManagedDeviceInfo (requires MS Intune)
+### getManagedDevicesInfo (requires MS Intune)
 
 **Purpose**  
 Returns **Intune-managed devices** for a given user’s principal name or hostname, letting IR see device compliance, OS, last check-in, etc.
