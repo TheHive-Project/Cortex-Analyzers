@@ -195,8 +195,24 @@ class ElasticsearchAnalyzer(Analyzer):
                     info['querystring'] += '"'
                 #loop to get hits from each index
                 for index in self.index:
+                    body = {
+                        "sort": [
+                            {
+                                "@timestamp": {
+                                    "order": "desc",
+                                    "unmapped_type" : "date"
+                                }
+                            }
+                        ],
+                        "query": {
+                            "multi_match": {
+                                "query": self.data,
+                                "fields": self.fields
+                            }
+                        }
+                    }
                     #search elastic for fields in each index
-                    res = es.search(size=self.size,index=index,body={'sort':[{"@timestamp":{"order":"desc"}}],'query':{'multi_match':{'query':self.data, 'fields':self.fields}}})
+                    res = es.search(size=self.size,index=index,body=body)
                     #if relation is gte then more logs exist than we will display
                     if res['hits']['total']['relation'] == 'gte' or res['hits']['total']['relation'] == 'gt':
                         total = 'gte'
