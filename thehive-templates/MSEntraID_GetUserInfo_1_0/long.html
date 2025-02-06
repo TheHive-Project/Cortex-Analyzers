@@ -35,7 +35,14 @@
                         </tr>
                         <tr>
                             <td><strong>Account Enabled</strong></td>
-                            <td>{{ content.accountEnabled ? 'Yes' : 'No' }}</td>
+                            <td>
+                                <span class="label" ng-class="{
+                                    'label-success': content.accountEnabled,
+                                    'label-danger': !content.accountEnabled
+                                }">
+                                    {{ content.accountEnabled ? 'Yes' : 'No' }}
+                                </span>
+                            </td>
                         </tr>
                         <tr>
                             <td><strong>Created Date</strong></td>
@@ -69,7 +76,7 @@
                     </table>
                 </div>
             </div>
-        
+
             <!-- MFA Methods -->
             <div class="panel" ng-if="content.mfaMethods.length > 0">
                 <div class="panel-heading">
@@ -86,7 +93,6 @@
                             <td>{{ method.methodType }}</td>
                             <td>{{ method.displayName || 'N/A' }}</td>
                             <td>
-                            <td>
                                 <span ng-repeat="(key, value) in method" ng-if="key !== '@odata.type' && key !== 'id'">
                                     <strong>{{ key }}</strong>: {{ value || 'N/A' }}<br>
                                 </span>
@@ -96,19 +102,16 @@
                 </div>
             </div>
 
-            <!-- MFA error -->
+            <!-- MFA Error -->
             <div class="panel panel-danger" ng-if="content.mfaError.length > 0">
                 <div class="panel-heading">
-                    <strong>Error</strong>
+                    <strong><i class="fa fa-warning"></i> MFA Error</strong>
                 </div>
                 <div class="panel-body">
-                    <dl class="dl-horizontal">
-                        <dt><i class="fa fa-warning"></i> Message: </dt>
-                        <dd class="wrap">{{ content.mfaError }}</dd>
-                    </dl>
+                    <p>{{ content.mfaError }}</p>
                 </div>
             </div>
-            
+
             <!-- Assigned Licenses -->
             <div class="panel" ng-if="content.assignedLicenses.length > 0">
                 <div class="panel-heading">
@@ -118,9 +121,11 @@
                     <table class="table">
                         <tr>
                             <th>Service Plan ID</th>
+                            <th>Plan Name</th>
                         </tr>
                         <tr ng-repeat="license in content.assignedLicenses">
                             <td>{{ license.skuPartNumber }}</td>
+                            <td>{{ license.servicePlanName || 'N/A' }}</td>
                         </tr>
                     </table>
                 </div>
