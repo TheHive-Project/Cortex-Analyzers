@@ -14,7 +14,7 @@
     "dataTypeList": [
         "hostname"
     ],
-    "command": "CrowdstrikeFalcon/CrowdstrikeFalcon_getDeviceVulnerabilities.py",
+    "command": "CrowdstrikeFalcon/CrowdstrikeFalcon_GetDeviceVulnerabilities.py",
     "configurationItems": [
         {
             "name": "client_id",
