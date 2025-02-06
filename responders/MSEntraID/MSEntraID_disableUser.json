@@ -4,7 +4,7 @@
     "author": "nusatanra-self, StrangeBee",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "description": "Disable user in Microsoft Entra ID",
+    "description": "Disable user in Microsoft Entra ID for a User Principal Name. (mail)",
     "dataTypeList": ["thehive:case_artifact"],
     "command": "MSEntraID/MSEntraID.py",
     "baseConfig": "MSEntraID",
