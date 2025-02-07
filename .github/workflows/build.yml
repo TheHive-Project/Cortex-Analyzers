@@ -17,7 +17,7 @@ jobs:
     runs-on: [ ubuntu-latest ]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Build analyzers
@@ -32,7 +32,7 @@ jobs:
     runs-on: [ ubuntu-latest ]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Build responders
@@ -49,13 +49,13 @@ jobs:
     if: always()
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Build catalog
         uses: docker://thehiveproject/neurons-build-catalogs
       - name: Build report-templates zip package
         uses: docker://thehiveproject/neurons-build-report-templates
       - name: Save Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: catalog
           path: |
@@ -80,13 +80,13 @@ jobs:
     needs: [build_analyzers, build_responders ]
     if: startsWith(github.ref, 'refs/tags/') && always()
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Prepare documentation files
         uses: docker://thehiveproject/doc-builder
         with:
           args: --type Cortex-Neurons
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v5
         with:
           python-version: "3.x"
           architecture: x64

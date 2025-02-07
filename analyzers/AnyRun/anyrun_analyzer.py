@@ -85,7 +85,7 @@ class AnyRunAnalyzer(Analyzer):
                     if status_code == 200:
                         task_id = response.json()["data"]["taskid"]
                     elif status_code == 201:
-                        task_id = response.json()["taskid"]
+                        task_id = response.json()["data"]["taskid"]
                     elif status_code == 429:
                         # it not support parallel runs, so we wait and resubmit later
                         time.sleep(60)

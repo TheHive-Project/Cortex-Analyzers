@@ -1,17 +1,26 @@
 # Changelog
 
-## [3.4.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.2) (2025-01-16)
+## [3.4.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.4) (2025-02-07)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.4.3...3.4.4)
+
+**Closed issues:**
+
+- \[FR\] - Feedback for the MSEntraID Responder [\#1302](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1302)
+- \[Bug\] Elasticsearch analyzer does not work with index that has no @timestamp field [\#1290](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1290)
+
+## [3.4.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.3) (2025-01-16)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.4.2...3.4.3)
 
 **Closed issues:**
 
-- \[FR\] Crowdstrike Falcon: support custom base URL [\#1306](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1309)
+- \[FR\] Crowdstrike Falcon: support custom base URL [\#1309](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1309)
 
 **Merged pull requests:**
 
-- Crowdstrike Falcon - Custom Base URL support [\#1310](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1310) ([nusantara-self](https://github.com/nusantara-self))
 - utils improvements [\#1311](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1311) ([nusantara-self](https://github.com/nusantara-self))
+- Crowdstrike Falcon - Custom Base URL support [\#1310](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1310) ([nusantara-self](https://github.com/nusantara-self))
 
 ## [3.4.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.2) (2024-12-26)
 
