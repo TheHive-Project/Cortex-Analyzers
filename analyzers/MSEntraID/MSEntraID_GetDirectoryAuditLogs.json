@@ -1,15 +1,15 @@
 {
-    "name": "MSEntraID_GetSignIns",
+    "name": "MSEntraID_GetDirectoryAuditLogs",
     "version": "1.0",
-    "author": "@jahamilto",
+    "author": "nusantara-self, StrangeBee",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "description": "Pull all Microsoft Entra ID sign ins for a user within the specified amount of time.",
+    "description": "Pull Microsoft Entra ID directory audit logs for a user within the specified timeframe.",
     "dataTypeList": ["mail"],
     "command": "MSEntraID/MSEntraID.py",
     "baseConfig": "MSEntraID",
     "config": {
-        "service": "getSignIns"
+        "service": "getDirectoryAuditLogs"
     },
     "configurationItems": [
         {"name": "tenant_id",
@@ -31,30 +31,18 @@
         "required": true
         },
         {"name": "lookup_range",
-        "description": "Check for sign ins in the last X days. Should be between 1 and 31 days.",
+        "description": "Check for Directory Audit Logs in the last X days. Should be between 1 and 31 days.",
         "type": "number",
         "multi": false,
         "required": false,
         "defaultValue": 7
         },
         {"name": "lookup_limit",
-        "description": "Display no more than this many sign ins.",
+        "description": "Display no more than this many Directory Audit Logs.",
         "type": "number",
         "multi": false,
         "required": false,
         "defaultValue": 12
-        },
-        {"name": "state",
-        "description": "Expected sign in state (used as a taxonomy when sign ins appear outside of this area).",
-        "type": "number",
-        "multi": false,
-        "required": false
-        },
-        {"name": "country",
-        "description": "Expected sign in country or region (used as a taxonomy when sign ins appear outside of this area).",
-        "type": "number",
-        "multi": false,
-        "required": false
         }
     ],
     "registration_required": true,
