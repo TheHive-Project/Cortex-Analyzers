@@ -5,11 +5,59 @@
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
     "description": "Perform domain lookup to Spamhaus DBL",
-    "dataTypeList": ["domain", "fqdn"],
+    "dataTypeList": [
+        "domain",
+        "fqdn"
+    ],
     "baseConfig": "SpamhausDBL",
     "config": {
-       "service": "DBLLookup"
+        "service": "DBLLookup"
     },
     "command": "SpamhausDBL/spamhausdbl.py",
-    "configurationItems": []
+    "configurationItems": [],
+    "checks": [
+        {
+            "input": {
+                "data": "strangebee.com",
+                "dataType": "domain",
+                "config": {
+                    "service": "DBLLookup"
+                }
+            },
+            "rules": [
+                {
+                    "path": "$.success",
+                    "expected": [
+                        true
+                    ]
+                },
+                {
+                    "path": "$.summary.taxonomies[*].predicate",
+                    "expected": [
+                        "return_code",
+                        "classification"
+                    ]
+                },
+                {
+                    "path": "$.summary.taxonomies[*].value",
+                    "expected": [
+                        "NXDOMAIN",
+                        "Clean"
+                    ]
+                },
+                {
+                    "path": "$.full.return_code",
+                    "expected": [
+                        "NXDOMAIN"
+                    ]
+                },
+                {
+                    "path": "$.full.classification",
+                    "expected": [
+                        "Clean"
+                    ]
+                }
+            ]
+        }
+    ]
 }

@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Parse files in several formats such as OLE and OpenXML to detect VBA macros, extract their source code, generate useful information on PE, PDF files...",
-  "dataTypeList": ["file"],
+  "dataTypeList": [
+    "file"
+  ],
   "baseConfig": "FileInfo",
   "command": "FileInfo/fileinfo_analyzer.py",
   "configurationItems": [
@@ -64,6 +66,32 @@
       "required": false,
       "multi": false,
       "default": 4
+    }
+  ],
+  "checks": [
+    {
+      "input": {
+        "file": "catalog.json",
+        "contentType": "application/json",
+        "filename": "catalog.json",
+        "dataType": "file",
+        "config": {
+          "manalyze_enable": false,
+          "manalyze_enable_docker": false,
+          "manalyze_binary_path": "/worker/Manalyze/bin/manalyze",
+          "floss_enable": false,
+          "floss_binary_path": "/usr/bin/floss",
+          "floss_minimal_string_length": 4
+        }
+      },
+      "rules": [
+        {
+          "path": "$.success",
+          "expected": [
+            true
+          ]
+        }
+      ]
     }
   ]
 }
