@@ -48,7 +48,7 @@
         "name": "uid_search_field",
         "description": "Specify here the field to use when searching by username. Eg: uid or sAMAccountName",
         "type": "string",
-        "multi": false,
+        "multi": true,
         "required": true
     },
     {
