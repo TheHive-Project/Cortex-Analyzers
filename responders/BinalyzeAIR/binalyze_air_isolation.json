@@ -8,7 +8,7 @@
     "dataTypeList": [
         "thehive:case_artifact"
     ],
-    "command": "BinalyzeAIR/air.py",
+    "command": "BinalyzeAIR/binalyze.py",
     "config": {
         "service": "air_isolate"
     },
