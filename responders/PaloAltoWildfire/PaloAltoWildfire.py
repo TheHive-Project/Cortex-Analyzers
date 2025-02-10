@@ -28,14 +28,13 @@ class PaloAltoWildfire(Responder):
                     observable = self.get_param('data.data')
 
                 headers = {
-                    'user-agent': 'PaloAltoWildfire-Cortex-Responder'
+                    'User-Agent': 'PaloAltoWildfire-Cortex-Responder'
                 }
                 payload = {
-                    "apikey": self.api_key,
-                    "link": observable
+                    'apikey': (None, self.api_key),
+                    'link': (None, observable),
                 }
-
-                response = requests.post(self.wildfire_url, data=payload, headers=headers)
+                response = requests.post(self.wildfire_url, files=payload, headers=headers)
                 if response.status_code == 200:
                     self.report({'message': 'Observable sent to Wildfire. Message: {}'.format(response.text)})
                 elif response.status_code == 401:
