@@ -1,17 +1,20 @@
-FROM python:3
+FROM python:3-alpine
 WORKDIR /worker
-COPY . Capa
-
 # Install required tools
-RUN apt-get update && apt-get install -y \
+RUN apk add --no-cache \
     curl \
     jq \
-    unzip && \
-    rm -rf /var/lib/apt/lists/*
+    unzip \
+    bash && \
+    rm -rf /var/cache/apk/*
+
+COPY requirements.txt Capa/
+RUN test ! -e Capa/requirements.txt || pip install --no-cache-dir -r Capa/requirements.txt
 
 # Add a script to fetch the latest capa release and extract it
 COPY fetch_capa.sh /worker/fetch_capa.sh
 RUN chmod +x /worker/fetch_capa.sh && /worker/fetch_capa.sh
 
-RUN test ! -e Capa/requirements.txt || pip install --no-cache-dir -r Capa/requirements.txt
-ENTRYPOINT "Capa/CapaAnalyze.py"
+COPY . Capa/
+
+ENTRYPOINT ["python", "Capa/CapaAnalyze.py"]
