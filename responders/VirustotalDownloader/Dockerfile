@@ -13,4 +13,3 @@ RUN test ! -e VirusTotalDownloader/requirements.txt || pip install --no-cache-di
 COPY . VirusTotalDownloader
 
 ENTRYPOINT ["python", "VirusTotalDownloader/VirustotalDownloader.py"]
-cd
