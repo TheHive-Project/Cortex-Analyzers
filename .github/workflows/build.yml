@@ -12,43 +12,106 @@ on:
     - cron: "42 8 1 * *"
 
 jobs:
-  build_analyzers:
-    name: Build Analyzers
-    runs-on: [ ubuntu-latest ]
+  generate-matrix:
+    name: Generate Matrix
+    runs-on: ubuntu-latest
+    outputs:
+      analyzers_matrix: ${{ steps.set-matrix.outputs.analyzers_matrix }}
+      responders_matrix: ${{ steps.set-matrix.outputs.responders_matrix }}
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Build analyzers
+
+      - name: List analyzer and responder directories and build matrices
+        id: set-matrix
+        run: |
+          echo "Listing analyzer directories in 'analyzers/'..."
+          analyzer_dirs=$(find analyzers -mindepth 1 -maxdepth 1 -type d -printf '%f\n')
+          echo "Found analyzer directories:"
+          echo "$analyzer_dirs"
+
+          echo "Listing responder directories in 'responders/'..."
+          responder_dirs=$(find responders -mindepth 1 -maxdepth 1 -type d -printf '%f\n')
+          echo "Found responder directories:"
+          echo "$responder_dirs"
+
+          # Build JSON for analyzers (each object has a directory name)
+          analyzer_json=$(echo "$analyzer_dirs" | jq -R -s -c 'split("\n")[:-1] | map({directory: .})')
+          # Build JSON for responders
+          responder_json=$(echo "$responder_dirs" | jq -R -s -c 'split("\n")[:-1] | map({directory: .})')
+          
+          # Add a component key to each and wrap them with "include"
+          analyzers_matrix=$(echo "$analyzer_json" | jq -c '{include: map(. + {component: "analyzers"})}')
+          responders_matrix=$(echo "$responder_json" | jq -c '{include: map(. + {component: "responders"})}')
+          
+          echo "Generated analyzers matrix: $analyzers_matrix"
+          echo "Generated responders matrix: $responders_matrix"
+          
+          {
+            echo "analyzers_matrix<<EOF"
+            echo "$analyzers_matrix"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+          
+          {
+            echo "responders_matrix<<EOF"
+            echo "$responders_matrix"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+  build_analyzers:
+    name: Build Analyzers
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.analyzers_matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Pre-pull builder image (if not already cached)
+        run: docker pull thehiveproject/cortex-neurons-builder:latest
+
+      - name: Build analyzer ${{ matrix.directory }}
         uses: docker://thehiveproject/cortex-neurons-builder:latest
         with:
           driver-opts: image=moby/buildkit:v0.19.0
           args: |
-            --namespace cortexneurons --path analyzers --registry_dockerhub ${{ secrets.REGISTRY_DOCKERHUB }} ${{ (startsWith(github.ref, 'refs/tags') || github.event_name == 'schedule') && '--stable' || '' }}
+            --namespace cortexneurons --path analyzers -w ${{ matrix.directory }} --registry_dockerhub ${{ secrets.REGISTRY_DOCKERHUB }} ${{ (startsWith(github.ref, 'refs/tags') || github.event_name == 'schedule') && '--stable' || '' }}
 
   build_responders:
     name: Build Responders
-    runs-on: [ ubuntu-latest ]
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.responders_matrix) }}
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Build responders
+
+      - name: Pre-pull builder image (if not already cached)
+        run: docker pull thehiveproject/cortex-neurons-builder:latest
+
+      - name: Build responder ${{ matrix.directory }}
         uses: docker://thehiveproject/cortex-neurons-builder:latest
         with:
           driver-opts: image=moby/buildkit:v0.19.0
           args: |
-            --namespace cortexneurons --path responders --registry_dockerhub ${{ secrets.REGISTRY_DOCKERHUB }} ${{ (startsWith(github.ref, 'refs/tags') || github.event_name == 'schedule') && '--stable' || '' }}
+            --namespace cortexneurons --path responders -w ${{ matrix.directory }} --registry_dockerhub ${{ secrets.REGISTRY_DOCKERHUB }} ${{ (startsWith(github.ref, 'refs/tags') || github.event_name == 'schedule') && '--stable' || '' }}
 
   build_catalog:
     name: Build Catalog
-    runs-on: [ ubuntu-latest ]
+    runs-on: ubuntu-latest
     needs: [ build_analyzers, build_responders ]
     if: always()
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
       - name: Build catalog
         uses: docker://thehiveproject/neurons-build-catalogs
@@ -76,8 +139,8 @@ jobs:
 
   build_docs:
     name: Build documentation
-    runs-on: [ ubuntu-latest ]
-    needs: [build_analyzers, build_responders ]
+    runs-on: ubuntu-latest
+    needs: [ build_analyzers, build_responders ]
     if: startsWith(github.ref, 'refs/tags/') && always()
     steps:
       - uses: actions/checkout@v4
@@ -92,21 +155,24 @@ jobs:
           architecture: x64
       - name: Install requirements
         run: python3 -m pip install -r utils/test_doc/requirements.txt
-      - name: setup git user
-        run: git config user.name 'github-actions[bot]' && git config user.email 'github-actions[bot]@users.noreply.github.com'
-      - name: Deploy
+      - name: Set up git user
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+      - name: Deploy documentation
         run: python3 -m mkdocs gh-deploy --remote-branch gh-pages --force
 
   notify:
-    needs: [build_analyzers, build_responders, build_catalog, build_docs ]
-    runs-on: [ ubuntu-latest ]
-    if: always()
+    name: Notify
+    needs: [ build_analyzers, build_responders, build_catalog, build_docs ]
+    runs-on: ubuntu-latest
+    if: false   # Temporarily disable notifications
     steps:
       - name: Slack notification
         uses: Gamesight/slack-workflow-status@master
         with:
-          repo_token: ${{secrets.GITHUB_TOKEN}}
-          slack_webhook_url: ${{secrets.SLACK_WEBHOOK_URL}}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
           channel: "#ci-cortex"
           name: Cortex Analyzers build
           include_commit_message: true
