@@ -6,8 +6,8 @@ See https://github.com/certsocietegenerale/abuse_finder for further reference.
 """
 
 from cortexutils.analyzer import Analyzer
-from abuse_finder import domain_abuse, ip_abuse, \
-    email_abuse, url_abuse
+from abuse_finder import domain_abuse, ip_abuse, email_abuse, url_abuse
+
 import logging
 logging.getLogger("tldextract").setLevel(logging.CRITICAL)
 

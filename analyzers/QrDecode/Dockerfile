@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3-slim
 WORKDIR /worker
 COPY . QrDecode
 RUN test ! -e QrDecode/requirements.txt || pip install --no-cache-dir -r QrDecode/requirements.txt

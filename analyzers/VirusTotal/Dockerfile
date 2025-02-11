@@ -1,11 +1,15 @@
-FROM python:3.9
+FROM python:3-alpine
 
 WORKDIR /worker
+
+# install runtime dependencies.
+RUN apk add --no-cache perl-image-exiftool file-dev
+
+COPY requirements.txt VirusTotal/
+
+# Install Python dependencies from requirements.txt
+RUN test ! -e VirusTotal/requirements.txt || pip install --no-cache-dir -r VirusTotal/requirements.txt
+
 COPY . VirusTotal
-RUN apt update
-RUN apt install -y -q libimage-exiftool-perl       && \
-    rm -rf /var/lib/apt/lists/*
 
-RUN pip install --no-cache-dir -r VirusTotal/requirements.txt
-
-ENTRYPOINT VirusTotal/virustotal.py
+ENTRYPOINT ["python", "VirusTotal/virustotal.py"]

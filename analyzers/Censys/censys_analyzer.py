@@ -2,11 +2,7 @@
 from cortexutils.analyzer import Analyzer
 from censys.search import CensysHosts, CensysCerts
 
-from censys.common.exceptions import (
-    CensysNotFoundException,
-    CensysRateLimitExceededException,
-    CensysUnauthorizedException,
-)
+from censys.common.exceptions import CensysNotFoundException, CensysRateLimitExceededException, CensysUnauthorizedException
 
 import iocextract
 

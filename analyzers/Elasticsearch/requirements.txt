@@ -2,3 +2,4 @@ elasticsearch
 cortexutils
 pytz
 requests
+python-dateutil
