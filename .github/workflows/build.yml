@@ -84,6 +84,10 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Create and use a new Buildx builder
+        run: |
+          docker buildx create --name mybuilder --driver docker-container --use --bootstrap || docker buildx use mybuilder
+          docker buildx ls
       - name: Pre-pull builder image (if not already cached)
         run: docker pull thehiveproject/cortex-neurons-builder:latest
 
@@ -117,6 +121,10 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Create and use a new Buildx builder
+        run: |
+          docker buildx create --name mybuilder --driver docker-container --use --bootstrap || docker buildx use mybuilder
+          docker buildx ls
       - name: Pre-pull builder image (if not already cached)
         run: docker pull thehiveproject/cortex-neurons-builder:latest
 
