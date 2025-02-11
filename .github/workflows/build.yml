@@ -79,14 +79,10 @@ jobs:
           fetch-depth: 0
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-        with:
-          driver: docker-container
-          use: true
-          cleanup: true
+        uses: docker/setup-buildx-action@v3
 
       - name: Pre-pull builder image (if not already cached)
         run: docker pull thehiveproject/cortex-neurons-builder:latest
@@ -116,14 +112,10 @@ jobs:
           fetch-depth: 0
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-        with:
-          driver: docker-container
-          use: true
-          cleanup: true
+        uses: docker/setup-buildx-action@v3
 
       - name: Pre-pull builder image (if not already cached)
         run: docker pull thehiveproject/cortex-neurons-builder:latest
