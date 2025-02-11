@@ -66,6 +66,7 @@ jobs:
     needs: generate-matrix
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         directory: ${{ fromJson(needs.generate-matrix.outputs.analyzers_matrix).include[*].directory }}
     steps:
@@ -95,6 +96,7 @@ jobs:
     needs: generate-matrix
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         directory: ${{ fromJson(needs.generate-matrix.outputs.analyzers_matrix).include[*].directory }}
     steps:
@@ -124,6 +126,7 @@ jobs:
     needs: generate-matrix
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         directory: ${{ fromJson(needs.generate-matrix.outputs.responders_matrix).include[*].directory }}
     steps:
@@ -153,6 +156,7 @@ jobs:
     needs: generate-matrix
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         directory: ${{ fromJson(needs.generate-matrix.outputs.responders_matrix).include[*].directory }}
     steps:
