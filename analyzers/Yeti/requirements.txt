@@ -1,2 +1,2 @@
 cortexutils
-yeti-python
+git+https://github.com/yeti-platform/pyeti
