@@ -93,7 +93,7 @@ jobs:
 
   build_analyzers_arm64:
     name: Build Analyzers (arm64)
-    needs: build_responders_amd64
+    needs: [ generate-matrix, build_analyzers_amd64 ]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -153,7 +153,7 @@ jobs:
 
   build_responders_arm64:
     name: Build Responders (arm64)
-    needs: build_responders_amd64
+    needs: [ generate-matrix, build_responders_amd64 ]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
