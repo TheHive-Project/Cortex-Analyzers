@@ -65,6 +65,9 @@ jobs:
     name: Build Analyzers (multi-arch)
     needs: generate-matrix
     runs-on: ubuntu-latest
+    env:
+      DOCKER_BUILDKIT: 1
+      DOCKER_CLI_EXPERIMENTAL: enabled
     strategy:
       fail-fast: false
       matrix:
@@ -99,6 +102,9 @@ jobs:
     name: Build Responders (multi-arch)
     needs: generate-matrix
     runs-on: ubuntu-latest
+    env:
+      DOCKER_BUILDKIT: 1
+      DOCKER_CLI_EXPERIMENTAL: enabled
     strategy:
       fail-fast: false
       matrix:
@@ -118,7 +124,7 @@ jobs:
           driver: docker-container
           use: true
           cleanup: true
-          
+
       - name: Pre-pull builder image (if not already cached)
         run: docker pull thehiveproject/cortex-neurons-builder:latest
 
