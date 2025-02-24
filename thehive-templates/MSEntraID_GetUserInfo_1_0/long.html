@@ -1,0 +1,148 @@
+<!-- Success -->
+<div class="panel panel-danger" ng-if="success">
+    <div class="panel-body">
+        <div>
+            <!-- User Information Section -->
+            <div class="panel" ng-if="content.displayName.length > 0">
+                <div class="panel-heading">
+                    <i class="fa fa-user"></i> User Information
+                </div>
+                <div>
+                    <table class="table">
+                        <tr>
+                            <td><strong>Display Name</strong></td>
+                            <td>{{ content.displayName || 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Job Title</strong></td>
+                            <td>{{ content.jobTitle || 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Email</strong></td>
+                            <td>{{ content.mail || 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Department</strong></td>
+                            <td>{{ content.department || 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Usage Location</strong></td>
+                            <td>{{ content.usageLocation || 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>User Type</strong></td>
+                            <td>{{ content.userType || 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Account Enabled</strong></td>
+                            <td>
+                                <span class="label" ng-class="{
+                                    'label-success': content.accountEnabled,
+                                    'label-danger': !content.accountEnabled
+                                }">
+                                    {{ content.accountEnabled ? 'Yes' : 'No' }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Created Date</strong></td>
+                            <td>{{ content.createdDateTime || 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Last Sign-In</strong></td>
+                            <td>{{ content.lastSignInDateTime || 'N/A' }}</td>
+                        </tr>
+                        <tr ng-if="content.manager">
+                            <td><strong>Manager</strong></td>
+                            <td>{{ content.manager.displayName }} ({{ content.manager.userPrincipalName }})</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Membership Groups -->
+            <div class="panel" ng-if="content.memberOf.length > 0">
+                <div class="panel-heading">
+                    <i class="fa fa-users"></i> Membership Groups
+                </div>
+                <div>
+                    <table class="table">
+                        <tr>
+                            <th>Group Name</th>
+                        </tr>
+                        <tr ng-repeat="group in content.memberOf">
+                            <td>{{ group.displayName }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- MFA Methods -->
+            <div class="panel" ng-if="content.mfaMethods.length > 0">
+                <div class="panel-heading">
+                    <i class="fa fa-lock"></i> Multi-Factor Authentication Methods
+                </div>
+                <div>
+                    <table class="table">
+                        <tr>
+                            <th>Type</th>
+                            <th>Display Name</th>
+                            <th>Details</th>
+                        </tr>
+                        <tr ng-repeat="method in content.mfaMethods">
+                            <td>{{ method.methodType }}</td>
+                            <td>{{ method.displayName || 'N/A' }}</td>
+                            <td>
+                                <span ng-repeat="(key, value) in method" ng-if="key !== '@odata.type' && key !== 'id'">
+                                    <strong>{{ key }}</strong>: {{ value || 'N/A' }}<br>
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- MFA Error -->
+            <div class="panel panel-danger" ng-if="content.mfaError.length > 0">
+                <div class="panel-heading">
+                    <strong><i class="fa fa-warning"></i> MFA Error</strong>
+                </div>
+                <div class="panel-body">
+                    <p>{{ content.mfaError }}</p>
+                </div>
+            </div>
+
+            <!-- Assigned Licenses -->
+            <div class="panel" ng-if="content.assignedLicenses.length > 0">
+                <div class="panel-heading">
+                    <i class="fa fa-id-card"></i> Assigned Licenses
+                </div>
+                <div>
+                    <table class="table">
+                        <tr>
+                            <th>Service Plan ID</th>
+                            <th>Plan Name</th>
+                        </tr>
+                        <tr ng-repeat="license in content.assignedLicenses">
+                            <td>{{ license.skuPartNumber }}</td>
+                            <td>{{ license.servicePlanName || 'N/A' }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> MSEntra ID GetUserInfo: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
