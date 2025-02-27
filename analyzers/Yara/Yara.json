@@ -1,10 +1,10 @@
 {
   "name": "Yara",
-  "author": "Nils Kuhnert, CERT-Bund",
+  "author": "Nils Kuhnert, CERT-Bund; Fabien Bloume, StrangeBee",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/cortex-analyzers",
-  "version": "2.0",
-  "description": "Check files against YARA rules.",
+  "version": "3.0",
+  "description": "Check files against YARA rules, either from local filesystem or from one or multiple GitHub repositories. NOTE: Performance & execution time may be much longer according to the number of rules checked.",
   "dataTypeList": ["file"],
   "command": "Yara/yara_analyzer.py",
   "baseConfig": "Yara",
@@ -14,7 +14,21 @@
       "description": "Define the path rules folder",
       "type": "string",
       "multi": true,
-      "required": true
+      "required": false
+    },
+    {
+      "name": "github_urls",
+      "description": "GitHub URLs to get rules from. Expected format: https://github.com/owner/repo/tree/main or https://github.com/owner/repo/tree/main/subdir",
+      "type": "string",
+      "multi": true,
+      "required": false
+    },
+    {
+      "name": "github_token",
+      "description": "PAT (recommended) in case of private repository or high frequency of pulls/executions",
+      "type": "string",
+      "multi": false,
+      "required": false
     }
   ]
 }
