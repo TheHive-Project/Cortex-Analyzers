@@ -149,12 +149,15 @@ class YaraAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
 
-        self.rulepaths = self.get_param('config.rules', None, 'No paths for rules provided.')
+        self.rulepaths = self.get_param('config.rules', [], 'No paths for rules provided.')
         if not self.rulepaths:
             self.rulepaths = []  # Ensure it's a list even if nothing was provided
         elif isinstance(self.rulepaths, str):
             self.rulepaths = [self.rulepaths]
             
+        # Filter out any None values from the list
+        self.rulepaths = [rp for rp in self.rulepaths if rp is not None and rp != '']
+
         self.github_urls = self.get_param('config.github_urls', None, 'No GitHub URLs provided.')
         self.github_token = self.get_param('config.github_token', None, 'No GitHub PAT provided.')
 
@@ -236,35 +239,39 @@ class YaraAnalyzer(Analyzer):
             for match in matches:
                 try:
                     decoded_strings = []
+                    self.report({"message": str(match.strings)})
                     for s in match.strings:
-                        try:
-                            matched_text = s[2].decode(errors='ignore')
-                        except Exception as e:
-                            matched_text = f"<decoding error: {str(e)}>"
-    
-                        # Apply all relevant decoding methods
-                        decoded_b64 = is_base64(matched_text)
-                        decoded_hex = is_hex(matched_text)
-                        decoded_rot13 = is_rot13(matched_text)
-                        decoded_url = is_url_encoded(matched_text)
-                        decoded_unicode = is_unicode_escape(matched_text)
-                        decoded_html = is_html_entity(matched_text)
-                        decoded_xor = is_xor_static_key(matched_text)
-    
-                        decoded_strings.append({
-                            "offset": s[0],
-                            "matched": matched_text,
-                            "base64_decoded": decoded_b64 if decoded_b64 else "N/A",
-                            "hex_decoded": decoded_hex if decoded_hex else "N/A",
-                            "rot13_decoded": decoded_rot13 if decoded_rot13 else "N/A",
-                            "url_decoded": decoded_url if decoded_url else "N/A",
-                            "unicode_decoded": decoded_unicode if decoded_unicode else "N/A",
-                            "html_decoded": decoded_html if decoded_html else "N/A",
-                            "xor_decoded": decoded_xor if decoded_xor else "N/A"
-                        })
+                        # Iterate over each instance (each match occurrence)
+                        for inst in s.instances:
+                            try:
+                                matched_text = inst.plaintext().decode(errors='ignore')
+                            except Exception as e:
+                                matched_text = f"<decoding error: {str(e)}>"
+                
+                            # Apply decoding methods
+                            decoded_b64 = is_base64(matched_text)
+                            decoded_hex = is_hex(matched_text)
+                            decoded_rot13 = is_rot13(matched_text)
+                            decoded_url = is_url_encoded(matched_text)
+                            decoded_unicode = is_unicode_escape(matched_text)
+                            decoded_html = is_html_entity(matched_text)
+                            decoded_xor = is_xor_static_key(matched_text)
+                
+                            decoded_strings.append({
+                                "offset": getattr(inst, 'offset', "N/A"),
+                                "identifier": s.identifier,
+                                "matched": matched_text,
+                                "base64_decoded": decoded_b64 if decoded_b64 else "N/A",
+                                "hex_decoded": decoded_hex if decoded_hex else "N/A",
+                                "rot13_decoded": decoded_rot13 if decoded_rot13 else "N/A",
+                                "url_decoded": decoded_url if decoded_url else "N/A",
+                                "unicode_decoded": decoded_unicode if decoded_unicode else "N/A",
+                                "html_decoded": decoded_html if decoded_html else "N/A",
+                                "xor_decoded": decoded_xor if decoded_xor else "N/A"
+                            })
                     results.append({
                         "rule": match.rule,
-                        "namespace": match.namespace if hasattr(match, "namespace") else "N/A",
+                        "namespace": getattr(match, "namespace", "N/A"),
                         "strings": decoded_strings,
                         "meta": match.meta
                     })
