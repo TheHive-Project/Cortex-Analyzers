@@ -1,7 +1,7 @@
 {
   "name": "Ldap_Query",
-  "version": "2.0",
-  "author": "Florian Perret @cyber_pescadito",
+  "version": "3.0",
+  "author": "Florian Perret @cyber_pescadito & THA-CERT @tha_cert",
   "url": "https://github.com/cyberpescadito/Cortex-Analyzers/tree/master/analyzers/LdapQuery",
   "license": "AGPL-V3",
   "description": "Query your LDAP server to harvest informations about an user of your organization",
@@ -25,7 +25,7 @@
     },
     {
         "name": "LDAP_username",
-        "description": "Usernae of the account that will be used to bind to LDAP server. The Account should have permissions to read ldap objects and attributes.",
+        "description": "Username of the account that will be used to bind to LDAP server. The Account should have permissions to read ldap objects and attributes.",
         "type": "string",
         "multi": false,
         "required": true
@@ -45,11 +45,32 @@
         "required": true
     },
     {
-        "name": "uid_search_field",
-        "description": "Specify here the field to use when searching by username. Eg: uid or sAMAccountName",
+        "name": "uid_search_fields",
+        "description": "Specify here one or multiple fields to use when searching by username. Eg: uid and/or sAMAccountName",
         "type": "string",
-        "multi": false,
+        "multi": true,
         "required": true
+    },
+    {
+        "name": "uid_search_filter",
+        "description": "Restrict username format that you want to search on LDAP server, based on regular expression(s) matching. Eg: '^[0-9]{8}$' will request LDAP server only if username observable is a string of 8 digits",
+        "type": "string",
+        "multi": true,
+        "required": false
+    },
+    {
+        "name": "mail_search_fields",
+        "description": "Specify here one or multiple fields to use when searching by email. Eg: mail and/or mailAlias",
+        "type": "string",
+        "multi": true,
+        "required": true
+    },
+    {
+        "name": "mail_search_filter",
+        "description": "Restrict email domain names that you want to search on LDAP server. Eg: domain.org",
+        "type": "string",
+        "multi": true,
+        "required": false
     },
     {
         "name": "attributes",
@@ -57,6 +78,33 @@
         "type": "string",
         "multi": true,
         "required": true
+    },
+    {
+        "name": "attributes_to_extract",
+        "description": "Specify here attributes that you want to extract as Observables. You need to specify the attibute name and observable type using ':' separator (attribute need to respect case sensivity). Format: 'attribute:datatype'. Eg: 'uid:username', 'mail:mail'",
+        "type": "string",
+        "multi": true,
+        "required": false
+    },
+    {
+        "name": "autoimport_artifacts",
+        "description": "Set on 'True' to auto-import extracted artifacts from LDAP response, as observables. False by default.",
+        "type": "boolean",
+        "required": false
+    },
+    {
+        "name": "attributes_to_tags",
+        "description": "Specify here attributes that you want to extract as tags. Optionally, you can re-define tag's prefix, using ':' separator (attribute need to respect case sensivity). Format: 'attribute' | 'attribute:prefix'. Eg: 'mail' will add tag 'mail:jdoe@domain.org', 'mail:e-mail' will add tag 'e-mail:jdoe@domain.org'",
+        "type": "string",
+        "multi": true,
+        "required": false
+    },
+    {
+        "name": "attributes_to_custom_fields",
+        "description": "Specify here attributes that you want to extract as custom fields. You can re-define custom fields' names, using ':' separator (attribute need to respect case sensivity). Format: 'attribute:prefix'. Eg: 'c:Country' will add a 'Country' custom field 'France'",
+        "type": "string",
+        "multi": true,
+        "required": false
     }
   ]
 }
