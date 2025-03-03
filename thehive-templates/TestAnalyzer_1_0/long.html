@@ -1,0 +1,156 @@
+<!-- Success -->
+<div class="panel panel-success" ng-if="success">
+    <div class="panel-heading">
+        TestAnalyzer Report
+    </div>
+    <div class="panel-body">
+        <!-- Display content dataType and data -->
+        <h3>Content Overview</h3>
+        <p><strong>Data Type:</strong> {{ content.dataType }}</p>
+        <p><strong>Data:</strong> {{ content.data }}</p>
+        
+        <!-- Displaying an array -->
+        <h4>Array Example</h4>
+        <ul>
+            <li ng-repeat="item in content.arrayExample">
+                {{ item }}
+            </li>
+        </ul>
+        
+        <!-- Displaying a table (object) -->
+        <h4>Table Example</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Column A</th>
+                    <th>Column B</th>
+                    <th>Column C</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ content.tableExample.colA }}</td>
+                    <td>{{ content.tableExample.colB }}</td>
+                    <td>{{ content.tableExample.colC }}</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Tabbed content -->
+        <h4>Tabbed Content Example</h4>
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab1" data-toggle="tab">Tab 1</a></li>
+            <li><a href="#tab2" data-toggle="tab">Tab 2</a></li>
+            <li><a href="#tab3" data-toggle="tab">Tab 3</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab1">
+                <p>Placeholder tab 1 content</p>
+            </div>
+            <div class="tab-pane" id="tab2">
+                <p>Placeholder tab 2 content</p>
+            </div>
+            <div class="tab-pane" id="tab3">
+                <p>Placeholder tab 3 content</p>
+            </div>
+        </div>
+        
+        <!-- Collapsible section -->
+        <h4 class="panel-default">Collapsible Section</h4>
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h5 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            Show More Details
+                        </a>
+                    </h5>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <p>Some collapsible details</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Plain HTML Examples -->
+
+<div ng-if="success">
+    <h4>Plain HTML Examples - No Class - For Testing Only</h4>
+</div>
+
+<div ng-if="success">
+    <h4>Array List Example</h4>
+    <ul>
+        <li ng-repeat="item in content.arrayExample">
+            {{ item }}
+        </li>
+    </ul>
+</div>
+
+<div ng-if="success">
+    <h4>Table Example Without Classes</h4>
+    <table border="1" cellspacing="0" cellpadding="5">
+        <thead>
+            <tr>
+                <th>Header 1</th>
+                <th>Header 2</th>
+                <th>Header 3</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ content.tableExample.colA }}</td>
+                <td>{{ content.tableExample.colB }}</td>
+                <td>{{ content.tableExample.colC }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div ng-if="success">
+    <h4>Tabbed Content Without Classes</h4>
+    <div>
+        <!-- Simple buttons to set the active tab -->
+        <button ng-click="activeTab = 'tab1'">Tab 1</button>
+        <button ng-click="activeTab = 'tab2'">Tab 2</button>
+        <button ng-click="activeTab = 'tab3'">Tab 3</button>
+    </div>
+    <div>
+        <div ng-if="activeTab === 'tab1'">
+            <p>Content for Tab 1</p>
+        </div>
+        <div ng-if="activeTab === 'tab2'">
+            <p>Content for Tab 2</p>
+        </div>
+        <div ng-if="activeTab === 'tab3'">
+            <p>Content for Tab 3</p>
+        </div>
+    </div>
+</div>
+
+<div ng-if="success">
+    <h4>Collapsible Section Example</h4>
+    <button ng-click="collapsed = !collapsed">
+        {{ collapsed ? 'Show Details' : 'Hide Details' }}
+    </button>
+    <div ng-if="!collapsed">
+        <p>Additional details: some more details</p>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{ (artifact.data || artifact.attachment.name) | fang }}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> ANALYZERNAME:</dt>
+            <dd class="wrap">{{ content.errorMessage }}</dd>
+        </dl>
+    </div>
+</div>
