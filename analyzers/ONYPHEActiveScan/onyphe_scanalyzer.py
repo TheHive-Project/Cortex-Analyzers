@@ -2,7 +2,6 @@
 
 from cortexutils.analyzer import Analyzer
 from scanyphe_api import Scanyphe,ScanypheError
-from dateutil import parser
 import time
 #from tld import get_fld # TODO FLD/subdomains check
 
