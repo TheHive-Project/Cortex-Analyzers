@@ -1,19 +1,19 @@
 {
-  "name": "ONYPHE_Search",
+  "name": "ONYPHE_Ctiscan",
   "version": "1.0",
-  "author": "Pierre Baudry, Adrien Barchapt, Andrea Garavaglia, Davide Arcuri, James Atack",
+  "author": "James Atack",
   "license": "AGPL-V3",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "description": "Retrieve results from ONYPHE Search API for a given ip, domain, fqdn or hash (sha256 TLS fingerprint) from specified category",
-  "dataTypeList": ["ip", "domain", "fqdn", "hash", "other"],
+  "dataTypeList": ["ip", "domain", "fqdn", "hash"],
   "command": "Onyphe/onyphe_analyzer.py",
   "baseConfig": "Onyphe",
   "config": {
     "service": "ctiscan",
     "base_uri": "/api/v2/",
     "base_url": "https://www.onyphe.io",
-    "accept_other_datatype" : true,
-    "return_other_ipports" : true
+    "return_other_artifacts" : true,
+    "keep_all_tags" : false
   },
   "configurationItems": [
     {

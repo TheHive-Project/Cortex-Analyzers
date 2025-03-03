@@ -10,11 +10,20 @@
 	</div>
 </div>
 
+<style>
+    .wrap {
+    word-wrap: break-word;
+    white-space: normal;
+    max-width: 500px;
+    overflow-wrap: break-word;
+}
+</style>
 
-<div class="panel panel-info" ng-if="success && content.total_category > 0 " ng-repeat="r in content.results | orderBy:'-@timestamp'">
+<div class="panel panel-info" ng-if="success && content.total_category > 0 " ng-repeat="r in content.results">
     <div class="panel-heading">
-        <span ng-if="r.protocol">{{r.ip.dest}}:{{r.tcp.port}} | ({{r.app.transport}}/{{r.app.protocol}}<span ng-if="r.app.tls == 'true'">/tls</span>) seen {{ r['@timestamp'] | date:'medium' }} | country {{r.ip.country}}&nbsp;&nbsp;</span>
-        <span style="font-style: bold;background-color: #3460fc" class="badge text-bg-primary">&nbsp;<a style="color: white" target="_blank" href="https://onyphe.io/search?q=category%3A{{r['@category']}}+ip.dest%3A{{r.ip.dest}}">Open in ONYPHE</a>&nbsp;</span>
+        <span ng-if="r.tcp.dest">{{r.ip.dest}}:{{r.tcp.dest}} | ({{r.app.transport}}/{{r.app.protocol}}<span ng-if="r.app.tls == 'true'">/tls</span>) seen {{ r['@timestamp'] | date:'medium' }} | country {{r.ip.country}}&nbsp;&nbsp;</span>
+        <span ng-if="r.udp.dest">{{r.ip.dest}}:{{r.udp.dest}} | ({{r.app.transport}}/{{r.app.protocol}}<span ng-if="r.app.tls == 'true'">/tls</span>) seen {{ r['@timestamp'] | date:'medium' }} | country {{r.ip.country}}&nbsp;&nbsp;</span>
+        <span style="font-style: bold;background-color: #3460fc" class="badge text-bg-primary">&nbsp;<a style="color: white" target="_blank" href="https://search.onyphe.io/search?q=category%3A{{r['@category']}}+ip.dest%3A{{r.ip.dest}}">Open in ONYPHE</a>&nbsp;</span>
     </div>
     <div ng-if="r.tag">
         <span ng-repeat="ta in r.tag">
@@ -47,7 +56,7 @@
                     </tr>
                     <tr ng-if="r.app.device">
                         <td width="200">Device</td>
-                        <td class="wrap">{{r.app.device}}</td>
+                        <td class="wrap"><span ng-repeat="device in r.app.device">{{ device }}<br></span></td>
                     </tr>
                     <tr ng-if="r.http.defang">
                         <td width="200">URL</td>
@@ -67,7 +76,7 @@
                     </tr>
                     <tr ng-if="r.app.protocol">
                         <td width="200">App Protocol</td>
-                        <td class="wrap">{{r.protocol}}</td>
+                        <td class="wrap">{{r.app.protocol}}</td>
                     </tr>
                     <tr>
                         <td width="200">Source</td>
@@ -129,52 +138,152 @@
                         <td width="200">Issuer Email</td>
                         <td class="wrap">{{r.cert.subject.e}}</td>
                     </tr>
+                    <tr ng-if="r.cert.subject.an">
+                        <td width="200">Subject Alt Name</td>
+                        <td class="wrap"><span ng-repeat="altnam in r.cert.subject.an">{{ altnam }}<br></span></td>
+                    </tr>
                     <tr ng-if="r.cert.subject.st">
                         <td width="200">Issuer State or Province</td>
                         <td class="wrap">{{r.cert.subject.st}}</td>
                     </tr>
-                    <tr ng-if="r.cert.subject.an">
-                        <td width="200">Subject Alt Name</td>
-                        <td class="wrap"><span ng-repeat="altnam in r.cert.subject.an">{{ altnam }}<br></span></td>
-                    </tr><!-- here TODO the rest-->
-                    <tr ng-if="r.fingerprint.sha256">
-                        <td width="200">SHA256 Fingerprint</td>
-                        <td class="wrap">{{r.fingerprint.sha256}}</td>
+                    <tr ng-if="r.cert.fingerprint.md5">
+                        <td width="200">Fingerprint MD5</td>
+                        <td class="wrap">{{r.cert.fingerprint.md5}}</td>
                     </tr>
-                    <tr ng-if="r.validity.notbefore">
+                    <tr ng-if="r.cert.fingerprint.sha1">
+                        <td width="200">Fingerprint SHA1</td>
+                        <td class="wrap">{{r.cert.fingerprint.sha1}}</td>
+                    </tr>
+                    <tr ng-if="r.cert.fingerprint.sha256">
+                        <td width="200">Fingerprint SHA256</td>
+                        <td class="wrap">{{r.cert.fingerprint.sha256}}</td>
+                    </tr>
+                    <tr ng-if="r.cert.validity.notbefore">
                         <td width="200">Validity Not Before</td>
-                        <td class="wrap">{{r.validity.notbefore}}</td>
+                        <td class="wrap">{{r.cert.validity.notbefore}}</td>
                     </tr>
-                    <tr ng-if="r.validity.notafter">
+                    <tr ng-if="r.cert.validity.notafter">
                         <td width="200">Validity Not After</td>
-                        <td class="wrap">{{r.validity.notafter}}</td>
+                        <td class="wrap">{{r.cert.validity.notafter}}</td>
                     </tr>
                 </tbody>
             </table>
         </uib-tab>
-        <uib-tab ng-if="r.datamd5" TabIndex="Analytics-{{$index}}" heading="Analytics" disable="tab.disabled">
+        <uib-tab TabIndex="Analytics-{{$index}}" heading="Analytics" disable="tab.disabled">
             <table class="table">
                 <tbody>
-                    <tr ng-if="r.datamd5">
-                        <td width="200">Data MD5</td>
-                        <td class="wrap">{{r.datamd5}}</td>
+                    <tr ng-if="r.cert.issuer.dn">
+                        <td width="200">Issuer Distinguished Name</td>
+                        <td class="wrap">{{r.cert.issuer.dn}}</td>
                     </tr>
-                    <tr ng-if="r.app.http.headermd5">
-                        <td width="200">HTTP Header MD5</td>
-                        <td class="wrap">{{r.app.http.headermd5}}</td>
+                    <tr ng-if="r.cert.issuer.o">
+                        <td width="200">Issuer Organization</td>
+                        <td class="wrap">{{r.cert.issuer.o}}</td>
                     </tr>
-                    <tr ng-if="r.app.http.bodymd5">
-                        <td width="200">HTTP Body MD5</td>
-                        <td class="wrap">{{r.app.http.bodymd5}}</td>
+                    <tr ng-if="r.cert.subject.dn">
+                        <td width="200">Issuer Distinguished Name</td>
+                        <td class="wrap">{{r.cert.subject.dn}}</td>
+                    </tr>
+                    <tr ng-if="r.cert.serial.hex">
+                        <td width="200">Cert Serial Hex</td>
+                        <td class="wrap">{{r.cert.serial.hex}}</td>
+                    </tr>
+                    <tr ng-if="r.cert.fingerprint.sha256">
+                        <td width="200">Cert Fingerprint SHA256</td>
+                        <td class="wrap">{{r.cert.fingerprint.sha256}}</td>
+                    </tr>
+                    <tr ng-if="r.tcp.fingerprint.md5">
+                        <td width="200">TCP Fingerprint MD5</td>
+                        <td class="wrap">{{r.tcp.fingerprint.md5}}</td>
+                    </tr>
+                    <tr ng-if="r.tcp.options">
+                        <td width="200">TCP Options</td>
+                        <td class="wrap">{{r.tcp.options}}</td>
+                    </tr>
+                    <tr ng-if="r.tcp.window">
+                        <td width="200">TCP Window</td>
+                        <td class="wrap">{{r.tcp.window}}</td>
+                    </tr>
+                    <tr ng-if="r.ja4t.fingerprint.md5">
+                        <td width="200">JA4T Fingerprint MD5</td>
+                        <td class="wrap">{{r.ja4t.fingerprint.md5}}</td>
+                    </tr>
+                    <tr ng-if="r.app.data.md5">
+                        <td width="200">App Data MD5</td>
+                        <td class="wrap">{{r.app.data.md5}}</td>
+                    </tr>
+                    <tr ng-if="r.app.data.md5">
+                        <td width="200">App Data MMH3</td>
+                        <td class="wrap">{{r.app.data.mmh3}}</td>
+                    </tr>
+                    <tr ng-if="r.app.data.sha256">
+                        <td width="200">App Data SHA256</td>
+                        <td class="wrap">{{r.app.data.sha256}}</td>
+                    </tr>
+                    <tr ng-if="r.http.header.data.md5">
+                        <td width="200">HTTP Header Data MD5</td>
+                        <td class="wrap">{{r.http.header.data.md5}}</td>
+                    </tr>
+                    <tr ng-if="r.http.header.data.mmh3">
+                        <td width="200">HTTP Header Data MMH3</td>
+                        <td class="wrap">{{r.http.header.data.mmh3}}</td>
+                    </tr>
+                    <tr ng-if="r.http.header.data.sha256">
+                        <td width="200">HTTP Header Data SHA256</td>
+                        <td class="wrap">{{r.http.header.data.sha256}}</td>
+                    </tr>
+                    <tr ng-if="r.http.body.data.md5">
+                        <td width="200">HTTP Body Data MD5</td>
+                        <td class="wrap">{{r.http.body.data.md5}}</td>
+                    </tr>
+                    <tr ng-if="r.http.body.data.mmh3">
+                        <td width="200">HTTP Body Data MMH3</td>
+                        <td class="wrap">{{r.http.body.data.mmh3}}</td>
+                    </tr>
+                    <tr ng-if="r.http.body.data.sha256">
+                        <td width="200">HTTP Body Data SHA256</td>
+                        <td class="wrap">{{r.http.body.data.sha256}}</td>
+                    </tr>
+                    <tr ng-if="r.favicon.data.md5">
+                        <td width="200">Favicon Data MD5</td>
+                        <td class="wrap">{{r.favicon.data.md5}}</td>
+                    </tr>
+                    <tr ng-if="r.favicon.data.mmh3">
+                        <td width="200">Favicon Data MMH3</td>
+                        <td class="wrap">{{r.favicon.data.mmh3}}</td>
+                    </tr>
+                    <tr ng-if="r.favicon.data.sha256">
+                        <td width="200">Favicon Data SHA256</td>
+                        <td class="wrap">{{r.favicon.data.sha256}}</td>
+                    </tr>
+                    <tr ng-if="r.ssh.fingerprint.md5">
+                        <td width="200">SSH Fingerprint MD5</td>
+                        <td class="wrap">{{r.ssh.fingerprint.md5}}</td>
+                    </tr>
+                    <tr ng-if="r.ssh.fingerprint.mmh3">
+                        <td width="200">SSH Fingerprint MMH3</td>
+                        <td class="wrap">{{r.ssh.fingerprint.mmh3}}</td>
+                    </tr>
+                    <tr ng-if="r.ssh.fingerprint.sha256">
+                        <td width="200">SSH Fingerprint SHA256</td>
+                        <td class="wrap">{{r.ssh.fingerprint.sha256}}</td>
+                    </tr>
+                    <tr ng-if="r.hassh.fingerprint.md5">
+                        <td width="200">HaSSH Fingerprint MD5</td>
+                        <td class="wrap">{{r.hassh.fingerprint.md5}}</td>
+                    </tr>
+                    <tr ng-if="r.services.port">
+                        <td width="200">Services Port(s)</td>
+                        <td class="wrap"><span ng-repeat="port in r.services.port">{{ port }}<span ng-if="!$last">, </span></span></td>
                     </tr>
                 </tbody>
             </table>
         </uib-tab>
-        <uib-tab ng-if="r.summary" TabIndex="summary-{{$index}}" heading="Summary" disable="tab.disabled">
-            <textarea readonly style="background-color: black;color:#e0e0e0;" rows="20" cols="95">{{ r.summary }}</textarea>
+        <uib-tab ng-if="r.app.data.text" TabIndex="data-{{$index}}" heading="Data" disable="tab.disabled">
+            <textarea readonly style="background-color: black;color:#e0e0e0;" rows="20" cols="95">{{ r.app.data.text }}</textarea>
         </uib-tab>
-        <uib-tab ng-if="r.data" TabIndex="data-{{$index}}" heading="Data" disable="tab.disabled">
-            <textarea readonly style="background-color: black;color:#e0e0e0;" rows="20" cols="95">{{ r.data }}</textarea>
+        <uib-tab TabIndex="json-{{$index}}" heading="JSON" disable="tab.disabled">
+            <textarea readonly style="background-color: black;color:#7ec699;" rows="20" cols="95">{{r | json}}</textarea>
         </uib-tab>
     </uib-tabset>
 </div>

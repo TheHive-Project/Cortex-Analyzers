@@ -2,7 +2,6 @@
 from requests.compat import urljoin
 import requests
 
-
 class Onyphe:
     """Wrapper around the Onyphe REST API
     :param key: The Onyphe API key
@@ -57,6 +56,12 @@ class Onyphe:
             url_path = "summary/hostname/{hostname}".format(hostname=data)
         return self._request(path=url_path)
 
+    
+    def search_oql(self, oql: str):
+        """Return data from specified category using Search API and the provided data as the OQL filter. 
+        """
+        url_path = "search/?q={oql}".format(oql=oql)
+        return self._request(path=url_path)
     
     def search(self, data: str, datatype: str, category: str, filter: str):
         """Return data from specified category using Search API and the provided data as the OQL filter. 

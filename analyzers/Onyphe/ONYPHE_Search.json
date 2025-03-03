@@ -11,7 +11,9 @@
   "config": {
     "service": "search",
     "base_uri": "/api/v2/",
-    "base_url": "https://www.onyphe.io"
+    "base_url": "https://www.onyphe.io",
+    "accept_other_datatype" : true,
+    "return_other_ipports" : true
   },
   "configurationItems": [
     {
