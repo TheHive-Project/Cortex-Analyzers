@@ -5,7 +5,7 @@
   "license": "AGPL-V3",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "description": "Query ONYPHE Ctiscan threat hunting data for open services (takes ip, domain, fqdn, autonomous-system or hash.)",
-  "dataTypeList": ["ip", "domain", "fqdn", "hash", "autonomous-system"],
+  "dataTypeList": ["ip", "domain", "fqdn", "hash", "autonomous-system", "other"],
   "command": "Onyphe/onyphe_analyzer.py",
   "baseConfig": "Onyphe",
   "config": {

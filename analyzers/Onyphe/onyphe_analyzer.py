@@ -432,6 +432,10 @@ class OnypheAnalyzer(Analyzer):
                     ctifilter += '?favicon.data.sha256:{data} '.format(data=data)
                 elif self.data_type == "autonomous-system":
                     ctifilter += 'ip.asn:{asn} '.format(asn=data)
+                elif self.data_type == "other":
+                    port = data.split(':')[1]
+                    ip = data.split(':')[0]
+                    ctifilter += 'ip.dest:{ip} tcp.dest:{port} '.format(ip=ip,port=port)
                     
                 ctifilter += self.time_filter
                 oql = 'category:{category} '.format(category=self.onyphe_category) + ctifilter

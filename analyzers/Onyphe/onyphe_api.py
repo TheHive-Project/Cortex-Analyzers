@@ -40,7 +40,7 @@ class Onyphe:
             raise APIError("Couldn't parse response JSON from: {url}".format(url=url))
 
         if response_data["error"] > 0:
-            raise APIGeneralError("Error {code} from ONYPHE API : {url}".format(code=response_data["error"],url=url))
+            raise APIGeneralError("Error {code} {text} : {url}".format(code=response_data["error"],text=response_data["text"],url=url))
 
         return response_data
 
