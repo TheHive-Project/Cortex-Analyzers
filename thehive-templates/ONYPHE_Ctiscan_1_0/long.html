@@ -280,10 +280,10 @@
             </table>
         </uib-tab>
         <uib-tab ng-if="r.app.data.text" TabIndex="data-{{$index}}" heading="Data" disable="tab.disabled">
-            <textarea readonly style="background-color: black;color:#e0e0e0;" rows="20" cols="95">{{ r.app.data.text }}</textarea>
+            <textarea readonly style="background-color: black;color:#e0e0e0;" rows="20" cols="120">{{ r.app.data.text }}</textarea>
         </uib-tab>
         <uib-tab TabIndex="json-{{$index}}" heading="JSON" disable="tab.disabled">
-            <textarea readonly style="background-color: black;color:#7ec699;" rows="20" cols="95">{{r | json}}</textarea>
+            <textarea readonly style="background-color: black;color:#7ec699;" rows="20" cols="120">{{r | json}}</textarea>
         </uib-tab>
     </uib-tabset>
 </div>
