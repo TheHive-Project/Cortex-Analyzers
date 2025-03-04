@@ -180,10 +180,13 @@
             </table>
         </uib-tab>
         <uib-tab ng-if="r.summary" TabIndex="summary-{{$index}}" heading="Summary" disable="tab.disabled">
-            <textarea readonly style="background-color: black;color:#e0e0e0;" rows="20" cols="95">{{ r.summary }}</textarea>
+            <textarea readonly style="background-color: black;color:#e0e0e0;" rows="20" cols="120">{{ r.summary }}</textarea>
         </uib-tab>
         <uib-tab ng-if="r.data" TabIndex="data-{{$index}}" heading="Data" disable="tab.disabled">
-            <textarea readonly style="background-color: black;color:#e0e0e0;" rows="20" cols="95">{{ r.data }}</textarea>
+            <textarea readonly style="background-color: black;color:#e0e0e0;" rows="20" cols="120">{{ r.data }}</textarea>
+        </uib-tab>
+        <uib-tab TabIndex="json-{{$index}}" heading="JSON" disable="tab.disabled">
+            <textarea readonly style="background-color: black;color:#7ec699;" rows="20" cols="120">{{r | json}}</textarea>
         </uib-tab>
     </uib-tabset>
 </div>

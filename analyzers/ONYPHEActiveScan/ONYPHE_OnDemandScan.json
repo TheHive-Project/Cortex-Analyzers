@@ -13,7 +13,11 @@
     "base_uri": "/api/v3/",
     "base_url": "https://www.onyphe.io",
     "scanyphe_poll_interval" : 30,
-    "onyphe_import": false
+    "onyphe_import": false,
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 1
   },
   "configurationItems": [
     {

@@ -1,6 +1,6 @@
 {
   "name": "ONYPHE_Search",
-  "version": "1.0",
+  "version": "1.1",
   "author": "Pierre Baudry, Adrien Barchapt, Andrea Garavaglia, Davide Arcuri, James Atack",
   "license": "AGPL-V3",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
@@ -11,9 +11,7 @@
   "config": {
     "service": "search",
     "base_uri": "/api/v2/",
-    "base_url": "https://www.onyphe.io",
-    "accept_other_datatype" : true,
-    "return_other_ipports" : true
+    "base_url": "https://www.onyphe.io"
   },
   "configurationItems": [
     {

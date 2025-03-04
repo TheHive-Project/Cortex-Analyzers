@@ -11,19 +11,33 @@
 </div>
 
 
-<div class="panel panel-info" ng-if="success && content.total_category > 0 " ng-repeat="r in content.results | orderBy:'-seen_date'">
+<div class="panel panel-info" ng-if="success && content.total_category > 0 " ng-repeat="r in content.results">
     <div class="panel-heading">
-        <span ng-if="r.protocol">{{r.ip}}:{{r.port}} | ({{r.transport}}/{{r.protocol}}<span ng-if="r.tls == 'true'">/tls</span>) last seen on {{r.seen_date}} | country {{r.country}}&nbsp;&nbsp;</span>
-        <span ng-if="r.threatlist">{{r.ip}} | ({{r.threatlist}}) last seen on {{r.seen_date}} | country {{r.country}}&nbsp;&nbsp;</span>
+        {{r.ip}}:{{r.port}} | ({{r.transport}}/{{r.protocol}}<span ng-if="r.tls == 'true'">/tls</span>) seen {{ r['@timestamp'] | date:'medium' }} | country {{r.country}}&nbsp;&nbsp;
         <span style="font-style: bold;background-color: #3460fc" class="badge text-bg-primary">&nbsp;<a style="color: white" target="_blank" href="https://onyphe.io/search?q=category%3A{{r['@category']}}+ip%3A{{r.ip}}">Open in ONYPHE</a>&nbsp;</span>
     </div>
     <div ng-if="r.tag">
         <span ng-repeat="ta in r.tag">
-            <span style="font-style: bold;background-color: orange;color:#111;" class="badge text-bg-danger" ng-if="ta.indexOf('risk') !== -1 && ta.indexOf('criticalcve') == -1">&nbsp;{{ ta }}&nbsp;</span>
-            <span style="font-style: bold;background-color: red;color:#fff;" class="badge text-bg-danger" ng-if="ta.indexOf('criticalcve') !== -1">&nbsp;{{ ta }}&nbsp;</span>
-            <span style="font-style: bold;background-color: red;color:#fff;" class="badge text-bg-danger" ng-if="ta.indexOf('compromised') !== -1">&nbsp;{{ ta }}&nbsp;</span>
-            <span style="font-style: bold;background-color: red;color:#fff;" class="badge text-bg-danger" ng-if="ta.indexOf('botnet') !== -1">&nbsp;{{ ta }}&nbsp;</span>
-            <span style="font-style: bold" class="badge text-bg-secondary" ng-if="ta.indexOf('risk') == -1 && ta.indexOf('CVE') == -1 && ta.indexOf('compromised') == -1">&nbsp;{{ ta }}&nbsp;</span>
+            <span style="font-weight: bold; background-color: orange; color:#111;" 
+                  class="badge text-bg-warning" 
+                  ng-if="ta.indexOf('maybevulnerable') === 0">
+                &nbsp;{{ ta }}&nbsp;
+            </span>
+            <span style="font-weight: bold; background-color: red; color:#fff;" 
+                  class="badge text-bg-danger" 
+                  ng-if="ta.indexOf('vulnerable') === 0">
+                &nbsp;{{ ta }}&nbsp;
+            </span>
+            <span style="font-weight: bold; background-color: red; color:#fff;" 
+                  class="badge text-bg-danger" 
+                  ng-if="ta.indexOf('compromised') !== -1">
+                &nbsp;{{ ta }}&nbsp;
+            </span>
+            <span style="font-weight: bold;" 
+                  class="badge text-bg-secondary" 
+                  ng-if="ta.indexOf('maybevulnerable') !== 0 && ta.indexOf('vulnerable') !== 0 && ta.indexOf('compromised') === -1">
+                &nbsp;{{ ta }}&nbsp;
+            </span>
         </span>
     </div>
     <uib-tabset active="active">
@@ -46,11 +60,11 @@
                         <td width="200">Alternative IP(s)</td>
                         <td class="wrap"><span ng-repeat="ip in r.alternativeip">{{ ip }}<br></span></td>
                     </tr>
-                    <tr ng-if="r.subnet">
+                    <tr>
                         <td width="200">Network</td>
                         <td class="wrap">{{r.subnet}}</td>
                     </tr>
-                    <tr ng-if="r.domain">
+                    <tr>
                         <td width="200">Domain(s)</td>
                         <td class="wrap"><span ng-repeat="d in r.domain">{{ d }}<br></span></td>
                     </tr>
@@ -59,11 +73,15 @@
                         <td class="wrap" ng-if="r.device.product">{{r.device.productvendor}} {{r.device.product}}</td>
                         <td class="wrap" ng-if="!r.device.product">{{r.device.class}}</td>
                     </tr>
-                    <tr ng-if="r.os">
+                    <tr>
+                        <td width="200">Organization</td>
+                        <td class="wrap">{{r.organization}}</td>
+                    </tr>
+                    <tr>
                         <td width="200">OS</td>
                         <td class="wrap">{{r.os}}</td>
                     </tr>
-                    <tr ng-if="r.url">
+                    <tr ng-if="r.url"></tr>
                         <td width="200">URL</td>
                         <td class="wrap" ng-if="r.forward && r.tls == 'true' && r.port == '443'">https://{{r.forward}}{{r.url}}</td>
                         <td class="wrap" ng-if="r.forward && r.tls == 'true' && r.port != '443'">https://{{r.forward}}:{{r.port}}{{r.url}}</td>
@@ -94,7 +112,7 @@
                         <td width="200">Organization</td>
                         <td class="wrap">{{r.organization}}</td>
                     </tr>
-                    <tr ng-if="r.protocol">
+                    <tr>
                         <td width="200">Protocol</td>
                         <td class="wrap">{{r.protocol}}</td>
                     </tr>
@@ -181,10 +199,13 @@
             </table>
         </uib-tab>
         <uib-tab ng-if="r.summary" TabIndex="summary-{{$index}}" heading="Summary" disable="tab.disabled">
-            <textarea readonly style="background-color: black;color:#e0e0e0;" rows="20" cols="95">{{ r.summary }}</textarea>
+            <textarea readonly style="background-color: black;color:#e0e0e0;" rows="20" cols="120">{{ r.summary }}</textarea>
         </uib-tab>
         <uib-tab ng-if="r.data" TabIndex="data-{{$index}}" heading="Data" disable="tab.disabled">
-            <textarea readonly style="background-color: black;color:#e0e0e0;" rows="20" cols="95">{{ r.data }}</textarea>
+            <textarea readonly style="background-color: black;color:#e0e0e0;" rows="20" cols="120">{{ r.data }}</textarea>
+        </uib-tab>
+        <uib-tab TabIndex="json-{{$index}}" heading="JSON" disable="tab.disabled">
+            <textarea readonly style="background-color: black;color:#7ec699;" rows="20" cols="120">{{r | json}}</textarea>
         </uib-tab>
     </uib-tabset>
 </div>
