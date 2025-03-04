@@ -102,3 +102,12 @@ class APIGeneralError(Exception):
 
     def __str__(self):
         return self.value
+
+class OtherError(Exception):
+    """This exception gets raised when we can't parse an other observable"""
+
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return self.value

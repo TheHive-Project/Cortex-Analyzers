@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from cortexutils.analyzer import Analyzer
-from onyphe_api import Onyphe
+from onyphe_api import Onyphe,OtherError
 from datetime import datetime
 from dateutil import parser
 #from tld import get_fld # TODO FLD/subdomains check
@@ -419,24 +419,38 @@ class OnypheAnalyzer(Analyzer):
                     ctifilter += '?cert.fingerprint.sha1:{data} '.format(data=data)
                     ctifilter += '?cert.fingerprint.sha256:{data} '.format(data=data)
                     ctifilter += '?app.data.md5:{data} '.format(data=data)
-                    ctifilter += '?app.data.sha1:{data} '.format(data=data)
+                    ctifilter += '?app.data.mmh3:{data} '.format(data=data)
                     ctifilter += '?app.data.sha256:{data} '.format(data=data)
                     ctifilter += '?http.body.data.md5:{data} '.format(data=data)
-                    ctifilter += '?http.body.data.sha1:{data} '.format(data=data)
+                    ctifilter += '?http.body.data.mmh3:{data} '.format(data=data)
                     ctifilter += '?http.body.data.sha256:{data} '.format(data=data)
+                    #ctifilter += '?http.body.data.domhash:{data} '.format(data=data)
                     ctifilter += '?http.header.data.md5:{data} '.format(data=data)
-                    ctifilter += '?http.header.data.sha1:{data} '.format(data=data)
+                    ctifilter += '?http.header.data.mmh3:{data} '.format(data=data)
                     ctifilter += '?http.header.data.sha256:{data} '.format(data=data)
                     ctifilter += '?favicon.data.md5:{data} '.format(data=data)
-                    ctifilter += '?favicon.data.sha1:{data} '.format(data=data)
+                    ctifilter += '?favicon.data.mmh3:{data} '.format(data=data)
                     ctifilter += '?favicon.data.sha256:{data} '.format(data=data)
+                    ctifilter += '?ssh.fingerprint.md5:{data} '.format(data=data)
+                    ctifilter += '?ssh.fingerprint.sha1:{data} '.format(data=data)
+                    ctifilter += '?ssh.fingerprint.sha256:{data} '.format(data=data)
+                    ctifilter += '?hassh.fingerprint.md5:{data} '.format(data=data)
+                    ctifilter += '?tcp.fingerprint.md5:{data} '.format(data=data)
+                    ctifilter += '?ja4t.fingerprint.md5:{data} '.format(data=data)
+                    #ctifilter += '?ja3s.fingerprint.md5:{data} '.format(data=data)
+                    #ctifilter += '?ja4s.fingerprint.md5:{data} '.format(data=data)
+                    #ctifilter += '?jarm.fingerprint.md5:{data} '.format(data=data)
+                    #ctifilter += '?jarm.ja3s.md5:{data} '.format(data=data)
                 elif self.data_type == "autonomous-system":
                     ctifilter += 'ip.asn:{asn} '.format(asn=data)
                 elif self.data_type == "other":
-                    port = data.split(':')[1]
-                    ip = data.split(':')[0]
-                    ctifilter += 'ip.dest:{ip} tcp.dest:{port} '.format(ip=ip,port=port)
-                    
+                    try:
+                        port = data.split(':')[1]
+                        ip = data.split(':')[0]
+                        ctifilter += 'ip.dest:{ip} tcp.dest:{port} '.format(ip=ip,port=port)
+                    except:
+                        raise OtherError("Unable to parse observable {other} as type other".format(other=data))
+                        
                 ctifilter += self.time_filter
                 oql = 'category:{category} '.format(category=self.onyphe_category) + ctifilter
                 results = self.onyphe_client.search_oql(oql)
