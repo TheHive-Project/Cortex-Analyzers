@@ -327,11 +327,12 @@ class YaraAnalyzer(Analyzer):
                 "rules_tested": sum(len(rule_obj.get("rule_names", [])) for rule_obj in self.ruleset),
                 "rulenames": rule_names,
                 "total_yar_files": len(self.ruleset),
-                "ignored_rules": self.ignored_rules
+                "ignored_rules": self.ignored_rules,
+                "files_limit": self.files_limit
             }
             self.report(output)
         else:
-            self.error('Wrong data type.')
+            self.error('Wrong data type. Expected file')
 
 
 if __name__ == '__main__':
