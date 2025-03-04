@@ -47,7 +47,7 @@ class Scanyphe:
 
         if response_data["error"] > 0:
             raise APIError("API error {}: {}".format(
-                str(response_data["error"]), response_data["message"]))
+                str(response_data["error"]), response_data["text"]))
 
         return response_data
 
