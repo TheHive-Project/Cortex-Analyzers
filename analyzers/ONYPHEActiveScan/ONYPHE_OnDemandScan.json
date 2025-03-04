@@ -1,0 +1,95 @@
+{
+  "name": "ONYPHE_OnDemandScan",
+  "version": "1.0",
+  "author": "James Atack",
+  "license": "AGPL-V3",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "description": "Perform active scan of an asset using a Scanyphe Entreprise On-Demand scanner",
+  "dataTypeList": ["ip", "domain", "fqdn"],
+  "command": "ONYPHEActiveScan/onyphe_scanalyzer.py",
+  "baseConfig": "Onyphe",
+  "config": {
+    "service": "scanyphe",
+    "base_uri": "/api/v3/",
+    "base_url": "https://www.onyphe.io",
+    "scanyphe_poll_interval" : 30,
+    "onyphe_import": false,
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 1
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API key to use to connect the service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "auto_import",
+      "description": "Automatically import artifacts as observables (risks, cves, assets, ...)",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": false
+    },
+    {
+      "name": "maxscantime",
+      "description": "Max scan time (default 120 seconds)",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 120
+    },
+    {
+      "name": "urlscan",
+      "description": "Enable/disable urlscan stage",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": true
+    },
+    {
+      "name": "vulnscan",
+      "description": "Enable/disable vulnscan stage",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": true
+    },
+    {
+      "name": "riskscan",
+      "description": "Enable/disable riskscan stage",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    },
+    {
+      "name": "asm",
+      "description": "Enable/disable asm stage",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    },
+    {
+      "name": "ports",
+      "description": "list of ports to scan, comma-separated list (default to ONYPHE’s scanned ports)",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": ""
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.onyphe.io",
+  "service_logo": {
+    "path": "assets/onyphe_logo.png",
+    "caption": "logo"
+  }
+}

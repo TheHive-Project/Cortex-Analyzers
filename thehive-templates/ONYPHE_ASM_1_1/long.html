@@ -12,7 +12,7 @@
 
 <div ng-repeat="r in content.results | orderBy:'-seen_date'">
     <uib-accordion ng-repeat="ta in r.tag">
-        <div uib-accordion-group ng-if="ta.indexOf('risk') !== -1" style="font-style: bold" heading="{{ ta }} seen on {{r.seen_date}} - {{r.ip}}:{{r.port}} | {{r.device.class}}" is-open="false" is-disabled="status.isFirstDisabled"
+        <div uib-accordion-group ng-if="ta.indexOf('risk') !== -1" style="font-style: bold" heading="{{ ta }} seen {{ r['@timestamp'] | date:'medium' }} - {{r.ip}}:{{r.port}} | {{r.device.class}}" is-open="false" is-disabled="status.isFirstDisabled"
             ng-class="{
                 'panel-danger': ta.indexOf('criticalcve') !== -1 || ta.indexOf('compromised') !== -1,
                 'panel-info': ta.indexOf('certexpired') !== -1,
@@ -27,7 +27,7 @@
             </span><br>
             <dl class="dl-horizontal">
                 <dt>Timestamp:</dt>
-                <dd>{{r['@timestamp']}}</dd>
+                <dd>{{ r['@timestamp'] | date:'medium' }}</dd>
             </dl>
             <dl class="dl-horizontal">
                 <dt>Asset:</dt>

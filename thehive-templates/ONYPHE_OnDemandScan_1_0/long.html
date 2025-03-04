@@ -1,21 +1,20 @@
-<div class="panel panel-info" ng-if="success && content.total_category < 100 ">
+<div class="panel panel-info" ng-if="success && content.total_docs < 100 ">
 	<div class="panel-heading">
-		ONYPHE {{content.category}} search - <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong> - {{content.total_category}} results
+		ONYPHE OnDemand Scan - <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong> - {{content.total_docs}} results
 	</div>
 </div>
 
-<div class="panel panel-info" ng-if="success && content.total_category >= 100 ">
+<div class="panel panel-info" ng-if="success && content.total_docs >= 100 ">
 	<div class="panel-heading">
-		ONYPHE {{content.category}} search - <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong> - Displaying first 100 results (search returned {{content.total}})
+		ONYPHE OnDemand Scan search - <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong> - Displaying first 100 results (scan returned {{content.total_docs}})
 	</div>
 </div>
 
 
-<div class="panel panel-info" ng-if="success && content.total_category > 0 " ng-repeat="r in content.results | orderBy:'-seen_date'">
+<div class="panel panel-info" ng-if="success && content.total_docs > 0 " ng-repeat="r in content.results">
     <div class="panel-heading">
-        <span ng-if="r.protocol">{{r.ip}}:{{r.port}} | ({{r.transport}}/{{r.protocol}}<span ng-if="r.tls == 'true'">/tls</span>) last seen on {{r.seen_date}} | country {{r.country}}&nbsp;&nbsp;</span>
-        <span ng-if="r.threatlist">{{r.ip}} | ({{r.threatlist}}) last seen on {{r.seen_date}} | country {{r.country}}&nbsp;&nbsp;</span>
-        <span style="font-style: bold;background-color: #3460fc" class="badge text-bg-primary">&nbsp;<a style="color: white" target="_blank" href="https://onyphe.io/search?q=category%3A{{r['@category']}}+ip%3A{{r.ip}}">Open in ONYPHE</a>&nbsp;</span>
+        <span ng-if="r.protocol">{{r.ip}}:{{r.port}} | ({{r.transport}}/{{r.protocol}}<span ng-if="r.tls == 'true'">/tls</span>) scanned at {{ r['@timestamp'] | date:'medium' }} | country {{r.country}}&nbsp;&nbsp;</span>
+        <span style="font-style: bold;background-color: #3460fc" class="badge text-bg-primary">&nbsp;<a style="color: white" target="_blank" href="https://search.onyphe.io/search?q=category%3A{{r['@category']}}+ip%3A{{r.ip}}">Open in ONYPHE</a>&nbsp;</span>
     </div>
     <div ng-if="r.tag">
         <span ng-repeat="ta in r.tag">
@@ -181,10 +180,13 @@
             </table>
         </uib-tab>
         <uib-tab ng-if="r.summary" TabIndex="summary-{{$index}}" heading="Summary" disable="tab.disabled">
-            <textarea readonly style="background-color: black;color:#e0e0e0;" rows="20" cols="95">{{ r.summary }}</textarea>
+            <textarea readonly style="background-color: black;color:#e0e0e0;" rows="20" cols="120">{{ r.summary }}</textarea>
         </uib-tab>
         <uib-tab ng-if="r.data" TabIndex="data-{{$index}}" heading="Data" disable="tab.disabled">
-            <textarea readonly style="background-color: black;color:#e0e0e0;" rows="20" cols="95">{{ r.data }}</textarea>
+            <textarea readonly style="background-color: black;color:#e0e0e0;" rows="20" cols="120">{{ r.data }}</textarea>
+        </uib-tab>
+        <uib-tab TabIndex="json-{{$index}}" heading="JSON" disable="tab.disabled">
+            <textarea readonly style="background-color: black;color:#7ec699;" rows="20" cols="120">{{r | json}}</textarea>
         </uib-tab>
     </uib-tabset>
 </div>
