@@ -1,6 +1,6 @@
 <!-- Summary Section -->
 <div class="alert alert-warning" ng-if="content.summary && content.summary.taxonomies.length && success">
-	<strong>Summary:</strong>
+	<strong><i class="fa fa-info-circle"></i> Summary:</strong>
 	<ul>
 		<li ng-repeat="tax in content.summary.taxonomies">
 			<strong>{{tax.predicate}}:</strong> {{tax.value}} <small>(Level: {{tax.level}})</small>
@@ -10,16 +10,16 @@
 
 <!-- No Matches Found -->
 <div class="alert alert-success" ng-if="content.results.length === 0 && success">
-	<strong>No Yara rule matches were found.</strong>
+	<strong><i class="fa fa-check-circle"></i> No Yara rule matches were found.</strong>
 </div>
 
 <!-- Detailed Matches -->
-<div ng-if="content.results.length > 0 && success">
-	<h4>Detected Rules ({{content.results.length}})</h4>
+<div class="panel-body" ng-if="content.results.length > 0 && success">
+	<h4><i class="fa fa-exclamation-triangle"></i> Detected Rules ({{content.results.length}})</h4>
 	<div ng-repeat="rule in content.results" class="panel panel-default">
 		<div class="panel-heading">
 			<h4 class="panel-title">
-				{{rule.rule}} <small>({{rule.namespace}})</small>
+				<i class="fa fa-file-code-o"></i> {{rule.rule}} <small>({{rule.namespace}})</small>
 			</h4>
 		</div>
 		<div class="panel-body">
@@ -37,7 +37,7 @@
 					<br>
 				</span>
 			</p>
-			<h5>Matched Strings</h5>
+			<h5><i class="fa fa-link"></i> Matched Strings</h5>
 			<table class="table table-striped table-condensed">
 				<thead>
 					<tr>
@@ -62,14 +62,18 @@
 <div class="well well-sm" ng-if="success">
 	<p>
 		<strong>Total YAR files:</strong> {{content.total_yar_files}}<br>
+		<strong>YAR files limit set in Cortex:</strong> {{content.files_limit}}<br>
 		<strong>Total rules tested:</strong> {{content.rules_tested}}<br>
 		<details>
-			<summary>Rules scanned ({{content.rulenames.length}}): click to expand</summary>
+			<summary>
+				<i class="fa fa-chevron-down"></i>
+				Rules scanned ({{content.rulenames.length}}): click to expand
+			</summary>
 			<div>
-			  {{content.rulenames.join(', ')}}
+				{{content.rulenames.join(', ')}}
 			</div>
-		  </details>
-		</p>
+		</details>
+	</p>
 </div>
 
 <!-- General error  -->
@@ -79,7 +83,7 @@
 	</div>
 	<div class="panel-body">
 		<dl class="dl-horizontal" ng-if="content.errorMessage">
-			<dt><i class="fa fa-warning"></i> Yara: </dt>
+			<dt><i class="fa fa-warning"></i> Yara:</dt>
 			<dd class="wrap">{{content.errorMessage}}</dd>
 		</dl>
 	</div>

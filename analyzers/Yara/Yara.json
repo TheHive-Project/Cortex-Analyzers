@@ -25,10 +25,18 @@
     },
     {
       "name": "github_token",
-      "description": "PAT (recommended) in case of private repository or high frequency of pulls/executions",
+      "description": "GitHub Private Access Token",
       "type": "string",
       "multi": false,
       "required": false
+    },
+    {
+      "name": "files_limit",
+      "description": "Enforce a limit on the number of YARA files downloaded or tested against the file. Adjust with care as this may impact analysis time and resources on your Cortex instance.",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 400
     }
   ]
 }
