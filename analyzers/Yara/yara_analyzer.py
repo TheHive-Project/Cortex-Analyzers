@@ -98,7 +98,7 @@ class YaraAnalyzer(Analyzer):
     
     def download_rules_from_github_url(self, url, token, limit=None):
         """
-        Downloads up to 'limit' .yar or .yara files from the given GitHub URL.
+        Downloads up to 'limit' .yar, .yara, .rule, or .rules files from the given GitHub URL.
         If limit is None, downloads all matching files.
         """
         info = extract_github_info(url)
@@ -126,7 +126,7 @@ class YaraAnalyzer(Analyzer):
         rule_files = []
         for item in tree:
             if item["type"] == "blob" and item["path"].startswith(directory) and \
-               item["path"].endswith((".yar", ".yara")):
+               item["path"].endswith((".yar", ".yara", ".rule", ".rules")):
                 rule_files.append(item["path"])
                 if limit is not None and len(rule_files) >= limit:
                     break
@@ -165,14 +165,14 @@ class YaraAnalyzer(Analyzer):
         # Global list of rule files
         rule_files = []
 
-        # Add local rule files (both .yar and .yara)
+        # Add local rule files (both .yar and .yara, as well as .rule & .rules)
         for rulepath in self.rulepaths:
-            if os.path.isfile(rulepath) and rulepath.endswith((".yar", ".yara")):
+            if os.path.isfile(rulepath) and rulepath.endswith((".yar", ".yara", ".rule", ".rules")):
                 rule_files.append(rulepath)
             elif os.path.isdir(rulepath):
                 local_files = [os.path.join(rulepath, f)
                                for f in os.listdir(rulepath)
-                               if f.endswith((".yar", ".yara"))]
+                               if f.endswith((".yar", ".yara", ".rule", ".rules"))]
                 rule_files.extend(local_files)
             else:
                 print(f"Warning: {rulepath} is not a valid file or directory.")
