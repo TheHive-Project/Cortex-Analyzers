@@ -27,13 +27,13 @@ jobs:
       - name: List analyzer and responder directories and build matrices
         id: set-matrix
         run: |
-          echo "Listing analyzer directories in 'analyzers/'..."
-          analyzer_dirs=$(find analyzers -mindepth 1 -maxdepth 1 -type d -printf '%f\n')
+          echo "Listing analyzer directories in 'analyzers/' (excluding deprecated ones)..."
+          analyzer_dirs=$(find analyzers -mindepth 1 -maxdepth 1 -type d -exec sh -c 'ls "{}"/*.json >/dev/null 2>&1' \; -printf '%f\n')
           echo "Found analyzer directories:"
           echo "$analyzer_dirs"
 
-          echo "Listing responder directories in 'responders/'..."
-          responder_dirs=$(find responders -mindepth 1 -maxdepth 1 -type d -printf '%f\n')
+          echo "Listing responder directories in 'responders/' (excluding deprecated ones)..."
+          responder_dirs=$(find responders -mindepth 1 -maxdepth 1 -type d -exec sh -c 'ls "{}"/*.json >/dev/null 2>&1' \; -printf '%f\n')
           echo "Found responder directories:"
           echo "$responder_dirs"
 
