@@ -66,5 +66,8 @@ Parameter `attributes_to_tags` allow to specify which attributes you want to ext
 * Example: if 'c' value is 'France' in the LDAP response, `c:country` will add the entry `France` in `country` Custom Field.
 
 ### TheHive template
-A basic template for TheHive (`long.html`) comes along this new version.  
-This template directly depends on LDAP attributes, so, it need to be adapted to your own needs: modify, add or remove variable `{{result.xxx}}` as you will.
+A template for TheHive (`long.html`) comes along this new version.  
+This template dynamically adapts to LDAP query results, automatically displaying all attributes harvested.
+* Prioritizes Full Name, Email, and UID, while listing other attributes dynamically
+* Limits output to 5 results for clarity
+* Handles filtered results, errors, and empty responses
