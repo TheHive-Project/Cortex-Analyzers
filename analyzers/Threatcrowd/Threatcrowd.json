@@ -4,7 +4,7 @@
     "license": "AGPL-V3",
     "url": "https://github.com/Cyberprotect/Cortex-Analyzers",
     "version": "1.0",
-    "description": "Look up domains, mail and IP addresses on ThreatCrowd.",
+    "description": "[DEPRECATED] Look up domains, mail and IP addresses on ThreatCrowd.",
     "dataTypeList": [
         "mail",
         "ip",

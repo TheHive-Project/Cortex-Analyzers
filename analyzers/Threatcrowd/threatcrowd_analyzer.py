@@ -6,7 +6,7 @@ from cortexutils.analyzer import Analyzer
 
 
 class Threatcrowd(Analyzer):
-    URI = "https://www.threatcrowd.org/searchApi/v2"
+    URI = "https://ci-www.threatcrowd.org/searchApi/v2"
 
     def summary(self, raw):
         taxonomies = []
@@ -41,7 +41,7 @@ class Threatcrowd(Analyzer):
         if self.data_type == 'domain' or self.data_type == 'ip' or self.data_type == 'mail' or self.data_type == 'fqdn':
             threatcrowd_data_type = self.data_type if self.data_type != 'mail' else 'email'
             try:
-                response = requests.get("{}/{}/report/".format(self.URI, threatcrowd_data_type),
+                response = requests.get("{}/{}/report/".format(self.URI, threatcrowd_data_type), verify=False,
                                         params = {threatcrowd_data_type: self.get_data()})
                 self.report(response.json())
             except Exception as e:
