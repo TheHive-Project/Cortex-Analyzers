@@ -1,7 +1,7 @@
 {
     "name": "CrowdstrikeFalcon_Sandbox_Win7",
     "version": "1.0",
-    "author": "nusantara-self, StrangeBee",
+    "author": "Fabien Bloume, StrangeBee",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
     "baseConfig": "CrowdstrikeFalcon",

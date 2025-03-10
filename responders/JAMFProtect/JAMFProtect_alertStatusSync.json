@@ -1,17 +1,17 @@
 {
-  "name": "JAMFProtect_removeHashfromPreventList",
+  "name": "JAMFProtect_alertStatusSync",
   "version": "1.0",
   "author": "Fabien Bloume, StrangeBee",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Remove IOC on JAMF Protect - removes associated custom prevent list(s) containing the hash",
+  "description": "Syncs status of a TheHive Case back to JAMF Protect",
   "dataTypeList": [
-    "thehive:case_artifact"
+    "thehive:case", "thehive:alert"
   ],
-  "command": "JAMFProtect/JAMFProtect_IOC.py",
+  "command": "JAMFProtect/JAMFProtect_sync.py",
   "baseConfig": "JAMFProtect",
   "config": {
-    "service": "removeIOC"
+    "service": "sync"
   },
   "configurationItems": [
     {

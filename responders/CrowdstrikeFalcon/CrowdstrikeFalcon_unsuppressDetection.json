@@ -1,7 +1,7 @@
 {
   "name": "CrowdStrikeFalcon_unsuppressDetections",
   "version": "1.0",
-  "author": "nusantara-self, StrangeBee",
+  "author": "Fabien Bloume, StrangeBee",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Allow detections for the host.",
