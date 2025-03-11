@@ -60,7 +60,7 @@ class MSEntraID(Responder):
         headers = {'Authorization': f'Bearer {token}', 'Content-Type': 'application/json'}
         base_url = 'https://graph.microsoft.com/v1.0/users/'
         
-        if self.service == "tokenRevoker":
+        if self.service == "revokeSignInSessions":
             if self.get_param('data.dataType') == 'mail':
                 try:
                     self.user = self.get_param('data.data', None, 'No UPN supplied to revoke credentials for')

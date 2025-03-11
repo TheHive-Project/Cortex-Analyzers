@@ -1,5 +1,5 @@
 {
-    "name": "MSEntraID_TokenRevoker",
+    "name": "MSEntraID_revokeSignInSessions",
     "version": "1.1",
     "author": "Daniel Weiner @dmweiner; revised by @jahamilto; Fabien Bloume, StrangeBee",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
@@ -9,7 +9,7 @@
     "command": "MSEntraID/MSEntraID.py",
     "baseConfig": "MSEntraID",
     "config": {
-        "service": "tokenRevoker"
+        "service": "revokeSignInSessions"
     },
     "configurationItems": [
         {"name": "tenant_id",

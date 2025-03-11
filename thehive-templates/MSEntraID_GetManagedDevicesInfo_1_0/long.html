@@ -82,8 +82,8 @@
                             <td>{{ device.isEncrypted ? 'Yes' : 'No' }}</td>
                             <td>
                                 <span class="label" ng-class="{
-                                    'label-danger': device.jailBroken === 'Yes',
-                                    'label-success': device.jailBroken === 'No'
+                                    'label-danger': (device.jailBroken || '').toLowerCase() === 'yes',
+                                    'label-success': (device.jailBroken || '').toLowerCase() === 'no'
                                 }">
                                     {{ device.jailBroken || 'N/A' }}
                                 </span>
