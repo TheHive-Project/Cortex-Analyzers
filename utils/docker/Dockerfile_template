@@ -14,8 +14,10 @@
 
 
 
-FROM python:3
-WORKDIR /worker
-COPY . {worker_name}
+FROM python:3-alpine
+# Specific alpine setup to support libmagic
+# RUN apk add --no-cache file-dev && rm -rf /var/cache/apk/*\nWORKDIR /worker
+COPY requirements.txt {worker_name}/
 RUN test ! -e {worker_name}/requirements.txt || pip install --no-cache-dir -r {worker_name}/requirements.txt
-ENTRYPOINT {command}
+COPY . {worker_name}/
+ENTRYPOINT ["python", "{command}"]
