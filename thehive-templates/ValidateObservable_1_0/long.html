@@ -4,6 +4,14 @@
         <strong><i class="fa fa-check-circle"></i> ValidateObservable Result</strong>
     </div>
     <div class="panel-body">
+        <!-- Clarification Note -->
+        <div class="alert alert-info">
+            <i class="fa fa-info-circle"></i> 
+            This analyzer performs <strong>syntax and format validation only</strong>. 
+            It does <strong>not</strong> verify the existence, resolution, or legitimacy of the observable.<br>
+            A <span class="label label-warning">SUSPICIOUS</span> status indicates a syntactically valid observable that contains potentially risky indicators, such as Unicode obfuscation or Punycode usage.
+        </div>
+        
         <table class="table table-hover table-bordered">
             <!-- Observable Type -->
             <tr>
