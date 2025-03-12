@@ -1,11 +1,11 @@
 {
     "name": "AWSLambda_InvokeFunction",
     "version": "1.0",
-    "author": "nusantara-self,StrangeBee",
+    "author": "Fabien Bloume, StrangeBee",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
     "description": "Invokes the configured AWS Lambda function",
-    "dataTypeList": ["thehive:case", "thehive:alert", "thehive:case_artifact", "thehive:task"],
+    "dataTypeList": ["thehive:case", "thehive:alert", "thehive:case_artifact", "thehive:case_task", "thehive:case_task_log"],
     "command": "AWSLambda/AWSInvokeLambda.py",
     "baseConfig": "AWSLambda",
     "configurationItems": [

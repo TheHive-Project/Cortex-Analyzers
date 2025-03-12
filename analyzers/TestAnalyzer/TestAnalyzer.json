@@ -1,0 +1,53 @@
+{
+  "name": "TestAnalyzer",
+  "version": "1.0",
+  "author": "Fabien Bloume, StrangeBee",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Just a simple test analyzer! No real-world use-case covered by this one, for testing, reference, dev and any other purpose only!",
+  "dataTypeList": ["ip", "domain", "url", "fqdn", "mail", "hash", "filename", "uri_path", "user-agent", "mail-subject"],
+  "baseConfig": "TestAnalyzer",
+  "command": "TestAnalyzer/testing.py",
+  "config": {
+    "service": "testing"
+  },
+  "configurationItems": [
+    {
+    "name": "some_string",
+    "description": "placeholder string",
+    "type": "string",
+    "multi": false,
+    "required": false,
+    "defaultValue": "some string.."
+  },
+  {
+    "name": "some_list",
+    "description": "placeholder list",
+    "type": "string",
+    "multi": true,
+    "required": false,
+    "defaultValue": ["item1", "item2", "item3"]
+
+  },
+  {
+    "name": "some_number",
+    "description": "placeholder number",
+    "type": "number",
+    "multi": false,
+    "required": false,
+    "defaultValue": 1
+  },
+  {
+    "name": "throw_error",
+    "description": "throw an error!",
+    "type": "boolean",
+    "multi": false,
+    "required": true,
+    "defaultValue": false
+  }
+  ],
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": false,
+  "serviceHomepage": "None"
+}

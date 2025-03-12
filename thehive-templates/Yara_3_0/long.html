@@ -1,0 +1,90 @@
+<!-- Summary Section -->
+<div class="alert alert-warning" ng-if="content.summary && content.summary.taxonomies.length && success">
+	<strong><i class="fa fa-info-circle"></i> Summary:</strong>
+	<ul>
+		<li ng-repeat="tax in content.summary.taxonomies">
+			<strong>{{tax.predicate}}:</strong> {{tax.value}} <small>(Level: {{tax.level}})</small>
+		</li>
+	</ul>
+</div>
+
+<!-- No Matches Found -->
+<div class="alert alert-success" ng-if="content.results.length === 0 && success">
+	<strong><i class="fa fa-check-circle"></i> No Yara rule matches were found.</strong>
+</div>
+
+<!-- Detailed Matches -->
+<div class="panel-body" ng-if="content.results.length > 0 && success">
+	<h4><i class="fa fa-exclamation-triangle"></i> Detected Rules ({{content.results.length}})</h4>
+	<div ng-repeat="rule in content.results" class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<i class="fa fa-file-code-o"></i> {{rule.rule}} <small>({{rule.namespace}})</small>
+			</h4>
+		</div>
+		<div class="panel-body">
+			<p>
+				<!-- Loop over all meta fields except ones with 'hash' in the key -->
+				<span ng-repeat="(key, value) in rule.meta" ng-if="key.toLowerCase().indexOf('hash') === -1">
+					<strong>{{ key | uppercase }}:</strong>
+					<!-- if the value looks like a URL, hyperlink it -->
+					<span ng-if="key.toLowerCase() === 'reference'">
+						<a ng-href="{{ value }}" target="_blank">{{ value }}</a>
+					</span>
+					<span ng-if="key.toLowerCase() !== 'reference'">
+						{{ value }}
+					</span>
+					<br>
+				</span>
+			</p>
+			<h5><i class="fa fa-link"></i> Matched Strings</h5>
+			<table class="table table-striped table-condensed">
+				<thead>
+					<tr>
+						<th>Identifier</th>
+						<th>Offset</th>
+						<th>Matched</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="str in rule.strings">
+						<td>{{str.identifier}}</td>
+						<td>{{str.offset}}</td>
+						<td>{{str.matched}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<!-- Additional Artifact/Scan Info -->
+<div class="well well-sm" ng-if="success">
+	<p>
+		<strong>Total YAR files:</strong> {{content.total_yar_files}}<br>
+		<strong>YAR files limit set in Cortex:</strong> {{content.files_limit}}<br>
+		<strong>Total rules tested:</strong> {{content.rules_tested}}<br>
+		<details>
+			<summary>
+				<i class="fa fa-chevron-down"></i>
+				Rules scanned ({{content.rulenames.length}}): click to expand
+			</summary>
+			<div>
+				{{content.rulenames.join(', ')}}
+			</div>
+		</details>
+	</p>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+	<div class="panel-heading">
+		<strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+	</div>
+	<div class="panel-body">
+		<dl class="dl-horizontal" ng-if="content.errorMessage">
+			<dt><i class="fa fa-warning"></i> Yara:</dt>
+			<dd class="wrap">{{content.errorMessage}}</dd>
+		</dl>
+	</div>
+</div>

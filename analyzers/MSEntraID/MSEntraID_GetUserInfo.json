@@ -1,0 +1,65 @@
+{
+    "name": "MSEntraID_GetUserInfo",
+    "version": "1.0",
+    "author": "Fabien Bloume, StrangeBee",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Get information about the user from Microsoft Entra ID, using the mail",
+    "dataTypeList": ["mail"],
+    "command": "MSEntraID/MSEntraID.py",
+    "baseConfig": "MSEntraID",
+    "config": {
+        "service": "getUserInfo"
+    },
+    "configurationItems": [
+        {"name": "tenant_id",
+        "description": "Microsoft Entra ID Tenant ID",
+        "type": "string",
+        "multi": false,
+        "required": true
+        },
+        {"name": "client_id",
+        "description": "Client ID/Application ID of Microsoft Entra ID Registered App",
+        "type": "string",
+        "multi": false,
+        "required": true
+        },
+        {"name": "client_secret",
+        "description": "Secret for Microsoft Entra ID Registered Application",
+        "type": "string",
+        "multi": false,
+        "required": true
+        },
+        {
+            "name": "params_list",
+            "description": "list of query params to get User information",
+            "type": "string",
+            "multi": true,
+            "required": true,
+            "defaultValue": [
+                "businessPhones",
+                "givenName",
+                "surname",
+                "userPrincipalName",
+                "displayName",
+                "jobTitle",
+                "mail",
+                "mobilePhone",
+                "officeLocation",
+                "department",
+                "accountEnabled",
+                "onPremisesSyncEnabled",
+                "onPremisesLastSyncDateTime",
+                "onPremisesSecurityIdentifier",
+                "proxyAddresses",
+                "usageLocation",
+                "userType",
+                "createdDateTime"
+            ]
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://www.microsoft.com/security/business/identity-access/microsoft-entra-id"
+}

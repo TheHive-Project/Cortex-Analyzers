@@ -1,5 +1,22 @@
 # Changelog
 
+## [3.5.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/HEAD) (2025-03-12)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.4.4...3.5.0)
+
+**Closed issues:**
+
+- \[FR\] Yara: Support GitHub repositories for YARA rules [\#1328](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1328)
+- \[ENG\] Feature Request: LdapQuery could import Observables, Tags, Custom Fields [\#1326](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1326)
+- \[Bug\] Fortiguard Captcha [\#1192](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1192)
+- \[FR\] Update to Ldap\_Query to support the observable type account [\#1187](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1187)
+- \[FR\] Smaller and updated Docker images based on Alpine [\#1166](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1166)
+- Umbrella Analyzer API not supported [\#1155](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1155)
+- \[FR\] Add Palo Alto Cortex XDR responder [\#1103](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1103)
+- \[FR\] Netcraft Takedown service responder [\#1052](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1052)
+- \[FR\] PaloAlto Wildfire responder [\#1051](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1051)
+- missing users field in Azure Token revoker responder: [\#1034](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1034)
+
 ## [3.4.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.4) (2025-02-07)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.4.3...3.4.4)
@@ -8,6 +25,16 @@
 
 - \[FR\] - Feedback for the MSEntraID Responder [\#1302](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1302)
 - \[Bug\] Elasticsearch analyzer does not work with index that has no @timestamp field [\#1290](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1290)
+
+**Merged pull requests:**
+
+- CI - Fixes and improvements [\#1323](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1323) ([nusantara-self](https://github.com/nusantara-self))
+- Update Elasticsearch Analyzer to not fail when @timestamp has no mapping in searched indices [\#1322](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1322) ([vpiserchia](https://github.com/vpiserchia))
+- Shuffle - Support all datatypes as trigger for responder [\#1321](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1321) ([nusantara-self](https://github.com/nusantara-self))
+- CSFalcon Spotlight -- fix filename [\#1320](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1320) ([nusantara-self](https://github.com/nusantara-self))
+- Rename thehive template for ES [\#1314](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1314) ([vpiserchia](https://github.com/vpiserchia))
+- Fix AnyRun Analyzer for data type 'file' [\#1313](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1313) ([backb1](https://github.com/backb1))
+- DShield - exception resolved in ipv6 address [\#1037](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1037) ([viviandsilva](https://github.com/viviandsilva))
 
 ## [3.4.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.3) (2025-01-16)
 
