@@ -76,7 +76,7 @@ class MSEntraID(Responder):
                 except Exception:
                     self.error(traceback.format_exc())
                 
-                full_report = {"message": f"User {self.user} authentication tokens successfully revoked at {self.time}"}
+                full_report = {"message": f"All refresh tokens and browser session cookies successfully revoked for user {self.user} at {self.time}"}
                 self.report(full_report)
             else:
                 self.error('Incorrect dataType. "mail" expected.')
