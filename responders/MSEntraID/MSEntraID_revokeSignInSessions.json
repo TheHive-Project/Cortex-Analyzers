@@ -4,7 +4,7 @@
     "author": "Daniel Weiner @dmweiner; revised by @jahamilto; Fabien Bloume, StrangeBee",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "description": "Revoke all Microsoft Entra ID authentication session tokens for a User Principal Name. (mail)",
+    "description": "Invalidates all the refresh tokens issued to applications for a Microsoft Entra ID user (as well as session cookies in a user's browser)",
     "dataTypeList": ["thehive:case_artifact"],
     "command": "MSEntraID/MSEntraID.py",
     "baseConfig": "MSEntraID",
