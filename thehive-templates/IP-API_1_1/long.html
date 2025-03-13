@@ -1,0 +1,107 @@
+<!-- Success -->
+<div class="panel panel-info" ng-if="success && content.status !== 'fail'">
+    <div class="panel-heading">
+        Geolocation of <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <th>Continent</th>
+                <td>{{content.continent}} ({{content.continentCode}})</td>
+            </tr>
+            <tr>
+                <th>Country</th>
+                <td>{{content.country}} ({{content.countryCode}})</td>
+            </tr>
+            <tr>
+                <th>Region</th>
+                <td>{{content.regionName}} ({{content.region}})</td>
+            </tr>
+            <tr>
+                <th>City</th>
+                <td>{{content.city}}</td>
+            </tr>
+            <tr ng-if="content.district">
+                <th>District</th>
+                <td>{{content.district}}</td>
+            </tr>
+            <tr>
+                <th>ZIP</th>
+                <td>{{content.zip}}</td>
+            </tr>
+            <tr>
+                <th>Latitude</th>
+                <td>{{content.lat}}</td>
+            </tr>
+            <tr>
+                <th>Longitude</th>
+                <td>{{content.lon}}</td>
+            </tr>
+            <tr>
+                <th>Timezone</th>
+                <td>{{content.timezone}} (UTC {{content.offset / 3600}})</td>
+            </tr>
+            <tr>
+                <th>Currency</th>
+                <td>{{content.currency}}</td>
+            </tr>
+            <tr>
+                <th>ISP</th>
+                <td>{{content.isp}}</td>
+            </tr>
+            <tr>
+                <th>Organization</th>
+                <td>{{content.org}}</td>
+            </tr>
+            <tr>
+                <th>AS</th>
+                <td>{{content.as}} ({{content.asname}})</td>
+            </tr>
+            <tr ng-if="content.reverse">
+                <th>Reverse DNS</th>
+                <td>{{content.reverse}}</td>
+            </tr>
+            <tr>
+                <th>Mobile</th>
+                <td>{{content.mobile}}</td>
+            </tr>
+            <tr>
+                <th>Proxy</th>
+                <td>{{content.proxy}}</td>
+            </tr>
+            <tr>
+                <th>Hosting</th>
+                <td>{{content.hosting}}</td>
+            </tr>
+            <tr>
+                <th>Query</th>
+                <td>{{content.query}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- Success but fail -->
+<div class="panel panel-danger" ng-if="success && content.status == 'fail'">
+    <div class="panel-heading">
+        Error querying <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <p><strong>Status:</strong> {{content.status}}</p>
+        <p><strong>Message:</strong> {{content.message}}</p>
+        <p><strong>Query:</strong> {{content.query}}</p>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{ (artifact.data || artifact.attachment.name) | fang }}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> IP-API:</dt>
+            <dd class="wrap">{{ content.errorMessage }}</dd>
+        </dl>
+    </div>
+</div>
