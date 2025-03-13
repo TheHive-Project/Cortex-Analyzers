@@ -1,21 +1,50 @@
 # Changelog
 
-## [3.5.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/HEAD) (2025-03-12)
+## [3.5.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.1) (2025-03-13)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.0...3.5.1)
+
+**Closed issues:**
+
+- \[Bug\] Unable to use IP-API analyzer [\#1265](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1265)
+- \[Bug\]  Cortex Elasticsearch Analyzer Error [\#1189](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1189)
+- \[Bug\] Splunk Analyzers [\#1180](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1180)
+- \[Bug\] Talos Reputation analyzer is not working [\#1145](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1145)
+- \[Bug\] TalosReputation analyser returns error "Unexpected Error: Detected a Cloudflare version 2 challenge, This feature is not available in the opensource \(free\) version." [\#1084](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1084)
+- \[Bug\] Splunk analyser missing cortexutils [\#936](https://github.com/TheHive-Project/Cortex-Analyzers/issues/936)
+- Splunk Search Analyzer [\#97](https://github.com/TheHive-Project/Cortex-Analyzers/issues/97)
+
+## [3.5.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.0) (2025-03-12)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.4.4...3.5.0)
 
 **Closed issues:**
 
-- \[FR\] Yara: Support GitHub repositories for YARA rules [\#1328](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1328)
-- \[ENG\] Feature Request: LdapQuery could import Observables, Tags, Custom Fields [\#1326](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1326)
 - \[Bug\] Fortiguard Captcha [\#1192](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1192)
 - \[FR\] Update to Ldap\_Query to support the observable type account [\#1187](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1187)
-- \[FR\] Smaller and updated Docker images based on Alpine [\#1166](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1166)
 - Umbrella Analyzer API not supported [\#1155](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1155)
 - \[FR\] Add Palo Alto Cortex XDR responder [\#1103](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1103)
 - \[FR\] Netcraft Takedown service responder [\#1052](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1052)
 - \[FR\] PaloAlto Wildfire responder [\#1051](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1051)
 - missing users field in Azure Token revoker responder: [\#1034](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1034)
+- \[FR\] Yara: Support GitHub repositories for YARA rules [\#1328](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1328)
+- \[ENG\] Feature Request: LdapQuery could import Observables, Tags, Custom Fields [\#1326](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1326)
+- \[FR\] Smaller and updated Docker images based on Alpine [\#1166](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1166)
+
+**Merged pull requests:**
+
+- Mailer responder needs to be fixed when checking description [\#1059](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1059) ([priamai](https://github.com/priamai))
+- Fix TeamCymru analyzer [\#1335](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1335) ([nusantara-self](https://github.com/nusantara-self))
+- Deprecation support for analyzers & responders in CI [\#1334](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1334) ([nusantara-self](https://github.com/nusantara-self))
+- Yara 3.0 - Performance improvements & hard limit [\#1332](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1332) ([nusantara-self](https://github.com/nusantara-self))
+- Add Test analyzer [\#1331](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1331) ([nusantara-self](https://github.com/nusantara-self))
+- Update Umbrella.py [\#1330](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1330) ([Noatun](https://github.com/Noatun))
+- Yara analyzer version 3.0 - GitHub repositories support [\#1329](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1329) ([nusantara-self](https://github.com/nusantara-self))
+- LdapQuery3.0: Import Observables, Tags and Custom Fields [\#1327](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1327) ([kiaora17](https://github.com/kiaora17))
+- Alpine docker images support + dockerfile & Requirements.txt cleanup [\#1325](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1325) ([nusantara-self](https://github.com/nusantara-self))
+- CI - improvements [\#1324](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1324) ([nusantara-self](https://github.com/nusantara-self))
+- MSEntraID - Additional Analyzers & Responders + Improvements [\#1317](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1317) ([nusantara-self](https://github.com/nusantara-self))
+- Paloalto wildfire responder [\#1054](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1054) ([korteke](https://github.com/korteke))
 
 ## [3.4.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.4) (2025-02-07)
 
