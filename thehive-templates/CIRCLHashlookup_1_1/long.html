@@ -1,70 +1,67 @@
-<div class="panel panel-info" ng-if="success && content.message == null ">
+<!-- Success with results -->
+<div class="panel panel-info" ng-if="success && !content.message">
     <div class="panel-heading">
-        CIRCL Hashlookup for: 
-        <strong>{{artifact.data}}</strong>
-        </div>
-</div>
-
-<! -- We have a result -->
-<div class="panel panel-info" ng-if="success && content.message == null ">
-<div ng-repeat = "(key, value) in content">
-   
-    <div ng-if="key != 'parents' && key != 'OpSystemCode' && key != 'ProductCode' && key != 'children' ">
-       <td><b>{{key}}:</b></td> <td> {{ value }} </td>
-    </div>
-    
-    <div ng-if="key == 'OpSystemCode' ">
-       <td><b>{{key}}:</b></td>
-       <div ng-repeat = "(op_x, op_y) in value">
-           <td><b> - {{op_x}}:</b></td> <td> {{ op_y }} </td>
-       </div>
-    </div>
-    
-    <div ng-if="key == 'ProductCode' ">
-       <td><b>{{key}}:</b></td>
-       <div ng-repeat = "(prod_x, prod_y) in value">
-           <td><b> - {{prod_x}}:</b></td> <td> {{ prod_y }} </td>
-         </div>
-    </div>
-    
-    <div ng-if="key == 'parents' ">
-       <td><b>{{key}}:</b></td>
-       <div ng-repeat = "r in value">
-        <div ng-repeat = "(par_x, par_y) in r">
-           <td><b>- {{par_x}}:</b></td> <td> {{ par_y }} </td>
-        </div>
-       </div>
-    </div>
-    
-    <div ng-if="key == 'children' ">
-       <td><b>{{key}}:</b></td>
-       <div ng-repeat = "c in value">
-        <div ng-repeat = "(child_x, child_y) in c">
-           <td><b>- {{child_x}}:</b></td> <td> {{ child_y }} </td>
-        </div>
-       </div>
-    </div>
-    
-</div>
-</div>
-
-
-<!-- No hits  -->
-<div class="panel panel-danger" ng-if="success && content.message != null ">
-     <div class="panel-heading">CIRCL Hashlookup: No hits </div>
-     Hash: {{artifact.data}}
-</div>
-
-
-<!-- General error  -->
-<div class="panel panel-danger" ng-if="!success">
-    <div class="panel-heading">
-        <strong>General Error: Please try again</strong>
+      CIRCL Hashlookup for: <strong>{{ artifact.data }}</strong>
     </div>
     <div class="panel-body">
-    	<dl class="dl-horizontal" ng-if="content.errorMessage">
-            <dt><i class="fa fa-warning"></i>CIRCLHashlookup: </dt>
-            <dd class="wrap">{{content.errorMessage}}"</dd>
-        </dl>
+      <dl class="dl-horizontal" ng-repeat="(key, value) in content">
+  
+        <!-- General key/value pairs -->
+        <div ng-if="['parents', 'OpSystemCode', 'ProductCode', 'children'].indexOf(key) === -1">
+          <dt>{{ key }}:</dt>
+          <dd>{{ value }}</dd>
+        </div>
+  
+        <!-- OpSystemCode and ProductCode -->
+        <div ng-if="key === 'OpSystemCode' || key === 'ProductCode'">
+          <dt>{{ key }}:</dt>
+          <dd>
+            <ul class="list-unstyled">
+              <li ng-repeat="(subKey, subValue) in value">
+                <strong>{{ subKey }}:</strong> {{ subValue }}
+              </li>
+            </ul>
+          </dd>
+        </div>
+  
+        <!-- Parents and children  -->
+        <div ng-if="key === 'parents' || key === 'children'">
+          <dt>{{ key }}:</dt>
+          <dd>
+            <ul class="list-unstyled">
+              <li ng-repeat="item in value">
+                <ul class="list-unstyled">
+                  <li ng-repeat="(itemKey, itemValue) in item">
+                    <strong>{{ itemKey }}:</strong> {{ itemValue }}
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </dd>
+        </div>
+  
+      </dl>
     </div>
-</div>
+  </div>
+  
+  <!-- Success with no hits -->
+  <div class="panel panel-danger" ng-if="success && content.message">
+    <div class="panel-heading">CIRCL Hashlookup: No hits</div>
+    <div class="panel-body">
+      <p>Hash: {{ artifact.data }}</p>
+    </div>
+  </div>
+  
+  <!-- General error -->
+  <div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+      <strong>General Error: Please try again</strong>
+    </div>
+    <div class="panel-body">
+      <dl class="dl-horizontal" ng-if="content.errorMessage">
+        <dt><i class="fa fa-warning"></i> CIRCL Hashlookup:</dt>
+        <dd class="wrap">{{ content.errorMessage }}</dd>
+      </dl>
+    </div>
+  </div>
+  
