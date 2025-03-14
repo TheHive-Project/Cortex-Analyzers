@@ -329,6 +329,19 @@ class OnypheAnalyzer(Analyzer):
                                 thisartifact = "ip#" + str(odoc["ip"]["dest"])
                             else: 
                                 thisartifact = "ip#" + str(odoc["ip"])
+                        elif self.data_type == "ip":
+                            if "forward" in odoc:
+                                thisartifact = "fqdn#" + str(odoc["forward"])
+                            elif "http" in odoc and "vhost" in odoc["http"]:
+                                thisartifact = "fqdn#" + str(odoc["http"]["vhost"])
+                            elif "hostname" in odoc:
+                                hostnamelist = odoc["hostname"]
+                                #TODO: currently take first hostname. Possible take all of them, or ask user to configure this choice.
+                                thisartifact = "fqdn#" + str(hostnamelist[0])
+                            elif "dns" in odoc and "hostname" in odoc["dns"]:
+                                thisartifact = "fqdn#" + str(odoc["dns"]["hostname"][0])
+                            elif "cert" in odoc and "hostname" in odoc["dns"]:
+                                thisartifact = "fqdn#" + str(odoc["cert"]["hostname"][0])
                         else:
                             if "forward" in odoc:
                                 thisartifact = "fqdn#" + str(odoc["forward"])
@@ -337,13 +350,11 @@ class OnypheAnalyzer(Analyzer):
                             elif "hostname" in odoc:
                                 hostnamelist = odoc["hostname"]
                                 #TODO: currently take first hostname. Possible take all of them, or ask user to configure this choice.
-                                thisartifact = "fqdn#" + str(hostnamelist[0])        
-                            elif "dns" in odoc and "forward" in odoc["dns"]:
-                                thisartifact = "fqdn#" + str(odoc["dns"]["forward"][0])
-                            elif "reverse" in odoc:
-                                thisartifact = "fqdn#" + str(odoc["reverse"])
-                            elif "dns" in odoc and "reverse" in odoc["dns"]:
-                                thisartifact = "fqdn#" + str(odoc["dns"]["reverse"][0])
+                                thisartifact = "fqdn#" + str(hostnamelist[0])
+                            elif "dns" in odoc and "hostname" in odoc["dns"]:
+                                thisartifact = "fqdn#" + str(odoc["dns"]["hostname"][0])
+                            elif "cert" in odoc and "hostname" in odoc["dns"]:
+                                thisartifact = "fqdn#" + str(odoc["cert"]["hostname"][0])
                             elif "dest" in odoc["ip"]:
                                 thisartifact = "ip#" + str(odoc["ip"]["dest"])
                             else: 
@@ -359,7 +370,7 @@ class OnypheAnalyzer(Analyzer):
                         dedup[dedupkey] = odoc["@timestamp"]
 
             except Exception as e:
-                self.unexpectedError(e)
+                self.unexpectedError("Error: " + e + " in artifacts")
                   
         for key in build:
             type = key.split('#')[0]
@@ -436,7 +447,7 @@ class OnypheAnalyzer(Analyzer):
                             otags.append("udp/" + str(odoc["udp"]["dest"]))
                
             except Exception as e:
-                self.unexpectedError(e)
+                self.unexpectedError("Error: " + e + " in operations")
        
         for this_tag in otags:
             operations.append(self.build_operation('AddTagToArtifact', tag=this_tag))
