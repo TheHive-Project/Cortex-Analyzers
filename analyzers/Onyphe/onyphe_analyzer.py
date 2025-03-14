@@ -314,10 +314,11 @@ class OnypheAnalyzer(Analyzer):
                         if self.return_other_artifacts:
                             thisartifact = "other#"
                             if odoc["@category"] == "ctiscan":
-                                if "http" in odoc and "vhost" in odoc["http"]:
-                                    thisartifact += str(odoc["http"]["vhost"])
-                                else:
-                                    thisartifact += str(odoc["ip"]["dest"])
+                                #TODO handle vhost in other parsing in run()
+                                #if "http" in odoc and "vhost" in odoc["http"]:
+                                #    thisartifact += str(odoc["http"]["vhost"])
+                                #else:
+                                thisartifact += str(odoc["ip"]["dest"])
                                 if "tcp" in odoc:                                
                                     thisartifact += ":" + str(odoc["tcp"]["dest"])
                                 elif "udp" in odoc:                                
@@ -366,6 +367,81 @@ class OnypheAnalyzer(Analyzer):
             artifacts.append(self.build_artifact(type, data, tags=build[key]))
                 
         return artifacts
+    
+    def operations(self, raw):
+        operations = []
+        otags = []
+        data = self.get_param("data", None, "Data is missing")
+        
+        if self.service != "summary":
+            try: 
+                for odoc in raw["results"]:
+                    matchdata = False
+                    #does odoc match data observable.
+                    if self.data_type == "fqdn":
+                        if "forward" in odoc and odoc["forward"] == data:
+                            matchdata = True
+                        elif "http" in odoc and "vhost" in odoc["http"] and odoc["http"]["vhost"] == data:
+                            matchdata = True
+                        elif "dns" in odoc and "hostname" in odoc["dns"] and data in odoc["dns"]["hostname"]:
+                            matchdata = True
+                        elif "cert" in odoc and "hostname" in odoc["cert"] and data in odoc["cert"]["hostname"]:
+                            matchdata = True
+                        elif "hostname" in odoc and data in odoc["hostname"]:
+                            matchdata = True
+                    elif self.data_type == "ip":
+                        if "dest" in odoc["ip"] and odoc["ip"]["dest"] == data:
+                            matchdata = True
+                        elif odoc["ip"] == data:
+                            matchdata = True
+                    elif self.data_type == "other":
+                            matchdata = True
+                    
+                    if matchdata:                        
+                        #parse ONYPHE documents. Manage both legacy and ctiscan data models here.
+                        if odoc["@category"] == "riskscan" or (odoc["@category"] == "ctiscan" and "tag" in odoc):
+                            for ta in odoc["tag"]:
+                                if ta.split('::')[0] == 'risk':
+                                    otags.append(str(ta))
+                                    otags.append("onyphe:risk")
+                        
+                        if "cve" in odoc:
+                            otags.append("onyphe:cve")
+                            for cve in odoc["cve"]:
+                                otags.append(str(cve))
+                            for ta in odoc["tag"]:
+                                otags.append(str(ta))
+
+                        if self.keep_all_tags:
+                            for ta in odoc["tag"]:
+                                otags.append(str(ta))
+                        
+                        if "cpe" in odoc:
+                            for cpe in odoc["cpe"]:
+                                otags.append(str(cpe))
+                        elif "component" in odoc:
+                            for cpe in odoc["component"]["cpe"]:
+                                otags.append(str(cpe))
+
+                        if "protocol" in odoc:                                
+                            otags.append(str(odoc["protocol"]))
+                        elif "app" in odoc and "protocol" in odoc["app"]:                                
+                            otags.append(str(odoc["app"]["protocol"]))
+                        
+                        if "transport" in odoc and "port" in odoc:                                
+                            otags.append(str(odoc["transport"]) + "/" + str(odoc["port"]))
+                        elif "tcp" in odoc:                                
+                            otags.append("tcp/" + str(odoc["tcp"]["dest"]))
+                        elif "udp" in odoc:                                
+                            otags.append("udp/" + str(odoc["udp"]["dest"]))
+               
+            except Exception as e:
+                self.unexpectedError(e)
+       
+        for this_tag in otags:
+            operations.append(self.build_operation('AddTagToArtifact', tag=this_tag))
+       
+        return operations
 
     def run(self):
         Analyzer.run(self)
@@ -419,17 +495,13 @@ class OnypheAnalyzer(Analyzer):
                     ctifilter += '?cert.fingerprint.sha1:{data} '.format(data=data)
                     ctifilter += '?cert.fingerprint.sha256:{data} '.format(data=data)
                     ctifilter += '?app.data.md5:{data} '.format(data=data)
-                    ctifilter += '?app.data.mmh3:{data} '.format(data=data)
                     ctifilter += '?app.data.sha256:{data} '.format(data=data)
                     ctifilter += '?http.body.data.md5:{data} '.format(data=data)
-                    ctifilter += '?http.body.data.mmh3:{data} '.format(data=data)
                     ctifilter += '?http.body.data.sha256:{data} '.format(data=data)
-                    #ctifilter += '?http.body.data.domhash:{data} '.format(data=data)
+                    #ctifilter += '?http.body.data.domhash:{data} '.format(data=data) #roadmap
                     ctifilter += '?http.header.data.md5:{data} '.format(data=data)
-                    ctifilter += '?http.header.data.mmh3:{data} '.format(data=data)
                     ctifilter += '?http.header.data.sha256:{data} '.format(data=data)
                     ctifilter += '?favicon.data.md5:{data} '.format(data=data)
-                    ctifilter += '?favicon.data.mmh3:{data} '.format(data=data)
                     ctifilter += '?favicon.data.sha256:{data} '.format(data=data)
                     ctifilter += '?ssh.fingerprint.md5:{data} '.format(data=data)
                     ctifilter += '?ssh.fingerprint.sha1:{data} '.format(data=data)
@@ -437,16 +509,36 @@ class OnypheAnalyzer(Analyzer):
                     ctifilter += '?hassh.fingerprint.md5:{data} '.format(data=data)
                     ctifilter += '?tcp.fingerprint.md5:{data} '.format(data=data)
                     ctifilter += '?ja4t.fingerprint.md5:{data} '.format(data=data)
-                    #ctifilter += '?ja3s.fingerprint.md5:{data} '.format(data=data)
-                    #ctifilter += '?ja4s.fingerprint.md5:{data} '.format(data=data)
-                    #ctifilter += '?jarm.fingerprint.md5:{data} '.format(data=data)
-                    #ctifilter += '?jarm.ja3s.md5:{data} '.format(data=data)
+                    #ctifilter += '?ja3s.fingerprint.md5:{data} '.format(data=data) #roadmap
+                    #ctifilter += '?ja4s.fingerprint.md5:{data} '.format(data=data) #roadmap
+                    #ctifilter += '?jarm.fingerprint.md5:{data} '.format(data=data) #roadmap
+                    #ctifilter += '?jarm.ja3s.md5:{data} '.format(data=data) #roadmap
                 elif self.data_type == "autonomous-system":
                     ctifilter += 'ip.asn:{asn} '.format(asn=data)
                 elif self.data_type == "other":
                     try:
-                        port = data.split(':')[1]
-                        ip = data.split(':')[0]
+                        splitted = data.split(':')
+                        splitsize = len(splitted)
+                        port = int(splitted[splitsize-1])
+                        ip = str(splitted[0])
+                        #sanity check for IP, but not a full valid IP check as the API will do final checks anyway
+                        #TODO handle vhost/fqdn parsing for other data_type
+                        if splitsize  > 2 and splitsize < 10:
+                            #could be IPv6
+                            i = 0
+                            ip = ""
+                            for octet in splitted:
+                                i += 1
+                                if i < splitsize - 1 :
+                                    ip += octet + ":"
+                                elif i == splitsize - 1:
+                                    ip += octet
+                        elif splitsize == 2:
+                            test = ip.split('.') 
+                            if len(test) < 4:
+                                raise OtherError("Unable to parse observable {other} as type other".format(other=data))        
+                        else:
+                            raise OtherError("Unable to parse observable {other} as type other".format(other=data))
                         ctifilter += 'ip.dest:{ip} tcp.dest:{port} '.format(ip=ip,port=port)
                     except:
                         raise OtherError("Unable to parse observable {other} as type other".format(other=data))

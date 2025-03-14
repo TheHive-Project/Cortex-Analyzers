@@ -36,7 +36,7 @@
     },
     {
       "name": "return_other_artifacts",
-      "description": "Analyzer will create artifacts of type 'other' for each open service, with tags for technologies and protocols",
+      "description": "Analyzer will create '<ip>:<port>' artifacts of type 'other' for each open service, with tags for technologies and protocols",
       "type": "boolean",
       "multi": false,
       "required": true,
