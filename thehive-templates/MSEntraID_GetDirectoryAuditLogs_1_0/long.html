@@ -84,6 +84,7 @@
                 </div>
                 <div ng-if="audit.expanded">
                     <table class="table">
+                        <!-- Static fields -->
                         <tr>
                             <td><strong>Correlation ID</strong></td>
                             <td>{{ audit.correlationId || 'N/A' }}</td>
@@ -100,40 +101,65 @@
                             <td><strong>Result Reason</strong></td>
                             <td>{{ audit.resultReason || 'N/A' }}</td>
                         </tr>
-
-                        <!-- Target Resources -->
-                        <tr ng-if="audit.targetResources && audit.targetResources.length > 0">
-                            <td><strong>Target Resources</strong></td>
+                        
+                        <!-- Dynamic rendering for Initiated By -->
+                        <tr ng-if="audit.initiatedBy">
+                            <td><strong>Initiated By</strong></td>
                             <td>
                                 <table class="table">
-                                    <tr>
-                                        <th>Type</th>
-                                        <th>Display Name</th>
-                                        <th>User Principal Name</th>
-                                    </tr>
-                                    <tr ng-repeat="resource in audit.targetResources">
-                                        <td>{{ resource.type || 'N/A' }}</td>
-                                        <td>{{ resource.displayName || 'N/A' }}</td>
-                                        <td>{{ resource.userPrincipalName || 'N/A' }}</td>
+                                    <tr ng-repeat="(key, value) in audit.initiatedBy">
+                                        <td><strong>{{ key }}</strong></td>
+                                        <td>{{ value || 'N/A' }}</td>
                                     </tr>
                                 </table>
                             </td>
                         </tr>
-
-                        <!-- Additional Details -->
-                        <tr ng-if="audit.additionalDetails && audit.additionalDetails.length > 0">
+                        
+                        <!-- Dynamic rendering for Modified Properties -->
+                        <tr ng-if="audit.modifiedProperties && audit.modifiedProperties.length">
+                            <td><strong>Modified Properties</strong></td>
+                            <td>
+                                <div ng-repeat="modified in audit.modifiedProperties">
+                                    <table class="table">
+                                        <tr ng-repeat="(key, value) in modified">
+                                            <td><strong>{{ key }}</strong></td>
+                                            <td>{{ value || 'N/A' }}</td>
+                                        </tr>
+                                    </table>
+                                    <hr ng-if="!$last">
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Dynamic rendering for Target Resources -->
+                        <tr ng-if="audit.targetResources && audit.targetResources.length">
+                            <td><strong>Target Resources</strong></td>
+                            <td>
+                                <div ng-repeat="resource in audit.targetResources">
+                                    <table class="table">
+                                        <tr ng-repeat="(key, value) in resource">
+                                            <td><strong>{{ key }}</strong></td>
+                                            <td>{{ value || 'N/A' }}</td>
+                                        </tr>
+                                    </table>
+                                    <hr ng-if="!$last">
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Dynamic rendering for Additional Details -->
+                        <tr ng-if="audit.additionalDetails && audit.additionalDetails.length">
                             <td><strong>Additional Details</strong></td>
                             <td>
-                                <table class="table">
-                                    <tr>
-                                        <th>Key</th>
-                                        <th>Value</th>
-                                    </tr>
-                                    <tr ng-repeat="detail in audit.additionalDetails">
-                                        <td>{{ detail.key }}</td>
-                                        <td>{{ detail.value }}</td>
-                                    </tr>
-                                </table>
+                                <div ng-repeat="detail in audit.additionalDetails">
+                                    <table class="table">
+                                        <tr ng-repeat="(key, value) in detail">
+                                            <td><strong>{{ key }}</strong></td>
+                                            <td>{{ value || 'N/A' }}</td>
+                                        </tr>
+                                    </table>
+                                    <hr ng-if="!$last">
+                                </div>
                             </td>
                         </tr>
                     </table>
