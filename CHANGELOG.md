@@ -6,13 +6,18 @@
 
 **Closed issues:**
 
-- \[Bug\] Unable to use IP-API analyzer [\#1265](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1265)
 - \[Bug\]  Cortex Elasticsearch Analyzer Error [\#1189](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1189)
 - \[Bug\] Splunk Analyzers [\#1180](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1180)
 - \[Bug\] Talos Reputation analyzer is not working [\#1145](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1145)
 - \[Bug\] TalosReputation analyser returns error "Unexpected Error: Detected a Cloudflare version 2 challenge, This feature is not available in the opensource \(free\) version." [\#1084](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1084)
 - \[Bug\] Splunk analyser missing cortexutils [\#936](https://github.com/TheHive-Project/Cortex-Analyzers/issues/936)
 - Splunk Search Analyzer [\#97](https://github.com/TheHive-Project/Cortex-Analyzers/issues/97)
+- \[Bug\] Unable to use IP-API analyzer [\#1265](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1265)
+
+**Merged pull requests:**
+
+- CERTatPassiveDNS - Improvements [\#1337](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1337) ([nusantara-self](https://github.com/nusantara-self))
+- IP-API - Improvements & Pro license support [\#1336](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1336) ([nusantara-self](https://github.com/nusantara-self))
 
 ## [3.5.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.0) (2025-03-12)
 
