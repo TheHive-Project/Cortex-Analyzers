@@ -1,0 +1,33 @@
+<!-- Success -->
+<div class="panel panel-danger" ng-if="success">
+    <div class="panel-heading">
+        LupovisProwlAnalyzer Report
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>IP Address:</dt>
+            <dd>{{content.full.ip}}</dd>
+
+            <dt>Details:</dt>
+            <dd ng-if="content.full.details !== 'no known malicious activity'">
+                {{content.full.details}}
+            </dd>
+            <dd ng-if="content.full.details === 'no known malicious activity'">
+                No known malicious activity associated with this IP address.
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> LupovisProwlAnalyzer: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
