@@ -38,7 +38,7 @@
     },
     {
       "name": "base_uri",
-      "description": "The base URL of your Zscaler subscription",
+      "description": "The base URL of your Zscaler subscription. Example: https://zsapi.zscalertwo.net",
       "type": "string",
       "multi": false,
       "required": true
