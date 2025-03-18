@@ -27,8 +27,25 @@ class TestAnalyzer(Analyzer):
         #data = self.get_param("data", None, "Data is missing")
         datatype = self.data_type
 
-        result = {"data": data, "dataType": datatype, "arrayExample": ["A", "B", "C"], "tableExample": {"colA": "row A value", "colB": "row B value", "colC": "row C value",}}
-
+        #result = {"data": data, "dataType": datatype, "arrayExample": ["A", "B", "C"], "tableExample": {"colA": "row A value", "colB": "row B value", "colC": "row C value",}}
+    
+        # Unicode test data
+        unicode_test_string = "こんにちは, 你好, 안녕하세요, 😀, 💻, π, ∑, ∞, « Bonjour, comment ça va ? »"
+        unicode_table_example = {
+            "colA": "Row A: こんにちは (Hello in Japanese)", 
+            "colB": "Row B: 你好 (Hello in Chinese)", 
+            "colC": "Row C: 😀 (Smiley emoji)",
+            "colD": "«Row D: Bonjour, comment ça va ? Très bien. » (Hello, how are you? Doing very well. in French)"
+        }
+    
+        result = {
+            "data": data, 
+            "dataType": datatype, 
+            "arrayExample": ["A", "B", "C", "Δ", "Ж", "Ω", "💡"],
+            "tableExample": unicode_table_example,
+            "unicodeTest": unicode_test_string
+        }
+    
         self.report(result)
         
     def summary(self, raw):
