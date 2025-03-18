@@ -1,5 +1,32 @@
 # Changelog
 
+## [3.5.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.3) (2025-03-18)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.2...3.5.3)
+
+**Closed issues:**
+
+- \[Bug\] Zscaler Analyzer v1.3 failing execution [\#1268](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1268)
+- zscaler \[Bug\] [\#1217](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1217)
+- OpenCTI analyzers not working [\#1122](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1122)
+- \[Bug\]OpenCTI analyzer 'Unknown type \"CryptographicKey\" [\#1120](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1120)
+- \[Bug\] Unknown type "X509V3ExtensionsType" Python Error in OpenCTI Anlyzers [\#1104](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1104)
+- tfa [\#1081](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1081)
+- \[FR\] IntezerCommunity search by hash [\#1026](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1026)
+- OpenCTi connector issue : \_\_init\_\_\(\) takes from 3 to 5 positional arguments but 6 were given [\#994](https://github.com/TheHive-Project/Cortex-Analyzers/issues/994)
+- \[Bug\] Cortex Analyzer OpenCTI  [\#919](https://github.com/TheHive-Project/Cortex-Analyzers/issues/919)
+- \[FR\] Support of http\(s\) proxies in OpenCTI Analyzer [\#814](https://github.com/TheHive-Project/Cortex-Analyzers/issues/814)
+- Zscaler Analyzer [\#424](https://github.com/TheHive-Project/Cortex-Analyzers/issues/424)
+
+## [3.5.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.2) (2025-03-14)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.1...3.5.2)
+
+**Merged pull requests:**
+
+- Various Analyzer templates improvements [\#1338](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1338) ([nusantara-self](https://github.com/nusantara-self))
+- Added support for ONYPHE Ctiscan and ActiveScan analyzers. Updated existing analyzers. [\#1333](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1333) ([jimbobnet](https://github.com/jimbobnet))
+
 ## [3.5.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.1) (2025-03-13)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.0...3.5.1)
