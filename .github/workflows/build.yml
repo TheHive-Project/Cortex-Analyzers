@@ -160,15 +160,14 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}:${{ (startsWith(github.ref, 'refs/tags') || github.event_name == 'schedule') && env.VERSION || 'devel' }}
           labels: |
-            schema-version=1.0
-            org.label-schema.build-date=${{ steps.build_date.outputs.date }}
-            org.label-schema.name=${{ env.LOWERCASE_NAME }}
-            org.label-schema.description=${{ env.DESCRIPTION }}
-            org.label-schema.url=https://thehive-project.org
-            org.label-schema.vcs-url=https://github.com/TheHive-Project/Cortex-Analyzers
-            org.label-schema.vcs-ref=${{ github.sha }}
-            org.label-schema.vendor=TheHive Project
-            org.label-schema.version=${{ env.VERSION }}
+            org.opencontainers.image.created=${{ steps.build_date.outputs.date }}
+            org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
+            org.opencontainers.image.description=${{ env.DESCRIPTION }}
+            org.opencontainers.image.url=https://thehive-project.org
+            org.opencontainers.image.source=https://github.com/TheHive-Project/Cortex-Analyzers
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.vendor=TheHive Project
+            org.opencontainers.image.version=${{ env.VERSION }}
 
   build_catalog:
     name: Build Catalog
