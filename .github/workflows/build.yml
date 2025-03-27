@@ -24,43 +24,34 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: List analyzer and responder directories and build matrices
+      - name: List analyzer and responder JSON files and build matrices
         id: set-matrix
         run: |
-          echo "Listing analyzer directories in 'analyzers/' (excluding deprecated ones)..."
-          analyzer_dirs=$(find analyzers -mindepth 1 -maxdepth 1 -type d -exec sh -c 'ls "{}"/*.json >/dev/null 2>&1' \; -printf '%f\n')
-          echo "Found analyzer directories:"
-          echo "$analyzer_dirs"
+          echo "Building analyzers matrix..."
+          analyzers_matrix=$(find analyzers -type f -name '*.json' -printf '%P\n' | \
+            jq -R -s -c 'split("\n")[:-1] | map({directory: (split("/")[0]), path: .}) | {include: .}')
 
-          echo "Listing responder directories in 'responders/' (excluding deprecated ones)..."
-          responder_dirs=$(find responders -mindepth 1 -maxdepth 1 -type d -exec sh -c 'ls "{}"/*.json >/dev/null 2>&1' \; -printf '%f\n')
-          echo "Found responder directories:"
-          echo "$responder_dirs"
+          echo "Building responders matrix..."
+          responders_matrix=$(find responders -type f -name '*.json' -printf '%P\n' | \
+            jq -R -s -c 'split("\n")[:-1] | map({directory: (split("/")[0]), path: .}) | {include: .}')
 
-          # Build JSON for analyzers (each object has a directory name)
-          analyzer_json=$(echo "$analyzer_dirs" | jq -R -s -c 'split("\n")[:-1] | map({directory: .})')
-          # Build JSON for responders
-          responder_json=$(echo "$responder_dirs" | jq -R -s -c 'split("\n")[:-1] | map({directory: .})')
-          
-          # Add a component key to each and wrap them with "include"
-          analyzers_matrix=$(echo "$analyzer_json" | jq -c '{include: map(. + {component: "analyzers"})}')
-          responders_matrix=$(echo "$responder_json" | jq -c '{include: map(. + {component: "responders"})}')
-          
           echo "Generated analyzers matrix: $analyzers_matrix"
           echo "Generated responders matrix: $responders_matrix"
-          
+
           {
             echo "analyzers_matrix<<EOF"
             echo "$analyzers_matrix"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
-          
+
           {
             echo "responders_matrix<<EOF"
             echo "$responders_matrix"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
+        
+          
   build_analyzers:
     name: Build Analyzers
     needs: generate-matrix
