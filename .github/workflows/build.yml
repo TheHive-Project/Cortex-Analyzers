@@ -52,27 +52,27 @@ jobs:
 
         
           
-  build_analyzers:
-    name: Build Analyzers
-    needs: generate-matrix
-    runs-on: ubuntu-latest
-    strategy:
-      matrix: ${{ fromJson(needs.generate-matrix.outputs.analyzers_matrix) }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+  # build_analyzers:
+  #   name: Build Analyzers
+  #   needs: generate-matrix
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix: ${{ fromJson(needs.generate-matrix.outputs.analyzers_matrix) }}
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
 
-      - name: Pre-pull builder image (if not already cached)
-        run: docker pull thehiveproject/cortex-neurons-builder:latest
+  #     - name: Pre-pull builder image (if not already cached)
+  #       run: docker pull thehiveproject/cortex-neurons-builder:latest
 
-      - name: Build analyzer ${{ matrix.directory }}
-        uses: docker://thehiveproject/cortex-neurons-builder:latest
-        with:
-          driver-opts: image=moby/buildkit:v0.19.0
-          args: |
-            --namespace cortexneurons --path analyzers -w ${{ matrix.directory }} --registry_dockerhub ${{ secrets.REGISTRY_DOCKERHUB }} ${{ (startsWith(github.ref, 'refs/tags') || github.event_name == 'schedule') && '--stable' || '' }}
+  #     - name: Build analyzer ${{ matrix.directory }}
+  #       uses: docker://thehiveproject/cortex-neurons-builder:latest
+  #       with:
+  #         driver-opts: image=moby/buildkit:v0.19.0
+  #         args: |
+  #           --namespace cortexneurons --path analyzers -w ${{ matrix.directory }} --registry_dockerhub ${{ secrets.REGISTRY_DOCKERHUB }} ${{ (startsWith(github.ref, 'refs/tags') || github.event_name == 'schedule') && '--stable' || '' }}
 
   build_responders:
     name: Build Responders
