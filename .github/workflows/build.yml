@@ -137,7 +137,34 @@ jobs:
             echo "Dockerfile exists: $dockerfile_path"
           fi
 
+      - name: Check if image needs rebuild
+        id: check-rebuild
+        run: |
+          image="ghcr.io/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}"
+          current_sha="${{ github.sha }}"
+
+          # Pull the image manifest labels from GHCR
+          token=$(echo "${{ secrets.GITHUB_TOKEN }}")
+          labels=$(curl -sL -H "Authorization: Bearer $token" \
+            "https://ghcr.io/v2/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}/manifests/${{ env.VERSION }}" \
+            -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
+            | jq -r '.config.digest')
+
+          # Fetch image config blob to extract labels
+          image_labels=$(curl -sL -H "Authorization: Bearer $token" \
+            "https://ghcr.io/v2/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}/blobs/$labels" \
+            | jq -r '.config.Labels."org.opencontainers.image.revision"')
+
+          if [[ "$image_labels" == "$current_sha" ]]; then
+            echo "No rebuild needed. SHA matches: $current_sha"
+            echo "rebuild=false" >> $GITHUB_OUTPUT
+          else
+            echo "SHA mismatch or no existing image. Rebuild needed"
+            echo "rebuild=true" >> $GITHUB_OUTPUT
+          fi
+  
       - name: Build and push multi-arch image to GHCR
+        if: steps.check-rebuild.outputs.rebuild == 'true'
         uses: docker/build-push-action@v6
         with:
           context: analyzers/${{ matrix.directory }}
@@ -248,7 +275,35 @@ jobs:
             echo "Dockerfile exists: $dockerfile_path"
           fi
 
+      - name: Check if image needs rebuild
+        id: check-rebuild
+        run: |
+          image="ghcr.io/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}"
+          current_sha="${{ github.sha }}"
+
+          # Pull the image manifest labels from GHCR
+          token=$(echo "${{ secrets.GITHUB_TOKEN }}")
+          labels=$(curl -sL -H "Authorization: Bearer $token" \
+            "https://ghcr.io/v2/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}/manifests/${{ env.VERSION }}" \
+            -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
+            | jq -r '.config.digest')
+
+          # Fetch image config blob to extract labels
+          image_labels=$(curl -sL -H "Authorization: Bearer $token" \
+            "https://ghcr.io/v2/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}/blobs/$labels" \
+            | jq -r '.config.Labels."org.opencontainers.image.revision"')
+
+          if [[ "$image_labels" == "$current_sha" ]]; then
+            echo "No rebuild needed. SHA matches: $current_sha"
+            echo "rebuild=false" >> $GITHUB_OUTPUT
+          else
+            echo "SHA mismatch or no existing image. Rebuild needed"
+            echo "rebuild=true" >> $GITHUB_OUTPUT
+          fi
+
+
       - name: Build and push multi-arch image to GHCR
+        if: steps.check-rebuild.outputs.rebuild == 'true'
         uses: docker/build-push-action@v6
         with:
           context: responders/${{ matrix.directory }}
