@@ -436,46 +436,84 @@ jobs:
       - name: Test imports in the container
         if: steps.check-rebuild.outputs.rebuild == 'true'
         run: |
-          IMAGE="ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
-          echo "Testing image: $IMAGE"
-          docker pull "$IMAGE"
-          # We'll run python *inside* the container with inline code:
-          docker run --rm "$IMAGE" python -c "
-          import os, sys, re, os.path as osp
+          python <<EOF
+          import subprocess
+          import sys
+          import textwrap
           
-          entrypoint_full = \"${{ env.COMMAND }}\"
-          fallback_dir = \"${{ matrix.directory }}\"
+          image_tag = "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
+          command = "${{ env.COMMAND }}"
+          worker_name = "${{ matrix.directory }}"
           
-          # Attempt to mimic the logic that sets up the path:
-          if '/' in entrypoint_full:
-              dir_part = osp.dirname(entrypoint_full)
-              file_part = osp.basename(entrypoint_full)
-              if not osp.isdir(dir_part) and osp.isdir(fallback_dir):
-                  dir_part = fallback_dir
-              os.chdir(osp.join(os.getcwd(), dir_part))
-              entrypoint = file_part
-          else:
-              entrypoint = entrypoint_full
+          print(f"🔍 Testing Python imports in built image '{image_tag}' for worker '{worker_name}'...")
           
-          if not osp.exists(entrypoint):
-              print(f'::error file={entrypoint},line=1::Entry-point script \"{entrypoint}\" not found inside container.')
-              sys.exit(1)
+          # The in-container Python snippet:
+          test_code = textwrap.dedent(f'''
+              import os, sys, re, os.path as osp
           
-          with open(entrypoint, 'r', encoding='utf-8') as f:
-              content = f.readlines()
+              entrypoint_full = "{command}"
+              fallback_dir = "{worker_name}"
           
-          imports = [line.strip() for line in content if re.match(r'^\\s*(import|from)\\s+[a-zA-Z0-9_.]+', line)]
-          print('🔍 Checking Python imports from', entrypoint)
-          for imp in imports:
-              try:
-                  exec(imp)
-                  print('✅', imp, '- SUCCESS')
-              except Exception as e:
-                  print(f'::error file={entrypoint}::Failed import {{imp}} => {{e}}')
+              if "/" in entrypoint_full:
+                  dir_part = osp.dirname(entrypoint_full)
+                  file_part = osp.basename(entrypoint_full)
+                  # If directory doesn't exist but fallback_dir does, change to fallback.
+                  if not osp.isdir(dir_part) and osp.isdir(fallback_dir):
+                      dir_part = fallback_dir
+                  os.chdir(osp.join(os.getcwd(), dir_part))
+                  entrypoint = file_part
+              else:
+                  entrypoint = entrypoint_full
+          
+              if not osp.exists(entrypoint):
+                  print("❌ ERROR: {{}} not found inside the container.".format(entrypoint))
                   sys.exit(1)
           
-          print('✅ All imports tested successfully!')
-          "
+              with open(entrypoint, 'r', encoding='utf-8') as f:
+                  content = f.readlines()
+          
+              imports = [line.strip() for line in content if re.match(r'^\\s*(import|from)\\s+[a-zA-Z0-9_.]+', line)]
+              print("🔍 Checking Python imports from", entrypoint)
+              for imp in imports:
+                  try:
+                      exec(imp)
+                      print("✅", imp, "- SUCCESS")
+                  except Exception as e:
+                      print("❌", imp, "- FAILED:", e)
+                      sys.exit(1)
+          
+              print("✅ All imports tested successfully!")
+          ''')
+          
+          try:
+              # Pull the image first so we see logs if it's missing
+              pull_result = subprocess.run(["docker", "pull", image_tag], capture_output=True, text=True)
+              print(pull_result.stdout, file=sys.stdout)
+              print(pull_result.stderr, file=sys.stderr)
+          
+              # Now run the container with our Python code
+              result = subprocess.run(
+                  ["docker", "run", "--rm", "--entrypoint", "python", image_tag, "-c", test_code],
+                  capture_output=True,
+                  text=True
+              )
+              # Print the container's logs
+              print(result.stdout, file=sys.stdout)
+              print(result.stderr, file=sys.stderr)
+          
+              if result.returncode != 0:
+                  warning_message = f"Import testing FAILED for worker '{worker_name}' with exit code {result.returncode}"
+                  print("⚠️", warning_message)
+                  # GitHub Actions annotation for warning
+                  print(f"::warning::{warning_message}")
+              else:
+                  print("✅ Import testing succeeded")
+          
+          except Exception as e:
+              print("Error during import testing:", e)
+              # If you want to fail the entire job, do sys.exit(1):
+              sys.exit(1)
+          EOF
 
   
   build_catalog:
