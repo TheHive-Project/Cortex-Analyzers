@@ -14,10 +14,10 @@
 
 
 
-FROM python:3.9-slim
+FROM python:3-slim
 WORKDIR /worker
 COPY . EmlParser
-RUN test ! -e EmlParser/requirements.txt || pip install --no-cache-dir -rEmlParser/requirements.txt
+RUN test ! -e EmlParser/requirements.txt || pip install --no-cache-dir -r EmlParser/requirements.txt
 RUN apt update
 RUN apt install -y wkhtmltopdf libmagic1
 ENTRYPOINT EmlParser/parse.py

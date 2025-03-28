@@ -24,48 +24,41 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: List analyzer and responder directories and build matrices
+      - name: List analyzer and responder JSON files and build matrices
         id: set-matrix
         run: |
-          echo "Listing analyzer directories in 'analyzers/' (excluding deprecated ones)..."
-          analyzer_dirs=$(find analyzers -mindepth 1 -maxdepth 1 -type d -exec sh -c 'ls "{}"/*.json >/dev/null 2>&1' \; -printf '%f\n')
-          echo "Found analyzer directories:"
-          echo "$analyzer_dirs"
+          echo "Building analyzers matrix..."
+          analyzers_matrix=$(find analyzers -type f -name '*.json' -printf '%P\n' | \
+            jq -R -s -c 'split("\n")[:-1] | map({directory: (split("/")[0]), path: .}) | {include: .}')
 
-          echo "Listing responder directories in 'responders/' (excluding deprecated ones)..."
-          responder_dirs=$(find responders -mindepth 1 -maxdepth 1 -type d -exec sh -c 'ls "{}"/*.json >/dev/null 2>&1' \; -printf '%f\n')
-          echo "Found responder directories:"
-          echo "$responder_dirs"
+          echo "Building responders matrix..."
+          responders_matrix=$(find responders -type f -name '*.json' -printf '%P\n' | \
+            jq -R -s -c 'split("\n")[:-1] | map({directory: (split("/")[0]), path: .}) | {include: .}')
 
-          # Build JSON for analyzers (each object has a directory name)
-          analyzer_json=$(echo "$analyzer_dirs" | jq -R -s -c 'split("\n")[:-1] | map({directory: .})')
-          # Build JSON for responders
-          responder_json=$(echo "$responder_dirs" | jq -R -s -c 'split("\n")[:-1] | map({directory: .})')
-          
-          # Add a component key to each and wrap them with "include"
-          analyzers_matrix=$(echo "$analyzer_json" | jq -c '{include: map(. + {component: "analyzers"})}')
-          responders_matrix=$(echo "$responder_json" | jq -c '{include: map(. + {component: "responders"})}')
-          
           echo "Generated analyzers matrix: $analyzers_matrix"
           echo "Generated responders matrix: $responders_matrix"
-          
+
           {
             echo "analyzers_matrix<<EOF"
             echo "$analyzers_matrix"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
-          
+
           {
             echo "responders_matrix<<EOF"
             echo "$responders_matrix"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
+        
+          
   build_analyzers:
     name: Build Analyzers
     needs: generate-matrix
     runs-on: ubuntu-latest
+    continue-on-error: true
     strategy:
+      max-parallel: 20
       matrix: ${{ fromJson(needs.generate-matrix.outputs.analyzers_matrix) }}
     steps:
       - name: Checkout repository
@@ -73,21 +66,183 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Pre-pull builder image (if not already cached)
-        run: docker pull thehiveproject/cortex-neurons-builder:latest
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
-      - name: Build analyzer ${{ matrix.directory }}
-        uses: docker://thehiveproject/cortex-neurons-builder:latest
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: GHCR Login
+        uses: docker/login-action@v3
         with:
-          driver-opts: image=moby/buildkit:v0.19.0
-          args: |
-            --namespace cortexneurons --path analyzers -w ${{ matrix.directory }} --registry_dockerhub ${{ secrets.REGISTRY_DOCKERHUB }} ${{ (startsWith(github.ref, 'refs/tags') || github.event_name == 'schedule') && '--stable' || '' }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Convert directory to lowercase
+        id: lowercase_dir
+        run: |
+          lower_dir=$(echo "${{ matrix.directory }}" | tr '[:upper:]' '[:lower:]')
+          echo "lower_dir=${lower_dir}" >> $GITHUB_ENV
+
+      - name: Parse JSON and set environment variables from matrix.path (using jq)
+        id: parse_json
+        run: |
+          json_file="./analyzers/${{ matrix.path }}"
+          if [ -f "$json_file" ]; then
+            lower_name=$(jq -r '.name | ascii_downcase' "$json_file")
+            version=$(jq -r '.version // empty' "$json_file")
+            description=$(jq -r '.description // empty' "$json_file")
+            command=$(jq -r '.command // empty' "$json_file")
+
+            echo "LOWERCASE_NAME=${lower_name}" >> $GITHUB_ENV
+            echo "VERSION=${version}" >> $GITHUB_ENV
+            echo "DESCRIPTION=${description}" >> $GITHUB_ENV
+            echo "COMMAND=${command}" >> $GITHUB_ENV
+
+            if [[ "$version" == *.* ]]; then
+              version_split=$(echo "$version" | cut -d '.' -f 1)
+              echo "VERSION_SPLIT=${version_split}" >> $GITHUB_ENV
+            else
+              echo "VERSION_SPLIT=${version}" >> $GITHUB_ENV
+            fi
+          else
+            echo "File not found: $json_file"
+            exit 1
+          fi
+
+      - name: Check and create Dockerfile if not present
+        run: |
+          dockerfile_path="analyzers/${{ matrix.directory }}/Dockerfile"
+          matrix_directory="${{ matrix.directory }}"
+          command_value="${{ env.COMMAND }}"
+
+          # Add multiple workers separated by spaces
+          special_alpine_workers="PaloAltoNGFW Worker2 Worker3 AnotherWorker"
+
+          if [ ! -f "$dockerfile_path" ]; then
+            echo "Dockerfile not found in $dockerfile_path. Creating one..."
+            echo "FROM python:3-alpine" > "$dockerfile_path"
+
+            # Check if current worker is among special alpine workers
+            if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
+              echo "RUN apk add --no-cache file-dev && rm -rf /var/cache/apk/*" >> "$dockerfile_path"
+            fi
+
+            echo "WORKDIR /worker" >> "$dockerfile_path"
+            echo "COPY requirements.txt ${matrix_directory}/" >> "$dockerfile_path"
+            echo "RUN test ! -e ${matrix_directory}/requirements.txt || pip install --no-cache-dir -r ${matrix_directory}/requirements.txt" >> "$dockerfile_path"
+            echo "COPY . ${matrix_directory}/" >> "$dockerfile_path"
+            echo "ENTRYPOINT [\"python\", \"${command_value}\"]" >> "$dockerfile_path"
+          else
+            echo "Dockerfile exists: $dockerfile_path"
+          fi
+
+      - name: Check if image needs rebuild
+        id: check-rebuild
+        run: |
+          image="ghcr.io/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}"
+          current_sha="${{ github.sha }}"
+      
+          token="${{ secrets.GITHUB_TOKEN }}"
+      
+          # Fetch image manifest from GHCR
+          manifest_response=$(curl -sSL \
+            -H "Authorization: Bearer $token" \
+            -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
+            "https://ghcr.io/v2/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}/manifests/${{ env.VERSION }}")
+      
+          # Check if the manifest response contains a valid digest
+          labels=$(echo "$manifest_response" | jq -r '.config.digest // empty')
+      
+          if [[ -z "$labels" ]]; then
+            echo "No existing image or unable to fetch manifest. rebuild needed"
+            echo "rebuild=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+      
+          # Fetch image config blob to extract labels
+          config_response=$(curl -sSL \
+            -H "Authorization: Bearer $token" \
+            "https://ghcr.io/v2/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}/blobs/$labels")
+      
+          # Extract image label safely
+          image_labels=$(echo "$config_response" | jq -r '.config.Labels["org.opencontainers.image.revision"] // empty')
+      
+          # Debugging: print values
+          echo "current_sha: $current_sha"
+          echo "image_labels: $image_labels"
+      
+          if [[ "$image_labels" == "$current_sha" ]]; then
+            echo "No rebuild needed. SHA matches: $current_sha"
+            echo "rebuild=false" >> $GITHUB_OUTPUT
+          else
+            echo "SHA mismatch or missing label. rebuild needed"
+            echo "rebuild=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Set build date
+        id: build_date
+        run: echo "date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT" 
+  
+      - name: Set Image Tag
+        run: |
+          if [[ "${{ github.ref }}" =~ ^refs/tags/ ]] || [ "${{ github.event_name }}" == "schedule" ]; then
+            echo "IMAGE_TAG=${{ env.VERSION }}" >> $GITHUB_ENV
+          else
+            echo "IMAGE_TAG=devel" >> $GITHUB_ENV
+          fi
+      
+      - name: Set Platforms
+        id: set_platforms
+        run: |
+          NO_ARM64_DIRS="FileInfo"
+      
+          CURRENT_DIR="${{ matrix.directory }}"
+          # Default to multi-arch
+          PLATFORMS="linux/amd64,linux/arm64"
+      
+          # Check if CURRENT_DIR is in the NO_ARM64_DIRS list
+          if echo "$NO_ARM64_DIRS" | grep -qw "$CURRENT_DIR"; then
+            echo "Directory '$CURRENT_DIR' is in NO_ARM64_DIRS; limiting to linux/amd64 only."
+            PLATFORMS="linux/amd64"
+          fi
+      
+          echo "PLATFORMS=$PLATFORMS" >> $GITHUB_ENV
+
+      - name: Build and push multi-arch image to GHCR
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: analyzers/${{ matrix.directory }}
+          file: ./analyzers/${{ matrix.directory }}/Dockerfile
+          platforms: ${{ env.PLATFORMS }}
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
+          labels: |
+            org.opencontainers.image.created=${{ steps.build_date.outputs.date }}
+            org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
+            org.opencontainers.image.description=${{ env.DESCRIPTION }}
+            org.opencontainers.image.url=https://thehive-project.org
+            org.opencontainers.image.source=https://github.com/TheHive-Project/Cortex-Analyzers
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.vendor=TheHive Project
+            org.opencontainers.image.version=${{ env.VERSION }}
+          annotations: |
+            org.opencontainers.image.description=${{ env.DESCRIPTION }}
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
+            org.opencontainers.image.url=https://thehive-project.org
+            org.opencontainers.image.version=${{ env.VERSION }}
 
   build_responders:
     name: Build Responders
     needs: generate-matrix
     runs-on: ubuntu-latest
+    continue-on-error: true
     strategy:
+      max-parallel: 20
       matrix: ${{ fromJson(needs.generate-matrix.outputs.responders_matrix) }}
     steps:
       - name: Checkout repository
@@ -95,38 +250,220 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Pre-pull builder image (if not already cached)
-        run: docker pull thehiveproject/cortex-neurons-builder:latest
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
-      - name: Build responder ${{ matrix.directory }}
-        uses: docker://thehiveproject/cortex-neurons-builder:latest
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: GHCR Login
+        uses: docker/login-action@v3
         with:
-          driver-opts: image=moby/buildkit:v0.19.0
-          args: |
-            --namespace cortexneurons --path responders -w ${{ matrix.directory }} --registry_dockerhub ${{ secrets.REGISTRY_DOCKERHUB }} ${{ (startsWith(github.ref, 'refs/tags') || github.event_name == 'schedule') && '--stable' || '' }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Convert directory to lowercase
+        id: lowercase_dir
+        run: |
+          lower_dir=$(echo "${{ matrix.directory }}" | tr '[:upper:]' '[:lower:]')
+          echo "lower_dir=${lower_dir}" >> $GITHUB_ENV
+
+      - name: Parse JSON and set environment variables from matrix.path (using jq)
+        id: parse_json
+        run: |
+          json_file="./responders/${{ matrix.path }}"
+          if [ -f "$json_file" ]; then
+            lower_name=$(jq -r '.name | ascii_downcase' "$json_file")
+            version=$(jq -r '.version // empty' "$json_file")
+            description=$(jq -r '.description // empty' "$json_file")
+            command=$(jq -r '.command // empty' "$json_file")
+
+            echo "LOWERCASE_NAME=${lower_name}" >> $GITHUB_ENV
+            echo "VERSION=${version}" >> $GITHUB_ENV
+            echo "DESCRIPTION=${description}" >> $GITHUB_ENV
+            echo "COMMAND=${command}" >> $GITHUB_ENV
+
+            if [[ "$version" == *.* ]]; then
+              version_split=$(echo "$version" | cut -d '.' -f 1)
+              echo "VERSION_SPLIT=${version_split}" >> $GITHUB_ENV
+            else
+              echo "VERSION_SPLIT=${version}" >> $GITHUB_ENV
+            fi
+          else
+            echo "File not found: $json_file"
+            exit 1
+          fi
+
+      - name: Check and create Dockerfile if not present
+        run: |
+          dockerfile_path="responders/${{ matrix.directory }}/Dockerfile"
+          matrix_directory="${{ matrix.directory }}"
+          command_value="${{ env.COMMAND }}"
+
+          # Add multiple workers separated by spaces
+          special_alpine_workers="PaloAltoNGFW Worker2 Worker3 AnotherWorker"
+
+          if [ ! -f "$dockerfile_path" ]; then
+            echo "Dockerfile not found in $dockerfile_path. Creating one..."
+            echo "FROM python:3-alpine" > "$dockerfile_path"
+
+            # Check if current worker is among special alpine workers
+            if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
+              echo "RUN apk add --no-cache file-dev && rm -rf /var/cache/apk/*" >> "$dockerfile_path"
+            fi
+
+            echo "WORKDIR /worker" >> "$dockerfile_path"
+            echo "COPY requirements.txt ${matrix_directory}/" >> "$dockerfile_path"
+            echo "RUN test ! -e ${matrix_directory}/requirements.txt || pip install --no-cache-dir -r ${matrix_directory}/requirements.txt" >> "$dockerfile_path"
+            echo "COPY . ${matrix_directory}/" >> "$dockerfile_path"
+            echo "ENTRYPOINT [\"python\", \"${command_value}\"]" >> "$dockerfile_path"
+          else
+            echo "Dockerfile exists: $dockerfile_path"
+          fi
+
+      - name: Check if image needs rebuild
+        id: check-rebuild
+        run: |
+          image="ghcr.io/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}"
+          current_sha="${{ github.sha }}"
+      
+          token="${{ secrets.GITHUB_TOKEN }}"
+      
+          # Fetch image manifest from GHCR
+          manifest_response=$(curl -sSL \
+            -H "Authorization: Bearer $token" \
+            -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
+            "https://ghcr.io/v2/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}/manifests/${{ env.VERSION }}")
+      
+          # Check if the manifest response contains a valid digest
+          labels=$(echo "$manifest_response" | jq -r '.config.digest // empty')
+      
+          if [[ -z "$labels" ]]; then
+            echo "No existing image or unable to fetch manifest. rebuild needed"
+            echo "rebuild=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+      
+          # Fetch image config blob to extract labels
+          config_response=$(curl -sSL \
+            -H "Authorization: Bearer $token" \
+            "https://ghcr.io/v2/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}/blobs/$labels")
+      
+          # Extract image label safely
+          image_labels=$(echo "$config_response" | jq -r '.config.Labels["org.opencontainers.image.revision"] // empty')
+      
+          # Debugging: print values
+          echo "current_sha: $current_sha"
+          echo "image_labels: $image_labels"
+      
+          if [[ "$image_labels" == "$current_sha" ]]; then
+            echo "No rebuild needed. SHA matches: $current_sha"
+            echo "rebuild=false" >> $GITHUB_OUTPUT
+          else
+            echo "SHA mismatch or missing label. rebuild needed"
+            echo "rebuild=true" >> $GITHUB_OUTPUT
+          fi
+        
+
+      - name: Set build date
+        id: build_date
+        run: echo "date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT" 
+      
+      - name: Set Image Tag
+        run: |
+          if [[ "${{ github.ref }}" =~ ^refs/tags/ ]] || [ "${{ github.event_name }}" == "schedule" ]; then
+            echo "IMAGE_TAG=${{ env.VERSION }}" >> $GITHUB_ENV
+          else
+            echo "IMAGE_TAG=devel" >> $GITHUB_ENV
+          fi
+
+      - name: Set Platforms
+        id: set_platforms
+        run: |
+          NO_ARM64_DIRS="MSDefenderOffice365"
+      
+          CURRENT_DIR="${{ matrix.directory }}"
+          # Default to multi-arch
+          PLATFORMS="linux/amd64,linux/arm64"
+      
+          # Check if CURRENT_DIR is in the NO_ARM64_DIRS list
+          if echo "$NO_ARM64_DIRS" | grep -qw "$CURRENT_DIR"; then
+            echo "Directory '$CURRENT_DIR' is in NO_ARM64_DIRS; limiting to linux/amd64 only."
+            PLATFORMS="linux/amd64"
+          fi
+      
+          echo "PLATFORMS=$PLATFORMS" >> $GITHUB_ENV
+
+      - name: Build and push multi-arch image to GHCR
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: responders/${{ matrix.directory }}
+          file: ./responders/${{ matrix.directory }}/Dockerfile
+          platforms: ${{ env.PLATFORMS }}
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
+          labels: |
+            org.opencontainers.image.created=${{ steps.build_date.outputs.date }}
+            org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
+            org.opencontainers.image.description=${{ env.DESCRIPTION }}
+            org.opencontainers.image.url=https://thehive-project.org
+            org.opencontainers.image.source=https://github.com/TheHive-Project/Cortex-Analyzers
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.vendor=TheHive Project
+            org.opencontainers.image.version=${{ env.VERSION }}
+          annotations: |
+            org.opencontainers.image.description=${{ env.DESCRIPTION }}
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
+            org.opencontainers.image.url=https://thehive-project.org
+            org.opencontainers.image.version=${{ env.VERSION }}
+            
   build_catalog:
     name: Build Catalog
     runs-on: ubuntu-latest
+    #needs: [ build_responders ]
     needs: [ build_analyzers, build_responders ]
     if: always()
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Build catalog
-        uses: docker://thehiveproject/neurons-build-catalogs
-      - name: Build report-templates zip package
-        uses: docker://thehiveproject/neurons-build-report-templates
+      - name: Build catalog JSON files
+        run: |
+          build_catalog() {
+            DIR=$1
+            jq -s '[.[] | del(.command) + { dockerImage: ("ghcr.io/${{ github.repository_owner }}/" + (.name | ascii_downcase) + ":devel") }]' \
+              ${DIR}/*/*.json > ${DIR}/${DIR}-devel.json
+  
+            jq -s '[.[] | del(.command) + { dockerImage: ("ghcr.io/${{ github.repository_owner }}/" + (.name | ascii_downcase) + ":" + .version) }]' \
+              ${DIR}/*/*.json > ${DIR}/${DIR}-stable.json
+  
+            jq -s '[.[] | del(.command) + { dockerImage: ("ghcr.io/${{ github.repository_owner }}/" + (.name | ascii_downcase) + ":" + (.version | split("."))[0]) }]' \
+              ${DIR}/*/*.json > ${DIR}/${DIR}.json
+          }
+          
+          build_catalog analyzers
+          build_catalog responders
+  
+      - name: Zip report-templates
+        run: zip -r ../analyzers/report-templates.zip *
+        working-directory: thehive-templates
       - name: Save Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: catalog
           path: |
             analyzers/analyzers.json
+            analyzers/analyzers-devel.json
+            analyzers/analyzers-stable.json
             analyzers/report-templates.zip
             responders/responders.json
+            responders/responders-devel.json
+            responders/responders-stable.json
       - name: Make Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           generate_release_notes: true
@@ -137,9 +474,11 @@ jobs:
             responders/responders-stable.json
             responders/responders.json
 
+
   build_docs:
     name: Build documentation
     runs-on: ubuntu-latest
+    #needs: [ build_responders ]
     needs: [ build_analyzers, build_responders ]
     if: startsWith(github.ref, 'refs/tags/') && always()
     steps:
@@ -164,6 +503,7 @@ jobs:
 
   notify:
     name: Notify
+    #needs: [ build_responders, build_catalog, build_docs ]
     needs: [ build_analyzers, build_responders, build_catalog, build_docs ]
     runs-on: ubuntu-latest
     if: false   # Temporarily disable notifications
