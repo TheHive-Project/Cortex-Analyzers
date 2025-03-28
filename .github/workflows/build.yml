@@ -456,10 +456,14 @@ jobs:
           name: catalog
           path: |
             analyzers/analyzers.json
+            analyzers/analyzers-devel.json
+            analyzers/analyzers-stable.json
             analyzers/report-templates.zip
             responders/responders.json
+            responders/responders-devel.json
+            responders/responders-stable.json
       - name: Make Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           generate_release_notes: true
