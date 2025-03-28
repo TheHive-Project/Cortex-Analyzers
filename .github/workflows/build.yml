@@ -432,7 +432,52 @@ jobs:
             org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
             org.opencontainers.image.url=https://thehive-project.org
             org.opencontainers.image.version=${{ env.VERSION }}
-            
+
+      - name: Test imports in the container
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        run: |
+          IMAGE="ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
+          echo "Testing image: $IMAGE"
+          docker pull "$IMAGE"
+          # We'll run python *inside* the container with inline code:
+          docker run --rm "$IMAGE" python -c "
+          import os, sys, re, os.path as osp
+          
+          entrypoint_full = \"${{ env.COMMAND }}\"
+          fallback_dir = \"${{ matrix.directory }}\"
+          
+          # Attempt to mimic the logic that sets up the path:
+          if '/' in entrypoint_full:
+              dir_part = osp.dirname(entrypoint_full)
+              file_part = osp.basename(entrypoint_full)
+              if not osp.isdir(dir_part) and osp.isdir(fallback_dir):
+                  dir_part = fallback_dir
+              os.chdir(osp.join(os.getcwd(), dir_part))
+              entrypoint = file_part
+          else:
+              entrypoint = entrypoint_full
+          
+          if not osp.exists(entrypoint):
+              print(f'::error file={entrypoint},line=1::Entry-point script \"{entrypoint}\" not found inside container.')
+              sys.exit(1)
+          
+          with open(entrypoint, 'r', encoding='utf-8') as f:
+              content = f.readlines()
+          
+          imports = [line.strip() for line in content if re.match(r'^\\s*(import|from)\\s+[a-zA-Z0-9_.]+', line)]
+          print('🔍 Checking Python imports from', entrypoint)
+          for imp in imports:
+              try:
+                  exec(imp)
+                  print('✅', imp, '- SUCCESS')
+              except Exception as e:
+                  print(f'::error file={entrypoint}::Failed import {{imp}} => {{e}}')
+                  sys.exit(1)
+          
+          print('✅ All imports tested successfully!')
+          "
+
+  
   build_catalog:
     name: Build Catalog
     runs-on: ubuntu-latest
