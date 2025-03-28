@@ -196,7 +196,7 @@ jobs:
       - name: Set Platforms
         id: set_platforms
         run: |
-          NO_ARM64_DIRS=""
+          NO_ARM64_DIRS="FileInfo"
       
           CURRENT_DIR="${{ matrix.directory }}"
           # Default to multi-arch
