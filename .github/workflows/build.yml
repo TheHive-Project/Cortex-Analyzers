@@ -117,8 +117,6 @@ jobs:
             exit 1
           fi
 
-          
-
       - name: Check and create Dockerfile if not present
         run: |
           dockerfile_path="analyzers/${{ matrix.directory }}/Dockerfile"
@@ -196,14 +194,9 @@ jobs:
       - name: Set Image Tag
         run: |
           if [[ "${{ github.ref }}" =~ ^refs/tags/ ]] || [ "${{ github.event_name }}" == "schedule" ]; then
-            echo "IMAGE_TAGS<<EOF" >> $GITHUB_ENV
-            echo "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}"
-            echo "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION_SPLIT }}"
-            echo "EOF" >> $GITHUB_ENV
+            echo "IMAGE_TAG=${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
           else
-            echo "IMAGE_TAGS<<EOF" >> $GITHUB_ENV
-            echo "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:devel"
-            echo "EOF" >> $GITHUB_ENV
+            echo "IMAGE_TAG=devel" >> $GITHUB_ENV
           fi
       
       - name: Set Platforms
@@ -231,7 +224,7 @@ jobs:
           file: ./analyzers/${{ matrix.directory }}/Dockerfile
           platforms: ${{ env.PLATFORMS }}
           push: true
-          tags: ${{ env.IMAGE_TAGS }}
+          tags: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
           labels: |
             org.opencontainers.image.created=${{ steps.build_date.outputs.date }}
             org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
@@ -392,15 +385,11 @@ jobs:
       - name: Set Image Tag
         run: |
           if [[ "${{ github.ref }}" =~ ^refs/tags/ ]] || [ "${{ github.event_name }}" == "schedule" ]; then
-            echo "IMAGE_TAGS<<EOF" >> $GITHUB_ENV
-            echo "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}"
-            echo "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION_SPLIT }}"
-            echo "EOF" >> $GITHUB_ENV
+            echo "IMAGE_TAG=${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
           else
-            echo "IMAGE_TAGS<<EOF" >> $GITHUB_ENV
-            echo "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:devel"
-            echo "EOF" >> $GITHUB_ENV
+            echo "IMAGE_TAG=devel" >> $GITHUB_ENV
           fi
+
       - name: Set Platforms
         id: set_platforms
         run: |
@@ -426,7 +415,7 @@ jobs:
           file: ./responders/${{ matrix.directory }}/Dockerfile
           platforms: ${{ env.PLATFORMS }}
           push: true
-          tags: ${{ env.IMAGE_TAGS }}
+          tags: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
           labels: |
             org.opencontainers.image.created=${{ steps.build_date.outputs.date }}
             org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
