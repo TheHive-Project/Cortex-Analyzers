@@ -85,6 +85,12 @@ jobs:
           lower_dir=$(echo "${{ matrix.directory }}" | tr '[:upper:]' '[:lower:]')
           echo "lower_dir=${lower_dir}" >> $GITHUB_ENV
 
+      - name: Set lowercase and sanitized repository owner
+        run: |
+          owner="${{ github.repository_owner }}"
+          lower_owner=$(echo "$owner" | tr '[:upper:]' '[:lower:]')
+          echo "LOWER_REPO_OWNER=$lower_owner" >> $GITHUB_ENV 
+
       - name: Parse JSON and set environment variables from matrix.path (using jq)
         id: parse_json
         run: |
@@ -141,7 +147,7 @@ jobs:
       - name: Check if image needs rebuild
         id: check-rebuild
         run: |
-          image="ghcr.io/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}"
+          image="ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}"
           current_sha="${{ github.sha }}"
       
           token="${{ secrets.GITHUB_TOKEN }}"
@@ -150,7 +156,7 @@ jobs:
           manifest_response=$(curl -sSL \
             -H "Authorization: Bearer $token" \
             -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
-            "https://ghcr.io/v2/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}/manifests/${{ env.VERSION }}")
+            "https://ghcr.io/v2/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}/manifests/${{ env.VERSION }}")
       
           # Check if the manifest response contains a valid digest
           labels=$(echo "$manifest_response" | jq -r '.config.digest // empty')
@@ -164,7 +170,7 @@ jobs:
           # Fetch image config blob to extract labels
           config_response=$(curl -sSL \
             -H "Authorization: Bearer $token" \
-            "https://ghcr.io/v2/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}/blobs/$labels")
+            "https://ghcr.io/v2/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}/blobs/$labels")
       
           # Extract image label safely
           image_labels=$(echo "$config_response" | jq -r '.config.Labels["org.opencontainers.image.revision"] // empty')
@@ -218,7 +224,7 @@ jobs:
           file: ./analyzers/${{ matrix.directory }}/Dockerfile
           platforms: ${{ env.PLATFORMS }}
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
+          tags: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
           labels: |
             org.opencontainers.image.created=${{ steps.build_date.outputs.date }}
             org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
@@ -268,6 +274,12 @@ jobs:
         run: |
           lower_dir=$(echo "${{ matrix.directory }}" | tr '[:upper:]' '[:lower:]')
           echo "lower_dir=${lower_dir}" >> $GITHUB_ENV
+
+      - name: Set lowercase and sanitized repository owner
+        run: |
+          owner="${{ github.repository_owner }}"
+          lower_owner=$(echo "$owner" | tr '[:upper:]' '[:lower:]')
+          echo "LOWER_REPO_OWNER=$lower_owner" >> $GITHUB_ENV 
 
       - name: Parse JSON and set environment variables from matrix.path (using jq)
         id: parse_json
@@ -325,7 +337,7 @@ jobs:
       - name: Check if image needs rebuild
         id: check-rebuild
         run: |
-          image="ghcr.io/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}"
+          image="ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}"
           current_sha="${{ github.sha }}"
       
           token="${{ secrets.GITHUB_TOKEN }}"
@@ -334,7 +346,7 @@ jobs:
           manifest_response=$(curl -sSL \
             -H "Authorization: Bearer $token" \
             -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
-            "https://ghcr.io/v2/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}/manifests/${{ env.VERSION }}")
+            "https://ghcr.io/v2/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}/manifests/${{ env.VERSION }}")
       
           # Check if the manifest response contains a valid digest
           labels=$(echo "$manifest_response" | jq -r '.config.digest // empty')
@@ -348,7 +360,7 @@ jobs:
           # Fetch image config blob to extract labels
           config_response=$(curl -sSL \
             -H "Authorization: Bearer $token" \
-            "https://ghcr.io/v2/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}/blobs/$labels")
+            "https://ghcr.io/v2/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}/blobs/$labels")
       
           # Extract image label safely
           image_labels=$(echo "$config_response" | jq -r '.config.Labels["org.opencontainers.image.revision"] // empty')
@@ -403,7 +415,7 @@ jobs:
           file: ./responders/${{ matrix.directory }}/Dockerfile
           platforms: ${{ env.PLATFORMS }}
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
+          tags: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
           labels: |
             org.opencontainers.image.created=${{ steps.build_date.outputs.date }}
             org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
@@ -434,13 +446,13 @@ jobs:
         run: |
           build_catalog() {
             DIR=$1
-            jq -s '[.[] | del(.command) + { dockerImage: ("ghcr.io/${{ github.repository_owner }}/" + (.name | ascii_downcase) + ":devel") }]' \
+            jq -s '[.[] | del(.command) + { dockerImage: ("ghcr.io/${{ env.LOWER_REPO_OWNER }}/" + (.name | ascii_downcase) + ":devel") }]' \
               ${DIR}/*/*.json > ${DIR}/${DIR}-devel.json
   
-            jq -s '[.[] | del(.command) + { dockerImage: ("ghcr.io/${{ github.repository_owner }}/" + (.name | ascii_downcase) + ":" + .version) }]' \
+            jq -s '[.[] | del(.command) + { dockerImage: ("ghcr.io/${{ env.LOWER_REPO_OWNER }}/" + (.name | ascii_downcase) + ":" + .version) }]' \
               ${DIR}/*/*.json > ${DIR}/${DIR}-stable.json
   
-            jq -s '[.[] | del(.command) + { dockerImage: ("ghcr.io/${{ github.repository_owner }}/" + (.name | ascii_downcase) + ":" + (.version | split("."))[0]) }]' \
+            jq -s '[.[] | del(.command) + { dockerImage: ("ghcr.io/${{ env.LOWER_REPO_OWNER }}/" + (.name | ascii_downcase) + ":" + (.version | split("."))[0]) }]' \
               ${DIR}/*/*.json > ${DIR}/${DIR}.json
           }
           
