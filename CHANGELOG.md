@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.5.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.4) (2025-03-28)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.3...3.5.4)
+
+**Closed issues:**
+
+- \[FR\] CI Refactor - ARM64 support & GHCR migration [\#1343](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1343)
+
 ## [3.5.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.3) (2025-03-18)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.2...3.5.3)
@@ -17,6 +25,14 @@
 - \[Bug\] Cortex Analyzer OpenCTI  [\#919](https://github.com/TheHive-Project/Cortex-Analyzers/issues/919)
 - \[FR\] Support of http\(s\) proxies in OpenCTI Analyzer [\#814](https://github.com/TheHive-Project/Cortex-Analyzers/issues/814)
 - Zscaler Analyzer [\#424](https://github.com/TheHive-Project/Cortex-Analyzers/issues/424)
+
+**Merged pull requests:**
+
+- TestAnalyzer - Add Unicode data output [\#1340](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1340) ([nusantara-self](https://github.com/nusantara-self))
+- ZScaler - Clearer configuration [\#1339](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1339) ([nusantara-self](https://github.com/nusantara-self))
+- Ibmxfe updates [\#1040](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1040) ([viviandsilva](https://github.com/viviandsilva))
+- OTX query does not have actionable intelligence [\#1036](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1036) ([viviandsilva](https://github.com/viviandsilva))
+- \[IntezerCommunity\] Added support for hash \(sha256\) type [\#1029](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1029) ([vivekmittal](https://github.com/vivekmittal))
 
 ## [3.5.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.2) (2025-03-14)
 
