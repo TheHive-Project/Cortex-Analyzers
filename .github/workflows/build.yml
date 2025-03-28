@@ -160,7 +160,7 @@ jobs:
           fi
 
       - name: Build and push multi-arch image to GHCR
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           context: responders/${{ matrix.directory }}
           file: ./responders/${{ matrix.directory }}/Dockerfile
