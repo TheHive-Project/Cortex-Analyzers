@@ -178,10 +178,28 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Build catalog
-        uses: docker://thehiveproject/neurons-build-catalogs
-      - name: Build report-templates zip package
-        uses: docker://thehiveproject/neurons-build-report-templates
+      - name: Build catalog JSON files
+        run: |
+          build_catalog() {
+            DIR=$1
+            jq -s '[.[] | del(.command) + { dockerImage: ("ghcr.io/${{ github.repository_owner }}/" + (.name | ascii_downcase) + ":devel") }]' \
+              ${DIR}/*/*.json > ${DIR}/${DIR}-devel.json
+  
+            jq -s '[.[] | del(.command) + { dockerImage: ("ghcr.io/${{ github.repository_owner }}/" + (.name | ascii_downcase) + ":" + .version) }]' \
+              ${DIR}/*/*.json > ${DIR}/${DIR}-stable.json
+  
+            jq -s '[.[] | del(.command) + { dockerImage: ("ghcr.io/${{ github.repository_owner }}/" + (.name | ascii_downcase) + ":" + (.version | split("."))[0]) }]' \
+              ${DIR}/*/*.json > ${DIR}/${DIR}.json
+          }
+          
+          build_catalog analyzers
+          build_catalog responders
+  
+      - name: Zip report-templates
+        run: |
+          cd analyzers
+          zip -r report-templates.zip *
+        working-directory: thehive-templates
       - name: Save Artifacts
         uses: actions/upload-artifact@v4
         with:
