@@ -379,9 +379,7 @@ jobs:
           build_catalog responders
   
       - name: Zip report-templates
-        run: |
-          cd analyzers
-          zip -r report-templates.zip *
+        run: zip -r ../analyzers/report-templates.zip *
         working-directory: thehive-templates
       - name: Save Artifacts
         uses: actions/upload-artifact@v4
