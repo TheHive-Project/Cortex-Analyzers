@@ -52,27 +52,109 @@ jobs:
 
         
           
-  # build_analyzers:
-  #   name: Build Analyzers
-  #   needs: generate-matrix
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix: ${{ fromJson(needs.generate-matrix.outputs.analyzers_matrix) }}
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
-  #       with:
-  #         fetch-depth: 0
+  build_analyzers:
+    name: Build Analyzers
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.analyzers_matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-  #     - name: Pre-pull builder image (if not already cached)
-  #       run: docker pull thehiveproject/cortex-neurons-builder:latest
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
-  #     - name: Build analyzer ${{ matrix.directory }}
-  #       uses: docker://thehiveproject/cortex-neurons-builder:latest
-  #       with:
-  #         driver-opts: image=moby/buildkit:v0.19.0
-  #         args: |
-  #           --namespace cortexneurons --path analyzers -w ${{ matrix.directory }} --registry_dockerhub ${{ secrets.REGISTRY_DOCKERHUB }} ${{ (startsWith(github.ref, 'refs/tags') || github.event_name == 'schedule') && '--stable' || '' }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: GHCR Login
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Convert directory to lowercase
+        id: lowercase_dir
+        run: |
+          lower_dir=$(echo "${{ matrix.directory }}" | tr '[:upper:]' '[:lower:]')
+          echo "lower_dir=${lower_dir}" >> $GITHUB_ENV
+
+      - name: Parse JSON and set environment variables from matrix.path (using jq)
+        id: parse_json
+        run: |
+          json_file="./analyzers/${{ matrix.path }}"
+          if [ -f "$json_file" ]; then
+            lower_name=$(jq -r '.name | ascii_downcase' "$json_file")
+            version=$(jq -r '.version // empty' "$json_file")
+            description=$(jq -r '.description // empty' "$json_file")
+            command=$(jq -r '.command // empty' "$json_file")
+
+            echo "LOWERCASE_NAME=${lower_name}" >> $GITHUB_ENV
+            echo "VERSION=${version}" >> $GITHUB_ENV
+            echo "DESCRIPTION=${description}" >> $GITHUB_ENV
+            echo "COMMAND=${command}" >> $GITHUB_ENV
+
+            if [[ "$version" == *.* ]]; then
+              version_split=$(echo "$version" | cut -d '.' -f 1)
+              echo "VERSION_SPLIT=${version_split}" >> $GITHUB_ENV
+            else
+              echo "VERSION_SPLIT=${version}" >> $GITHUB_ENV
+            fi
+          else
+            echo "File not found: $json_file"
+            exit 1
+          fi
+
+      - name: Check and create Dockerfile if not present
+        run: |
+          dockerfile_path="analyzers/${{ matrix.directory }}/Dockerfile"
+          matrix_directory="${{ matrix.directory }}"
+          command_value="${{ env.COMMAND }}"
+
+          # Add multiple workers separated by spaces
+          special_alpine_workers="PaloAltoNGFW Worker2 Worker3 AnotherWorker"
+
+          if [ ! -f "$dockerfile_path" ]; then
+            echo "Dockerfile not found in $dockerfile_path. Creating one..."
+            echo "FROM python:3-alpine" > "$dockerfile_path"
+
+            # Check if current worker is among special alpine workers
+            if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
+              echo "RUN apk add --no-cache file-dev && rm -rf /var/cache/apk/*" >> "$dockerfile_path"
+            fi
+
+            echo "WORKDIR /worker" >> "$dockerfile_path"
+            echo "COPY requirements.txt ${matrix_directory}/" >> "$dockerfile_path"
+            echo "RUN test ! -e ${matrix_directory}/requirements.txt || pip install --no-cache-dir -r ${matrix_directory}/requirements.txt" >> "$dockerfile_path"
+            echo "COPY . ${matrix_directory}/" >> "$dockerfile_path"
+            echo "ENTRYPOINT [\"python\", \"${command_value}\"]" >> "$dockerfile_path"
+          else
+            echo "Dockerfile exists: $dockerfile_path"
+          fi
+
+      - name: Build and push multi-arch image to GHCR
+        uses: docker/build-push-action@v6
+        with:
+          context: analyzers/${{ matrix.directory }}
+          file: ./analyzers/${{ matrix.directory }}/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}:${{ (startsWith(github.ref, 'refs/tags') || github.event_name == 'schedule') && env.VERSION || 'devel' }}
+          labels: |
+            org.opencontainers.image.created=${{ steps.build_date.outputs.date }}
+            org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
+            org.opencontainers.image.description=${{ env.DESCRIPTION }}
+            org.opencontainers.image.url=https://thehive-project.org
+            org.opencontainers.image.source=https://github.com/TheHive-Project/Cortex-Analyzers
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.vendor=TheHive Project
+            org.opencontainers.image.version=${{ env.VERSION }}
 
   build_responders:
     name: Build Responders
@@ -181,8 +263,8 @@ jobs:
   build_catalog:
     name: Build Catalog
     runs-on: ubuntu-latest
-    needs: [ build_responders ]
-    #needs: [ build_analyzers, build_responders ]
+    #needs: [ build_responders ]
+    needs: [ build_analyzers, build_responders ]
     if: always()
     steps:
       - name: Checkout repository
@@ -233,8 +315,8 @@ jobs:
   build_docs:
     name: Build documentation
     runs-on: ubuntu-latest
-    needs: [ build_responders ]
-    #needs: [ build_analyzers, build_responders ]
+    #needs: [ build_responders ]
+    needs: [ build_analyzers, build_responders ]
     if: startsWith(github.ref, 'refs/tags/') && always()
     steps:
       - uses: actions/checkout@v4
@@ -258,8 +340,8 @@ jobs:
 
   notify:
     name: Notify
-    needs: [ build_responders, build_catalog, build_docs ]
-    #needs: [ build_analyzers, build_responders, build_catalog, build_docs ]
+    #needs: [ build_responders, build_catalog, build_docs ]
+    needs: [ build_analyzers, build_responders, build_catalog, build_docs ]
     runs-on: ubuntu-latest
     if: false   # Temporarily disable notifications
     steps:
