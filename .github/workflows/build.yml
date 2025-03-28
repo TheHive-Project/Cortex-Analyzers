@@ -143,24 +143,41 @@ jobs:
         run: |
           image="ghcr.io/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}"
           current_sha="${{ github.sha }}"
-
-          # Pull the image manifest labels from GHCR
-          token=$(echo "${{ secrets.GITHUB_TOKEN }}")
-          labels=$(curl -sL -H "Authorization: Bearer $token" \
-            "https://ghcr.io/v2/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}/manifests/${{ env.VERSION }}" \
+      
+          token="${{ secrets.GITHUB_TOKEN }}"
+      
+          # Fetch image manifest from GHCR
+          manifest_response=$(curl -sSL \
+            -H "Authorization: Bearer $token" \
             -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
-            | jq -r '.config.digest')
-
+            "https://ghcr.io/v2/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}/manifests/${{ env.VERSION }}")
+      
+          # Check if the manifest response contains a valid digest
+          labels=$(echo "$manifest_response" | jq -r '.config.digest // empty')
+      
+          if [[ -z "$labels" ]]; then
+            echo "No existing image or unable to fetch manifest. rebuild needed"
+            echo "rebuild=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+      
           # Fetch image config blob to extract labels
-          image_labels=$(curl -sL -H "Authorization: Bearer $token" \
-            "https://ghcr.io/v2/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}/blobs/$labels" \
-            | jq -r '.config.Labels."org.opencontainers.image.revision"')
-
+          config_response=$(curl -sSL \
+            -H "Authorization: Bearer $token" \
+            "https://ghcr.io/v2/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}/blobs/$labels")
+      
+          # Extract image label safely
+          image_labels=$(echo "$config_response" | jq -r '.config.Labels["org.opencontainers.image.revision"] // empty')
+      
+          # Debugging: print values
+          echo "current_sha: $current_sha"
+          echo "image_labels: $image_labels"
+      
           if [[ "$image_labels" == "$current_sha" ]]; then
             echo "No rebuild needed. SHA matches: $current_sha"
             echo "rebuild=false" >> $GITHUB_OUTPUT
           else
-            echo "SHA mismatch or no existing image. Rebuild needed"
+            echo "SHA mismatch or missing label. rebuild needed"
             echo "rebuild=true" >> $GITHUB_OUTPUT
           fi
       
@@ -293,26 +310,44 @@ jobs:
         run: |
           image="ghcr.io/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}"
           current_sha="${{ github.sha }}"
-
-          # Pull the image manifest labels from GHCR
-          token=$(echo "${{ secrets.GITHUB_TOKEN }}")
-          labels=$(curl -sL -H "Authorization: Bearer $token" \
-            "https://ghcr.io/v2/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}/manifests/${{ env.VERSION }}" \
+      
+          token="${{ secrets.GITHUB_TOKEN }}"
+      
+          # Fetch image manifest from GHCR
+          manifest_response=$(curl -sSL \
+            -H "Authorization: Bearer $token" \
             -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
-            | jq -r '.config.digest')
-
+            "https://ghcr.io/v2/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}/manifests/${{ env.VERSION }}")
+      
+          # Check if the manifest response contains a valid digest
+          labels=$(echo "$manifest_response" | jq -r '.config.digest // empty')
+      
+          if [[ -z "$labels" ]]; then
+            echo "No existing image or unable to fetch manifest. rebuild needed"
+            echo "rebuild=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+      
           # Fetch image config blob to extract labels
-          image_labels=$(curl -sL -H "Authorization: Bearer $token" \
-            "https://ghcr.io/v2/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}/blobs/$labels" \
-            | jq -r '.config.Labels."org.opencontainers.image.revision"')
-
+          config_response=$(curl -sSL \
+            -H "Authorization: Bearer $token" \
+            "https://ghcr.io/v2/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}/blobs/$labels")
+      
+          # Extract image label safely
+          image_labels=$(echo "$config_response" | jq -r '.config.Labels["org.opencontainers.image.revision"] // empty')
+      
+          # Debugging: print values
+          echo "current_sha: $current_sha"
+          echo "image_labels: $image_labels"
+      
           if [[ "$image_labels" == "$current_sha" ]]; then
             echo "No rebuild needed. SHA matches: $current_sha"
             echo "rebuild=false" >> $GITHUB_OUTPUT
           else
-            echo "SHA mismatch or no existing image. Rebuild needed"
+            echo "SHA mismatch or missing label. rebuild needed"
             echo "rebuild=true" >> $GITHUB_OUTPUT
           fi
+        
 
       - name: Set build date
         id: build_date
