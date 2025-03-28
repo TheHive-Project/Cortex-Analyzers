@@ -85,7 +85,7 @@ jobs:
           lower_dir=$(echo "${{ matrix.directory }}" | tr '[:upper:]' '[:lower:]')
           echo "lower_dir=${lower_dir}" >> $GITHUB_ENV
 
-      - name: Set lowercase and sanitized repository owner
+      - name: Set lowercase repository owner
         run: |
           owner="${{ github.repository_owner }}"
           lower_owner=$(echo "$owner" | tr '[:upper:]' '[:lower:]')
@@ -275,7 +275,7 @@ jobs:
           lower_dir=$(echo "${{ matrix.directory }}" | tr '[:upper:]' '[:lower:]')
           echo "lower_dir=${lower_dir}" >> $GITHUB_ENV
 
-      - name: Set lowercase and sanitized repository owner
+      - name: Set lowercase repository owner
         run: |
           owner="${{ github.repository_owner }}"
           lower_owner=$(echo "$owner" | tr '[:upper:]' '[:lower:]')
@@ -442,6 +442,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Set lowercase repository owner
+        run: |
+          owner="${{ github.repository_owner }}"
+          lower_owner=$(echo "$owner" | tr '[:upper:]' '[:lower:]')
+          echo "LOWER_REPO_OWNER=$lower_owner" >> $GITHUB_ENV 
       - name: Build catalog JSON files
         run: |
           build_catalog() {
