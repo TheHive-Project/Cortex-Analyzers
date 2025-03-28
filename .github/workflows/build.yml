@@ -606,7 +606,7 @@ jobs:
             org.opencontainers.image.url=https://thehive-project.org
             org.opencontainers.image.version=${{ env.VERSION }}
 
-      - name: Test imports in the container
+      - name: Test imports in the container (amd64)
         if: steps.check-rebuild.outputs.rebuild == 'true'
         run: |
           python <<EOF
