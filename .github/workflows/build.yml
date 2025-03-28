@@ -191,7 +191,24 @@ jobs:
             echo "IMAGE_TAG=${{ env.VERSION }}" >> $GITHUB_ENV
           else
             echo "IMAGE_TAG=devel" >> $GITHUB_ENV
-          fi        
+          fi
+      
+      - name: Set Platforms
+        id: set_platforms
+        run: |
+          NO_ARM64_DIRS=""
+      
+          CURRENT_DIR="${{ matrix.directory }}"
+          # Default to multi-arch
+          PLATFORMS="linux/amd64,linux/arm64"
+      
+          # Check if CURRENT_DIR is in the NO_ARM64_DIRS list
+          if echo "$NO_ARM64_DIRS" | grep -qw "$CURRENT_DIR"; then
+            echo "Directory '$CURRENT_DIR' is in NO_ARM64_DIRS; limiting to linux/amd64 only."
+            PLATFORMS="linux/amd64"
+          fi
+      
+          echo "PLATFORMS=$PLATFORMS" >> $GITHUB_ENV
 
       - name: Build and push multi-arch image to GHCR
         if: steps.check-rebuild.outputs.rebuild == 'true'
@@ -199,7 +216,7 @@ jobs:
         with:
           context: analyzers/${{ matrix.directory }}
           file: ./analyzers/${{ matrix.directory }}/Dockerfile
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ env.PLATFORMS }}
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
           labels: |
@@ -361,13 +378,30 @@ jobs:
             echo "IMAGE_TAG=devel" >> $GITHUB_ENV
           fi
 
+      - name: Set Platforms
+        id: set_platforms
+        run: |
+          NO_ARM64_DIRS="MSDefenderOffice365"
+      
+          CURRENT_DIR="${{ matrix.directory }}"
+          # Default to multi-arch
+          PLATFORMS="linux/amd64,linux/arm64"
+      
+          # Check if CURRENT_DIR is in the NO_ARM64_DIRS list
+          if echo "$NO_ARM64_DIRS" | grep -qw "$CURRENT_DIR"; then
+            echo "Directory '$CURRENT_DIR' is in NO_ARM64_DIRS; limiting to linux/amd64 only."
+            PLATFORMS="linux/amd64"
+          fi
+      
+          echo "PLATFORMS=$PLATFORMS" >> $GITHUB_ENV
+
       - name: Build and push multi-arch image to GHCR
         if: steps.check-rebuild.outputs.rebuild == 'true'
         uses: docker/build-push-action@v6
         with:
           context: responders/${{ matrix.directory }}
           file: ./responders/${{ matrix.directory }}/Dockerfile
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ env.PLATFORMS }}
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
           labels: |
