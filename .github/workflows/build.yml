@@ -58,6 +58,7 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     strategy:
+      max-parallel: 20
       matrix: ${{ fromJson(needs.generate-matrix.outputs.analyzers_matrix) }}
     steps:
       - name: Checkout repository
@@ -207,6 +208,7 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     strategy:
+      max-parallel: 20
       matrix: ${{ fromJson(needs.generate-matrix.outputs.responders_matrix) }}
     steps:
       - name: Checkout repository
