@@ -162,7 +162,11 @@ jobs:
             echo "SHA mismatch or no existing image. Rebuild needed"
             echo "rebuild=true" >> $GITHUB_OUTPUT
           fi
-  
+      
+      - name: Set build date
+        id: build_date
+        run: echo "date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT" 
+      
       - name: Build and push multi-arch image to GHCR
         if: steps.check-rebuild.outputs.rebuild == 'true'
         uses: docker/build-push-action@v6
@@ -301,7 +305,10 @@ jobs:
             echo "rebuild=true" >> $GITHUB_OUTPUT
           fi
 
-
+      - name: Set build date
+        id: build_date
+        run: echo "date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT" 
+      
       - name: Build and push multi-arch image to GHCR
         if: steps.check-rebuild.outputs.rebuild == 'true'
         uses: docker/build-push-action@v6
