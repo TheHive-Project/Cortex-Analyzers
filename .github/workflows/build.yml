@@ -194,7 +194,7 @@ jobs:
       - name: Set Image Tag
         run: |
           if [[ "${{ github.ref }}" =~ ^refs/tags/ ]] || [ "${{ github.event_name }}" == "schedule" ]; then
-            echo "IMAGE_TAG=${{ env.VERSION }}" >> $GITHUB_ENV
+            echo "IMAGE_TAG=${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
           else
             echo "IMAGE_TAG=devel" >> $GITHUB_ENV
           fi
@@ -558,7 +558,7 @@ jobs:
       - name: Set Image Tag
         run: |
           if [[ "${{ github.ref }}" =~ ^refs/tags/ ]] || [ "${{ github.event_name }}" == "schedule" ]; then
-            echo "IMAGE_TAG=${{ env.VERSION }}" >> $GITHUB_ENV
+            echo "IMAGE_TAG=${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
           else
             echo "IMAGE_TAG=devel" >> $GITHUB_ENV
           fi
