@@ -28,27 +28,48 @@ jobs:
         id: set-matrix
         run: |
           echo "Building analyzers matrix..."
+          # define your lists of allowed directories for analyzers and responders for targeted build
+          # If you want to disable filtering, set the corresponding flag to "false"
+          filter_analyzers="true"
+          filter_responders="true"
+          
+          allowed_analyzers="Hippocampe|Diario|EmlParser|ClamAV|FileInfo|Maltiverse|MalwareClustering"
+          allowed_responders="VirustotalDownloader|RT4|MSDefenderOffice365|Jupyter_Responder"
+          
+          # If filtering is disabled, use a regex that matches everything.
+          if [ "$filter_analyzers" != "true" ]; then
+            allowed_analyzers=".*"
+          fi
+          
+          if [ "$filter_responders" != "true" ]; then
+            allowed_responders=".*"
+          fi
+          
+          echo "Building analyzers matrix..."
           analyzers_matrix=$(find analyzers -type f -name '*.json' -printf '%P\n' | \
+            grep -E "^($allowed_analyzers)/" | \
             jq -R -s -c 'split("\n")[:-1] | map({directory: (split("/")[0]), path: .}) | {include: .}')
-
+          
           echo "Building responders matrix..."
           responders_matrix=$(find responders -type f -name '*.json' -printf '%P\n' | \
+            grep -E "^($allowed_responders)/" | \
             jq -R -s -c 'split("\n")[:-1] | map({directory: (split("/")[0]), path: .}) | {include: .}')
-
+          
           echo "Generated analyzers matrix: $analyzers_matrix"
           echo "Generated responders matrix: $responders_matrix"
-
+          
           {
             echo "analyzers_matrix<<EOF"
             echo "$analyzers_matrix"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
-
+          
           {
             echo "responders_matrix<<EOF"
             echo "$responders_matrix"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
+
 
         
           
@@ -204,7 +225,7 @@ jobs:
           else
             echo "IMAGE_TAG=devel" >> $GITHUB_ENV
             # Only the :devel tag
-            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:devel,ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:latest" >> $GITHUB_ENV
+            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:devel" >> $GITHUB_ENV
           fi
       
       - name: Set Platforms
@@ -585,7 +606,7 @@ jobs:
           else
             echo "IMAGE_TAG=devel" >> $GITHUB_ENV
             # Only the :devel tag
-            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:devel,ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:latest" >> $GITHUB_ENV
+            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:devel" >> $GITHUB_ENV
           fi
 
       - name: Set Platforms
