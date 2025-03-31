@@ -191,12 +191,17 @@ jobs:
         id: build_date
         run: echo "date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT" 
   
-      - name: Set Image Tag
+      - name: Set Image Tags
         run: |
           if [[ "${{ github.ref }}" =~ ^refs/tags/ ]] || [ "${{ github.event_name }}" == "schedule" ]; then
-            echo "IMAGE_TAG=${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
+            # Produce three tags:
+            #   1) :VERSION  (e.g. 2.0)
+            #   2) :VERSION_SPLIT  (e.g. 2)
+            #   3) :latest
+            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }},ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION_SPLIT }},ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:latest" >> $GITHUB_ENV
           else
-            echo "IMAGE_TAG=devel" >> $GITHUB_ENV
+            # Only the :devel tag
+            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:devel" >> $GITHUB_ENV
           fi
       
       - name: Set Platforms
@@ -224,7 +229,7 @@ jobs:
           file: ./analyzers/${{ matrix.directory }}/Dockerfile
           platforms: ${{ env.PLATFORMS }}
           push: true
-          tags: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
+          tags: ${{ env.IMAGE_TAGS }}
           labels: |
             org.opencontainers.image.created=${{ steps.build_date.outputs.date }}
             org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
@@ -555,12 +560,17 @@ jobs:
         id: build_date
         run: echo "date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT" 
       
-      - name: Set Image Tag
+      - name: Set Image Tags
         run: |
           if [[ "${{ github.ref }}" =~ ^refs/tags/ ]] || [ "${{ github.event_name }}" == "schedule" ]; then
-            echo "IMAGE_TAG=${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
+            # Produce three tags:
+            #   1) :VERSION  (e.g. 2.0)
+            #   2) :VERSION_SPLIT  (e.g. 2)
+            #   3) :latest
+            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }},ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION_SPLIT }},ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:latest" >> $GITHUB_ENV
           else
-            echo "IMAGE_TAG=devel" >> $GITHUB_ENV
+            # Only the :devel tag
+            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:devel" >> $GITHUB_ENV
           fi
 
       - name: Set Platforms
@@ -588,7 +598,7 @@ jobs:
           file: ./responders/${{ matrix.directory }}/Dockerfile
           platforms: ${{ env.PLATFORMS }}
           push: true
-          tags: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
+          tags: ${{ env.IMAGE_TAGS }}
           labels: |
             org.opencontainers.image.created=${{ steps.build_date.outputs.date }}
             org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
