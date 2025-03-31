@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.5.7](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.7) (2025-03-28)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.6...3.5.7)
+
+## [3.5.6](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.6) (2025-03-28)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.5...3.5.6)
+
+## [3.5.5](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.5) (2025-03-28)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.4...3.5.5)
+
 ## [3.5.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.4) (2025-03-28)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.3...3.5.4)
@@ -7,6 +19,11 @@
 **Closed issues:**
 
 - \[FR\] CI Refactor - ARM64 support & GHCR migration [\#1343](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1343)
+
+**Merged pull requests:**
+
+- CI Refactor - GHCR.io migration / ARM64 Support [\#1341](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1341) ([nusantara-self](https://github.com/nusantara-self))
+- CI Refactor - GHCR.io migration / ARM64 Support [\#1342](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1342) ([nusantara-self](https://github.com/nusantara-self))
 
 ## [3.5.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.3) (2025-03-18)
 
