@@ -194,12 +194,15 @@ jobs:
       - name: Set Image Tags
         run: |
           if [[ "${{ github.ref }}" =~ ^refs/tags/ ]] || [ "${{ github.event_name }}" == "schedule" ]; then
+            # Keep one image tag for import testing
+            echo "IMAGE_TAG=${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
             # Produce three tags:
             #   1) :VERSION  (e.g. 2.0)
             #   2) :VERSION_SPLIT  (e.g. 2)
             #   3) :latest
             echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }},ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION_SPLIT }},ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:latest" >> $GITHUB_ENV
           else
+            echo "IMAGE_TAG=devel" >> $GITHUB_ENV
             # Only the :devel tag
             echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:devel" >> $GITHUB_ENV
           fi
@@ -258,16 +261,16 @@ jobs:
           image_tag = "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
           command = "${{ env.COMMAND }}"
           worker_name = "${{ matrix.directory }}"
-          
-          print(f"🔍 Testing Python imports in built image '{image_tag}' for worker '{worker_name}'...")
-          
+
+          print(f"🔍 Testing (amd64) Python imports in built image '{image_tag}' for worker '{worker_name}'...")
+
           # in-container python snippet:
           test_code = textwrap.dedent(f'''
               import os, sys, re, os.path as osp
-          
+
               entrypoint_full = "{command}"
               fallback_dir = "{worker_name}"
-          
+
               if "/" in entrypoint_full:
                   dir_part = osp.dirname(entrypoint_full)
                   file_part = osp.basename(entrypoint_full)
@@ -278,14 +281,14 @@ jobs:
                   entrypoint = file_part
               else:
                   entrypoint = entrypoint_full
-          
+
               if not osp.exists(entrypoint):
                   print("❌ ERROR: {{}} not found inside the container.".format(entrypoint))
                   sys.exit(1)
-          
+
               with open(entrypoint, 'r', encoding='utf-8') as f:
                   content = f.readlines()
-          
+
               imports = [line.strip() for line in content if re.match(r'^\\s*(import|from)\\s+[a-zA-Z0-9_.]+', line)]
               print("🔍 Checking Python imports from", entrypoint)
               for imp in imports:
@@ -295,37 +298,46 @@ jobs:
                   except Exception as e:
                       print("❌", imp, "- FAILED:", e)
                       sys.exit(1)
-          
+
               print("✅ All imports tested successfully!")
           ''')
-          
+
           try:
-              # Pull the image first so we see logs if it's missing
-              pull_result = subprocess.run(["docker", "pull", image_tag], capture_output=True, text=True)
+              # Pull the amd64 variant explicitly
+              pull_result = subprocess.run(
+                  ["docker", "pull", "--platform", "linux/amd64", image_tag],
+                  capture_output=True,
+                  text=True
+              )
               print(pull_result.stdout, file=sys.stdout)
               print(pull_result.stderr, file=sys.stderr)
-          
-              # run the container with our Python code
+
+              # Run the container with your python test code on amd64
               result = subprocess.run(
-                  ["docker", "run", "--rm", "--entrypoint", "python", image_tag, "-c", test_code],
+                  [
+                      "docker", "run", "--rm",
+                      "--platform", "linux/amd64",
+                      "--entrypoint", "python",
+                      image_tag,
+                      "-c", test_code
+                  ],
                   capture_output=True,
                   text=True
               )
               # Print the container's logs
               print(result.stdout, file=sys.stdout)
               print(result.stderr, file=sys.stderr)
-          
+
               if result.returncode != 0:
-                  warning_message = f"Import testing FAILED for worker '{worker_name}' with exit code {result.returncode}"
+                  warning_message = f"Import testing FAILED (amd64) for worker '{worker_name}' with exit code {result.returncode}"
                   print("⚠️", warning_message)
                   # GitHub Actions annotation for warning
                   print(f"::warning::{warning_message}")
               else:
-                  print("✅ Import testing succeeded")
-          
+                  print("✅ Import testing succeeded (amd64)")
+
           except Exception as e:
-              print("Error during import testing:", e)
-              # to fail the entire job, do sys.exit(1)
+              print("::warning::Error during import testing (amd64):", e)
               sys.exit(1)
           EOF
 
@@ -563,12 +575,15 @@ jobs:
       - name: Set Image Tags
         run: |
           if [[ "${{ github.ref }}" =~ ^refs/tags/ ]] || [ "${{ github.event_name }}" == "schedule" ]; then
+            # Keep one image tag for import testing
+            echo "IMAGE_TAG=${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
             # Produce three tags:
             #   1) :VERSION  (e.g. 2.0)
             #   2) :VERSION_SPLIT  (e.g. 2)
             #   3) :latest
             echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }},ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION_SPLIT }},ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:latest" >> $GITHUB_ENV
           else
+            echo "IMAGE_TAG=devel" >> $GITHUB_ENV
             # Only the :devel tag
             echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:devel" >> $GITHUB_ENV
           fi
@@ -627,16 +642,16 @@ jobs:
           image_tag = "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
           command = "${{ env.COMMAND }}"
           worker_name = "${{ matrix.directory }}"
-          
-          print(f"🔍 Testing Python imports in built image '{image_tag}' for worker '{worker_name}'...")
-          
+
+          print(f"🔍 Testing (amd64) Python imports in built image '{image_tag}' for worker '{worker_name}'...")
+
           # in-container python snippet:
           test_code = textwrap.dedent(f'''
               import os, sys, re, os.path as osp
-          
+
               entrypoint_full = "{command}"
               fallback_dir = "{worker_name}"
-          
+
               if "/" in entrypoint_full:
                   dir_part = osp.dirname(entrypoint_full)
                   file_part = osp.basename(entrypoint_full)
@@ -647,14 +662,14 @@ jobs:
                   entrypoint = file_part
               else:
                   entrypoint = entrypoint_full
-          
+
               if not osp.exists(entrypoint):
                   print("❌ ERROR: {{}} not found inside the container.".format(entrypoint))
                   sys.exit(1)
-          
+
               with open(entrypoint, 'r', encoding='utf-8') as f:
                   content = f.readlines()
-          
+
               imports = [line.strip() for line in content if re.match(r'^\\s*(import|from)\\s+[a-zA-Z0-9_.]+', line)]
               print("🔍 Checking Python imports from", entrypoint)
               for imp in imports:
@@ -664,37 +679,46 @@ jobs:
                   except Exception as e:
                       print("❌", imp, "- FAILED:", e)
                       sys.exit(1)
-          
+
               print("✅ All imports tested successfully!")
           ''')
-          
+
           try:
-              # Pull the image first so we see logs if it's missing
-              pull_result = subprocess.run(["docker", "pull", image_tag], capture_output=True, text=True)
+              # Pull the amd64 variant explicitly
+              pull_result = subprocess.run(
+                  ["docker", "pull", "--platform", "linux/amd64", image_tag],
+                  capture_output=True,
+                  text=True
+              )
               print(pull_result.stdout, file=sys.stdout)
               print(pull_result.stderr, file=sys.stderr)
-          
-              # run the container with our Python code
+
+              # Run the container with your python test code on amd64
               result = subprocess.run(
-                  ["docker", "run", "--rm", "--entrypoint", "python", image_tag, "-c", test_code],
+                  [
+                      "docker", "run", "--rm",
+                      "--platform", "linux/amd64",
+                      "--entrypoint", "python",
+                      image_tag,
+                      "-c", test_code
+                  ],
                   capture_output=True,
                   text=True
               )
               # Print the container's logs
               print(result.stdout, file=sys.stdout)
               print(result.stderr, file=sys.stderr)
-          
+
               if result.returncode != 0:
-                  warning_message = f"Import testing FAILED for worker '{worker_name}' with exit code {result.returncode}"
+                  warning_message = f"Import testing FAILED (amd64) for worker '{worker_name}' with exit code {result.returncode}"
                   print("⚠️", warning_message)
                   # GitHub Actions annotation for warning
                   print(f"::warning::{warning_message}")
               else:
-                  print("✅ Import testing succeeded")
-          
+                  print("✅ Import testing succeeded (amd64)")
+
           except Exception as e:
-              print("Error during import testing:", e)
-              # to fail the entire job, do sys.exit(1)
+              print("::warning::Error during import testing (amd64):", e)
               sys.exit(1)
           EOF
           
