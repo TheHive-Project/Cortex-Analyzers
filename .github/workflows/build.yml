@@ -28,27 +28,48 @@ jobs:
         id: set-matrix
         run: |
           echo "Building analyzers matrix..."
+          # define your lists of allowed directories for analyzers and responders for targeted build
+          # If you want to disable filtering, set the corresponding flag to "false"
+          filter_analyzers="false"
+          filter_responders="false"
+          
+          allowed_analyzers="Hippocampe|Diario|EmlParser|ClamAV|FileInfo"
+          allowed_responders="MSDefenderOffice365"
+          
+          # If filtering is disabled, use a regex that matches everything.
+          if [ "$filter_analyzers" != "true" ]; then
+            allowed_analyzers=".*"
+          fi
+          
+          if [ "$filter_responders" != "true" ]; then
+            allowed_responders=".*"
+          fi
+          
+          echo "Building analyzers matrix..."
           analyzers_matrix=$(find analyzers -type f -name '*.json' -printf '%P\n' | \
+            grep -E "^($allowed_analyzers)/" | \
             jq -R -s -c 'split("\n")[:-1] | map({directory: (split("/")[0]), path: .}) | {include: .}')
-
+          
           echo "Building responders matrix..."
           responders_matrix=$(find responders -type f -name '*.json' -printf '%P\n' | \
+            grep -E "^($allowed_responders)/" | \
             jq -R -s -c 'split("\n")[:-1] | map({directory: (split("/")[0]), path: .}) | {include: .}')
-
+          
           echo "Generated analyzers matrix: $analyzers_matrix"
           echo "Generated responders matrix: $responders_matrix"
-
+          
           {
             echo "analyzers_matrix<<EOF"
             echo "$analyzers_matrix"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
-
+          
           {
             echo "responders_matrix<<EOF"
             echo "$responders_matrix"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
+
 
         
           
@@ -191,12 +212,20 @@ jobs:
         id: build_date
         run: echo "date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT" 
   
-      - name: Set Image Tag
+      - name: Set Image Tags
         run: |
           if [[ "${{ github.ref }}" =~ ^refs/tags/ ]] || [ "${{ github.event_name }}" == "schedule" ]; then
+            # Keep one image tag for import testing
             echo "IMAGE_TAG=${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
+            # Produce three tags:
+            #   1) :VERSION  (e.g. 2.0)
+            #   2) :VERSION_SPLIT  (e.g. 2)
+            #   3) :latest
+            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }},ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
           else
             echo "IMAGE_TAG=devel" >> $GITHUB_ENV
+            # Only the :devel tag
+            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:devel" >> $GITHUB_ENV
           fi
       
       - name: Set Platforms
@@ -224,7 +253,7 @@ jobs:
           file: ./analyzers/${{ matrix.directory }}/Dockerfile
           platforms: ${{ env.PLATFORMS }}
           push: true
-          tags: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
+          tags: ${{ env.IMAGE_TAGS }}
           labels: |
             org.opencontainers.image.created=${{ steps.build_date.outputs.date }}
             org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
@@ -241,6 +270,215 @@ jobs:
             org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
             org.opencontainers.image.url=https://thehive-project.org
             org.opencontainers.image.version=${{ env.VERSION }}
+
+      - name: Test imports in the container (amd64)
+        if: ${{ steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/amd64') }}
+        run: |
+          python <<EOF
+          import subprocess
+          import sys
+          import textwrap
+          
+          image_tag = "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
+          command = "${{ env.COMMAND }}"
+          worker_name = "${{ matrix.directory }}"
+      
+          print(f"🔍 Testing (amd64) Python imports in built image '{image_tag}' for worker '{worker_name}'...")
+      
+          # in-container python snippet (AST-based import checking):
+          test_code = textwrap.dedent(f'''
+              import os, sys, ast, os.path as osp
+      
+              entrypoint_full = "{command}"
+              fallback_dir = "{worker_name}"
+      
+              if "/" in entrypoint_full:
+                  dir_part = osp.dirname(entrypoint_full)
+                  file_part = osp.basename(entrypoint_full)
+                  # If directory doesn't exist but fallback_dir does, change to fallback.
+                  if not osp.isdir(dir_part) and osp.isdir(fallback_dir):
+                      dir_part = fallback_dir
+                  os.chdir(osp.join(os.getcwd(), dir_part))
+                  entrypoint = file_part
+              else:
+                  entrypoint = entrypoint_full
+      
+              if not osp.exists(entrypoint):
+                  print("❌ ERROR: {{}} not found inside the container.".format(entrypoint))
+                  sys.exit(1)
+      
+              with open(entrypoint, 'r', encoding='utf-8') as f:
+                  source = f.read()
+      
+              try:
+                  tree = ast.parse(source)
+              except SyntaxError as e:
+                  print(f"❌ Syntax error in {{entrypoint}}: {{e}}")
+                  sys.exit(1)
+      
+              imports = []
+              for node in ast.walk(tree):
+                  if isinstance(node, ast.Import):
+                      for alias in node.names:
+                          imports.append(alias.name)
+                  elif isinstance(node, ast.ImportFrom):
+                      if node.module:
+                          imports.append(node.module)
+      
+              print("🔍 Checking Python imports from", entrypoint)
+              for mod in set(imports):
+                  try:
+                      __import__(mod)
+                      print(f"✅ {{mod}} - SUCCESS")
+                  except Exception as e:
+                      print(f"❌ {{mod}} - FAILED: {{e}}")
+                      sys.exit(1)
+      
+              print("✅ All imports tested successfully!")
+          ''')
+      
+          try:
+              # Pull the amd64 variant explicitly
+              pull_result = subprocess.run(
+                  ["docker", "pull", "--platform", "linux/amd64", image_tag],
+                  capture_output=True,
+                  text=True
+              )
+              print(pull_result.stdout, file=sys.stdout)
+              print(pull_result.stderr, file=sys.stderr)
+      
+              # Run the container with the Python test code
+              result = subprocess.run(
+                  [
+                      "docker", "run", "--rm",
+                      "--platform", "linux/amd64",
+                      "--entrypoint", "python",
+                      image_tag,
+                      "-c", test_code
+                  ],
+                  capture_output=True,
+                  text=True
+              )
+              # Print container logs
+              print(result.stdout, file=sys.stdout)
+              print(result.stderr, file=sys.stderr)
+      
+              if result.returncode != 0:
+                  warning_message = f"Import testing FAILED (amd64) for worker '{worker_name}' with exit code {result.returncode}"
+                  print("⚠️", warning_message)
+                  print(f"::warning::{warning_message}")
+              else:
+                  print("✅ Import testing succeeded (amd64)")
+      
+          except Exception as e:
+              print("::warning::Error during import testing (amd64):", e)
+              sys.exit(1)
+          EOF
+
+
+      - name: Test imports in the container (arm64)
+        if: ${{ steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/arm64') }}
+        run: |
+          python <<EOF
+          import subprocess
+          import sys
+          import textwrap
+          
+          image_tag = "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
+          command = "${{ env.COMMAND }}"
+          worker_name = "${{ matrix.directory }}"
+      
+          print(f"🔍 Testing (arm64) Python imports in built image '{image_tag}' for worker '{worker_name}'...")
+      
+          # in-container python snippet (AST-based import checking):
+          test_code = textwrap.dedent(f'''
+              import os, sys, ast, os.path as osp
+      
+              entrypoint_full = "{command}"
+              fallback_dir = "{worker_name}"
+      
+              if "/" in entrypoint_full:
+                  dir_part = osp.dirname(entrypoint_full)
+                  file_part = osp.basename(entrypoint_full)
+                  # If directory doesn't exist but fallback_dir does, change to fallback.
+                  if not osp.isdir(dir_part) and osp.isdir(fallback_dir):
+                      dir_part = fallback_dir
+                  os.chdir(osp.join(os.getcwd(), dir_part))
+                  entrypoint = file_part
+              else:
+                  entrypoint = entrypoint_full
+      
+              if not osp.exists(entrypoint):
+                  print("❌ ERROR: {{}} not found inside the container.".format(entrypoint))
+                  sys.exit(1)
+      
+              with open(entrypoint, 'r', encoding='utf-8') as f:
+                  source = f.read()
+      
+              try:
+                  tree = ast.parse(source)
+              except SyntaxError as e:
+                  print(f"❌ Syntax error in {{entrypoint}}: {{e}}")
+                  sys.exit(1)
+      
+              imports = []
+              for node in ast.walk(tree):
+                  if isinstance(node, ast.Import):
+                      for alias in node.names:
+                          imports.append(alias.name)
+                  elif isinstance(node, ast.ImportFrom):
+                      if node.module:
+                          imports.append(node.module)
+      
+              print("🔍 Checking Python imports from", entrypoint)
+              for mod in set(imports):
+                  try:
+                      __import__(mod)
+                      print(f"✅ {{mod}} - SUCCESS")
+                  except Exception as e:
+                      print(f"❌ {{mod}} - FAILED: {{e}}")
+                      sys.exit(1)
+      
+              print("✅ All imports tested successfully!")
+          ''')
+      
+          try:
+              # Pull the arm64 variant explicitly
+              pull_result = subprocess.run(
+                  ["docker", "pull", "--platform", "linux/arm64", image_tag],
+                  capture_output=True,
+                  text=True
+              )
+              print(pull_result.stdout, file=sys.stdout)
+              print(pull_result.stderr, file=sys.stderr)
+      
+              # Run the container with the Python test code
+              result = subprocess.run(
+                  [
+                      "docker", "run", "--rm",
+                      "--platform", "linux/arm64",
+                      "--entrypoint", "python",
+                      image_tag,
+                      "-c", test_code
+                  ],
+                  capture_output=True,
+                  text=True
+              )
+              # Print container logs
+              print(result.stdout, file=sys.stdout)
+              print(result.stderr, file=sys.stderr)
+      
+              if result.returncode != 0:
+                  warning_message = f"Import testing FAILED (arm64) for worker '{worker_name}' with exit code {result.returncode}"
+                  print("⚠️", warning_message)
+                  print(f"::warning::{warning_message}")
+              else:
+                  print("✅ Import testing succeeded (arm64)")
+      
+          except Exception as e:
+              print("::warning::Error during import testing (arm64):", e)
+              sys.exit(1)
+          EOF
 
   build_responders:
     name: Build Responders
@@ -382,12 +620,20 @@ jobs:
         id: build_date
         run: echo "date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT" 
       
-      - name: Set Image Tag
+      - name: Set Image Tags
         run: |
           if [[ "${{ github.ref }}" =~ ^refs/tags/ ]] || [ "${{ github.event_name }}" == "schedule" ]; then
+            # Keep one image tag for import testing
             echo "IMAGE_TAG=${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
+            # Produce three tags:
+            #   1) :VERSION  (e.g. 2.0)
+            #   2) :VERSION_SPLIT  (e.g. 2)
+            #   3) :latest
+            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }},ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
           else
             echo "IMAGE_TAG=devel" >> $GITHUB_ENV
+            # Only the :devel tag
+            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:devel" >> $GITHUB_ENV
           fi
 
       - name: Set Platforms
@@ -415,7 +661,7 @@ jobs:
           file: ./responders/${{ matrix.directory }}/Dockerfile
           platforms: ${{ env.PLATFORMS }}
           push: true
-          tags: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
+          tags: ${{ env.IMAGE_TAGS }}
           labels: |
             org.opencontainers.image.created=${{ steps.build_date.outputs.date }}
             org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
@@ -432,7 +678,217 @@ jobs:
             org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
             org.opencontainers.image.url=https://thehive-project.org
             org.opencontainers.image.version=${{ env.VERSION }}
-            
+
+      - name: Test imports in the container (amd64)
+        if: ${{ steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/amd64') }}
+        run: |
+          python <<EOF
+          import subprocess
+          import sys
+          import textwrap
+          
+          image_tag = "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
+          command = "${{ env.COMMAND }}"
+          worker_name = "${{ matrix.directory }}"
+      
+          print(f"🔍 Testing (amd64) Python imports in built image '{image_tag}' for worker '{worker_name}'...")
+      
+          # in-container python snippet (AST-based import checking):
+          test_code = textwrap.dedent(f'''
+              import os, sys, ast, os.path as osp
+      
+              entrypoint_full = "{command}"
+              fallback_dir = "{worker_name}"
+      
+              if "/" in entrypoint_full:
+                  dir_part = osp.dirname(entrypoint_full)
+                  file_part = osp.basename(entrypoint_full)
+                  # If directory doesn't exist but fallback_dir does, change to fallback.
+                  if not osp.isdir(dir_part) and osp.isdir(fallback_dir):
+                      dir_part = fallback_dir
+                  os.chdir(osp.join(os.getcwd(), dir_part))
+                  entrypoint = file_part
+              else:
+                  entrypoint = entrypoint_full
+      
+              if not osp.exists(entrypoint):
+                  print("❌ ERROR: {{}} not found inside the container.".format(entrypoint))
+                  sys.exit(1)
+      
+              with open(entrypoint, 'r', encoding='utf-8') as f:
+                  source = f.read()
+      
+              try:
+                  tree = ast.parse(source)
+              except SyntaxError as e:
+                  print(f"❌ Syntax error in {{entrypoint}}: {{e}}")
+                  sys.exit(1)
+      
+              imports = []
+              for node in ast.walk(tree):
+                  if isinstance(node, ast.Import):
+                      for alias in node.names:
+                          imports.append(alias.name)
+                  elif isinstance(node, ast.ImportFrom):
+                      if node.module:
+                          imports.append(node.module)
+      
+              print("🔍 Checking Python imports from", entrypoint)
+              for mod in set(imports):
+                  try:
+                      __import__(mod)
+                      print(f"✅ {{mod}} - SUCCESS")
+                  except Exception as e:
+                      print(f"❌ {{mod}} - FAILED: {{e}}")
+                      sys.exit(1)
+      
+              print("✅ All imports tested successfully!")
+          ''')
+      
+          try:
+              # Pull the amd64 variant explicitly
+              pull_result = subprocess.run(
+                  ["docker", "pull", "--platform", "linux/amd64", image_tag],
+                  capture_output=True,
+                  text=True
+              )
+              print(pull_result.stdout, file=sys.stdout)
+              print(pull_result.stderr, file=sys.stderr)
+      
+              # Run the container with the Python test code
+              result = subprocess.run(
+                  [
+                      "docker", "run", "--rm",
+                      "--platform", "linux/amd64",
+                      "--entrypoint", "python",
+                      image_tag,
+                      "-c", test_code
+                  ],
+                  capture_output=True,
+                  text=True
+              )
+              # Print container logs
+              print(result.stdout, file=sys.stdout)
+              print(result.stderr, file=sys.stderr)
+      
+              if result.returncode != 0:
+                  warning_message = f"Import testing FAILED (amd64) for worker '{worker_name}' with exit code {result.returncode}"
+                  print("⚠️", warning_message)
+                  print(f"::warning::{warning_message}")
+              else:
+                  print("✅ Import testing succeeded (amd64)")
+      
+          except Exception as e:
+              print("::warning::Error during import testing (amd64):", e)
+              sys.exit(1)
+          EOF
+
+          
+      - name: Test imports in the container (arm64)
+        if: ${{ steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/arm64') }}
+        run: |
+          python <<EOF
+          import subprocess
+          import sys
+          import textwrap
+          
+          image_tag = "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
+          command = "${{ env.COMMAND }}"
+          worker_name = "${{ matrix.directory }}"
+      
+          print(f"🔍 Testing (arm64) Python imports in built image '{image_tag}' for worker '{worker_name}'...")
+      
+          # in-container python snippet (AST-based import checking):
+          test_code = textwrap.dedent(f'''
+              import os, sys, ast, os.path as osp
+      
+              entrypoint_full = "{command}"
+              fallback_dir = "{worker_name}"
+      
+              if "/" in entrypoint_full:
+                  dir_part = osp.dirname(entrypoint_full)
+                  file_part = osp.basename(entrypoint_full)
+                  # If directory doesn't exist but fallback_dir does, change to fallback.
+                  if not osp.isdir(dir_part) and osp.isdir(fallback_dir):
+                      dir_part = fallback_dir
+                  os.chdir(osp.join(os.getcwd(), dir_part))
+                  entrypoint = file_part
+              else:
+                  entrypoint = entrypoint_full
+      
+              if not osp.exists(entrypoint):
+                  print("❌ ERROR: {{}} not found inside the container.".format(entrypoint))
+                  sys.exit(1)
+      
+              with open(entrypoint, 'r', encoding='utf-8') as f:
+                  source = f.read()
+      
+              try:
+                  tree = ast.parse(source)
+              except SyntaxError as e:
+                  print(f"❌ Syntax error in {{entrypoint}}: {{e}}")
+                  sys.exit(1)
+      
+              imports = []
+              for node in ast.walk(tree):
+                  if isinstance(node, ast.Import):
+                      for alias in node.names:
+                          imports.append(alias.name)
+                  elif isinstance(node, ast.ImportFrom):
+                      if node.module:
+                          imports.append(node.module)
+      
+              print("🔍 Checking Python imports from", entrypoint)
+              for mod in set(imports):
+                  try:
+                      __import__(mod)
+                      print(f"✅ {{mod}} - SUCCESS")
+                  except Exception as e:
+                      print(f"❌ {{mod}} - FAILED: {{e}}")
+                      sys.exit(1)
+      
+              print("✅ All imports tested successfully!")
+          ''')
+      
+          try:
+              # Pull the arm64 variant explicitly
+              pull_result = subprocess.run(
+                  ["docker", "pull", "--platform", "linux/arm64", image_tag],
+                  capture_output=True,
+                  text=True
+              )
+              print(pull_result.stdout, file=sys.stdout)
+              print(pull_result.stderr, file=sys.stderr)
+      
+              # Run the container with the Python test code
+              result = subprocess.run(
+                  [
+                      "docker", "run", "--rm",
+                      "--platform", "linux/arm64",
+                      "--entrypoint", "python",
+                      image_tag,
+                      "-c", test_code
+                  ],
+                  capture_output=True,
+                  text=True
+              )
+              # Print container logs
+              print(result.stdout, file=sys.stdout)
+              print(result.stderr, file=sys.stderr)
+      
+              if result.returncode != 0:
+                  warning_message = f"Import testing FAILED (arm64) for worker '{worker_name}' with exit code {result.returncode}"
+                  print("⚠️", warning_message)
+                  print(f"::warning::{warning_message}")
+              else:
+                  print("✅ Import testing succeeded (arm64)")
+      
+          except Exception as e:
+              print("::warning::Error during import testing (arm64):", e)
+              sys.exit(1)
+          EOF
+
+  
   build_catalog:
     name: Build Catalog
     runs-on: ubuntu-latest
