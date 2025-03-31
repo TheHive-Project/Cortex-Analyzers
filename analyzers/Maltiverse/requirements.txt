@@ -1,5 +1,5 @@
 cortexutils
 future
 requests
-git+https://github.com/maltiverse/python-maltiverse
+maltiverse
 PyJWT

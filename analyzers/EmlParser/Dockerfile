@@ -12,12 +12,11 @@
 #
 # 
 
-
-
 FROM python:3-slim
 WORKDIR /worker
-COPY . EmlParser
-RUN test ! -e EmlParser/requirements.txt || pip install --no-cache-dir -r EmlParser/requirements.txt
 RUN apt update
-RUN apt install -y wkhtmltopdf libmagic1
-ENTRYPOINT EmlParser/parse.py
+RUN apt install -y wkhtmltopdf python3-magic
+COPY requirements.txt EmlParser/
+RUN test ! -e EmlParser/requirements.txt || pip install --no-cache-dir -r EmlParser/requirements.txt
+COPY . EmlParser/
+ENTRYPOINT ["python", "EmlParser/parse.py"]
