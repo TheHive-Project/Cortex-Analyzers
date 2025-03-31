@@ -282,16 +282,16 @@ jobs:
           image_tag = "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
           command = "${{ env.COMMAND }}"
           worker_name = "${{ matrix.directory }}"
-
+      
           print(f"🔍 Testing (amd64) Python imports in built image '{image_tag}' for worker '{worker_name}'...")
-
-          # in-container python snippet:
+      
+          # in-container python snippet (AST-based import checking):
           test_code = textwrap.dedent(f'''
-              import os, sys, re, os.path as osp
-
+              import os, sys, ast, os.path as osp
+      
               entrypoint_full = "{command}"
               fallback_dir = "{worker_name}"
-
+      
               if "/" in entrypoint_full:
                   dir_part = osp.dirname(entrypoint_full)
                   file_part = osp.basename(entrypoint_full)
@@ -302,27 +302,41 @@ jobs:
                   entrypoint = file_part
               else:
                   entrypoint = entrypoint_full
-
+      
               if not osp.exists(entrypoint):
                   print("❌ ERROR: {{}} not found inside the container.".format(entrypoint))
                   sys.exit(1)
-
+      
               with open(entrypoint, 'r', encoding='utf-8') as f:
-                  content = f.readlines()
-
-              imports = [line.strip() for line in content if re.match(r'^\\s*(import|from)\\s+[a-zA-Z0-9_.]+', line)]
+                  source = f.read()
+      
+              try:
+                  tree = ast.parse(source)
+              except SyntaxError as e:
+                  print(f"❌ Syntax error in {{entrypoint}}: {{e}}")
+                  sys.exit(1)
+      
+              imports = []
+              for node in ast.walk(tree):
+                  if isinstance(node, ast.Import):
+                      for alias in node.names:
+                          imports.append(alias.name)
+                  elif isinstance(node, ast.ImportFrom):
+                      if node.module:
+                          imports.append(node.module)
+      
               print("🔍 Checking Python imports from", entrypoint)
-              for imp in imports:
+              for mod in set(imports):
                   try:
-                      exec(imp)
-                      print("✅", imp, "- SUCCESS")
+                      __import__(mod)
+                      print(f"✅ {{mod}} - SUCCESS")
                   except Exception as e:
-                      print("❌", imp, "- FAILED:", e)
+                      print(f"❌ {{mod}} - FAILED: {{e}}")
                       sys.exit(1)
-
+      
               print("✅ All imports tested successfully!")
           ''')
-
+      
           try:
               # Pull the amd64 variant explicitly
               pull_result = subprocess.run(
@@ -332,8 +346,8 @@ jobs:
               )
               print(pull_result.stdout, file=sys.stdout)
               print(pull_result.stderr, file=sys.stderr)
-
-              # Run the container with your python test code on amd64
+      
+              # Run the container with the Python test code
               result = subprocess.run(
                   [
                       "docker", "run", "--rm",
@@ -345,22 +359,22 @@ jobs:
                   capture_output=True,
                   text=True
               )
-              # Print the container's logs
+              # Print container logs
               print(result.stdout, file=sys.stdout)
               print(result.stderr, file=sys.stderr)
-
+      
               if result.returncode != 0:
                   warning_message = f"Import testing FAILED (amd64) for worker '{worker_name}' with exit code {result.returncode}"
                   print("⚠️", warning_message)
-                  # GitHub Actions annotation for warning
                   print(f"::warning::{warning_message}")
               else:
                   print("✅ Import testing succeeded (amd64)")
-
+      
           except Exception as e:
               print("::warning::Error during import testing (amd64):", e)
               sys.exit(1)
           EOF
+
 
       - name: Test imports in the container (arm64)
         if: ${{ steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/arm64') }}
@@ -373,16 +387,16 @@ jobs:
           image_tag = "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
           command = "${{ env.COMMAND }}"
           worker_name = "${{ matrix.directory }}"
-
+      
           print(f"🔍 Testing (arm64) Python imports in built image '{image_tag}' for worker '{worker_name}'...")
-
-          # in-container python snippet:
+      
+          # in-container python snippet (AST-based import checking):
           test_code = textwrap.dedent(f'''
-              import os, sys, re, os.path as osp
-
+              import os, sys, ast, os.path as osp
+      
               entrypoint_full = "{command}"
               fallback_dir = "{worker_name}"
-
+      
               if "/" in entrypoint_full:
                   dir_part = osp.dirname(entrypoint_full)
                   file_part = osp.basename(entrypoint_full)
@@ -393,27 +407,41 @@ jobs:
                   entrypoint = file_part
               else:
                   entrypoint = entrypoint_full
-
+      
               if not osp.exists(entrypoint):
                   print("❌ ERROR: {{}} not found inside the container.".format(entrypoint))
                   sys.exit(1)
-
+      
               with open(entrypoint, 'r', encoding='utf-8') as f:
-                  content = f.readlines()
-
-              imports = [line.strip() for line in content if re.match(r'^\\s*(import|from)\\s+[a-zA-Z0-9_.]+', line)]
+                  source = f.read()
+      
+              try:
+                  tree = ast.parse(source)
+              except SyntaxError as e:
+                  print(f"❌ Syntax error in {{entrypoint}}: {{e}}")
+                  sys.exit(1)
+      
+              imports = []
+              for node in ast.walk(tree):
+                  if isinstance(node, ast.Import):
+                      for alias in node.names:
+                          imports.append(alias.name)
+                  elif isinstance(node, ast.ImportFrom):
+                      if node.module:
+                          imports.append(node.module)
+      
               print("🔍 Checking Python imports from", entrypoint)
-              for imp in imports:
+              for mod in set(imports):
                   try:
-                      exec(imp)
-                      print("✅", imp, "- SUCCESS")
+                      __import__(mod)
+                      print(f"✅ {{mod}} - SUCCESS")
                   except Exception as e:
-                      print("❌", imp, "- FAILED:", e)
+                      print(f"❌ {{mod}} - FAILED: {{e}}")
                       sys.exit(1)
-
+      
               print("✅ All imports tested successfully!")
           ''')
-
+      
           try:
               # Pull the arm64 variant explicitly
               pull_result = subprocess.run(
@@ -423,8 +451,8 @@ jobs:
               )
               print(pull_result.stdout, file=sys.stdout)
               print(pull_result.stderr, file=sys.stderr)
-
-              # Run the container with your python test code on arm64
+      
+              # Run the container with the Python test code
               result = subprocess.run(
                   [
                       "docker", "run", "--rm",
@@ -436,18 +464,17 @@ jobs:
                   capture_output=True,
                   text=True
               )
-              # Print the container's logs
+              # Print container logs
               print(result.stdout, file=sys.stdout)
               print(result.stderr, file=sys.stderr)
-
+      
               if result.returncode != 0:
                   warning_message = f"Import testing FAILED (arm64) for worker '{worker_name}' with exit code {result.returncode}"
                   print("⚠️", warning_message)
-                  # GitHub Actions annotation for warning
                   print(f"::warning::{warning_message}")
               else:
                   print("✅ Import testing succeeded (arm64)")
-
+      
           except Exception as e:
               print("::warning::Error during import testing (arm64):", e)
               sys.exit(1)
@@ -663,16 +690,16 @@ jobs:
           image_tag = "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
           command = "${{ env.COMMAND }}"
           worker_name = "${{ matrix.directory }}"
-
+      
           print(f"🔍 Testing (amd64) Python imports in built image '{image_tag}' for worker '{worker_name}'...")
-
-          # in-container python snippet:
+      
+          # in-container python snippet (AST-based import checking):
           test_code = textwrap.dedent(f'''
-              import os, sys, re, os.path as osp
-
+              import os, sys, ast, os.path as osp
+      
               entrypoint_full = "{command}"
               fallback_dir = "{worker_name}"
-
+      
               if "/" in entrypoint_full:
                   dir_part = osp.dirname(entrypoint_full)
                   file_part = osp.basename(entrypoint_full)
@@ -683,27 +710,41 @@ jobs:
                   entrypoint = file_part
               else:
                   entrypoint = entrypoint_full
-
+      
               if not osp.exists(entrypoint):
                   print("❌ ERROR: {{}} not found inside the container.".format(entrypoint))
                   sys.exit(1)
-
+      
               with open(entrypoint, 'r', encoding='utf-8') as f:
-                  content = f.readlines()
-
-              imports = [line.strip() for line in content if re.match(r'^\\s*(import|from)\\s+[a-zA-Z0-9_.]+', line)]
+                  source = f.read()
+      
+              try:
+                  tree = ast.parse(source)
+              except SyntaxError as e:
+                  print(f"❌ Syntax error in {{entrypoint}}: {{e}}")
+                  sys.exit(1)
+      
+              imports = []
+              for node in ast.walk(tree):
+                  if isinstance(node, ast.Import):
+                      for alias in node.names:
+                          imports.append(alias.name)
+                  elif isinstance(node, ast.ImportFrom):
+                      if node.module:
+                          imports.append(node.module)
+      
               print("🔍 Checking Python imports from", entrypoint)
-              for imp in imports:
+              for mod in set(imports):
                   try:
-                      exec(imp)
-                      print("✅", imp, "- SUCCESS")
+                      __import__(mod)
+                      print(f"✅ {{mod}} - SUCCESS")
                   except Exception as e:
-                      print("❌", imp, "- FAILED:", e)
+                      print(f"❌ {{mod}} - FAILED: {{e}}")
                       sys.exit(1)
-
+      
               print("✅ All imports tested successfully!")
           ''')
-
+      
           try:
               # Pull the amd64 variant explicitly
               pull_result = subprocess.run(
@@ -713,8 +754,8 @@ jobs:
               )
               print(pull_result.stdout, file=sys.stdout)
               print(pull_result.stderr, file=sys.stderr)
-
-              # Run the container with your python test code on amd64
+      
+              # Run the container with the Python test code
               result = subprocess.run(
                   [
                       "docker", "run", "--rm",
@@ -726,22 +767,22 @@ jobs:
                   capture_output=True,
                   text=True
               )
-              # Print the container's logs
+              # Print container logs
               print(result.stdout, file=sys.stdout)
               print(result.stderr, file=sys.stderr)
-
+      
               if result.returncode != 0:
                   warning_message = f"Import testing FAILED (amd64) for worker '{worker_name}' with exit code {result.returncode}"
                   print("⚠️", warning_message)
-                  # GitHub Actions annotation for warning
                   print(f"::warning::{warning_message}")
               else:
                   print("✅ Import testing succeeded (amd64)")
-
+      
           except Exception as e:
               print("::warning::Error during import testing (amd64):", e)
               sys.exit(1)
           EOF
+
           
       - name: Test imports in the container (arm64)
         if: ${{ steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/arm64') }}
@@ -754,16 +795,16 @@ jobs:
           image_tag = "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
           command = "${{ env.COMMAND }}"
           worker_name = "${{ matrix.directory }}"
-
+      
           print(f"🔍 Testing (arm64) Python imports in built image '{image_tag}' for worker '{worker_name}'...")
-
-          # in-container python snippet:
+      
+          # in-container python snippet (AST-based import checking):
           test_code = textwrap.dedent(f'''
-              import os, sys, re, os.path as osp
-
+              import os, sys, ast, os.path as osp
+      
               entrypoint_full = "{command}"
               fallback_dir = "{worker_name}"
-
+      
               if "/" in entrypoint_full:
                   dir_part = osp.dirname(entrypoint_full)
                   file_part = osp.basename(entrypoint_full)
@@ -774,27 +815,41 @@ jobs:
                   entrypoint = file_part
               else:
                   entrypoint = entrypoint_full
-
+      
               if not osp.exists(entrypoint):
                   print("❌ ERROR: {{}} not found inside the container.".format(entrypoint))
                   sys.exit(1)
-
+      
               with open(entrypoint, 'r', encoding='utf-8') as f:
-                  content = f.readlines()
-
-              imports = [line.strip() for line in content if re.match(r'^\\s*(import|from)\\s+[a-zA-Z0-9_.]+', line)]
+                  source = f.read()
+      
+              try:
+                  tree = ast.parse(source)
+              except SyntaxError as e:
+                  print(f"❌ Syntax error in {{entrypoint}}: {{e}}")
+                  sys.exit(1)
+      
+              imports = []
+              for node in ast.walk(tree):
+                  if isinstance(node, ast.Import):
+                      for alias in node.names:
+                          imports.append(alias.name)
+                  elif isinstance(node, ast.ImportFrom):
+                      if node.module:
+                          imports.append(node.module)
+      
               print("🔍 Checking Python imports from", entrypoint)
-              for imp in imports:
+              for mod in set(imports):
                   try:
-                      exec(imp)
-                      print("✅", imp, "- SUCCESS")
+                      __import__(mod)
+                      print(f"✅ {{mod}} - SUCCESS")
                   except Exception as e:
-                      print("❌", imp, "- FAILED:", e)
+                      print(f"❌ {{mod}} - FAILED: {{e}}")
                       sys.exit(1)
-
+      
               print("✅ All imports tested successfully!")
           ''')
-
+      
           try:
               # Pull the arm64 variant explicitly
               pull_result = subprocess.run(
@@ -804,8 +859,8 @@ jobs:
               )
               print(pull_result.stdout, file=sys.stdout)
               print(pull_result.stderr, file=sys.stderr)
-
-              # Run the container with your python test code on arm64
+      
+              # Run the container with the Python test code
               result = subprocess.run(
                   [
                       "docker", "run", "--rm",
@@ -817,22 +872,22 @@ jobs:
                   capture_output=True,
                   text=True
               )
-              # Print the container's logs
+              # Print container logs
               print(result.stdout, file=sys.stdout)
               print(result.stderr, file=sys.stderr)
-
+      
               if result.returncode != 0:
                   warning_message = f"Import testing FAILED (arm64) for worker '{worker_name}' with exit code {result.returncode}"
                   print("⚠️", warning_message)
-                  # GitHub Actions annotation for warning
                   print(f"::warning::{warning_message}")
               else:
                   print("✅ Import testing succeeded (arm64)")
-
+      
           except Exception as e:
               print("::warning::Error during import testing (arm64):", e)
               sys.exit(1)
           EOF
+
   
   build_catalog:
     name: Build Catalog
