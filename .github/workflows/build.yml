@@ -204,7 +204,7 @@ jobs:
           else
             echo "IMAGE_TAG=devel" >> $GITHUB_ENV
             # Only the :devel tag
-            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:devel" >> $GITHUB_ENV
+            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:devel,ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:latest" >> $GITHUB_ENV
           fi
       
       - name: Set Platforms
@@ -585,7 +585,7 @@ jobs:
           else
             echo "IMAGE_TAG=devel" >> $GITHUB_ENV
             # Only the :devel tag
-            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:devel" >> $GITHUB_ENV
+            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:devel,ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:latest" >> $GITHUB_ENV
           fi
 
       - name: Set Platforms
