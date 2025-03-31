@@ -5,11 +5,11 @@ WORKDIR /worker
 # install runtime dependencies.
 RUN apk add --no-cache file-dev
 
-COPY requirements.txt VirusTotalDownloader/
+COPY requirements.txt VirustotalDownloader/
 
 # Install Python dependencies from requirements.txt
-RUN test ! -e VirusTotalDownloader/requirements.txt || pip install --no-cache-dir -r VirusTotalDownloader/requirements.txt
+RUN test ! -e VirustotalDownloader/requirements.txt || pip install --no-cache-dir -r VirustotalDownloader/requirements.txt
 
-COPY . VirusTotalDownloader
+COPY . VirustotalDownloader
 
-ENTRYPOINT ["python", "VirusTotalDownloader/VirustotalDownloader.py"]
+ENTRYPOINT ["python", "VirustotalDownloader/VirustotalDownloader.py"]
