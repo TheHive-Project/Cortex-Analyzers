@@ -221,7 +221,7 @@ jobs:
             #   1) :VERSION  (e.g. 2.0)
             #   2) :VERSION_SPLIT  (e.g. 2)
             #   3) :latest
-            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }},ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION_SPLIT }},ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:latest" >> $GITHUB_ENV
+            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }},ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
           else
             echo "IMAGE_TAG=devel" >> $GITHUB_ENV
             # Only the :devel tag
@@ -629,7 +629,7 @@ jobs:
             #   1) :VERSION  (e.g. 2.0)
             #   2) :VERSION_SPLIT  (e.g. 2)
             #   3) :latest
-            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }},ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION_SPLIT }},ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:latest" >> $GITHUB_ENV
+            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }},ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
           else
             echo "IMAGE_TAG=devel" >> $GITHUB_ENV
             # Only the :devel tag
