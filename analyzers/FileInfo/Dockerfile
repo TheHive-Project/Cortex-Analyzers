@@ -17,7 +17,7 @@ RUN git clone https://github.com/JusticeRage/Manalyze.git           && \
     cd bin/yara_rules                                               && \
     pip3 install requests                                           && \
     python3 update_clamav_signatures.py
-RUN curl -SL https://github.com/mandiant/flare-floss/releases/download/v2.0.0/floss-v2.0.0-linux.zip  --output floss.zip && \
+RUN curl -SL https://github.com/mandiant/flare-floss/releases/download/v3.1.1/floss-v3.1.1-linux.zip  --output floss.zip && \
     unzip floss.zip -d /usr/bin
 COPY . FileInfo
 RUN pip install --no-cache-dir -r FileInfo/requirements.txt
