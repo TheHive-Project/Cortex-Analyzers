@@ -33,7 +33,7 @@ jobs:
           filter_analyzers="false"
           filter_responders="false"
           
-          allowed_analyzers="Hippocampe|Diario|EmlParser|ClamAV|FileInfo"
+          allowed_analyzers="Hippocampe|EmlParser|ClamAV|FileInfo"
           allowed_responders="MSDefenderOffice365"
           
           # If filtering is disabled, use a regex that matches everything.
