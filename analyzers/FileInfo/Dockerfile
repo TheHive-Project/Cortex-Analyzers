@@ -22,4 +22,4 @@ RUN curl -SL https://github.com/mandiant/flare-floss/releases/download/v2.0.0/fl
 COPY . FileInfo
 RUN pip install --no-cache-dir -r FileInfo/requirements.txt
 
-ENTRYPOINT FileInfo/fileinfo_analyzer.py
+ENTRYPOINT ["python","FileInfo/fileinfo_analyzer.py"]
