@@ -1,26 +1,16 @@
-## To test an Analyzer of Responder with docker: 
-#
-# Copy this file in the folder of an analyzer or a responder and name it Dockerfile
-## edit it and Change variables
-#
-# - {workername} by the folder name of the analyzer or responder
-# - {command} by the value of the `command` in a JSON file
-# 
-# Save and run: 
-#
-# docker build -t cortexneurons/{flavor_name}:devel  with {flavor_name} the name of the analyzer of responder in the JSON file
-#
-# 
-
-
-
-FROM python:3
+FROM python:3-alpine
 WORKDIR /worker
-WORKDIR /worker
+
+RUN apk update && apk add clamav clamav-daemon build-base
+
+COPY requirements.txt ClamAV/
+RUN test ! -e ClamAV/requirements.txt || pip install --no-cache-dir -r ClamAV/requirements.txt
+
+RUN mkdir -p /run/clamav && chown clamav:clamav /run/clamav && chmod 750 /run/clamav
+RUN mkdir -p /var/lib/clamav
+
 COPY . ClamAV
-RUN test ! -e ClamAV/requirements.txt || pip install --no-cache-dir -rClamAV/requirements.txt
-RUN apt update
-RUN apt install -y clamav clamav-daemon build-essential
-RUN service clamav-freshclam start
-RUN service clamav-daemon start
-ENTRYPOINT service clamav-freshclam start && service clamav-daemon start && ClamAV/pyclam_analyzer.py
+RUN chmod +x ClamAV/entrypoint.sh
+
+ENTRYPOINT ["/bin/sh", "ClamAV/entrypoint.sh"]
+    
