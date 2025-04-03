@@ -11,6 +11,6 @@ sleep 20  # Wait for definitions to update
 
 # start clamd in the background
 /usr/sbin/clamd &
-
+sleep 10
 # start analyzer script
 exec python ClamAV/pyclam_analyzer.py
