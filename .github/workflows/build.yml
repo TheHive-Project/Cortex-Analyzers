@@ -30,10 +30,10 @@ jobs:
           echo "Building analyzers matrix..."
           # define your lists of allowed directories for analyzers and responders for targeted build
           # If you want to disable filtering, set the corresponding flag to "false"
-          filter_analyzers="false"
-          filter_responders="false"
+          filter_analyzers="true"
+          filter_responders="true"
           
-          allowed_analyzers="Hippocampe|Diario|EmlParser|ClamAV|FileInfo"
+          allowed_analyzers="Hippocampe|EmlParser|ClamAV|FileInfo"
           allowed_responders="MSDefenderOffice365"
           
           # If filtering is disabled, use a regex that matches everything.
