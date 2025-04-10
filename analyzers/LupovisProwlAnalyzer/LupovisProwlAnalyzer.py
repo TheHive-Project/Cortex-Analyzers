@@ -7,9 +7,9 @@ from cortexutils.analyzer import Analyzer
 class LupovisProwlAnalyzer(Analyzer):
     def __init__(self):
         super().__init__()
-        self.prowl_api_key = 'Enter your API Key'
+        self.prowl_api_key = self.get_param("config.prowl_api_key", None, "Missing API key")
         self.prowl_api_url = 'https://api.prowl.lupovis.io/GetIPReputation?ip='
-        self.proxy = 'Enter your proxy server if required'
+        self.proxy = self.get_param("config.proxy.https", None)
 
     def summary(self, raw):
         """
