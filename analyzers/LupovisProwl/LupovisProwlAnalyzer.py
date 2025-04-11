@@ -1,4 +1,4 @@
-!/usr/bin/env python3
+#!/usr/bin/env python3
 
 import subprocess
 import json
@@ -82,7 +82,7 @@ class LupovisProwlAnalyzer(Analyzer):
                 result = {
                     "ip": ip,
                     "details": details,
-                    "taxonomy": self.build_taxonomy(level, 'LupovisProwlAnalyzer', 'Threat', details)
+                    "taxonomy": self.build_taxonomy(level, 'LupovisProwl', 'Threat', details)
                 }
                 self.report(result)
             else:
