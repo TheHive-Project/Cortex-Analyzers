@@ -38,6 +38,26 @@ class MSEntraID(Analyzer):
 
         return token_r.json().get('access_token')
 
+    def resolve_user_guid(self, email, headers, base_url):
+        """Resolves a userPrincipalName (email) to an objectId (GUID) using direct lookup (most compatible)."""
+        url = f"{base_url}users/{email}?$select=id"
+        response = requests.get(url, headers=headers)
+
+        if response.status_code != 200:
+            self.error(f"Failed to resolve GUID for user {email}: {response.content}")
+
+        user = response.json()
+        user_id = user.get("id")
+        if not user_id:
+            self.error(f"ID not found in response for {email}")
+
+        return user_id
+
+    def ensure_user_guid(self, base_url, headers):
+        if "@" in self.user:
+            return self.resolve_user_guid(self.user, headers, base_url)
+        return self.user
+
     def handle_get_signins(self, headers, base_url):
         """
         Retrieve sign-in logs for a userPrincipalName within a specified time range.
@@ -49,14 +69,15 @@ class MSEntraID(Analyzer):
             self.user = self.get_data()
             if not self.user:
                 self.error("No user supplied")
-
+            self.guid = self.ensure_user_guid(base_url, headers)
+            
             # Build the filter time
             filter_time = datetime.utcnow() - timedelta(days=self.time_range)
             format_time = filter_time.strftime('%Y-%m-%dT00:00:00Z')
 
             # Query sign-in logs
             endpoint = (
-                f"auditLogs/signIns?$filter=startsWith(userPrincipalName,'{self.user}') "
+                f"auditLogs/signIns?$filter=userId eq '{self.guid}'"
                 f"and createdDateTime ge {format_time}&$top={self.lookup_limit}"
             )
             r = requests.get(base_url + endpoint, headers=headers)
@@ -168,13 +189,14 @@ class MSEntraID(Analyzer):
             self.user = self.get_data()
             if not self.user:
                 self.error("No user supplied")
-
+            
+            self.guid = self.ensure_user_guid(base_url, headers)
             # Use select to retrieve many user attributes. Adjust as needed.
             params = {
                         "$select": ",".join(self.params_list)
                     }
 
-            user_info_url = f"{base_url}users/{self.user}"
+            user_info_url = f"{base_url}users/{self.guid}"
 #            user_info_url = f"{base_url}users/{self.user}"
 
             user_response = requests.get(user_info_url, headers=headers, params=params)
@@ -211,7 +233,7 @@ class MSEntraID(Analyzer):
             }
 
             # Fetch user's manager
-            manager_url = f"{base_url}users/{self.user}/manager?$select=id,displayName,userPrincipalName"
+            manager_url = f"{base_url}users/{self.guid}/manager?$select=id,displayName,userPrincipalName"
             manager_resp = requests.get(manager_url, headers=headers)
             if manager_resp.status_code == 200:
                 manager_data = manager_resp.json()
@@ -224,7 +246,7 @@ class MSEntraID(Analyzer):
                     }
             
             # Fetch user's license details
-            license_url = f"{base_url}users/{self.user}/licenseDetails"
+            license_url = f"{base_url}users/{self.guid}/licenseDetails"
             license_resp = requests.get(license_url, headers=headers)
             if license_resp.status_code == 200:
                 license_data = license_resp.json().get("value", [])
@@ -238,7 +260,7 @@ class MSEntraID(Analyzer):
                     })
 
             # Fetch user's group memberships
-            member_of_url = f"{base_url}users/{self.user}/memberOf"
+            member_of_url = f"{base_url}users/{self.guid}/memberOf"
             member_of_response = requests.get(member_of_url, headers=headers)
             if member_of_response.status_code == 200:
                 memberships = member_of_response.json().get("value", [])
@@ -249,7 +271,7 @@ class MSEntraID(Analyzer):
                     })
 
             # MFA Methods
-            mfa_url = f"{base_url}users/{self.user}/authentication/methods"
+            mfa_url = f"{base_url}users/{self.guid}/authentication/methods"
             mfa_r = requests.get(mfa_url, headers=headers)
 
             if mfa_r.status_code == 200:
@@ -374,9 +396,11 @@ class MSEntraID(Analyzer):
             self.error('Incorrect dataType. "mail" expected.')
         try:
             # Pull the userPrincipalName from the observable data (data_type=mail)
-            user_upn = self.get_data()
-            if not user_upn:
+            self.user = self.get_data()
+            if not self.user:
                 self.error("No user principal name supplied for directory audit logs")
+            self.guid = self.ensure_user_guid(base_url, headers)
+            
             # Calculate time range (past X days)
             filter_time = datetime.utcnow() - timedelta(days=self.time_range)
             filter_time_str = filter_time.strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -386,7 +410,7 @@ class MSEntraID(Analyzer):
             endpoint = (
                 "auditLogs/directoryAudits?"
                 f"$filter=activityDateTime ge {filter_time_str} "
-                f"and initiatedBy/user/userPrincipalName eq '{user_upn}'"
+                f"and initiatedBy/user/id eq '{self.guid}'"
                 f"&$top={self.lookup_limit}"
             )
 
@@ -435,16 +459,19 @@ class MSEntraID(Analyzer):
                 else:
                     self.error("No user UPN supplied")
             
-            # Build the appropriate endpoint based on the observable type
-            if self.data_type == 'hostname':
+            if self.data_type == 'mail':
+                # Resolve UPN to GUID and use exact match
+                self.user = query_value
+                guid = self.ensure_user_guid(base_url, headers)
                 endpoint = (
-                    "deviceManagement/managedDevices?"
-                    f"$filter=startswith(deviceName,'{query_value}')"
+                    f"deviceManagement/managedDevices?"
+                    f"$filter=userId eq '{guid}'"
                 )
-            elif self.data_type == 'mail':
+            else:
+                # Use startswith for partial hostname matches
                 endpoint = (
-                    "deviceManagement/managedDevices?"
-                    f"$filter=startswith(userPrincipalName,'{query_value}')"
+                    f"deviceManagement/managedDevices?"
+                    f"$filter=startswith(deviceName,'{query_value}')"
                 )
             
             # Perform the GET request
