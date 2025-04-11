@@ -459,16 +459,19 @@ class MSEntraID(Analyzer):
                 else:
                     self.error("No user UPN supplied")
             
-            # Build the appropriate endpoint based on the observable type
-            if self.data_type == 'hostname':
+            if self.data_type == 'mail':
+                # Resolve UPN to GUID and use exact match
+                self.user = query_value
+                guid = self.ensure_user_guid(base_url, headers)
                 endpoint = (
-                    "deviceManagement/managedDevices?"
-                    f"$filter=startswith(deviceName,'{query_value}')"
+                    f"deviceManagement/managedDevices?"
+                    f"$filter=userId eq '{guid}'"
                 )
-            elif self.data_type == 'mail':
+            else:
+                # Use startswith for partial hostname matches
                 endpoint = (
-                    "deviceManagement/managedDevices?"
-                    f"$filter=startswith(userPrincipalName,'{query_value}')"
+                    f"deviceManagement/managedDevices?"
+                    f"$filter=startswith(deviceName,'{query_value}')"
                 )
             
             # Perform the GET request
