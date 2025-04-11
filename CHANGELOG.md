@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.5.10](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.10) (2025-04-11)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.9...3.5.10)
+
+**Closed issues:**
+
+- \[Bug\] MSEntraID - User Principal Names may produce invalid key [\#1346](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1346)
+
+## [3.5.9](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.9) (2025-04-04)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.8...3.5.9)
+
+**Merged pull requests:**
+
+- Various improvements & fixes [\#1345](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1345) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.5.8](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.8) (2025-03-31)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.7...3.5.8)
