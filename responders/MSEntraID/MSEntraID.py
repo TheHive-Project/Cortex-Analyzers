@@ -32,8 +32,29 @@ class MSEntraID(Responder):
         
         return token_r.json().get('access_token')
 
+    def resolve_user_guid(self, email, headers, base_url):
+        """Resolves a userPrincipalName (email) to an objectId (GUID) using direct lookup (most compatible)."""
+        url = f"{base_url}users/{email}?$select=id"
+        response = requests.get(url, headers=headers)
+
+        if response.status_code != 200:
+            self.error(f"Failed to resolve GUID for user {email}: {response.content}")
+
+        user = response.json()
+        user_id = user.get("id")
+        if not user_id:
+            self.error(f"ID not found in response for {email}")
+
+        return user_id
+
+    def ensure_guid(self, headers, base_url):
+        if "@" in self.user:
+            self.guid = self.resolve_user_guid(self.user, headers, base_url)
+        else:
+            self.guid = self.user
+
     def check_user_status(self, user, headers, base_url):
-        r = requests.get(f"{base_url}{user}?$select=accountEnabled", headers=headers)
+        r = requests.get(f"{base_url}users/{user}?$select=accountEnabled", headers=headers)
 
         if r.status_code == 404:
             self.error(f'User {user} not found in Microsoft Entra ID')
@@ -58,7 +79,7 @@ class MSEntraID(Responder):
         Responder.run(self)
         token = self.authenticate()
         headers = {'Authorization': f'Bearer {token}', 'Content-Type': 'application/json'}
-        base_url = 'https://graph.microsoft.com/v1.0/users/'
+        base_url = 'https://graph.microsoft.com/v1.0/'
         
         if self.service == "revokeSignInSessions":
             if self.get_param('data.dataType') == 'mail':
@@ -66,8 +87,9 @@ class MSEntraID(Responder):
                     self.user = self.get_param('data.data', None, 'No UPN supplied to revoke credentials for')
                     if not self.user:
                         self.error("No user supplied")
-                    
-                    r = requests.post(f"{base_url}{self.user}/revokeSignInSessions", headers=headers)
+                    self.ensure_guid(headers, base_url)
+
+                    r = requests.post(f"{base_url}users/{self.guid}/revokeSignInSessions", headers=headers)
                     
                     if r.status_code != 200:
                         self.error(f'Failure to revoke access tokens of user {self.user}: {r.content}')
@@ -87,9 +109,10 @@ class MSEntraID(Responder):
                     self.user = self.get_param('data.data', None, 'No UPN supplied for password reset')
                     if not self.user:
                         self.error("No user supplied")
-                    
+                    self.ensure_guid(headers, base_url)
+                                            
                     data = {"passwordProfile": {"forceChangePasswordNextSignIn": True}}
-                    r = requests.patch(f"{base_url}{self.user}", headers=headers, json=data)
+                    r = requests.patch(f"{base_url}users/{self.guid}", headers=headers, json=data)
                     
                     if r.status_code != 204:
                         self.error(f'Failure to reset password for user {self.user}: {r.content}')
@@ -105,9 +128,10 @@ class MSEntraID(Responder):
                 self.user = self.get_param('data.data', None, 'No UPN supplied for password reset with MFA')
                 if not self.user:
                     self.error("No user supplied")
-                
+                self.ensure_guid(headers, base_url)
+
                 data = {"passwordProfile": {"forceChangePasswordNextSignIn": True, "forceChangePasswordNextSignInWithMfa": True}}
-                r = requests.patch(f"{base_url}{self.user}", headers=headers, json=data)
+                r = requests.patch(f"{base_url}users/{self.guid}", headers=headers, json=data)
                 
                 if r.status_code != 204:
                     self.error(f'Failure to reset password with MFA for user {self.user}: {r.content}')
@@ -122,14 +146,15 @@ class MSEntraID(Responder):
                     self.user = self.get_param('data.data', None, 'No UPN supplied to enable user')
                     if not self.user:
                         self.error("No user supplied")
-                    
-                    user_status = self.check_user_status(self.user, headers, base_url)
+                    self.ensure_guid(headers, base_url)
+
+                    user_status = self.check_user_status(self.guid, headers, base_url)
                     if user_status is True:
                         self.report({"message": f"User {self.user} is already enabled"})
                         return
     
                     data = {"accountEnabled": True}
-                    r = requests.patch(f"{base_url}{self.user}", headers=headers, json=data)
+                    r = requests.patch(f"{base_url}users/{self.guid}", headers=headers, json=data)
                     
                     if r.status_code != 204:
                         self.error(f'Failure to enable user {self.user}: {r.content}')
@@ -147,14 +172,15 @@ class MSEntraID(Responder):
                     self.user = self.get_param('data.data', None, 'No UPN supplied to disable user')
                     if not self.user:
                         self.error("No user supplied")
-                    
-                    user_status = self.check_user_status(self.user, headers, base_url)
+                    self.ensure_guid(headers, base_url)
+
+                    user_status = self.check_user_status(self.guid, headers, base_url)
                     if user_status is False:
                         self.report({"message": f"User {self.user} is already disabled"})
                         return
                     
                     data = {"accountEnabled": False}
-                    r = requests.patch(f"{base_url}{self.user}", headers=headers, json=data)
+                    r = requests.patch(f"{base_url}users/{self.guid}", headers=headers, json=data)
                     
                     if r.status_code != 204:
                         self.error(f'Failure to disable user {self.user}: {r.content}')
