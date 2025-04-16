@@ -468,12 +468,12 @@ class MSEntraID(Analyzer):
                     self.error("No user UPN supplied")
             
             if self.data_type == 'mail':
-                # Resolve UPN to GUID and use exact match
                 self.user = query_value
-                guid = self.ensure_user_guid(base_url, headers)
+                # Resolve UPN to GUID and use exact match
+                # guid = self.ensure_user_guid(base_url, headers)
                 endpoint = (
                     f"deviceManagement/managedDevices?"
-                    f"$filter=userId eq '{guid}'"
+                    f"$filter=userPrincipalName eq '{self.user}'"
                 )
             else:
                 # Use startswith for partial hostname matches
