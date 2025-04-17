@@ -116,9 +116,9 @@ class MSEntraID(Analyzer):
                     failure_reason = status_info.get("failureReason", "")
                     basic_details["result"] = f"Failure: {failure_reason}" if failure_reason else "Failure"
 
-                # Risk level
+                # Risk level - 	The risk level during sign-in. Possible values: none, low, medium, high, or hidden. The value hidden means the user or sign-in was not enabled for Azure AD Identity Protection. 
                 basic_details["riskLevel"] = signin.get("riskLevelDuringSignIn", "none")
-                if basic_details["riskLevel"] != "none" and success:
+                if basic_details["riskLevel"] in ["low", "medium", "high"] and success:
                     risks += 1
 
                 # Device details
@@ -139,10 +139,18 @@ class MSEntraID(Analyzer):
 
                 # If sign-in was successful, check if it differs from specified state/country
                 if success:
-                    if self.state and location_details["state"] != self.state:
+                    actual_state = location_details.get("state", "").strip().lower()
+                    expected_state = (self.state or "").strip().lower()
+
+                    actual_country = location_details.get("countryOrRegion", "").strip().lower()
+                    expected_country = (self.country or "").strip().lower()
+
+                    if expected_state and actual_state and actual_state != expected_state:
                         ex_state += 1
-                    if self.country and location_details["countryOrRegion"] != self.country:
+
+                    if expected_country and actual_country and actual_country != expected_country:
                         ex_country += 1
+
 
                 # Applied Conditional Access Policies
                 applied_policies = signin.get("appliedConditionalAccessPolicies", [])
@@ -460,12 +468,12 @@ class MSEntraID(Analyzer):
                     self.error("No user UPN supplied")
             
             if self.data_type == 'mail':
-                # Resolve UPN to GUID and use exact match
                 self.user = query_value
-                guid = self.ensure_user_guid(base_url, headers)
+                # Resolve UPN to GUID and use exact match
+                # guid = self.ensure_user_guid(base_url, headers)
                 endpoint = (
                     f"deviceManagement/managedDevices?"
-                    f"$filter=userId eq '{guid}'"
+                    f"$filter=userPrincipalName eq '{self.user}'"
                 )
             else:
                 # Use startswith for partial hostname matches
