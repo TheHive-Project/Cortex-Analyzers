@@ -8,6 +8,10 @@
 
 - \[Bug\] MSEntraID - User Principal Names may produce invalid key [\#1346](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1346)
 
+**Merged pull requests:**
+
+- MSEntra ID - Use GUIDs instead of UPNs for better compatibility [\#1347](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1347) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.5.9](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.9) (2025-04-04)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.8...3.5.9)
