@@ -1,0 +1,79 @@
+<!-- Error panel, displayed when the analyzer fails -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+<!-- Main panel based on monitoring status -->
+<div class="panel" ng-if="success" ng-class="{'panel-success': content.status === 'Monitored', 'panel-warning': content.status === 'Not Monitored', 'panel-danger': content.status === 'Error'}">
+    <div class="panel-heading">
+        <strong>Watcher Domain Check: {{artifact.data || '-' | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <!-- Domain monitoring status -->
+        <dl class="dl-horizontal">
+            <dt>Status:</dt>
+            <dd class="wrap">
+                <span ng-if="content.status === 'Monitored'" style="background-color: #5cb85c; color: white; padding: 3px 10px; border-radius: 3px; display: inline-block;">Watcher:Check="Monitored"</span>
+                <span ng-if="content.status === 'Not Monitored'" style="background-color: #5bc0de; color: white; padding: 3px 10px; border-radius: 3px; display: inline-block;">Watcher:Check="Not Monitored"</span>
+                <span ng-if="content.status === 'Error'" class="label label-danger">Error</span>
+            </dd>
+        </dl>
+
+        <dl class="dl-horizontal">
+            <dt>Message:</dt>
+            <dd class="wrap">{{content.Message}}</dd>
+        </dl>
+
+        <div ng-if="content.status === 'Monitored'">
+            <!-- Ticket ID if available -->
+            <dl class="dl-horizontal" ng-if="content['Ticket ID'] && content['Ticket ID'] !== '-'">
+                <dt>Ticket ID:</dt>
+                <dd class="wrap">{{(content['Ticket ID'] && content['Ticket ID'] !== '-') ? content['Ticket ID'] : '-'}}</dd>
+            </dl>
+
+            <!-- Ip if available-->
+            <dl class="dl-horizontal" ng-if="content.Ip && content.Ip !== '-'">
+                <dt>Ip:</dt>
+                <dd class="wrap">{{(content.Ip && content.Ip !== '-') ? content.Ip : '-'}}</dd>
+            </dl>
+
+            <!-- Ip Second if available -->
+            <dl class="dl-horizontal" ng-if="content['Ip Second'] && content['Ip Second'] !== '-'">
+                <dt>Ip Second:</dt>
+                <dd class="wrap">{{(content['Ip Second'] && content['Ip Second'] !== '-') ? content['Ip Second'] : '-'}}</dd>
+            </dl>
+
+            <!-- List of MX records if available -->
+            <dl class="dl-horizontal" ng-if="content['MX Records'] && content['MX Records'] !== '-' && content['MX Records'].length > 0">
+                <dt>MX Records:</dt>
+                <dd class="wrap">
+                    <div ng-if="content['MX Records'] && content['MX Records'].length > 0" ng-repeat="mx in content['MX Records']">
+                        {{mx || '-'}}
+                    </div>
+                    <div ng-if="!content['MX Records'] || content['MX Records'].length === 0">
+                        -
+                    </div>
+                </dd>
+            </dl>
+            
+            <!-- Mail server if available -->
+            <dl class="dl-horizontal" ng-if="content['Mail Server'] && content['Mail Server'] !== '-'">
+                <dt>Mail Server:</dt>
+                <dd class="wrap">{{(content['Mail Server'] && content['Mail Server'] !== '-') ? content['Mail Server'] : '-'}}</dd>
+            </dl>
+        </div>
+
+        <!-- Action suggestion for domains not yet monitored -->
+        <dl class="dl-horizontal" ng-if="content.status === 'Not Monitored'">
+            <dt>Action:</dt>
+            <dd class="wrap">
+                <i class="fa fa-plus-circle"></i> To add the domain use the Watcher Responder: <strong><code>Watcher_Add_Domain</code></strong>
+            </dd>
+        </dl>
+    </div>
+</div>
