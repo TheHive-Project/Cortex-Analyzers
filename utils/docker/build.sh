@@ -26,13 +26,14 @@ DOCKER_REPOSITORY=ilovestrangebee
 build_image() {
       JSON=$1
     cat << EOF > /tmp/default_dockerfile
-FROM python:3
-WORKDIR /worker
+FROM python:3-alpine
 ARG workername
 ARG command
-COPY . \$workername
+WORKDIR /worker
+COPY requirements.txt \$workername/
 RUN test ! -e \$workername/requirements.txt || pip install --no-cache-dir -r \$workername/requirements.txt
-ENTRYPOINT \$command
+COPY . \$workername/
+ENTRYPOINT ["python","\$command"]
 EOF
 
     DEFAULT_DOCKERFILE=/tmp/default_dockerfile
