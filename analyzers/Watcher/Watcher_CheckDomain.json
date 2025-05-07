@@ -1,0 +1,26 @@
+{
+    "name": "Watcher_CheckDomain",
+    "version": "1.3",
+    "author": "THA-CERT // YNE",
+    "url": "-",
+    "license": "AGPL-V3",
+    "description": "Checks if a domain is monitored in Watcher.",
+    "dataTypeList": ["domain"],
+    "command": "Watcher/watcher.py",
+    "baseConfig": "Watcher",
+    "configurationItems": [
+      {
+        "name": "watcher_url",
+        "description": "URL of Watcher.",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "watcher_api_key",
+        "description": "API key used for authenticating requests to Watcher.",
+        "type": "string",
+        "required": true
+      }
+    ]
+  }
+  
