@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.5.11](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.11) (2025-04-17)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.10...3.5.11)
+
+**Closed issues:**
+
+- New Analyzer - LupovisProwlAnalyzer [\#1277](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1277)
+
+**Merged pull requests:**
+
+- MSEntra ID - Fix short reports [\#1349](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1349) ([nusantara-self](https://github.com/nusantara-self))
+- Fix analyzer: remove missing fields \[TorBlutmagie\]  [\#1348](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1348) ([Ignatella](https://github.com/Ignatella))
+- Added new LupovisProwlAnalyzer \#1277 [\#1278](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1278) ([stacsirt](https://github.com/stacsirt))
+
 ## [3.5.10](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.10) (2025-04-11)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.9...3.5.10)
