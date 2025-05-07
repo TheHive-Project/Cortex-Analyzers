@@ -15,7 +15,7 @@ Watcher Monitor Manager is a Responder for TheHive/Cortex that allows adding or 
 - A functional instance of Cortex and TheHive
 
 ### Installation
-- Add the configuration files (`Watcher_Add_Domain.json` and `Watcher_Remove_Domain.json`) to the Cortex configurations.
+- Add the configuration files (`Watcher_AddDomain.json` and `Watcher_RemoveDomain.json`) to the Cortex configurations.
 
 ### Configuration
 In Cortex, configure the following parameters for the Responder:

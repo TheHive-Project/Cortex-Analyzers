@@ -1,15 +1,15 @@
 {
-  "name": "Watcher_Add_Domain",
+  "name": "Watcher_RemoveDomain",
   "version": "1.2",
   "author": "THA-CERT // YNE",
   "url": "https://github.com/thalesgroup-cert/Watcher",
   "license": "AGPL-V3",
-  "description": "Add a domain to monitoring in the Website Monitoring module on Watcher.",
+  "description": "Removes a domain from monitoring in the Website Monitoring module on Watcher.",
   "dataTypeList": ["thehive:case_artifact"],
   "command": "Watcher/watcher.py",
   "baseConfig": "Watcher",
   "config": {
-    "service": "WatcherAddDomain"
+    "service": "WatcherRemoveDomain"
   },
   "configurationItems": [
     {
