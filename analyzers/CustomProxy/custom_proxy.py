@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 
-import requests
 import json
 import re
+
+import requests
 from cortexutils.analyzer import Analyzer
 
 
@@ -44,8 +45,10 @@ class CurstomProxy(Analyzer):
                 f"Error trying to contact {self.base_url + module + '/' + url}: {repr(e)}"
             )
         else:
-            to_check = req.json()
-
+            try:
+                to_check = req.json()
+            except requests.exceptions.JSONDecodeError as e:
+                to_check = req.content.decode()
             results = to_check
             return results
 
