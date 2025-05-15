@@ -19,16 +19,30 @@ class CurstomProxy(Analyzer):
 
     def do_request(self, method, module, url, headers, post_data):
         try:
-            if method == 'GET':
-                req = requests.get(self.base_url + module + '/' + url, headers=headers, timeout=30)
+            if method == "GET":
+                req = requests.get(
+                    self.base_url + module + "/" + url, headers=headers, timeout=30
+                )
                 req.raise_for_status()
-            elif method == 'POST':
-                req = requests.post(self.base_url + module + '/' + url, headers=headers, data=post_data, timeout=30)
+            elif method == "POST":
+                req = requests.post(
+                    self.base_url + module + "/" + url,
+                    headers=headers,
+                    data=post_data,
+                    timeout=30,
+                )
+                req.raise_for_status()
+            elif method == "OPTIONS":
+                req = requests.options(
+                    self.base_url + module + "/" + url, headers=headers, timeout=30
+                )
                 req.raise_for_status()
             else:
                 self.error("Unknown method")
         except Exception as e:
-            self.error(f"Error trying to contact {self.base_url + module + '/' + url}: {repr(e)}")
+            self.error(
+                f"Error trying to contact {self.base_url + module + '/' + url}: {repr(e)}"
+            )
         else:
             to_check = req.json()
 
@@ -40,8 +54,8 @@ class CurstomProxy(Analyzer):
         level = "info"
         namespace = "CustomProxy"
 
-        value = "{}".format(raw['status'])
-        taxonomies.append(self.build_taxonomy(level, namespace, 'Status_Code', value))
+        value = "{}".format(raw["status"])
+        taxonomies.append(self.build_taxonomy(level, namespace, "Status_Code", value))
 
         return {"taxonomies": taxonomies}
 
@@ -49,15 +63,15 @@ class CurstomProxy(Analyzer):
         Analyzer.run(self)
 
         try:
-            method = self.get_param('parameters.method', default='GET')
-            module = self.get_param('parameters.module', default="get-tor")
-            url = self.get_param('data', None, 'Data param is missing')
-            headers = self.get_param('parameters.headers', default={})
-            post_data = self.get_param('parameters.post_data', default={})
+            method = self.get_param("parameters.method", default="GET")
+            module = self.get_param("parameters.module", default="get-tor")
+            url = self.get_param("data", None, "Data param is missing")
+            headers = self.get_param("parameters.headers", default={})
+            post_data = self.get_param("parameters.post_data", default={})
             self.report(self.do_request(method, module, url, headers, post_data))
         except Exception as e:
             self.unexpectedError(e)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     CurstomProxy().run()
