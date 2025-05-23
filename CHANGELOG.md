@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.5.12](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.12) (2025-05-07)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.11...3.5.12)
+
+**Merged pull requests:**
+
+- New Analyzer & Responders Watcher [\#1353](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1353) ([ygalnezri](https://github.com/ygalnezri))
+
 ## [3.5.11](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.11) (2025-04-17)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.10...3.5.11)
