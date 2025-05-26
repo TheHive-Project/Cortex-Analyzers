@@ -4,8 +4,8 @@
     "author": "THA-CERT - PVA",
     "url": "-",
     "license": "AGPL-V3",
-    "description": "Take a screenshot of a url and report all HTTP redirections",
-    "dataTypeList": ["url", "domain", "fqdn"],
+    "description": "Take a screenshot of an url, domain, FQDN or IP and report all HTTP redirections",
+    "dataTypeList": ["url", "domain", "fqdn", "ip"],
     "command": "Lookyloo/lookyloo.py",
     "baseConfig": "Lookyloo",
     "configurationItems": [
