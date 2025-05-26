@@ -1,0 +1,37 @@
+<!-- Success !--> 
+<div class="panel panel-info" ng-if="content.status == 'Capture done' || content.status == 'Domain resolved'" >
+    <div class="panel-heading" >
+        <strong>Data submitted: "{{content.submitted_url}}" at {{content.submission_date}}</strong>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <div>
+                <a href="{{content.url}}" target="_blank">View results in Lookyloo</a>
+            </div>
+            <table class="table table-hover">
+                <tr>
+                    <th>#</th>
+                    <th>Redirection</th>
+                </tr>
+                <tr ng-repeat="row in content.redirections track by $index">
+                    <td>
+                        {{$index}}
+                    </td>
+                    <td>
+                        {{row}}
+                    </td>
+                </tr>
+            </table>
+            <div>
+                <img src="data:image/png;base64, {{content.screenshot}}" alt="Screenshot" style="width:100%" />
+            </div>
+        </div>
+    </div>
+</div> 
+
+<!-- Domain not resolved !--> 
+<div class="panel panel-danger" ng-if="content.status == 'Domain not resolved'" >
+    <div class="panel-heading" >
+        <strong>Domain not resolved for: "{{content.submitted_url}}" at {{content.submission_date}}</strong>
+    </div>
+</div>

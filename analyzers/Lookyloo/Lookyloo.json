@@ -1,0 +1,27 @@
+{
+    "name": "Lookyloo_Screenshot",
+    "version": "1.0",
+    "author": "THA-CERT - PVA",
+    "url": "-",
+    "license": "AGPL-V3",
+    "description": "Take a screenshot of a url and report all HTTP redirections",
+    "dataTypeList": ["url", "domain", "fqdn"],
+    "command": "Lookyloo/lookyloo.py",
+    "baseConfig": "Lookyloo",
+    "configurationItems": [
+        {
+            "name": "Lookyloo_instance",
+            "description": "Should be a URL. By default: https://lookyloo.circl.lu/",
+            "type": "string",
+            "multi": false,
+            "required": false
+        },
+        {
+            "name": "Capture_timeout",
+            "description": "In seconds. Max analysis time, after, the query will stop. Default: 120s",
+            "type": "number",
+            "multi": false,
+            "required": false
+        }
+    ]
+}
