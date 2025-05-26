@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.5.13](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.13) (2025-05-23)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.12...3.5.13)
+
+**Merged pull requests:**
+
+- Fix analyzer: incompatible ctx.io api \[Malwares\] [\#1350](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1350) ([Ignatella](https://github.com/Ignatella))
+
 ## [3.5.12](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.12) (2025-05-07)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.11...3.5.12)
