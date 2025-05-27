@@ -14,14 +14,26 @@
             "description": "Should be a URL. By default: https://lookyloo.circl.lu/",
             "type": "string",
             "multi": false,
-            "required": false
+            "required": false,
+            "defaultValue": "https://lookyloo.circl.lu/"
         },
         {
             "name": "Capture_timeout",
             "description": "In seconds. Max analysis time, after, the query will stop. Default: 120s",
             "type": "number",
             "multi": false,
-            "required": false
+            "required": false,
+            "defaultValue": 120
+        }
+    ],
+    "registration_required": false,
+    "subscription_required": false,
+    "free_subscription": true,
+    "serviceHomepage": "https://github.com/Lookyloo/lookyloo",
+    "screenshots": [
+        {
+        "path": "assets/report2.png",
+        "caption": "Lookyloo Screenshot: long report"
         }
     ]
 }
