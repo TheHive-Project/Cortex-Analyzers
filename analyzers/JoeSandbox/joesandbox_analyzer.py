@@ -10,6 +10,7 @@ import io
 import requests
 import time
 import json
+import re
 from jbxapi import JoeSandbox
 
 def get_files(folder):
@@ -170,11 +171,13 @@ class JoeSandboxAnalyzer(Analyzer):
             os.rmdir(zip_folder) 
 
         if self.analysis:
+            report_url = re.sub(r'/api.*$', '', self.url.rstrip('/'))
+            
             self.analysis["htmlreport"] = (
-                self.url + "analysis/" + str(self.analysis["id"]) + "/0/html"
+                f"{report_url}/analysis/{self.analysis['id']}/0/html"
             )
             self.analysis["pdfreport"] = (
-                self.url + "analysis/" + str(self.analysis["id"]) + "/0/pdf"
+                f"{report_url}/analysis/{self.analysis['id']}/0/pdf"
             )
             self.report(self.analysis)
         else:
