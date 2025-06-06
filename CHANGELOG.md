@@ -1,5 +1,25 @@
 # Changelog
 
+## [3.5.15](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.15) (2025-05-27)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.14...3.5.15)
+
+**Merged pull requests:**
+
+- Add Lookyloo analyzer [\#1357](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1357) ([PoloOctopus](https://github.com/PoloOctopus))
+
+## [3.5.14](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.14) (2025-05-26)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.13...3.5.14)
+
+**Closed issues:**
+
+- \[FR\] CIRCL Vulnerability-Lookup Analyzer [\#1352](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1352)
+
+**Merged pull requests:**
+
+- Add CIRCL Vulnerability-Lookup analyzer [\#1356](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1356) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.5.13](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.13) (2025-05-23)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.12...3.5.13)
