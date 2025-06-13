@@ -982,7 +982,7 @@ jobs:
     #needs: [ build_responders, build_catalog, build_docs ]
     needs: [ build_analyzers, build_responders, build_catalog, build_docs ]
     runs-on: ubuntu-latest
-    if: false   # Temporarily disable notifications
+    if: true
     steps:
       - name: Slack notification
         uses: Gamesight/slack-workflow-status@master
