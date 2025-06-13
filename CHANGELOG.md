@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.5.16](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.16) (2025-06-06)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.15...3.5.16)
+
+**Merged pull requests:**
+
+- Fix links for Joe Sandbox analyzer [\#1358](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1358) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.5.15](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.15) (2025-05-27)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.14...3.5.15)
