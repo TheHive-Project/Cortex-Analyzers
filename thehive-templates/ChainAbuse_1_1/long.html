@@ -1,0 +1,106 @@
+<!-- Success -->
+<div class="panel panel-default" ng-if="success">
+    <div class="panel-heading">
+        <i class="fa fa-link text-primary"></i>
+        ChainAbuse Report<span ng-if="content && content.data && content.data.length">s</span>
+        <span class="badge bg-primary" style="margin-left:10px;" ng-if="content && content.data && content.data.length">{{content.count || (content.data && content.data.length)}}</span>
+    </div>
+    <div class="panel-body" ng-if="content && content.data && content.data.length">
+        <div class="alert alert-info" ng-if="!content.data || !content.data.length">
+            <i class="fa fa-info-circle"></i> No reports found.
+        </div>
+
+        <div class="panel-group" id="chainAbuseAccordion">
+            <div class="panel panel-info" ng-repeat="report in content.data">
+                <div class="panel-heading" style="cursor:pointer;" data-toggle="collapse" data-parent="#chainAbuseAccordion" data-target="#report{{$index}}">
+                    <span class="fa-stack" style="vertical-align: middle;">
+                        <i class="fa fa-circle fa-stack-2x text-info"></i>
+                        <i class="fa fa-warning fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <strong>Scam Category:</strong> <span class="label label-warning" style="margin-right:10px;">{{report.scamCategory}}</span>
+                    <small class="text-muted">Reported <i class="fa fa-clock-o"></i> {{report.createdAt | date:'yyyy-MM-dd HH:mm:ss'}}</small>
+                    <span ng-if="report.trusted" class="label label-success" style="margin-left:10px;"><i class="fa fa-check"></i> Trusted</span>
+                    <a class="btn btn-xs btn-primary pull-right" style="margin-left:10px;" title="Open ChainAbuse Report"
+                        href="https://www.chainabuse.com/report/{{report.id}}" target="_blank" rel="noopener noreferrer">
+                        <i class="fa fa-external-link"></i> View on ChainAbuse
+                    </a>
+                </div>
+                <div id="report{{$index}}" class="panel-collapse collapse" ng-class="{'in': $first}">
+                    <div class="panel-body">
+                        <dl class="dl-horizontal">
+                            <dt><i class="fa fa-tags"></i> Scam Category</dt>
+                            <dd>{{report.scamCategory}}</dd>
+                            <dt><i class="fa fa-calendar"></i> Date</dt>
+                            <dd>{{report.createdAt | date:'yyyy-MM-dd HH:mm:ss'}}</dd>
+                            <dt><i class="fa fa-shield"></i> Trusted Source</dt>
+                            <dd>
+                                <span ng-if="report.trusted" class="label label-success"><i class="fa fa-check"></i> Yes</span>
+                                <span ng-if="!report.trusted" class="label label-default"><i class="fa fa-minus-circle"></i> No</span>
+                            </dd>
+                            <dt><i class="fa fa-link"></i> Report Link</dt>
+                            <dd>
+                                <a href="https://www.chainabuse.com/report/{{report.id}}" target="_blank" rel="noopener noreferrer">
+                                    https://www.chainabuse.com/report/{{report.id}}
+                                    <i class="fa fa-external-link"></i>
+                                </a>
+                            </dd>
+                        </dl>
+                        <div ng-if="report.addresses && report.addresses.length">
+                            <strong>Reported Addresses / Domains:</strong>
+                            <ul class="list-group" style="margin-top:10px;">
+                                <li class="list-group-item" ng-repeat="addr in report.addresses">
+                                    <span ng-if="addr.address">
+                                        <i class="fa fa-chain text-primary"></i>
+                                        <strong>{{addr.address}}</strong>
+                                        <span ng-if="addr.chain" class="label label-info" style="margin-left:5px;">{{addr.chain}}</span>
+                                    </span>
+                                    <span ng-if="addr.domain">
+                                        <i class="fa fa-globe text-success"></i>
+                                        <a href="{{addr.domain}}" target="_blank" rel="noopener noreferrer">{{addr.domain}}</a>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div ng-if="report.checked !== null">
+                            <hr>
+                            <strong>Checked:</strong>
+                            <span ng-if="report.checked" class="label label-success"><i class="fa fa-check"></i> Yes</span>
+                            <span ng-if="!report.checked" class="label label-default"><i class="fa fa-minus"></i> No</span>
+                        </div>
+                        <div ng-if="report.additionalInfo">
+                            <hr>
+                            <pre class="bg-light" style="padding:10px;">{{report.additionalInfo}}</pre>
+                        </div>
+                        <div ng-if="report.references && report.references.length">
+                            <hr>
+                            <strong>References:</strong>
+                            <ul>
+                                <li ng-repeat="ref in report.references">
+                                    <a ng-href="{{ref}}" target="_blank" rel="noopener noreferrer">{{ref}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body" ng-if="!content.data || !content.data.length">
+        <div class="alert alert-info">
+            <i class="fa fa-info-circle"></i> No ChainAbuse reports found for this observable.
+        </div>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> ChainAbuse: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
