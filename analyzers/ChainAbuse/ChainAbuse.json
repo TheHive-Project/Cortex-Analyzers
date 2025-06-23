@@ -1,0 +1,36 @@
+{
+  "name": "ChainAbuse",
+  "version": "1.1",
+  "author": "Peter Juhas; Fabien Bloume, StrangeBee",
+  "url": "https://github.com/pjuhas/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Check crypto address against reported abuse cases on ChainAbuse",
+  "dataTypeList": [
+    "crypto_address",
+    "btc_address"
+  ],
+  "baseConfig": "ChainAbuse",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for ChainAbuse",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "command": "ChainAbuse/ChainAbuse.py",
+  "registration_required": true,
+  "subscription_required": false,
+  "service_homepage": "https://www.chainabuse.com/",
+  "service_logo": {
+    "path": "assets/chainabuse-logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/chainabuse-long-report.png",
+      "caption": "ChainAbuse: long report"
+    }
+  ]
+}
