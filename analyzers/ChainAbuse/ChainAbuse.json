@@ -1,0 +1,20 @@
+{
+  "name": "ChainAbuse",
+  "version": "1.1",
+  "author": "Peter Juhas; Fabien Bloume, StrangeBee",
+  "url": "https://github.com/pjuhas/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Check crypto address against ChainAbuse database",
+  "dataTypeList": ["crypto_address", "btc_address"],
+  "baseConfig": "ChainAbuse",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for ChainAbuse",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "command": "ChainAbuse/ChainAbuse.py"
+}
