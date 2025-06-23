@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.5.17](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.17) (2025-06-13)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.16...3.5.17)
+
+**Merged pull requests:**
+
+- Added the n8n responder [\#1359](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1359) ([elohim666](https://github.com/elohim666))
+
 ## [3.5.16](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.16) (2025-06-06)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.15...3.5.16)
