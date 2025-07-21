@@ -3,11 +3,18 @@
   "author": "ninoseki, Nils Kuhnert",
   "license": "MIT",
   "url": "https://github.com/ninoseki/cortex_URLhaus_analyzer",
-  "version": "2.0",
+  "version": "2.1",
   "baseConfig": "URLhaus",
   "description": "Search domains, IPs, URLs or hashes on URLhaus.",
   "dataTypeList": ["domain", "fqdn", "url", "hash", "ip"],
   "command": "URLhaus/URLhaus_analyzer.py",
   "configurationItems": [
+    {
+            "name": "API_Key",
+            "description": "API Key of URLHaus. You can create account for free on https://urlhaus.abuse.ch/",
+            "type": "string",
+            "multi": false,
+            "required": true
+        }
   ]
 }
