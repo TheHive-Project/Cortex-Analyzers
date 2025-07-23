@@ -48,6 +48,7 @@ class Slack(Responder):
         if self.service == "createchannel":
             # Gather data from TheHive case
             case_id = self.get_param("data.caseId")
+            case_unique_id = self.get_param("data.id")
             title = self.get_param("data.title", "")
             owner = self.get_param("data.owner", "")
             description = self.get_param("data.description", "")
@@ -128,7 +129,7 @@ class Slack(Responder):
 
                 case_link_text = ""
                 if self.thehive_base_url:
-                    case_web_link = f"{self.thehive_base_url}/index.html#/case/{self.get_param('data.id')}"
+                    case_web_link = f"{self.thehive_base_url}/cases/{case_unique_id}/details"
                     case_link_text = f"\n🔗 <{case_web_link}|Open Case in TheHive>"   
                             
                 summary_lines = [
