@@ -1,0 +1,35 @@
+{
+  "name": "Watcher_RemoveDomain",
+  "version": "1.2",
+  "author": "THA-CERT // YNE",
+  "url": "https://github.com/thalesgroup-cert/Watcher",
+  "license": "AGPL-V3",
+  "description": "Removes a domain from monitoring in the Website Monitoring module on Watcher.",
+  "dataTypeList": ["thehive:case_artifact"],
+  "command": "Watcher/watcher.py",
+  "baseConfig": "Watcher",
+  "config": {
+    "service": "WatcherRemoveDomain"
+  },
+  "configurationItems": [
+    {
+      "name": "watcher_url",
+      "description": "URL of Watcher.",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "watcher_api_key",
+      "description": "API key used for authenticating requests to Watcher.",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "the_hive_custom_field",
+      "description": "Name of the custom field (same as .env variable).",
+      "type": "string",
+      "required": true,
+      "defaultValue": "watcher-id"
+    }
+  ]
+}

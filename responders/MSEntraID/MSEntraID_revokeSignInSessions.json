@@ -1,0 +1,38 @@
+{
+    "name": "MSEntraID_revokeSignInSessions",
+    "version": "1.1",
+    "author": "Daniel Weiner @dmweiner; revised by @jahamilto; Fabien Bloume, StrangeBee",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Invalidates all the refresh tokens issued to applications for a Microsoft Entra ID user (as well as session cookies in a user's browser)",
+    "dataTypeList": ["thehive:case_artifact"],
+    "command": "MSEntraID/MSEntraID.py",
+    "baseConfig": "MSEntraID",
+    "config": {
+        "service": "revokeSignInSessions"
+    },
+    "configurationItems": [
+        {"name": "tenant_id",
+        "description": "Microsoft Entra ID Tenant ID",
+        "type": "string",
+        "multi": false,
+        "required": true
+        },
+        {"name": "client_id",
+        "description": "Client ID/Application ID of Microsoft Entra ID Registered App",
+        "type": "string",
+        "multi": false,
+        "required": true
+        },
+        {"name": "client_secret",
+        "description": "Secret for Microsoft Entra ID Registered Application",
+        "type": "string",
+        "multi": false,
+        "required": true
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://www.microsoft.com/security/business/identity-access/microsoft-entra-id"
+}

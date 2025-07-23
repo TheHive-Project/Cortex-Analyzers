@@ -1,0 +1,101 @@
+<div class="panel panel-primary" ng-if="success && content.result !== null">
+        <div class="panel panel-heading"><strong>Triage Analyze</strong></div>
+ <div>
+            <div class="btn-group btn-group-justified" role="group">
+                <div class="btn-group" role="group"><a target="_blank" href="{{content.url}}{{content.result.sample.id}}"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>Full Report</button></a></div>
+            </div>
+        </div>
+    </div> 
+
+<!-- General information  -->
+<div class="panel panel-info" ng-if="success && content.result !== null">
+     <div class="panel-heading">General</div>
+            <dl class="dl-horizontal">
+             <dt>Hashes</dt>
+                <dd class="wrap">
+                    MD5: {{content.result.sample.md5}}<br />
+                    SHA1: {{content.result.sample.sha1}}<br />
+                    SHA256: {{content.result.sample.sha256}}<br />
+                </dd>
+                <dt>Analysed</dt>
+                <dd>{{content.result.sample.created}}</dd>
+                <dt>Filename</dt>
+                <dd>{{content.result.tasks['0'].target}}</dd>
+                <dt>Filesize</dt>
+                <dd>{{content.result.sample.size}}</dd>
+                <dt>Tags</dt>
+                    <dd><span ng-repeat="r in content.result.analysis.tags" ng-style="{color: 'red'}">
+                     {{r}} &nbsp;
+                    </span></dd>
+                <dt>Total score</dt>
+                <dd>{{content.result.sample.score}}/10</dd>
+            </dl>
+        </div>
+    </div>
+</div>    
+
+<!-- Signatures -->
+<div class="panel panel-info" ng-if="success && content.result !== null">
+  <div class="panel-heading" ng-if="content.result.signatures">Signatures</div>
+     <div class="panel-body">
+       <table style="width:100%">
+       <tr>
+        <th>Name</th>
+        <th>Label</th>
+        <th>Desc</th>
+        <th>Score</th>
+        </tr>
+        <tr ng-repeat="x in content.result.signatures">
+            <td>{{x.name || "-"}}</td>
+            <td>{{x.label || "-"}}</td>
+            <td>{{x.desc || "-"}}</td>
+            <td ng-if="x.score > 7 || x.score == 7" ng-style="{color: 'red'}">{{x.score}}</td>
+            <td ng-if="x.score < 6 || x.score == 6" ng-style="{color: 'orange'}">{{x.score}}</td>
+        </tr>
+    </table>
+    </div>
+</div>
+
+<!-- URLs  -->
+<div class="panel panel-info" ng-if="success && content.result !== null && content.result.targets['0'].iocs.urls">
+    <div class="panel panel-heading" ng-if="content.result.targets">URLs</div>
+                    <div class="panel-body" ng-repeat="r in content.result.targets">
+                            <span ng-repeat="x in r.iocs.urls">
+                           {{x}} </br>
+                           </span>
+                    </div>
+</div>
+
+
+<!-- Domains  -->
+<div class="panel panel-info" ng-if="success && content.result !== null && content.result.targets['0'].iocs.domains">
+    <div class="panel panel-heading" ng-if="content.result.targets">Domains</div>
+                    <div class="panel-body" ng-repeat="r in content.result.targets">
+                            <span ng-repeat="x in r.iocs.domains">
+                           {{x}} </br>
+                           </span>
+                    </div>
+</div>
+
+<!-- IPs  -->
+<div class="panel panel-info" ng-if="success && content.result !== null && content.result.targets['0'].iocs.ips">
+    <div class="panel panel-heading" ng-if="content.result.targets">IPs</div>
+                    <div class="panel-body" ng-repeat="r in content.result.targets">
+                            <span ng-repeat="x in r.iocs.ips">
+                           {{x}} </br>
+                           </span>
+                    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success || content.result === null">
+    <div class="panel-heading">
+        <strong>General Error: Please try again</strong>
+    </div>
+    <div class="panel-body">
+    	<dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> Triage: </dt>
+            <dd class="wrap">{{content.errorMessage}}"</dd>
+        </dl>
+    </div>
+</div>

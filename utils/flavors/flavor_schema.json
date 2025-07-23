@@ -34,7 +34,10 @@
             "type": "object",
             "properties": {
                 "service": {
-                    "type": "string"
+                    "type": [
+                        "number",
+                        "string"
+                    ]
                 }
             }
         },
@@ -95,6 +98,9 @@
                 "description": {
                     "type": "string"
                 },
+                "type": {
+                    "type": "string"
+                },
                 "multi": {
                     "type": "boolean"
                 },
@@ -109,6 +115,7 @@
                 "name",
                 "description",
                 "multi",
+                "type",
                 "required" 
             ]
         },

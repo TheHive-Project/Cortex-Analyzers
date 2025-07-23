@@ -18,7 +18,8 @@
     "registry",
     "regexp",
     "other",
-    "filename"
+    "filename",
+    "mail-subject"
   ],
   "config": {
       "service": "search_exact"

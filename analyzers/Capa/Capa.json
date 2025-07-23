@@ -1,0 +1,38 @@
+{
+    "name": "Capa",
+    "version": "1.0",
+    "author": "Wes Lambert; Fabien Bloume, StrangeBee",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Analyze files with Capa",
+    "dataTypeList": ["file"],
+    "baseConfig": "Capa",
+    "config": {
+       "service": "CapaAnalyze"
+    },
+    "command": "Capa/CapaAnalyze.py",
+    "configurationItems": [
+     {
+      "name": "capa_path",
+      "description": "Path to Capa binary (if installed locally, should be /opt/Cortex-Analyzers/analyzers/Capa/capa)",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "/worker/Capa/capa"
+    }
+    ],
+    "registration_required": false,
+    "subscription_required": false,
+    "free_subscription": false,
+    "service_homepage": "https://github.com/mandiant/capa",
+    "service_logo": {
+      "path": "assets/capa.png",
+      "caption": "CAPA logo"
+    },
+    "screenshots": [
+      {
+        "path": "assets/long_report.png",
+        "caption": "CAPA: Long report template"
+      }
+    ]
+}

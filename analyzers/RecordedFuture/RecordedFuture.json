@@ -1,0 +1,27 @@
+{
+  "name": "RecordedFuture",
+  "version": "2.0",
+  "author": "Recorded Future",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "dataTypeList": ["ip", "domain", "fqdn", "hash", "url"],
+  "description": "Enrich IP, Domain, FQDN, URL, or Hash with Recorded Future context:  Risk Score, Risk Details, AI Insights, Links, Threat Actor, Attack Vector, Malware Category / Family, and Related Entities (IPs, Domains, and Hashes)",
+  "command": "RecordedFuture/recordedfuture.py",
+  "baseConfig": "RecordedFuture",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API Token",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "service_homepage": "https://www.recordedfuture.com/",
+  "service_logo": {
+    "path": "assets/recordedfuture-logo.png",
+    "caption": "logo"
+  }
+}

@@ -3,8 +3,8 @@
   "author": "Mikael Keri",
   "license": "AGPL-V3",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-  "version": "1.0",
-  "description": "Submit artifacts to the Triage sandbox service. This analyzer requires a paid subscription",
+  "version": "2.0",
+  "description": "Submit artifacts to the Recorded Future Triage sandbox service. This analyzer requires a paid subscription for the Private and Recorded Future sandboxes.",
   "dataTypeList": ["ip", "url", "file"],
   "baseConfig": "Triage",
   "config": {
@@ -18,6 +18,13 @@
     {
       "name": "api_key",
       "description": "API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "api_url",
+      "description": "Sandbox API URL: public sandbox (https://tria.ge/api), private sandbox (https://private.tria.ge/api), or Recorded Future sandbox (https://sandbox.recordedfuture.com/api)",
       "type": "string",
       "multi": false,
       "required": true
@@ -39,9 +46,9 @@
    ],
    "registration_required": true,
    "subscription_required": true,
-   "free_subscription": false,
+   "free_subscription": true,
    "service_homepage": "https://tria.ge",
-   "service_logo": {"path":"assets/triage_logo.png", "caption": "logo"},
+   "service_logo": {"path":"assets/recorded_future_triage_logo.png", "caption": "logo"},
    "screenshots": [
      {"path":"assets/triage_cortex_settings.png",
        "caption":"Triage analyzer cortex setting"

@@ -20,7 +20,7 @@ class KasperskyTIP(Analyzer):
             level = "safe"
         elif value == "Yellow":
             level = "suspicious"
-        elif value == "Red":
+        elif value in ["Orange", "Red"]:
             level = "malicious"
         taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         return {'taxonomies': taxonomies}

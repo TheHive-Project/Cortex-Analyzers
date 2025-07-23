@@ -1,0 +1,67 @@
+{
+  "name": "ONYPHE_ASM",
+  "version": "1.1",
+  "author": "Pierre Baudry, Adrien Barchapt, Andrea Garavaglia, Davide Arcuri, James Atack",
+  "license": "AGPL-V3",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "description": "Manage an attack surface from The Hive using ONYPHE riskscan category",
+  "dataTypeList": ["ip", "domain", "fqdn", "hash"],
+  "command": "Onyphe/onyphe_analyzer.py",
+  "baseConfig": "Onyphe",
+  "config": {
+    "service": "asm",
+    "base_uri": "/api/v2/",
+    "base_url": "https://www.onyphe.io"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API key to use to connect the service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "time_filter",
+      "description": "Specify ONYPHE time filter to be used for searches (see https://www.onyphe.io/docs/onyphe-query-language)",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "-since:1M"
+    },
+    {
+      "name": "fields_filter",
+      "description": "[!!Advanced!!] Modify ONYPHE fields to return in raw data (see https://www.onyphe.io/docs/onyphe-query-language)",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "ip,port,protocol,tag,tls,cpe,cve,hostname,domain,alternativeip,forward,url,organization,transport,organization,device.class,device.product,device.productvendor,device.productversion,product,productvendor,productversion"
+    },
+    {
+      "name": "auto_import",
+      "description": "Automatically import artifacts as observables (risks, cves, assets, ...)",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://www.onyphe.io",
+  "service_logo": {
+    "path": "assets/onyphe_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/ONYPHE_ASM_long.png",
+      "caption": "ONYPHE ASM report sample (IPs obscured) with click to expand accordion."
+    },
+    {
+      "path": "assets/ONYPHE_ASM_short.png",
+      "caption": "ONYPHE ASM mini report showing no. of risks"
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+<!-- General success  -->
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <strong>Stats</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <td>File Name</td>
+                <td>{{ content["stats"]["file_name"] }}</td>
+            </tr>
+            <tr>
+                <td>File Extension</td>
+                <td>{{ content["stats"]["file_extension"] }}</td>
+            </tr>
+            <tr>
+                <td>Total QR Code(s)</td>
+                <td>{{ content["stats"]["total_qr_codes"] }}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-repeat="result in content.results_list">
+    <div class="panel-heading">
+        <strong>QR: {{ result.results.QR }}</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <td>Data Category</td>
+                <td>{{ result.results.data_category }}</td>
+            </tr>
+            <tr>
+                <td>Data Type</td>
+                <td>{{ result.results.data_type }}</td>
+            </tr>
+            <tr>
+                <td>Info</td>
+                <td>{{ result.results.info }}</td>
+            </tr>
+            <tr>
+                <td>Data</td>
+                <td><b>{{ result.results.data }}</b></td>
+            </tr>
+            <tr>
+                <td>Brute Data</td>
+                <td>{{ result.results.brute_data }}</td>
+            </tr>
+            <tr ng-if="result.results.page">
+                <td>On PDF page</td>
+                <td>{{ result.results.page }}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="content.stats.error">
+    <div class="panel-heading">
+        <strong>Error</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>
+                <i class="fa fa-warning"></i> QrDecode:
+            </dt>
+            <dd class="wrap">{{ content.stats.error }}</dd>
+        </dl>
+    </div>
+</div>

@@ -159,7 +159,7 @@ def parseEml(filepath, job_directory, wkhtmltoimage, sanitized_rendering):
     ##
     ## Extract raw email
     ##
-    result["raw_email"] = raw_email.decode("utf-8")
+    result["raw_email"] = raw_email.decode("utf-8", errors="replace")
     ##
     ## Extract SMTP envelope
     ##

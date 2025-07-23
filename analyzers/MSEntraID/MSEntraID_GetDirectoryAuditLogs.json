@@ -1,0 +1,52 @@
+{
+    "name": "MSEntraID_GetDirectoryAuditLogs",
+    "version": "1.0",
+    "author": "Fabien Bloume, StrangeBee",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Pull Microsoft Entra ID directory audit logs for a user within the specified timeframe.",
+    "dataTypeList": ["mail"],
+    "command": "MSEntraID/MSEntraID.py",
+    "baseConfig": "MSEntraID",
+    "config": {
+        "service": "getDirectoryAuditLogs"
+    },
+    "configurationItems": [
+        {"name": "tenant_id",
+        "description": "Microsoft Entra ID Tenant ID",
+        "type": "string",
+        "multi": false,
+        "required": true
+        },
+        {"name": "client_id",
+        "description": "Client ID/Application ID of Microsoft Entra ID Registered App",
+        "type": "string",
+        "multi": false,
+        "required": true
+        },
+        {"name": "client_secret",
+        "description": "Secret for Microsoft Entra ID Registered Application",
+        "type": "string",
+        "multi": false,
+        "required": true
+        },
+        {"name": "lookup_range",
+        "description": "Check for Directory Audit Logs in the last X days. Should be between 1 and 31 days.",
+        "type": "number",
+        "multi": false,
+        "required": false,
+        "defaultValue": 7
+        },
+        {"name": "lookup_limit",
+        "description": "Display no more than this many Directory Audit Logs.",
+        "type": "number",
+        "multi": false,
+        "required": false,
+        "defaultValue": 12
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://www.microsoft.com/security/business/identity-access/microsoft-entra-id"
+}

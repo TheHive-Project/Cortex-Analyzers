@@ -1,0 +1,50 @@
+{
+  "name": "JAMFProtect_removeHashfromPreventList",
+  "version": "1.0",
+  "author": "Fabien Bloume, StrangeBee",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Remove IOC on JAMF Protect - removes associated custom prevent list(s) containing the hash",
+  "dataTypeList": [
+    "thehive:case_artifact"
+  ],
+  "command": "JAMFProtect/JAMFProtect_IOC.py",
+  "baseConfig": "JAMFProtect",
+  "config": {
+    "service": "removeIOC"
+  },
+  "configurationItems": [
+    {
+      "name": "base_url",
+      "description": "JAMF Protect base url",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "https://mycompany.protect.jamfcloud.com"
+    },
+    {
+      "name": "client_id",
+      "description": "JAMF Protect client ID",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": ""
+    },
+    {
+      "name": "password",
+      "description": "JAMF Protect password",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": ""
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.jamf.com/products/jamf-protect/",
+  "service_logo": {
+    "path": "assets/jamfprotect.png",
+    "caption": "JAMF Protect logo"
+  }
+}

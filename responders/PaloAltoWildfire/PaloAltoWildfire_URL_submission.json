@@ -1,0 +1,32 @@
+{
+  "name": "PaloAltoWildfire_URL_submission",
+  "version": "1.0",
+  "author": "Keijo Korte - @korteke",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Submit URL to PaloAlto Wildfire service.",
+  "dataTypeList": ["url", "domain", "fqdn"],
+  "command": "PaloAltoWildfire/PaloAltoWildfire.py",
+  "baseConfig": "PaloAltoWildfire",
+  "configurationItems": [
+    {
+      "name": "api_key",
+      "description": "PaloAlto Wildfire API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "wildfire_url",
+      "description": "PaloAlto Wildfire Takedown URL",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "https://wildfire.paloaltonetworks.com/publicapi/submit/link"
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.paloaltonetworks.com/network-security/wildfire"
+}

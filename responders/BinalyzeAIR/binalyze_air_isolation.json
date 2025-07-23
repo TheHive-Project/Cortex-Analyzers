@@ -1,0 +1,55 @@
+{
+    "name": "Binalyze_AIR_Isolation",
+    "version": "1.0",
+    "author": "Binalyze Integration Team",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Isolate your endpoints with Binalyze AIR.",
+    "dataTypeList": [
+        "thehive:case_artifact"
+    ],
+    "command": "BinalyzeAIR/binalyze.py",
+    "config": {
+        "service": "air_isolate"
+    },
+    "service_logo": {
+    "path": "assets/binalyze-logo.png",
+    "caption": "logo"
+    },
+    "baseConfig": "BinalyzeAIR",
+    "configurationItems": [
+        {
+            "name": "air_console_url",
+            "description": "Console URL",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "air_api_key",
+            "description": "API Key,",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "endpoint_hostname",
+            "description": "Endpoint Hostname",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "isolation",
+            "description": "Isolation operation",
+            "type": "boolean",
+            "multi": false,
+            "default": "true",
+            "required": true
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://www.binalyze.com/air"
+}

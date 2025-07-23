@@ -1,0 +1,142 @@
+<!-- Success -->
+<div class="panel panel-danger" ng-if="success">
+    <div class="panel-body">
+        <div>
+            <!-- Query Information -->
+            <div class="panel">
+                <div class="panel-heading">
+                    <i class="fa fa-envelope"></i> Queried User Email or Hostname
+                </div>
+                <div>
+                    <table class="table">
+                        <tr>
+                            <td><strong>Query</strong></td>
+                            <td>{{ content.query || 'N/A' }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- No Devices Found -->
+            <div class="panel" ng-if="content.devices.length === 0">
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle"></i> No Devices Found
+                </div>
+                <div>No devices found for this user in Intune.</div>
+            </div>
+
+            <!-- Device Details -->
+            <div class="panel" ng-if="content.devices.length > 0">
+                <div class="panel-heading">
+                    <i class="fa fa-laptop"></i> Enrolled Devices
+                </div>
+                <div>
+                    <table class="table">
+                        <tr>
+                            <th>Device Name</th>
+                            <th>Operating System</th>
+                            <th>OS Version</th>
+                            <th>Compliance State</th>
+                            <th>Last Sync Date</th>
+                            <th>Enrollment Type</th>
+                        </tr>
+                        <tr ng-repeat="device in content.devices">
+                            <td>{{ device.deviceName || 'N/A' }}</td>
+                            <td>{{ device.operatingSystem || 'N/A' }}</td>
+                            <td>{{ device.osVersion || 'N/A' }}</td>
+                            <td>
+                                <span class="label" ng-class="{
+                                    'label-success': device.complianceState === 'compliant',
+                                    'label-warning': device.complianceState === 'noncompliant',
+                                    'label-danger': device.complianceState === 'unknown'
+                                }">
+                                    {{ device.complianceState || 'N/A' }}
+                                </span>
+                            </td>
+                            <td>{{ device.lastSyncDateTime || 'N/A' }}</td>
+                            <td>{{ device.deviceEnrollmentType || 'N/A' }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Device Security & Compliance -->
+            <div class="panel" ng-if="content.devices.length > 0">
+                <div class="panel-heading">
+                    <i class="fa fa-shield"></i> Security & Compliance
+                </div>
+                <div>
+                    <table class="table">
+                        <tr>
+                            <th>Device</th>
+                            <th>BitLocker</th>
+                            <th>Secure Boot</th>
+                            <th>Encryption</th>
+                            <th>Jailbroken</th>
+                            <th>Threat State</th>
+                        </tr>
+                        <tr ng-repeat="device in content.devices">
+                            <td>{{ device.deviceName || 'N/A' }}</td>
+                            <td>{{ device.deviceHealthAttestationState.bitLockerStatus || 'N/A' }}</td>
+                            <td>{{ device.deviceHealthAttestationState.secureBoot || 'N/A' }}</td>
+                            <td>{{ device.isEncrypted ? 'Yes' : 'No' }}</td>
+                            <td>
+                                <span class="label" ng-class="{
+                                    'label-danger': (device.jailBroken || '').toLowerCase() === 'yes',
+                                    'label-success': (device.jailBroken || '').toLowerCase() === 'no'
+                                }">
+                                    {{ device.jailBroken || 'N/A' }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="label" ng-class="{
+                                    'label-success': device.partnerReportedThreatState === 'clean',
+                                    'label-danger': device.partnerReportedThreatState !== 'clean'
+                                }">
+                                    {{ device.partnerReportedThreatState || 'N/A' }}
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Device Action Results -->
+            <div class="panel" ng-repeat="device in content.devices" ng-if="device.deviceActionResults.length > 0">
+                <div class="panel-heading">
+                    <i class="fa fa-tasks"></i> Device Actions - {{ device.deviceName }}
+                </div>
+                <div>
+                    <table class="table">
+                        <tr>
+                            <th>Action Name</th>
+                            <th>Action State</th>
+                            <th>Start Date</th>
+                            <th>Last Updated</th>
+                        </tr>
+                        <tr ng-repeat="action in device.deviceActionResults">
+                            <td>{{ action.actionName || 'N/A' }}</td>
+                            <td>{{ action.actionState || 'N/A' }}</td>
+                            <td>{{ action.startDateTime || 'N/A' }}</td>
+                            <td>{{ action.lastUpdatedDateTime || 'N/A' }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> GetManagedDeviceInfo: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
+

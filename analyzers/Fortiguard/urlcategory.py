@@ -5,6 +5,7 @@
 import re
 import requests
 from cortexutils.analyzer import Analyzer
+import urllib.parse
 
 
 class URLCategoryAnalyzer(Analyzer):
@@ -37,12 +38,15 @@ class URLCategoryAnalyzer(Analyzer):
             try:
                 pattern = re.compile("(?:Category: )([-\w\s]+)")
                 baseurl = 'https://www.fortiguard.com/webfilter?q='
-                url = baseurl + self.get_data()
+                url = baseurl + urllib.parse.quote_plus(self.get_data())
                 req = requests.get(url)
-                category_match = re.search(pattern, req.text, flags=0)
-                self.report({
-                    'category': category_match.group(1)
-                })
+                if not req.status_code == 200:
+                    raise Exception(str(req.status_code)+': '+req.reason+' '+url)
+                else:
+                    category_match = re.search(pattern, req.text, flags=0)
+                    self.report({
+                        'category': category_match.group(1)
+                    })
             except ValueError as e:
                 self.unexpectedError(e)
         else:

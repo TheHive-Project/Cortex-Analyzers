@@ -1,0 +1,127 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        DNSDumpster Information for <strong>{{ artifact.data }}</strong>
+    </div>
+    <div class="panel-body">
+        <div>
+            <dl class="dl-horizontal">
+                <dt class="text-bold">Domain</dt>
+                <dd>{{ content.result.domain }}</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        DNS Records
+    </div>
+    <div class="panel-body">
+        <div>
+            <dl class="dl-horizontal" ng-if="content.result.dns_records.dns.length > 0">
+                <dt class="text-bold">DNS Records</dt>
+                <dd>
+                    <span ng-repeat="dns in content.result.dns_records.dns">
+                        <strong>Domain:</strong> {{ dns.domain }}<br>
+                        <strong>IP:</strong> {{ dns.ip }}<br>
+                        <strong>Reverse DNS:</strong> {{ dns.reverse_dns }}<br>
+                        <strong>AS:</strong> {{ dns.as }}<br>
+                        <strong>Provider:</strong> {{ dns.provider }}<br>
+                        <strong>Country:</strong> {{ dns.country }}<br>
+                        <strong>Header:</strong> {{ dns.header }}<br><br>
+                    </span>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        MX Records
+    </div>
+    <div class="panel-body">
+        <div>
+            <dl class="dl-horizontal" ng-if="content.result.dns_records.mx.length > 0">
+                <dt class="text-bold">MX Records</dt>
+                <dd>
+                    <span ng-repeat="mx in content.result.dns_records.mx">
+                        <strong>Domain:</strong> {{ mx.domain }}<br>
+                        <strong>Reverse DNS:</strong> {{ mx.reverse_dns }}<br>
+                        <strong>IP:</strong> {{ mx.ip }}<br>
+                        <strong>AS:</strong> {{ mx.as }}<br>
+                        <strong>Provider:</strong> {{ mx.provider }}<br>
+                        <strong>Country:</strong> {{ mx.country }}<br>
+                        <strong>Header:</strong> {{ mx.header }}<br><br>
+                    </span>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        TXT Records
+    </div>
+    <div class="panel-body">
+        <div>
+            <dl class="dl-horizontal" ng-if="content.result.dns_records.txt.length > 0">
+                <dt class="text-bold">TXT Records</dt>
+                <dd>
+                    <span ng-repeat="txt in content.result.dns_records.txt">
+                        {{ txt }}<br><br>
+                    </span>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        Host Information
+    </div>
+    <div class="panel-body">
+        <div>
+            <dl class="dl-horizontal" ng-if="content.result.dns_records.host.length > 0">
+                <dt class="text-bold">Host Records</dt>
+                <dd>
+                    <span ng-repeat="host in content.result.dns_records.host">
+                        <strong>Domain:</strong> {{ host.domain }}<br>
+                        <strong>IP:</strong> {{ host.ip }}<br>
+                        <strong>Reverse DNS:</strong> {{ host.reverse_dns }}<br>
+                        <strong>AS:</strong> {{ host.as }}<br>
+                        <strong>Provider:</strong> {{ host.provider }}<br>
+                        <strong>Country:</strong> {{ host.country }}<br>
+                        <strong>Header:</strong> {{ host.header }}<br><br>
+                    </span>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        DNS Map
+    </div>
+    <div class="panel-body">
+        <div>
+            <dl class="dl-horizontal">
+                <dt class="text-bold">Map URL</dt>
+                <dd><a href="{{ content.result.dns_records.map_url }}" target="_blank">View DNS Map</a></dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{ artifact.data }}</strong>
+    </div>
+    <div class="panel-body">
+        {{ content.errorMessage }}
+    </div>
+</div>

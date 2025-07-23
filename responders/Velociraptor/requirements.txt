@@ -2,4 +2,4 @@ cortexutils
 cryptography
 grpcio-tools
 pyvelociraptor
-thehive4py
+thehive4py~=1.8.1

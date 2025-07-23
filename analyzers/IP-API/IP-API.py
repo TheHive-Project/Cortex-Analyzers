@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import requests
 from cortexutils.analyzer import Analyzer
 
@@ -7,6 +7,7 @@ class IPAPI(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
+        self.key = self.get_param("config.key", None)
 
     def summary(self, raw):
         taxonomies = []
@@ -21,17 +22,20 @@ class IPAPI(Analyzer):
 
     def run(self):
         Analyzer.run(self)
-        if self.data_type == 'ip' or self.data_type == 'domain':
+        if self.data_type in ('ip', 'domain'):
+            data = self.get_data()
+            base_url = "https://pro.ip-api.com/json" if self.key else "http://ip-api.com/json"
+            fields = "status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query"
+            params = {"key": self.key, "fields": fields} if self.key else {"fields": fields}
+
             try:
-                data = self.get_data()
-                s = requests.Session()
-                response_details = s.get('http://ip-api.com/json/{}'
-                                         .format(data))
-                if response_details.status_code == 200:
-                    result = response_details.json()
-                    self.report(result if len(result) > 0 else {})
-                else:
-                    self.error('Failed to query IP-API details. Status_code {}'.format(response_details.status_code))
+                with requests.Session() as session:
+                    response = session.get(f"{base_url}/{data}", params=params, timeout=10)
+                    response.raise_for_status()
+                    result = response.json()
+                    self.report(result or {})
+            except requests.RequestException as e:
+                self.error(f"HTTP request failed: {e}")
             except Exception as e:
                 self.unexpectedError(e)
         else:

@@ -19,6 +19,7 @@ pyvenv.cfg
 share
 
 test-doc
+test_doc
 analyzers/*/input
 analyzers/*/output
 responders/*/input

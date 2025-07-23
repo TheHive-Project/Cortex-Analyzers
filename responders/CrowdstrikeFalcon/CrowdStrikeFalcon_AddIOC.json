@@ -1,0 +1,118 @@
+{
+  "name": "CrowdStrikeFalcon_AddIOC",
+  "version": "1.0",
+  "author": "Fabien Bloume, StrangeBee",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Add IOC to IoC Management on Crowdstrike - supports domain, url, IPs & different kind of hashes",
+  "dataTypeList": [
+    "thehive:case_artifact"
+  ],
+  "command": "CrowdstrikeFalcon/CrowdstrikeFalconIOC.py",
+  "baseConfig": "CrowdstrikeFalcon",
+  "config": {
+    "service": "addIOC"
+  },
+  "configurationItems": [
+    {
+      "name": "client_id",
+      "description": "Crowdstrike client ID key",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": ""
+    },
+    {
+      "name": "client_secret",
+      "description": "Crowdstrike client secret key",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": ""
+    },
+    {
+      "name": "base_url",
+      "description": "Crowdstrike base URL. Also supports US-1, US-2, EU-1, US-GOV-1 values",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "https://api.crowdstrike.com"
+    },
+    {
+      "name": "severity",
+      "description": "Severity linked to the IoC - informational, low, medium, high, critical",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "informational"
+    },
+    {
+      "name": "action",
+      "description": "Action policy to do - no_action, detect, allow, prevent. Prevent & Allow only works with hashes. In case of other types, prevent will default to detect.",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "prevent"
+    },
+    {
+      "name": "expiration_days",
+      "description": "Expiration date of the IoC -- None if not filled.",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 0
+    },
+    {
+      "name": "platform_list",
+      "description": "List of Platforms",
+      "type": "string",
+      "multi": true,
+      "required": true,
+      "defaultValue": [
+        "windows",
+        "mac",
+        "linux"
+      ]
+    },
+    {
+      "name": "host_groups_list",
+      "description": "Applies Detection to all Hosts if left empty. Else, provide host group IDs",
+      "type": "string",
+      "multi": true,
+      "defaultValue": [
+        "all"
+      ],
+      "required": false
+    },
+    {
+      "name": "retrodetect_flag",
+      "description": "Flag to indicate whether to submit retrodetects.",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    },
+    {
+      "name": "tags_list",
+      "description": "Tags added to IOC when TheHive pushes the IoC",
+      "type": "string",
+      "multi": true,
+      "required": false,
+      "defaultValue": []
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.crowdstrike.com",
+  "service_logo": {
+    "path": "assets/crowdstrike.png",
+    "caption": "Crowdstrike logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/responder-report-1-ioc.png",
+      "caption": "Crowdstrike: responder report example"
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+<!-- Success: Dynamic display (limited to 5 results) -->
+<div ng-if="success && content.results.length > 0">
+    <div class="panel panel-success" ng-repeat="result in content.results | limitTo:5">
+      <div class="panel-heading">
+          <strong>{{ result.cn || result.uid || ('LDAP Result ' + ($index + 1)) }}</strong>
+      </div>
+      <div class="panel-body">
+          <dl class="dl-horizontal">
+              <div ng-if="result.cn">
+                  <dt>Full Name</dt>
+                  <dd class="wrap">{{result.cn}}</dd>
+              </div>
+              <div ng-if="result.mail">
+                  <dt>Email</dt>
+                  <dd class="wrap"><a href="mailto:{{result.mail}}">{{result.mail}}</a></dd>
+              </div>
+              <div ng-if="result.uid">
+                  <dt>UID</dt>
+                  <dd class="wrap">{{result.uid}}</dd>
+              </div>
+              <!-- Dynamically show other attributes -->
+              <div ng-repeat="(attr, value) in result" ng-if="attr !== 'cn' && attr !== 'mail' && attr !== 'uid'">
+                    <div>
+                        <dt>{{ attr | uppercase }}</dt>
+                        <dd class="wrap">{{ value }}</dd>
+                    </div>
+                </div> 
+          </dl>
+      </div>
+    </div>
+</div>
+  
+<!-- No results found -->
+<div class="panel panel-info" ng-if="success && content.results.length === 0">
+      <div class="panel-heading">
+          <strong>No results found</strong>
+      </div>
+      <div class="panel-body">
+          <p>No LDAP entries matched your query.</p>
+      </div>
+</div>
+  
+<!-- Filtered results -->
+<div class="panel panel-warning" ng-if="success && content.filtered">
+      <div class="panel-heading">
+          <strong>Filtered LDAP Query</strong>
+      </div>
+      <div class="panel-body">
+          <dl class="dl-horizontal">
+              <dt>Message</dt>
+              <dd class="wrap">{{content.filtered.message}}</dd>
+              <dt>Data</dt>
+              <dd class="wrap">{{content.filtered.data}}</dd>
+              <dt>Data type</dt>
+              <dd class="wrap">{{content.filtered.data_type}}</dd>
+              <dt>Whitelist</dt>
+              <dd class="wrap">{{content.filtered.whitelist}}</dd>
+          </dl>
+      </div>
+</div>
+  
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+      <div class="panel-heading">
+          <strong>Error during LDAP query</strong>
+      </div>
+      <div class="panel-body">
+          <p>{{content.errorMessage}}</p>
+      </div>
+</div>  
