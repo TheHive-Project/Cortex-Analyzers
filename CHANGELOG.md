@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.5.18](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.18) (2025-06-23)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.17...3.5.18)
+
+**Closed issues:**
+
+- \[FR\] BitcoinAbuse analyzer fails – upstream API migrated to ChainAbuse [\#1360](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1360)
+
+**Merged pull requests:**
+
+- Migrates BitcoinAbuse analyzer to new ChainAbuse [\#1361](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1361) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.5.17](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.17) (2025-06-13)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.16...3.5.17)
