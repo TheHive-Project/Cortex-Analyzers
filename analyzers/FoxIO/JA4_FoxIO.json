@@ -1,0 +1,17 @@
+{
+    "name": "JA4_FoxIO",
+    "version": "1.0",
+    "author": "Florian Perret @cyber_pescadito",
+    "url": "https://github.com/cyberpescadito/Cortex-Analyzers/tree/master/analyzers/JA4_FoxIO",
+    "license": "AGPL-V3",
+    "description": "JA4 Fingerprint analysis with FoxIO Database",
+    "dataTypeList": ["user-agent", "ja4-fingerprint"],
+    "command": "FoxIO/JA4_FoxIO.py",
+    "baseConfig": "FoxIO",
+    "configurationItems": [
+    ],
+    "registration_required": false,
+    "subscription_required": false,
+    "free_subscription": true,
+    "service_homepage": "https://ja4db.com/"
+  }

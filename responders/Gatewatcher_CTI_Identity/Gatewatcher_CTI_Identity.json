@@ -1,0 +1,50 @@
+{
+    "name": "Gatewatcher_CTI_Identity",
+    "version": "1.0",
+    "author": "Gatewatcher",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-3.0",
+    "description": "Gatewatcher_CTI_Identity responder",
+    "dataTypeList": [
+        "thehive:case"
+    ],
+    "command": "Gatewatcher_CTI_Identity/Gatewatcher_CTI_Identity.py",
+    "baseConfig": "Gatewatcher_CTI_Identity",
+    "configurationItems": [
+        {
+            "name": "LISApiKey",
+            "description": "Gatewatcher CTI Api Key.",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "theHiveApiKey",
+            "description": "TheHive Api Key.",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "theHiveFQDN",
+            "description": "TheHive FQDN. [protocol]://[Domain Name]",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "domain",
+            "description": "Domain name to check.",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "minutes",
+            "description": "Retrieve leaked emails for the given domain only for the last X minutes.",
+            "type": "number",
+            "multi": false,
+            "required": false
+        }
+    ]
+}
