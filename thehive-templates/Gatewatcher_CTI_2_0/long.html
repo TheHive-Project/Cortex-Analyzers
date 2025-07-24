@@ -1,0 +1,216 @@
+<div class="panel panel-danger" ng-if="!success">
+  <div class="panel-heading">
+    <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+  </div>
+  <div class="panel-body">
+    {{content.errorMessage}}
+  </div>
+</div>
+
+<div ng-if="success && content.IsOnGw">
+  <!-- For IOCs Search !--> 
+  <div ng-if="content.DataType != 'mail' && content.DataType != 'ip'">
+    <div class="panel panel-info" ng-repeat="ioc in content.IOCs">
+      <div class="panel-heading">
+        <strong>Gatewatcher CTI Report for {{ioc.Type}}: {{ioc.Value}}</strong>
+      </div>
+      <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="ioc.Value == artifact.data && ioc.MD5">
+          <dt>MD5</dt>
+          <dd class="wrap">{{ioc.MD5}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="ioc.Value == artifact.data && ioc.SHA1">
+          <dt>SHA1</dt>
+          <dd class="wrap">{{ioc.SHA1}}</dd>
+        </dl>
+        <dl
+          class="dl-horizontal"
+          ng-if="ioc.Value == artifact.data && ioc.SHA256"
+        >
+          <dt>SHA256</dt>
+          <dd class="wrap">{{ioc.SHA256}}</dd>
+        </dl>
+  
+        <dl class="dl-horizontal" ng-if="ioc.CreationDate">
+          <dt>Creation Date</dt>
+          <dd class="wrap">{{ioc.CreationDate}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="ioc.Risk">
+          <dt>Risk</dt>
+          <dd class="wrap">{{ioc.Risk}}</dd>
+        </dl>
+        <dl
+          class="dl-horizontal"
+          ng-if="ioc.description && ioc.description.length>0"
+        >
+          <dt>Description</dt>
+          <dd class="wrap">{{ioc.description}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="ioc.cwe && ioc.cwe.length>0">
+          <dt>Cwe</dt>
+          <dd class="wrap">{{ioc.Cwe}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="ioc.filetype">
+          <dt>Filetype</dt>
+          <dd class="wrap">{{ioc.filetype}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="ioc.Categories.length>0">
+          <dt>Categories</dt>
+          <dd class="wrap">{{ioc.Categories.join(", ")}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="ioc.Families.length>0">
+          <dt>Families</dt>
+          <dd class="wrap">{{ioc.Families.join(", ")}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="ioc.TTP.length>0">
+          <dt>TTP</dt>
+          <dd class="wrap">{{ioc.TTP.join(", ")}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="ioc.TLP">
+          <dt>TLP</dt>
+          <dd class="wrap">{{ioc.TLP}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="ioc.TargetedSectors.length>0">
+          <dt>Targeted Sectors</dt>
+          <dd class="wrap">{{ioc.TargetedSectors.join(", ")}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="ioc.TargetedCountries.length>0">
+          <dt>Targeted Countries</dt>
+          <dd class="wrap">{{ioc.TargetedCountries.join(", ")}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="ioc.TargetedPlatforms.length>0">
+          <dt>Targeted Platforms</dt>
+          <dd class="wrap">{{ioc.TargetedPlatforms.join(", ")}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="ioc.Vulnerabilities.length>0">
+          <dt>Vulnerabilities</dt>
+          <dd class="wrap">{{ioc.Vulnerabilities.join(", ")}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="ioc.Tags.length>0">
+          <dt>Tags</dt>
+          <dd class="wrap">{{ioc.Tags.join(", ")}}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <!-- End of IOCs Search !-->
+  <!-- Email leaked -->
+  <div ng-if="content.DataType == 'mail'">
+    <div class="panel-heading">
+      <strong>Gatewatcher CTI Identity Intelligence Report for {{content.Value}}</strong>
+    </div>
+    <div class="panel-body">
+      <dl class="dl-horizontal" ng-if="content.CreationDate">
+        <dt>Creation Date</dt>
+        <dd class="wrap">{{content.CreationDate}}</dd>
+      </dl>
+      <dl class="dl-horizontal" ng-if="content.ModificationDate">
+        <dt>Modification Date</dt>
+        <dd class="wrap">{{content.ModificationDate}}</dd>
+      </dl>
+      <!-- Password Part -->
+      <dl class="dl-horizontal" ng-if="content.totalPasswords">
+        <dt>Passwords leaked</dt>
+        <dd class="wrap">{{content.totalPasswords}}</dd>
+      </dl>
+      <div class="panel panel-info" ng-repeat="(key, value) in content.Passwords">
+        <dl class="dl-horizontal">
+          <dd class="wrap"><strong>SHA256</strong>: {{key}}</dd>
+          <dd class="wrap" ng-if="value.count"><strong>Number of leaks</strong>: {{value.count}}</dd>
+          <dd class="wrap" ng-if="value.properties.length>0"><strong>Properties</strong>: {{value.properties.join(", ")}}</dd>
+          <dd class="wrap" ng-if="value.urls.length>0"><strong>URLs</strong>: {{value.urls.join(", ")}}</dd>
+        </dl>
+      </div>
+      <!-- End Password Part -->
+      <dl class="dl-horizontal" ng-if="content.Tags.length>0">
+        <dt>Tags</dt>
+        <dd class="wrap">{{content.Tags.join(", ")}}</dd>
+      </dl>
+      <div class="panel-heading">
+        <strong>External Links</strong>
+      </div>
+      <div class="panel-body">
+        <div class="panel panel-info" ng-repeat="link in content.ExternalLinks">
+          <dl class="dl-horizontal">
+            <dt>{{link.source_name}}</dt>
+            <dd class="wrap">{{link.url}}</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End of Email leaked -->  
+  <!-- For IP reputation !-->
+  <div ng-if="content.DataType == 'ip'">
+    <div class="panel-heading">
+      <strong>Gatewatcher CTI Report for {{content.Value}}</strong>
+    </div>
+    <div class="panel-body">
+      <dl class="dl-horizontal" ng-if="content.CreationDate">
+        <dt>Creation Date</dt>
+        <dd class="wrap">{{content.CreationDate}}</dd>
+      </dl>
+      <dl class="dl-horizontal" ng-if="content.Score">
+        <dt>Score</dt>
+        <dd class="wrap">{{content.Score}}</dd>
+      </dl>
+      <dl class="dl-horizontal" ng-if="content.Tags.length>0">
+        <dt>Last Tags</dt>
+        <dd class="wrap">{{content.Tags.join(", ")}}</dd>
+      </dl>
+      <dl class="dl-horizontal" ng-if="content.Metadata">
+        <dl class="dl-horizontal" ng-if="content.Metadata.geo_country_official_name || content.Metadata.geo_country_name">
+          <dt>Country Name</dt>
+          <dd class="wrap" ng-if="content.Metadata.geo_country_official_name">{{content.Metadata.geo_country_official_name}}</dd>
+          <dd class="wrap" ng-if="!content.Metadata.geo_country_official_name">{{content.Metadata.geo_country_name}}</dd>
+        </dl>
+      </dl>
+      <div class="panel panel-info" ng-repeat="timeline in content.Timeline">
+        <div class="panel-heading">
+          <strong>Result from {{timeline.created}} to {{timeline.modified}}</strong>
+        </div>
+        <div class="panel-body">
+          <dl class="dl-horizontal" ng-if="timeline.families.length>0">
+            <dt>Families</dt>
+            <dd class="wrap">{{timeline.families.join(", ")}}</dd>
+          </dl>
+          <dl class="dl-horizontal" ng-if="timeline.categories.length>0">
+            <dt>Categories</dt>
+            <dd class="wrap">{{timeline.categories.join(", ")}}</dd>
+          </dl>
+          <dl class="dl-horizontal" ng-if="timeline.ttp.length>0">
+            <dt>TTP</dt>
+            <dd class="wrap">{{timeline.ttp.join(", ")}}</dd>
+          </dl>
+          <dl class="dl-horizontal" ng-if="timeline.threatactor.length>0">
+            <dt>Threatactor</dt>
+            <dd class="wrap">{{timeline.threatactor.join(", ")}}</dd>
+          </dl>
+          <dl class="dl-horizontal" ng-if="timeline.iocs.length>0">
+            <dt>IOCs</dt>
+            <dd class="wrap">{{timeline.iocs.join(", ")}}</dd>
+          </dl>
+          <dl class="dl-horizontal" ng-if="timeline.vulnerabilities.length>0">
+            <dt>Vulnerabilities</dt>
+            <dd class="wrap">{{timeline.vulnerabilities.join(", ")}}</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <!-- End of IP reputation !-->
+  </div>
+</div>
+
+<div ng-if="success && !content.IsOnGw">
+  <div class="panel panel-info">
+    <div class="panel-heading" ng-if="content.DataType != 'mail'">
+      Gatewatcher CTI Report
+    </div>
+    <div class="panel-heading" ng-if="content.DataType == 'mail'">
+      Gatewatcher CTI Identity Intelligence Report
+    </div>
+    <div class="panel-body">
+      <span>No match.</span>
+    </div>
+  </div>
+</div>
