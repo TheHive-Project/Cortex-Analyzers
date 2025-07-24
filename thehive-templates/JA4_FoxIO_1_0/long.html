@@ -1,0 +1,78 @@
+<!-- Analyzer result panel -->
+<div class="panel panel-info" ng-if="success && content.report.length > 0">
+    <div class="panel-heading">
+        JA4 Fingerprint Analyzer results for
+        <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body" ng-repeat="entry in content.report">
+        <h5>Match #{{$index + 1}}</h5>
+        <dl class="dl-horizontal">
+
+            <dt>Application</dt>
+            <dd>{{entry.application || 'N/A'}}</dd>
+
+            <dt>User-Agent</dt>
+            <dd class="wrap">{{entry.user_agent_string || 'N/A'}}</dd>
+
+            <dt>Observation count</dt>
+            <dd>{{entry.observation_count}}</dd>
+
+            <dt>Verified</dt>
+            <dd>
+                <span class="label" ng-class="{'label-success': entry.verified, 'label-default': !entry.verified}">
+                    {{entry.verified ? 'Yes' : 'No'}}
+                </span>
+            </dd>
+
+            <dt>Notes</dt>
+            <dd class="wrap">{{entry.notes || 'None'}}</dd>
+
+            <dt>JA4 Fingerprint</dt>
+            <dd class="wrap">{{entry.ja4_fingerprint || 'N/A'}}</dd>
+
+            <dt>JA4 Fingerprint String</dt>
+            <dd class="wrap">{{entry.ja4_fingerprint_string || 'N/A'}}</dd>
+
+            <dt>JA4S Fingerprint</dt>
+            <dd class="wrap">{{entry.ja4s_fingerprint || 'N/A'}}</dd>
+
+            <dt>JA4H Fingerprint</dt>
+            <dd class="wrap">{{entry.ja4h_fingerprint || 'N/A'}}</dd>
+
+            <dt>JA4X Fingerprint</dt>
+            <dd class="wrap">{{entry.ja4x_fingerprint || 'N/A'}}</dd>
+
+            <dt>JA4T Fingerprint</dt>
+            <dd class="wrap">{{entry.ja4t_fingerprint || 'N/A'}}</dd>
+
+            <dt>JA4TS Fingerprint</dt>
+            <dd class="wrap">{{entry.ja4ts_fingerprint || 'N/A'}}</dd>
+
+            <dt>JA4TScan Fingerprint</dt>
+            <dd class="wrap">{{entry.ja4tscan_fingerprint || 'N/A'}}</dd>
+
+        </dl>
+        <hr />
+    </div>
+</div>
+
+<!-- No results -->
+<div class="panel panel-warning" ng-if="success && content.report.length === 0">
+    <div class="panel-heading">
+        <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+        <p>No matching JA4 fingerprints found.</p>
+    </div>
+</div>
+
+<!-- Error panel -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        Analyzer execution failed for <strong>{{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+        <p ng-if="content.errorMessage">{{content.errorMessage}}</p>
+        <p ng-if="!content.errorMessage">An unknown error occurred.</p>
+    </div>
+</div>
