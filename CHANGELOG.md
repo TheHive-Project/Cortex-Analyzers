@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.5.19](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.19) (2025-07-24)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.18...3.5.19)
+
+**Merged pull requests:**
+
+- JA4 FoxIO - JA4 fingerprint analyzer [\#1364](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1364) ([nusantara-self](https://github.com/nusantara-self))
+- Gatewatcher - Add new features [\#1363](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1363) ([remydewaGW](https://github.com/remydewaGW))
+- URLHaus - Add API Key requirement [\#1362](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1362) ([Lohuss](https://github.com/Lohuss))
+
 ## [3.5.18](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.18) (2025-06-23)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.17...3.5.18)

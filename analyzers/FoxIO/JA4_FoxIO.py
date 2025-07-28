@@ -35,9 +35,9 @@ class JA4_FoxIO(Analyzer):
                     "ja4tscan_fingerprint"
                     ]
 
-            for item in jsoned:
-                if any(self.data == item.get(field) for field in fingerprint_fields):
-                    report_content.append(item)
+                for item in jsoned:
+                    if any(self.data == item.get(field) for field in fingerprint_fields):
+                        report_content.append(item)
 
             self.report({"report": report_content})
 
