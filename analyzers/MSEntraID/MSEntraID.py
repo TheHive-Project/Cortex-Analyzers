@@ -8,6 +8,10 @@ from cortexutils.analyzer import Analyzer
 import re
 #import json
 
+
+GUID_RE = re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-"
+                    r"[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$")
+
 # Initialize Azure Class
 class MSEntraID(Analyzer):
     def __init__(self):
@@ -38,25 +42,40 @@ class MSEntraID(Analyzer):
 
         return token_r.json().get('access_token')
 
-    def resolve_user_guid(self, email, headers, base_url):
-        """Resolves a userPrincipalName (email) to an objectId (GUID) using direct lookup (most compatible)."""
-        url = f"{base_url}users/{email}?$select=id"
-        response = requests.get(url, headers=headers)
 
-        if response.status_code != 200:
-            self.error(f"Failed to resolve GUID for user {email}: {response.content}")
+    def resolve_user_guid(self, upn_or_mail: str, headers: dict, base_url: str) -> str:
+        """
+        Robustly turn a UPN or mail address into the user objectId (GUID).
+        Works for cloud users, B2B guests, aliases, vanity domains…
+        """
+        if GUID_RE.match(upn_or_mail):
+            return upn_or_mail                    # already a GUID
 
-        user = response.json()
-        user_id = user.get("id")
-        if not user_id:
-            self.error(f"ID not found in response for {email}")
+        # Escape single quotes inside the address (rare)
+        quoted = upn_or_mail.replace("'", "''")
 
-        return user_id
+        filter_q = (f"(userPrincipalName eq '{quoted}') "
+                    f"or (mail eq '{quoted}')")
+
+        resp = requests.get(
+            f"{base_url}users",
+            headers=headers,
+            params={"$filter": filter_q, "$select": "id"}
+        )
+        if resp.status_code != 200:
+            self.error(f"[GUID‑lookup] HTTP {resp.status_code}: {resp.text}")
+
+        users = resp.json().get("value", [])
+        if not users:
+            self.error(f"[GUID‑lookup] No user matches '{upn_or_mail}'")
+
+        return users[0]["id"]
 
     def ensure_user_guid(self, base_url, headers):
-        if "@" in self.user:
-            return self.resolve_user_guid(self.user, headers, base_url)
-        return self.user
+        if GUID_RE.match(self.user):
+            return self.user
+        return self.resolve_user_guid(self.user, headers, base_url)
+
 
     def handle_get_signins(self, headers, base_url):
         """
@@ -78,7 +97,7 @@ class MSEntraID(Analyzer):
             # Query sign-in logs
             endpoint = (
                 f"auditLogs/signIns?$filter=userId eq '{self.guid}'"
-                f"and createdDateTime ge {format_time}&$top={self.lookup_limit}"
+                f" and createdDateTime ge {format_time}&$top={self.lookup_limit}"
             )
             r = requests.get(base_url + endpoint, headers=headers)
 
