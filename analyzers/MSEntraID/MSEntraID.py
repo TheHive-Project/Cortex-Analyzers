@@ -428,42 +428,44 @@ class MSEntraID(Analyzer):
                 self.error("No user principal name supplied for directory audit logs")
             self.guid = self.ensure_user_guid(base_url, headers)
             
+            adv_headers = headers.copy()
+            adv_headers["ConsistencyLevel"] = "eventual"
+            
             # Calculate time range (past X days)
-            filter_time = datetime.utcnow() - timedelta(days=self.time_range)
-            filter_time_str = filter_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+            filter_time = (datetime.utcnow() - timedelta(days=self.time_range)) \
+                        .strftime('%Y-%m-%dT%H:%M:%SZ')
 
-            # Build endpoint
-            # Example: GET /auditLogs/directoryAudits?$filter=activityDateTime ge 2023-01-01T00:00:00Z&$top=12
-            endpoint = (
-                "auditLogs/directoryAudits?"
-                f"$filter=activityDateTime ge {filter_time_str} "
-                f"and initiatedBy/user/id eq '{self.guid}'"
-                f"&$top={self.lookup_limit}"
-            )
+            filter_q = (
+            f"activityDateTime ge {filter_time} and ("
+            f"initiatedBy/user/id eq '{self.guid}' "
+            f"or initiatedBy/user/userPrincipalName eq '{self.user.lower()}')"
+        )
 
-            # Perform the GET request
-            r = requests.get(base_url + endpoint, headers=headers)
-            if r.status_code != 200:
-                self.error(f"Failure to fetch directory audit logs: {r.content}")
+            url = f"{base_url}auditLogs/directoryAudits"
+            params = {"$filter": filter_q, "$top": self.lookup_limit}
 
-            # Parse the returned JSON
-            audit_data = r.json().get('value', [])
+            audit_rows = []
+            while url:
+                r = requests.get(url, headers=adv_headers, params=params)
+                if r.status_code != 200:
+                    self.error(f"Directory audit fetch failed: {r.text}")
+                data = r.json()
+                audit_rows.extend(data.get("value", []))
+                url = data.get("@odata.nextLink")     # None when no more pages
+                params = None                         # only on first request
 
-            # Build the result object
-            result = {
+            self.report({
                 "filterParameters": {
                     "timeRangeDays": self.time_range,
                     "lookupLimit": self.lookup_limit,
-                    "startTime": filter_time_str
+                    "startTime": filter_time
                 },
-                "directoryAudits": audit_data
-            }
+                "directoryAudits": audit_rows
+            })
 
-            # Return the results to TheHive
-            self.report(result)
-
-        except Exception as ex:
+        except Exception:
             self.error(traceback.format_exc())
+
 
     def handle_get_devices(self, headers, base_url):
         """
