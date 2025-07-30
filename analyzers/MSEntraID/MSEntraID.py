@@ -532,7 +532,10 @@ class MSEntraID(Analyzer):
         Analyzer.run(self)
 
         token = self.authenticate()
-        headers = { 'Authorization': f'Bearer {token}' }
+        headers = {
+                    'Authorization': f'Bearer {token}',
+                    'User-Agent': 'strangebee-thehive/1.0'
+                }
         base_url = 'https://graph.microsoft.com/v1.0/'
 
         # Decide which service to run
