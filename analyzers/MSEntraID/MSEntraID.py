@@ -491,28 +491,40 @@ class MSEntraID(Analyzer):
             if self.data_type == 'mail':
                 self.user = query_value
                 # Resolve UPN to GUID and use exact match
-                # guid = self.ensure_user_guid(base_url, headers)
-                endpoint = (
-                    f"deviceManagement/managedDevices?"
-                    f"$filter=userPrincipalName eq '{self.user}'"
+                self.guid = self.ensure_user_guid(base_url, headers)
+                safe_upn = self.user.replace("'", "''")
+
+                filter_q = (
+                    f"(userPrincipalName eq '{safe_upn}' "
+                    f"or userId eq '{self.guid}')"
                 )
-            else:
-                # Use startswith for partial hostname matches
-                endpoint = (
-                    f"deviceManagement/managedDevices?"
-                    f"$filter=startswith(deviceName,'{query_value}')"
-                )
-            
-            # Perform the GET request
-            r = requests.get(base_url + endpoint, headers=headers)
-            if r.status_code != 200:
-                self.error(f"Failure to pull device(s) for query '{query_value}': {r.content}")
-            
-            # Parse and report the results
-            devices_data = r.json().get('value', [])
-            self.report({"query": query_value, "devices": devices_data})
-        
-        except Exception as ex:
+            else:  # hostname
+                safe_name = query_value.replace("'", "''")
+                filter_q = f"startswith(deviceName,'{safe_name}')"
+
+            url    = f"{base_url}deviceManagement/managedDevices"
+            params = {"$filter": filter_q, "$top": 100}   # 100 = max page size
+
+            devices = []
+            while url and len(devices) < self.lookup_limit:
+                try:
+                    r = requests.get(url, headers=headers, params=params)
+                except requests.exceptions.RequestException as e:
+                    self.error(f"Network error while contacting Microsoft Graph: {e}")
+                if r.status_code != 200:
+                    self.error(f"ManagedDevice fetch failed: {r.text}")
+
+                data = r.json()
+                devices.extend(data.get("value", []))
+
+                url    = data.get("@odata.nextLink")      # None = last page
+                params = None
+
+            devices = devices[: self.lookup_limit]
+
+            self.report({"query": query_value, "devices": devices})
+
+        except Exception:
             self.error(traceback.format_exc())
 
     
