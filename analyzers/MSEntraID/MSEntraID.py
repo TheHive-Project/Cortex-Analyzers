@@ -8,6 +8,10 @@ from cortexutils.analyzer import Analyzer
 import re
 #import json
 
+
+GUID_RE = re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-"
+                    r"[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$")
+
 # Initialize Azure Class
 class MSEntraID(Analyzer):
     def __init__(self):
@@ -38,25 +42,40 @@ class MSEntraID(Analyzer):
 
         return token_r.json().get('access_token')
 
-    def resolve_user_guid(self, email, headers, base_url):
-        """Resolves a userPrincipalName (email) to an objectId (GUID) using direct lookup (most compatible)."""
-        url = f"{base_url}users/{email}?$select=id"
-        response = requests.get(url, headers=headers)
 
-        if response.status_code != 200:
-            self.error(f"Failed to resolve GUID for user {email}: {response.content}")
+    def resolve_user_guid(self, upn_or_mail: str, headers: dict, base_url: str) -> str:
+        """
+        Robustly turn a UPN or mail address into the user objectId (GUID).
+        Works for cloud users, B2B guests, aliases, vanity domains…
+        """
+        if GUID_RE.match(upn_or_mail):
+            return upn_or_mail                    # already a GUID
 
-        user = response.json()
-        user_id = user.get("id")
-        if not user_id:
-            self.error(f"ID not found in response for {email}")
+        # Escape single quotes inside the address (rare)
+        quoted = upn_or_mail.replace("'", "''")
 
-        return user_id
+        filter_q = (f"(userPrincipalName eq '{quoted}') "
+                    f"or (mail eq '{quoted}')")
+
+        resp = requests.get(
+            f"{base_url}users",
+            headers=headers,
+            params={"$filter": filter_q, "$select": "id"}
+        )
+        if resp.status_code != 200:
+            self.error(f"[GUID‑lookup] HTTP {resp.status_code}: {resp.text}")
+
+        users = resp.json().get("value", [])
+        if not users:
+            self.error(f"[GUID‑lookup] No user matches '{upn_or_mail}'")
+
+        return users[0]["id"]
 
     def ensure_user_guid(self, base_url, headers):
-        if "@" in self.user:
-            return self.resolve_user_guid(self.user, headers, base_url)
-        return self.user
+        if GUID_RE.match(self.user):
+            return self.user
+        return self.resolve_user_guid(self.user, headers, base_url)
+
 
     def handle_get_signins(self, headers, base_url):
         """
@@ -78,7 +97,7 @@ class MSEntraID(Analyzer):
             # Query sign-in logs
             endpoint = (
                 f"auditLogs/signIns?$filter=userId eq '{self.guid}'"
-                f"and createdDateTime ge {format_time}&$top={self.lookup_limit}"
+                f" and createdDateTime ge {format_time}&$top={self.lookup_limit}"
             )
             r = requests.get(base_url + endpoint, headers=headers)
 
@@ -409,42 +428,44 @@ class MSEntraID(Analyzer):
                 self.error("No user principal name supplied for directory audit logs")
             self.guid = self.ensure_user_guid(base_url, headers)
             
+            adv_headers = headers.copy()
+            adv_headers["ConsistencyLevel"] = "eventual"
+            
             # Calculate time range (past X days)
-            filter_time = datetime.utcnow() - timedelta(days=self.time_range)
-            filter_time_str = filter_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+            filter_time = (datetime.utcnow() - timedelta(days=self.time_range)) \
+                        .strftime('%Y-%m-%dT%H:%M:%SZ')
 
-            # Build endpoint
-            # Example: GET /auditLogs/directoryAudits?$filter=activityDateTime ge 2023-01-01T00:00:00Z&$top=12
-            endpoint = (
-                "auditLogs/directoryAudits?"
-                f"$filter=activityDateTime ge {filter_time_str} "
-                f"and initiatedBy/user/id eq '{self.guid}'"
-                f"&$top={self.lookup_limit}"
-            )
+            filter_q = (
+            f"activityDateTime ge {filter_time} and ("
+            f"initiatedBy/user/id eq '{self.guid}' "
+            f"or initiatedBy/user/userPrincipalName eq '{self.user.lower()}')"
+        )
 
-            # Perform the GET request
-            r = requests.get(base_url + endpoint, headers=headers)
-            if r.status_code != 200:
-                self.error(f"Failure to fetch directory audit logs: {r.content}")
+            url = f"{base_url}auditLogs/directoryAudits"
+            params = {"$filter": filter_q, "$top": self.lookup_limit}
 
-            # Parse the returned JSON
-            audit_data = r.json().get('value', [])
+            audit_rows = []
+            while url:
+                r = requests.get(url, headers=adv_headers, params=params)
+                if r.status_code != 200:
+                    self.error(f"Directory audit fetch failed: {r.text}")
+                data = r.json()
+                audit_rows.extend(data.get("value", []))
+                url = data.get("@odata.nextLink")     # None when no more pages
+                params = None                         # only on first request
 
-            # Build the result object
-            result = {
+            self.report({
                 "filterParameters": {
                     "timeRangeDays": self.time_range,
                     "lookupLimit": self.lookup_limit,
-                    "startTime": filter_time_str
+                    "startTime": filter_time
                 },
-                "directoryAudits": audit_data
-            }
+                "directoryAudits": audit_rows
+            })
 
-            # Return the results to TheHive
-            self.report(result)
-
-        except Exception as ex:
+        except Exception:
             self.error(traceback.format_exc())
+
 
     def handle_get_devices(self, headers, base_url):
         """
@@ -470,28 +491,40 @@ class MSEntraID(Analyzer):
             if self.data_type == 'mail':
                 self.user = query_value
                 # Resolve UPN to GUID and use exact match
-                # guid = self.ensure_user_guid(base_url, headers)
-                endpoint = (
-                    f"deviceManagement/managedDevices?"
-                    f"$filter=userPrincipalName eq '{self.user}'"
+                self.guid = self.ensure_user_guid(base_url, headers)
+                safe_upn = self.user.replace("'", "''")
+
+                filter_q = (
+                    f"(userPrincipalName eq '{safe_upn}' "
+                    f"or userId eq '{self.guid}')"
                 )
-            else:
-                # Use startswith for partial hostname matches
-                endpoint = (
-                    f"deviceManagement/managedDevices?"
-                    f"$filter=startswith(deviceName,'{query_value}')"
-                )
-            
-            # Perform the GET request
-            r = requests.get(base_url + endpoint, headers=headers)
-            if r.status_code != 200:
-                self.error(f"Failure to pull device(s) for query '{query_value}': {r.content}")
-            
-            # Parse and report the results
-            devices_data = r.json().get('value', [])
-            self.report({"query": query_value, "devices": devices_data})
-        
-        except Exception as ex:
+            else:  # hostname
+                safe_name = query_value.replace("'", "''")
+                filter_q = f"startswith(deviceName,'{safe_name}')"
+
+            url    = f"{base_url}deviceManagement/managedDevices"
+            params = {"$filter": filter_q, "$top": 100}   # 100 = max page size
+
+            devices = []
+            while url and len(devices) < self.lookup_limit:
+                try:
+                    r = requests.get(url, headers=headers, params=params)
+                except requests.exceptions.RequestException as e:
+                    self.error(f"Network error while contacting Microsoft Graph: {e}")
+                if r.status_code != 200:
+                    self.error(f"ManagedDevice fetch failed: {r.text}")
+
+                data = r.json()
+                devices.extend(data.get("value", []))
+
+                url    = data.get("@odata.nextLink")      # None = last page
+                params = None
+
+            devices = devices[: self.lookup_limit]
+
+            self.report({"query": query_value, "devices": devices})
+
+        except Exception:
             self.error(traceback.format_exc())
 
     
@@ -499,7 +532,10 @@ class MSEntraID(Analyzer):
         Analyzer.run(self)
 
         token = self.authenticate()
-        headers = { 'Authorization': f'Bearer {token}' }
+        headers = {
+                    'Authorization': f'Bearer {token}',
+                    'User-Agent': 'strangebee-thehive/1.0'
+                }
         base_url = 'https://graph.microsoft.com/v1.0/'
 
         # Decide which service to run
