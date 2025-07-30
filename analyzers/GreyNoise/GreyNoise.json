@@ -1,7 +1,7 @@
 {
   "name": "GreyNoise",
-  "version": "3.1",
-  "author": "Nclose",
+  "version": "3.2",
+  "author": "GreyNoise",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "APLv2",
   "description": "Determine whether an IP has known scanning activity using GreyNoise.",
@@ -14,14 +14,7 @@
       "description": "API key for GreyNoise",
       "type": "string",
       "multi": false,
-      "required": false
-    },
-    {
-      "name": "api_type",
-      "description": "API Type to Match Key, either 'enterprise' or 'community'",
-      "type": "string",
-      "multi": false,
-      "required": false
+      "required": true
     }
   ],
   "config": {
