@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.5.20](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.20) (2025-07-28)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.19...3.5.20)
+
+**Merged pull requests:**
+
+- Various small improvements [\#1365](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1365) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.5.19](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.19) (2025-07-24)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.18...3.5.19)
