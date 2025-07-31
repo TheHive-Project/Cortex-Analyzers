@@ -1,2 +1,2 @@
 cortexutils
-greynoise>=0.8.0
+greynoise==3.0.1

@@ -8,7 +8,6 @@ The analyzer comes in a single flavour, but supports both the GreyNoise Paid and
 GreyNoise additional information categorization for provided ip.
 
 #### Requirements
-You need a valid GreyNoise API integration subscription or Community account to use the analyzer.
+You need a valid GreyNoise API integration subscription or Free account with a business email address to use the analyzer.
 
 - Provide your API key as values for the `key` parameter.
-- Provide your API key type as "enterprise" (the default) or "community" for the `api_type` parameter
