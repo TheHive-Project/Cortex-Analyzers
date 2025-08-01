@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.5.21](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.21) (2025-07-30)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.20...3.5.21)
+
+**Merged pull requests:**
+
+- MSEntraID - Enhancements & bug fixes [\#1366](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1366) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.5.20](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.20) (2025-07-28)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.19...3.5.20)
