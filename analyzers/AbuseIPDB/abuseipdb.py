@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
 import requests
+from requests.exceptions import RequestException
+from collections import Counter
+from datetime import datetime, timezone
 
 from cortexutils.analyzer import Analyzer
 
@@ -89,6 +92,48 @@ class AbuseIPDBAnalyzer(Analyzer):
                                 if category_as_str not in categories_strings:
                                     categories_strings.append(category_as_str)
                         response["categories_strings"] = categories_strings
+                        
+                        reports = response["data"].get("reports") or []
+
+                        # reporter geography
+                        cc_counts = Counter()
+                        for r in reports:
+                            code = (r.get("reporterCountryCode") or "??").upper()
+                            name = r.get("reporterCountryName") or code
+                            cc_counts[(code, name)] += 1
+                        response["reporting_countries"] = [
+                            {"code": code, "name": name, "count": cnt}
+                            for (code, name), cnt in cc_counts.most_common(6)  # top 6
+                        ]
+
+                        # category frequency
+                        cat_counts = Counter()
+                        for r in reports:
+                            for c in (r.get("categories_strings") or []):
+                                cat_counts[c] += 1
+                        response["category_counts"] = [{"category": k, "count": v} for k, v in cat_counts.most_common(6)]
+
+                        # freshness windows (simple counts)
+                        def to_dt(x):
+                            try:
+                                return datetime.fromisoformat(x.replace("Z", "+00:00"))
+                            except Exception:
+                                return None
+
+                        now = datetime.now(timezone.utc)
+                        last_24h = 0
+                        last_7d = 0
+                        for r in reports:
+                            dt = to_dt(r.get("reportedAt"))
+                            if not dt:
+                                continue
+                            if (now - dt).total_seconds() <= 24*3600:
+                                last_24h += 1
+                            if (now - dt).total_seconds() <= 7*24*3600:
+                                last_7d += 1
+
+                        response["freshness"] = {"last24h": last_24h, "last7d": last_7d}
+
 
                 self.report({"values": response_list})
             else:

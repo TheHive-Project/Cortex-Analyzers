@@ -106,6 +106,36 @@
 						<span ng-if="content.values[0].data.isWhitelisted" class="text-success">Yes</span>
 						<span ng-if="!content.values[0].data.isWhitelisted" class="text-danger">No</span>
 					</div>
+					<div style="margin-top:10px;">
+					<strong>Report Freshness</strong><br>
+					<span class="label label-default">24h: {{content.values[0].freshness.last24h || 0}}</span>
+					<span class="label label-default">7d: {{content.values[0].freshness.last7d || 0}}</span>
+					</div>
+
+					<div style="margin-top:10px;">
+					<strong>Top Reporter Countries</strong><br>
+					<span ng-if="content.values[0].reporting_countries && content.values[0].reporting_countries.length">
+						<span ng-repeat="rc in content.values[0].reporting_countries">
+						<span class="label label-info" style="margin-right:4px; margin-bottom:2px; display:inline-block;">
+							<span class="flag-icon flag-icon-{{(rc.code || '').toLowerCase()}}" style="margin-right:4px;"></span>
+							{{rc.name}} ({{rc.count}})
+						</span>
+						</span>
+					</span>
+					<span ng-if="!content.values[0].reporting_countries || !content.values[0].reporting_countries.length">-</span>
+					</div>
+
+					<div style="margin-top:10px;">
+					<strong>Most Reported Categories</strong><br>
+					<span ng-if="content.values[0].category_counts && content.values[0].category_counts.length">
+						<span ng-repeat="cc in content.values[0].category_counts">
+						<span class="label label-primary" style="margin-right:4px; margin-bottom:2px; display:inline-block;">
+							{{cc.category}} ({{cc.count}})
+						</span>
+						</span>
+					</span>
+					<span ng-if="!content.values[0].category_counts || !content.values[0].category_counts.length">-</span>
+					</div>
 				</div>
 			</div>
 
