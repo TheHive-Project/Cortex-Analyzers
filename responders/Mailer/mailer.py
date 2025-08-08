@@ -6,6 +6,8 @@ import smtplib
 from cortexutils.responder import Responder
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.utils import formatdate, make_msgid
+
 
 
 class Mailer(Responder):
@@ -79,6 +81,9 @@ class Mailer(Responder):
         msg["Subject"] = title
         msg["From"] = self.mail_from
         msg["To"] = mail_to
+        msg["Date"] = formatdate(localtime=True)
+        msg["Message-ID"] = make_msgid()
+        #msg["MIME-Version"] = "1.0"
         msg.attach(MIMEText(description, "plain", "utf-8"))
 
         if self.smtp_user and self.smtp_pwd:
