@@ -38,6 +38,10 @@ class Mailer(Responder):
 
         mail_to = None
         if self.data_type == "thehive:case":
+            # Add case number to title
+            case_number = self.get_param("data.caseId", None)
+            if case_number:
+                title = f"[Case #{case_number}] {title}"
             # Search recipient address in case tags
             tags = self.get_param(
                 "data.tags", None, "recipient address not found in tags"
@@ -83,7 +87,7 @@ class Mailer(Responder):
         msg["To"] = mail_to
         msg["Date"] = formatdate(localtime=True)
         msg["Message-ID"] = make_msgid()
-        #msg["MIME-Version"] = "1.0"
+        msg["MIME-Version"] = "1.0"
         msg.attach(MIMEText(description, "plain", "utf-8"))
 
         if self.smtp_user and self.smtp_pwd:
