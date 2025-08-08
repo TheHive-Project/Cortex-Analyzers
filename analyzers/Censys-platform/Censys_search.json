@@ -1,0 +1,27 @@
+{
+  "name": "Censys_platform_search",
+  "author": "Marc Nebout, SEKOIA",
+  "version": "1.0",
+  "license": "AGPL-V3",
+  "url": "https://github.com/CTIMarc/Cortex-Analyzers/tree/master/analyzers/Censys-platform",
+  "description": "Search pattern in Censys platform",
+  "dataTypeList": ["other","ip","domain"],
+  "baseConfig": "Censys Platform",
+  "command": "Censys-platform/censys_search.py",
+  "configurationItems": [
+    {
+      "name": "oid",
+      "description": "Organization ID in Censys",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "key",
+      "description": "API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}
