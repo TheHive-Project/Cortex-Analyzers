@@ -86,7 +86,7 @@ class CensysAnalyzer(Analyzer):
                     "Data type not supported. Please use this analyzer with data types hash, ip or domain."
                 )
         except Exception as e:
-            self.report({"message": f"{repr(e)} could not be found."})
+            self.report({"message": f"Error: {repr(e)}."})
 
     def summary(self, raw):
         taxonomies = []
