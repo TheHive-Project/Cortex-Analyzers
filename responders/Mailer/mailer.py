@@ -55,6 +55,10 @@ class Mailer(Responder):
                 self.error("recipient address not found in tags")
 
         elif self.data_type == "thehive:case_task":
+            # Add case number to title
+            case_number = self.get_param("data.case.caseId", None)
+            if case_number:
+                title = f"[Case #{case_number}] {title}"
             # Search recipient address in tasks description
             descr_array = description.splitlines()
             if "mailto:" in descr_array[0]:
@@ -87,7 +91,6 @@ class Mailer(Responder):
         msg["To"] = mail_to
         msg["Date"] = formatdate(localtime=True)
         msg["Message-ID"] = make_msgid()
-        msg["MIME-Version"] = "1.0"
         msg.attach(MIMEText(description, "plain", "utf-8"))
 
         if self.smtp_user and self.smtp_pwd:
