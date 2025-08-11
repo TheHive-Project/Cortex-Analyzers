@@ -72,18 +72,29 @@ class Mailer(Responder):
 
         elif self.data_type == "thehive:alert":
             # Search recipient address in artifacts
-            artifacts = self.get_param(
-                "data.artifacts", None, "recipient address not found in observables"
+            # artifacts = self.get_param(
+            #     "data.artifacts", None, "recipient address not found in observables"
+            # )
+            # mail_artifacts = [
+            #     a["data"]
+            #     for a in artifacts
+            #     if a.get("dataType") == "mail" and "data" in a
+            # ]
+            # if mail_artifacts:
+            #     mail_to = mail_artifacts.pop()
+            # else:
+            #     self.error("recipient address not found in observables")
+                        # Search recipient address in case tags
+            tags = self.get_param(
+                "data.tags", None, "recipient address not found in tags"
             )
-            mail_artifacts = [
-                a["data"]
-                for a in artifacts
-                if a.get("dataType") == "mail" and "data" in a
+            mail_tags = [
+                t[5:] for t in tags if t.startswith("mail=") or t.startswith("mail:")
             ]
-            if mail_artifacts:
-                mail_to = mail_artifacts.pop()
+            if mail_tags:
+                mail_to = mail_tags.pop()
             else:
-                self.error("recipient address not found in observables")
+                self.error("recipient address not found in tags")
 
         msg = MIMEMultipart()
         msg["Subject"] = title
