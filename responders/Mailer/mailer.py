@@ -9,12 +9,11 @@ from email.mime.text import MIMEText
 from email.utils import formatdate, make_msgid
 
 
-
 class Mailer(Responder):
     def __init__(self):
         Responder.__init__(self)
         self.smtp_host = self.get_param("config.smtp_host", "localhost")
-        self.smtp_port = self.get_param("config.smtp_port", "25")
+        self.smtp_port = int(self.get_param("config.smtp_port", "25"))
         self.mail_from = self.get_param(
             "config.from", None, "Missing sender email address"
         )
@@ -84,7 +83,7 @@ class Mailer(Responder):
             #     mail_to = mail_artifacts.pop()
             # else:
             #     self.error("recipient address not found in observables")
-                        # Search recipient address in case tags
+            # Search recipient address in case tags
             tags = self.get_param(
                 "data.tags", None, "recipient address not found in tags"
             )
