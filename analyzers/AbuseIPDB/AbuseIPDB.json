@@ -1,10 +1,10 @@
 {
     "name": "AbuseIPDB",
-    "version": "1.0",
-    "author": "Matteo Lodi",
+    "version": "1.1",
+    "author": "Matteo Lodi; Fabien Bloume, StrangeBee",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-v3",
-    "description": "Determine whether an IP was reported or not as malicious by AbuseIPDB",
+    "description": "Checks an IP against AbuseIPDB for abuse score, categories, and recent reports.",
     "dataTypeList": ["ip"],
     "baseConfig": "AbuseIPDB",
     "command": "AbuseIPDB/abuseipdb.py",
@@ -23,7 +23,7 @@
         "multi": false,
         "required": false,
         "defaultValue": 30
-      }
+      } 
     ],
     "config": {
         "check_tlp": true,
