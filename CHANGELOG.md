@@ -1,5 +1,26 @@
 # Changelog
 
+## [3.5.23](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.23) (2025-08-12)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.22...3.5.23)
+
+**Closed issues:**
+
+- \[FR\] - Responder Mailer\_1.0 - Add Case number of the subject of the sent email [\#1370](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1370)
+- \[Bug\] GreyNoise - new SDK breaks analyzer [\#1368](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1368)
+- \[Bug\] Cortex Mailer Responder does not add Date header \(per RFC5322\) [\#1222](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1222)
+- Can't run mailer.py responder: "doesn't have image" [\#953](https://github.com/TheHive-Project/Cortex-Analyzers/issues/953)
+- \[Bug\] Mailer Responder is checking for recipient tags starting with "mail:" [\#847](https://github.com/TheHive-Project/Cortex-Analyzers/issues/847)
+
+## [3.5.22](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.22) (2025-08-01)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.21...3.5.22)
+
+**Merged pull requests:**
+
+- Slack integration - Create Channel / War room [\#1369](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1369) ([nusantara-self](https://github.com/nusantara-self))
+- \[greynoise\] Updates analyzer to support GreyNoise v3 API [\#1367](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1367) ([bradchiappetta](https://github.com/bradchiappetta))
+
 ## [3.5.21](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.21) (2025-07-30)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.20...3.5.21)
