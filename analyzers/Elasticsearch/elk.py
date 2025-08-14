@@ -145,7 +145,7 @@ class ElasticsearchAnalyzer(Analyzer):
                         api_key = (key),
                         ca_certs=self.cert,
                         verify_certs=self.verify,
-                        timeout=30
+                        request_timeout=30
                     )
                 elif user:
                     es = Elasticsearch(
@@ -153,14 +153,14 @@ class ElasticsearchAnalyzer(Analyzer):
                         http_auth = (user,password),
                         ca_certs=self.cert,
                         verify_certs=self.verify,
-                        timeout=30
+                        request_timeout=30
                     )
                 else:
                     es = Elasticsearch(
                         endpoint,
                         ca_certs=self.cert,
                         verify_certs=self.verify,
-                        timeout=30
+                        request_timeout=30
                     )
 
                 info = {}
