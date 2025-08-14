@@ -1,10 +1,10 @@
 {
-  "name": "DevTools_Repeater",
+  "name": "DevTools_Echo",
   "version": "1.0",
   "author": "Fabien Bloume, StrangeBee",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Simply repeats the input received by the analyzer. For Developement purpose",
+  "description": "Development utility that simply echoes the (available) input received by the analyzer.",
   "dataTypeList": [
     "ip",
     "domain",
@@ -21,7 +21,7 @@
   "baseConfig": "TestAnalyzer",
   "command": "TestAnalyzer/testing.py",
   "config": {
-    "service": "repeater"
+    "service": "echo"
   },
   "configurationItems": [
     {

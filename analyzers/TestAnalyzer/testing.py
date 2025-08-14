@@ -26,7 +26,7 @@ class TestAnalyzer(Analyzer):
             # data = self.get_param("data", None, "Data is missing")
             datatype = self.data_type
 
-            if self.service == "repeater":
+            if self.service == "echo":
                 everything = {
                     # Observable metadata
                     # "_id": self.get_param("_id", None),               ## Not supported / Not in input
