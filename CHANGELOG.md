@@ -6,11 +6,16 @@
 
 **Closed issues:**
 
-- \[FR\] - Responder Mailer\_1.0 - Add Case number of the subject of the sent email [\#1370](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1370)
 - \[Bug\] GreyNoise - new SDK breaks analyzer [\#1368](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1368)
-- \[Bug\] Cortex Mailer Responder does not add Date header \(per RFC5322\) [\#1222](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1222)
 - Can't run mailer.py responder: "doesn't have image" [\#953](https://github.com/TheHive-Project/Cortex-Analyzers/issues/953)
 - \[Bug\] Mailer Responder is checking for recipient tags starting with "mail:" [\#847](https://github.com/TheHive-Project/Cortex-Analyzers/issues/847)
+- \[FR\] - Responder Mailer\_1.0 - Add Case number of the subject of the sent email [\#1370](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1370)
+- \[Bug\] Cortex Mailer Responder does not add Date header \(per RFC5322\) [\#1222](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1222)
+
+**Merged pull requests:**
+
+- Mailer - Tiny fixes & improvements [\#1372](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1372) ([nusantara-self](https://github.com/nusantara-self))
+- AbuseIPDB 1.1 - Contextual improvements / Analyzer template  [\#1371](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1371) ([nusantara-self](https://github.com/nusantara-self))
 
 ## [3.5.22](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.22) (2025-08-01)
 
