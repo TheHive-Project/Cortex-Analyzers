@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.5.24](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.24) (2025-08-18)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.23...3.5.24)
+
+**Merged pull requests:**
+
+- Elasticsearch Analyzer: Fix deprecated timeout constructor argument [\#1374](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1374) ([bytinbit](https://github.com/bytinbit))
+
 ## [3.5.23](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.23) (2025-08-12)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.22...3.5.23)
@@ -103,6 +111,10 @@
 ## [3.5.13](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.13) (2025-05-23)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.12...3.5.13)
+
+**Closed issues:**
+
+- MISP Analyzer \(misp:2 image\) fails with 'input: null' and 'worker didn't generate output file' on Python 3.13.3 [\#1355](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1355)
 
 **Merged pull requests:**
 
