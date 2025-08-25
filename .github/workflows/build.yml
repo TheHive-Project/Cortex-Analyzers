@@ -145,17 +145,19 @@ jobs:
           command_value="${{ env.COMMAND }}"
 
           # Add multiple workers separated by spaces
-          special_alpine_workers="PaloAltoNGFW Worker2 Worker3 AnotherWorker"
+          #special_alpine_workers="PaloAltoNGFW Worker2 Worker3 AnotherWorker"
 
           if [ ! -f "$dockerfile_path" ]; then
             echo "Dockerfile not found in $dockerfile_path. Creating one..."
-            echo "FROM python:3-alpine" > "$dockerfile_path"
-            echo "RUN apk add --no-cache openssl ca-certificates" >> "$dockerfile_path"
+            #echo "FROM python:3-alpine" > "$dockerfile_path"
+            #echo "RUN apk add --no-cache openssl ca-certificates" >> "$dockerfile_path"
+            echo "FROM python:3-slim" > "$dockerfile_path"
+            # echo "RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*" >> "$dockerfile_path"
 
             # Check if current worker is among special alpine workers
-            if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
-              echo "RUN apk add --no-cache file-dev && rm -rf /var/cache/apk/*" >> "$dockerfile_path"
-            fi
+            #if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
+            #  echo "RUN apk add --no-cache file-dev && rm -rf /var/cache/apk/*" >> "$dockerfile_path"
+            #fi
 
             echo "WORKDIR /worker" >> "$dockerfile_path"
             echo "COPY requirements.txt ${matrix_directory}/" >> "$dockerfile_path"
@@ -271,6 +273,16 @@ jobs:
             org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
             org.opencontainers.image.url=https://thehive-project.org
             org.opencontainers.image.version=${{ env.VERSION }}
+
+      - name: Scan image for vulnerabilities (Trivy)
+        uses: aquasecurity/trivy-action@0.32.0
+        with:
+          image-ref: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
+          format: table
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+          exit-code: 0
+          ignore-unfixed: true
 
       - name: Test imports in the container (amd64)
         if: ${{ steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/amd64') }}
@@ -553,18 +565,18 @@ jobs:
           command_value="${{ env.COMMAND }}"
 
           # Add multiple workers separated by spaces
-          special_alpine_workers="PaloAltoNGFW Worker2 Worker3 AnotherWorker"
+          # special_alpine_workers="PaloAltoNGFW Worker2 Worker3 AnotherWorker"
 
           if [ ! -f "$dockerfile_path" ]; then
             echo "Dockerfile not found in $dockerfile_path. Creating one..."
-            echo "FROM python:3-alpine" > "$dockerfile_path"
-            echo "RUN apk add --no-cache openssl ca-certificates" >> "$dockerfile_path"
-
+            # echo "FROM python:3-alpine" > "$dockerfile_path"
+            # echo "RUN apk add --no-cache openssl ca-certificates bind-tools" >> "$dockerfile_path"
+            echo "FROM python:3-slim" > "$dockerfile_path"
 
             # Check if current worker is among special alpine workers
-            if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
-              echo "RUN apk add --no-cache file-dev && rm -rf /var/cache/apk/*" >> "$dockerfile_path"
-            fi
+            #if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
+            #  echo "RUN apk add --no-cache file-dev && rm -rf /var/cache/apk/*" >> "$dockerfile_path"
+            #fi
 
             echo "WORKDIR /worker" >> "$dockerfile_path"
             echo "COPY requirements.txt ${matrix_directory}/" >> "$dockerfile_path"
@@ -681,6 +693,16 @@ jobs:
             org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
             org.opencontainers.image.url=https://thehive-project.org
             org.opencontainers.image.version=${{ env.VERSION }}
+
+      - name: Scan image for vulnerabilities (Trivy)
+        uses: aquasecurity/trivy-action@0.32.0
+        with:
+          image-ref: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
+          format: table
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+          exit-code: 0
+          ignore-unfixed: true
 
       - name: Test imports in the container (amd64)
         if: ${{ steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/amd64') }}
