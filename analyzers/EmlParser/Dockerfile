@@ -12,7 +12,7 @@
 #
 # 
 
-FROM python:3.12-slim
+FROM python:3-slim-bookworm
 WORKDIR /worker
 RUN apt update
 RUN apt install -y wkhtmltopdf python3-magic
