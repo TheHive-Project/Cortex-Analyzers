@@ -145,7 +145,7 @@ jobs:
           command_value="${{ env.COMMAND }}"
 
           # Add multiple workers separated by spaces
-          #special_alpine_workers="PaloAltoNGFW Worker2 Worker3 AnotherWorker"
+          special_alpine_workers="PaloAltoNGFW Worker2 Worker3 AnotherWorker"
 
           if [ ! -f "$dockerfile_path" ]; then
             echo "Dockerfile not found in $dockerfile_path. Creating one..."
@@ -155,9 +155,10 @@ jobs:
             # echo "RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*" >> "$dockerfile_path"
 
             # Check if current worker is among special alpine workers
-            #if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
+            if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
             #  echo "RUN apk add --no-cache file-dev && rm -rf /var/cache/apk/*" >> "$dockerfile_path"
-            #fi
+              echo "RUN apt-get update && apt-get install -y --no-install-recommends libmagic1 && rm -rf /var/lib/apt/lists/*" >> "$dockerfile_path"
+            fi
 
             echo "WORKDIR /worker" >> "$dockerfile_path"
             echo "COPY requirements.txt ${matrix_directory}/" >> "$dockerfile_path"
@@ -565,7 +566,7 @@ jobs:
           command_value="${{ env.COMMAND }}"
 
           # Add multiple workers separated by spaces
-          # special_alpine_workers="PaloAltoNGFW Worker2 Worker3 AnotherWorker"
+          special_alpine_workers="PaloAltoNGFW Worker2 Worker3 AnotherWorker"
 
           if [ ! -f "$dockerfile_path" ]; then
             echo "Dockerfile not found in $dockerfile_path. Creating one..."
@@ -574,9 +575,10 @@ jobs:
             echo "FROM python:3-slim" > "$dockerfile_path"
 
             # Check if current worker is among special alpine workers
-            #if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
+            if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
             #  echo "RUN apk add --no-cache file-dev && rm -rf /var/cache/apk/*" >> "$dockerfile_path"
-            #fi
+              echo "RUN apt-get update && apt-get install -y --no-install-recommends libmagic1 && rm -rf /var/lib/apt/lists/*" >> "$dockerfile_path"
+            fi
 
             echo "WORKDIR /worker" >> "$dockerfile_path"
             echo "COPY requirements.txt ${matrix_directory}/" >> "$dockerfile_path"
