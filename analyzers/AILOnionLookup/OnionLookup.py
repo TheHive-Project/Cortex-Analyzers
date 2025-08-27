@@ -100,6 +100,30 @@ class AILOnionLookup(Analyzer):
     def artifacts(self, raw):
         artifacts = []
         return artifacts
+    
+    def summary(self, raw):
+        taxonomies = []
+        namespace = "OnionLookup"
+
+        report = raw or {}
+        resp = report.get("raw") or {}
+        tags = set(report.get("observed_tags", []) or [])
+
+        # Found vs not found
+        found = isinstance(resp, dict) and any(resp.get(k) for k in ("id", "first_seen", "last_seen", "titles", "languages", "tags"))
+        taxonomies.append(
+            self.build_taxonomy("info", namespace, "Status", "found" if found else "not-found")
+        )
+
+        # CSAM-linked
+        csam = self.csam_tag in tags or any("csam" in str(t).lower() for t in tags)
+        if csam:
+            taxonomies.append(self.build_taxonomy("malicious", namespace, "CSAM", "linked"))
+        #else:
+        #    taxonomies.append(self.build_taxonomy("safe", namespace, "CSAM", "not-linked"))
+
+        return {"taxonomies": taxonomies}
+  
 
 if __name__ == "__main__":
     AILOnionLookup().run()
