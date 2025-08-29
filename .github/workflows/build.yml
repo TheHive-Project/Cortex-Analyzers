@@ -149,21 +149,34 @@ jobs:
 
           if [ ! -f "$dockerfile_path" ]; then
             echo "Dockerfile not found in $dockerfile_path. Creating one..."
-            #echo "FROM python:3-alpine" > "$dockerfile_path"
-            #echo "RUN apk add --no-cache openssl ca-certificates" >> "$dockerfile_path"
-            echo "FROM python:3-slim" > "$dockerfile_path"
-            # echo "RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*" >> "$dockerfile_path"
+            
+            # Multi-stage build - Builder stage
+            echo "# Builder stage" > "$dockerfile_path"
+            echo "FROM python:3-slim as builder" >> "$dockerfile_path"
+            echo "WORKDIR /build" >> "$dockerfile_path"
 
-            # Check if current worker is among special alpine workers
+            # Check if current worker is among special alpine workers and install build dependencies
             if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
-            #  echo "RUN apk add --no-cache file-dev && rm -rf /var/cache/apk/*" >> "$dockerfile_path"
+              echo "RUN apt-get update && apt-get install -y --no-install-recommends libmagic-dev build-essential && rm -rf /var/lib/apt/lists/*" >> "$dockerfile_path"
+            fi
+
+            echo "COPY requirements.txt ." >> "$dockerfile_path"
+            echo "RUN test ! -e requirements.txt || pip install --user --no-cache-dir -r requirements.txt" >> "$dockerfile_path"
+            echo "" >> "$dockerfile_path"
+            
+            # Runtime stage
+            echo "# Runtime stage" >> "$dockerfile_path"
+            echo "FROM python:3-slim" >> "$dockerfile_path"
+            
+            # Check if current worker needs runtime libraries
+            if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
               echo "RUN apt-get update && apt-get install -y --no-install-recommends libmagic1 && rm -rf /var/lib/apt/lists/*" >> "$dockerfile_path"
             fi
 
             echo "WORKDIR /worker" >> "$dockerfile_path"
-            echo "COPY requirements.txt ${matrix_directory}/" >> "$dockerfile_path"
-            echo "RUN test ! -e ${matrix_directory}/requirements.txt || pip install --no-cache-dir -r ${matrix_directory}/requirements.txt" >> "$dockerfile_path"
+            echo "COPY --from=builder /root/.local /root/.local" >> "$dockerfile_path"
             echo "COPY . ${matrix_directory}/" >> "$dockerfile_path"
+            echo "ENV PATH=/root/.local/bin:\$PATH" >> "$dockerfile_path"
             echo "ENTRYPOINT [\"python\", \"${command_value}\"]" >> "$dockerfile_path"
           else
             echo "Dockerfile exists: $dockerfile_path"
@@ -570,20 +583,34 @@ jobs:
 
           if [ ! -f "$dockerfile_path" ]; then
             echo "Dockerfile not found in $dockerfile_path. Creating one..."
-            # echo "FROM python:3-alpine" > "$dockerfile_path"
-            # echo "RUN apk add --no-cache openssl ca-certificates bind-tools" >> "$dockerfile_path"
-            echo "FROM python:3-slim" > "$dockerfile_path"
+            
+            # Multi-stage build - Builder stage
+            echo "# Builder stage" > "$dockerfile_path"
+            echo "FROM python:3-slim as builder" >> "$dockerfile_path"
+            echo "WORKDIR /build" >> "$dockerfile_path"
 
-            # Check if current worker is among special alpine workers
+            # Check if current worker is among special alpine workers and install build dependencies
             if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
-            #  echo "RUN apk add --no-cache file-dev && rm -rf /var/cache/apk/*" >> "$dockerfile_path"
+              echo "RUN apt-get update && apt-get install -y --no-install-recommends libmagic-dev build-essential && rm -rf /var/lib/apt/lists/*" >> "$dockerfile_path"
+            fi
+
+            echo "COPY requirements.txt ." >> "$dockerfile_path"
+            echo "RUN test ! -e requirements.txt || pip install --user --no-cache-dir -r requirements.txt" >> "$dockerfile_path"
+            echo "" >> "$dockerfile_path"
+            
+            # Runtime stage
+            echo "# Runtime stage" >> "$dockerfile_path"
+            echo "FROM python:3-slim" >> "$dockerfile_path"
+            
+            # Check if current worker needs runtime libraries
+            if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
               echo "RUN apt-get update && apt-get install -y --no-install-recommends libmagic1 && rm -rf /var/lib/apt/lists/*" >> "$dockerfile_path"
             fi
 
             echo "WORKDIR /worker" >> "$dockerfile_path"
-            echo "COPY requirements.txt ${matrix_directory}/" >> "$dockerfile_path"
-            echo "RUN test ! -e ${matrix_directory}/requirements.txt || pip install --no-cache-dir -r ${matrix_directory}/requirements.txt" >> "$dockerfile_path"
+            echo "COPY --from=builder /root/.local /root/.local" >> "$dockerfile_path"
             echo "COPY . ${matrix_directory}/" >> "$dockerfile_path"
+            echo "ENV PATH=/root/.local/bin:\$PATH" >> "$dockerfile_path"
             echo "ENTRYPOINT [\"python\", \"${command_value}\"]" >> "$dockerfile_path"
           else
             echo "Dockerfile exists: $dockerfile_path"
