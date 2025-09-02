@@ -184,44 +184,40 @@ jobs:
 
       - name: Check if image needs rebuild
         id: check-rebuild
+        env:
+          IMAGE_NAME: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}
+          CURRENT_SHA: ${{ github.sha }}
+          COMPONENT_DIR: analyzers/${{ matrix.directory }}
         run: |
-          image="ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}"
-          current_sha="${{ github.sha }}"
-      
-          token="${{ secrets.GITHUB_TOKEN }}"
-      
-          # Fetch image manifest from GHCR
-          manifest_response=$(curl -sSL \
-            -H "Authorization: Bearer $token" \
-            -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
-            "https://ghcr.io/v2/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}/manifests/${{ env.VERSION }}")
-      
-          # Check if the manifest response contains a valid digest
-          labels=$(echo "$manifest_response" | jq -r '.config.digest // empty')
-      
-          if [[ -z "$labels" ]]; then
-            echo "No existing image or unable to fetch manifest. rebuild needed"
-            echo "rebuild=true" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-      
-          # Fetch image config blob to extract labels
-          config_response=$(curl -sSL \
-            -H "Authorization: Bearer $token" \
-            "https://ghcr.io/v2/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}/blobs/$labels")
-      
-          # Extract image label safely
-          image_labels=$(echo "$config_response" | jq -r '.config.Labels["org.opencontainers.image.revision"] // empty')
-      
-          # Debugging: print values
-          echo "current_sha: $current_sha"
-          echo "image_labels: $image_labels"
-      
-          if [[ "$image_labels" == "$current_sha" ]]; then
-            echo "No rebuild needed. SHA matches: $current_sha"
-            echo "rebuild=false" >> $GITHUB_OUTPUT
+          set +x  # Disable command echoing for security
+          
+          # Try to pull the image to check if it exists
+          if docker pull --platform linux/amd64 "$IMAGE_NAME" >/dev/null 2>&1; then
+            # Image exists, check if it has the current SHA
+            EXISTING_SHA=$(docker inspect "$IMAGE_NAME" --format='{{index .Config.Labels "org.opencontainers.image.revision"}}' 2>/dev/null || echo "")
+            
+            if [[ "$EXISTING_SHA" == "$CURRENT_SHA" ]]; then
+              echo "Image is up to date with current commit. No rebuild needed."
+              echo "rebuild=false" >> $GITHUB_OUTPUT
+            else
+              # Check if this specific component folder has changes since the image was built
+              if [[ -n "$EXISTING_SHA" ]] && git rev-parse --verify "$EXISTING_SHA" >/dev/null 2>&1; then
+                # Check if there are changes in the component directory since the existing SHA
+                if git diff --quiet "$EXISTING_SHA" "$CURRENT_SHA" -- "$COMPONENT_DIR"; then
+                  echo "No changes in $COMPONENT_DIR since last build. No rebuild needed."
+                  echo "rebuild=false" >> $GITHUB_OUTPUT
+                else
+                  echo "Changes detected in $COMPONENT_DIR. Rebuild needed."
+                  echo "rebuild=true" >> $GITHUB_OUTPUT
+                fi
+              else
+                echo "Cannot verify existing SHA. Rebuild needed."
+                echo "rebuild=true" >> $GITHUB_OUTPUT
+              fi
+            fi
           else
-            echo "SHA mismatch or missing label. rebuild needed"
+            # Image doesn't exist or can't be pulled
+            echo "Image not found or inaccessible. Rebuild needed."
             echo "rebuild=true" >> $GITHUB_OUTPUT
           fi
       
@@ -618,47 +614,42 @@ jobs:
 
       - name: Check if image needs rebuild
         id: check-rebuild
+        env:
+          IMAGE_NAME: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}
+          CURRENT_SHA: ${{ github.sha }}
+          COMPONENT_DIR: analyzers/${{ matrix.directory }}
         run: |
-          image="ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}"
-          current_sha="${{ github.sha }}"
-      
-          token="${{ secrets.GITHUB_TOKEN }}"
-      
-          # Fetch image manifest from GHCR
-          manifest_response=$(curl -sSL \
-            -H "Authorization: Bearer $token" \
-            -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
-            "https://ghcr.io/v2/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}/manifests/${{ env.VERSION }}")
-      
-          # Check if the manifest response contains a valid digest
-          labels=$(echo "$manifest_response" | jq -r '.config.digest // empty')
-      
-          if [[ -z "$labels" ]]; then
-            echo "No existing image or unable to fetch manifest. rebuild needed"
-            echo "rebuild=true" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-      
-          # Fetch image config blob to extract labels
-          config_response=$(curl -sSL \
-            -H "Authorization: Bearer $token" \
-            "https://ghcr.io/v2/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}/blobs/$labels")
-      
-          # Extract image label safely
-          image_labels=$(echo "$config_response" | jq -r '.config.Labels["org.opencontainers.image.revision"] // empty')
-      
-          # Debugging: print values
-          echo "current_sha: $current_sha"
-          echo "image_labels: $image_labels"
-      
-          if [[ "$image_labels" == "$current_sha" ]]; then
-            echo "No rebuild needed. SHA matches: $current_sha"
-            echo "rebuild=false" >> $GITHUB_OUTPUT
+          set +x  # Disable command echoing for security
+          
+          # Try to pull the image to check if it exists
+          if docker pull --platform linux/amd64 "$IMAGE_NAME" >/dev/null 2>&1; then
+            # Image exists, check if it has the current SHA
+            EXISTING_SHA=$(docker inspect "$IMAGE_NAME" --format='{{index .Config.Labels "org.opencontainers.image.revision"}}' 2>/dev/null || echo "")
+            
+            if [[ "$EXISTING_SHA" == "$CURRENT_SHA" ]]; then
+              echo "Image is up to date with current commit. No rebuild needed."
+              echo "rebuild=false" >> $GITHUB_OUTPUT
+            else
+              # Check if this specific component folder has changes since the image was built
+              if [[ -n "$EXISTING_SHA" ]] && git rev-parse --verify "$EXISTING_SHA" >/dev/null 2>&1; then
+                # Check if there are changes in the component directory since the existing SHA
+                if git diff --quiet "$EXISTING_SHA" "$CURRENT_SHA" -- "$COMPONENT_DIR"; then
+                  echo "No changes in $COMPONENT_DIR since last build. No rebuild needed."
+                  echo "rebuild=false" >> $GITHUB_OUTPUT
+                else
+                  echo "Changes detected in $COMPONENT_DIR. Rebuild needed."
+                  echo "rebuild=true" >> $GITHUB_OUTPUT
+                fi
+              else
+                echo "Cannot verify existing SHA. Rebuild needed."
+                echo "rebuild=true" >> $GITHUB_OUTPUT
+              fi
+            fi
           else
-            echo "SHA mismatch or missing label. rebuild needed"
+            # Image doesn't exist or can't be pulled
+            echo "Image not found or inaccessible. Rebuild needed."
             echo "rebuild=true" >> $GITHUB_OUTPUT
           fi
-        
 
       - name: Set build date
         id: build_date
