@@ -617,7 +617,7 @@ jobs:
         env:
           IMAGE_NAME: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}
           CURRENT_SHA: ${{ github.sha }}
-          COMPONENT_DIR: analyzers/${{ matrix.directory }}
+          COMPONENT_DIR: responders/${{ matrix.directory }}
         run: |
           set +x  # Disable command echoing for security
           
