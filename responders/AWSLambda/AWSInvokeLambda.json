@@ -4,7 +4,7 @@
     "author": "Fabien Bloume, StrangeBee",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "description": "Invokes the configured AWS Lambda function",
+    "description": "Invokes the specified AWS Lambda function with the given input from TheHive.",
     "dataTypeList": ["thehive:case", "thehive:alert", "thehive:case_artifact", "thehive:case_task", "thehive:case_task_log"],
     "command": "AWSLambda/AWSInvokeLambda.py",
     "baseConfig": "AWSLambda",
