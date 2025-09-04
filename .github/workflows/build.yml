@@ -190,6 +190,13 @@ jobs:
           COMPONENT_DIR: analyzers/${{ matrix.directory }}
         run: |
           set +x  # Disable command echoing for security
+
+          # Force rebuild on scheduled runs (cron)
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "Scheduled run detected - forcing rebuild"
+            echo "rebuild=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
           
           # Try to pull the image to check if it exists
           if docker pull --platform linux/amd64 "$IMAGE_NAME" >/dev/null 2>&1; then
@@ -231,8 +238,8 @@ jobs:
             # Keep one image tag for import testing
             echo "IMAGE_TAG=${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
             # Produce three tags:
-            #   1) :VERSION  (e.g. 2.0)
-            #   2) :VERSION_SPLIT  (e.g. 2)
+            #   1) :VERSION  (eg 2.0)
+            #   2) :VERSION_SPLIT  (eg 2)
             #   3) :latest
             echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }},ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
           else
@@ -622,6 +629,13 @@ jobs:
           COMPONENT_DIR: responders/${{ matrix.directory }}
         run: |
           set +x  # Disable command echoing for security
+
+          # Force rebuild on scheduled runs (cron)
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "Scheduled run detected - forcing rebuild"
+            echo "rebuild=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
           
           # Try to pull the image to check if it exists
           if docker pull --platform linux/amd64 "$IMAGE_NAME" >/dev/null 2>&1; then
@@ -663,8 +677,8 @@ jobs:
             # Keep one image tag for import testing
             echo "IMAGE_TAG=${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
             # Produce three tags:
-            #   1) :VERSION  (e.g. 2.0)
-            #   2) :VERSION_SPLIT  (e.g. 2)
+            #   1) :VERSION  (eg 2.0)
+            #   2) :VERSION_SPLIT  (eg 2)
             #   3) :latest
             echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }},ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
           else
