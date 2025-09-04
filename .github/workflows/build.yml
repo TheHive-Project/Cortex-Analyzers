@@ -20,7 +20,7 @@ jobs:
       responders_matrix: ${{ steps.set-matrix.outputs.responders_matrix }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -83,7 +83,7 @@ jobs:
       matrix: ${{ fromJson(needs.generate-matrix.outputs.analyzers_matrix) }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -287,7 +287,7 @@ jobs:
             org.opencontainers.image.version=${{ env.VERSION }}
 
       - name: Scan image for vulnerabilities (Trivy)
-        uses: aquasecurity/trivy-action@0.32.0
+        uses: aquasecurity/trivy-action@0.33.1
         with:
           image-ref: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
           format: table
@@ -515,7 +515,7 @@ jobs:
       matrix: ${{ fromJson(needs.generate-matrix.outputs.responders_matrix) }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -719,7 +719,7 @@ jobs:
             org.opencontainers.image.version=${{ env.VERSION }}
 
       - name: Scan image for vulnerabilities (Trivy)
-        uses: aquasecurity/trivy-action@0.32.0
+        uses: aquasecurity/trivy-action@0.33.1
         with:
           image-ref: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
           format: table
@@ -946,7 +946,7 @@ jobs:
     if: always()
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Set lowercase repository owner
         run: |
           owner="${{ github.repository_owner }}"
@@ -1004,13 +1004,13 @@ jobs:
     needs: [ build_analyzers, build_responders ]
     if: startsWith(github.ref, 'refs/tags/') && always()
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Prepare documentation files
         uses: docker://thehiveproject/doc-builder
         with:
           args: --type Cortex-Neurons
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.x"
           architecture: x64
