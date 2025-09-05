@@ -1,0 +1,46 @@
+{
+    "name": "AIL_OnionLookup",
+    "version": "1.0",
+    "author": "Fabien Bloume, StrangeBee",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Checks the existence of Tor hidden services and retrieving their associated metadata. Onion-lookup relies on an AIL instance to obtain the metadata.",
+    "dataTypeList": [
+        "domain",
+        "url",
+        "fqdn"
+    ],
+    "command": "AILOnionLookup/OnionLookup.py",
+    "baseConfig": "AIL_OnionLookup",
+    "config": {
+        "service": "case"
+    },
+    "configurationItems": [
+        {
+            "name": "base_url",
+            "description": "Base URL of the onion-lookup service (no trailing slash)",
+            "type": "string",
+            "multi": false,
+            "required": false,
+            "defaultValue": "https://onion.ail-project.org"
+        },
+        {
+            "name": "timeout",
+            "description": "HTTP timeout in seconds",
+            "type": "number",
+            "required": false,
+            "defaultValue": 30
+        },
+        {
+            "name": "verify_tls",
+            "description": "Verify TLS certificate",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": true
+        }
+    ],
+    "registration_required": false,
+    "subscription_required": false,
+    "free_subscription": false,
+    "serviceHomepage": "https://onion.ail-project.org/"
+}
