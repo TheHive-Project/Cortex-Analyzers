@@ -19,7 +19,8 @@ echo "Downloading from $DOWNLOAD_URL"
 
 # Download and extract capa
 curl -L -o capa.zip "$DOWNLOAD_URL" || { echo "Download failed"; exit 1; }
-unzip capa.zip -d /worker/capa || { echo "Extraction failed"; exit 1; }
+mkdir -p /worker/Capa
+unzip capa.zip -d /worker/Capa || { echo "Extraction failed"; exit 1; }
 
 # Clean up
 rm capa.zip

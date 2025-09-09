@@ -1,12 +1,14 @@
-FROM python:3-alpine
+FROM python:3-slim
 WORKDIR /worker
+
 # Install required tools
-RUN apk add --no-cache \
-    curl \
-    jq \
-    unzip \
-    bash && \
-    rm -rf /var/cache/apk/*
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      curl \
+      jq \
+      unzip \
+      bash \
+      ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt Capa/
 RUN test ! -e Capa/requirements.txt || pip install --no-cache-dir -r Capa/requirements.txt
