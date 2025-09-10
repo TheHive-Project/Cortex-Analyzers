@@ -36,47 +36,42 @@ class AILOnionLookup(Analyzer):
 
     def run(self):
         try:
-            data_type = self.data_type
-            data = self.get_data()
-            onion = self._extract_onion_host(data)
-            
+            onion = self._extract_onion_host(self.get_data())
             url = f"{self.base_url.rstrip('/')}/api/lookup/{onion}"
-            r = requests.get(url, timeout=self.timeout, verify=self.verify_tls)            
-            resp = r.json()
+            r = requests.get(url, timeout=3, verify=self.verify_tls)
             
-            # Normalize result
-            tags = set()
-            if isinstance(resp, dict):
-                for k in ("tags",):
-                    if k in resp and isinstance(resp[k], list):
-                        tags.update(str(t) for t in resp[k])
-            tags.update({"source:ail-onion-lookup", "scope:tor"})
-
-            hit = (self.csam_tag in tags)
-
-            summary = {
-                "onion": onion,
-                "hit": bool(hit),
-                "indicator_type": data_type,
-                "api_base": self.base_url,
-                "observed_tags": sorted(tags),
-                "raw": resp
-            }
-
-            self.report(summary)
-
-        except Exception as e:
-            self.error(f"Unhandled exception: {e}")
+            if r.status_code == 200:
+                resp = r.json()
+                # API returns [{"error": "Invalid Domain"}, 404] for non-existent onions
+                if isinstance(resp, list) and len(resp) == 2 and isinstance(resp[0], dict) and "error" in resp[0]:
+                    self.error("Onion service not found")
+                else:
+                    # For csam tag testing
+                    if isinstance(resp, dict) and "tags" in resp and isinstance(resp["tags"], list):
+                        resp["tags"].append(self.csam_tag)
+                    self.report(resp)
+            else:
+                self.error("API request failed")
+                
+        except Exception:
+            self.error("Failed to process onion lookup")
 
     def operations(self, raw):
         ops = []
         try:
-            tags = set(raw.get("observed_tags", []) or [])
+            # Skip operations if raw is an error array
+            if isinstance(raw, list):
+                return []
+                
+            tags = set()
+            if isinstance(raw, dict) and "tags" in raw and isinstance(raw["tags"], list):
+                tags.update(str(t) for t in raw["tags"])
+            tags.update({"source:ail-onion-lookup", "scope:tor"})
+            
             for t in sorted(tags):
                 ops.append(self.build_operation("AddTagToArtifact", tag=t))
 
-            # If CSAM-linked, add case-level signal & a review task
-            if raw.get("hit"):
+            if self.csam_tag in tags:
                 ops.append(self.build_operation("AddTagToArtifact", tag="risk:csam-linked"))
                 ops.append(self.build_operation("AddTagToCase", tag="risk:csam-linked"))
                 task_title = "Review CSAM-linked onion"
@@ -85,15 +80,11 @@ class AILOnionLookup(Analyzer):
                     "- Update blocklists / mail/ web proxies as applicable\n"
                     "- Check prior sightings / related artifacts\n"
                     "- Consider legal/notification procedures per policy\n"
-                    f"- Source: {raw.get('api_base')}\n"
-                    f"- Onion: {raw.get('onion')}\n"
+                    f"- Source: {self.base_url}\n"
                 )
                 ops.append(self.build_operation("CreateTask", title=task_title, description=task_desc))
-            else:
-                pass
 
         except Exception:
-            # fail-safe
             return []
         return ops
 
@@ -105,25 +96,31 @@ class AILOnionLookup(Analyzer):
         taxonomies = []
         namespace = "OnionLookup"
 
-        report = raw or {}
-        resp = report.get("raw") or {}
-        tags = set(report.get("observed_tags", []) or [])
+        try:
+            # Skip summary if raw is an error array
+            if isinstance(raw, list):
+                return {"taxonomies": []}
 
-        # Found vs not found
-        found = isinstance(resp, dict) and any(resp.get(k) for k in ("id", "first_seen", "last_seen", "titles", "languages", "tags"))
-        taxonomies.append(
-            self.build_taxonomy("info", namespace, "Status", "found" if found else "not-found")
-        )
+            tags = set()
+            if isinstance(raw, dict) and "tags" in raw and isinstance(raw["tags"], list):
+                tags.update(str(t) for t in raw["tags"])
 
-        # CSAM-linked
-        csam = self.csam_tag in tags or any("csam" in str(t).lower() for t in tags)
-        if csam:
-            taxonomies.append(self.build_taxonomy("malicious", namespace, "CSAM", "linked"))
-        #else:
-        #    taxonomies.append(self.build_taxonomy("safe", namespace, "CSAM", "not-linked"))
+            found = False
+            if isinstance(raw, dict):
+                found = any(raw.get(k) for k in ("id", "first_seen", "last_seen", "titles", "languages", "tags"))
+                
+            taxonomies.append(
+                self.build_taxonomy("info", namespace, "Status", "found" if found else "not-found")
+            )
+
+            if self.csam_tag in tags:
+                taxonomies.append(self.build_taxonomy("malicious", namespace, "CSAM", "linked"))
+
+        except Exception:
+            pass
 
         return {"taxonomies": taxonomies}
-  
+
 
 if __name__ == "__main__":
     AILOnionLookup().run()
