@@ -11,14 +11,14 @@
     </div>
     <div class="panel-body">
         <!-- CSAM Warning Alert -->
-        <div class="alert alert-danger" ng-if="content.tags && content.tags.indexOf('dark-web:topic=\"pornography-child-exploitation\"') !== -1">
+        <div class="alert alert-danger" ng-if="content.tags && content.tags.join('|').indexOf('pornography-child-exploitation') !== -1">
             <i class="fa fa-exclamation-triangle"></i>
             <strong>HIGH RISK - CSAM Content Detected:</strong>
             This onion service has been flagged for potential child exploitation material. Follow escalation procedures immediately.
         </div>
 
         <!-- Standard Info Alert -->
-        <div class="alert alert-info" ng-if="!(content.tags && content.tags.indexOf('dark-web:topic=\"pornography-child-exploitation\"') !== -1)">
+        <div class="alert alert-info" ng-if="!content.tags || content.tags.join('|').indexOf('pornography-child-exploitation') === -1">
             <i class="fa fa-info-circle"></i>
             <strong>Intelligence Available:</strong>
             Data retrieved from AIL Project onion database.
@@ -39,10 +39,13 @@
 
                 <dt><i class="fa fa-shield"></i> Risk Level</dt>
                 <dd>
-                    <span class="label" ng-class="{'label-danger': content.tags && content.tags.indexOf('dark-web:topic=\"pornography-child-exploitation\"') !== -1, 'label-info': !(content.tags && content.tags.indexOf('dark-web:topic=\"pornography-child-exploitation\"') !== -1)}">
-                        <i class="fa" ng-class="{'fa-exclamation-triangle': content.tags && content.tags.indexOf('dark-web:topic=\"pornography-child-exploitation\"') !== -1, 'fa-info-circle': !(content.tags && content.tags.indexOf('dark-web:topic=\"pornography-child-exploitation\"') !== -1)}"></i>
-                        <span ng-if="content.tags && content.tags.indexOf('dark-web:topic=\"pornography-child-exploitation\"') !== -1" style="color: white;">HIGH RISK - CSAM</span>
-                        <span ng-if="!(content.tags && content.tags.indexOf('dark-web:topic=\"pornography-child-exploitation\"') !== -1)">Standard Monitoring</span>
+                    <span class="label label-danger" ng-if="content.tags && content.tags.join('|').indexOf('pornography-child-exploitation') !== -1">
+                        <i class="fa fa-exclamation-triangle"></i>
+                        <span style="color: white;">HIGH RISK - CSAM</span>
+                    </span>
+                    <span class="label label-info" ng-if="!content.tags || content.tags.join('|').indexOf('pornography-child-exploitation') === -1">
+                        <i class="fa fa-info-circle"></i>
+                        Standard Monitoring
                     </span>
                 </dd>
             </dl>
