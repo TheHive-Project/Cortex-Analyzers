@@ -4,21 +4,14 @@
         <i class="fa fa-user-secret text-primary"></i>
         AIL Onion Lookup Report
         <span class="pull-right">
-            <span class="label label-danger" ng-if="content.tags && content.tags.indexOf('dark-web:topic=\"pornography-child-exploitation\"') !== -1">
-                <i class="fa fa-exclamation-triangle"></i> CSAM Risk
+            <span class="label label-info" ng-if="content.tags && content.tags.length">
+                <i class="fa fa-tags"></i> {{content.tags.length}} tag(s)
             </span>
         </span>
     </div>
     <div class="panel-body">
-        <!-- CSAM Warning Alert -->
-        <div class="alert alert-danger" ng-if="content.tags && content.tags.join('|').indexOf('pornography-child-exploitation') !== -1">
-            <i class="fa fa-exclamation-triangle"></i>
-            <strong>HIGH RISK - CSAM Content Detected:</strong>
-            This onion service has been flagged for potential child exploitation material. Follow escalation procedures immediately.
-        </div>
-
-        <!-- Standard Info Alert -->
-        <div class="alert alert-info" ng-if="!content.tags || content.tags.join('|').indexOf('pornography-child-exploitation') === -1">
+        <!-- Info Alert -->
+        <div class="alert alert-info">
             <i class="fa fa-info-circle"></i>
             <strong>Intelligence Available:</strong>
             Data retrieved from AIL Project onion database.
@@ -37,15 +30,15 @@
                     </a>
                 </dd>
 
-                <dt><i class="fa fa-shield"></i> Risk Level</dt>
+                <dt><i class="fa fa-database"></i> Detection Status</dt>
                 <dd>
-                    <span class="label label-danger" ng-if="content.tags && content.tags.join('|').indexOf('pornography-child-exploitation') !== -1">
-                        <i class="fa fa-exclamation-triangle"></i>
-                        <span style="color: white;">HIGH RISK - CSAM</span>
+                    <span class="label label-success" ng-if="content.tags && content.tags.length">
+                        <i class="fa fa-check"></i>
+                        {{content.tags.length}} detection(s) found
                     </span>
-                    <span class="label label-info" ng-if="!content.tags || content.tags.join('|').indexOf('pornography-child-exploitation') === -1">
-                        <i class="fa fa-info-circle"></i>
-                        Standard Monitoring
+                    <span class="label label-default" ng-if="!content.tags || content.tags.length === 0">
+                        <i class="fa fa-minus"></i>
+                        No detections
                     </span>
                 </dd>
             </dl>
@@ -82,20 +75,22 @@
             </div>
 
             <!-- Tags Section -->
-            <div ng-if="content.tags && content.tags.length" style="margin-top: 20px;">
+            <div ng-if="content.tags_enriched && content.tags_enriched.length" style="margin-top: 20px;">
                 <strong><i class="fa fa-tags text-info"></i> Detection Tags:</strong>
                 
                 <div style="margin-top: 8px;">
-                    <span ng-repeat="tag in content.tags" 
-                          class="label" 
-                          ng-class="{
-                              'label-danger': tag.indexOf('dark-web:topic=\"pornography-child-exploitation\"') !== -1,
-                              'label-warning': tag.toLowerCase().indexOf('bitcoin') !== -1,
-                              'label-primary': tag.indexOf('dark-web:topic=\"pornography-child-exploitation\"') === -1 && tag.toLowerCase().indexOf('bitcoin') === -1
-                          }" 
-                          style="margin: 2px;">
-                        {{tag}}
-                    </span>
+                    <div ng-repeat="tag_info in content.tags_enriched" style="margin-bottom: 8px;">
+                        <span class="label label-primary" style="margin-right: 4px;">
+                            {{tag_info.expanded || tag_info.original}}
+                        </span>
+                        
+                        <div ng-if="tag_info.description" style="margin-top: 4px; padding: 8px; background-color: #fff3cd; border-left: 3px solid #ffc107; border-radius: 3px;">
+                            <small>
+                                <i class="fa fa-warning text-warning"></i>
+                                <strong>Context:</strong> {{tag_info.description}}
+                            </small>
+                        </div>
+                    </div>
                 </div>
             </div>
 
