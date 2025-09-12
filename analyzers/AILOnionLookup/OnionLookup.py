@@ -128,13 +128,16 @@ class AILOnionLookup(Analyzer):
             try:
                 r = requests.get(url, timeout=self.timeout, verify=self.verify_tls)
             except requests.exceptions.ConnectTimeout:
-                self.error(f"Connection timeout to {self.base_url}")
+                self.error(f"Connection timeout after {self.timeout}s to {url}")
                 return
-            except requests.exceptions.ConnectionError:
-                self.error(f"Connection failed to {self.base_url}")
+            except requests.exceptions.ConnectionError as e:
+                self.error(f"Connection failed to {url} - {str(e)}")
+                return
+            except requests.exceptions.SSLError as e:
+                self.error(f"SSL/TLS error connecting to {url} - {str(e)} (verify_tls={self.verify_tls})")
                 return
             except requests.exceptions.RequestException as e:
-                self.error(f"Request failed: {str(e)}")
+                self.error(f"Request failed to {url} - {str(e)}")
                 return
             
             if r.status_code == 200:
