@@ -34,28 +34,37 @@ class AILOnionLookup(Analyzer):
         if not host.endswith(".onion"):
             raise ValueError("Not a .onion host")
         if not ONION_RE.match(host):
-            pass
+            raise ValueError(f"Invalid .onion domain format: {host}")
         return host
 
     def _load_tag_descriptions(self):
         """Load tag descriptions from machinetag.json"""
         machinetag_path = os.path.join(os.path.dirname(__file__), 'machinetag.json')
         if not os.path.exists(machinetag_path):
+            # Log warning but continue without tag descriptions
             return {}
             
-        with open(machinetag_path, 'r', encoding='utf-8') as f:
-            self.machinetag_data = json.load(f)
+        try:
+            with open(machinetag_path, 'r', encoding='utf-8') as f:
+                self.machinetag_data = json.load(f)
+        except (IOError, json.JSONDecodeError) as e:
+            # Log warning and continue without tag descriptions
+            return {}
         
         descriptions = {}
-        for value_info in self.machinetag_data['values']:
-            predicate = value_info['predicate']
-            for entry in value_info['entry']:
-                key = f"dark-web:{predicate}={entry['value']}"
-                descriptions[key] = {
-                    'description': entry['description'],
-                    'expanded': entry['expanded'],
-                    'value': entry['value']
-                }
+        try:
+            for value_info in self.machinetag_data['values']:
+                predicate = value_info['predicate']
+                for entry in value_info['entry']:
+                    key = f"dark-web:{predicate}={entry['value']}"
+                    descriptions[key] = {
+                        'description': entry['description'],
+                        'expanded': entry['expanded'],
+                        'value': entry['value']
+                    }
+        except (KeyError, TypeError) as e:
+            # Return empty dict if machinetag structure is unexpected
+            return {}
         
         return descriptions
 
@@ -102,12 +111,39 @@ class AILOnionLookup(Analyzer):
 
     def run(self):
         try:
-            onion = self._extract_onion_host(self.get_data())
+            # Extract and validate onion host
+            try:
+                onion = self._extract_onion_host(self.get_data())
+            except ValueError as e:
+                self.error(f"Invalid onion domain: {str(e)}")
+                return
+            except Exception as e:
+                self.error(f"Error processing input data: {str(e)}")
+                return
+            
+            # Build API URL
             url = f"{self.base_url.rstrip('/')}/api/lookup/{onion}"
-            r = requests.get(url, timeout=3, verify=self.verify_tls)
+            
+            # Make API request
+            try:
+                r = requests.get(url, timeout=self.timeout, verify=self.verify_tls)
+            except requests.exceptions.ConnectTimeout:
+                self.error(f"Connection timeout to {self.base_url}")
+                return
+            except requests.exceptions.ConnectionError:
+                self.error(f"Connection failed to {self.base_url}")
+                return
+            except requests.exceptions.RequestException as e:
+                self.error(f"Request failed: {str(e)}")
+                return
             
             if r.status_code == 200:
-                resp = r.json()
+                try:
+                    resp = r.json()
+                except ValueError as e:
+                    self.error(f"Invalid JSON response: {str(e)}")
+                    return
+                    
                 # API returns [{"error": "Invalid Domain"}, 404] for non-existent onions
                 if isinstance(resp, list) and len(resp) == 2 and isinstance(resp[0], dict) and "error" in resp[0]:
                     self.error("Onion service not found")
@@ -117,14 +153,18 @@ class AILOnionLookup(Analyzer):
                     #     resp["tags"].append(self.csam_tag)
                     # Add enriched tags with analyst-friendly descriptions
                     if isinstance(resp, dict) and "tags" in resp and isinstance(resp["tags"], list):
-                        resp["tags_enriched"] = self._enrich_tags(resp["tags"])
-                        resp["tags_sanitized"] = self._create_sanitized_tags(resp["tags"])
+                        try:
+                            resp["tags_enriched"] = self._enrich_tags(resp["tags"])
+                            resp["tags_sanitized"] = self._create_sanitized_tags(resp["tags"])
+                        except Exception as e:
+                            # Continue even if tag enrichment fails
+                            pass
                     self.report(resp)
             else:
-                self.error("API request failed")
+                self.error(f"API request failed with status code {r.status_code}: {r.text}")
                 
-        except Exception:
-            self.error("Failed to process onion lookup")
+        except Exception as e:
+            self.error(f"Unexpected error in onion lookup: {str(e)}")
 
     def operations(self, raw):
         ops = []
