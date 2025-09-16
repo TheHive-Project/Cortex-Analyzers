@@ -1,5 +1,9 @@
 # Slack Responders
 
+<div align="center">
+  <img src="./assets/slack-logo.png" alt="Slack Logo" width="150"/>
+</div>
+
 This directory contains two Slack responders for TheHive integration:
 
 1. **Slack_CreateChannel**: Creates a Slack channel for a TheHive case, invites participants, and optionally posts a case summary and description.
@@ -23,6 +27,19 @@ This directory contains two Slack responders for TheHive integration:
 - Prevents duplicate syncing by tracking message timestamps
 - Converts Slack user IDs to readable usernames for better readability
 
+## Preview
+
+<div align="center">
+  <a href="./assets/slack-history.png" target="_blank">
+    <img src="./assets/slack-history.png" alt="Slack History" width="300" style="margin: 10px;"/>
+  </a>
+  <a href="./assets/thehive-slacksync-1.png" target="_blank">
+    <img src="./assets/thehive-slacksync-1.png" alt="TheHive Slack Sync 1" width="300" style="margin: 10px;"/>
+  </a>
+  <a href="./assets/thehive-slacksync-2.png" target="_blank">
+    <img src="./assets/thehive-slacksync-2.png" alt="TheHive Slack Sync 2" width="300" style="margin: 10px;"/>
+  </a>
+</div>
 ---
 
 ## Requirements
@@ -69,3 +86,4 @@ This directory contains two Slack responders for TheHive integration:
 ## 2. Enable and configure the Responders
 
 Log into your Cortex instance, go to Organization > Responders and enable the desired JIRA responders with the appropriate configuration & API keys.
+
