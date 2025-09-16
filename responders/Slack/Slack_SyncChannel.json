@@ -4,7 +4,7 @@
   "author": "Fabien Bloume, StrangeBee",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Syncs Slack channel conversations to TheHive task logs. Imports messages chronologically with file attachments for traceability",
+  "description": "Syncs Slack channel conversations to TheHive task logs. Imports messages chronologically with file attachments for traceability.",
   "dataTypeList": ["thehive:case"],
   "command": "Slack/slack.py",
   "baseConfig": "Slack",
