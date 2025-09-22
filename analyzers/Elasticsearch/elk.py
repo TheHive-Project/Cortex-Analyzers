@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch, VERSION as ES_VERSION
 from cortexutils.analyzer import Analyzer
 import dateutil.parser
 from datetime import datetime
@@ -138,30 +138,27 @@ class ElasticsearchAnalyzer(Analyzer):
     def run(self):
         Analyzer.run(self)
         try:
+            from packaging.version import Version
+            if Version(".".join([str(s) for s in ES_VERSION])) < Version("9.0.0"):
+                _dict = dict(timeout="30s")
+            else:
+                _dict = dict(request_timeout="30s")
+
             for endpoint,key,user,password in zip(self.endpoints,self.keys,self.users,self.passwords):
+                es_dict = dict(
+                            hosts=endpoint,
+                            ca_certs=self.cert,
+                            verify_certs=self.verify,
+                        )
                 if key:
-                    es = Elasticsearch(
-                        endpoint,
-                        api_key = (key),
-                        ca_certs=self.cert,
-                        verify_certs=self.verify,
-                        request_timeout=30
-                    )
+                    es_dict["api_key"] = key
                 elif user:
-                    es = Elasticsearch(
-                        endpoint,
-                        http_auth = (user,password),
-                        ca_certs=self.cert,
-                        verify_certs=self.verify,
-                        request_timeout=30
-                    )
-                else:
-                    es = Elasticsearch(
-                        endpoint,
-                        ca_certs=self.cert,
-                        verify_certs=self.verify,
-                        request_timeout=30
-                    )
+                    es_dict["http_auth"] = (user, password)
+
+                # update with timeouts
+                es_dict.update(_dict)
+                # ES client
+                es = Elasticsearch(**es_dict)
 
                 info = {}
                 hits = []
