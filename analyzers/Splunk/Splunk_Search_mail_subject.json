@@ -5,8 +5,7 @@
   "author": "Unit777, LetMeR00t",
   "license": "AGPL-V3",
   "dataTypeList": [
-    "mail_subject",
-    "mail-subject"
+    "mail_subject"
   ],
   "description": "Execute a savedsearch on a Splunk instance with a mail subject as argument",
   "baseConfig": "Splunk",
