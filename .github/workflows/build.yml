@@ -93,12 +93,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
       - name: GHCR Login
         uses: docker/login-action@v3
         with:
@@ -258,18 +252,28 @@ jobs:
         id: set_platforms
         run: |
           NO_ARM64_DIRS="FileInfo"
-      
+
           CURRENT_DIR="${{ matrix.directory }}"
           # Default to multi-arch
           PLATFORMS="linux/amd64,linux/arm64"
-      
+
           # Check if CURRENT_DIR is in the NO_ARM64_DIRS list
           if echo "$NO_ARM64_DIRS" | grep -qw "$CURRENT_DIR"; then
             echo "Directory '$CURRENT_DIR' is in NO_ARM64_DIRS; limiting to linux/amd64 only."
             PLATFORMS="linux/amd64"
           fi
-      
+
           echo "PLATFORMS=$PLATFORMS" >> $GITHUB_ENV
+
+      # Only install QEMU when we actually build AND arm64 is targeted
+      - name: Set up QEMU
+        if: steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/arm64')
+        uses: docker/setup-qemu-action@v3
+
+      # Buildx is only needed when we build (and for imagetools)
+      - name: Set up Docker Buildx
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        uses: docker/setup-buildx-action@v3
 
       - name: Build and push multi-arch image to GHCR
         if: steps.check-rebuild.outputs.rebuild == 'true'
@@ -300,17 +304,18 @@ jobs:
             org.opencontainers.image.version=${{ env.VERSION }}
 
       - name: Get image digest for Trivy scan
+        if: steps.check-rebuild.outputs.rebuild == 'true'
         id: get-digest
         run: |
           # Get the digest of the pushed image using buildx imagetools
           IMAGE_DIGEST=$(docker buildx imagetools inspect ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }} 2>/dev/null | grep "^Digest:" | awk '{print $2}' || echo "")
-          
+
           if [ -n "$IMAGE_DIGEST" ]; then
             IMAGE_DIGEST="ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}@$IMAGE_DIGEST"
           else
             # Fallback: try docker inspect for RepoDigests
             IMAGE_DIGEST=$(docker inspect ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }} --format='{{index .RepoDigests 0}}' 2>/dev/null || echo "")
-            
+
             if [ -z "$IMAGE_DIGEST" ]; then
               # Fallback: try to get digest from local images
               IMAGE_DIGEST=$(docker images --digests ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }} --format "table {{.Repository}}:{{.Tag}}\t{{.Digest}}" | grep ":${{ env.IMAGE_TAG }}" | awk '{print $2}' | head -1)
@@ -569,12 +574,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
       - name: GHCR Login
         uses: docker/login-action@v3
         with:
@@ -734,18 +733,28 @@ jobs:
         id: set_platforms
         run: |
           NO_ARM64_DIRS="MSDefenderOffice365"
-      
+
           CURRENT_DIR="${{ matrix.directory }}"
           # Default to multi-arch
           PLATFORMS="linux/amd64,linux/arm64"
-      
+
           # Check if CURRENT_DIR is in the NO_ARM64_DIRS list
           if echo "$NO_ARM64_DIRS" | grep -qw "$CURRENT_DIR"; then
             echo "Directory '$CURRENT_DIR' is in NO_ARM64_DIRS; limiting to linux/amd64 only."
             PLATFORMS="linux/amd64"
           fi
-      
+
           echo "PLATFORMS=$PLATFORMS" >> $GITHUB_ENV
+
+      # Only install QEMU when we actually build AND arm64 is targeted
+      - name: Set up QEMU
+        if: steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/arm64')
+        uses: docker/setup-qemu-action@v3
+
+      # Buildx is only needed when we build (and for imagetools)
+      - name: Set up Docker Buildx
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        uses: docker/setup-buildx-action@v3
 
       - name: Build and push multi-arch image to GHCR
         if: steps.check-rebuild.outputs.rebuild == 'true'
@@ -776,17 +785,18 @@ jobs:
             org.opencontainers.image.version=${{ env.VERSION }}
 
       - name: Get image digest for Trivy scan
+        if: steps.check-rebuild.outputs.rebuild == 'true'
         id: get-digest-responder
         run: |
           # Get the digest of the pushed image using buildx imagetools
           IMAGE_DIGEST=$(docker buildx imagetools inspect ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }} 2>/dev/null | grep "^Digest:" | awk '{print $2}' || echo "")
-          
+
           if [ -n "$IMAGE_DIGEST" ]; then
             IMAGE_DIGEST="ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}@$IMAGE_DIGEST"
           else
             # Fallback: try docker inspect for RepoDigests
             IMAGE_DIGEST=$(docker inspect ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }} --format='{{index .RepoDigests 0}}' 2>/dev/null || echo "")
-            
+
             if [ -z "$IMAGE_DIGEST" ]; then
               # Fallback: try to get digest from local images
               IMAGE_DIGEST=$(docker images --digests ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }} --format "table {{.Repository}}:{{.Tag}}\t{{.Digest}}" | grep ":${{ env.IMAGE_TAG }}" | awk '{print $2}' | head -1)
