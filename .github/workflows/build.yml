@@ -152,7 +152,7 @@ jobs:
             
             # Multi-stage build - Builder stage
             echo "# Builder stage" > "$dockerfile_path"
-            echo "FROM python:3-slim as builder" >> "$dockerfile_path"
+            echo "FROM python:3-slim AS builder" >> "$dockerfile_path"
             echo "WORKDIR /build" >> "$dockerfile_path"
 
             # Check if current worker is among special alpine workers and install build dependencies
@@ -633,7 +633,7 @@ jobs:
             
             # Multi-stage build - Builder stage
             echo "# Builder stage" > "$dockerfile_path"
-            echo "FROM python:3-slim as builder" >> "$dockerfile_path"
+            echo "FROM python:3-slim AS builder" >> "$dockerfile_path"
             echo "WORKDIR /build" >> "$dockerfile_path"
 
             # Check if current worker is among special alpine workers and install build dependencies
