@@ -1,2 +1,3 @@
 cortexutils
-censys
+censys~=2.2
+iocextract

@@ -1,0 +1,73 @@
+{
+    "name": "MSEntraID_GetSignIns",
+    "version": "1.0",
+    "author": "@jahamilto",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Pull all Microsoft Entra ID sign ins for a user within the specified amount of time.",
+    "dataTypeList": [
+        "mail"
+    ],
+    "command": "MSEntraID/MSEntraID.py",
+    "baseConfig": "MSEntraID",
+    "config": {
+        "service": "getSignIns"
+    },
+    "configurationItems": [
+        {
+            "name": "tenant_id",
+            "description": "Microsoft Entra ID Tenant ID",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "client_id",
+            "description": "Client ID/Application ID of Microsoft Entra ID Registered App",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "client_secret",
+            "description": "Secret for Microsoft Entra ID Registered Application",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "lookup_range",
+            "description": "Check for sign ins in the last X days. Should be between 1 and 31 days.",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 7
+        },
+        {
+            "name": "lookup_limit",
+            "description": "Display no more than this many sign ins.",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 12
+        },
+        {
+            "name": "state",
+            "description": "Expected sign in state (used as a taxonomy when sign ins appear outside of this area).",
+            "type": "string",
+            "multi": false,
+            "required": false
+        },
+        {
+            "name": "country",
+            "description": "Expected sign in country or region (used as a taxonomy when sign ins appear outside of this area).",
+            "type": "string",
+            "multi": false,
+            "required": false
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://www.microsoft.com/security/business/identity-access/microsoft-entra-id"
+}

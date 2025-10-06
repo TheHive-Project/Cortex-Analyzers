@@ -1,6 +1,6 @@
 {
   "name": "VirusTotal_DownloadSample",
-  "version": "3.0",
+  "version": "3.1",
   "author": "LDO-CERT",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -19,5 +19,12 @@
       "required": true
     }
   ],
+  "registration_required": true,
+  "subscription_required": true,
+  "service_homepage": "https://www.virustotal.com/",
+  "service_logo": {
+    "path": "assets/virustotal-logo.png",
+    "caption": "logo"
+  },
   "command": "VirusTotal/virustotal.py"
 }

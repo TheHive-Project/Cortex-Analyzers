@@ -1,0 +1,183 @@
+<!-- Success -->
+<div class="panel panel-danger" ng-if="success">
+    <div class="panel-body">
+        <div>
+            <!-- Filter Parameters -->
+            <div class="panel" ng-if="content.filterParameters">
+                <div class="panel-heading">
+                    <i class="fa fa-filter"></i> Filter Parameters
+                </div>
+                <div>
+                    <table class="table">
+                        <tr>
+                            <td><strong>Time Range (days)</strong></td>
+                            <td>{{ content.filterParameters.timeRangeDays || 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lookup Limit</strong></td>
+                            <td>{{ content.filterParameters.lookupLimit || 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Start Time</strong></td>
+                            <td>{{ content.filterParameters.startTime || 'N/A' }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- No Directory Audits Found -->
+            <div class="panel" ng-if="content.directoryAudits && content.directoryAudits.length === 0">
+                <div class="panel-heading">
+                    <i class="fa fa-exclamation-triangle"></i> No Audit Logs Found
+                </div>
+                <div class="panel-body">
+                    <p>No directory audit logs were found for the given parameters.</p>
+                </div>
+            </div>
+
+            <!-- Directory Audit Logs Summary -->
+            <div class="panel" ng-if="content.directoryAudits.length > 0">
+                <div class="panel-heading">
+                    <i class="fa fa-list"></i> Directory Audit Logs
+                </div>
+                <div>
+                    <table class="table">
+                        <tr>
+                            <th>ID</th>
+                            <th>Category</th>
+                            <th>Activity</th>
+                            <th>Result</th>
+                            <th>Timestamp</th>
+                            <th>Initiated By</th>
+                        </tr>
+                        <tr ng-repeat="audit in content.directoryAudits">
+                            <td>{{ audit.id }}</td>
+                            <td>{{ audit.category }}</td>
+                            <td>{{ audit.activityDisplayName }}</td>
+                            <td>
+                                <span class="label" ng-class="{
+                                    'label-success': audit.result === 'success',
+                                    'label-danger': audit.result !== 'success'
+                                }">
+                                    {{ audit.result || 'N/A' }}
+                                </span>
+                            </td>
+                            <td>{{ audit.activityDateTime || 'N/A' }}</td>
+                            <td>
+                                <span ng-if="audit.initiatedBy && audit.initiatedBy.user">
+                                    {{ audit.initiatedBy.user.displayName || audit.initiatedBy.user.userPrincipalName || 'N/A' }}<br>
+                                    <strong>IP:</strong> {{ audit.initiatedBy.user.ipAddress || 'N/A' }}
+                                </span>
+                                <span ng-if="audit.initiatedBy && audit.initiatedBy.app">
+                                    (App: {{ audit.initiatedBy.app.appId || 'N/A' }})
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Collapsible Detailed Logs -->
+            <div class="panel" ng-repeat="audit in content.directoryAudits">
+                <div class="panel-heading" ng-click="audit.expanded = !audit.expanded" style="cursor:pointer;">
+                    <i class="fa fa-info-circle"></i> Audit Details - {{ audit.id }}
+                </div>
+                <div ng-if="audit.expanded">
+                    <table class="table">
+                        <!-- Static fields -->
+                        <tr>
+                            <td><strong>Correlation ID</strong></td>
+                            <td>{{ audit.correlationId || 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Operation Type</strong></td>
+                            <td>{{ audit.operationType || 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Logged By Service</strong></td>
+                            <td>{{ audit.loggedByService || 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Result Reason</strong></td>
+                            <td>{{ audit.resultReason || 'N/A' }}</td>
+                        </tr>
+                        
+                        <!-- Dynamic rendering for Initiated By -->
+                        <tr ng-if="audit.initiatedBy">
+                            <td><strong>Initiated By</strong></td>
+                            <td>
+                                <table class="table">
+                                    <tr ng-repeat="(key, value) in audit.initiatedBy">
+                                        <td><strong>{{ key }}</strong></td>
+                                        <td>{{ value || 'N/A' }}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        
+                        <!-- Dynamic rendering for Modified Properties -->
+                        <tr ng-if="audit.modifiedProperties && audit.modifiedProperties.length">
+                            <td><strong>Modified Properties</strong></td>
+                            <td>
+                                <div ng-repeat="modified in audit.modifiedProperties">
+                                    <table class="table">
+                                        <tr ng-repeat="(key, value) in modified">
+                                            <td><strong>{{ key }}</strong></td>
+                                            <td>{{ value || 'N/A' }}</td>
+                                        </tr>
+                                    </table>
+                                    <hr ng-if="!$last">
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Dynamic rendering for Target Resources -->
+                        <tr ng-if="audit.targetResources && audit.targetResources.length">
+                            <td><strong>Target Resources</strong></td>
+                            <td>
+                                <div ng-repeat="resource in audit.targetResources">
+                                    <table class="table">
+                                        <tr ng-repeat="(key, value) in resource">
+                                            <td><strong>{{ key }}</strong></td>
+                                            <td>{{ value || 'N/A' }}</td>
+                                        </tr>
+                                    </table>
+                                    <hr ng-if="!$last">
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Dynamic rendering for Additional Details -->
+                        <tr ng-if="audit.additionalDetails && audit.additionalDetails.length">
+                            <td><strong>Additional Details</strong></td>
+                            <td>
+                                <div ng-repeat="detail in audit.additionalDetails">
+                                    <table class="table">
+                                        <tr ng-repeat="(key, value) in detail">
+                                            <td><strong>{{ key }}</strong></td>
+                                            <td>{{ value || 'N/A' }}</td>
+                                        </tr>
+                                    </table>
+                                    <hr ng-if="!$last">
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> getDirectoryAuditLogs: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

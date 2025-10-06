@@ -1,0 +1,35 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+<div ng-if="success">
+    <div ng-repeat="nb in content.notebooks">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+        	    Summary for <strong>{{nb.name}}</strong>: Executed in {{nb.duration}} seconds 
+        	</div>
+        	<div class="panel-body">
+        	    <div class="dl-horizontal">
+        	        <b>Output</b>: <a href={{nb.output_notebook}}>{{nb.output_notebook}}</a>
+                    <div class="jupyter-render-html" content="{{nb.html}}"></div>
+                </div>
+        	</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function jupyter_render_html(){
+        node = $(".jupyter-render-html").each(function(index, element) {
+            console.log(element)
+            $(this).html($(this).attr("content"))
+        })
+    }
+    // Wait before executing the script to have all the page loaded
+    setTimeout(jupyter_render_html, 250);
+</script>

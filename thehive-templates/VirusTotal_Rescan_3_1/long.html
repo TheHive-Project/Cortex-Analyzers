@@ -1,0 +1,204 @@
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>VirusTotal GetReport</strong>
+    </div>
+    <div class="panel-body">{{content.errorMessage}}</div>
+</div>
+
+<!-- Success -->
+<div ng-switch="content.response_code" ng-if="success">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Summary</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal" ng-if="content.data.id">
+                <dt>Id (base64)</dt>
+                <dd class="wrap">{{content.data.id}}</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.relations.contacted_urls.meta.count > 0">
+        <div class="panel-heading">
+            <strong>Contacted URLs</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Scanned</th>
+                    <th scope="col">Detections</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">URL</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="url in content.relations.contacted_urls.data">
+                    <td>
+                        <strong>{{url.attributes.last_analysis_date*1000 | date: 'yyyy-MM-dd'}}</strong>
+                    </td>
+                    <td
+                        ng-init="stats = url.attributes.last_analysis_stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
+                    >
+                        <strong ng-class="url.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
+                            {{url.attributes.last_analysis_stats.malicious || "0"}}
+                        </strong> / {{total}}
+                    </td>
+                    <td>{{url.attributes.last_http_response_code || "-"}}</td>
+                    <td>{{url.attributes.url || "-"}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.relations.contacted_domains.meta.count > 0">
+        <div class="panel-heading">
+            <strong>Contacted Domains</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Domain</th>
+                    <th scope="col">Detections</th>
+                    <th scope="col">Created</th>
+                    <th scope="col">Registrar</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="domain in content.relations.contacted_domains.data">
+                    <td>
+                        <strong>{{domain.id}}</strong>
+                    </td>
+                    <td
+                        ng-init="stats = domain.attributes.last_analysis_stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
+                    >
+                        <strong ng-class="domain.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
+                            {{domain.attributes.last_analysis_stats.malicious || "0"}}
+                        </strong> / {{total}}
+                    </td>
+                    <td ng-if="domain.attributes.creation_date">{{domain.attributes.creation_date*1000 | date: 'yyyy-MM-dd'}}</td>
+                    <td ng-if="!domain.attributes.creation_date">-</td>
+                    <td>{{domain.attributes.registrar || "-"}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.relations.contacted_ips.meta.count > 0">
+        <div class="panel-heading">
+            <strong>Contacted IP Addresses</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">IP</th>
+                    <th scope="col">Detections</th>
+                    <th scope="col">Autonomous System</th>
+                    <th scope="col">Country</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="ip in content.relations.contacted_ips.data">
+                    <td>
+                        <strong>{{ip.id}}</strong>
+                    </td>
+                    <td
+                        ng-init="stats = ip.attributes.last_analysis_stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
+                    >
+                        <strong ng-class="ip.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
+                            {{ip.attributes.last_analysis_stats.malicious || "0"}}
+                        </strong> / {{total}}
+                    </td>
+                    <td>{{ip.attributes.asn || "-"}}</td>
+                    <td>{{ip.attributes.country || "-"}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.relations.last_serving_ip_address.meta.count > 0">
+        <div class="panel-heading">
+            <strong>Last Serving IP Address</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">IP</th>
+                    <th scope="col">Detections</th>
+                    <th scope="col">Autonomous System</th>
+                    <th scope="col">Country</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-init="ip = content.relations.last_serving_ip_address.data">
+                    <td>
+                        <strong>{{ip.id}}</strong>
+                    </td>
+                    <td
+                        ng-init="stats = ip.attributes.last_analysis_stats; total = stats.harmless + stats.type-unsupported + stats.suspicious + stats.confirmed-timeout + stats.timeout + stats.failure + stats.malicious + stats.undetected"
+                    >
+                        <strong ng-class="ip.attributes.last_analysis_stats.malicious > 0 ? 'text-danger': 'text-success'">
+                            {{ip.attributes.last_analysis_stats.malicious || "0"}}
+                        </strong> / {{total}}
+                    </td>
+                    <td>{{ip.attributes.asn || "-"}}</td>
+                    <td>{{ip.attributes.country || "-"}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info" ng-if="content.attributes.results">
+        <div class="panel-heading">
+            <strong>Scans</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Scanner</th>
+                        <th scope="col">Detected</th>
+                        <th scope="col" ng-if="content.id[0] == 'u'">Result</th>
+                        <th scope="col">Method</th>
+                        <th scope="col" ng-if="content.id[0] != 'u'">Update</th>
+                        <th scope="col" ng-if="content.id[0] != 'u'">Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="scanner in content.attributes.results">
+                        <td>
+                            <strong>{{scanner.engine_name}}</strong>
+                        </td>
+                        <td>
+                            <i
+                                ng-class="scanner.category == 'malicious' ? 'text-danger fa fa-bug' : (scanner.category == 'suspicious' ? 'text-warning fa fa-bug' : (scanner.category == 'harmless' ? 'text-success fa fa-check-circle' : 'text-info fa fa-question-circle' ))"
+                            >
+                            </i>
+                        </td>
+                        <td
+                            ng-if="content.id[0] == 'u'"
+                            ng-class="{'text-danger': scanner.category == 'malicious', 'text-warning': scanner.category == 'suspicious', 'text-success': scanner.category == 'harmless', 'text-info': scanner.category == 'failure' && scanner.category == 'undetected' && scanner.category == 'type-unsupported' }"
+                            class="wrap"
+                        >
+                            {{scanner.result || "null"}}
+                        </td>
+                        <td>{{scanner.method || "null"}}</td>
+                        <td ng-if="content.id[0] != 'u'">
+                            {{scanner.engine_update.slice(0,4)+"/"+scanner.engine_update.slice(4,6)+"/"+scanner.engine_update.slice(6,8)}}
+                        </td>
+                        <td ng-if="content.id[0] != 'u'">{{scanner.engine_version || ""}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

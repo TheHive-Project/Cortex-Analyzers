@@ -1,0 +1,67 @@
+<!-- Success with results -->
+<div class="panel panel-info" ng-if="success && !content.message">
+    <div class="panel-heading">
+      CIRCL Hashlookup for: <strong>{{ artifact.data }}</strong>
+    </div>
+    <div class="panel-body">
+      <dl class="dl-horizontal" ng-repeat="(key, value) in content">
+  
+        <!-- General key/value pairs -->
+        <div ng-if="['parents', 'OpSystemCode', 'ProductCode', 'children'].indexOf(key) === -1">
+          <dt>{{ key }}:</dt>
+          <dd>{{ value }}</dd>
+        </div>
+  
+        <!-- OpSystemCode and ProductCode -->
+        <div ng-if="key === 'OpSystemCode' || key === 'ProductCode'">
+          <dt>{{ key }}:</dt>
+          <dd>
+            <ul class="list-unstyled">
+              <li ng-repeat="(subKey, subValue) in value">
+                <strong>{{ subKey }}:</strong> {{ subValue }}
+              </li>
+            </ul>
+          </dd>
+        </div>
+  
+        <!-- Parents and children  -->
+        <div ng-if="key === 'parents' || key === 'children'">
+          <dt>{{ key }}:</dt>
+          <dd>
+            <ul class="list-unstyled">
+              <li ng-repeat="item in value">
+                <ul class="list-unstyled">
+                  <li ng-repeat="(itemKey, itemValue) in item">
+                    <strong>{{ itemKey }}:</strong> {{ itemValue }}
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </dd>
+        </div>
+  
+      </dl>
+    </div>
+  </div>
+  
+  <!-- Success with no hits -->
+  <div class="panel panel-danger" ng-if="success && content.message">
+    <div class="panel-heading">CIRCL Hashlookup: No hits</div>
+    <div class="panel-body">
+      <p>Hash: {{ artifact.data }}</p>
+    </div>
+  </div>
+  
+  <!-- General error -->
+  <div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+      <strong>General Error: Please try again</strong>
+    </div>
+    <div class="panel-body">
+      <dl class="dl-horizontal" ng-if="content.errorMessage">
+        <dt><i class="fa fa-warning"></i> CIRCL Hashlookup:</dt>
+        <dd class="wrap">{{ content.errorMessage }}</dd>
+      </dl>
+    </div>
+  </div>
+  

@@ -1,0 +1,69 @@
+<div class="report-PT" ng-if="success">
+    <style>
+        .report-PT dl {
+            margin-bottom: 2px;
+        }
+        .fieldlabel {
+            font-size: 10pt;
+            color: #777;
+        }
+        .fieldvalue {
+            font-weight: 600;
+            margin-bottom: 5px;
+            margin
+        }
+    </style>
+
+
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>RiskIQ Subdomains</strong>
+                </div>
+                <div class="panel-body">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <div class="fieldlabel">Primary Domain</div>
+                                    <div class="fieldvalue">{{content.primary_domain}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-info">
+                        <div class="panel-heading"><b>Observed Subdomains</b></div>
+                        <div class="panel-body">
+                            <table class="table table-hover table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Subdomain</th>
+                                        <th>Primary Domain</th>
+                                        <th>FQDN</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="p in content.records">
+                                        <td class="text-nowrap">{{p.subdomain}}</td>
+                                        <td>{{p.primary_domain}}</td>
+                                        <td class="text-nowrap">{{p.hostname}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

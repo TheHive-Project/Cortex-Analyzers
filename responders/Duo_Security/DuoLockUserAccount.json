@@ -1,0 +1,34 @@
+{
+  "name": "DuoLockUserAccount",
+  "version": "1.0",
+  "author": "Sven Kutzer / Gyorgy Acs, @oscd_initiative",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Lock User Account in Duo Security via AdminAPI (The user will not be able to log in)",
+  "dataTypeList": ["thehive:case_artifact"],
+  "command": "Duo_Security/duoLockUserAccount.py",
+  "baseConfig": "Duo_Security_main",
+  "configurationItems": [
+    {
+      "name": "API_hostname",
+      "description": "Duo Admin API hostname, api-XXXXXXXX.duosecurity.com",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+   {
+      "name": "Integration_Key",
+      "description": "Integration Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "Secret_Key",
+      "description": "Secret Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}

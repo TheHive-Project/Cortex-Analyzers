@@ -1,0 +1,88 @@
+<div ng-if="success">
+    <div ng-if="content.results">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <strong>Summary</strong>
+            </div>
+            <div class="panel-body">
+                <dl class="dl-horizontal" ng-if="content.status_message">
+                    <dt>Status</dt>
+                    <dd>{{content.status_message}}</dd>
+                </dl>
+            </div>
+        </div>
+
+
+        <div class="panel panel-info" ng-if="artifact.dataType === 'domain'">
+            <div class="panel-heading">
+                <strong>WhoIS about domain.</strong>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover" ng-repeat="r in content.results">
+                    <tr>
+                        <th>Updated date</th>
+                        <td>{{r.whois.updated_date}}</td>
+                    </tr>
+                    <tr>
+                        <th>WhoIS MD5</th>
+                        <td>{{r.whois.whois_md5}}</td>
+                    </tr>
+                    <tr>
+                        <th>Creation date</th>
+                        <td>{{r.whois.creation_date}}</td>
+                    </tr>
+                    <tr>
+                        <th>Expiration date</th>
+                        <td>{{r.whois.expiration_date}}</td>
+                    </tr>
+                    <tr>
+                        <th>Registrar</th>
+                        <td>{{r.whois.registrar}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="panel panel-info" ng-if="artifact.dataType === 'ip'">
+            <div class="panel-heading">
+                <strong>WhoIS about domain.</strong>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover" ng-repeat="r in content.results">
+                    <tr>
+                        <th>Reverse name</th>
+                        <td>{{r.reverse_name}}</td>
+                    </tr>
+                    <tr>
+                        <th>Prefix</th>
+                        <td>{{r.bgp_prefix}}</td>
+                    </tr>
+                    <tr>
+                        <th>Organization name</th>
+                        <td>{{r.org_name}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div ng-switch-default>
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+                </div>
+                <div class="panel-body">
+                    {{content.verbose_msg}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="panel panel-danger" ng-if="!success">
+        <div class="panel-heading">
+            <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+        </div>
+        <div class="panel-body">
+            {{content.errorMessage}}
+        </div>
+    </div>

@@ -1,0 +1,23 @@
+{
+  "name": "IP-API",
+  "version": "1.1",
+  "author": "Peter Juhas; Fabien Bloume, StrangeBee",
+  "url": "https://github.com/pjuhas/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Check IP address or domain using ip-api.com",
+  "dataTypeList": ["ip", "domain"],
+  "baseConfig": "IP-API",
+  "command": "IP-API/IP-API.py",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for IP-API pro - Unlimited queries, SSL and commercial use",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ],
+  "registration_required": false,
+  "subscription_required": false,
+  "service_homepage": "https://ip-api.com"
+}

@@ -1,2 +1,4 @@
 cortexutils
--e git+https://github.com/CheckPointSW/cp_mgmt_api_python_sdk#egg=cpapi cpapi
+cp-mgmt-api-sdk
+# -e git+https://github.com/CheckPointSW/cp_mgmt_api_python_sdk#egg=cpapi cpapi
+#git+https://github.com/CheckPointSW/cp_mgmt_api_python_sdk

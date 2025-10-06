@@ -1,0 +1,84 @@
+{
+    "name": "PaloAltoCortexXDR_isolate",
+    "version": "1.0",
+    "author": "Joe Lazaro",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Isolate endpoints identified by hostname or IP list",
+    "dataTypeList": [
+        "thehive:case_artifact"
+    ],
+    "command": "PaloAltoCortexXDR/cortex_xdr.py",
+    "baseConfig": "PaloAltoCortexXDR",
+    "config": {
+        "service": "isolate"
+    },
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://www.paloaltonetworks.com/cortex/cortex-xdr",
+    "service_logo": {
+        "path": "assets/cortex_logo.png",
+        "caption": "logo"
+    },
+    "screenshots": [
+        {
+            "path": "assets/PaloAltoCortexXDR_isolate.png",
+            "caption": "Example responder action result"
+        }
+    ],
+    "configurationItems": [
+        {
+            "name": "api_key",
+            "description": "API key",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "api_key_id",
+            "description": "API key ID",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "advanced_security",
+            "description": "Set True if the API key was generated with Advanced security level. False for a Standard security key.",
+            "type": "boolean",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "api_host",
+            "description": "Fully qualified domain name for the API host. Example: api-example.xdr.us.paloaltonetworks.com",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "isolate_polling_interval",
+            "description": "Interval, in seconds between requests for isolate or unisolate actions.",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 30
+        },
+        {
+            "name": "isolate_max_polling_retries",
+            "description": "Maximum number of time to retry action status when the isolate or unisolate action is still in progress.",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 120
+        },
+        {
+            "name": "allow_multiple_isolation_targets",
+            "description": "Allow the responder to send multiple targets for isolation/unisolation in one multi-line observable. Set to false as a safety mechanism to allow only a single endpoint to be affected while refusing requests to operate on multiple endpoints.",
+            "type": "boolean",
+            "multi": false,
+            "required": true,
+            "defaultValue": false
+        }
+    ]
+}

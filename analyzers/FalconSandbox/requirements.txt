@@ -1,0 +1,5 @@
+requests
+cortexutils
+urllib3
+oauthlib
+requests-oauthlib

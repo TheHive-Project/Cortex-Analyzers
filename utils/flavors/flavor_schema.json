@@ -2,7 +2,8 @@
     "type": "object",
     "properties": {
         "name": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^[^\\s]*$"
         },
         "version": {
             "type": "string"
@@ -33,7 +34,10 @@
             "type": "object",
             "properties": {
                 "service": {
-                    "type": "string"
+                    "type": [
+                        "number",
+                        "string"
+                    ]
                 }
             }
         },
@@ -83,10 +87,7 @@
         "description",
         "dataTypeList",
         "command",
-        "baseConfig",
-        "registration_required",
-        "subscription_required",
-        "free_subscription"
+        "baseConfig"
     ],
     "definition": {
         "configurationItem": {
@@ -95,6 +96,9 @@
                     "type": "string"
                 },
                 "description": {
+                    "type": "string"
+                },
+                "type": {
                     "type": "string"
                 },
                 "multi": {
@@ -111,6 +115,7 @@
                 "name",
                 "description",
                 "multi",
+                "type",
                 "required" 
             ]
         },
@@ -125,8 +130,7 @@
                 }
             },
             "required": [
-                "path",
-                "caption"
+                "path"
             ]
         }
     }

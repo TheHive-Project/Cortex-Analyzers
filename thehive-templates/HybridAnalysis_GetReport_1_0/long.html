@@ -1,4 +1,4 @@
-  <!-- General error  -->
+<!-- General error -->
 <div class="panel panel-danger" ng-if="!success">
   <div class="panel-heading">
     <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
@@ -10,107 +10,304 @@
 
 <div class="panel panel-info" ng-if="success">
   <div class="panel-heading">
-    <!-- HybridAnalysis Sandbox Hash Report Public API: Related Reports -->
     Related Reports
   </div>
-  <!-- Hash and File (also hash) -->
-  <div class="panel-body">
-    <div ng-if="!content.results.response.result" ng-repeat="r in ::content.results.response">
-      <dl class="dl-horizontal" ng-if="r.verdict">
-        <strong>Verdict: </strong>
-        <span class="label" ng-class="{'no specific threat': 'label-info', 'whitelisted': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[r.verdict]">
-            {{r.verdict}}
-        </span><br/>
-      </dl>
-      <dl class="dl-horizontal" ng-if="r.threatscore">
-          <strong>Threat Score: </strong> {{r.threatscore}}<br/>
-      </dl>
-      <dl class="dl-horizontal" ng-if="r.classification_tags.length > 0">
-          <strong>Tagged as:</strong>
-          <span class="tags-list flexwrap" ng-repeat="tag in ::r.classification_tags ">
-            {{tag}}
-          </span>
-      </dl>
-      <dl class="dl-horizontal" ng-if="r.submitname">
-        <strong>Submitted filename: </strong> {{r.submitname}}<br/>
-      </dl>
-      <dl class="dl-horizontal" ng-if="r.analysis_start_time">
-        <strong>Analysis Start Time: </strong> {{r.analysis_start_time}}<br/>
-      </dl>
-      <dl class="dl-horizontal" ng-if="r.md5">
-        <strong>MD5: </strong> {{r.md5}}<br/>
-      </dl>
-      <dl class="dl-horizontal" ng-if="r.sha1">
-        <strong>SHA1: </strong> {{r.sha1}}<br/>
-      </dl>
-      <dl class="dl-horizontal" ng-if="r.sha256">
-        <strong>SHA256: </strong> {{r.sha256}}<br/>
-      </dl>
-      <dl class="dl-horizontal" ng-if="r.type">
-        <strong>File Description: </strong> {{r.type}}<br/>
-      </dl>
-      <dl class="dl-horizontal" ng-if="r.avdetect">
-        <strong>AVdetect Score: </strong> {{r.avdetect}}<br/>
-      </dl>
-      <dl class="dl-horizontal" ng-if="r.vxfamily">
-        <strong>VxFamily: </strong> {{r.vxfamily}}<br/>
-      </dl>
-      <dl class="dl-horizontal" ng-if="r.total_signatures">
-        <strong>Total Signatures: </strong> {{r.total_signatures}}<br/>
-      </dl>
-      <dl class="dl-horizontal" ng-if="r.environmentDescription">
-        <strong>Environment Description: </strong> {{r.environmentDescription}}<br/>
-      </dl>
-      <dl class="dl-horizontal" ng-if="r.domains.length > 0">
-        <strong>DNS requests:</strong><ul><li ng-repeat="domain in ::r.domains">{{domain}}</li></ul>
-      </dl>
-      <dl class="dl-horizontal" ng-if="r.hosts.length > 0">
-        <strong>Contacted Hosts:</strong><ul><li ng-repeat="host in ::r.hosts">{{host}}</li></ul>
-      </dl>
-      <dl class="dl-horizontal" ng-if="r.sha256">
-          <strong>Online report:</strong>
-          <a href="https://www.hybrid-analysis.com/sample/{{r.sha256}}">https://www.hybrid-analysis.com/sample/{{r.sha256}}</a>
-        </dl>
-      <hr>
+
+  <!-- Check if results array is empty -->
+  <div class="panel-body" ng-if="content.results && content.results.length === 0">
+    <div class="alert alert-info">
+      No results were returned.
     </div>
   </div>
-  <!-- Filename -->
+  
+  <!-- Iterate over each result in results array -->
   <div class="panel-body">
-    <div ng-if="content.results.response.result" ng-repeat="r in ::content.results.response.result">
-    <dl class="dl-horizontal" ng-if="r.verdict">
-        <strong>Verdict: </strong>
-        <span class="label" ng-class="{'no specific threat': 'label-info', 'whitelisted': 'label-success', 'suspicious': 'label-warning', 'malicious':'label-danger'}[r.verdict]">
-            {{r.verdict}}
-        </span><br/>
+    <div ng-repeat="report in content.results" ng-if="report">
+
+      <!-- Submissions Section -->
+      <div ng-if="report.submissions.length > 0">
+        <h4>Submissions</h4>
+        <dl class="dl-horizontal" ng-repeat="submission in report.submissions">
+          <dt>Filename:</dt>
+          <dd>{{submission.filename}}</dd>
+          <dt>Submission ID:</dt>
+          <dd>{{submission.submission_id}}</dd>
+          <dt>Created At:</dt>
+          <dd>{{submission.created_at | date:'medium'}}</dd>
+        </dl>
+
+        <!-- Verdict Section -->
+        <dl class="dl-horizontal" ng-if="report.verdict">
+          <dt><strong>Verdict:</strong></dt>
+          <dd>
+            <span class="label" ng-class="{
+            'label-info': report.verdict === 'no specific threat',
+            'label-success': report.verdict === 'whitelisted',
+            'label-warning': report.verdict === 'suspicious',
+            'label-danger': report.verdict === 'malicious'
+          }">
+              {{report.verdict}}
+            </span>
+          </dd>
+        </dl>
+
+        <!-- Threat Score Section -->
+        <dl class="dl-horizontal" ng-if="report.threat_score">
+          <dt><strong>Threat Score:</strong></dt>
+          <dd>{{report.threat_score}}</dd>
+        </dl>
+
+        <!-- Online Report Link (moved to Submissions Section) -->
+        <dl class="dl-horizontal" ng-if="report.sha256">
+          <dt><strong>Online Report:</strong></dt>
+          <dd>
+            <a href="https://www.hybrid-analysis.com/sample/{{report.sha256}}" target="_blank">
+              https://www.hybrid-analysis.com/sample/{{report.sha256}}
+            </a>
+          </dd>
+        </dl>
+      </div>
+
+      <!-- Report Details -->
+      <dl class="dl-horizontal" ng-if="report.md5">
+        <dt><strong>MD5:</strong></dt>
+        <dd>{{report.md5}}</dd>
       </dl>
-      <dl class="dl-horizontal" ng-if="r.submitname">
-        <strong>Submitted filename: </strong> {{r.submitname}}<br/>
+      <dl class="dl-horizontal" ng-if="report.sha1">
+        <dt><strong>SHA1:</strong></dt>
+        <dd>{{report.sha1}}</dd>
       </dl>
-      <dl class="dl-horizontal" ng-if="r.threatscore">
-          <strong>Threat Score: </strong> {{r.threatscore}}<br/>
+      <dl class="dl-horizontal" ng-if="report.sha256">
+        <dt><strong>SHA256:</strong></dt>
+        <dd>{{report.sha256}}</dd>
       </dl>
-      <dl class="dl-horizontal" ng-if="r.sha256">
-        <strong>SHA256: </strong> {{r.sha256}}<br/>
+      <dl class="dl-horizontal" ng-if="report.type">
+        <dt><strong>File Description:</strong></dt>
+        <dd>{{report.type}}</dd>
       </dl>
-      <dl class="dl-horizontal" ng-if="r.type_short">
-        <strong>File type: </strong>{{r.type_short}} <br/>
+      <dl class="dl-horizontal" ng-if="report.av_detect">
+        <dt><strong>AVdetect Score:</strong></dt>
+        <dd>{{report.av_detect}}</dd>
       </dl>
-      <dl class="dl-horizontal" ng-if="r.type">
-        <strong>File Description: </strong> {{r.type}}<br/>
+      <dl class="dl-horizontal" ng-if="report.vx_family">
+        <dt><strong>VxFamily:</strong></dt>
+        <dd>{{report.vx_family}}</dd>
       </dl>
-      <dl class="dl-horizontal" ng-if="r.avdetect">
-        <strong>AVdetect Score: </strong> {{r.avdetect}}<br/>
+      <dl class="dl-horizontal" ng-if="report.environment_description">
+        <dt><strong>Environment Description:</strong></dt>
+        <dd>{{report.environment_description}}</dd>
       </dl>
-      <dl class="dl-horizontal" ng-if="r.vxfamily">
-        <strong>VxFamily: </strong> {{r.vxfamily}}<br/>
-      </dl>
-      <dl class="dl-horizontal" ng-if="r.environmentDescription">
-        <strong>Environment Description: </strong> {{r.environmentDescription}}<br/>
-      </dl>
-      <dl class="dl-horizontal" ng-if="r.sha256">
-        <strong>Online report:</strong>
-        <a href="https://www.hybrid-analysis.com/sample/{{r.sha256}}">https://www.hybrid-analysis.com/sample/{{r.sha256}}</a>
-      </dl>
+
+      <!-- MITRE ATT&CK Section -->
+      <div ng-if="report.mitre_attcks && report.mitre_attcks.length > 0">
+        <h4>
+          MITRE ATT&CK Tactics and Techniques
+          <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-mitre-attck"
+            aria-expanded="false" aria-controls="collapse-mitre-attck">
+            Show/Hide
+          </button>
+        </h4>
+        <div id="collapse-mitre-attck" class="collapse">
+          <div ng-repeat="attck in report.mitre_attcks">
+            <dl class="dl-horizontal">
+              <dt ng-if="attck.tactic"><strong>Tactic:</strong></dt>
+              <dd ng-if="attck.tactic">{{attck.tactic}}</dd>
+
+              <dt ng-if="attck.technique"><strong>Technique:</strong></dt>
+              <dd ng-if="attck.technique">{{attck.technique}}</dd>
+
+              <dt ng-if="attck.attck_id"><strong>Technique ID:</strong></dt>
+              <dd ng-if="attck.attck_id">
+                <a ng-href="{{attck.attck_id_wiki}}" target="_blank">{{attck.attck_id}}</a>
+              </dd>
+
+              <dt ng-if="attck.parent.technique"><strong>Parent Technique:</strong></dt>
+              <dd ng-if="attck.parent.technique">
+                {{attck.parent.technique}} (ID:
+                <a ng-href="{{attck.parent.attck_id_wiki}}" target="_blank">{{attck.parent.attck_id}}</a>)
+              </dd>
+
+              <dt ng-if="attck.malicious_identifiers_count"><strong>Malicious Identifiers Count:</strong></dt>
+              <dd ng-if="attck.malicious_identifiers_count">{{attck.malicious_identifiers_count}}</dd>
+
+              <dt ng-if="attck.suspicious_identifiers_count"><strong>Suspicious Identifiers Count:</strong></dt>
+              <dd ng-if="attck.suspicious_identifiers_count">{{attck.suspicious_identifiers_count}}</dd>
+
+              <dt ng-if="attck.informative_identifiers_count"><strong>Informative Identifiers Count:</strong></dt>
+              <dd ng-if="attck.informative_identifiers_count">{{attck.informative_identifiers_count}}</dd>
+            </dl>
+            <hr />
+          </div>
+        </div>
+      </div>
+
+      <!-- Signatures Section -->
+      <div ng-if="report.signatures && report.signatures.length > 0">
+        <h4>
+          Signatures
+          <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-signatures"
+            aria-expanded="false" aria-controls="collapse-signatures">
+            Show/Hide
+          </button>
+        </h4>
+        <div id="collapse-signatures" class="collapse">
+          <div ng-repeat="signature in report.signatures">
+            <dl class="dl-horizontal"
+              ng-if="signature.name || signature.description || signature.threat_level_human || signature.relevance || signature.category">
+              <dt ng-if="signature.name"><strong>Signature Name:</strong></dt>
+              <dd ng-if="signature.name">{{signature.name}}</dd>
+
+              <dt ng-if="signature.description"><strong>Description:</strong></dt>
+              <dd ng-if="signature.description">{{signature.description}}</dd>
+
+              <dt ng-if="signature.threat_level_human"><strong>Threat Level:</strong></dt>
+              <dd ng-if="signature.threat_level_human">{{signature.threat_level_human}} ({{signature.threat_level}})
+              </dd>
+
+              <dt ng-if="signature.relevance"><strong>Relevance:</strong></dt>
+              <dd ng-if="signature.relevance">{{signature.relevance}}</dd>
+
+              <dt ng-if="signature.category"><strong>Category:</strong></dt>
+              <dd ng-if="signature.category">{{signature.category}}</dd>
+            </dl>
+            <hr />
+          </div>
+        </div>
+      </div>
+
+      <!-- Extracted Files Section -->
+      <div ng-if="report.extracted_files && report.extracted_files.length > 0">
+        <h4>
+          Extracted Files
+          <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-extracted-files"
+            aria-expanded="false" aria-controls="collapse-extracted-files">
+            Show/Hide
+          </button>
+        </h4>
+        <div id="collapse-extracted-files" class="collapse">
+          <div ng-repeat="file in report.extracted_files"
+            ng-if="file.filename || file.type || file.md5 || file.sha256 || file.size">
+            <dl class="dl-horizontal">
+              <dt ng-if="file.filename"><strong>File Name:</strong></dt>
+              <dd ng-if="file.filename">{{file.filename}}</dd>
+
+              <dt ng-if="file.type"><strong>Type:</strong></dt>
+              <dd ng-if="file.type">{{file.type}}</dd>
+
+              <dt ng-if="file.md5"><strong>MD5:</strong></dt>
+              <dd ng-if="file.md5">{{file.md5}}</dd>
+
+              <dt ng-if="file.sha256"><strong>SHA256:</strong></dt>
+              <dd ng-if="file.sha256">{{file.sha256}}</dd>
+
+              <dt ng-if="file.size"><strong>Size:</strong></dt>
+              <dd ng-if="file.size">{{file.size}}</dd>
+            </dl>
+            <hr />
+          </div>
+        </div>
+      </div>
+
+      <!-- AV Detection Section -->
+      <div
+        ng-if="report.av_detect && (report.vx_family || report.malicious_engine_count || (report.avtest_results && report.avtest_results.length > 0))">
+        <h4>
+          Antivirus Detection
+          <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-av-detection"
+            aria-expanded="false" aria-controls="collapse-av-detection">
+            Show/Hide
+          </button>
+        </h4>
+        <div id="collapse-av-detection" class="collapse">
+          <dl class="dl-horizontal">
+            <dt ng-if="report.av_detect"><strong>AV Detection Score:</strong></dt>
+            <dd ng-if="report.av_detect">{{report.av_detect}}</dd>
+
+            <dt ng-if="report.vx_family"><strong>VX Family:</strong></dt>
+            <dd ng-if="report.vx_family">{{report.vx_family}}</dd>
+
+            <dt ng-if="report.malicious_engine_count"><strong>Malicious Engine Count:</strong></dt>
+            <dd ng-if="report.malicious_engine_count">{{report.malicious_engine_count}}</dd>
+
+            <dt ng-if="report.avtest_results.length > 0"><strong>Malicious Engine Details:</strong></dt>
+            <dd ng-if="report.avtest_results.length > 0">
+              <ul>
+                <li ng-repeat="engine in report.avtest_results">{{engine.name}} - {{engine.result}}</li>
+              </ul>
+            </dd>
+          </dl>
+        </div>
+      </div>
+
+      <!-- Hosts Section -->
+      <div ng-if="report.hosts && report.hosts.length > 0">
+        <h4>
+          Contacted Hosts
+          <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-hosts"
+            aria-expanded="false" aria-controls="collapse-hosts">
+            Show/Hide
+          </button>
+        </h4>
+        <div id="collapse-hosts" class="collapse">
+          <ul>
+            <li ng-repeat="host in report.hosts">{{host}}</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- IoCs Section -->
+      <div ng-if="report.md5 || report.sha1 || report.sha256">
+        <h4>
+          Indicators of Compromise (IoCs)
+          <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-iocs"
+            aria-expanded="false" aria-controls="collapse-iocs">
+            Show/Hide
+          </button>
+        </h4>
+        <div id="collapse-iocs" class="collapse">
+          <dl class="dl-horizontal">
+            <dt ng-if="report.md5"><strong>MD5:</strong></dt>
+            <dd ng-if="report.md5">{{report.md5}}</dd>
+
+            <dt ng-if="report.sha1"><strong>SHA1:</strong></dt>
+            <dd ng-if="report.sha1">{{report.sha1}}</dd>
+
+            <dt ng-if="report.sha256"><strong>SHA256:</strong></dt>
+            <dd ng-if="report.sha256">{{report.sha256}}</dd>
+          </dl>
+        </div>
+      </div>
+
+      <!-- Processes Section -->
+      <div ng-if="report.processes && report.processes.length > 0">
+        <h4>
+          Processes
+          <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-processes"
+            aria-expanded="false" aria-controls="collapse-processes">
+            Show/Hide
+          </button>
+        </h4>
+        <div id="collapse-processes" class="collapse">
+          <div ng-repeat="process in report.processes"
+            ng-if="process.name || process.pid || process.ppid || process.command_line">
+            <dl class="dl-horizontal">
+              <dt ng-if="process.name"><strong>Process Name:</strong></dt>
+              <dd ng-if="process.name">{{process.name}}</dd>
+
+              <dt ng-if="process.pid"><strong>PID:</strong></dt>
+              <dd ng-if="process.pid">{{process.pid}}</dd>
+
+              <dt ng-if="process.ppid"><strong>Parent PID:</strong></dt>
+              <dd ng-if="process.ppid">{{process.ppid}}</dd>
+
+              <dt ng-if="process.command_line"><strong>Command Line:</strong></dt>
+              <dd ng-if="process.command_line">{{process.command_line}}</dd>
+            </dl>
+            <hr />
+          </div>
+        </div>
+      </div>
+
       <hr>
     </div>
   </div>

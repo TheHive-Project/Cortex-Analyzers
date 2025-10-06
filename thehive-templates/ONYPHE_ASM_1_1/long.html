@@ -1,0 +1,88 @@
+<div class="panel panel-info" ng-if="success && content.total_category < 100 ">
+	<div class="panel-heading">
+		ONYPHE ASM search - <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong> - {{content.total_category}} results
+	</div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.total_category >= 100 ">
+	<div class="panel-heading">
+		ONYPHE ASM search - <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong> - Displaying first 100 results (search returned {{content.total}})
+	</div>
+</div>
+
+<div ng-repeat="r in content.results | orderBy:'-seen_date'">
+    <uib-accordion ng-repeat="ta in r.tag">
+        <div uib-accordion-group ng-if="ta.indexOf('risk') !== -1" style="font-style: bold" heading="{{ ta }} seen {{ r['@timestamp'] | date:'medium' }} - {{r.ip}}:{{r.port}} | {{r.device.class}}" is-open="false" is-disabled="status.isFirstDisabled"
+            ng-class="{
+                'panel-danger': ta.indexOf('criticalcve') !== -1 || ta.indexOf('compromised') !== -1,
+                'panel-info': ta.indexOf('certexpired') !== -1,
+                'panel-warning': ['risk::criticalcve', 'risk::compromised', 'risk::certexpired'].indexOf(ta) == -1
+            }">
+            <span style="font-style: bold;background-color: #3460fc" class="badge text-bg-primary">&nbsp;<a style="color: white" target="_blank" href="https://onyphe.io/search?q=category%3Ariskscan+ip%3A{{r.ip}}+tag%3A{{ta}}">Open in ONYPHE</a>&nbsp;</span>
+            <span ng-repeat="bista in r.tag">
+                <span style="font-style: bold;background-color: orange;color:#111;" class="badge text-bg-danger" ng-if="bista.indexOf('risk') !== -1 && bista.indexOf('criticalcve') == -1">&nbsp;{{ bista }}&nbsp;</span>
+                <span style="font-style: bold;background-color: red;color:#fff;" class="badge text-bg-danger" ng-if="bista.indexOf('criticalcve') !== -1">&nbsp;{{ bista }}&nbsp;</span>
+                <span style="font-style: bold;background-color: red;color:#fff;" class="badge text-bg-danger" ng-if="bista.indexOf('compromised') !== -1">&nbsp;{{ bista }}&nbsp;</span>
+                <span style="font-style: bold" class="badge text-bg-secondary" ng-if="bista.indexOf('risk') == -1 && bista.indexOf('CVE') == -1 && bista.indexOf('compromised') == -1">&nbsp;{{ bista }}&nbsp;</span>
+            </span><br>
+            <dl class="dl-horizontal">
+                <dt>Timestamp:</dt>
+                <dd>{{ r['@timestamp'] | date:'medium' }}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Asset:</dt>
+                <dd>{{r.ip}}:{{r.port}} | ({{r.transport}}/{{r.protocol}}<span ng-if="r.tls == 'true'">/tls</span>)</dd>
+            </dl>
+            <dl ng-if="r.cve" class="dl-horizontal">
+                <dt>CVE(s):</dt>
+                <dd><span ng-repeat="cv in r.cve">{{ cv }}<br></span></dd> 
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Hostname(s):</dt>
+                <dd><span ng-repeat="h in r.hostname">{{ h }}<br></span></dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Domain:</dt>
+                <dd><span ng-repeat="d in r.domain">{{ d }}<br></span></dd>
+            </dl>
+            <dl ng-if="r.alternativeip" class="dl-horizontal">
+                <dt>Alternative IP(s):</dt>
+                <dd><span ng-repeat="ip in r.alternativeip">{{ ip }}<br></span></dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Device:</dt>
+                <dd ng-if="r.device.product">{{r.device.productvendor}} {{r.device.product}}</dd> 
+                <dd ng-if="!r.device.product">{{r.device.class}}</dd> 
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>URL:</dt>
+                <dd ng-if="r.forward && r.tls == 'true' && r.port == '443'">https://{{r.forward}}{{r.url}}</dd> 
+                <dd ng-if="r.forward && r.tls == 'true' && r.port != '443'">https://{{r.forward}}:{{r.port}}{{r.url}}</dd> 
+                <dd ng-if="r.forward && r.tls == 'false' && r.port == '80'">http://{{r.forward}}{{r.url}}</dd> 
+                <dd ng-if="r.forward && r.tls == 'false' && r.port != '80'">http://{{r.forward}}:{{r.port}}{{r.url}}</dd> 
+                <dd ng-if="!r.forward && r.tls == 'true' && r.port == '443'">https://{{r.ip}}{{r.url}}</dd> 
+                <dd ng-if="!r.forward && r.tls == 'true' && r.port != '443'">https://{{r.ip}}:{{r.port}}{{r.url}}</dd> 
+                <dd ng-if="!r.forward && r.tls == 'false' && r.port == '80'">http://{{r.ip}}{{r.url}}</dd> 
+                <dd ng-if="!r.forward && r.tls == 'false' && r.port != '80'">http://{{r.ip}}:{{r.port}}{{r.url}}</dd> 
+            </dl>
+            <dl ng-if="r.organization" class="dl-horizontal">
+                <dt>Organization:</dt>
+                <dd>{{r.organization}}</dd> 
+            </dl>
+            <dl ng-if="r.cpe" class="dl-horizontal">
+                <dt>CPE(s):</dt>
+                <dd><span ng-repeat="cp in r.cpe">{{ cp }}<br></span></dd> 
+            </dl>
+        </uib-accordion-group>
+    </uib-accordion>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

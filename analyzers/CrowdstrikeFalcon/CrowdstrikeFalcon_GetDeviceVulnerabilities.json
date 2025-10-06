@@ -1,0 +1,81 @@
+{
+    "name": "CrowdstrikeFalcon_GetDeviceVulnerabilities",
+    "version": "1.0",
+    "author": "Fabien Bloume, StrangeBee",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseConfig": "CrowdstrikeFalcon",
+    "config": {
+        "check_tlp": false,
+        "max_tlp": 3,
+        "service": ""
+    },
+    "description": "Get device vulnerabilities from hostname",
+    "dataTypeList": [
+        "hostname"
+    ],
+    "command": "CrowdstrikeFalcon/CrowdstrikeFalcon_getDeviceVulnerabilities.py",
+    "configurationItems": [
+        {
+            "name": "client_id",
+            "description": "Crowdstrike client ID key",
+            "type": "string",
+            "multi": false,
+            "required": true,
+            "defaultValue": ""
+        },
+        {
+            "name": "client_secret",
+            "description": "Crowdstrike client secret key",
+            "type": "string",
+            "multi": false,
+            "required": true,
+            "defaultValue": ""
+        },
+        {
+            "name": "base_url",
+            "description": "Crowdstrike base URL. Also supports US-1, US-2, EU-1, US-GOV-1 values",
+            "type": "string",
+            "multi": false,
+            "required": true,
+            "defaultValue": "https://api.crowdstrike.com"
+        },
+        {
+            "name": "vuln_fields",
+            "description": "Specific field values to keep in resulting payload for vulnerabilities",
+            "type": "string",
+            "multi": true,
+            "required": true,
+            "defaultValue": [
+                "vulnerability_id",
+                "status",
+                "created_timestamp",
+                "updated_timestamp",
+                "apps.product_name_version",
+                "confidence",
+                "cve",
+                "host_info.asset_criticality",
+                "host_info.internet_exposure",
+                "remediation.entities.action"
+            ]
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://www.crowdstrike.com",
+    "service_logo": {
+        "path": "assets/crowdstrike.png",
+        "caption": "Crowdstrike logo"
+    },
+    "screenshots": [
+        {
+            "path": "assets/short-report-vulns.png",
+            "caption": "Crowdstrike: Short report template"
+        },
+        {
+            "path": "assets/long-report-vulns.png",
+            "caption": "Crowdstrike: Long report template"
+        }
+    ]
+}

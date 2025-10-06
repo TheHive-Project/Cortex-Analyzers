@@ -192,7 +192,7 @@ accepts the following datatypes:
 - hash
 - ip
 - mail
-- mail_subject
+- mail-subject
 - other
 - regexp
 - registry

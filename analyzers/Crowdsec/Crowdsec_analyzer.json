@@ -1,0 +1,112 @@
+{
+    "name": "Crowdsec_Analyzer",
+    "version": "1.1",
+    "author": "CERT-ARKEA",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Query Crowdsec API",
+    "dataTypeList": [
+        "ip"
+    ],
+    "command": "Crowdsec/crowdsec_analyzer.py",
+    "baseConfig": "Crowdsec",
+    "configurationItems": [
+        {
+            "name": "api_key",
+            "description": "Crowdsec API key",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "taxonomy_reputation",
+            "description": "Create taxonomy for reputation",
+            "type": "boolean",
+            "multi": false,
+            "required": true,
+            "defaultValue": true
+        },
+        {
+            "name": "taxonomy_as_name",
+            "description": "Create taxonomy for AS name",
+            "type": "boolean",
+            "multi": false,
+            "required": true,
+            "defaultValue": false
+        },
+        {
+            "name": "taxonomy_ip_range_score",
+            "description": "Create taxonomy for IP range score",
+            "type": "boolean",
+            "multi": false,
+            "required": true,
+            "defaultValue": false
+        },
+        {
+            "name": "taxonomy_last_seen",
+            "description": "Create taxonomy for last seen date",
+            "type": "boolean",
+            "multi": false,
+            "required": true,
+            "defaultValue": false
+        },
+        {
+            "name": "taxonomy_attack_details",
+            "description": "Create taxonomy for attack details",
+            "type": "boolean",
+            "multi": false,
+            "required": true,
+            "defaultValue": false
+        },
+        {
+            "name": "taxonomy_behaviors",
+            "description": "Create taxonomy for behaviors",
+            "type": "boolean",
+            "multi": false,
+            "required": true,
+            "defaultValue": true
+        },
+        {
+            "name": "taxonomy_mitre_techniques",
+            "description": "Create taxonomy for mitre techniques",
+            "type": "boolean",
+            "multi": false,
+            "required": true,
+            "defaultValue": false
+        },
+        {
+            "name": "taxonomy_cves",
+            "description": "Create taxonomy for cves",
+            "type": "boolean",
+            "multi": false,
+            "required": true,
+            "defaultValue": true
+        },
+        {
+            "name": "taxonomy_not_found",
+            "description": "Create taxonomy for not found IP",
+            "type": "boolean",
+            "multi": false,
+            "required": true,
+            "defaultValue": true
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": true,
+    "service_homepage": "https://www.crowdsec.net/product/threat-intelligence",
+    "service_logo": {
+        "path": "assets/crowdsec-logo.png",
+        "caption": "logo"
+    },
+    "screenshots": [
+        {
+            "path": "assets/crowdsec-report-long.png",
+            "caption": "CrowdSec analyzer: long report"
+        },
+        {
+            "path": "assets/crowdsec-analyzer-result-example.png",
+            "caption": "CrowdSec analyzer: short report"
+        }
+    ]
+}

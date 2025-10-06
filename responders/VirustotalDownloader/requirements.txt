@@ -1,6 +1,6 @@
 cortexutils
 datetime
 requests
-thehive4py
+thehive4py~=1.8.1
 python-magic
 filetype

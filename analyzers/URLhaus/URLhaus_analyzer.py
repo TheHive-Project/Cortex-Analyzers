@@ -6,6 +6,7 @@ from URLhaus_client import URLhausClient
 class URLhausAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
+        self.api_key = self.get_param("config.API_Key")
 
     def run(self):
         data = self.get_data()
@@ -14,12 +15,12 @@ class URLhausAnalyzer(Analyzer):
 
         results = {}
         if self.data_type == 'url':
-            results = URLhausClient.search_url(data)
+            results = URLhausClient.search_url(data, self.api_key)
         elif self.data_type in ['domain', 'fqdn', 'ip']:
-            results = URLhausClient.search_host(data)
+            results = URLhausClient.search_host(data, self.api_key)
         elif self.data_type == 'hash':
             if len(data) in [32, 64]:
-                results = URLhausClient.search_payload(data)
+                results = URLhausClient.search_payload(data, self.api_key)
             else:
                 self.error('Only sha256 and md5 supported by URLhaus.')
         else:
@@ -35,8 +36,7 @@ class URLhausAnalyzer(Analyzer):
         namespace = "URLhaus"
 
         if raw['query_status'] == 'no_results' \
-        or (raw['query_status'] == 'ok' and not raw.get('md5_hash', None) \
-        and not raw.get('sha256_hash', None)):
+        or raw['query_status'] == 'ok' and raw['md5_hash'] == None and raw['sha256_hash'] == None:
             taxonomies.append(self.build_taxonomy(
                 'info',
                 namespace,

@@ -1,105 +1,231 @@
 <div class="panel panel-info" ng-if="success">
-    <div class="panel-heading">
-        DomainMailSPF_DMARC information for <strong>{{artifact.data}}</strong>
+    <div class="panel-heading bg-primary text-white">
+        <h4 class="panel-title">Domain SPF & DMARC Information: <strong>{{artifact.data}}</strong></h4>
     </div>
     <div class="panel-body">
-        <div>
-            <dl class="dl-horizontal">
-                <dt class="text-bold">Domain</dt>
-                <dd>{{content.DomainMailSPFDMARC.domain}}</dd>
-            </dl>
-            <dl class="dl-horizontal">
-                <dt class="text-bold">Base domain</dt>
-                <dd>{{content.DomainMailSPFDMARC.base_domain}}</dd>
-            </dl>
-            <dl class="dl-horizontal">
-                <dt class="text-bold">dnssec</dt>
-                <dd>{{content.DomainMailSPFDMARC.dnssec}}</dd>
-            </dl>
-            <dl class="dl-horizontal" ng-if="content.DomainMailSPFDMARC.ns.hostnames.length > 0">
-                <dt class="text-bold">[NS] Hostnames</dt>
-                <dd>{{content.DomainMailSPFDMARC.ns.hostnames.join(', ') }}</dd>
-            </dl>
-            <dl class="dl-horizontal" ng-if="content.DomainMailSPFDMARC.ns.warnings.length > 0">
-                <dt class="text-bold">[NS] Warnings</dt>
-                <dd>{{content.DomainMailSPFDMARC.ns.warnings.join('\n') }}</dd>
-            </dl>
+        <div class="row">
+            <div class="col-md-6">
+                <dl class="dl-horizontal">
+                    <dt>Domain:</dt>
+                    <dd>{{content.DomainMailSPFDMARC.domain}}</dd>
+                    <dt>Base Domain:</dt>
+                    <dd>{{content.DomainMailSPFDMARC.base_domain}}</dd>
+                    <dt>DNSSEC:</dt>
+                    <dd>
+                        <span ng-if="content.DomainMailSPFDMARC.dnssec">&#10003;</span>
+                        <span ng-if="!content.DomainMailSPFDMARC.dnssec">&#10007;</span>
+                    </dd>
+                </dl>
+            </div>
+            <div class="col-md-6">
+                <dl class="dl-horizontal" ng-if="content.DomainMailSPFDMARC.ns.hostnames.length">
+                    <dt>NS Hostnames:</dt>
+                    <dd>{{content.DomainMailSPFDMARC.ns.hostnames.join(', ')}}</dd>
+                </dl>
+                <dl class="dl-horizontal" ng-if="content.DomainMailSPFDMARC.ns.warnings.length">
+                    <dt>NS Warnings:</dt>
+                    <dd>
+                        <pre>{{content.DomainMailSPFDMARC.ns.warnings.join('\n')}}</pre>
+                    </dd>
+                </dl>
+            </div>
+        </div>
 
-            <dl class="dl-horizontal" ng-if="content.DomainMailSPFDMARC.mx.hosts.length > 0">
-                <dt class="text-bold">[MX] Hosts</dt>
-                <dd>{{content.DomainMailSPFDMARC.mx.hosts.join(', ') }}</dd>
-            </dl>
-            <dl class="dl-horizontal" ng-if="content.DomainMailSPFDMARC.mx.warnings.length > 0">
-                <dt class="text-bold">[MX] Warnings</dt>
-                <dd>{{content.DomainMailSPFDMARC.mx.warnings.join('\n')}}</dd>
-            </dl>
+        <dl class="dl-horizontal" ng-if="content.DomainMailSPFDMARC.mx.hosts.length">
+            <dt>MX Hosts:</dt>
+            <dd>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Preference</th>
+                            <th>Hostname</th>
+                            <th>Addresses</th>
+                            <th>DNSSEC</th>
+                            <th>TLS</th>
+                            <th>STARTTLS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="mx in content.DomainMailSPFDMARC.mx.hosts">
+                            <td>{{mx.preference}}</td>
+                            <td>{{mx.hostname}}</td>
+                            <td>{{mx.addresses.join(', ')}}</td>
+                            <td>
+                                <span ng-if="mx.dnssec">&#10003;</span>
+                                <span ng-if="!mx.dnssec">&#10007;</span>
+                            </td>
+                            <td>
+                                <span ng-if="mx.tls">&#10003;</span>
+                                <span ng-if="!mx.tls">&#10007;</span>
+                            </td>
+                            <td>
+                                <span ng-if="mx.starttls">&#10003;</span>
+                                <span ng-if="!mx.starttls">&#10007;</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.DomainMailSPFDMARC.mx.warnings.length">
+            <dt>MX Warnings:</dt>
+            <dd>
+                <pre>{{content.DomainMailSPFDMARC.mx.warnings.join('\n')}}</pre>
+            </dd>
+        </dl>
+
+        <hr>
+
+        <h4 class="text-info">SPF Record</h4>
+        <dl class="dl-horizontal">
+            <dt>Record:</dt>
+            <dd><code>{{content.DomainMailSPFDMARC.spf.record}}</code></dd>
+            <dt>Valid:</dt>
+            <dd>{{content.DomainMailSPFDMARC.spf.valid}}</dd>
+            <dt>Error:</dt>
+            <dd>{{content.DomainMailSPFDMARC.spf.error || 'None'}}</dd>
+
+            <dt>DNS Lookups:</dt>
+            <dd>
+                {{content.DomainMailSPFDMARC.spf.dns_lookups}}
+                <span ng-if="content.DomainMailSPFDMARC.spf.dns_lookups > 10" class="text-danger">⚠ Too many
+                    lookups</span>
+            </dd>
+            <dt>Void Lookups:</dt>
+            <dd>{{content.DomainMailSPFDMARC.spf.dns_void_lookups}}</dd>
+
+        </dl>
+
+        <div ng-if="content.DomainMailSPFDMARC.spf.parsed">
+            <h5 style="cursor: pointer;" ng-click="spfDetailsVisible = !spfDetailsVisible">
+                <span class="text-info">SPF Parsed Tree</span>
+                <span class="pull-right">
+                    <span ng-if="!spfDetailsVisible">[+]</span>
+                    <span ng-if="spfDetailsVisible">[−]</span>
+                </span>
+            </h5>
+            <div ng-show="spfDetailsVisible" style="margin-top:10px;">
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Mechanism</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="entry in content.DomainMailSPFDMARC.spf.parsed.pass">
+                            <td>pass ({{entry.mechanism}})</td>
+                            <td>{{entry.value}}</td>
+                        </tr>
+                        <tr ng-repeat="entry in content.DomainMailSPFDMARC.spf.parsed.include">
+                            <td>include</td>
+                            <td>{{entry.domain}}</td>
+                        </tr>
+                        <tr ng-if="content.DomainMailSPFDMARC.spf.parsed.all">
+                            <td>all</td>
+                            <td>{{content.DomainMailSPFDMARC.spf.parsed.all}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-</div>
-<div class="panel panel-info" ng-if="success">
-    <div class="panel-heading">
-        SPF
-    </div>
-    <div class="panel-body">
-        <div>
-            <dl class="dl-horizontal">
-                <dt>Record</dt>
-                <dd>{{content.DomainMailSPFDMARC.spf.record}}</dd>
-            </dl>
-            <dl class="dl-horizontal">
-                <dt>Valid</dt>
-                <dd>{{content.DomainMailSPFDMARC.spf.valid}}</dd>
-            </dl>
-            <dl class="dl-horizontal">
-                <dt>Error</dt>
-                <dd>{{content.DomainMailSPFDMARC.spf.error}}</dd>
-            </dl>                        
-        </div>
-    </div>
-</div>
-<div class="panel panel-info" ng-if="success">
-    <div class="panel-heading">
-        DMARK
-    </div>
-    <div class="panel-body">
-        <div>
-            <h4 >Info</h4>
-            <dl class="dl-horizontal">
-                <dt>Record</dt>
-                <dd>{{content.DomainMailSPFDMARC.dmarc.record}}</dd>
-            </dl>
-            <dl class="dl-horizontal">
-                <dt>Valid</dt>
-                <dd>{{content.DomainMailSPFDMARC.dmarc.valid}}</dd>
-            </dl>
-            <dl class="dl-horizontal">
-                <dt>Error</dt>
-                <dd>{{content.DomainMailSPFDMARC.dmarc.error}}</dd>
-            </dl>              
-            <dl class="dl-horizontal">
-                <dt>Location</dt>
-                <dd>{{content.DomainMailSPFDMARC.dmarc.location}}</dd>
-            </dl>                        
-            <dl class="dl-horizontal" ng-if="content.DomainMailSPFDMARC.dmarc.warnings.length > 0">
-                <dt class="text-bold">Warnings</dt>
-                <dd>{{content.DomainMailSPFDMARC.dmarc.warnings.join('\n')}}</dd>
-            </dl>      
-            <hr>
-            <h4 >Tags</h4>
-            <dl class="dl-horizontal" ng-repeat="(tag, value) in content.DomainMailSPFDMARC.dmarc.tags">
-                <dt>{{tag}}</dt>
-                <dd>{{value.value}} <span ng-if="value.explicit">[Explicit]</span></dd>
-            </dl>
-        </div>
+
+
+        <hr>
+
+        <h4 class="text-info">DMARC Record</h4>
+        <dl class="dl-horizontal">
+            <dt>Record:</dt>
+            <dd><code>{{content.DomainMailSPFDMARC.dmarc.record}}</code></dd>
+            <dt>Valid:</dt>
+            <dd>{{content.DomainMailSPFDMARC.dmarc.valid}}</dd>
+            <dt>Error:</dt>
+            <dd>{{content.DomainMailSPFDMARC.dmarc.error || 'None'}}</dd>
+            <dt>Location:</dt>
+            <dd>{{content.DomainMailSPFDMARC.dmarc.location}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.DomainMailSPFDMARC.dmarc.warnings.length">
+            <dt>Warnings:</dt>
+            <dd>
+                <pre>{{content.DomainMailSPFDMARC.dmarc.warnings.join('\n')}}</pre>
+            </dd>
+        </dl>
+
+        <hr>
+
+        <h4 class="text-info">DMARC Tags</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Tag</th>
+                    <th>Value</th>
+                    <th>Explicit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="(tag, value) in content.DomainMailSPFDMARC.dmarc.tags">
+                    <td>{{tag}}</td>
+                    <td>
+                        <span ng-if="tag === 'p'" ng-class="{
+                        'text-success': value.value === 'reject',
+                        'text-warning': value.value === 'quarantine',
+                        'text-danger': value.value === 'none'
+                      }">{{value.value}}</span>
+                        <span ng-if="tag !== 'p'">{{value.value}}</span>
+                    </td>
+                    <td>{{value.explicit ? 'Yes' : 'No'}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr>
+
+        <h4 class="text-info">MTA-STS</h4>
+        <dl class="dl-horizontal">
+            <dt>Valid:</dt>
+            <dd>{{content.DomainMailSPFDMARC.mta_sts.valid ? 'Yes' : 'No'}}</dd>
+            <dt>Error:</dt>
+            <dd>{{content.DomainMailSPFDMARC.mta_sts.error || 'None'}}</dd>
+        </dl>
+
+        <hr>
+
+        <h4 class="text-info">SMTP TLS Reporting</h4>
+        <dl class="dl-horizontal">
+            <dt>Valid:</dt>
+            <dd>{{content.DomainMailSPFDMARC.smtp_tls_reporting.valid ? 'Yes' : 'No'}}</dd>
+            <dt>Error:</dt>
+            <dd>{{content.DomainMailSPFDMARC.smtp_tls_reporting.error || 'None'}}</dd>
+        </dl>
+
+        <hr>
+
+        <h4 class="text-info">BIMI</h4>
+        <dl class="dl-horizontal">
+            <dt>Record:</dt>
+            <dd><code>{{content.DomainMailSPFDMARC.bimi.record}}</code></dd>
+            <dt>Valid:</dt>
+            <dd>{{content.DomainMailSPFDMARC.bimi.valid ? 'Yes' : 'No'}}</dd>
+            <dt>Selector:</dt>
+            <dd>{{content.DomainMailSPFDMARC.bimi.selector}}</dd>
+            <dt>Image Error:</dt>
+            <dd>{{content.DomainMailSPFDMARC.bimi.image.error || 'None'}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.DomainMailSPFDMARC.bimi.warnings.length">
+            <dt>Warnings:</dt>
+            <dd>
+                <pre>{{content.DomainMailSPFDMARC.bimi.warnings.join('\n')}}</pre>
+            </dd>
+        </dl>
+
     </div>
 </div>
 
-<!-- General error -->
 <div class="panel panel-danger" ng-if="!success">
     <div class="panel-heading">
         <strong>{{artifact.data | fang}}</strong>
     </div>
     <div class="panel-body">
-        {{content.errorMessage}}
+        <p>{{content.errorMessage}}</p>
     </div>
 </div>

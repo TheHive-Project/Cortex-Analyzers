@@ -23,7 +23,7 @@ class TorBlutmagieClient:
         self.cache_duration = cache_duration
         if self.cache_duration > 0:
             self.cache = Cache(cache_root)
-        self.url = 'http://torstatus.blutmagie.de/query_export.php/Tor_query_EXPORT.csv'
+        self.url = 'https://torstatus.rueckgr.at/query_export.php/Tor_query_EXPORT.csv'
 
     __cache_key = __name__ + ':raw_data'
 
@@ -49,9 +49,7 @@ class TorBlutmagieClient:
             'hostname': line['Hostname'],
             'name': line['Router Name'],
             'country_code': line['Country Code'],
-            'ip': line['IP Address'],
-            'as_name': line['ASName'],
-            'as_number': line['ASNumber']
+            'ip': line['IP Address']
         }
 
     def _get_node_from_domain(self, domain):
@@ -93,8 +91,6 @@ class TorBlutmagieClient:
                  - ip: their IP address
                  - hostname: Hostname of the router
                  - country_code: ISO2 code of the country hosting the router
-                 - as_name: ASName registering the router
-                 - as_number: ASNumber registering the router
                   Otherwise, `nodes` will be empty.
         :rtype: list
         """

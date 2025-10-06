@@ -1,0 +1,70 @@
+{
+    "name": "AWSLambda_InvokeFunction",
+    "version": "1.0",
+    "author": "Fabien Bloume, StrangeBee",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Invokes the configured AWS Lambda function",
+    "dataTypeList": ["thehive:case", "thehive:alert", "thehive:case_artifact", "thehive:case_task", "thehive:case_task_log"],
+    "command": "AWSLambda/AWSInvokeLambda.py",
+    "baseConfig": "AWSLambda",
+    "configurationItems": [
+      {
+        "name": "aws_access_key_id",
+        "description": "AWS Access Key ID",
+        "type": "string",
+        "multi": false,
+        "required": true,
+        "defaultValue": ""
+      },
+      {
+        "name": "aws_secret_access_key",
+        "description": "AWS Secret Access Key",
+        "type": "string",
+        "multi": false,
+        "required": true,
+        "defaultValue": ""
+      },
+      {
+        "name": "aws_region",
+        "description": "AWS Region",
+        "type": "string",
+        "multi": false,
+        "required": true,
+        "defaultValue": "us-east-1"
+      },
+      {
+        "name": "lambda_function_name",
+        "description": "Name of the AWS Lambda function to invoke",
+        "type": "string",
+        "multi": false,
+        "required": true,
+        "defaultValue": ""
+      },
+      {
+        "name": "invocation_type",
+        "description": "Invocation type for the lambda function. Default is 'RequestResponse'. Change to 'Event' for asynchronous invocation.",
+        "type": "string",
+        "multi": false,
+        "required": true,
+        "defaultValue": "RequestResponse"
+      },
+      {
+        "name": "add_tag_to_case",
+        "description": "Add a tag to case mentioning the AWS Lambda function that was invoked",
+        "type": "boolean",
+        "multi": false,
+        "required": true,
+        "defaultValue": true
+      }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://aws.amazon.com/lambda/",
+    "service_logo": {
+      "path": "assets/awslambda.png",
+      "caption": "AWS Lambda logo"
+    }
+  }
+  

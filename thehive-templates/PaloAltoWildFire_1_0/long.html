@@ -1,0 +1,452 @@
+<style>
+  section.report h1 {
+    color: rgb(109, 136, 10);
+    margin: 3em 0 2em 0;
+  }
+  section.report th,
+  section.report td.header {
+    background-color: rgb(209, 224, 181);
+    font-weight: bold;
+    font-size: larger;
+  }
+  section.report td,
+  section.report th {
+    border: 1px solid rgb(141, 159, 68);
+    padding: 8px;
+  }
+  section.report .verdict {
+    font-weight: bold;
+    font-size: larger;
+    text-transform: capitalize;
+  }
+  section.report .analysis-type {
+    text-transform: capitalize;
+  }
+  section.report .behavior-title {
+    font-size: x-large;
+  }
+  section.report .subsection-content {
+    margin-left: 2em;
+  }
+  section.report .observable-container {
+    justify-content: start;
+  }
+  section.report .observable-item {
+    margin-right: 1em;
+    padding: 1em;
+    border: solid black 1px;
+  }
+  section.report {
+    counter-reset: h1counter;
+  }
+  section.report h1 {
+    counter-reset: h2counter;
+  }
+  section.report h1::before {
+    counter-increment: h1counter;
+    content: counter(h1counter) '. ';
+  }
+  section.report h2 {
+    counter-reset: h3counter;
+  }
+  section.report h2::before {
+    counter-increment: h2counter;
+    content: counter(h1counter) '.' counter(h2counter) '. ';
+  }
+  section.report h3::before {
+    counter-increment: h3counter;
+    content: counter(h1counter) '.' counter(h2counter) '.' counter(h3counter)
+      '. ';
+  }
+  section.report h4 {
+    /* Make h4 larger than normal */
+    display: block;
+    font-size: 1.5em;
+    margin-top: 0.83em;
+    margin-bottom: 0.83em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+  }
+  section.report h5 {
+    /* Make h5 larger than normal */
+    display: block;
+    font-size: 1.17em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+  }
+</style>
+
+<section class="report">
+  <div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+      <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">{{content.errorMessage}}</div>
+  </div>
+
+  <div class="panel panel-primary" ng-if="success">
+    <!-- file and hash data reports -->
+    <div
+      class="panel-body"
+      ng-if="content.results.data_type === 'file' || content.results.data_type === 'hash'"
+    >
+      <h1>File Information</h1>
+      <div class="subsection-content">
+        <table class="w-100">
+          <tr>
+            <td class="header">File Type</td>
+            <td>{{content.results.file_info.filetype}}</td>
+          </tr>
+          <tr>
+            <td class="header">File Signer</td>
+            <td>{{content.results.file_info.file_signer}}</td>
+          </tr>
+          <tr>
+            <td class="header">SHA-256</td>
+            <td>{{content.results.file_info.sha256}}</td>
+          </tr>
+          <tr>
+            <td class="header">SHA-1</td>
+            <td>{{content.results.file_info.sha1}}</td>
+          </tr>
+          <tr>
+            <td class="header">MD5</td>
+            <td>{{content.results.file_info.md5}}</td>
+          </tr>
+          <tr>
+            <td class="header">File Size</td>
+            <td>{{content.results.file_info.size}} bytes</td>
+          </tr>
+          <tr>
+            <td class="header">Verdict</td>
+            <td>
+              <span
+                class="label verdict"
+                ng-if="content.results.verdict"
+                ng-class="{'label-danger': content.results.verdict === 'malware', 'label-success': content.results.verdict === 'benign'}"
+                >{{content.results.verdict}}</span
+              >
+              <span class="label label-default" ng-if="!content.results.verdict"
+                >Unknown</span
+              >
+            </td>
+          </tr>
+        </table>
+      </div>
+      <!-- End of File Information subsection -->
+
+      <h1>Static Analysis</h1>
+      <div
+        ng-repeat="report in content.results.task_info.report | filter:{software: 'PE Static Analyzer'}"
+      >
+        <h2>File Properties</h2>
+        <div class="subsection-content">
+          <p class="lead">
+            This file was statically analyzed and the table below lists the
+            noteworthy items that were found.
+          </p>
+          <table class="w-100 table-striped">
+            <tr>
+              <th>Property</th>
+              <th>Description</th>
+            </tr>
+            <tr ng-repeat="entry in report.summary.entry">
+              <td>{{entry['#text']}}</td>
+              <td>{{entry['@details']}}</td>
+            </tr>
+            <tr ng-if="!report.summary.entry">
+              <td>N/A</td>
+              <td>N/A</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <!-- End of Static Analysis subsection -->
+
+      <h1>Dynamic Analysis</h1>
+      <div
+        ng-repeat="report in content.results.task_info.report | filter:{software: '!PE Static Analyzer'}"
+      >
+        <h2>VM{{$index+1}} ({{report.software}}}</h2>
+        <h3>Behavioral Summary</h3>
+        <div class="subsection-content">
+          <p class="lead">
+            This sample was found to be
+            <strong ng-if="report.malware === 'yes'">malware</strong>
+            <strong ng-if="report.malware === 'no'">benign</strong>
+            on this virtual machine. In the table below, a score of 1.0
+            indicates the highest severity and 0.0 indicates the lowest.
+          </p>
+          <table class="w-100 table-striped">
+            <thead>
+              <tr>
+                <th>Severity</th>
+                <th>Behavior</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="entry in report.summary.entry">
+                <td>{{entry['@score']}}</td>
+                <td>
+                  <span class="behavior-title">{{entry['#text']}}</span>
+                  <p>{{entry['@details']}}</p>
+                </td>
+              </tr>
+              <tr ng-if="!report.summary.entry">
+                <td>N/A</td>
+                <td>N/A</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- End of Behavioral Summary subsection -->
+
+        <h3>Network Activity</h3>
+        <h4>DNS Queries</h4>
+        <div class="subsection-content">
+          <table class="w-100 table-striped">
+            <thead>
+              <tr>
+                <th>Domain Name</th>
+                <th>Query Type</th>
+                <th>DNS Response</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="dns_entry in report.network.dns">
+                <td>{{dns_entry['@query']}}</td>
+                <td>{{dns_entry['@type']}}</td>
+                <td>{{dns_entry['@response']}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- End of Network Activity subsection -->
+
+        <h4>Connections</h4>
+        <div class="subsection-content">
+          <table class="w-100 table-striped">
+            <thead>
+              <tr>
+                <th>Host</th>
+                <th>Port</th>
+                <th>Protocol</th>
+                <th>Country</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="connection in report.network.TCP">
+                <td>{{connection['@ip']}}</td>
+                <td>{{connection['@port']}}</td>
+                <td>TCP</td>
+                <td>{{connection['@country']}}</td>
+              </tr>
+              <tr ng-repeat="connection in report.network.UDP">
+                <td>{{connection['@ip']}}</td>
+                <td>{{connection['@port']}}</td>
+                <td>UDP</td>
+                <td>{{connection['@country']}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- End of Connections subsection -->
+
+        <h3>Host Activity</h3>
+        <div ng-repeat="process in report.process_list.process">
+          <h4>Process Name - {{process['@name']}}</h4>
+          <div class="subsection-content">
+            <p class="lead">(Command: {{process['@command']}})</p>
+            <p ng-if="!process.process_activity">
+              No activity recorded for this process
+            </p>
+            <div ng-if="process.process_activity">
+              <h5>Process Activity</h5>
+              <table class="w-100 table-striped">
+                <thead>
+                  <tr>
+                    <th>Child Process</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody
+                  ng-repeat="(action, pa_list) in process.process_activity"
+                >
+                  <tr ng-repeat="process_activity in pa_list">
+                    <td>{{process_activity['@command']}}</td>
+                    <td>{{action}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5>File Activity</h5>
+            <p ng-if="!process.file">No file activity for this process</p>
+            <div ng-if="process.file">
+              <table class="w-100 table-striped">
+                <thead>
+                  <tr>
+                    <th>File</th>
+                    <th>Action</th>
+                    <th>Size</th>
+                    <th>Type</th>
+                    <th>Hashes</th>
+                  </tr>
+                </thead>
+                <tbody ng-repeat="(action, f_list) in process.file">
+                  <tr ng-repeat="file in f_list">
+                    <td>{{file['@name']}}</td>
+                    <td>{{action}}</td>
+                    <td>{{file['@size']}}</td>
+                    <td>{{file['@type']}}</td>
+                    <td>
+                      SHA-256: {{file['@sha256']}}<br />
+                      SHA-1: {{file['@sha1']}}<br />
+                      MD5: {{file['@md5']}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5>Registry Activity</h5>
+            <p ng-if="!process.registry">
+              No registry activity for this process
+            </p>
+            <div ng-if="process.registry">
+              <table class="w-100 table-striped">
+                <thead>
+                  <tr>
+                    <th>Registry Key</th>
+                    <th>Value</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody ng-repeat="(action, reg_list) in process.registry">
+                  <tr ng_repeat="reg in reg_list">
+                    <td>{{reg['@key']}}\{{reg['@subkey']}}</td>
+                    <td>{{reg['@data']}}</td>
+                    <td>{{action}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5>Service Activity</h5>
+            <p ng-if="!process.service">No service activity for this process</p>
+            <div ng-if="process.service">
+              <table class="w-100 table-striped">
+                <thead>
+                  <tr>
+                    <th>Service Name</th>
+                    <th>Action</th>
+                    <th>Parent Process</th>
+                  </tr>
+                </thead>
+                <tbody ng-repeat="(action, svc_list) in process.service">
+                  <tr ng_repeat="service in svc_list">
+                    <td>{{service['@name']}}</td>
+                    <td>{{action}}</td>
+                    <td>{{service['@path']}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5>Mutex Activity</h5>
+            <p ng-if="!process.mutex">No mutex activity for this process</p>
+            <div ng-if="process.mutex">
+              <table class="w-100 table-striped">
+                <thead>
+                  <tr>
+                    <th>Mutex Name</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody ng-repeat="(action, mutex_list) in process.mutex">
+                  <tr ng-repeat="mutex in mutex_list">
+                    <td>{{mutex['@name']}}</td>
+                    <td>{{action}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- End of Host Activity subsection -->
+
+        <h3>Event Timeline</h3>
+        <ol>
+          <li ng-repeat="event in report.timeline.entry">{{event['#text']}}</li>
+        </ol>
+      </div>
+      <!-- End of Dynamic Analysis subsection -->
+    </div>
+    <!-- End of file/hash report -->
+
+    <div class="panel-body" ng-if="content.results.data_type === 'url'">
+      <p class="lead">
+        Verdict:
+        <span
+          class="label"
+          ng-if="content.results.verdict"
+          ng-class="{'label-danger': content.results.verdict === 'malware', 'label-success': content.results.verdict === 'benign'}"
+          >{{content.results.verdict}}</span
+        >
+        <span class="label label-default" ng-if="!content.results.verdict"
+          >Unknown</span
+        >
+      </p>
+      <h4>Detection Reasons</h4>
+      <span ng-if="content.results.report.detection_reasons.length === 0">
+        N/A
+      </span>
+      <div ng-repeat="reason in content.results.report.detection_reasons">
+        <ul>
+          <li>{{reason.description}}</li>
+        </ul>
+      </div>
+      <hr>
+
+      <div
+        ng-repeat="mp in content.results.report.maec_packages track by mp.id"
+      >
+        <!-- <div class="bg-info">
+          <div class="col-sm-4"><strong>Analysis Type</strong></div>
+          <div class="col-sm-4"><strong>Conclusion</strong></div>
+          <div class="col-sm-4"><strong>Description</strong></div>
+        </div> -->
+        <span ng-repeat="mo in mp.maec_objects track by mo.id">
+          <span ng-repeat="metadata in mo.analysis_metadata track by $index" >
+            <p class="lead">
+              <span class="analysis-type">{{ metadata.analysis_type }}</span>
+              analysis
+              <span ng-if="metadata.description"
+                >({{ metadata.description }})</span
+              >
+              , Conclusion:
+              <strong>{{ metadata.conclusion }}</strong>
+            </p>
+          </span>
+        </span>
+
+        <div>
+          <h5>Observable Objects</h5>
+          <div class="d-flex flex-row observable-container">
+            <div class="p-2 bg-info observable-item" ng-repeat="(index, obj) in mp.observable_objects">
+              <span ng-repeat="(key, value) in obj">
+                <strong>{{key}}: </strong>{{value}}<br>
+              </span>
+            </div>
+          </div>
+        </div>
+        <hr />
+      </div>
+    </div>
+    <!-- End of url report -->
+  </div>
+</section>

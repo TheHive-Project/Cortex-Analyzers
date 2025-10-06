@@ -1,0 +1,67 @@
+{
+  "name": "ONYPHE_Search",
+  "version": "1.1",
+  "author": "Pierre Baudry, Adrien Barchapt, Andrea Garavaglia, Davide Arcuri, James Atack",
+  "license": "AGPL-V3",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "description": "Retrieve results from ONYPHE Search API for a given ip, domain, fqdn or hash (sha256 TLS fingerprint) from specified category",
+  "dataTypeList": ["ip", "domain", "fqdn", "hash"],
+  "command": "Onyphe/onyphe_analyzer.py",
+  "baseConfig": "Onyphe",
+  "config": {
+    "service": "search",
+    "base_uri": "/api/v2/",
+    "base_url": "https://www.onyphe.io"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API key to use to connect the service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "category",
+      "description": "Specify ONYPHE category to be used for search API (default datascan)",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "datascan"
+    },
+    {
+      "name": "time_filter",
+      "description": "Specify ONYPHE time filter to be used for searches (see https://www.onyphe.io/docs/onyphe-query-language)",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "-since:1M"
+    },
+    {
+      "name": "auto_import",
+      "description": "Automatically import artifacts as observables (risks, cves, assets, ...)",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": false
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://www.onyphe.io",
+  "service_logo": {
+    "path": "assets/onyphe_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/ONYPHE_Search_long.png",
+      "caption": "ONYPHE Search report sample (IPs obscured)"
+    },
+    {
+      "path": "assets/ONYPHE_Search_short.png",
+      "caption": "ONYPHE Search mini report showing no. of open ports"
+    }
+  ]
+}

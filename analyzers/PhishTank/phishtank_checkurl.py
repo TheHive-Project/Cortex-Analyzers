@@ -8,13 +8,15 @@ class PhishtankAnalyzer(Analyzer):
 
     def __init__(self):
         Analyzer.__init__(self)
-        self.phishtank_key = self.get_param('config.key', None,
-                                            'Missing PhishTank API key')
+        self.phishtank_key = self.get_param('config.key', None, 'Missing PhishTank API key')
+        self.proxies = {'http': self.get_param('config.proxy_http', None),
+                        'https': self.get_param('config.proxy_https', None)}
 
     def phishtank_checkurl(self, data):
         url = 'https://checkurl.phishtank.com/checkurl/'
+        postheaders = {"User-Agent": "phishtank/cortex"}
         postdata = {'url': data, 'format': 'json', 'app_key': self.phishtank_key}
-        r = requests.post(url, data=postdata)
+        r = requests.post(url, headers=postheaders, data=postdata, proxies=self.proxies)
         return r.json()
 
     def summary(self, raw):

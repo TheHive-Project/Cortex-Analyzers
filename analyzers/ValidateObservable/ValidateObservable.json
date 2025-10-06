@@ -1,0 +1,18 @@
+{
+  "name": "ValidateObservable",
+  "version": "1.0",
+  "author": "Fabien Bloume, StrangeBee",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Use regexes and libraries to indicate if observable is valid",
+  "dataTypeList": ["ip", "domain", "url", "fqdn", "mail", "hash", "filename", "uri_path", "user-agent"],
+  "baseConfig": "ValidateObservable",
+  "command": "ValidateObservable/ValidateObservable.py",
+  "config": {
+    "service": "validateObservable"
+  },
+  "configurationItems": [],
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": false
+}

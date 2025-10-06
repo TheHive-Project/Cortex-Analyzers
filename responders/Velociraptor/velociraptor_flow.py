@@ -3,11 +3,15 @@ from cortexutils.responder import Responder
 import json
 import grpc
 import re
+import os
 import time
 import yaml
+from thehive4py.api import TheHiveApi
+from thehive4py.models import Case, CaseObservable
 import pyvelociraptor
 from pyvelociraptor import api_pb2
 from pyvelociraptor import api_pb2_grpc
+
 
 class Velociraptor(Responder):
   def __init__(self):
@@ -23,6 +27,7 @@ class Velociraptor(Responder):
    
   def run(self):
     Responder.run(self)
+    case_id = self.get_param('data._parent')
     creds = grpc.ssl_channel_credentials(
         root_certificates=self.config["ca_certificate"].encode("utf8"),
         private_key=self.config["client_private_key"].encode("utf8"),
@@ -83,7 +88,6 @@ class Velociraptor(Responder):
             self.report({'message': query_results })
           except:
             pass
-
   def operations(self, raw):
       global client_id
       return [self.build_operation('AddTagToArtifact', tag=client_id)]

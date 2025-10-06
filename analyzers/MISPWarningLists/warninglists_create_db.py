@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # coding: utf-8
 
 import re
@@ -13,14 +13,15 @@ logging.basicConfig(filename='import.log',level=logging.DEBUG)
 
 
 import psycopg2.extras
-from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey, Index, create_engine
+from sqlalchemy.exc import ArgumentError
+from sqlalchemy import Table, Column, Integer, String, MetaData, Index, create_engine
 from sqlalchemy.sql import select
 from sqlalchemy.dialects.postgresql import CIDR
 
 conn_string = "<insert_postgres_conn_strin>"
 warninglists_path = "misp-warninglists/**/list.json"
 
-engine = create_engine(conn_string, use_batch_mode=True)
+engine = create_engine(conn_string)
 conn = engine.connect()
 
 # UPDATE TLD FROM MOZILLA
@@ -148,7 +149,10 @@ except:
 
 
 # CHECK IF OLD RELEASE ARE IN DB
-s = select([warninglists.c.list_name, warninglists.c.list_version]).distinct()
+try:
+    s = select([warninglists.c.list_name, warninglists.c.list_version]).distinct()
+except ArgumentError:
+    s = select(warninglists.c.list_name, warninglists.c.list_version).distinct()
 last_versions = [x for x in conn.execute(s)]
 print(f"{len(last_versions)} list already available in db")
 
@@ -189,13 +193,13 @@ raw_conn.close()
 try:
     warninglists_address_idx.create(engine)
 except:
-    logging.error(f"warninglists_address_idx already exists")
+    logging.error("warninglists_address_idx already exists")
 try:
     warninglists_hash_idx.create(engine)
 except:
-    logging.error(f"warninglists_hash_idx already exists")
+    logging.error("warninglists_hash_idx already exists")
 try:
     warninglists_domain_idx.create(engine)
 except:
-    logging.error(f"warninglists_domain_idx already exists")
+    logging.error("warninglists_domain_idx already exists")
 engine.dispose()

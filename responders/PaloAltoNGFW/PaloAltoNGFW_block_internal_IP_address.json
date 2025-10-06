@@ -1,0 +1,56 @@
+{
+  "name": "PaloAltoNGFW_block_internal_IP_address",
+  "version": "2.0.0",
+  "author": "Maxim Konakin, OSCD Initiative",
+  "url": "https://www.paloaltonetworks.com/",
+  "license": "AGPL-V3",
+  "description": "Block internal IP address",
+  "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
+  "command": "PaloAltoNGFW/block_internal_ip.py",
+  "baseConfig": "PaloAltoNGFW_main",
+  "configurationItems": [
+    {
+      "name": "Hostname_PaloAltoNGFW",
+      "description": "Hostname PaloAltoNGFW",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "User_PaloAltoNGFW",
+      "description": "User PaloAltoNGFW",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "Password_PaloAltoNGFW",
+      "description": "User PaloAltoNGFW",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "Security_rule_for_block_internal_IP_address",
+      "description": "Name internal security rule for IP address",
+      "type": "string",
+      "multi": false,
+      "required": true,
+	  "defaultValue": "TheHive Block internal IP address"
+    },
+	{
+        "name": "TheHive_instance",
+        "description": "URL of the TheHive instance to query",
+        "type": "string",
+        "multi": false,
+        "required": true
+      },
+      {
+        "name": "TheHive_API_key",
+        "description": "TheHive API key with read access",
+        "type": "string",
+        "multi": false,
+        "required": true
+      }
+  ]
+}

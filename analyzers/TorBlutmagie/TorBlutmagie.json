@@ -4,7 +4,7 @@
   "license": "AGPL-V3",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "version": "1.0",
-  "description": "Query http://torstatus.blutmagie.de/query_export.php/Tor_query_EXPORT.csv for TOR exit nodes IP addresses or names.",
+  "description": "Query https://torstatus.rueckgr.at/query_export.php/Tor_query_EXPORT.csv (formerly TorBlutmagie) for TOR exit nodes IP addresses or names.",
   "dataTypeList": ["ip", "domain", "fqdn"],
   "command": "TorBlutmagie/tor_blutmagie_analyzer.py",
   "baseConfig": "TorBlutmagie",
@@ -24,5 +24,9 @@
       "multi": false,
       "required": false
     }
-  ]
+  ],
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://torstatus.rueckgr.at"
 }

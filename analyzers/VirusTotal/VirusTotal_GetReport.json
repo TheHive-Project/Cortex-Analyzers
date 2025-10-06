@@ -1,7 +1,7 @@
 {
   "name": "VirusTotal_GetReport",
-  "version": "3.0",
-  "author": "CERT-BDF",
+  "version": "3.1",
+  "author": "CERT-BDF, StrangeBee",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Get the latest VirusTotal report for a file, hash, domain or an IP address.",
@@ -55,6 +55,19 @@
       "type": "boolean",
       "multi": false,
       "required": false
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": false,
+  "service_homepage": "https://www.virustotal.com/",
+  "service_logo": {
+    "path": "assets/virustotal-logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/virustotal-scan.png",
+      "caption": "VirusTotal: long report"
     }
   ]
 }

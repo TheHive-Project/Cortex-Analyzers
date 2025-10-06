@@ -145,7 +145,7 @@ class ElasticsearchAnalyzer(Analyzer):
                         api_key = (key),
                         ca_certs=self.cert,
                         verify_certs=self.verify,
-                        timeout=30
+                        request_timeout=30
                     )
                 elif user:
                     es = Elasticsearch(
@@ -153,14 +153,14 @@ class ElasticsearchAnalyzer(Analyzer):
                         http_auth = (user,password),
                         ca_certs=self.cert,
                         verify_certs=self.verify,
-                        timeout=30
+                        request_timeout=30
                     )
                 else:
                     es = Elasticsearch(
                         endpoint,
                         ca_certs=self.cert,
                         verify_certs=self.verify,
-                        timeout=30
+                        request_timeout=30
                     )
 
                 info = {}
@@ -195,8 +195,24 @@ class ElasticsearchAnalyzer(Analyzer):
                     info['querystring'] += '"'
                 #loop to get hits from each index
                 for index in self.index:
+                    body = {
+                        "sort": [
+                            {
+                                "@timestamp": {
+                                    "order": "desc",
+                                    "unmapped_type" : "date"
+                                }
+                            }
+                        ],
+                        "query": {
+                            "multi_match": {
+                                "query": self.data,
+                                "fields": self.fields
+                            }
+                        }
+                    }
                     #search elastic for fields in each index
-                    res = es.search(size=self.size,index=index,body={'sort':[{"@timestamp":{"order":"desc"}}],'query':{'multi_match':{'query':self.data, 'fields':self.fields}}})
+                    res = es.search(size=self.size,index=index,body=body)
                     #if relation is gte then more logs exist than we will display
                     if res['hits']['total']['relation'] == 'gte' or res['hits']['total']['relation'] == 'gt':
                         total = 'gte'

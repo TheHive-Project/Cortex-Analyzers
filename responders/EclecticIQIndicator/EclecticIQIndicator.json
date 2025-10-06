@@ -1,0 +1,35 @@
+{
+  "name": "EclecticIQ_Indicator_API",
+  "version": "1.0",
+  "author": "EclecticIQ",
+  "url": "https://eclecticiq.com",
+  "license": "MIT",
+  "description": "Submit indicators to the EclecticIQ Intelligence Center api",
+  "dataTypeList": ["thehive:case_artifact", "thehive:case"],
+  "command": "EclecticIQIndicator/EclecticIQIndicator.py",
+  "baseConfig": "EclecticIQIndicator",
+  "configurationItems": [
+    {
+      "name": "eiq_host_url",
+      "description": "EclecticIQ Intelligence Center host url",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "eiq_api_key",
+      "description": "EclecticIQ Intelligence Center API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "group_name",
+      "description": "EclecticIQ Intelligence Center Group Name",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "Testing Group"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "DevTools_Echo_Responder",
+  "version": "1.0",
+  "author": "Fabien Bloume, StrangeBee",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Development utility that simply echoes the input received by the responder.",
+  "dataTypeList": ["thehive:case", "thehive:alert", "thehive:case_artifact", "thehive:case_task", "thehive:case_task_log"],
+  "command": "Test/test.py",
+  "baseConfig": "Test",
+  "config": {
+    "service": "echo"
+  },
+  "configurationItems": [
+  ]
+}

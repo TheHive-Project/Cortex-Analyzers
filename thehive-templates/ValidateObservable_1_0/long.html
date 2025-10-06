@@ -1,0 +1,63 @@
+<!-- ValidateObservable Analyzer Output -->
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <strong><i class="fa fa-check-circle"></i> ValidateObservable Result</strong>
+    </div>
+    <div class="panel-body">
+        <!-- Clarification Note -->
+        <div class="alert alert-info">
+            <i class="fa fa-info-circle"></i> 
+            This analyzer performs <strong>syntax and format validation only</strong>. 
+            It does <strong>not</strong> verify the existence, resolution, or legitimacy of the observable.<br>
+            A <span class="label label-warning">SUSPICIOUS</span> status indicates a syntactically valid observable that contains potentially risky indicators, such as Unicode obfuscation or Punycode usage.
+        </div>
+        
+        <table class="table table-hover table-bordered">
+            <!-- Observable Type -->
+            <tr>
+                <td><strong>Type</strong></td>
+                <td><strong>{{ content["type"] }}</strong></td>
+            </tr>
+
+            <!-- Observable Value -->
+            <tr>
+                <td><strong>Value</strong></td>
+                <td><code>{{ content["value"] }}</code></td>
+            </tr>
+
+            <!-- Status with Colored Labels -->
+            <tr>
+                <td><strong>Status</strong></td>
+                <td>
+                    <span class="label" ng-class="{
+                        'label-success': content['status'] === 'valid',
+                        'label-danger': content['status'] === 'invalid',
+                        'label-warning': content['status'] === 'suspicious'
+                    }">
+                        {{ content["status"] | uppercase }}
+                    </span>
+                </td>
+            </tr>
+
+            <!-- Reason (Optional) -->
+            <tr ng-if="content.reason">
+                <td><strong>Reason</strong></td>
+                <td>{{ content["reason"] }}</td>
+            <!-- Note (Optional) -->
+            <tr ng-if="content.note">
+                <td><strong>Note</strong></td>
+                <td>{{ content["note"] }}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- No Output Found -->
+<div class="panel panel-info" ng-if="!content || Object.keys(content).length === 0">
+    <div class="panel-heading">
+        <strong><i class="fa fa-info-circle"></i> No Result</strong>
+    </div>
+    <div class="panel-body">
+        <p>No output is available for the "ValidateObservable" analyzer.</p>
+    </div>
+</div>

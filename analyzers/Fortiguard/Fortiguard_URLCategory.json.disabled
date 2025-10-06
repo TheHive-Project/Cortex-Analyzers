@@ -1,0 +1,49 @@
+{
+  "name": "Fortiguard_URLCategory",
+  "version": "2.1",
+  "author": "Eric Capuano",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "dataTypeList": ["domain", "url", "fqdn"],
+  "description": "[DEPRECATED!] Check the Fortiguard category of a URL, FQDN or a domain. Check the full available list at https://fortiguard.com/webfilter/categories",
+  "baseConfig": "Fortiguard",
+  "command": "Fortiguard/urlcategory.py",
+  "configurationItems": [
+    {
+      "name": "malicious_categories",
+      "description": "List of FortiGuard categories to be considered as malicious",
+      "type": "string",
+      "multi": true,
+      "required": true,
+      "defaultValue": ["Malicious Websites", "Phishing", "Spam URLs"]
+    },
+    {
+      "name": "suspicious_categories",
+      "description": "List of FortiGuard categories to be considered as suspicious",
+      "type": "string",
+      "multi": true,
+      "required": true,
+      "defaultValue": [
+        "Newly Observed Domain",
+        "Newly Registered Domain",
+        "Dynamic DNS",
+        "Proxy Avoidance",
+        "Hacking"
+      ]
+    }
+  ],
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": false,
+  "service_homepage": "https://www.fortiguard.com/webfilter",
+  "service_logo": {
+    "path": "assets/fortiguard.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report.png",
+      "caption": "Fortiguard: long report"
+    }
+  ]
+}

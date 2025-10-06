@@ -1,0 +1,56 @@
+{
+  "name": "PaloAltoNGFW_unblock_external_IP_address",
+  "version": "1.0.0",
+  "author": "Maxim Konakin, OSCD Initiative",
+  "url": "https://www.paloaltonetworks.com/",
+  "license": "AGPL-V3",
+  "description": "Unblock external ip",
+  "dataTypeList": ["thehive:alert","thehive:case_artifact","thehive:case"],
+  "command": "PaloAltoNGFW/unblock_external_ip.py",
+  "baseConfig": "PaloAltoNGFW_main",
+  "configurationItems": [
+    {
+      "name": "Hostname_PaloAltoNGFW",
+      "description": "Hostname PaloAltoNGFW",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "User_PaloAltoNGFW",
+      "description": "User PaloAltoNGFW",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "Password_PaloAltoNGFW",
+      "description": "User PaloAltoNGFW",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "Address_group_for_external_IP_address",
+      "description": "Name external Address Group for IP address",
+      "type": "string",
+      "multi": false,
+      "required": true,
+	  "defaultValue": "TheHive Block list external IP address"
+    },
+    {
+      "name": "TheHive_instance",
+      "description": "URL of the TheHive instance to query",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+	  "name": "TheHive_API_key",
+	  "description": "TheHive API key with read access",
+	  "type": "string",
+	  "multi": false,
+	  "required": true
+    }
+  ]
+}

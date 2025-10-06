@@ -5,3 +5,6 @@ The analyzer comes in a single flavout that will return websense categorization 
 
 #### Requirements
 The analyzer returns just their categorization, you can customize which category must be considerd suspiciour or malicious adding them to `suspicious_categories` or `malicious_categories` variables.
+
+#### Notes
+This analyzer has been **deprecated**. Due to changes by the vendor, programmatic access to this service is no longer available.

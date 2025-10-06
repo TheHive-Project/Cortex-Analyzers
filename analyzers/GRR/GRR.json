@@ -1,0 +1,37 @@
+{
+    "name": "GRR",
+    "version": "0.1",
+    "author": "pettai@sunet.se, SUNET",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Search GRR for the host agent.",
+    "dataTypeList": ["ip", "fqdn"],
+    "baseConfig": "GRR",
+    "config": {
+       "service": "query"
+    },
+    "command": "GRR/grrclient.py",
+    "configurationItems": [
+      {
+        "name": "url",
+        "description": "URL of the GRR API.",
+        "type": "string",
+        "required": true,
+        "multi": false
+      },
+      {
+        "name": "username",
+        "description": "API user to use",
+        "type": "string",
+        "required": true,
+        "multi": false
+      },
+      {
+        "name": "password",
+        "description": "API password to the API user",
+        "type": "string",
+        "required": true,
+        "multi": false
+      }
+    ]
+}

@@ -9,8 +9,7 @@ This program can be run on the whole repository or on a specific JSON file
 """
 
 import json
-import jsonschema
-from jsonschema import validate
+from jsonschema import Draft7Validator, FormatChecker
 import sys
 import os
 import argparse
@@ -62,23 +61,23 @@ def fixJsonFlavorFile(jsonfile:dict) -> dict:
         jsonfile["screenshots"] =  screenshots
     return jsonfile
 
-def validateFlavorFormat(flavorfile:str, schemafile:str, fix:bool) -> str:
+def validateFlavorFormat(flavorfile: str, schemafile: str, fix: bool) -> str:
     flavorSchema = openJsonFile(schemafile)
     fjson = openJsonFile(flavorfile)
-        
-    validator = jsonschema.Draft7Validator(flavorSchema, format_checker=jsonschema.draft7_format_checker)
-    errors = sorted(validator.iter_errors(fjson),key=lambda e: e.path)
-    if not errors:  
+    formatchecker = FormatChecker()
+    validator = Draft7Validator(flavorSchema, format_checker=formatchecker)
+    errors = sorted(validator.iter_errors(fjson), key=lambda e: e.path)
+    if not errors:
         printSuccess(True, flavorfile)
     else:
         printSuccess(False, flavorfile)
         for error in errors:
-            print("{}: {}".format(error.path,error.message))    
+            print("{}: {}".format(error.path, error.message))
         if fix:
             print("Fixing {}".format(flavorfile))
             j = fixJsonFlavorFile(fjson)
             with open(flavorfile, 'w+') as fj:
-                fj.write(json.dumps(j,indent=4))
+                fj.write(json.dumps(j, indent=4))
             fj.close()
 
 

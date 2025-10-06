@@ -1,0 +1,101 @@
+<!-- When no sign-ins found -->
+<div class="panel panel-success" ng-if="success && content.signIns.length == 0">
+    <div class="panel-heading">
+        <i class="fa fa-info-circle"></i> Microsoft Entra ID Sign Ins
+    </div>
+    <div class="panel-body">
+        <p><i class="fa fa-filter"></i> Analyzers searched for: {{content.filterParameters}}</p>
+    </div>
+</div>
+
+<!-- When sign-ins are available -->
+<div class="panel panel-primary" ng-if="success && content.signIns.length > 0">
+    <div class="panel-heading">
+        <i class="fa fa-sign-in-alt"></i> Microsoft Entra ID Sign Ins
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th><i class="fa fa-id-badge"></i> SignIn ID</th>
+                    <th><i class="fa fa-clock"></i> Time</th>
+                    <th><i class="fa fa-info"></i> Status</th>
+                    <th><i class="fa fa-network-wired"></i> IP</th>
+                    <th><i class="fa fa-th"></i> App Name</th>
+                    <th><i class="fa fa-exclamation-triangle"></i> Risk</th>
+                    <th><i class="fa fa-desktop"></i> Device ID</th>
+                    <th><i class="fa fa-mobile-alt"></i> Device Name</th>
+                    <th><i class="fa fa-laptop"></i> Device OS</th>
+                    <th><i class="fa fa-shield-alt"></i> Cond'l Access</th>
+                    <th><i class="fa fa-map-marker-alt"></i> Location</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- <tr ng-repeat="r in content.signIns" ng-style="{ 'background-color': r.locationDetails.countryOrRegion == 'US' && r.locationDetails.state != 'STATE' ? '#ebc27c' : r.locationDetails.countryOrRegion != 'COUNTRY' ? '#eb807c' : 'inherit' }"> -->
+                <tr ng-repeat="r in content.signIns">
+                    <td title="{{r.id}}">{{r.id | limitTo: 8}}</td>
+                    <td>{{r.basicDetails.signInTime}}</td>
+                    <td title="{{r.basicDetails.result}}">{{r.basicDetails.result | limitTo: 7}}</td>
+                    <td title="{{r.basicDetails.ip}}" ng-if="r.basicDetails.ip.length > 15">IPv6</td>
+                    <td ng-if="r.basicDetails.ip.length <= 14">{{r.basicDetails.ip}}</td>
+                    <td>{{r.basicDetails.appName}}</td>
+                    <td>{{r.basicDetails.riskLevel}}</td>
+                    <td ng-if="r.deviceDetails.id == 'Not Available'">Not Available</td>
+                    <td ng-if="r.deviceDetails.id != 'Not Available'" title="{{r.deviceDetails.id}}">{{r.deviceDetails.id | limitTo: 8}}</td>
+                    <td>{{r.deviceDetails.deviceName}}</td>
+                    <td>{{r.deviceDetails.operatingSystem}}</td>
+                    <td ng-if="r.appliedConditionalAccessPolicies == 'None'">No</td>
+                    <td ng-if="r.appliedConditionalAccessPolicies != 'None'">Yes</td>
+                    <td>{{r.locationDetails.city}}, {{r.locationDetails.state}}, {{r.locationDetails.countryOrRegion}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Expanded Information -->
+<div class="panel panel-primary" ng-if="success && content.signIns.length > 0">
+    <div class="panel-heading">
+        <i class="fa fa-info-circle"></i> Expanded Information
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th><i class="fa fa-id-badge"></i> SignIn ID</th>
+                    <th><i class="fa fa-network-wired"></i> IPv6</th>
+                    <th><i class="fa fa-th"></i> App Name</th>
+                    <th><i class="fa fa-cubes"></i> Client App</th>
+                    <th><i class="fa fa-book"></i> Resource Name</th>
+                    <th><i class="fa fa-check-square"></i> Applied CAPs</th>
+                    <th><i class="fa fa-desktop"></i> Device ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="r in content.signIns">
+                    <td>{{r.id}}</td>
+                    <td ng-if="r.basicDetails.ip.length > 15">{{r.basicDetails.ip}}</td>
+                    <td ng-if="r.basicDetails.ip.length <= 14">IPv4</td>
+                    <td>{{r.basicDetails.appName}}</td>
+                    <td>{{r.basicDetails.clientApp}}</td>
+                    <td>{{r.basicDetails.resourceName}}</td>
+                    <td>{{r.appliedConditionalAccessPolicies}}</td>
+                    <td>{{r.deviceDetails.id}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <i class="fa fa-warning"></i> <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> MSEntraID_GetSignIns:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

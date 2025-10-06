@@ -18,7 +18,8 @@
     "registry",
     "regexp",
     "other",
-    "filename"
+    "filename",
+    "mail-subject"
   ],
   "baseConfig": "MISP",
   "command": "MISP/misp.py",

@@ -1,0 +1,203 @@
+<div class="panel panel-info" ng-if="success && content.total_category < 100 ">
+	<div class="panel-heading">
+		ONYPHE {{content.category}} search - <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong> - {{content.total_category}} results
+	</div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.total_category >= 100 ">
+	<div class="panel-heading">
+		ONYPHE {{content.category}} search - <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong> - Displaying first 100 results (search returned {{content.total}})
+	</div>
+</div>
+
+
+<div class="panel panel-info" ng-if="success && content.total_category > 0 " ng-repeat="r in content.results">
+    <div class="panel-heading">
+        <span ng-if="r.protocol">{{r.ip}}:{{r.port}} | ({{r.transport}}/{{r.protocol}}<span ng-if="r.tls == 'true'">/tls</span>) seen {{ r['@timestamp'] | date:'medium' }} | country {{r.country}}&nbsp;&nbsp;</span>
+        <span ng-if="r.threatlist">{{r.ip}} | ({{r.threatlist}}) last seen on {{r.seen_date}} | country {{r.country}}&nbsp;&nbsp;</span>
+        <span style="font-style: bold;background-color: #3460fc" class="badge text-bg-primary">&nbsp;<a style="color: white" target="_blank" href="https://onyphe.io/search?q=category%3A{{r['@category']}}+ip%3A{{r.ip}}">Open in ONYPHE</a>&nbsp;</span>
+    </div>
+    <div ng-if="r.tag">
+        <span ng-repeat="ta in r.tag">
+            <span style="font-style: bold;background-color: orange;color:#111;" class="badge text-bg-danger" ng-if="ta.indexOf('risk') !== -1 && ta.indexOf('criticalcve') == -1">&nbsp;{{ ta }}&nbsp;</span>
+            <span style="font-style: bold;background-color: red;color:#fff;" class="badge text-bg-danger" ng-if="ta.indexOf('criticalcve') !== -1">&nbsp;{{ ta }}&nbsp;</span>
+            <span style="font-style: bold;background-color: red;color:#fff;" class="badge text-bg-danger" ng-if="ta.indexOf('compromised') !== -1">&nbsp;{{ ta }}&nbsp;</span>
+            <span style="font-style: bold;background-color: red;color:#fff;" class="badge text-bg-danger" ng-if="ta.indexOf('botnet') !== -1">&nbsp;{{ ta }}&nbsp;</span>
+            <span style="font-style: bold" class="badge text-bg-secondary" ng-if="ta.indexOf('risk') == -1 && ta.indexOf('CVE') == -1 && ta.indexOf('compromised') == -1">&nbsp;{{ ta }}&nbsp;</span>
+        </span>
+    </div>
+    <uib-tabset active="active">
+	    <uib-tab TabIndex="asset-{{index}}" heading="Asset" disable="tab.disabled">
+            <table class="table">
+                <tbody>
+                    <tr ng-if="r.cve">
+                        <td width="200">CVE(s)</td>
+                        <td class="wrap"><span ng-repeat="cve in r.cve">{{ cve }}<br></span></td>
+                    </tr>
+                    <tr ng-if="r.threatlist">
+                        <td width="200">Threat List</td>
+                        <td class="wrap">{{ r.threatlist }}</span></td>
+                    </tr>
+                    <tr>
+                        <td width="200">IP</td>
+                        <td class="wrap">{{r.ip}}</td>
+                    </tr>
+                    <tr ng-if="r.alternativeip">
+                        <td width="200">Alternative IP(s)</td>
+                        <td class="wrap"><span ng-repeat="ip in r.alternativeip">{{ ip }}<br></span></td>
+                    </tr>
+                    <tr ng-if="r.subnet">
+                        <td width="200">Network</td>
+                        <td class="wrap">{{r.subnet}}</td>
+                    </tr>
+                    <tr ng-if="r.domain">
+                        <td width="200">Domain(s)</td>
+                        <td class="wrap"><span ng-repeat="d in r.domain">{{ d }}<br></span></td>
+                    </tr>
+                    <tr ng-if="r.device">
+                        <td width="200">Device</td>
+                        <td class="wrap" ng-if="r.device.product">{{r.device.productvendor}} {{r.device.product}}</td>
+                        <td class="wrap" ng-if="!r.device.product">{{r.device.class}}</td>
+                    </tr>
+                    <tr ng-if="r.os">
+                        <td width="200">OS</td>
+                        <td class="wrap">{{r.os}}</td>
+                    </tr>
+                    <tr ng-if="r.url">
+                        <td width="200">URL</td>
+                        <td class="wrap" ng-if="r.forward && r.tls == 'true' && r.port == '443'">https://{{r.forward}}{{r.url}}</td>
+                        <td class="wrap" ng-if="r.forward && r.tls == 'true' && r.port != '443'">https://{{r.forward}}:{{r.port}}{{r.url}}</td>
+                        <td class="wrap" ng-if="r.forward && r.tls == 'false' && r.port == '80'">http://{{r.forward}}{{r.url}}</td>
+                        <td class="wrap" ng-if="r.forward && r.tls == 'false' && r.port != '80'">http://{{r.forward}}:{{r.port}}{{r.url}}</td>
+                        <td class="wrap" ng-if="!r.forward && r.tls == 'true' && r.port == '443'">https://{{r.ip}}{{r.url}}</td>
+                        <td class="wrap" ng-if="!r.forward && r.tls == 'true' && r.port != '443'">https://{{r.ip}}:{{r.port}}{{r.url}}</td>
+                        <td class="wrap" ng-if="!r.forward && r.tls == 'false' && r.port == '80'">http://{{r.ip}}{{r.url}}</td>
+                        <td class="wrap" ng-if="!r.forward && r.tls == 'false' && r.port != '80'">http://{{r.ip}}:{{r.port}}{{r.url}}</td>
+                    </tr>
+                    <tr ng-if="r.app.http.title">
+                        <td width="200">HTTP Title</td>
+                        <td class="wrap">{{r.app.http.title}}</td>
+                    </tr>
+                    <tr ng-if="r.app.http.description">
+                        <td width="200">HTTP Description</td>
+                        <td class="wrap">{{r.app.http.description}}</td>
+                    </tr>
+                    <tr ng-if="r.reverse">
+                        <td width="200">Reverse</td>
+                        <td class="wrap"><span ng-repeat="rev in r.reverse">{{ rev }}<br></span></td>
+                    </tr>
+                    <tr ng-if="r.asn">
+                        <td width="200">ASN</td>
+                        <td class="wrap">{{r.asn}}</td>
+                    </tr>
+                    <tr ng-if="r.organization">
+                        <td width="200">Organization</td>
+                        <td class="wrap">{{r.organization}}</td>
+                    </tr>
+                    <tr ng-if="r.protocol">
+                        <td width="200">Protocol</td>
+                        <td class="wrap">{{r.protocol}}</td>
+                    </tr>
+                    <tr>
+                        <td width="200">Source</td>
+                        <td class="wrap">{{r.source}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </uib-tab>
+        <uib-tab ng-if="r.cpecount > 0" TabIndex="software-{{$index}}" heading="Software" disable="tab.disabled">
+            <table class="table">
+                <tbody>
+                    <tr ng-if="r.product">
+                        <td width="200">Product</td>
+                        <td class="wrap" ng-if="r.device.productversion">{{r.productvendor}} {{r.product}} {{r.productversion}}</td>
+                        <td class="wrap" ng-if="!r.device.productversuib">{{r.productvendor}} {{r.product}}</td>
+                    </tr>
+                    <tr ng-if="r.app.http.component">
+                        <td width="200">HTTP Component(s)</td>
+                        <td class="wrap"><span ng-repeat="ponent in r.app.http.component">{{ ponent.productvendor }} {{ ponent.product }} <span ng-if="ponent.productversion">{{ponent.productversion}}</span><br></span></td>
+                    </tr>
+                    <tr ng-if="r.cpe">
+                        <td width="200">CPE(s)</td>
+                        <td class="wrap"><span ng-repeat="cp in r.cpe">{{ cp }}<br></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </uib-tab>
+        <uib-tab ng-if="r.tls == 'true'" TabIndex="tls-{{$index}}" heading="TLS" disable="tab.disabled">
+            <table class="table">
+                <tbody>
+                    <tr ng-if="r.issuer.commonname">
+                        <td width="200">Issuer Common Name</td>
+                        <td class="wrap">{{r.issuer.commonname}}</td>
+                    </tr>
+                    <tr ng-if="r.issuer.organization">
+                        <td width="200">Issuer Organization</td>
+                        <td class="wrap">{{r.issuer.commonname}}</td>
+                    </tr>
+                    <tr ng-if="r.subject.organization">
+                        <td width="200">Subject Organization</td>
+                        <td class="wrap">{{r.subject.organization}}</td>
+                    </tr>
+                    <tr ng-if="r.subject.commonname">
+                        <td width="200">Subject Common Name</td>
+                        <td class="wrap">{{r.subject.commonname}}</td>
+                    </tr>
+                    <tr ng-if="r.subject.altname">
+                        <td width="200">Subject Alt Name</td>
+                        <td class="wrap"><span ng-repeat="altnam in r.subject.altname">{{ altnam }}<br></span></td>
+                    </tr>
+                    <tr ng-if="r.fingerprint.sha256">
+                        <td width="200">SHA256 Fingerprint</td>
+                        <td class="wrap">{{r.fingerprint.sha256}}</td>
+                    </tr>
+                    <tr ng-if="r.validity.notbefore">
+                        <td width="200">Validity Not Before</td>
+                        <td class="wrap">{{r.validity.notbefore}}</td>
+                    </tr>
+                    <tr ng-if="r.validity.notafter">
+                        <td width="200">Validity Not After</td>
+                        <td class="wrap">{{r.validity.notafter}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </uib-tab>
+        <uib-tab ng-if="r.datamd5" TabIndex="Analytics-{{$index}}" heading="Analytics" disable="tab.disabled">
+            <table class="table">
+                <tbody>
+                    <tr ng-if="r.datamd5">
+                        <td width="200">Data MD5</td>
+                        <td class="wrap">{{r.datamd5}}</td>
+                    </tr>
+                    <tr ng-if="r.app.http.headermd5">
+                        <td width="200">HTTP Header MD5</td>
+                        <td class="wrap">{{r.app.http.headermd5}}</td>
+                    </tr>
+                    <tr ng-if="r.app.http.bodymd5">
+                        <td width="200">HTTP Body MD5</td>
+                        <td class="wrap">{{r.app.http.bodymd5}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </uib-tab>
+        <uib-tab ng-if="r.summary" TabIndex="summary-{{$index}}" heading="Summary" disable="tab.disabled">
+            <textarea readonly style="background-color: black;color:#e0e0e0;" rows="20" cols="120">{{ r.summary }}</textarea>
+        </uib-tab>
+        <uib-tab ng-if="r.data" TabIndex="data-{{$index}}" heading="Data" disable="tab.disabled">
+            <textarea readonly style="background-color: black;color:#e0e0e0;" rows="20" cols="120">{{ r.data }}</textarea>
+        </uib-tab>
+        <uib-tab TabIndex="json-{{$index}}" heading="JSON" disable="tab.disabled">
+            <textarea readonly style="background-color: black;color:#7ec699;" rows="20" cols="120">{{r | json}}</textarea>
+        </uib-tab>
+    </uib-tabset>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

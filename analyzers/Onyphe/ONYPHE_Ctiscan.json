@@ -1,0 +1,72 @@
+{
+  "name": "ONYPHE_Ctiscan",
+  "version": "1.0",
+  "author": "James Atack",
+  "license": "AGPL-V3",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "description": "Query ONYPHE Ctiscan threat hunting data for open services (takes ip, domain, fqdn, autonomous-system or hash.)",
+  "dataTypeList": ["ip", "domain", "fqdn", "hash", "autonomous-system", "other"],
+  "command": "Onyphe/onyphe_analyzer.py",
+  "baseConfig": "Onyphe",
+  "config": {
+    "service": "ctiscan",
+    "base_uri": "/api/v2/",
+    "base_url": "https://www.onyphe.io",
+    "keep_all_tags" : false,
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 2
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the API key to use to connect the service",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "time_filter",
+      "description": "Specify ONYPHE time function to be used for searches (see https://www.onyphe.io/docs/onyphe-query-language)",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "-since:1w"
+    },
+    {
+      "name": "return_other_artifacts",
+      "description": "Analyzer will create '<ip>:<port>' artifacts of type 'other' for each open service, with tags for technologies and protocols",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "auto_import",
+      "description": "Automatically import artifacts as observables",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": false
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://www.onyphe.io",
+  "service_logo": {
+    "path": "assets/onyphe_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/ONYPHE_Ctiscan_long.png",
+      "caption": "ONYPHE Ctiscan report sample (IPs obscured)"
+    },
+    {
+      "path": "assets/ONYPHE_Ctiscan_short.png",
+      "caption": "ONYPHE Ctiscan mini report showing imported observables for open services"
+    }
+  ]
+}

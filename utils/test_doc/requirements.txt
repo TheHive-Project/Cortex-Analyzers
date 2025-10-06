@@ -1,0 +1,8 @@
+pymdown-extensions
+mkdocs
+mkdocs-awesome-pages-plugin
+mkdocs-git-revision-date-localized-plugin
+mkdocs-material
+mkdocs-material-extensions
+mkdocs-pymdownx-material-extras
+mdutils
