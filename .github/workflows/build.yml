@@ -11,6 +11,12 @@ on:
     # Every Month, the first day at 8:42 
     - cron: "42 8 1 * *"
 
+permissions:
+  contents: write
+  security-events: write
+  packages: write
+  actions: read
+
 jobs:
   generate-matrix:
     name: Generate Matrix
@@ -20,7 +26,7 @@ jobs:
       responders_matrix: ${{ steps.set-matrix.outputs.responders_matrix }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -83,15 +89,9 @@ jobs:
       matrix: ${{ fromJson(needs.generate-matrix.outputs.analyzers_matrix) }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
 
       - name: GHCR Login
         uses: docker/login-action@v3
@@ -145,25 +145,38 @@ jobs:
           command_value="${{ env.COMMAND }}"
 
           # Add multiple workers separated by spaces
-          special_alpine_workers="PaloAltoNGFW Worker2 Worker3 AnotherWorker"
+          special_alpine_workers="PaloAltoNGFW FileInfo Worker2 Worker3 AnotherWorker"
 
           if [ ! -f "$dockerfile_path" ]; then
             echo "Dockerfile not found in $dockerfile_path. Creating one..."
-            #echo "FROM python:3-alpine" > "$dockerfile_path"
-            #echo "RUN apk add --no-cache openssl ca-certificates" >> "$dockerfile_path"
-            echo "FROM python:3-slim" > "$dockerfile_path"
-            # echo "RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*" >> "$dockerfile_path"
+            
+            # Multi-stage build - Builder stage
+            echo "# Builder stage" > "$dockerfile_path"
+            echo "FROM python:3-slim AS builder" >> "$dockerfile_path"
+            echo "WORKDIR /build" >> "$dockerfile_path"
 
-            # Check if current worker is among special alpine workers
+            # Check if current worker is among special alpine workers and install build dependencies
             if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
-            #  echo "RUN apk add --no-cache file-dev && rm -rf /var/cache/apk/*" >> "$dockerfile_path"
+              echo "RUN apt-get update && apt-get install -y --no-install-recommends libmagic-dev build-essential && rm -rf /var/lib/apt/lists/*" >> "$dockerfile_path"
+            fi
+
+            echo "COPY requirements.txt ." >> "$dockerfile_path"
+            echo "RUN test ! -e requirements.txt || pip install --user --no-cache-dir -r requirements.txt" >> "$dockerfile_path"
+            echo "" >> "$dockerfile_path"
+            
+            # Runtime stage
+            echo "# Runtime stage" >> "$dockerfile_path"
+            echo "FROM python:3-slim" >> "$dockerfile_path"
+            
+            # Check if current worker needs runtime libraries
+            if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
               echo "RUN apt-get update && apt-get install -y --no-install-recommends libmagic1 && rm -rf /var/lib/apt/lists/*" >> "$dockerfile_path"
             fi
 
             echo "WORKDIR /worker" >> "$dockerfile_path"
-            echo "COPY requirements.txt ${matrix_directory}/" >> "$dockerfile_path"
-            echo "RUN test ! -e ${matrix_directory}/requirements.txt || pip install --no-cache-dir -r ${matrix_directory}/requirements.txt" >> "$dockerfile_path"
+            echo "COPY --from=builder /root/.local /root/.local" >> "$dockerfile_path"
             echo "COPY . ${matrix_directory}/" >> "$dockerfile_path"
+            echo "ENV PATH=/root/.local/bin:\$PATH" >> "$dockerfile_path"
             echo "ENTRYPOINT [\"python\", \"${command_value}\"]" >> "$dockerfile_path"
           else
             echo "Dockerfile exists: $dockerfile_path"
@@ -171,44 +184,47 @@ jobs:
 
       - name: Check if image needs rebuild
         id: check-rebuild
+        env:
+          IMAGE_NAME: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}
+          CURRENT_SHA: ${{ github.sha }}
+          COMPONENT_DIR: analyzers/${{ matrix.directory }}
         run: |
-          image="ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}"
-          current_sha="${{ github.sha }}"
-      
-          token="${{ secrets.GITHUB_TOKEN }}"
-      
-          # Fetch image manifest from GHCR
-          manifest_response=$(curl -sSL \
-            -H "Authorization: Bearer $token" \
-            -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
-            "https://ghcr.io/v2/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}/manifests/${{ env.VERSION }}")
-      
-          # Check if the manifest response contains a valid digest
-          labels=$(echo "$manifest_response" | jq -r '.config.digest // empty')
-      
-          if [[ -z "$labels" ]]; then
-            echo "No existing image or unable to fetch manifest. rebuild needed"
+          set +x  # Disable command echoing for security
+
+          # Force rebuild on scheduled runs (cron) and manual triggers
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Scheduled run or manual trigger detected - forcing rebuild"
             echo "rebuild=true" >> $GITHUB_OUTPUT
             exit 0
           fi
-      
-          # Fetch image config blob to extract labels
-          config_response=$(curl -sSL \
-            -H "Authorization: Bearer $token" \
-            "https://ghcr.io/v2/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}/blobs/$labels")
-      
-          # Extract image label safely
-          image_labels=$(echo "$config_response" | jq -r '.config.Labels["org.opencontainers.image.revision"] // empty')
-      
-          # Debugging: print values
-          echo "current_sha: $current_sha"
-          echo "image_labels: $image_labels"
-      
-          if [[ "$image_labels" == "$current_sha" ]]; then
-            echo "No rebuild needed. SHA matches: $current_sha"
-            echo "rebuild=false" >> $GITHUB_OUTPUT
+          
+          # Try to pull the image to check if it exists
+          if docker pull --platform linux/amd64 "$IMAGE_NAME" >/dev/null 2>&1; then
+            # Image exists, check if it has the current SHA
+            EXISTING_SHA=$(docker inspect "$IMAGE_NAME" --format='{{index .Config.Labels "org.opencontainers.image.revision"}}' 2>/dev/null || echo "")
+            
+            if [[ "$EXISTING_SHA" == "$CURRENT_SHA" ]]; then
+              echo "Image is up to date with current commit. No rebuild needed."
+              echo "rebuild=false" >> $GITHUB_OUTPUT
+            else
+              # Check if this specific component folder has changes since the image was built
+              if [[ -n "$EXISTING_SHA" ]] && git rev-parse --verify "$EXISTING_SHA" >/dev/null 2>&1; then
+                # Check if there are changes in the component directory since the existing SHA
+                if git diff --quiet "$EXISTING_SHA" "$CURRENT_SHA" -- "$COMPONENT_DIR"; then
+                  echo "No changes in $COMPONENT_DIR since last build. No rebuild needed."
+                  echo "rebuild=false" >> $GITHUB_OUTPUT
+                else
+                  echo "Changes detected in $COMPONENT_DIR. Rebuild needed."
+                  echo "rebuild=true" >> $GITHUB_OUTPUT
+                fi
+              else
+                echo "Cannot verify existing SHA. Rebuild needed."
+                echo "rebuild=true" >> $GITHUB_OUTPUT
+              fi
+            fi
           else
-            echo "SHA mismatch or missing label. rebuild needed"
+            # Image doesn't exist or can't be pulled
+            echo "Image not found or inaccessible. Rebuild needed."
             echo "rebuild=true" >> $GITHUB_OUTPUT
           fi
       
@@ -222,8 +238,8 @@ jobs:
             # Keep one image tag for import testing
             echo "IMAGE_TAG=${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
             # Produce three tags:
-            #   1) :VERSION  (e.g. 2.0)
-            #   2) :VERSION_SPLIT  (e.g. 2)
+            #   1) :VERSION  (eg 2.0)
+            #   2) :VERSION_SPLIT  (eg 2)
             #   3) :latest
             echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }},ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
           else
@@ -236,18 +252,28 @@ jobs:
         id: set_platforms
         run: |
           NO_ARM64_DIRS="FileInfo"
-      
+
           CURRENT_DIR="${{ matrix.directory }}"
           # Default to multi-arch
           PLATFORMS="linux/amd64,linux/arm64"
-      
+
           # Check if CURRENT_DIR is in the NO_ARM64_DIRS list
           if echo "$NO_ARM64_DIRS" | grep -qw "$CURRENT_DIR"; then
             echo "Directory '$CURRENT_DIR' is in NO_ARM64_DIRS; limiting to linux/amd64 only."
             PLATFORMS="linux/amd64"
           fi
-      
+
           echo "PLATFORMS=$PLATFORMS" >> $GITHUB_ENV
+
+      # Only install QEMU when we actually build AND arm64 is targeted
+      - name: Set up QEMU
+        if: steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/arm64')
+        uses: docker/setup-qemu-action@v3
+
+      # Buildx is only needed when we build (and for imagetools)
+      - name: Set up Docker Buildx
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        uses: docker/setup-buildx-action@v3
 
       - name: Build and push multi-arch image to GHCR
         if: steps.check-rebuild.outputs.rebuild == 'true'
@@ -258,6 +284,8 @@ jobs:
           platforms: ${{ env.PLATFORMS }}
           push: true
           tags: ${{ env.IMAGE_TAGS }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max,scope=shared
           labels: |
             org.opencontainers.image.created=${{ steps.build_date.outputs.date }}
             org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
@@ -275,15 +303,53 @@ jobs:
             org.opencontainers.image.url=https://thehive-project.org
             org.opencontainers.image.version=${{ env.VERSION }}
 
+      - name: Get image digest for Trivy scan
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        id: get-digest
+        run: |
+          # Get the digest of the pushed image using buildx imagetools
+          IMAGE_DIGEST=$(docker buildx imagetools inspect ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }} 2>/dev/null | grep "^Digest:" | awk '{print $2}' || echo "")
+
+          if [ -n "$IMAGE_DIGEST" ]; then
+            IMAGE_DIGEST="ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}@$IMAGE_DIGEST"
+          else
+            # Fallback: try docker inspect for RepoDigests
+            IMAGE_DIGEST=$(docker inspect ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }} --format='{{index .RepoDigests 0}}' 2>/dev/null || echo "")
+
+            if [ -z "$IMAGE_DIGEST" ]; then
+              # Fallback: try to get digest from local images
+              IMAGE_DIGEST=$(docker images --digests ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }} --format "table {{.Repository}}:{{.Tag}}\t{{.Digest}}" | grep ":${{ env.IMAGE_TAG }}" | awk '{print $2}' | head -1)
+              if [ -n "$IMAGE_DIGEST" ] && [ "$IMAGE_DIGEST" != "<none>" ]; then
+                IMAGE_DIGEST="ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}@$IMAGE_DIGEST"
+              else
+                # Ultimate fallback: use tag
+                IMAGE_DIGEST="ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
+              fi
+            fi
+          fi
+          echo "IMAGE_DIGEST=$IMAGE_DIGEST" >> $GITHUB_OUTPUT
+          echo "Using image reference for Trivy scan: $IMAGE_DIGEST"
+
       - name: Scan image for vulnerabilities (Trivy)
-        uses: aquasecurity/trivy-action@0.32.0
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        uses: aquasecurity/trivy-action@0.33.1
         with:
-          image-ref: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
-          format: table
+          image-ref: ${{ steps.get-digest.outputs.IMAGE_DIGEST }}
+          format: sarif
+          output: trivy.sarif
           vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+          severity: 'CRITICAL,HIGH,MEDIUM'
           exit-code: 0
           ignore-unfixed: true
+          timeout: 10m
+          skip-files: '**/*.yara,**/*.cvd'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy.sarif
+          category: trivy-${{ matrix.directory }}
 
       - name: Test imports in the container (amd64)
         if: ${{ steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/amd64') }}
@@ -504,15 +570,9 @@ jobs:
       matrix: ${{ fromJson(needs.generate-matrix.outputs.responders_matrix) }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
 
       - name: GHCR Login
         uses: docker/login-action@v3
@@ -566,24 +626,38 @@ jobs:
           command_value="${{ env.COMMAND }}"
 
           # Add multiple workers separated by spaces
-          special_alpine_workers="PaloAltoNGFW Worker2 Worker3 AnotherWorker"
+          special_alpine_workers="PaloAltoNGFW FileInfo Worker2 Worker3 AnotherWorker"
 
           if [ ! -f "$dockerfile_path" ]; then
             echo "Dockerfile not found in $dockerfile_path. Creating one..."
-            # echo "FROM python:3-alpine" > "$dockerfile_path"
-            # echo "RUN apk add --no-cache openssl ca-certificates bind-tools" >> "$dockerfile_path"
-            echo "FROM python:3-slim" > "$dockerfile_path"
+            
+            # Multi-stage build - Builder stage
+            echo "# Builder stage" > "$dockerfile_path"
+            echo "FROM python:3-slim AS builder" >> "$dockerfile_path"
+            echo "WORKDIR /build" >> "$dockerfile_path"
 
-            # Check if current worker is among special alpine workers
+            # Check if current worker is among special alpine workers and install build dependencies
             if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
-            #  echo "RUN apk add --no-cache file-dev && rm -rf /var/cache/apk/*" >> "$dockerfile_path"
+              echo "RUN apt-get update && apt-get install -y --no-install-recommends libmagic-dev build-essential && rm -rf /var/lib/apt/lists/*" >> "$dockerfile_path"
+            fi
+
+            echo "COPY requirements.txt ." >> "$dockerfile_path"
+            echo "RUN test ! -e requirements.txt || pip install --user --no-cache-dir -r requirements.txt" >> "$dockerfile_path"
+            echo "" >> "$dockerfile_path"
+            
+            # Runtime stage
+            echo "# Runtime stage" >> "$dockerfile_path"
+            echo "FROM python:3-slim" >> "$dockerfile_path"
+            
+            # Check if current worker needs runtime libraries
+            if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
               echo "RUN apt-get update && apt-get install -y --no-install-recommends libmagic1 && rm -rf /var/lib/apt/lists/*" >> "$dockerfile_path"
             fi
 
             echo "WORKDIR /worker" >> "$dockerfile_path"
-            echo "COPY requirements.txt ${matrix_directory}/" >> "$dockerfile_path"
-            echo "RUN test ! -e ${matrix_directory}/requirements.txt || pip install --no-cache-dir -r ${matrix_directory}/requirements.txt" >> "$dockerfile_path"
+            echo "COPY --from=builder /root/.local /root/.local" >> "$dockerfile_path"
             echo "COPY . ${matrix_directory}/" >> "$dockerfile_path"
+            echo "ENV PATH=/root/.local/bin:\$PATH" >> "$dockerfile_path"
             echo "ENTRYPOINT [\"python\", \"${command_value}\"]" >> "$dockerfile_path"
           else
             echo "Dockerfile exists: $dockerfile_path"
@@ -591,47 +665,49 @@ jobs:
 
       - name: Check if image needs rebuild
         id: check-rebuild
+        env:
+          IMAGE_NAME: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}
+          CURRENT_SHA: ${{ github.sha }}
+          COMPONENT_DIR: responders/${{ matrix.directory }}
         run: |
-          image="ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}"
-          current_sha="${{ github.sha }}"
-      
-          token="${{ secrets.GITHUB_TOKEN }}"
-      
-          # Fetch image manifest from GHCR
-          manifest_response=$(curl -sSL \
-            -H "Authorization: Bearer $token" \
-            -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
-            "https://ghcr.io/v2/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}/manifests/${{ env.VERSION }}")
-      
-          # Check if the manifest response contains a valid digest
-          labels=$(echo "$manifest_response" | jq -r '.config.digest // empty')
-      
-          if [[ -z "$labels" ]]; then
-            echo "No existing image or unable to fetch manifest. rebuild needed"
+          set +x  # Disable command echoing for security
+
+          # Force rebuild on scheduled runs (cron) and manual triggers
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Scheduled run or manual trigger detected - forcing rebuild"
             echo "rebuild=true" >> $GITHUB_OUTPUT
             exit 0
           fi
-      
-          # Fetch image config blob to extract labels
-          config_response=$(curl -sSL \
-            -H "Authorization: Bearer $token" \
-            "https://ghcr.io/v2/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}/blobs/$labels")
-      
-          # Extract image label safely
-          image_labels=$(echo "$config_response" | jq -r '.config.Labels["org.opencontainers.image.revision"] // empty')
-      
-          # Debugging: print values
-          echo "current_sha: $current_sha"
-          echo "image_labels: $image_labels"
-      
-          if [[ "$image_labels" == "$current_sha" ]]; then
-            echo "No rebuild needed. SHA matches: $current_sha"
-            echo "rebuild=false" >> $GITHUB_OUTPUT
+          
+          # Try to pull the image to check if it exists
+          if docker pull --platform linux/amd64 "$IMAGE_NAME" >/dev/null 2>&1; then
+            # Image exists, check if it has the current SHA
+            EXISTING_SHA=$(docker inspect "$IMAGE_NAME" --format='{{index .Config.Labels "org.opencontainers.image.revision"}}' 2>/dev/null || echo "")
+            
+            if [[ "$EXISTING_SHA" == "$CURRENT_SHA" ]]; then
+              echo "Image is up to date with current commit. No rebuild needed."
+              echo "rebuild=false" >> $GITHUB_OUTPUT
+            else
+              # Check if this specific component folder has changes since the image was built
+              if [[ -n "$EXISTING_SHA" ]] && git rev-parse --verify "$EXISTING_SHA" >/dev/null 2>&1; then
+                # Check if there are changes in the component directory since the existing SHA
+                if git diff --quiet "$EXISTING_SHA" "$CURRENT_SHA" -- "$COMPONENT_DIR"; then
+                  echo "No changes in $COMPONENT_DIR since last build. No rebuild needed."
+                  echo "rebuild=false" >> $GITHUB_OUTPUT
+                else
+                  echo "Changes detected in $COMPONENT_DIR. Rebuild needed."
+                  echo "rebuild=true" >> $GITHUB_OUTPUT
+                fi
+              else
+                echo "Cannot verify existing SHA. Rebuild needed."
+                echo "rebuild=true" >> $GITHUB_OUTPUT
+              fi
+            fi
           else
-            echo "SHA mismatch or missing label. rebuild needed"
+            # Image doesn't exist or can't be pulled
+            echo "Image not found or inaccessible. Rebuild needed."
             echo "rebuild=true" >> $GITHUB_OUTPUT
           fi
-        
 
       - name: Set build date
         id: build_date
@@ -643,8 +719,8 @@ jobs:
             # Keep one image tag for import testing
             echo "IMAGE_TAG=${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
             # Produce three tags:
-            #   1) :VERSION  (e.g. 2.0)
-            #   2) :VERSION_SPLIT  (e.g. 2)
+            #   1) :VERSION  (eg 2.0)
+            #   2) :VERSION_SPLIT  (eg 2)
             #   3) :latest
             echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }},ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
           else
@@ -657,18 +733,28 @@ jobs:
         id: set_platforms
         run: |
           NO_ARM64_DIRS="MSDefenderOffice365"
-      
+
           CURRENT_DIR="${{ matrix.directory }}"
           # Default to multi-arch
           PLATFORMS="linux/amd64,linux/arm64"
-      
+
           # Check if CURRENT_DIR is in the NO_ARM64_DIRS list
           if echo "$NO_ARM64_DIRS" | grep -qw "$CURRENT_DIR"; then
             echo "Directory '$CURRENT_DIR' is in NO_ARM64_DIRS; limiting to linux/amd64 only."
             PLATFORMS="linux/amd64"
           fi
-      
+
           echo "PLATFORMS=$PLATFORMS" >> $GITHUB_ENV
+
+      # Only install QEMU when we actually build AND arm64 is targeted
+      - name: Set up QEMU
+        if: steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/arm64')
+        uses: docker/setup-qemu-action@v3
+
+      # Buildx is only needed when we build (and for imagetools)
+      - name: Set up Docker Buildx
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        uses: docker/setup-buildx-action@v3
 
       - name: Build and push multi-arch image to GHCR
         if: steps.check-rebuild.outputs.rebuild == 'true'
@@ -679,6 +765,8 @@ jobs:
           platforms: ${{ env.PLATFORMS }}
           push: true
           tags: ${{ env.IMAGE_TAGS }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max,scope=shared
           labels: |
             org.opencontainers.image.created=${{ steps.build_date.outputs.date }}
             org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
@@ -696,15 +784,53 @@ jobs:
             org.opencontainers.image.url=https://thehive-project.org
             org.opencontainers.image.version=${{ env.VERSION }}
 
+      - name: Get image digest for Trivy scan
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        id: get-digest-responder
+        run: |
+          # Get the digest of the pushed image using buildx imagetools
+          IMAGE_DIGEST=$(docker buildx imagetools inspect ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }} 2>/dev/null | grep "^Digest:" | awk '{print $2}' || echo "")
+
+          if [ -n "$IMAGE_DIGEST" ]; then
+            IMAGE_DIGEST="ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}@$IMAGE_DIGEST"
+          else
+            # Fallback: try docker inspect for RepoDigests
+            IMAGE_DIGEST=$(docker inspect ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }} --format='{{index .RepoDigests 0}}' 2>/dev/null || echo "")
+
+            if [ -z "$IMAGE_DIGEST" ]; then
+              # Fallback: try to get digest from local images
+              IMAGE_DIGEST=$(docker images --digests ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }} --format "table {{.Repository}}:{{.Tag}}\t{{.Digest}}" | grep ":${{ env.IMAGE_TAG }}" | awk '{print $2}' | head -1)
+              if [ -n "$IMAGE_DIGEST" ] && [ "$IMAGE_DIGEST" != "<none>" ]; then
+                IMAGE_DIGEST="ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}@$IMAGE_DIGEST"
+              else
+                # Ultimate fallback: use tag
+                IMAGE_DIGEST="ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
+              fi
+            fi
+          fi
+          echo "IMAGE_DIGEST=$IMAGE_DIGEST" >> $GITHUB_OUTPUT
+          echo "Using image reference for Trivy scan: $IMAGE_DIGEST"
+
       - name: Scan image for vulnerabilities (Trivy)
-        uses: aquasecurity/trivy-action@0.32.0
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        uses: aquasecurity/trivy-action@0.33.1
         with:
-          image-ref: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
-          format: table
+          image-ref: ${{ steps.get-digest-responder.outputs.IMAGE_DIGEST }}
+          format: sarif
+          output: trivy.sarif
           vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+          severity: 'CRITICAL,HIGH,MEDIUM'
           exit-code: 0
           ignore-unfixed: true
+          timeout: 10m
+          skip-files: '**/*.yara,**/*.cvd'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy.sarif
+          category: trivy-${{ matrix.directory }}
 
       - name: Test imports in the container (amd64)
         if: ${{ steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/amd64') }}
@@ -924,7 +1050,7 @@ jobs:
     if: always()
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Set lowercase repository owner
         run: |
           owner="${{ github.repository_owner }}"
@@ -982,13 +1108,13 @@ jobs:
     needs: [ build_analyzers, build_responders ]
     if: startsWith(github.ref, 'refs/tags/') && always()
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Prepare documentation files
         uses: docker://thehiveproject/doc-builder
         with:
           args: --type Cortex-Neurons
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.x"
           architecture: x64

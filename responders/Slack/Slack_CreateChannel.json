@@ -4,7 +4,7 @@
   "author": "Fabien Bloume, StrangeBee",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Creates a Slack channel for a TheHive case, invites participants, and optionally posts a case summary and/or case description.",
+  "description": "Creates a Slack channel for a TheHive case, invites participants, and optionally posts a case summary and description.",
   "dataTypeList": ["thehive:case"],
   "command": "Slack/slack.py",
   "baseConfig": "Slack",

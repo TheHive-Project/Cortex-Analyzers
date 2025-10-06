@@ -7,14 +7,14 @@ import hashlib
 from requests.auth import HTTPBasicAuth
 import time
 
-class ProofPointForensicsAnalyzer(Analyzer):
+class ProofpointForensicsAnalyzer(Analyzer):
 
 	def __init__(self):
 		Analyzer.__init__(self)
-		self.service = self.get_param('config.service', None, 'ProofPoint service is missing')
+		self.service = self.get_param('config.service', None, 'Proofpoint service is missing')
 		self.url = self.get_param('config.url', 'https://tap-api-v2.proofpoint.com', None)
-		self.apikey = self.get_param('config.apikey', None, 'ProofPoint apikey is missing')
-		self.secret = self.get_param('config.secret', None, 'ProofPoint secret is missing')
+		self.apikey = self.get_param('config.apikey', None, 'Proofpoint apikey is missing')
+		self.secret = self.get_param('config.secret', None, 'Proofpoint secret is missing')
 		self.verify = self.get_param('config.verifyssl', True, None)
 		if not self.verify:
 			from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -24,7 +24,7 @@ class ProofPointForensicsAnalyzer(Analyzer):
 		
 		taxonomies = []
 		level = "info"
-		namespace = "ProofPoint"
+		namespace = "Proofpoint"
 		predicate = "Category"
 		value = "\"Unknown\""
 		
@@ -104,4 +104,4 @@ class ProofPointForensicsAnalyzer(Analyzer):
 			self.unexpectedError(e)
 
 if __name__ == '__main__':
-	ProofPointForensicsAnalyzer().run()
+	ProofpointForensicsAnalyzer().run()
