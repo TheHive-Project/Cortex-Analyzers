@@ -69,6 +69,7 @@ class Slack(Responder):
                 .lower()
             )
             channel_name = channel_name[:80]
+            self.channel_name = channel_name
 
             headers = {
                 "Authorization": f"Bearer {self.slack_token}",
@@ -192,49 +193,72 @@ class Slack(Responder):
             case_id = self.get_param("data.caseId")
             case_unique_id = self.get_param("data.id")
 
-            # Channel name format: case-CASEID
-            channel_name = (
-                f"{self.channel_prefix}{case_id}".replace(" ", "-")
-                .replace(".", "")
-                .replace(",", "")
-                .lower()
-            )
-            channel_name = channel_name[:80]
+            # Collect all channel names from tags
+            channel_names = []
+            case_tags = self.get_param("data.tags", [])
+            for tag in case_tags:
+                if tag.startswith("slack:"):
+                    channel_names.append(tag[6:])  # Remove "slack:" prefix
+
+            # Fallback to reconstructing channel name if no tags found
+            if not channel_names:
+                channel_name = (
+                    f"{self.channel_prefix}{case_id}".replace(" ", "-")
+                    .replace(".", "")
+                    .replace(",", "")
+                    .lower()
+                )
+                channel_name = channel_name[:80]
+                channel_names.append(channel_name)
 
             headers = {
                 "Authorization": f"Bearer {self.slack_token}",
                 "Content-Type": "application/json",
             }
 
-            # Find the channel
-            channel_id = self.find_existing_channel(channel_name, headers)
-            if not channel_id:
-                self.error(
-                    f"Channel '{channel_name}' not found. Create the channel first."
-                )
+            # Sync all channels
+            synced_channels = []
+            errors = []
 
-            # Get channel conversation history
-            conversation_data = self.get_channel_conversations(channel_id, headers)
+            for channel_name in channel_names:
+                try:
+                    # Find the channel
+                    channel_id = self.find_existing_channel(channel_name, headers)
+                    if not channel_id:
+                        errors.append(f"Channel '{channel_name}' not found")
+                        continue
 
-            # Create or update TheHive task with conversation data
-            task_id, action = self.create_or_update_thehive_task(
-                case_unique_id, channel_name, conversation_data
-            )
+                    # Get channel conversation history
+                    conversation_data = self.get_channel_conversations(channel_id, headers)
 
-            # Include debug info in the main report
+                    # Create or update TheHive task with conversation data
+                    task_id, action = self.create_or_update_thehive_task(
+                        case_unique_id, channel_name, conversation_data
+                    )
+
+                    synced_channels.append({
+                        "channel_name": channel_name,
+                        "channel_id": channel_id,
+                        "task_id": task_id,
+                        "action": action
+                    })
+
+                except Exception as e:
+                    errors.append(f"Error syncing '{channel_name}': {str(e)}")
+
+            # Build report
+            if not synced_channels and errors:
+                self.error(f"Failed to sync channels: {', '.join(errors)}")
+
             report_data = {
-                "channel_name": channel_name,
-                "channel_id": channel_id,
-                "task_id": task_id,
-                "action": action,
-                "message": f"Slack channel `{channel_name}` conversation {action} in TheHive task {task_id}.",
+                "synced_channels": synced_channels,
+                "total_synced": len(synced_channels),
+                "message": f"Synced {len(synced_channels)} channel(s)"
             }
-            
-            # Add debug info if we have it
-            if hasattr(self, '_last_debug_info'):
-                report_data["debug_info"] = self._last_debug_info
-                delattr(self, '_last_debug_info')
-            
+
+            if errors:
+                report_data["errors"] = errors
+
             self.report(report_data)
 
     def get_channel_conversations(self, channel_id, headers):
@@ -705,6 +729,17 @@ class Slack(Responder):
 
             except Exception as e:
                 self.error(f"Failed to create task: {str(e)}")
+                
+    def operations(self, raw):
+        artifacts = []
+        # AddTagToArtifact ({ "type": "AddTagToArtifact", "tag": "tag to add" }): add a tag to the artifact related to the object
+        # AddTagToCase ({ "type": "AddTagToCase", "tag": "tag to add" }): add a tag to the case related to the object
+        # MarkAlertAsRead: mark the alert related to the object as read
+        # AddCustomFields ({"name": "key", "value": "value", "tpe": "type"): add a custom field to the case related to the object
+        if self.service == "createchannel":
+            if hasattr(self, 'channel_name'):
+                artifacts.append(self.build_operation("AddTagToCase", tag=f"slack:{self.channel_name}"))
+        return artifacts
 
 
 if __name__ == "__main__":
