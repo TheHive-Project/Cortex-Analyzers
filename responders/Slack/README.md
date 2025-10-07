@@ -18,14 +18,18 @@ This directory contains two Slack responders for TheHive integration:
 - Invites default participants by email
 - Sets channel visibility (private or public)
 - Posts case summary and/or case description (optional)
+- **Automatically tags the case** with `slack:<channel_name>` for easy tracking
 
-### Slack_SyncChannel  
-- Retrieves all conversation history from channels with format `#case-CASEID`
+### Slack_SyncChannel
+- **Syncs all Slack channels tagged with `slack:` prefix** on the case
+- Retrieves all conversation history from tagged channels
+- **Fallback**: If no tags found, uses default format `#case-CASEID`
 - Creates TheHive tasks in "Communication" category with individual task logs for each message
 - Downloads and attaches file attachments (images, documents) to task logs
 - Chronologically ordered messages with timestamps and usernames
 - Prevents duplicate syncing by tracking message timestamps
 - Converts Slack user IDs to readable usernames for better readability
+- **Multi-channel support**: Syncs multiple channels if multiple `slack:` tags exist
 
 ## Preview
 
@@ -85,5 +89,26 @@ This directory contains two Slack responders for TheHive integration:
 
 ## 2. Enable and configure the Responders
 
-Log into your Cortex instance, go to Organization > Responders and enable the desired JIRA responders with the appropriate configuration & API keys.
+Log into your Cortex instance, go to Organization > Responders and enable the desired Slack responders with the appropriate configuration & API keys.
 
+---
+
+## Privacy & Security Considerations
+
+### Channel Tagging
+When `Slack_CreateChannel` runs, it automatically adds a `slack:<channel_name>` tag to the case. This tag:
+- Makes it easy to identify which Slack channel(s) are associated with a case
+- Enables `Slack_SyncChannel` to reliably find channels without reconstructing names
+- Can be manually added to sync additional channels (see warning below)
+
+### Multi-Channel Syncing
+`Slack_SyncChannel` will sync **all** channels that have `slack:` tags on the case:
+- Each channel creates its own separate task in TheHive
+- Partial failures are handled gracefully (some channels may sync, others may fail)
+- Failed channels are reported in the responder output
+
+### Access Control Warning ⚠️
+- The bot can only read channels it has been **invited to**
+- Syncing brings Slack conversations into TheHive: ensure case permissions align with channel access
+- Private Slack channels synced to non-private TheHive cases may expose sensitive information
+- Consider your organization's data governance policies before syncing channels

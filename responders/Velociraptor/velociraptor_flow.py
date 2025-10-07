@@ -6,8 +6,7 @@ import re
 import os
 import time
 import yaml
-from thehive4py.api import TheHiveApi
-from thehive4py.models import Case, CaseObservable
+import base64
 import pyvelociraptor
 from pyvelociraptor import api_pb2
 from pyvelociraptor import api_pb2_grpc
@@ -16,8 +15,24 @@ from pyvelociraptor import api_pb2_grpc
 class Velociraptor(Responder):
   def __init__(self):
     Responder.__init__(self)
-    self.configpath = self.get_param('config.velociraptor_client_config', None, "File path missing!")
-    self.config = yaml.load(open(self.configpath).read(), Loader=yaml.FullLoader)
+    self.configpath = self.get_param('config.velociraptor_client_config', None)
+    self.config_content_base64 = self.get_param('config.velociraptor_client_config_content_base64', None)
+
+    # Validate that at least one config parameter is provided
+    if not self.configpath and not self.config_content_base64:
+      self.error("Either velociraptor_client_config, or velociraptor_client_config_content_base64 must be provided!")
+
+    # Load config from content or file
+    if self.config_content_base64:
+      # Decode base64 content (preserves newlines)
+      try:
+        decoded_content = base64.b64decode(self.config_content_base64).decode('utf-8')
+        self.config = yaml.load(decoded_content, Loader=yaml.FullLoader)
+      except Exception as e:
+        self.error(f"Failed to decode base64 config: {str(e)}")
+    else:
+      self.config = yaml.load(open(self.configpath).read(), Loader=yaml.FullLoader)
+
     self.artifact = self.get_param('config.velociraptor_artifact', None, 'Artifact missing!')
     self.artifact_args = self.get_param('config.velociraptor_artifact_args', None)
     self.observable_type = self.get_param('data.dataType', None, "Data type is empty")
