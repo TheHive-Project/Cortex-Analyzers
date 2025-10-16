@@ -1,5 +1,38 @@
 # Changelog
 
+## [3.6.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.0) (2025-10-06)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.26...3.6.0)
+
+**Merged pull requests:**
+
+- Update requirements.txt [\#1385](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1385) ([vpiserchia](https://github.com/vpiserchia))
+- Add Slack responder to sync created channels into task [\#1384](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1384) ([nusantara-self](https://github.com/nusantara-self))
+- CI - Add trivy scans & manual full rebuild [\#1383](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1383) ([nusantara-self](https://github.com/nusantara-self))
+- Update Velociraptor Responder [\#986](https://github.com/TheHive-Project/Cortex-Analyzers/pull/986) ([weslambert](https://github.com/weslambert))
+
+## [3.5.26](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.26) (2025-09-09)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.25...3.5.26)
+
+**Merged pull requests:**
+
+- Analyzer Capa - Fixes [\#1382](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1382) ([nusantara-self](https://github.com/nusantara-self))
+- Proofpoint - Fix a typo in folder and neurons name [\#1381](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1381) ([nusantara-self](https://github.com/nusantara-self))
+- CI - Build Improvements [\#1380](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1380) ([nusantara-self](https://github.com/nusantara-self))
+- Add CIRCL AIL Onion-Lookup Analyzer [\#1379](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1379) ([nusantara-self](https://github.com/nusantara-self))
+- Neurons description improvements [\#1378](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1378) ([nusantara-self](https://github.com/nusantara-self))
+
+## [3.5.25](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.25) (2025-08-25)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.24...3.5.25)
+
+**Merged pull requests:**
+
+- CI - Revert to Python-slim builds for K8S compatibility [\#1377](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1377) ([nusantara-self](https://github.com/nusantara-self))
+- Malwarebazaar: Bugfix for new authentication header key [\#1376](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1376) ([bytinbit](https://github.com/bytinbit))
+- Analyzers & Responders for testing / development purpose [\#1375](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1375) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.5.24](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.24) (2025-08-18)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.23...3.5.24)
