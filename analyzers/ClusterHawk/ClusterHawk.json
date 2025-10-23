@@ -1,0 +1,73 @@
+{
+  "name": "ClusterHawk",
+  "version": "0.0.1",
+  "author": "Marvin Uku, Chawkr",
+  "license": "AGPL-V3",
+  "service_homepage":"https://www.clusterhawk.chawkr.com",
+  "description": "ClusterHawk prediction analyzer for IP address threat intelligence using pre-trained models",
+  "dataTypeList": ["ip"],
+  "baseConfig": "ClusterHawk",
+  "config":{
+    "max_tlp":3,
+    "check_tlp":true
+  },
+  "configurationItems": [
+    {
+      "name": "api_key", 
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "description": "ClusterHawk API key"
+    },
+    {
+      "name": "base_url",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "https://clusterhawk.chawkr.com",
+      "description": "ClusterHawk API base URL"
+    },
+    {
+      "name": "model_name",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "description": "Name of the trained model to use for prediction"
+    },
+    {
+      "name": "check_quota",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": true,
+      "description": "Check concurrent job quota before submitting prediction"
+    },
+    {
+      "name": "timeout",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 30,
+      "description": "Maximum time to wait for job completion (minutes)"
+    },
+    {
+      "name": "poll_interval",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 10,
+      "description": "Interval between status checks (seconds)"
+    },
+    {
+      "name": "job_name",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "Cortex Analysis",
+      "description": "Custom name for prediction jobs"
+    }
+  ],
+  "command": "python3 ClusterHawk/ClusterHawk.py",
+  "registration_required": true,
+  "subscription_required": true
+}
