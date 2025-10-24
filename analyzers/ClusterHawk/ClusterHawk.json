@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "author": "Marvin Uku, Chawkr",
   "license": "AGPL-V3",
+  "url": "",
   "service_homepage":"https://www.clusterhawk.chawkr.com",
   "description": "ClusterHawk prediction analyzer for IP address threat intelligence using pre-trained models",
   "dataTypeList": ["ip"],
