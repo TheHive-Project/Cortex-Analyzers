@@ -1,6 +1,6 @@
 {
   "name": "ClusterHawk",
-  "version": "0.0.1",
+  "version": "1.0",
   "author": "Marvin Uku, Chawkr",
   "license": "AGPL-V3",
   "url": "",
@@ -70,5 +70,7 @@
   ],
   "command": "python3 ClusterHawk/ClusterHawk.py",
   "registration_required": true,
-  "subscription_required": true
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://clusterhawk.chawkr.com"
 }
