@@ -82,7 +82,7 @@ Before using this analyzer, you must:
 
 ### In Cortex
 
-1. Create a new analyzer instance
+1. [Enable the analyzer in Cortex](https://docs.strangebee.com/cortex/user-guides/first-start/#step-6-enable-and-configure-analyzers)
 2. Configure the required parameters (API key and model name)
 3. Run the analyzer on IP address observables
 4. Review the threat intelligence results
