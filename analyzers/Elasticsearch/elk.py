@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 
-from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch, VERSION as ES_VERSION
 from cortexutils.analyzer import Analyzer
 import dateutil.parser
 from datetime import datetime
 import pytz
+from packaging.version import Version
 
 # utils
 import operator
@@ -142,21 +143,29 @@ class ElasticsearchAnalyzer(Analyzer):
             client_timeout = 30  # seconds
 
             for endpoint,key,user,password in zip(self.endpoints,self.keys,self.users,self.passwords):
+                hosts = [endpoint] if isinstance(endpoint, str) else endpoint
                 es_dict = dict(
-                            hosts=endpoint,
+                            hosts=hosts,
                             ca_certs=self.cert,
                             verify_certs=self.verify,
                             request_timeout=client_timeout,
-                            connections_per_node=20,   # prevent FullPoolError
                             max_retries=3,
                             retry_on_timeout=True,
                             http_compress=True,
                         )
-                
+
+                if Version(".".join(map(str, ES_VERSION))) < Version("8.0.0"):
+                    es_dict["maxsize"] = 20
+                else:
+                    es_dict["connections_per_node"] = 20
+
                 if key:
                     es_dict["api_key"] = key
                 elif user:
-                    es_dict["basic_auth"] = (user, password)
+                    if Version(".".join(map(str, ES_VERSION))) < Version("8.0.0"):
+                        es_dict["http_auth"] = (user, password)
+                    else:
+                        es_dict["basic_auth"] = (user, password)                
 
                 # ES client (ensure connections get closed)
                 with Elasticsearch(**es_dict) as es:
