@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.6.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.1) (2025-10-07)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.0...3.6.1)
+
+**Merged pull requests:**
+
+- Slack responder - Improvements [\#1387](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1387) ([nusantara-self](https://github.com/nusantara-self))
+- Velociraptor - support for b64 api configuration for SaaS deployments [\#1386](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1386) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.6.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.0) (2025-10-06)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.26...3.6.0)
