@@ -1,0 +1,117 @@
+<div ng-if="content">
+
+  <h3 class="clearfix">
+    ClusterHawk Threat Intelligence Analysis
+    <span class="pull-right kh-subtle" ng-if="content.summary.job_id">
+      Job ID: <code>{{ content.summary.job_id }}</code>
+    </span>
+  </h3>
+
+  <div class="kh-section" ng-if="content.summary">
+    <h4>Analysis Summary</h4>
+    <div class="kh-panel">
+      <div class="kh-panel-bd">
+        <table class="table table-bordered table-condensed kh-kv">
+          <tr ng-if="content.summary.total_analyzed">
+            <th>Total IPs Analyzed</th>
+            <td>{{ content.summary.total_analyzed }}</td>
+          </tr>
+          <tr ng-if="content.summary.clusters_found">
+            <th>Clusters Found</th>
+            <td>{{ content.summary.clusters_found }}</td>
+          </tr>
+          <tr ng-if="content.summary.model_used">
+            <th>Model Used</th>
+            <td><code>{{ content.summary.model_used }}</code></td>
+          </tr>
+          <tr ng-if="content.summary.has_cluster_descriptions">
+            <th>Cluster Descriptions</th>
+            <td><span class="label label-success">Available</span></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="kh-section">
+    <h4>Cluster Analysis</h4>
+
+    <div class="kh-panel" ng-repeat="(name, info) in content.cluster_summary">
+      <div class="kh-panel-hd">
+        <strong>{{ name }}</strong>
+        <span class="label label-default label-space" ng-if="info.description">{{ info.description }}</span>
+      </div>
+      <div class="kh-panel-bd">
+        <div class="kh-note" ng-if="info.description || info.indicators">
+          <div><strong>Primary Characteristic:</strong> <em>{{ info.description || 'N/A' }}</em></div>
+          <div><strong>Key Indicators:</strong> {{ info.indicators || 'N/A' }}</div>
+        </div>
+
+        <table class="table table-bordered table-condensed kh-kv" style="margin-top:8px">
+          <tr>
+            <th>IP Count</th>
+            <td>{{ info.count }}</td>
+          </tr>
+          <tr>
+            <th>Average Confidence</th>
+            <td>{{ info.avg_confidence | number:3 }}</td>
+          </tr>
+          <tr>
+            <th>IP Addresses</th>
+            <td>
+              <span class="kh-chip" ng-repeat="ip in info.ips track by $index">{{ ip }}</span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="kh-section">
+    <h4>Predictions</h4>
+    <div class="table-responsive" ng-if="content.predictions && content.predictions.length">
+      <table class="table table-striped table-condensed kh-tight">
+        <thead>
+          <tr>
+            <th>IP</th>
+            <th>Cluster</th>
+            <th>Confidence</th>
+            <th>Uncertainty</th>
+            <th>Model Variance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat-start="p in content.predictions track by $index">
+            <td><span class="kh-chip">{{ p.ip }}</span></td>
+            <td>
+              <span class="label"
+                    ng-class="{
+                      'label-default': (p.cluster == -1),
+                      'label-warning': (p.cluster != -1 && p.confidence < 0.95),
+                      'label-danger':  (p.cluster != -1 && p.confidence >= 0.95)
+                    }">{{ p.cluster }}</span>
+              <div class="kh-subtle" ng-if="p.cluster_description"><em>{{ p.cluster_description }}</em></div>
+            </td>
+            <td>{{ p.confidence | number:3 }}</td>
+            <td>{{ p.uncertainty | number:3 }}</td>
+            <td>{{ p.model_variance | number:4 }}</td>
+          </tr>
+          <tr ng-repeat-end ng-if="p.cluster_indicators">
+            <td colspan="5" class="kh-subtle" style="background:#f9f9f9">
+              <strong>Indicators:</strong> {{ p.cluster_indicators }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div ng-if="!content.predictions || !content.predictions.length" class="kh-panel">
+      <div class="kh-panel-bd">
+        <p class="kh-subtle"><em>No prediction details available.</em></p>
+        <p ng-if="content.summary && content.summary.error" class="text-danger">
+          <strong>Error:</strong> {{ content.summary.error }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>
