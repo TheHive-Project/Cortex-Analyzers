@@ -528,9 +528,9 @@ class OnypheAnalyzer(Analyzer):
                     # from: https://search.onyphe.io/docs/onyphe-query-language
                     # asn should be in the form "AS<digits>"
                     if data.isdigit():
-                        data = 'AS{asn}'.format(asn=data)                        
-                    if data.startswith("AS-"):
-                        data = "AS"+data[3:]
+                        data = 'AS{asn}'.format(asn=data)
+                    if data.startswith('AS-'):
+                        data = 'AS{asn}'.format(asn=data[3:])
                     ctifilter += 'ip.asn:{asn} '.format(asn=data)
                 elif self.data_type == "other":
                     try:
