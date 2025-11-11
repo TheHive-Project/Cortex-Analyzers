@@ -1,5 +1,22 @@
 # Changelog
 
+## [3.6.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.3) (2025-11-11)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.2...3.6.3)
+
+**Closed issues:**
+
+- \[FR\] Add ClusterHawk analyzer for IP classification [\#1389](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1389)
+
+## [3.6.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.2) (2025-11-03)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.1...3.6.2)
+
+**Merged pull requests:**
+
+- Add ClusterHawk analyzer and template [\#1390](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1390) ([marvinuku](https://github.com/marvinuku))
+- Support elasticsearch-py ~= 9.x [\#1388](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1388) ([vpiserchia](https://github.com/vpiserchia))
+
 ## [3.6.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.1) (2025-10-07)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.0...3.6.1)
