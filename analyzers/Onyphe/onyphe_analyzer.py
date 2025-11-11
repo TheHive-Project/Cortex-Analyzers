@@ -525,6 +525,12 @@ class OnypheAnalyzer(Analyzer):
                     #ctifilter += '?jarm.fingerprint.md5:{data} '.format(data=data) #roadmap
                     #ctifilter += '?jarm.ja3s.md5:{data} '.format(data=data) #roadmap
                 elif self.data_type == "autonomous-system":
+                    # from: https://search.onyphe.io/docs/onyphe-query-language
+                    # asn should be in the form "AS<digits>"
+                    if data.isdigit():
+                        data = 'AS{asn}'.format(asn=data)
+                    if data.startswith('AS-'):
+                        data = 'AS{asn}'.format(asn=data[3:])
                     ctifilter += 'ip.asn:{asn} '.format(asn=data)
                 elif self.data_type == "other":
                     try:
