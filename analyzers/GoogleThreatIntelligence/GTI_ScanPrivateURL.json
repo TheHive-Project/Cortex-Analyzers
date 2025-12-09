@@ -1,0 +1,70 @@
+{
+    "name": "GTI_ScanPrivateURL",
+    "version": "1.0",
+    "author": "Google",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Get the latest Google Threat Intelligence report for a URL that was privately submitted to Google Threat Intelligence for scanning",
+    "dataTypeList": ["url"],
+    "command": "GoogleThreatIntelligence/gti.py",
+    "baseConfig": "GTI_ScanPrivateURL",
+    "config": {
+        "service": "privateScan"
+    },
+    "configurationItems": [
+        {
+            "name": "gti_api_key",
+            "description": "API key for Google Threat Intelligence.",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "sandboxes",
+            "description": "Comma-separated list of sandbox environments to use. e.g., chrome_headless_linux,cape_win,zenbox_windows.",
+            "type": "string",
+            "multi": false,
+            "required": false
+        },
+        {
+            "name": "retention_period_days",
+            "description": "Number of days the report and URL are retained in VirusTotal (1–28). If not set, the group's retention policy is applied.",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 1
+        },
+        {
+            "name": "storage_region",
+            "description": "Region where the URL will be stored. Defaults to the group's private_scanning.storage_region setting. Allowed values: US, CA, EU, GB.",
+            "type": "string",
+            "multi": false,
+            "required": false
+        },
+        {
+            "name": "interaction_timeout",
+            "description": "Timeout for interactive sandbox sessions, in seconds. Minimum: 60 (1 minute), Maximum: 1800 (30 minutes).",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 60
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "service_homepage": "https://www.virustotal.com/",
+    "service_logo": {
+        "path": "assets/googlethreatintelligence_logo.png",
+        "caption": "logo"
+    },
+    "screenshots": [
+        {
+            "path": "assets/scan_private_url_summary.png",
+            "caption": "GooogleThreatIntelligence: summary report"
+        },
+        {
+            "path": "assets/scan_private_url_full_report.png",
+            "caption": "GooogleThreatIntelligence: long report"
+        }
+    ]
+}

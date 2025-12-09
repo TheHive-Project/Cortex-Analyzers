@@ -329,21 +329,24 @@ class ElasticsearchAnalyzer(Analyzer):
                             timestamp,time,destination_ip,destination_port,source_ip,source_port,source_user_name,\
                                 url_domain,url_path,url_full,rule_category,dns_question_name,dns_resolvedip))
 
-                    #setup users
-                    usernames = [item.user_name for item in hits]
-                    source_usernames = [item.source_user_name for item in hits]
-                    usernames.extend(source_usernames)
-                    info['uniqueusers'] =  list(set(usernames))
-                    if "" in info['uniqueusers']:
-                        info['uniqueusers'].remove("")
-                    info['userhitcount'] = len(info['uniqueusers'])
-
-                    #setup devices
-                    devices = [item.host_name for item in hits]
-                    info['uniquedevices'] =  list(set(devices))
-                    if "" in info['uniquedevices']:
-                        info['uniquedevices'].remove("")
-                    info['devicehitcount'] = len(info['uniquedevices'])
+                    #setup users and devices
+                    info["uniqueusers"] = []
+                    info["uniquedevices"] = []
+                    for item in hits:
+                        for (fields, uniq,) in (
+                                    (("user_name", "source_user_name"), "uniqueusers"),
+                                    (("host_name",), "uniquedevices")):
+                            for field in fields:
+                                if getattr(item, field) is not None:
+                                    value = getattr(item, field)
+                                    if isinstance(value, (list, tuple)):
+                                        info[uniq].extend([v for v in value if v])
+                                    elif isinstance(value, (str,)) and value:
+                                        info[uniq].append(value)
+                    info["uniqueusers"] = list(set(info["uniqueusers"]))
+                    info["userhitcount"] = len(info["uniqueusers"])
+                    info["uniquedevices"] = list(set(info["uniquedevices"]))
+                    info["devicehitcount"] = len(info["uniquedevices"])
 
                     #observable that was searched on
                     info['data'] = self.data

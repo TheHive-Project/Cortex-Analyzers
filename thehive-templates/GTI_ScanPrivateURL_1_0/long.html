@@ -1,0 +1,230 @@
+<!-- General error -->
+<div ng-if="!success && content.errorMessage">
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <strong>Scanned Private URL Report Failed</strong>
+        </div>
+        <div class="panel-body">
+            <span style="word-wrap: break-word; white-space: normal;">
+                {{content.errorMessage}}
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- Success Content -->
+<div ng-if="success">
+    <h2
+        style="color: #2c3e50; font-size: 24px; font-weight: 600; margin-bottom: 20px; padding-bottom: 8px; border-bottom: 2px solid #3498db;">
+        Scanned Private URL Report
+    </h2>
+
+    <!-- Summary Panel -->
+    <div class="panel panel-info" ng-if="content.attributes">
+        <div class="panel-heading"><strong>Summary</strong></div>
+        <div class="panel-body">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%; margin-bottom: 0;">
+                <tbody>
+                    <tr ng-if="content.attributes.url">
+                        <td style="width: 30%;"><strong>Private URL</strong></td>
+                        <td style="width: 70%; word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.url}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.title">
+                        <td><strong>Page Title</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.title}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.last_http_response_code">
+                        <td><strong>HTTP Response Code</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.last_http_response_code}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.tld">
+                        <td><strong>Top Level Domain</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.tld}}</td>
+                    </tr>
+                    <tr ng-if="content.id">
+                        <td><strong>URL ID</strong></td>
+                        <td
+                            style="word-wrap: break-word; word-break: break-all; white-space: normal; ">
+                            {{content.id}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- GTI Assessment Panel -->
+    <div class="panel panel-info" ng-if="content.attributes && content.attributes.gti_assessment">
+        <div class="panel-heading"><strong>GTI Assessment</strong></div>
+        <div class="panel-body">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%; margin-bottom: 0;">
+                <tbody>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.verdict && content.attributes.gti_assessment.verdict.value">
+                        <td style="width: 30%;"><strong>Verdict</strong></td>
+                        <td style="width: 70%; word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            <span ng-class="{
+                                'text-success': content.attributes.gti_assessment.verdict.value === 'VERDICT_BENIGN',
+                                'text-danger': content.attributes.gti_assessment.verdict.value === 'VERDICT_MALICIOUS',
+                                'text-warning': content.attributes.gti_assessment.verdict.value !== 'VERDICT_BENIGN' && content.attributes.gti_assessment.verdict.value !== 'VERDICT_MALICIOUS'
+                            }">{{content.attributes.gti_assessment.verdict.value}}</span>
+                        </td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.severity && content.attributes.gti_assessment.severity.value">
+                        <td><strong>Severity</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            <span ng-class="{
+                                'text-success': content.attributes.gti_assessment.severity.value === 'SEVERITY_NONE',
+                                'text-danger': content.attributes.gti_assessment.severity.value === 'SEVERITY_HIGH',
+                                'text-warning': content.attributes.gti_assessment.severity.value !== 'SEVERITY_NONE' && content.attributes.gti_assessment.severity.value !== 'SEVERITY_HIGH'
+                            }">{{content.attributes.gti_assessment.severity.value}}</span>
+                        </td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.threat_score && content.attributes.gti_assessment.threat_score.value !== undefined">
+                        <td><strong>Threat Score</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.gti_assessment.threat_score.value}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.gti_assessment.description">
+                        <td><strong>Description</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.gti_assessment.description}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.contributing_factors && content.attributes.gti_assessment.contributing_factors.safebrowsing_verdict">
+                        <td><strong>Safe Browsing Verdict</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.gti_assessment.contributing_factors.safebrowsing_verdict}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- URL Analysis -->
+    <div class="panel panel-info" ng-if="content.type === 'private_url' && content.attributes">
+        <div class="panel-heading"><strong>URL Analysis</strong></div>
+        <div class="panel-body">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%; margin-bottom: 0;">
+                <tbody>
+                    <tr ng-if="content.attributes.tags && content.attributes.tags.length > 0">
+                        <td style="width: 25%;"><strong>Tags</strong></td>
+                        <td style="width: 70%; word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            <span ng-repeat="tag in content.attributes.tags" class="label label-default"
+                                style="color: white; background-color: #6c757d; margin-right: 8px; margin-bottom: 5px; display: inline-block; padding: 4px 8px;">
+                                {{tag}}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr ng-if="content.attributes.redirection_chain && content.attributes.redirection_chain.length > 0">
+                        <td><strong>Redirection Chain</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            <div ng-repeat="redirect in content.attributes.redirection_chain">
+                                <a ng-href="{{redirect}}" target="_blank"
+                                    style="word-wrap: break-word; word-break: break-all;">{{redirect}}</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr ng-if="content.attributes.outgoing_links && content.attributes.outgoing_links.length > 0">
+                        <td><strong>Outgoing Links</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            <div ng-repeat="link in content.attributes.outgoing_links | limitTo:10">
+                                <a ng-href="{{link}}" target="_blank"
+                                    style="word-wrap: break-word; word-break: break-all;">{{link}}</a>
+                            </div>
+                            <div ng-if="content.attributes.outgoing_links.length > 10" class="text-muted">
+                                + {{content.attributes.outgoing_links.length - 10}} more links
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- HTTP Headers Panel -->
+    <div class="panel panel-info" ng-if="content.attributes && content.attributes.last_http_response_headers">
+        <div class="panel-heading"><strong>HTTP Headers</strong></div>
+        <div class="panel-body">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%; margin-bottom: 0;">
+                <tbody>
+                    <tr ng-if="content.attributes.last_http_response_headers.server">
+                        <td style="width: 30%;"><strong>Server</strong></td>
+                        <td style="width: 70%; word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.last_http_response_headers.server}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.last_http_response_headers['content-type']">
+                        <td><strong>Content Type</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.last_http_response_headers['content-type']}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.last_http_response_headers.date">
+                        <td><strong>Response Date</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.last_http_response_headers.date}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.last_http_response_headers['x-frame-options']">
+                        <td><strong>X-Frame-Options</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.last_http_response_headers['x-frame-options']}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.last_http_response_headers['x-xss-protection']">
+                        <td><strong>X-XSS-Protection</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.last_http_response_headers['x-xss-protection']}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.last_http_response_headers['strict-transport-security']">
+                        <td><strong>Strict Transport Security</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.last_http_response_headers['strict-transport-security']}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.last_http_response_headers['transfer-encoding']">
+                        <td><strong>Transfer Encoding</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.last_http_response_headers["transfer-encoding"]}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Content Analysis Panel -->
+    <div class="panel panel-info"
+        ng-if="content.attributes && (content.attributes.favicon || content.attributes.last_http_response_content_sha256 || content.attributes.last_http_response_content_length)">
+        <div class="panel-heading"><strong>Content Analysis</strong></div>
+        <div class="panel-body">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%; margin-bottom: 0;">
+                <tbody>
+                    <tr ng-if="content.attributes.last_http_response_content_length">
+                        <td style="width: 30%;"><strong>Content Length</strong></td>
+                        <td style="width: 70%; word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.last_http_response_content_length}} bytes</td>
+                    </tr>
+                    <tr ng-if="content.attributes.last_http_response_content_sha256">
+                        <td><strong>Content SHA256</strong></td>
+                        <td
+                            style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.last_http_response_content_sha256}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.favicon && content.attributes.favicon.raw_md5">
+                        <td><strong>Favicon MD5</strong></td>
+                        <td
+                            style="word-wrap: break-word; word-break: break-all; white-space: normal; ">
+                            {{content.attributes.favicon.raw_md5}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.favicon && content.attributes.favicon.dhash">
+                        <td><strong>Favicon DHash</strong></td>
+                        <td
+                            style="word-wrap: break-word; word-break: break-all; white-space: normal; ">
+                            {{content.attributes.favicon.dhash}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
