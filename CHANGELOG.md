@@ -8,6 +8,10 @@
 
 - \[FR\] Add ClusterHawk analyzer for IP classification [\#1389](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1389)
 
+**Merged pull requests:**
+
+- Update onyphe\_analyzer.py [\#1391](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1391) ([vpiserchia](https://github.com/vpiserchia))
+
 ## [3.6.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.2) (2025-11-03)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.1...3.6.2)
@@ -116,7 +120,7 @@
 **Merged pull requests:**
 
 - JA4 FoxIO - JA4 fingerprint analyzer [\#1364](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1364) ([nusantara-self](https://github.com/nusantara-self))
-- Gatewatcher - Add new features [\#1363](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1363) ([remydewaGW](https://github.com/remydewaGW))
+- Gatewatcher - Add new features [\#1363](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1363) ([ghost](https://github.com/ghost))
 - URLHaus - Add API Key requirement [\#1362](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1362) ([Lohuss](https://github.com/Lohuss))
 
 ## [3.5.18](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.18) (2025-06-23)
@@ -397,7 +401,7 @@
 
 - Capa Analyzer - auto-download latest capa binary [\#1301](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1301) ([nusantara-self](https://github.com/nusantara-self))
 - Domaintools dependency issues [\#1300](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1300) ([nusantara-self](https://github.com/nusantara-self))
-- Fix anyrun\_analyzer.py for submit file [\#1299](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1299) ([winl0gon](https://github.com/winl0gon))
+- Fix anyrun\_analyzer.py for submit file [\#1299](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1299) ([threathunterr](https://github.com/threathunterr))
 - add proxies to phishtank\_checkurl.py [\#1298](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1298) ([Labuiga](https://github.com/Labuiga))
 
 ## [3.4.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.0) (2024-12-09)
@@ -472,7 +476,7 @@
 - EclecticIQ responder [\#1258](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1258) ([deepanshu-eiq](https://github.com/deepanshu-eiq))
 - Added EclecticIQ Analyser [\#1256](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1256) ([deepanshu-eiq](https://github.com/deepanshu-eiq))
 - Filters format migration for OpenCTI 5.12 [\#1245](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1245) ([evost](https://github.com/evost))
-- Update Gatewatcher CTI Analyzer for 'unknown' risk [\#1232](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1232) ([remydewaGW](https://github.com/remydewaGW))
+- Update Gatewatcher CTI Analyzer for 'unknown' risk [\#1232](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1232) ([ghost](https://github.com/ghost))
 - Fixes and added features to Defender for endpoints responder [\#1225](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1225) ([louismaxx](https://github.com/louismaxx))
 - TheHive Binalyze integration [\#1219](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1219) ([binalyze-murat](https://github.com/binalyze-murat))
 - Added responder for Ansible AWX [\#1215](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1215) ([Timmu91](https://github.com/Timmu91))
