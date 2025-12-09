@@ -1,0 +1,1556 @@
+<!-- General error  -->
+<div ng-if="!success && content.errorMessage">
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <strong>GTI Enrichment Report Failed</strong>
+        </div>
+        <div class="panel-body">
+            <span style="word-wrap: break-word; white-space: normal;">
+                {{content.errorMessage}}
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- Success -->
+<div ng-if="success">
+    <h2 style="
+    color: #2c3e50; 
+    font-size: 24px; 
+    font-weight: 600; 
+    margin-bottom: 20px; 
+    padding-bottom: 8px;
+    border-bottom: 2px solid #3498db;
+">
+        GTI Enrichment Report - {{content.type === 'ip_address' ? 'IP Address' : (content.type === 'domain' ? 'Domain' :
+        (content.type === 'file' ? 'File' : 'URL'))}}
+    </h2>
+
+    <!-- Summary Panel -->
+    <div class="panel panel-info" ng-if="content.attributes">
+        <div class="panel-heading"><strong>Summary</strong></div>
+        <div class="panel-body">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%; margin-bottom: 0;">
+                <tbody>
+                    <tr ng-if="content.id">
+                        <td style="width: 25%;"><strong>{{content.type === 'ip_address' ? 'IP Address' : (content.type
+                                === 'domain' ? 'Domain' : (content.type === 'file' ? 'File Hash' : 'URL'))}}</strong>
+                        </td>
+                        <td
+                            style="width: 70%; overflow-wrap: break-word; word-break: break-word; white-space: normal; max-width: 0;">
+                            {{content.type === 'url' ? content.attributes.url : content.id}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.last_analysis_stats">
+                        <td style="width: 25%;"><strong>Malicious</strong></td>
+                        <td style="width: 70%;" class="wrap"><strong
+                                style="color: #fa541c">{{content.attributes.last_analysis_stats.malicious}}</strong>/{{content.attributes.last_analysis_stats.harmless
+                            + content.attributes.last_analysis_stats.suspicious +
+                            content.attributes.last_analysis_stats.timeout +
+                            content.attributes.last_analysis_stats.malicious +
+                            content.attributes.last_analysis_stats.undetected}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.last_analysis_stats">
+                        <td><strong>Suspicious</strong></td>
+                        <td class="wrap"><strong
+                                style="color: #ffa940">{{content.attributes.last_analysis_stats.suspicious}}</strong>/{{content.attributes.last_analysis_stats.harmless
+                            + content.attributes.last_analysis_stats['type-unsupported'] +
+                            content.attributes.last_analysis_stats.suspicious +
+                            content.attributes.last_analysis_stats['confirmed-timeout'] +
+                            content.attributes.last_analysis_stats.timeout +
+                            content.attributes.last_analysis_stats.failure +
+                            content.attributes.last_analysis_stats.malicious +
+                            content.attributes.last_analysis_stats.undetected}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.last_analysis_stats">
+                        <td><strong>Undefined</strong></td>
+                        <td class="wrap"><strong
+                                class="text-info">{{content.attributes.last_analysis_stats['type-unsupported'] +
+                                content.attributes.last_analysis_stats['confirmed-timeout'] +
+                                content.attributes.last_analysis_stats.timeout +
+                                content.attributes.last_analysis_stats.failure +
+                                content.attributes.last_analysis_stats.undetected}}</strong>/{{content.attributes.last_analysis_stats['type-unsupported']
+                            + content.attributes.last_analysis_stats['confirmed-timeout'] +
+                            content.attributes.last_analysis_stats.timeout +
+                            content.attributes.last_analysis_stats.failure +
+                            content.attributes.last_analysis_stats.undetected +
+                            content.attributes.last_analysis_stats.harmless +
+                            content.attributes.last_analysis_stats.malicious +
+                            content.attributes.last_analysis_stats.suspicious}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.last_analysis_date">
+                        <td><strong>Last Analysis Date</strong></td>
+                        <td class="wrap">{{content.attributes.last_analysis_date*1000 | date: 'yyyy-MM-dd HH:mm:ss'}}
+                        </td>
+                    </tr>
+                    <tr ng-if="content.attributes.reputation !== undefined && content.attributes.reputation !== null">
+                        <td><strong>Reputation</strong></td>
+                        <td class="wrap">{{content.attributes.reputation}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.asn">
+                        <td><strong>ASN</strong></td>
+                        <td class="wrap">{{content.attributes.asn}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.as_owner">
+                        <td><strong>AS Owner</strong></td>
+                        <td class="wrap">{{content.attributes.as_owner}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.network">
+                        <td><strong>Network</strong></td>
+                        <td class="wrap">{{content.attributes.network}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.rdap && content.attributes.rdap.country">
+                        <td><strong>Country</strong></td>
+                        <td class="wrap">{{content.attributes.rdap.country}}</td>
+                    </tr>
+                    <tr ng-if="content.id">
+                        <td><strong>VirusTotal Report</strong></td>
+                        <td class="wrap" style="word-break: break-all;">
+                            <div ng-if="content.type === 'ip_address'">
+                                <a ng-href="https://www.virustotal.com/gui/ip-address/{{content.id}}" target="_blank">
+                                    https://www.virustotal.com/gui/ip-address/{{content.id}}
+                                </a>
+                            </div>
+                            <div ng-if="content.type === 'domain'">
+                                <a ng-href="https://www.virustotal.com/gui/domain/{{content.id}}" target="_blank">
+                                    https://www.virustotal.com/gui/domain/{{content.id}}
+                                </a>
+                            </div>
+                            <div ng-if="content.type === 'file'">
+                                <a ng-href="https://www.virustotal.com/gui/file/{{content.id}}" target="_blank">
+                                    https://www.virustotal.com/gui/file/{{content.id}}
+                                </a>
+                            </div>
+                            <div ng-if="content.type === 'url'">
+                                <a ng-href="https://www.virustotal.com/gui/url/{{content.id}}" target="_blank">
+                                    https://www.virustotal.com/gui/url/{{content.id}}
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- URL Details Panel -->
+    <div class="panel panel-info" ng-if="content.type === 'url' && content.attributes">
+        <div class="panel-heading"><strong>URL Details</strong></div>
+        <div class="panel-body">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%; margin-bottom: 0;">
+                <tbody>
+                    <tr ng-if="content.attributes.title">
+                        <td><strong>Page Title</strong></td>
+                        <td class="wrap">{{content.attributes.title}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.last_http_response_code">
+                        <td><strong>HTTP Response Code</strong></td>
+                        <td class="wrap"><span
+                                ng-class="{'text-success': content.attributes.last_http_response_code >= 200 && content.attributes.last_http_response_code < 300, 'text-warning': content.attributes.last_http_response_code >= 300 && content.attributes.last_http_response_code < 400, 'text-danger': content.attributes.last_http_response_code >= 400}">{{content.attributes.last_http_response_code}}</span>
+                        </td>
+                    </tr>
+                    <tr ng-if="content.attributes.last_http_response_content_length">
+                        <td><strong>Content Length</strong></td>
+                        <td class="wrap">{{content.attributes.last_http_response_content_length}} bytes</td>
+                    </tr>
+                    <tr ng-if="content.attributes.times_submitted">
+                        <td><strong>Times Submitted</strong></td>
+                        <td class="wrap">{{content.attributes.times_submitted}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.first_submission_date">
+                        <td><strong>First Submission</strong></td>
+                        <td class="wrap">{{content.attributes.first_submission_date*1000 | date: 'yyyy-MM-dd HH:mm:ss'}}
+                        </td>
+                    </tr>
+                    <tr ng-if="content.attributes.last_submission_date">
+                        <td><strong>Last Submission</strong></td>
+                        <td class="wrap">{{content.attributes.last_submission_date*1000 | date: 'yyyy-MM-dd HH:mm:ss'}}
+                        </td>
+                    </tr>
+                    <tr ng-if="content.attributes.tld">
+                        <td><strong>Top Level Domain</strong></td>
+                        <td class="wrap">{{content.attributes.tld}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.has_content !== undefined">
+                        <td><strong>Has Content</strong></td>
+                        <td class="wrap"><span
+                                ng-class="{'text-success': content.attributes.has_content, 'text-warning': !content.attributes.has_content}">{{content.attributes.has_content
+                                ? 'Yes' : 'No'}}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Domain Details Panel -->
+    <div class="panel panel-info" ng-if="content.type === 'domain' && content.attributes">
+        <div class="panel-heading"><strong>Domain Details</strong></div>
+        <div class="panel-body">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%; margin-bottom: 0;">
+                <tbody>
+                    <tr ng-if="content.attributes.registrar">
+                        <td style="width: 25%;"><strong>Registrar</strong></td>
+                        <td style="width: 70%;" class="wrap">{{content.attributes.registrar}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.creation_date">
+                        <td><strong>Creation Date</strong></td>
+                        <td class="wrap">{{content.attributes.creation_date*1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.expiration_date">
+                        <td><strong>Expiration Date</strong></td>
+                        <td class="wrap">{{content.attributes.expiration_date*1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.last_update_date">
+                        <td><strong>Last Update Date</strong></td>
+                        <td class="wrap">{{content.attributes.last_update_date*1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.tld">
+                        <td><strong>Top Level Domain</strong></td>
+                        <td class="wrap">{{content.attributes.tld}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.jarm">
+                        <td><strong>JARM Fingerprint</strong></td>
+                        <td class="wrap" style="word-break: break-all;">{{content.attributes.jarm}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.popularity_ranks">
+                        <td><strong>Popularity Rank</strong></td>
+                        <td class="wrap">
+                            <div ng-repeat="(service, rank) in content.attributes.popularity_ranks">
+                                {{service}}: #{{rank.rank}}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- File Details Panel -->
+    <div class="panel panel-info" ng-if="content.type === 'file' && content.attributes">
+        <div class="panel-heading"><strong>File Details</strong></div>
+        <div class="panel-body">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%; margin-bottom: 0;">
+                <tbody>
+                    <tr ng-if="content.attributes.size">
+                        <td style="width: 25%;"><strong>File Size</strong></td>
+                        <td style="width: 70%; word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.size}} bytes</td>
+                    </tr>
+                    <tr ng-if="content.attributes.type_description">
+                        <td><strong>File Type</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.type_description}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.first_submission_date">
+                        <td><strong>First Submission</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.first_submission_date*1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.last_submission_date">
+                        <td><strong>Last Submission</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.last_submission_date*1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.times_submitted">
+                        <td><strong>Times Submitted</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.times_submitted}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.md5">
+                        <td><strong>MD5</strong></td>
+                        <td
+                            style="word-wrap: break-word; word-break: break-all; white-space: normal; font-family: monospace;">
+                            {{content.attributes.md5}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.sha1">
+                        <td><strong>SHA1</strong></td>
+                        <td
+                            style="word-wrap: break-word; word-break: break-all; white-space: normal; font-family: monospace;">
+                            {{content.attributes.sha1}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.sha256">
+                        <td><strong>SHA256</strong></td>
+                        <td
+                            style="word-wrap: break-word; word-break: break-all; white-space: normal; font-family: monospace;">
+                            {{content.attributes.sha256}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.ssdeep">
+                        <td><strong>SSDEEP</strong></td>
+                        <td
+                            style="word-wrap: break-word; word-break: break-all; white-space: normal; font-family: monospace;">
+                            {{content.attributes.ssdeep}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- GTI Assessment Panel -->
+    <div class="panel panel-info" ng-if="content.attributes && content.attributes.gti_assessment">
+        <div class="panel-heading"><strong>GTI Assessment</strong></div>
+        <div class="panel-body">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%; margin-bottom: 0;">
+                <tbody>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.verdict && content.attributes.gti_assessment.verdict.value">
+                        <td style="width: 25%;"><strong>Verdict</strong></td>
+                        <td style="width: 70%;" class="wrap"><strong
+                                ng-class="{'text-success': content.attributes.gti_assessment.verdict.value === 'VERDICT_BENIGN', 'text-danger': content.attributes.gti_assessment.verdict.value === 'VERDICT_MALICIOUS', 'text-warning': content.attributes.gti_assessment.verdict.value !== 'VERDICT_BENIGN' && content.attributes.gti_assessment.verdict.value !== 'VERDICT_MALICIOUS'}">{{content.attributes.gti_assessment.verdict.value}}</strong>
+                        </td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.severity && content.attributes.gti_assessment.severity.value">
+                        <td><strong>Severity</strong></td>
+                        <td class="wrap"><strong
+                                ng-class="{'text-success': content.attributes.gti_assessment.severity.value === 'SEVERITY_NONE', 'text-danger': content.attributes.gti_assessment.severity.value === 'SEVERITY_HIGH', 'text-warning': content.attributes.gti_assessment.severity.value !== 'SEVERITY_NONE' && content.attributes.gti_assessment.severity.value !== 'SEVERITY_HIGH'}">{{content.attributes.gti_assessment.severity.value}}</strong>
+                        </td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.threat_score && content.attributes.gti_assessment.threat_score.value !== undefined">
+                        <td><strong>Threat Score</strong></td>
+                        <td class="wrap">{{content.attributes.gti_assessment.threat_score.value}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.gti_assessment.description">
+                        <td><strong>Description</strong></td>
+                        <td class="wrap">{{content.attributes.gti_assessment.description}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.contributing_factors && content.attributes.gti_assessment.contributing_factors.mandiant_confidence_score !== undefined">
+                        <td><strong>Mandiant Confidence Score</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.gti_assessment.contributing_factors.mandiant_confidence_score}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.contributing_factors && content.attributes.gti_assessment.contributing_factors.gti_confidence_score !== undefined">
+                        <td><strong>GTI Confidence Score</strong></td>
+                        <td class="wrap">{{content.attributes.gti_assessment.contributing_factors.gti_confidence_score}}
+                        </td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.contributing_factors && content.attributes.gti_assessment.contributing_factors.normalised_categories && content.attributes.gti_assessment.contributing_factors.normalised_categories.length > 0">
+                        <td><strong>Categories</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.gti_assessment.contributing_factors.normalised_categories.join(', ')}}
+                        </td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.contributing_factors && content.attributes.gti_assessment.contributing_factors.pervasive_indicator !== undefined">
+                        <td><strong>Pervasive Indicator</strong></td>
+                        <td class="wrap">{{content.attributes.gti_assessment.contributing_factors.pervasive_indicator}}
+                        </td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.contributing_factors && content.attributes.gti_assessment.contributing_factors.mandiant_domain_hijack !== undefined">
+                        <td><strong>Mandiant Domain Hijack</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.gti_assessment.contributing_factors.mandiant_domain_hijack}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.contributing_factors && content.attributes.gti_assessment.contributing_factors.associated_malware_configuration !== undefined">
+                        <td><strong>Associated Malware Configuration</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.gti_assessment.contributing_factors.associated_malware_configuration}}
+                        </td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.contributing_factors && content.attributes.gti_assessment.contributing_factors.mandiant_analyst_benign !== undefined">
+                        <td><strong>Mandiant Analyst Benign</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.gti_assessment.contributing_factors.mandiant_analyst_benign}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.contributing_factors && content.attributes.gti_assessment.contributing_factors.malicious_sandbox_verdict !== undefined">
+                        <td><strong>Malicious Sandbox Verdict</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.gti_assessment.contributing_factors.malicious_sandbox_verdict}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.contributing_factors && content.attributes.gti_assessment.contributing_factors.mandiant_association_report !== undefined">
+                        <td><strong>Mandiant Association Report</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.gti_assessment.contributing_factors.mandiant_association_report}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.contributing_factors && content.attributes.gti_assessment.contributing_factors.google_malware_analysis !== undefined">
+                        <td><strong>Google Malware Analysis</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.gti_assessment.contributing_factors.google_malware_analysis}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Threat Severity Panel -->
+    <div class="panel panel-info" ng-if="content.attributes && content.attributes.threat_severity">
+        <div class="panel-heading"><strong>Threat Severity</strong></div>
+        <div class="panel-body">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%; margin-bottom: 0;">
+                <tbody>
+                    <tr ng-if="content.attributes.threat_severity.threat_severity_level">
+                        <td style="width: 25%;"><strong>Level</strong></td>
+                        <td style="width: 70%;" class="wrap"
+                            ng-class="{'text-success': content.attributes.threat_severity.threat_severity_level === 'SEVERITY_NONE', 'text-danger': content.attributes.threat_severity.threat_severity_level === 'SEVERITY_HIGH', 'text-warning': content.attributes.threat_severity.threat_severity_level !== 'SEVERITY_NONE' && content.attributes.threat_severity.threat_severity_level !== 'SEVERITY_HIGH'}">
+                            <strong>{{content.attributes.threat_severity.threat_severity_level}}</strong>
+                        </td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.threat_severity.threat_severity_data && content.attributes.threat_severity.threat_severity_data.num_detections !== undefined">
+                        <td><strong>Detections</strong></td>
+                        <td class="wrap">{{content.attributes.threat_severity.threat_severity_data.num_detections}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.threat_severity.threat_severity_data && content.attributes.threat_severity.threat_severity_data.popular_threat_category">
+                        <td><strong>Threat Category</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.threat_severity.threat_severity_data.popular_threat_category}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.threat_severity.level_description">
+                        <td><strong>Description</strong></td>
+                        <td class="wrap">{{content.attributes.threat_severity.level_description}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.threat_severity.threat_severity_data && content.attributes.threat_severity.threat_severity_data.has_bad_communicating_files_high !== undefined">
+                        <td><strong>Bad Communicating Files (High)</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.threat_severity.threat_severity_data.has_bad_communicating_files_high}}
+                        </td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.threat_severity.threat_severity_data && content.attributes.threat_severity.threat_severity_data.has_bad_communicating_files_medium !== undefined">
+                        <td><strong>Bad Communicating Files (Medium)</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.threat_severity.threat_severity_data.has_bad_communicating_files_medium}}
+                        </td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.threat_severity.threat_severity_data && content.attributes.threat_severity.threat_severity_data.belongs_to_bad_collection !== undefined">
+                        <td><strong>Belongs to Bad Collection</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.threat_severity.threat_severity_data.belongs_to_bad_collection}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.threat_severity.threat_severity_data && content.attributes.threat_severity.threat_severity_data.belongs_to_threat_actor !== undefined">
+                        <td><strong>Belongs To Threat Actor</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.threat_severity.threat_severity_data.belongs_to_threat_actor}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.threat_severity.threat_severity_data && content.attributes.threat_severity.threat_severity_data.domain_rank">
+                        <td><strong>Domain Rank</strong></td>
+                        <td class="wrap">{{content.attributes.threat_severity.threat_severity_data.domain_rank}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.threat_severity.threat_severity_data && content.attributes.threat_severity.threat_severity_data.num_gav_detections !== undefined">
+                        <td><strong>GAV Detections</strong></td>
+                        <td class="wrap">{{content.attributes.threat_severity.threat_severity_data.num_gav_detections}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- URL Security & Categories Panel -->
+    <div class="panel panel-info" ng-if="content.type === 'url' && content.attributes">
+        <div class="panel-heading"><strong>URL Security & Categories</strong></div>
+        <div class="panel-body">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%; margin-bottom: 0;">
+                <tbody>
+                    <tr ng-if="content.attributes.categories">
+                        <td style="width: 25%;"><strong>Categories</strong></td>
+                        <td style="width: 70%;" class="wrap">
+                            <div ng-repeat="(engine, category) in content.attributes.categories">
+                                {{engine}}: {{category}}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr ng-if="content.attributes.tags && content.attributes.tags.length > 0">
+                        <td><strong>Tags</strong></td>
+                        <td class="wrap">
+                            <span ng-repeat="tag in content.attributes.tags" class="label label-default"
+                                style="color: white; background-color: #6c757d; margin-right: 8px; margin-bottom: 5px; display: inline-block; padding: 4px 8px;">
+                                {{tag}}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr ng-if="content.attributes.outgoing_links && content.attributes.outgoing_links.length > 0">
+                        <td><strong>Outgoing Links</strong></td>
+                        <td class="wrap" style="word-break: break-all;">
+                            <div ng-repeat="link in content.attributes.outgoing_links">
+                                <a ng-href="{{link}}" target="_blank">{{link}}</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr ng-if="content.attributes.redirection_chain && content.attributes.redirection_chain.length > 0">
+                        <td><strong>Redirection Chain</strong></td>
+                        <td class="wrap">
+                            <div ng-repeat="redirect in content.attributes.redirection_chain">
+                                <a ng-href="{{redirect}}" target="_blank">{{redirect}}</a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- HTTPS Certificate Panel -->
+    <div class="panel panel-info" ng-if="content.attributes && content.attributes.last_https_certificate">
+        <div class="panel-heading"><strong>HTTPS Certificate</strong></div>
+        <div class="panel-body">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%; margin-bottom: 0;">
+                <tbody>
+                    <tr
+                        ng-if="content.attributes.last_https_certificate.subject && content.attributes.last_https_certificate.subject.CN">
+                        <td style="width: 25%;"><strong>Subject</strong></td>
+                        <td style="width: 70%; word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.last_https_certificate.subject.CN}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.last_https_certificate.issuer && content.attributes.last_https_certificate.issuer.CN">
+                        <td><strong>Issuer</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.last_https_certificate.issuer.CN}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.last_https_certificate.validity && content.attributes.last_https_certificate.validity.not_before">
+                        <td><strong>Valid From</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.last_https_certificate.validity.not_before}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.last_https_certificate.validity && content.attributes.last_https_certificate.validity.not_after">
+                        <td><strong>Valid To</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.last_https_certificate.validity.not_after}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.last_https_certificate.serial_number">
+                        <td><strong>Serial Number</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.last_https_certificate.serial_number}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.last_https_certificate.thumbprint_sha256">
+                        <td><strong>Thumbprint SHA256</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.last_https_certificate.thumbprint_sha256}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Scans -->
+    <div class="panel panel-info" ng-if="content.attributes.last_analysis_results">
+        <div class="panel-heading">
+            <strong>Scans</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover table-bordered" style="table-layout: fixed; width: 100%; margin-bottom: 0;">
+                <thead>
+                    <tr style="background-color: #f1f1f1;">
+                        <th scope="col">Scanner</th>
+                        <th scope="col">Detected</th>
+                        <th scope="col">Method</th>
+                        <th scope="col">Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="(scanner_name, scanner) in content.attributes.last_analysis_results">
+                        <td>
+                            <strong>{{scanner.engine_name || scanner_name}}</strong>
+                        </td>
+                        <td>
+                            <i
+                                ng-class="scanner.category == 'malicious' ? 'text-danger fa fa-bug' : (scanner.category == 'suspicious' ? 'text-warning fa fa-bug' : (scanner.category == 'harmless' ? 'text-success fa fa-check-circle' : 'text-info fa fa-question-circle' ))">
+                            </i>
+                        </td>
+                        <td>{{scanner.method || "-"}}</td>
+                        <td ng-class="{'text-danger': scanner.category == 'malicious', 'text-warning': scanner.category == 'suspicious', 'text-success': scanner.category == 'harmless', 'text-info': scanner.category == 'failure' || scanner.category == 'undetected' || scanner.category == 'type-unsupported' }"
+                            class="wrap">
+                            {{scanner.result || "-"}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h2 ng-if="content.relationships.reports.length > 0 || content.relationships.collections.length > 0 || content.relationships.campaigns.length > 0 || content.relationships.malware_families.length > 0 || content.relationships.related_threat_actors.length > 0 || content.relationships.software_toolkits.length > 0 || content.relationships.vulnerabilities.length > 0 || content.relationships.comments.length > 0 || content.relationships.resolutions.length > 0 || content.relationships.behaviours.length > 0"
+        style="
+    color: #2c3e50; 
+    font-size: 24px; 
+    font-weight: 600; 
+    margin-bottom: 20px; 
+    padding-bottom: 8px;
+    border-bottom: 2px solid #3498db;
+">
+        Relationships
+    </h2>
+    <!-- Reports Panel -->
+    <div class="panel panel-info" ng-if="content.relationships.reports && content.relationships.reports.length > 0"
+        style="max-height: 500px; overflow: auto;">
+
+        <!-- Header -->
+        <div class="panel-heading"
+            style="display: flex; justify-content: space-between; align-items: center; background-color: #e8fafa; padding: 8px 12px; border-bottom: 1px solid #ccc; position: sticky; top: 0; z-index: 10;">
+            <div><strong>Reports ({{content.relationships.reports.length}})</strong></div>
+            <div ng-if="content.relationships.reports.length > 10" style="color: #555;">(First 10)</div>
+        </div>
+
+        <!-- Table -->
+        <table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; table-layout: fixed;">
+            <thead>
+                <tr style="background-color: #f1f1f1;">
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 20%;">ID</th>
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 30%;">Name</th>
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 15%;">Origin</th>
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 35%;">Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="report in content.relationships.reports | limitTo:10">
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">{{report.id || '-'}}</td>
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">{{report.attributes.name
+                        ||
+                        '-'}}</td>
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">{{report.attributes.origin
+                        ||
+                        '-'}}
+                    </td>
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+
+                        <!-- Targeted Industries -->
+                        <div>
+                            <strong>Targeted Industries:</strong>
+                            <div>
+                                <span
+                                    ng-if="report.attributes.targeted_industries_tree && report.attributes.targeted_industries_tree !== ''">
+                                    {{report.attributes.targeted_industries_tree}}
+                                </span>
+                                <span
+                                    ng-if="!report.attributes.targeted_industries_tree || report.attributes.targeted_industries_tree === ''">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Separator -->
+                        <hr style="border: none; border-top: 1px solid #ddd; margin: 6px 0;">
+
+                        <!-- Source Regions -->
+                        <div>
+                            <strong>Source Regions:</strong>
+                            <div>
+                                <span
+                                    ng-if="report.attributes.source_regions_hierarchy && report.attributes.source_regions_hierarchy !== ''">
+                                    {{report.attributes.source_regions_hierarchy}}
+                                </span>
+                                <span
+                                    ng-if="!report.attributes.source_regions_hierarchy || report.attributes.source_regions_hierarchy === ''">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Separator -->
+                        <hr style="border: none; border-top: 1px solid #ddd; margin: 6px 0;">
+
+                        <!-- Targeted Regions -->
+                        <div>
+                            <strong>Targeted Regions:</strong>
+                            <div>
+                                <span
+                                    ng-if="report.attributes.targeted_regions_hierarchy && report.attributes.targeted_regions_hierarchy !== ''">
+                                    {{report.attributes.targeted_regions_hierarchy}}
+                                </span>
+                                <span
+                                    ng-if="!report.attributes.targeted_regions_hierarchy || report.attributes.targeted_regions_hierarchy === ''">-</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Collections Panel -->
+    <div class="panel panel-info"
+        ng-if="content.relationships.collections && content.relationships.collections.length > 0"
+        style="max-height: 500px; overflow: auto;">
+
+        <!-- Header -->
+        <div class="panel-heading"
+            style="display: flex; justify-content: space-between; align-items: center; background-color: #e8fafa; padding: 8px 12px; border-bottom: 1px solid #ccc; position: sticky; top: 0; z-index: 10;">
+            <div><strong>Collections ({{content.relationships.collections.length}})</strong></div>
+            <div ng-if="content.relationships.collections.length > 10" style="color: #555;">(First 10)</div>
+        </div>
+
+        <!-- Table -->
+        <table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; table-layout: fixed;">
+            <thead>
+                <tr style="background-color: #f1f1f1;">
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 20%;">ID</th>
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 30%;">Name</th>
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 15%;">Origin</th>
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 35%;">Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="collection in content.relationships.collections | limitTo:10">
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">{{collection.id || '-'}}
+                    </td>
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+                        {{collection.attributes.name
+                        ||
+                        '-'}}</td>
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+                        {{collection.attributes.origin
+                        ||
+                        '-'}}
+                    </td>
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+
+                        <!-- Targeted Industries -->
+                        <div>
+                            <strong>Targeted Industries:</strong>
+                            <div>
+                                <span
+                                    ng-if="collection.attributes.targeted_industries_tree && collection.attributes.targeted_industries_tree !== ''">
+                                    {{collection.attributes.targeted_industries_tree}}
+                                </span>
+                                <span
+                                    ng-if="!collection.attributes.targeted_industries_tree || collection.attributes.targeted_industries_tree === ''">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Separator -->
+                        <hr style="border: none; border-top: 1px solid #ddd; margin: 6px 0;">
+
+                        <!-- Source Regions -->
+                        <div>
+                            <strong>Source Regions:</strong>
+                            <div>
+                                <span
+                                    ng-if="collection.attributes.source_regions_hierarchy && collection.attributes.source_regions_hierarchy !== ''">
+                                    {{collection.attributes.source_regions_hierarchy}}
+                                </span>
+                                <span
+                                    ng-if="!collection.attributes.source_regions_hierarchy || collection.attributes.source_regions_hierarchy === ''">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Separator -->
+                        <hr style="border: none; border-top: 1px solid #ddd; margin: 6px 0;">
+
+                        <!-- Targeted Regions -->
+                        <div>
+                            <strong>Targeted Regions:</strong>
+                            <div>
+                                <span
+                                    ng-if="collection.attributes.targeted_regions_hierarchy && collection.attributes.targeted_regions_hierarchy !== ''">
+                                    {{collection.attributes.targeted_regions_hierarchy}}
+                                </span>
+                                <span
+                                    ng-if="!collection.attributes.targeted_regions_hierarchy || collection.attributes.targeted_regions_hierarchy === ''">-</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <!-- campaigns Panel -->
+    <div class="panel panel-info" ng-if="content.relationships.campaigns && content.relationships.campaigns.length > 0"
+        style="max-height: 500px; overflow: auto;">
+
+        <!-- Header -->
+        <div class="panel-heading"
+            style="display: flex; justify-content: space-between; align-items: center; background-color: #e8fafa; padding: 8px 12px; border-bottom: 1px solid #ccc; position: sticky; top: 0; z-index: 10;">
+            <div><strong>Campaigns ({{content.relationships.campaigns.length}})</strong></div>
+            <div ng-if="content.relationships.campaigns.length > 10" style="color: #555;">(First 10)</div>
+        </div>
+
+        <!-- Table -->
+        <table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; table-layout: fixed;">
+            <thead>
+                <tr style="background-color: #f1f1f1;">
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 20%;">ID</th>
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 30%;">Name</th>
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 15%;">Origin</th>
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 35%;">Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="campaign in content.relationships.campaigns | limitTo:10">
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">{{campaign.id || '-'}}
+                    </td>
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">{{campaign.attributes.name
+                        ||
+                        '-'}}</td>
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+                        {{campaign.attributes.origin
+                        ||
+                        '-'}}
+                    </td>
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+
+                        <!-- Targeted Industries -->
+                        <div>
+                            <strong>Targeted Industries:</strong>
+                            <div>
+                                <span
+                                    ng-if="campaign.attributes.targeted_industries_tree && campaign.attributes.targeted_industries_tree !== ''">
+                                    {{campaign.attributes.targeted_industries_tree}}
+                                </span>
+                                <span
+                                    ng-if="!campaign.attributes.targeted_industries_tree || campaign.attributes.targeted_industries_tree === ''">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Separator -->
+                        <hr style="border: none; border-top: 1px solid #ddd; margin: 6px 0;">
+
+                        <!-- Source Regions -->
+                        <div>
+                            <strong>Source Regions:</strong>
+                            <div>
+                                <span
+                                    ng-if="campaign.attributes.source_regions_hierarchy && campaign.attributes.source_regions_hierarchy !== ''">
+                                    {{campaign.attributes.source_regions_hierarchy}}
+                                </span>
+                                <span
+                                    ng-if="!campaign.attributes.source_regions_hierarchy || campaign.attributes.source_regions_hierarchy === ''">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Separator -->
+                        <hr style="border: none; border-top: 1px solid #ddd; margin: 6px 0;">
+
+                        <!-- Targeted Regions -->
+                        <div>
+                            <strong>Targeted Regions:</strong>
+                            <div>
+                                <span
+                                    ng-if="campaign.attributes.targeted_regions_hierarchy && campaign.attributes.targeted_regions_hierarchy !== ''">
+                                    {{campaign.attributes.targeted_regions_hierarchy}}
+                                </span>
+                                <span
+                                    ng-if="!campaign.attributes.targeted_regions_hierarchy || campaign.attributes.targeted_regions_hierarchy === ''">-</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <!-- malware_families Panel -->
+    <div class="panel panel-info"
+        ng-if="content.relationships.malware_families && content.relationships.malware_families.length > 0"
+        style="max-height: 500px; overflow: auto;">
+
+        <!-- Header -->
+        <div class="panel-heading"
+            style="display: flex; justify-content: space-between; align-items: center; background-color: #e8fafa; padding: 8px 12px; border-bottom: 1px solid #ccc; position: sticky; top: 0; z-index: 10;">
+            <div><strong>Malware Families ({{content.relationships.malware_families.length}})</strong></div>
+            <div ng-if="content.relationships.malware_families.length > 10" style="color: #555;">(First 10)</div>
+        </div>
+
+        <!-- Table -->
+        <table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; table-layout: fixed;">
+            <thead>
+                <tr style="background-color: #f1f1f1;">
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 20%;">ID</th>
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 30%;">Name</th>
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 15%;">Origin</th>
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 35%;">Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="malware_familie in content.relationships.malware_families | limitTo:10">
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">{{malware_familie.id ||
+                        '-'}}
+                    </td>
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+                        {{malware_familie.attributes.name ||
+                        '-'}}</td>
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+                        {{malware_familie.attributes.origin ||
+                        '-'}}
+                    </td>
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+
+                        <!-- Targeted Industries -->
+                        <div>
+                            <strong>Targeted Industries:</strong>
+                            <div>
+                                <span
+                                    ng-if="malware_familie.attributes.targeted_industries_tree && malware_familie.attributes.targeted_industries_tree !== ''">
+                                    {{malware_familie.attributes.targeted_industries_tree}}
+                                </span>
+                                <span
+                                    ng-if="!malware_familie.attributes.targeted_industries_tree || malware_familie.attributes.targeted_industries_tree === ''">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Separator -->
+                        <hr style="border: none; border-top: 1px solid #ddd; margin: 6px 0;">
+
+                        <!-- Source Regions -->
+                        <div>
+                            <strong>Source Regions:</strong>
+                            <div>
+                                <span
+                                    ng-if="malware_familie.attributes.source_regions_hierarchy && malware_familie.attributes.source_regions_hierarchy !== ''">
+                                    {{malware_familie.attributes.source_regions_hierarchy}}
+                                </span>
+                                <span
+                                    ng-if="!malware_familie.attributes.source_regions_hierarchy || malware_familie.attributes.source_regions_hierarchy === ''">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Separator -->
+                        <hr style="border: none; border-top: 1px solid #ddd; margin: 6px 0;">
+
+                        <!-- Targeted Regions -->
+                        <div>
+                            <strong>Targeted Regions:</strong>
+                            <div>
+                                <span
+                                    ng-if="malware_familie.attributes.targeted_regions_hierarchy && malware_familie.attributes.targeted_regions_hierarchy !== ''">
+                                    {{malware_familie.attributes.targeted_regions_hierarchy}}
+                                </span>
+                                <span
+                                    ng-if="!malware_familie.attributes.targeted_regions_hierarchy || malware_familie.attributes.targeted_regions_hierarchy === ''">-</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <!-- related_threat_actors Panel -->
+    <div class="panel panel-info"
+        ng-if="content.relationships.related_threat_actors && content.relationships.related_threat_actors.length > 0"
+        style="max-height: 500px; overflow: auto;">
+
+        <!-- Header -->
+        <div class="panel-heading"
+            style="display: flex; justify-content: space-between; align-items: center; background-color: #e8fafa; padding: 8px 12px; border-bottom: 1px solid #ccc; position: sticky; top: 0; z-index: 10;">
+            <div><strong>Threat Actors ({{content.relationships.related_threat_actors.length}})</strong></div>
+            <div ng-if="content.relationships.related_threat_actors.length > 10" style="color: #555;">(First 10)</div>
+        </div>
+
+        <!-- Table -->
+        <table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; table-layout: fixed;">
+            <thead>
+                <tr style="background-color: #f1f1f1;">
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 20%;">ID</th>
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 30%;">Name</th>
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 15%;">Origin</th>
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 35%;">Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="related_threat_actor in content.relationships.related_threat_actors | limitTo:10">
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">{{related_threat_actor.id
+                        ||
+                        '-'}}</td>
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+                        {{related_threat_actor.attributes.name ||
+                        '-'}}</td>
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+                        {{related_threat_actor.attributes.origin ||
+                        '-'}}
+                    </td>
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+
+                        <!-- Targeted Industries -->
+                        <div>
+                            <strong>Targeted Industries:</strong>
+                            <div>
+                                <span
+                                    ng-if="related_threat_actor.attributes.targeted_industries_tree && related_threat_actor.attributes.targeted_industries_tree !== ''">
+                                    {{related_threat_actor.attributes.targeted_industries_tree}}
+                                </span>
+                                <span
+                                    ng-if="!related_threat_actor.attributes.targeted_industries_tree || related_threat_actor.attributes.targeted_industries_tree === ''">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Separator -->
+                        <hr style="border: none; border-top: 1px solid #ddd; margin: 6px 0;">
+
+                        <!-- Source Regions -->
+                        <div>
+                            <strong>Source Regions:</strong>
+                            <div>
+                                <span
+                                    ng-if="related_threat_actor.attributes.source_regions_hierarchy && related_threat_actor.attributes.source_regions_hierarchy !== ''">
+                                    {{related_threat_actor.attributes.source_regions_hierarchy}}
+                                </span>
+                                <span
+                                    ng-if="!related_threat_actor.attributes.source_regions_hierarchy || related_threat_actor.attributes.source_regions_hierarchy === ''">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Separator -->
+                        <hr style="border: none; border-top: 1px solid #ddd; margin: 6px 0;">
+
+                        <!-- Targeted Regions -->
+                        <div>
+                            <strong>Targeted Regions:</strong>
+                            <div>
+                                <span
+                                    ng-if="related_threat_actor.attributes.targeted_regions_hierarchy && related_threat_actor.attributes.targeted_regions_hierarchy !== ''">
+                                    {{related_threat_actor.attributes.targeted_regions_hierarchy}}
+                                </span>
+                                <span
+                                    ng-if="!related_threat_actor.attributes.targeted_regions_hierarchy || related_threat_actor.attributes.targeted_regions_hierarchy === ''">-</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <!-- software_toolkits Panel -->
+    <div class="panel panel-info"
+        ng-if="content.relationships.software_toolkits && content.relationships.software_toolkits.length > 0"
+        style="max-height: 500px; overflow: auto;">
+
+        <!-- Header -->
+        <div class="panel-heading"
+            style="display: flex; justify-content: space-between; align-items: center; background-color: #e8fafa; padding: 8px 12px; border-bottom: 1px solid #ccc; position: sticky; top: 0; z-index: 10;">
+            <div><strong>Software Toolkits ({{content.relationships.software_toolkits.length}})</strong></div>
+            <div ng-if="content.relationships.software_toolkits.length > 10" style="color: #555;">(First 10)</div>
+        </div>
+
+        <!-- Table -->
+        <table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; table-layout: fixed;">
+            <thead>
+                <tr style="background-color: #f1f1f1;">
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 20%;">ID</th>
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 30%;">Name</th>
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 15%;">Origin</th>
+                    <th style="border: 1px solid #ccc; padding: 8px; width: 35%;">Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="software_toolkit in content.relationships.software_toolkits | limitTo:10">
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">{{software_toolkit.id ||
+                        '-'}}
+                    </td>
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+                        {{software_toolkit.attributes.name ||
+                        '-'}}</td>
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+                        {{software_toolkit.attributes.origin ||
+                        '-'}}
+                    </td>
+                    <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+
+                        <!-- Targeted Industries -->
+                        <div>
+                            <strong>Targeted Industries:</strong>
+                            <div>
+                                <span
+                                    ng-if="software_toolkit.attributes.targeted_industries_tree && software_toolkit.attributes.targeted_industries_tree !== ''">
+                                    {{software_toolkit.attributes.targeted_industries_tree}}
+                                </span>
+                                <span
+                                    ng-if="!software_toolkit.attributes.targeted_industries_tree || software_toolkit.attributes.targeted_industries_tree === ''">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Separator -->
+                        <hr style="border: none; border-top: 1px solid #ddd; margin: 6px 0;">
+
+                        <!-- Source Regions -->
+                        <div>
+                            <strong>Source Regions:</strong>
+                            <div>
+                                <span
+                                    ng-if="software_toolkit.attributes.source_regions_hierarchy && software_toolkit.attributes.source_regions_hierarchy !== ''">
+                                    {{software_toolkit.attributes.source_regions_hierarchy}}
+                                </span>
+                                <span
+                                    ng-if="!software_toolkit.attributes.source_regions_hierarchy || software_toolkit.attributes.source_regions_hierarchy === ''">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Separator -->
+                        <hr style="border: none; border-top: 1px solid #ddd; margin: 6px 0;">
+
+                        <!-- Targeted Regions -->
+                        <div>
+                            <strong>Targeted Regions:</strong>
+                            <div>
+                                <span
+                                    ng-if="software_toolkit.attributes.targeted_regions_hierarchy && software_toolkit.attributes.targeted_regions_hierarchy !== ''">
+                                    {{software_toolkit.attributes.targeted_regions_hierarchy}}
+                                </span>
+                                <span
+                                    ng-if="!software_toolkit.attributes.targeted_regions_hierarchy || software_toolkit.attributes.targeted_regions_hierarchy === ''">-</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Vulnerabilities Panel -->
+    <div class="panel panel-info"
+        ng-if="content.relationships.vulnerabilities && content.relationships.vulnerabilities.length > 0"
+        style="max-height: 500px; overflow: auto;">
+        <!-- Header -->
+        <div class="panel-heading"
+            style="display: flex; justify-content: space-between; align-items: center; background-color: #e8fafa; padding: 8px 12px; border-bottom: 1px solid #ccc; position: sticky; top: 0; z-index: 10;">
+            <div><strong>Vulnerabilities ({{content.relationships.vulnerabilities.length}})</strong></div>
+            <div ng-if="content.relationships.reports.length > 10" style="color: #555;">(First 10)</div>
+        </div>
+
+        <div class="panel-body" style="padding: 0;">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%;">
+                <thead style="background-color: #f2f2f2;">
+                    <tr>
+                        <th style="width: 12%;">ID</th>
+                        <th style="width: 15%;">Name</th>
+                        <th style="width: 10%;">Priority</th>
+                        <th style="width: 63%;">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="vuln in content.relationships.vulnerabilities | limitTo:10">
+                        <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+                            {{vuln.id || '-'}}
+                        </td>
+                        <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+                            {{vuln.attributes.name || '-'}}
+                        </td>
+                        <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+                            {{vuln.attributes.priority || '-'}}
+                        </td>
+
+                        <!-- Details Column -->
+                        <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+
+                            <!-- Summary -->
+                            <div>
+                                <strong>Executive Summary:</strong>
+                                <div ng-bind="vuln.attributes.executive_summary || '-'"></div>
+                            </div>
+
+                            <!-- Separator -->
+                            <hr style="border: none; border-top: 1px solid #ddd; margin: 6px 0;">
+
+                            <!-- CVSS Details -->
+                            <div>
+                                <strong>CVSS Scores:</strong>
+                                <div>
+                                    <span ng-if="vuln.attributes.cvss.cvssv3_x">
+                                        v3.1: {{vuln.attributes.cvss.cvssv3_x.base_score}}
+                                        ({{vuln.attributes.cvss.cvssv3_x.vector}})
+                                        <span ng-if="vuln.attributes.cvss.cvssv3_x.temporal_score">, Temporal:
+                                            {{vuln.attributes.cvss.cvssv3_x.temporal_score}}</span>
+                                    </span>
+                                    <br ng-if="vuln.attributes.cvss.cvssv3_x && vuln.attributes.cvss.cvssv2_0">
+                                    <span ng-if="vuln.attributes.cvss.cvssv2_0">
+                                        v2.0: {{vuln.attributes.cvss.cvssv2_0.base_score}}
+                                        ({{vuln.attributes.cvss.cvssv2_0.vector}})
+                                        <span ng-if="vuln.attributes.cvss.cvssv2_0.temporal_score">, Temporal:
+                                            {{vuln.attributes.cvss.cvssv2_0.temporal_score}}</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Separator -->
+                            <hr style="border: none; border-top: 1px solid #ddd; margin: 6px 0;">
+
+                            <!-- Sources -->
+                            <div>
+                                <strong>Sources:</strong>
+                                <div ng-if="vuln.attributes.sources && vuln.attributes.sources.length > 0">
+                                    <ul style="margin: 0; padding-left: 18px;">
+                                        <li ng-repeat="src in vuln.attributes.sources">
+                                            <span ng-if="src.name">{{src.name}}:</span>
+                                            <a ng-href="{{src.url}}" target="_blank" style="word-break: break-all;">
+                                                {{src.title || src.url}}
+                                            </a>
+                                            <span ng-if="src.cvss.cvssv3_x && src.cvss.cvssv3_x.base_score">
+                                                (CVSS: {{src.cvss.cvssv3_x.base_score}})
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div ng-if="!vuln.attributes.sources || vuln.attributes.sources.length === 0">-</div>
+                            </div>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Comments Panel -->
+    <div class="panel panel-info" ng-if="content.relationships.comments && content.relationships.comments.length > 0"
+        style="max-height: 500px; overflow-y: auto;">
+
+        <!-- Header -->
+        <div class="panel-heading"
+            style="display: flex; justify-content: space-between; align-items: center; background-color: #e8fafa; padding: 8px 12px; border-bottom: 1px solid #ccc; position: sticky; top: 0; z-index: 10;">
+            <div><strong>Comments ({{content.relationships.comments.length}})</strong></div>
+            <div ng-if="content.relationships.comments.length > 10" style="color: #555;">(First 10)</div>
+        </div>
+
+        <div class="panel-body" style="padding: 0;">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%;">
+                <thead style="background-color: #f2f2f2;">
+                    <tr>
+                        <th style="width: 25%;">ID</th>
+                        <th style="width: 25%;">Date</th>
+                        <th style="width: 50%;">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="comment in content.relationships.comments | limitTo:10">
+                        <!-- ID -->
+                        <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+                            <span>{{comment.id || '-'}}</span>
+                        </td>
+
+                        <!-- Date -->
+                        <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+                            {{comment.attributes.date * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}
+                        </td>
+
+                        <!-- Details Column -->
+                        <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+                            <div>
+                                <strong>Comment:</strong>
+                                <div>
+                                    {{ (comment.attributes.text.split(' ').length > 30)
+                                    ? comment.attributes.text.split(' ').slice(0,30).join(' ') + '...'
+                                    : comment.attributes.text }}
+                                </div>
+                            </div>
+                            <hr style="border: none; border-top: 1px solid #ddd; margin: 6px 0;">
+                            <div>
+                                <strong>Tags:</strong>
+                                <span ng-if="comment.attributes.tags && comment.attributes.tags.length > 0">
+                                    <span ng-repeat="tag in comment.attributes.tags">
+                                        {{tag}}<span ng-if="!$last">, </span>
+                                    </span>
+                                </span>
+                                <span ng-if="!comment.attributes.tags || comment.attributes.tags.length === 0">-</span>
+                            </div>
+                            <hr style="border: none; border-top: 1px solid #ddd; margin: 6px 0;">
+                            <div>
+                                <strong>Votes:</strong>
+                                <div>
+                                    Positive: {{comment.attributes.votes.positive}} |
+                                    Negative: {{comment.attributes.votes.negative}} |
+                                    Abuse: {{comment.attributes.votes.abuse}}
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Resolutions Panel -->
+    <div class="panel panel-info"
+        ng-if="content.relationships.resolutions && content.relationships.resolutions.length > 0"
+        style="max-height: 500px; overflow-y: auto; overflow-x: hidden;">
+
+        <!-- Header -->
+        <div class="panel-heading"
+            style="display: flex; justify-content: space-between; align-items: center; background-color: #e8fafa; padding: 8px 12px; border-bottom: 1px solid #ccc; position: sticky; top: 0; z-index: 10;">
+            <div><strong>Resolutions ({{content.relationships.resolutions.length}})</strong></div>
+            <div ng-if="content.relationships.resolutions.length > 10" style="color: #555;">(First 10)</div>
+        </div>
+
+        <div class="panel-body" style="padding: 0;">
+            <table class="table table-bordered" style="margin: 0; table-layout: fixed; width: 100%;">
+                <thead style="background-color: #f5f5f5;">
+                    <tr>
+                        <th style="width: 20%;">Host Name</th>
+                        <th style="width: 18%;">IP Address</th>
+                        <th style="width: 15%;">Resolver</th>
+                        <th style="width: 24%;">Host Name Analysis</th>
+                        <th style="width: 24%;">IP Address Analysis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="res in content.relationships.resolutions | limitTo:10">
+                        <td style="border: 1px solid #ddd; padding: 8px; word-break: break-word;">
+                            {{res.attributes.host_name || '-'}}
+                        </td>
+                        <td style="border: 1px solid #ddd; padding: 8px; word-break: break-word;">
+                            {{res.attributes.ip_address || '-'}}
+                        </td>
+                        <td style="border: 1px solid #ddd; padding: 8px; word-break: break-word;">
+                            {{res.attributes.resolver || '-'}}
+                        </td>
+
+                        <!-- Hostname Analysis -->
+                        <td style="border: 1px solid #ddd; padding: 8px; word-break: break-word;">
+                            <div><strong>Malicious:</strong> {{res.attributes.host_name_last_analysis_stats.malicious}}
+                            </div>
+                            <div><strong>Suspicious:</strong>
+                                {{res.attributes.host_name_last_analysis_stats.suspicious}}
+                            </div>
+                            <div><strong>Undetected:</strong>
+                                {{res.attributes.host_name_last_analysis_stats.undetected}}
+                            </div>
+                            <div><strong>Harmless:</strong> {{res.attributes.host_name_last_analysis_stats.harmless}}
+                            </div>
+                        </td>
+
+                        <!-- IP Address Analysis -->
+                        <td style="border: 1px solid #ddd; padding: 8px; word-break: break-word;">
+                            <div><strong>Malicious:</strong> {{res.attributes.ip_address_last_analysis_stats.malicious}}
+                            </div>
+                            <div><strong>Suspicious:</strong>
+                                {{res.attributes.ip_address_last_analysis_stats.suspicious}}
+                            </div>
+                            <div><strong>Undetected:</strong>
+                                {{res.attributes.ip_address_last_analysis_stats.undetected}}
+                            </div>
+                            <div><strong>Harmless:</strong> {{res.attributes.ip_address_last_analysis_stats.harmless}}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- File Behaviour Panel -->
+    <div class="panel panel-info"
+        ng-if="content.relationships.behaviours && content.relationships.behaviours.length > 0"
+        style="max-height: 600px; overflow-y: auto; overflow-x: hidden;">
+
+        <!-- Header -->
+        <div class="panel-heading"
+            style="display: flex; justify-content: space-between; align-items: center; background-color: #e8fafa; padding: 8px 12px; border-bottom: 1px solid #ccc; position: sticky; top: 0; z-index: 10;">
+            <div><strong>File Behaviour Analysis ({{content.relationships.behaviours.length}})</strong></div>
+            <div ng-if="content.relationships.behaviours.length > 10" style="color: #555;">(First 10)</div>
+        </div>
+
+        <!-- BODY -->
+        <div class="panel-body" style="padding: 0;">
+            <div ng-repeat="beh in content.relationships.behaviours | limitTo:10"
+                style="border-bottom: 1px solid #dcdcdc; padding: 14px;">
+
+                <div style="margin-top: 10px;">
+                    <strong>Sandbox:</strong>
+                    <span style="color:#007b7f;">{{beh.attributes.sandbox_name || '-'}}</span>
+                </div>
+
+                <div style="margin-top: 10px;" ng-if="beh.attributes.verdict_confidence">
+                    <strong>Confidence:</strong> {{beh.attributes.verdict_confidence}}%
+                </div>
+
+                <div ng-if="beh.attributes.verdicts && beh.attributes.verdicts.length > 0"
+                    style="display: flex; align-items: center; flex-wrap: wrap; gap: 5px; margin-top: 10px;">
+                    <strong>Verdict:</strong>
+                    <span ng-repeat="ver in beh.attributes.verdicts | limitTo:10">
+                        <span ng-class="{
+        'label label-danger': ver=='malicious',
+        'label label-warning': ver=='suspicious',
+        'label label-success': ver=='benign',
+        'label label-default': ver!='malicious' && ver!='suspicious' && ver!='benign'
+      }">{{ver}}</span>
+                    </span>
+                </div>
+
+                <!-- COMMAND EXECUTIONS -->
+                <div ng-if="beh.attributes.command_executions && beh.attributes.command_executions.length > 0"
+                    style="margin-bottom: 10px; margin-top: 10px;">
+                    <div style="font-weight: bold;">Command Executions:</div>
+                    <ul style="margin: 5px 0 0 18px; padding-left: 0;">
+                        <li ng-repeat="cmd in beh.attributes.command_executions | limitTo:10"
+                            style="font-family: monospace;">{{cmd}}</li>
+                    </ul>
+                </div>
+
+                <!-- DNS LOOKUPS -->
+                <div ng-if="beh.attributes.dns_lookups && beh.attributes.dns_lookups.length > 0"
+                    style="margin-bottom: 12px;">
+                    <div style="font-weight: bold;">DNS Lookups:</div>
+                    <table class="table table-bordered table-striped"
+                        style="margin-top: 6px; width: 100%; table-layout: fixed;">
+                        <thead style="background-color: #f1f9f9;">
+                            <tr>
+                                <th style="width: 45%;">Hostname</th>
+                                <th style="width: 55%;">Resolved IPs</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="dns in beh.attributes.dns_lookups | limitTo:10">
+                                <td style="word-break: break-word;">{{dns.hostname || '-'}}</td>
+                                <td style="word-break: break-word;">
+                                    <span ng-if="dns.resolved_ips && dns.resolved_ips.length > 0">
+                                        {{dns.resolved_ips.join(', ')}}
+                                    </span>
+                                    <span ng-if="!dns.resolved_ips || dns.resolved_ips.length == 0">-</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- SIGNATURE MATCHES -->
+                <div ng-if="beh.attributes.signature_matches && beh.attributes.signature_matches.length > 0"
+                    style="margin-bottom: 12px;margin-top: 10px;">
+                    <div style="font-weight: bold;">Signature Matches:</div>
+                    <table class="table table-bordered table-hover"
+                        style="margin-top: 6px; width: 100%; table-layout: fixed;">
+                        <thead style="background-color: #f1f9f9;">
+                            <tr>
+                                <th style="width: 18%;">Name</th>
+                                <th style="width: 45%;">Description</th>
+                                <th style="width: 37%;">Matched Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="sig in beh.attributes.signature_matches | limitTo:10">
+                                <td style="word-break: break-word; font-weight: 600;">{{sig.name || '-'}}</td>
+                                <td style="word-break: break-word;">{{sig.description || '-'}}</td>
+                                <td style="word-break: break-word;">
+                                    <span ng-if="sig.match_data && sig.match_data.length > 0">
+                                        {{sig.match_data.join(', ')}}
+                                    </span>
+                                    <span ng-if="!sig.match_data || sig.match_data.length == 0">-</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2 ng-if="content.mitre_attack_data.length > 0" style="
+    color: #2c3e50; 
+    font-size: 24px; 
+    font-weight: 600; 
+    margin-bottom: 20px; 
+    padding-bottom: 8px;
+    border-bottom: 2px solid #3498db;
+">
+        MITRE ATT&CK Report
+    </h2>
+    <!-- MITRE ATT&CK Panel -->
+    <div class="panel panel-info" ng-if="content.mitre_attack_data && content.mitre_attack_data.length > 0"
+        style="max-height: 600px; overflow-y: auto;">
+
+        <!-- Header -->
+        <div class="panel-heading" style="display: flex; justify-content: space-between; align-items: center; background-color: #e8fafa;
+              padding: 8px 12px; border-bottom: 1px solid #ccc; position: sticky; top: 0; z-index: 10;">
+            <div><strong>MITRE ATT&CK Analysis ({{content.mitre_attack_data.length}})</strong></div>
+            <div ng-if="content.mitre_attack_data.length > 5" style="color: #555;">(First 10)</div>
+        </div>
+
+        <!-- Body -->
+        <div class="panel-body" style="padding: 0;">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%;">
+                <thead style="background-color: #f2f2f2;">
+                    <tr>
+                        <th style="width: 15%;">ID</th>
+                        <th style="width: 20%;">Tactic</th>
+                        <th style="width: 65%;">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="tactic in content.mitre_attack_data | limitTo:5">
+
+                        <!-- ID -->
+                        <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+                            <a href="{{tactic.link}}" target="_blank">{{tactic.id || '-'}}</a>
+                        </td>
+
+                        <!-- Tactic Name -->
+                        <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+                            {{tactic.name || '-'}}<br>
+                            <small style="color:#007b7f;">{{tactic.sandbox_name || '-'}}</small>
+                        </td>
+
+                        <!-- Details -->
+                        <td style="border: 1px solid #ccc; padding: 8px; word-break: break-word;">
+
+                            <!-- Description (trimmed to 30 words) -->
+                            <div>
+                                <strong>Description:</strong>
+                                <div>
+                                    {{ (tactic.description.split(' ').length > 30)
+                                    ? tactic.description.split(' ').slice(0,30).join(' ') + '...'
+                                    : tactic.description }}
+                                </div>
+                            </div>
+
+                            <!-- Techniques -->
+                            <hr style="border: none; border-top: 1px solid #ddd; margin: 6px 0;">
+                            <div>
+                                <strong>Techniques:</strong>
+                                <div ng-if="tactic.techniques && tactic.techniques.length > 0" style="margin-top: 6px;">
+                                    <div ng-repeat="tech in tactic.techniques"
+                                        style="margin-bottom: 8px; padding-left: 8px;">
+
+                                        <!-- Technique ID + Name -->
+                                        <div>
+                                            <a href="{{tech.link}}" target="_blank"
+                                                style="font-weight: 600;">{{tech.id}}</a> - {{tech.name}}
+                                        </div>
+
+                                        <!-- Technique Description (trimmed) -->
+                                        <div style="font-size: 13px; color: #333;">
+                                            {{ (tech.description.split(' ').length > 30)
+                                            ? tech.description.split(' ').slice(0,30).join(' ') + '...'
+                                            : tech.description }}
+                                        </div>
+
+                                        <!-- Signatures -->
+                                        <div ng-if="tech.signatures && tech.signatures.length > 0"
+                                            style="margin-top: 5px;">
+                                            <strong>Signatures:</strong>
+                                            <table class="table table-condensed" style="margin-top: 4px; width: 100%;">
+                                                <thead style="background-color: #f9f9f9;">
+                                                    <tr>
+                                                        <th style="width: 15%;">Severity</th>
+                                                        <th style="width: 85%;">Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="sig in tech.signatures">
+                                                        <td style="color: #333;">{{sig.severity}}</td>
+                                                        <td>
+                                                            {{ (sig.description.split(' ').length > 30)
+                                                            ? sig.description.split(' ').slice(0,30).join(' ') + '...'
+                                                            : sig.description }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="!tactic.techniques || tactic.techniques.length === 0">-</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

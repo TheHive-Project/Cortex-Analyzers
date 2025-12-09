@@ -1,0 +1,365 @@
+<!-- General error -->
+<div ng-if="!success && content.errorMessage">
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <strong>Scanned Private File Report Failed</strong>
+        </div>
+        <div class="panel-body">
+            <span style="word-wrap: break-word; white-space: normal;">
+                {{content.errorMessage}}
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- Success Content -->
+<div ng-if="success">
+    <h2
+        style="color: #2c3e50; font-size: 24px; font-weight: 600; margin-bottom: 20px; padding-bottom: 8px; border-bottom: 2px solid #3498db;">
+        Scanned Private File Report
+    </h2>
+
+    <!-- Summary Panel -->
+    <div class="panel panel-info" ng-if="content.attributes">
+        <div class="panel-heading"><strong>File Summary</strong></div>
+        <div class="panel-body">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%; margin-bottom: 0;">
+                <tbody>
+                    <tr ng-if="content.attributes.meaningful_name">
+                        <td style="width: 30%;"><strong>File Name</strong></td>
+                        <td style="width: 70%; word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.meaningful_name}}</td>
+                    </tr>
+                    <tr ng-if="content.id">
+                        <td><strong>File Hash</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.id}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.size">
+                        <td><strong>File Size</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.size}} bytes</td>
+                    </tr>
+                    <tr ng-if="content.attributes.type_description">
+                        <td><strong>File Type</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.type_description}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.magic">
+                        <td><strong>Magic Header</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.magic}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- GTI Assessment Panel -->
+    <div class="panel panel-info" ng-if="content.attributes && content.attributes.gti_assessment">
+        <div class="panel-heading"><strong>GTI Assessment</strong></div>
+        <div class="panel-body">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%; margin-bottom: 0;">
+                <tbody>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.verdict && content.attributes.gti_assessment.verdict.value">
+                        <td style="width: 25%;"><strong>Verdict</strong></td>
+                        <td style="width: 70%;" class="wrap"><strong
+                                ng-class="{'text-success': content.attributes.gti_assessment.verdict.value === 'VERDICT_BENIGN', 'text-danger': content.attributes.gti_assessment.verdict.value === 'VERDICT_MALICIOUS', 'text-warning': content.attributes.gti_assessment.verdict.value !== 'VERDICT_BENIGN' && content.attributes.gti_assessment.verdict.value !== 'VERDICT_MALICIOUS'}">{{content.attributes.gti_assessment.verdict.value}}</strong>
+                        </td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.severity && content.attributes.gti_assessment.severity.value">
+                        <td><strong>Severity</strong></td>
+                        <td class="wrap"><strong
+                                ng-class="{'text-success': content.attributes.gti_assessment.severity.value === 'SEVERITY_NONE', 'text-danger': content.attributes.gti_assessment.severity.value === 'SEVERITY_HIGH', 'text-warning': content.attributes.gti_assessment.severity.value !== 'SEVERITY_NONE' && content.attributes.gti_assessment.severity.value !== 'SEVERITY_HIGH'}">{{content.attributes.gti_assessment.severity.value}}</strong>
+                        </td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.threat_score && content.attributes.gti_assessment.threat_score.value !== undefined">
+                        <td><strong>Threat Score</strong></td>
+                        <td class="wrap">{{content.attributes.gti_assessment.threat_score.value}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.gti_assessment.description">
+                        <td><strong>Description</strong></td>
+                        <td class="wrap">{{content.attributes.gti_assessment.description}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.contributing_factors && content.attributes.gti_assessment.contributing_factors.mandiant_confidence_score !== undefined">
+                        <td><strong>Mandiant Confidence Score</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.gti_assessment.contributing_factors.mandiant_confidence_score}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.contributing_factors && content.attributes.gti_assessment.contributing_factors.gti_confidence_score !== undefined">
+                        <td><strong>GTI Confidence Score</strong></td>
+                        <td class="wrap">{{content.attributes.gti_assessment.contributing_factors.gti_confidence_score}}
+                        </td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.contributing_factors && content.attributes.gti_assessment.contributing_factors.normalised_categories && content.attributes.gti_assessment.contributing_factors.normalised_categories.length > 0">
+                        <td><strong>Categories</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.gti_assessment.contributing_factors.normalised_categories.join(', ')}}
+                        </td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.contributing_factors && content.attributes.gti_assessment.contributing_factors.pervasive_indicator !== undefined">
+                        <td><strong>Pervasive Indicator</strong></td>
+                        <td class="wrap">{{content.attributes.gti_assessment.contributing_factors.pervasive_indicator}}
+                        </td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.contributing_factors && content.attributes.gti_assessment.contributing_factors.mandiant_domain_hijack !== undefined">
+                        <td><strong>Mandiant Domain Hijack</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.gti_assessment.contributing_factors.mandiant_domain_hijack}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.contributing_factors && content.attributes.gti_assessment.contributing_factors.associated_malware_configuration !== undefined">
+                        <td><strong>Associated Malware Configuration</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.gti_assessment.contributing_factors.associated_malware_configuration}}
+                        </td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.contributing_factors && content.attributes.gti_assessment.contributing_factors.mandiant_analyst_benign !== undefined">
+                        <td><strong>Mandiant Analyst Benign</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.gti_assessment.contributing_factors.mandiant_analyst_benign}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.contributing_factors && content.attributes.gti_assessment.contributing_factors.malicious_sandbox_verdict !== undefined">
+                        <td><strong>Malicious Sandbox Verdict</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.gti_assessment.contributing_factors.malicious_sandbox_verdict}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.contributing_factors && content.attributes.gti_assessment.contributing_factors.mandiant_association_report !== undefined">
+                        <td><strong>Mandiant Association Report</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.gti_assessment.contributing_factors.mandiant_association_report}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.gti_assessment.contributing_factors && content.attributes.gti_assessment.contributing_factors.google_malware_analysis !== undefined">
+                        <td><strong>Google Malware Analysis</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.gti_assessment.contributing_factors.google_malware_analysis}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Threat Severity Panel -->
+    <div class="panel panel-info" ng-if="content.attributes && content.attributes.threat_severity">
+        <div class="panel-heading"><strong>Threat Severity</strong></div>
+        <div class="panel-body">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%; margin-bottom: 0;">
+                <tbody>
+                    <tr ng-if="content.attributes.threat_severity.threat_severity_level">
+                        <td style="width: 25%;"><strong>Level</strong></td>
+                        <td style="width: 70%;" class="wrap"
+                            ng-class="{'text-success': content.attributes.threat_severity.threat_severity_level === 'SEVERITY_NONE', 'text-danger': content.attributes.threat_severity.threat_severity_level === 'SEVERITY_HIGH', 'text-warning': content.attributes.threat_severity.threat_severity_level !== 'SEVERITY_NONE' && content.attributes.threat_severity.threat_severity_level !== 'SEVERITY_HIGH'}">
+                            <strong>{{content.attributes.threat_severity.threat_severity_level}}</strong>
+                        </td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.threat_severity.threat_severity_data && content.attributes.threat_severity.threat_severity_data.num_detections !== undefined">
+                        <td><strong>Detections</strong></td>
+                        <td class="wrap">{{content.attributes.threat_severity.threat_severity_data.num_detections}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.threat_severity.threat_severity_data && content.attributes.threat_severity.threat_severity_data.popular_threat_category">
+                        <td><strong>Threat Category</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.threat_severity.threat_severity_data.popular_threat_category}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.threat_severity.level_description">
+                        <td><strong>Description</strong></td>
+                        <td class="wrap">{{content.attributes.threat_severity.level_description}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.threat_severity.threat_severity_data && content.attributes.threat_severity.threat_severity_data.has_bad_communicating_files_high !== undefined">
+                        <td><strong>Bad Communicating Files (High)</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.threat_severity.threat_severity_data.has_bad_communicating_files_high}}
+                        </td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.threat_severity.threat_severity_data && content.attributes.threat_severity.threat_severity_data.has_bad_communicating_files_medium !== undefined">
+                        <td><strong>Bad Communicating Files (Medium)</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.threat_severity.threat_severity_data.has_bad_communicating_files_medium}}
+                        </td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.threat_severity.threat_severity_data && content.attributes.threat_severity.threat_severity_data.belongs_to_bad_collection !== undefined">
+                        <td><strong>Belongs to Bad Collection</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.threat_severity.threat_severity_data.belongs_to_bad_collection}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.threat_severity.threat_severity_data && content.attributes.threat_severity.threat_severity_data.belongs_to_threat_actor !== undefined">
+                        <td><strong>Belongs To Threat Actor</strong></td>
+                        <td class="wrap">
+                            {{content.attributes.threat_severity.threat_severity_data.belongs_to_threat_actor}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.threat_severity.threat_severity_data && content.attributes.threat_severity.threat_severity_data.domain_rank">
+                        <td><strong>Domain Rank</strong></td>
+                        <td class="wrap">{{content.attributes.threat_severity.threat_severity_data.domain_rank}}</td>
+                    </tr>
+                    <tr
+                        ng-if="content.attributes.threat_severity.threat_severity_data && content.attributes.threat_severity.threat_severity_data.num_gav_detections !== undefined">
+                        <td><strong>GAV Detections</strong></td>
+                        <td class="wrap">{{content.attributes.threat_severity.threat_severity_data.num_gav_detections}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- File Hashes Panel -->
+    <div class="panel panel-info"
+        ng-if="content.attributes && (content.attributes.md5 || content.attributes.sha1 || content.attributes.sha256 || content.attributes.ssdeep || content.attributes.tlsh)">
+        <div class="panel-heading"><strong>File Hashes</strong></div>
+        <div class="panel-body">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%; margin-bottom: 0;">
+                <tbody>
+                    <tr ng-if="content.attributes.md5">
+                        <td style="width: 20%;"><strong>MD5</strong></td>
+                        <td
+                            style="width: 80%; word-wrap: break-word; word-break: break-all; white-space: normal; ">
+                            {{content.attributes.md5}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.sha1">
+                        <td><strong>SHA1</strong></td>
+                        <td
+                            style="word-wrap: break-word; word-break: break-all; white-space: normal; ">
+                            {{content.attributes.sha1}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.sha256">
+                        <td><strong>SHA256</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal; ">
+                            {{content.attributes.sha256}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.ssdeep">
+                        <td><strong>SSDEEP</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal; ">
+                            {{content.attributes.ssdeep}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.tlsh">
+                        <td><strong>TLSH</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal; ">
+                            {{content.attributes.tlsh}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- File Properties Panel -->
+    <div class="panel panel-info"
+        ng-if="content.attributes && (content.attributes.tags || content.attributes.type_tags || content.attributes.names)">
+        <div class="panel-heading"><strong>File Properties</strong></div>
+        <div class="panel-body">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%; margin-bottom: 0;">
+                <tbody>
+                    <tr ng-if="content.attributes.tags && content.attributes.tags.length > 0">
+                        <td style="width: 25%;"><strong>Tags</strong></td>
+                        <td style="width: 75%; word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            <span ng-repeat="tag in content.attributes.tags" class="label label-default"
+                                style="color: white; background-color: #6c757d; margin-right: 8px; margin-bottom: 5px; display: inline-block; padding: 4px 8px;">
+                                {{tag}}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr ng-if="content.attributes.type_tags && content.attributes.type_tags.length > 0">
+                        <td><strong>Type Tags</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            <span ng-repeat="type_tag in content.attributes.type_tags" class="label label-primary"
+                                style="color: white; background-color: #3498db; margin-right: 8px; margin-bottom: 5px; display: inline-block; padding: 4px 8px;">
+                                {{type_tag}}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr ng-if="content.attributes.names && content.attributes.names.length > 0">
+                        <td><strong>Known Names</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            <div ng-repeat="name in content.attributes.names">
+                                {{name}}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Bundle Info Panel (for ZIP files) -->
+    <div class="panel panel-info" ng-if="content.attributes && content.attributes.bundle_info">
+        <div class="panel-heading"><strong>Archive Contents</strong></div>
+        <div class="panel-body">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%; margin-bottom: 0;">
+                <tbody>
+                    <tr ng-if="content.attributes.bundle_info.type">
+                        <td style="width: 30%;"><strong>Archive Type</strong></td>
+                        <td style="width: 70%; word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.bundle_info.type}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.bundle_info.num_children">
+                        <td><strong>Number of Files</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.bundle_info.num_children}}</td>
+                    </tr>
+                    <tr ng-if="content.attributes.bundle_info.uncompressed_size">
+                        <td><strong>Uncompressed Size</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{content.attributes.bundle_info.uncompressed_size}} bytes</td>
+                    </tr>
+                    <tr ng-if="content.attributes.bundle_info.extensions">
+                        <td><strong>File Extensions</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            <span ng-repeat="(ext, count) in content.attributes.bundle_info.extensions"
+                                class="label label-info"
+                                style="color: white; background-color: #17a2b8; margin-right: 8px; margin-bottom: 5px; display: inline-block; padding: 4px 8px;">
+                                {{ext}} ({{count}})
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- AI Analysis Panel (for XML files) -->
+    <div class="panel panel-info"
+        ng-if="content.attributes && content.attributes.crowdsourced_ai_results && content.attributes.crowdsourced_ai_results.length > 0">
+        <div class="panel-heading"><strong>AI Analysis</strong></div>
+        <div class="panel-body">
+            <table class="table table-bordered" style="table-layout: fixed; width: 100%; margin-bottom: 0;">
+                <tbody>
+                    <tr ng-repeat="ai_result in content.attributes.crowdsourced_ai_results">
+                        <td style="width: 25%;"><strong>Analysis Source</strong></td>
+                        <td style="width: 75%; word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{ai_result.source}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Category</strong></td>
+                        <td style="word-wrap: break-word; word-break: break-all; white-space: normal;">
+                            {{ai_result.category}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Analysis</strong></td>
+                        <td
+                            style="word-wrap: break-word; word-break: break-all; white-space: normal; line-height: 1.4;">
+                            {{ai_result.analysis}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
