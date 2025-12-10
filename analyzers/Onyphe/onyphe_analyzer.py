@@ -48,7 +48,7 @@ class OnypheAnalyzer(Analyzer):
                     reportlist.append(dedupkey)
                 if "cve" in odoc:
                     for cve in odoc["cve"]:
-                        cveipport = cve + ":" + str(odoc["ip"]) + ":" + str(odoc["port"])
+                        cveipport = str(cve) + ":" + str(odoc["ip"]) + ":" + str(odoc["port"])
                         if not cveipport in cvelist:
                             cvelist.append(cveipport)
                 elif odoc["@category"] == "riskscan":
@@ -274,7 +274,7 @@ class OnypheAnalyzer(Analyzer):
                         otags = []
                         if odoc["@category"] == "riskscan" or (odoc["@category"] == "ctiscan" and "tag" in odoc):
                             for ta in odoc["tag"]:
-                                if ta.split('::')[0] == 'risk':
+                                if ('::' in ta and ta.split('::')[0] == 'risk'):
                                     otags.append(str(ta))
                                     otags.append("onyphe:risk")
                         
@@ -291,7 +291,6 @@ class OnypheAnalyzer(Analyzer):
                         if self.keep_all_tags:
                             for ta in odoc["tag"]:
                                 otags.append(str(ta))
-                        
                         if "cpe" in odoc:
                             for cpe in odoc["cpe"]:
                                 otags.append(str(cpe))
@@ -310,7 +309,7 @@ class OnypheAnalyzer(Analyzer):
                             otags.append("tcp/" + str(odoc["tcp"]["dest"]))
                         elif "udp" in odoc:                                
                             otags.append("udp/" + str(odoc["udp"]["dest"]))
-                        
+
                         if self.return_other_artifacts:
                             thisartifact = "other#"
                             if odoc["@category"] == "ctiscan":
@@ -370,12 +369,13 @@ class OnypheAnalyzer(Analyzer):
                         dedup[dedupkey] = odoc["@timestamp"]
 
             except Exception as e:
-                self.unexpectedError("Error: " + e + " in artifacts")
+                self.unexpectedError("Error: " + str(e) + " in artifacts")
                   
         for key in build:
-            type = key.split('#')[0]
-            data = key.split('#')[1]
-            artifacts.append(self.build_artifact(type, data, tags=build[key]))
+            if "#" in key:
+                type = key.split('#')[0]
+                data = key.split('#')[1]
+                artifacts.append(self.build_artifact(type, data, tags=build[key]))
                 
         return artifacts
     
@@ -447,7 +447,7 @@ class OnypheAnalyzer(Analyzer):
                             otags.append("udp/" + str(odoc["udp"]["dest"]))
                
             except Exception as e:
-                self.unexpectedError("Error: " + e + " in operations")
+                self.unexpectedError("Error: " + str(e) + " in operations")
        
         for this_tag in otags:
             operations.append(self.build_operation('AddTagToArtifact', tag=this_tag))
