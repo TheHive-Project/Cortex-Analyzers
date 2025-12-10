@@ -1,4 +1,3 @@
 cortexutils
 requests
-datetime
 python-dateutil

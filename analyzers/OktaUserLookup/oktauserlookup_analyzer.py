@@ -18,7 +18,7 @@ class OktaUserlookupAnalyzer(Analyzer):
         predicate = "Query"
 
         for key, value in raw["results"].items():
-        	if key in ["Country Code", "Supervisory Org", "Company"]:
+            if key in ["Country Code", "Supervisory Org", "Company"]:
                 taxonomies.append(self.build_taxonomy(level, namespace, predicate, value))
         return {"taxonomies": taxonomies}
 

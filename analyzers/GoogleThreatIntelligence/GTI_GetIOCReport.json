@@ -1,0 +1,40 @@
+{
+    "name": "GTI_GetIOCReport",
+    "version": "1.0",
+    "author": "Google",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Get the latest Google Threat Intelligence report for a file, hash, url, domain or an IP address.",
+    "dataTypeList": [ "file", "hash", "domain", "fqdn", "ip", "url"],
+    "command": "GoogleThreatIntelligence/gti.py",
+    "baseConfig": "GTI_GetReport",
+    "config": {
+        "service": "get"
+    },
+    "configurationItems": [
+        {
+            "name": "gti_api_key",
+            "description": "API key for Google Threat Intelligence.",
+            "type": "string",
+            "multi": false,
+            "required": true
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": false,
+    "service_homepage": "https://www.virustotal.com/",
+    "service_logo": {
+        "path": "assets/googlethreatintelligence_logo.png",
+        "caption": "logo"
+    },
+    "screenshots": [
+        {
+        "path": "assets/get_ioc_report_summary.png",
+        "caption": "GooogleThreatIntelligence: summary report"
+        },
+        {
+        "path": "assets/get_ioc_report_full_report.png",
+        "caption": "GooogleThreatIntelligence: long report"
+        }
+    ]
+}

@@ -1,0 +1,108 @@
+{
+    "name": "GTI_ScanPrivateFile",
+    "version": "1.0",
+    "author": "Google",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Get the latest Google Threat Intelligence report for a file that was privately submitted to Google Threat Intelligence for scanning",
+    "dataTypeList": ["file"],
+    "command": "GoogleThreatIntelligence/gti.py",
+    "baseConfig": "GTI_ScanPrivateFile",
+    "config": {
+        "service": "privateScan"
+    },
+    "configurationItems": [
+        {
+            "name": "gti_api_key",
+            "description": "API key for Google Threat Intelligence.",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "password",
+            "description": "Password used to decompress and scan files contained within password-protected ZIP archives.",
+            "type": "string",
+            "multi": false,
+            "required": false
+        },
+        {
+            "name": "command_line",
+            "description": "Command-line arguments to be used when executing the file in sandbox environments.",
+            "type": "string",
+            "multi": false,
+            "required": false
+        },
+        {
+            "name": "disable_sandbox",
+            "description": "If true, the file will not be detonated in sandbox environments.",
+            "type": "boolean",
+            "multi": false,
+            "required": false,
+            "defaultValue": false
+        },
+        {
+            "name": "enable_internet",
+            "description": "Specifies whether the file should have internet access while running in sandbox environments.",
+            "type": "boolean",
+            "multi": false,
+            "required": false,
+            "defaultValue": false
+        },
+        {
+            "name": "retention_period_days",
+            "description": "Number of days the report and file are retained in VirusTotal (1–28). If not set, the group's retention policy is applied.",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 1
+        },
+        {
+            "name": "interaction_sandbox",
+            "description": "Specifies the sandbox to use for interactive analysis. Allowed values: cape_win, cape_linux.",
+            "type": "string",
+            "multi": false,
+            "required": false
+        },
+        {
+            "name": "interaction_timeout",
+            "description": "Timeout for interactive sessions, in seconds. Minimum: 60 (1 minute), Maximum: 1800 (30 minutes).",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 60
+        },
+        {
+            "name": "locale",
+            "description": "Preferred sandbox locale. On Windows, this sets the analysis machine’s language and keyboard settings. Allowed values: EN_US, AR_SA, DE_DE, ES_ES, PT_BR.",
+            "type": "string",
+            "multi": false,
+            "required": false,
+            "defaultValue": "EN_US"
+        },
+        {
+            "name": "storage_region",
+            "description": "Region where files will be stored. If not provided, uses the group's private_scanning.storage_region setting. Allowed values: US, CA, EU, GB.",
+            "type": "string",
+            "multi": false,
+            "required": false
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "service_homepage": "https://www.virustotal.com/",
+    "service_logo": {
+        "path": "assets/googlethreatintelligence_logo.png",
+        "caption": "logo"
+    },
+    "screenshots": [
+        {
+            "path": "assets/scan_private_file_summary.png",
+            "caption": "GooogleThreatIntelligence: summary report"
+        },
+        {
+            "path": "assets/scan_private_file_full_report.png",
+            "caption": "GooogleThreatIntelligence: long report"
+        }
+    ]
+}

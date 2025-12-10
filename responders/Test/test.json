@@ -8,6 +8,9 @@
   "dataTypeList": ["thehive:case", "thehive:alert", "thehive:case_artifact", "thehive:case_task", "thehive:case_task_log"],
   "command": "Test/test.py",
   "baseConfig": "Test",
+  "config": {
+    "service": "test"
+  },
   "configurationItems": [
   ]
 }

@@ -1,6 +1,6 @@
 {
   "name": "Censys",
-  "author": "Nils Kuhnert, CERT-Bund; nusantara-self, StrangeBee",
+  "author": "Nils Kuhnert, CERT-Bund; Fabien Bloume, StrangeBee",
   "license": "AGPL-V3",
   "url": "https://github.com/BSI-CERT-Bund/censys-analyzer",
   "version": "2.0",

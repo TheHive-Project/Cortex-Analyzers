@@ -1,7 +1,7 @@
 {
   "name": "CrowdStrikeFalcon_unhideHost",
   "version": "1.0",
-  "author": "nusantara-self, StrangeBee",
+  "author": "Fabien Bloume, StrangeBee",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "This action will restore a host. Detection reporting will resume after the host is restored",

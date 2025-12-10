@@ -1,5 +1,349 @@
 # Changelog
 
+## [3.6.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.3) (2025-11-11)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.2...3.6.3)
+
+**Closed issues:**
+
+- \[FR\] Add ClusterHawk analyzer for IP classification [\#1389](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1389)
+
+**Merged pull requests:**
+
+- Update onyphe\_analyzer.py [\#1391](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1391) ([vpiserchia](https://github.com/vpiserchia))
+
+## [3.6.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.2) (2025-11-03)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.1...3.6.2)
+
+**Merged pull requests:**
+
+- Add ClusterHawk analyzer and template [\#1390](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1390) ([marvinuku](https://github.com/marvinuku))
+- Support elasticsearch-py ~= 9.x [\#1388](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1388) ([vpiserchia](https://github.com/vpiserchia))
+
+## [3.6.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.1) (2025-10-07)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.0...3.6.1)
+
+**Merged pull requests:**
+
+- Slack responder - Improvements [\#1387](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1387) ([nusantara-self](https://github.com/nusantara-self))
+- Velociraptor - support for b64 api configuration for SaaS deployments [\#1386](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1386) ([nusantara-self](https://github.com/nusantara-self))
+
+## [3.6.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.0) (2025-10-06)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.26...3.6.0)
+
+**Merged pull requests:**
+
+- Update requirements.txt [\#1385](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1385) ([vpiserchia](https://github.com/vpiserchia))
+- Add Slack responder to sync created channels into task [\#1384](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1384) ([nusantara-self](https://github.com/nusantara-self))
+- CI - Add trivy scans & manual full rebuild [\#1383](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1383) ([nusantara-self](https://github.com/nusantara-self))
+- Update Velociraptor Responder [\#986](https://github.com/TheHive-Project/Cortex-Analyzers/pull/986) ([weslambert](https://github.com/weslambert))
+
+## [3.5.26](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.26) (2025-09-09)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.25...3.5.26)
+
+**Merged pull requests:**
+
+- Analyzer Capa - Fixes [\#1382](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1382) ([nusantara-self](https://github.com/nusantara-self))
+- Proofpoint - Fix a typo in folder and neurons name [\#1381](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1381) ([nusantara-self](https://github.com/nusantara-self))
+- CI - Build Improvements [\#1380](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1380) ([nusantara-self](https://github.com/nusantara-self))
+- Add CIRCL AIL Onion-Lookup Analyzer [\#1379](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1379) ([nusantara-self](https://github.com/nusantara-self))
+- Neurons description improvements [\#1378](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1378) ([nusantara-self](https://github.com/nusantara-self))
+
+## [3.5.25](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.25) (2025-08-25)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.24...3.5.25)
+
+**Merged pull requests:**
+
+- CI - Revert to Python-slim builds for K8S compatibility [\#1377](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1377) ([nusantara-self](https://github.com/nusantara-self))
+- Malwarebazaar: Bugfix for new authentication header key [\#1376](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1376) ([bytinbit](https://github.com/bytinbit))
+- Analyzers & Responders for testing / development purpose [\#1375](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1375) ([nusantara-self](https://github.com/nusantara-self))
+
+## [3.5.24](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.24) (2025-08-18)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.23...3.5.24)
+
+**Merged pull requests:**
+
+- Elasticsearch Analyzer: Fix deprecated timeout constructor argument [\#1374](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1374) ([bytinbit](https://github.com/bytinbit))
+
+## [3.5.23](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.23) (2025-08-12)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.22...3.5.23)
+
+**Closed issues:**
+
+- \[Bug\] GreyNoise - new SDK breaks analyzer [\#1368](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1368)
+- Can't run mailer.py responder: "doesn't have image" [\#953](https://github.com/TheHive-Project/Cortex-Analyzers/issues/953)
+- \[Bug\] Mailer Responder is checking for recipient tags starting with "mail:" [\#847](https://github.com/TheHive-Project/Cortex-Analyzers/issues/847)
+- \[FR\] - Responder Mailer\_1.0 - Add Case number of the subject of the sent email [\#1370](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1370)
+- \[Bug\] Cortex Mailer Responder does not add Date header \(per RFC5322\) [\#1222](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1222)
+
+**Merged pull requests:**
+
+- Mailer - Tiny fixes & improvements [\#1372](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1372) ([nusantara-self](https://github.com/nusantara-self))
+- AbuseIPDB 1.1 - Contextual improvements / Analyzer template  [\#1371](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1371) ([nusantara-self](https://github.com/nusantara-self))
+
+## [3.5.22](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.22) (2025-08-01)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.21...3.5.22)
+
+**Merged pull requests:**
+
+- Slack integration - Create Channel / War room [\#1369](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1369) ([nusantara-self](https://github.com/nusantara-self))
+- \[greynoise\] Updates analyzer to support GreyNoise v3 API [\#1367](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1367) ([bradchiappetta](https://github.com/bradchiappetta))
+
+## [3.5.21](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.21) (2025-07-30)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.20...3.5.21)
+
+**Merged pull requests:**
+
+- MSEntraID - Enhancements & bug fixes [\#1366](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1366) ([nusantara-self](https://github.com/nusantara-self))
+
+## [3.5.20](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.20) (2025-07-28)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.19...3.5.20)
+
+**Merged pull requests:**
+
+- Various small improvements [\#1365](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1365) ([nusantara-self](https://github.com/nusantara-self))
+
+## [3.5.19](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.19) (2025-07-24)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.18...3.5.19)
+
+**Merged pull requests:**
+
+- JA4 FoxIO - JA4 fingerprint analyzer [\#1364](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1364) ([nusantara-self](https://github.com/nusantara-self))
+- Gatewatcher - Add new features [\#1363](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1363) ([ghost](https://github.com/ghost))
+- URLHaus - Add API Key requirement [\#1362](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1362) ([Lohuss](https://github.com/Lohuss))
+
+## [3.5.18](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.18) (2025-06-23)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.17...3.5.18)
+
+**Closed issues:**
+
+- \[FR\] BitcoinAbuse analyzer fails – upstream API migrated to ChainAbuse [\#1360](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1360)
+
+**Merged pull requests:**
+
+- Migrates BitcoinAbuse analyzer to new ChainAbuse [\#1361](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1361) ([nusantara-self](https://github.com/nusantara-self))
+
+## [3.5.17](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.17) (2025-06-13)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.16...3.5.17)
+
+**Merged pull requests:**
+
+- Added the n8n responder [\#1359](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1359) ([elohim666](https://github.com/elohim666))
+
+## [3.5.16](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.16) (2025-06-06)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.15...3.5.16)
+
+**Merged pull requests:**
+
+- Fix links for Joe Sandbox analyzer [\#1358](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1358) ([nusantara-self](https://github.com/nusantara-self))
+
+## [3.5.15](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.15) (2025-05-27)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.14...3.5.15)
+
+**Merged pull requests:**
+
+- Add Lookyloo analyzer [\#1357](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1357) ([PoloOctopus](https://github.com/PoloOctopus))
+
+## [3.5.14](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.14) (2025-05-26)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.13...3.5.14)
+
+**Closed issues:**
+
+- \[FR\] CIRCL Vulnerability-Lookup Analyzer [\#1352](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1352)
+
+**Merged pull requests:**
+
+- Add CIRCL Vulnerability-Lookup analyzer [\#1356](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1356) ([nusantara-self](https://github.com/nusantara-self))
+
+## [3.5.13](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.13) (2025-05-23)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.12...3.5.13)
+
+**Closed issues:**
+
+- MISP Analyzer \(misp:2 image\) fails with 'input: null' and 'worker didn't generate output file' on Python 3.13.3 [\#1355](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1355)
+
+**Merged pull requests:**
+
+- Fix analyzer: incompatible ctx.io api \[Malwares\] [\#1350](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1350) ([Ignatella](https://github.com/Ignatella))
+
+## [3.5.12](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.12) (2025-05-07)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.11...3.5.12)
+
+**Merged pull requests:**
+
+- New Analyzer & Responders Watcher [\#1353](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1353) ([ygalnezri](https://github.com/ygalnezri))
+
+## [3.5.11](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.11) (2025-04-17)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.10...3.5.11)
+
+**Closed issues:**
+
+- New Analyzer - LupovisProwlAnalyzer [\#1277](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1277)
+
+**Merged pull requests:**
+
+- MSEntra ID - Fix short reports [\#1349](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1349) ([nusantara-self](https://github.com/nusantara-self))
+- Fix analyzer: remove missing fields \[TorBlutmagie\]  [\#1348](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1348) ([Ignatella](https://github.com/Ignatella))
+- Added new LupovisProwlAnalyzer \#1277 [\#1278](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1278) ([stacsirt](https://github.com/stacsirt))
+
+## [3.5.10](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.10) (2025-04-11)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.9...3.5.10)
+
+**Closed issues:**
+
+- \[Bug\] MSEntraID - User Principal Names may produce invalid key [\#1346](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1346)
+
+**Merged pull requests:**
+
+- MSEntra ID - Use GUIDs instead of UPNs for better compatibility [\#1347](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1347) ([nusantara-self](https://github.com/nusantara-self))
+
+## [3.5.9](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.9) (2025-04-04)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.8...3.5.9)
+
+**Merged pull requests:**
+
+- Various improvements & fixes [\#1345](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1345) ([nusantara-self](https://github.com/nusantara-self))
+
+## [3.5.8](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.8) (2025-03-31)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.7...3.5.8)
+
+**Merged pull requests:**
+
+- CI & docker images - update, improvements, fixes [\#1344](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1344) ([nusantara-self](https://github.com/nusantara-self))
+
+## [3.5.7](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.7) (2025-03-28)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.6...3.5.7)
+
+## [3.5.6](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.6) (2025-03-28)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.5...3.5.6)
+
+## [3.5.5](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.5) (2025-03-28)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.4...3.5.5)
+
+## [3.5.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.4) (2025-03-28)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.3...3.5.4)
+
+**Closed issues:**
+
+- \[FR\] CI Refactor - ARM64 support & GHCR migration [\#1343](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1343)
+
+**Merged pull requests:**
+
+- CI Refactor - GHCR.io migration / ARM64 Support [\#1341](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1341) ([nusantara-self](https://github.com/nusantara-self))
+- CI Refactor - GHCR.io migration / ARM64 Support [\#1342](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1342) ([nusantara-self](https://github.com/nusantara-self))
+
+## [3.5.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.3) (2025-03-18)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.2...3.5.3)
+
+**Closed issues:**
+
+- \[Bug\] Zscaler Analyzer v1.3 failing execution [\#1268](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1268)
+- zscaler \[Bug\] [\#1217](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1217)
+- OpenCTI analyzers not working [\#1122](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1122)
+- \[Bug\]OpenCTI analyzer 'Unknown type \"CryptographicKey\" [\#1120](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1120)
+- \[Bug\] Unknown type "X509V3ExtensionsType" Python Error in OpenCTI Anlyzers [\#1104](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1104)
+- tfa [\#1081](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1081)
+- \[FR\] IntezerCommunity search by hash [\#1026](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1026)
+- OpenCTi connector issue : \_\_init\_\_\(\) takes from 3 to 5 positional arguments but 6 were given [\#994](https://github.com/TheHive-Project/Cortex-Analyzers/issues/994)
+- \[Bug\] Cortex Analyzer OpenCTI  [\#919](https://github.com/TheHive-Project/Cortex-Analyzers/issues/919)
+- \[FR\] Support of http\(s\) proxies in OpenCTI Analyzer [\#814](https://github.com/TheHive-Project/Cortex-Analyzers/issues/814)
+- Zscaler Analyzer [\#424](https://github.com/TheHive-Project/Cortex-Analyzers/issues/424)
+
+**Merged pull requests:**
+
+- TestAnalyzer - Add Unicode data output [\#1340](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1340) ([nusantara-self](https://github.com/nusantara-self))
+- ZScaler - Clearer configuration [\#1339](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1339) ([nusantara-self](https://github.com/nusantara-self))
+- Ibmxfe updates [\#1040](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1040) ([viviandsilva](https://github.com/viviandsilva))
+- OTX query does not have actionable intelligence [\#1036](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1036) ([viviandsilva](https://github.com/viviandsilva))
+- \[IntezerCommunity\] Added support for hash \(sha256\) type [\#1029](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1029) ([vivekmittal](https://github.com/vivekmittal))
+
+## [3.5.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.2) (2025-03-14)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.1...3.5.2)
+
+**Merged pull requests:**
+
+- Various Analyzer templates improvements [\#1338](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1338) ([nusantara-self](https://github.com/nusantara-self))
+- Added support for ONYPHE Ctiscan and ActiveScan analyzers. Updated existing analyzers. [\#1333](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1333) ([jimbobnet](https://github.com/jimbobnet))
+
+## [3.5.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.1) (2025-03-13)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.5.0...3.5.1)
+
+**Closed issues:**
+
+- \[Bug\]  Cortex Elasticsearch Analyzer Error [\#1189](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1189)
+- \[Bug\] Splunk Analyzers [\#1180](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1180)
+- \[Bug\] Talos Reputation analyzer is not working [\#1145](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1145)
+- \[Bug\] TalosReputation analyser returns error "Unexpected Error: Detected a Cloudflare version 2 challenge, This feature is not available in the opensource \(free\) version." [\#1084](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1084)
+- \[Bug\] Splunk analyser missing cortexutils [\#936](https://github.com/TheHive-Project/Cortex-Analyzers/issues/936)
+- Splunk Search Analyzer [\#97](https://github.com/TheHive-Project/Cortex-Analyzers/issues/97)
+- \[Bug\] Unable to use IP-API analyzer [\#1265](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1265)
+
+**Merged pull requests:**
+
+- CERTatPassiveDNS - Improvements [\#1337](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1337) ([nusantara-self](https://github.com/nusantara-self))
+- IP-API - Improvements & Pro license support [\#1336](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1336) ([nusantara-self](https://github.com/nusantara-self))
+
+## [3.5.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.5.0) (2025-03-12)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.4.4...3.5.0)
+
+**Closed issues:**
+
+- \[Bug\] Fortiguard Captcha [\#1192](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1192)
+- \[FR\] Update to Ldap\_Query to support the observable type account [\#1187](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1187)
+- Umbrella Analyzer API not supported [\#1155](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1155)
+- \[FR\] Add Palo Alto Cortex XDR responder [\#1103](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1103)
+- \[FR\] Netcraft Takedown service responder [\#1052](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1052)
+- \[FR\] PaloAlto Wildfire responder [\#1051](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1051)
+- missing users field in Azure Token revoker responder: [\#1034](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1034)
+- \[FR\] Yara: Support GitHub repositories for YARA rules [\#1328](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1328)
+- \[ENG\] Feature Request: LdapQuery could import Observables, Tags, Custom Fields [\#1326](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1326)
+- \[FR\] Smaller and updated Docker images based on Alpine [\#1166](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1166)
+
+**Merged pull requests:**
+
+- Mailer responder needs to be fixed when checking description [\#1059](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1059) ([priamai](https://github.com/priamai))
+- Fix TeamCymru analyzer [\#1335](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1335) ([nusantara-self](https://github.com/nusantara-self))
+- Deprecation support for analyzers & responders in CI [\#1334](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1334) ([nusantara-self](https://github.com/nusantara-self))
+- Yara 3.0 - Performance improvements & hard limit [\#1332](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1332) ([nusantara-self](https://github.com/nusantara-self))
+- Add Test analyzer [\#1331](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1331) ([nusantara-self](https://github.com/nusantara-self))
+- Update Umbrella.py [\#1330](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1330) ([Noatun](https://github.com/Noatun))
+- Yara analyzer version 3.0 - GitHub repositories support [\#1329](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1329) ([nusantara-self](https://github.com/nusantara-self))
+- LdapQuery3.0: Import Observables, Tags and Custom Fields [\#1327](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1327) ([kiaora17](https://github.com/kiaora17))
+- Alpine docker images support + dockerfile & Requirements.txt cleanup [\#1325](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1325) ([nusantara-self](https://github.com/nusantara-self))
+- CI - improvements [\#1324](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1324) ([nusantara-self](https://github.com/nusantara-self))
+- MSEntraID - Additional Analyzers & Responders + Improvements [\#1317](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1317) ([nusantara-self](https://github.com/nusantara-self))
+- Paloalto wildfire responder [\#1054](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1054) ([korteke](https://github.com/korteke))
+
 ## [3.4.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.4) (2025-02-07)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.4.3...3.4.4)
@@ -8,6 +352,16 @@
 
 - \[FR\] - Feedback for the MSEntraID Responder [\#1302](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1302)
 - \[Bug\] Elasticsearch analyzer does not work with index that has no @timestamp field [\#1290](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1290)
+
+**Merged pull requests:**
+
+- CI - Fixes and improvements [\#1323](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1323) ([nusantara-self](https://github.com/nusantara-self))
+- Update Elasticsearch Analyzer to not fail when @timestamp has no mapping in searched indices [\#1322](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1322) ([vpiserchia](https://github.com/vpiserchia))
+- Shuffle - Support all datatypes as trigger for responder [\#1321](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1321) ([nusantara-self](https://github.com/nusantara-self))
+- CSFalcon Spotlight -- fix filename [\#1320](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1320) ([nusantara-self](https://github.com/nusantara-self))
+- Rename thehive template for ES [\#1314](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1314) ([vpiserchia](https://github.com/vpiserchia))
+- Fix AnyRun Analyzer for data type 'file' [\#1313](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1313) ([backb1](https://github.com/backb1))
+- DShield - exception resolved in ipv6 address [\#1037](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1037) ([viviandsilva](https://github.com/viviandsilva))
 
 ## [3.4.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.3) (2025-01-16)
 
@@ -47,7 +401,7 @@
 
 - Capa Analyzer - auto-download latest capa binary [\#1301](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1301) ([nusantara-self](https://github.com/nusantara-self))
 - Domaintools dependency issues [\#1300](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1300) ([nusantara-self](https://github.com/nusantara-self))
-- Fix anyrun\_analyzer.py for submit file [\#1299](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1299) ([winl0gon](https://github.com/winl0gon))
+- Fix anyrun\_analyzer.py for submit file [\#1299](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1299) ([threathunterr](https://github.com/threathunterr))
 - add proxies to phishtank\_checkurl.py [\#1298](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1298) ([Labuiga](https://github.com/Labuiga))
 
 ## [3.4.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.0) (2024-12-09)
@@ -122,7 +476,7 @@
 - EclecticIQ responder [\#1258](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1258) ([deepanshu-eiq](https://github.com/deepanshu-eiq))
 - Added EclecticIQ Analyser [\#1256](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1256) ([deepanshu-eiq](https://github.com/deepanshu-eiq))
 - Filters format migration for OpenCTI 5.12 [\#1245](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1245) ([evost](https://github.com/evost))
-- Update Gatewatcher CTI Analyzer for 'unknown' risk [\#1232](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1232) ([remydewaGW](https://github.com/remydewaGW))
+- Update Gatewatcher CTI Analyzer for 'unknown' risk [\#1232](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1232) ([ghost](https://github.com/ghost))
 - Fixes and added features to Defender for endpoints responder [\#1225](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1225) ([louismaxx](https://github.com/louismaxx))
 - TheHive Binalyze integration [\#1219](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1219) ([binalyze-murat](https://github.com/binalyze-murat))
 - Added responder for Ansible AWX [\#1215](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1215) ([Timmu91](https://github.com/Timmu91))

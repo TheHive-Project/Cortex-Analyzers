@@ -1,4 +1,4 @@
-<div class="panel panel-info">
+<div class="panel panel-success" ng-if="success && content.status == 'found_record'">
     <div class="panel-heading">
         TeamCymru Search Results
     </div>
@@ -12,5 +12,27 @@
                 <td>{{content.detection_pct}}</a></td>
             </tr>
         </table>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.status !== 'found_record'">
+    <div class="panel-heading">
+        TeamCymru Search Results
+    </div>
+    <div class="panel-body">
+        <p>{{content.status}}</p>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{ (artifact.data || artifact.attachment.name) | fang }}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> TeamCymruMHR:</dt>
+            <dd class="wrap">{{ content.errorMessage }}</dd>
+        </dl>
     </div>
 </div>

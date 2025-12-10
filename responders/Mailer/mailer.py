@@ -6,13 +6,14 @@ import smtplib
 from cortexutils.responder import Responder
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.utils import formatdate, make_msgid
 
 
 class Mailer(Responder):
     def __init__(self):
         Responder.__init__(self)
         self.smtp_host = self.get_param("config.smtp_host", "localhost")
-        self.smtp_port = self.get_param("config.smtp_port", "25")
+        self.smtp_port = int(self.get_param("config.smtp_port", "25"))
         self.mail_from = self.get_param(
             "config.from", None, "Missing sender email address"
         )
@@ -29,13 +30,17 @@ class Mailer(Responder):
             )
         elif self.data_type == "thehive:alert":
             description = self.get_param(
-                "data.case.description", None, "description is missing"
+                "data.description", None, "description is missing"
             )
         else:
             self.error("Invalid dataType")
 
         mail_to = None
         if self.data_type == "thehive:case":
+            # Add case number to title
+            case_number = self.get_param("data.caseId", None)
+            if case_number:
+                title = f"[Case #{case_number}] {title}"
             # Search recipient address in case tags
             tags = self.get_param(
                 "data.tags", None, "recipient address not found in tags"
@@ -49,6 +54,10 @@ class Mailer(Responder):
                 self.error("recipient address not found in tags")
 
         elif self.data_type == "thehive:case_task":
+            # Add case number to title
+            case_number = self.get_param("data.case.caseId", None)
+            if case_number:
+                title = f"[Case #{case_number}] {title}"
             # Search recipient address in tasks description
             descr_array = description.splitlines()
             if "mailto:" in descr_array[0]:
@@ -62,23 +71,36 @@ class Mailer(Responder):
 
         elif self.data_type == "thehive:alert":
             # Search recipient address in artifacts
-            artifacts = self.get_param(
-                "data.artifacts", None, "recipient address not found in observables"
+            # artifacts = self.get_param(
+            #     "data.artifacts", None, "recipient address not found in observables"
+            # )
+            # mail_artifacts = [
+            #     a["data"]
+            #     for a in artifacts
+            #     if a.get("dataType") == "mail" and "data" in a
+            # ]
+            # if mail_artifacts:
+            #     mail_to = mail_artifacts.pop()
+            # else:
+            #     self.error("recipient address not found in observables")
+            # Search recipient address in case tags
+            tags = self.get_param(
+                "data.tags", None, "recipient address not found in tags"
             )
-            mail_artifacts = [
-                a["data"]
-                for a in artifacts
-                if a.get("dataType") == "mail" and "data" in a
+            mail_tags = [
+                t[5:] for t in tags if t.startswith("mail=") or t.startswith("mail:")
             ]
-            if mail_artifacts:
-                mail_to = mail_artifacts.pop()
+            if mail_tags:
+                mail_to = mail_tags.pop()
             else:
-                self.error("recipient address not found in observables")
+                self.error("recipient address not found in tags")
 
         msg = MIMEMultipart()
         msg["Subject"] = title
         msg["From"] = self.mail_from
         msg["To"] = mail_to
+        msg["Date"] = formatdate(localtime=True)
+        msg["Message-ID"] = make_msgid()
         msg.attach(MIMEText(description, "plain", "utf-8"))
 
         if self.smtp_user and self.smtp_pwd:

@@ -332,7 +332,7 @@ builddockerfile() {
   then
     exit 1
   else
-    echo "FROM python:3.9-slim" > ${dockerfile}
+    echo "FROM python:3-alpine" > ${dockerfile}
     echo "WORKDIR /worker" >> ${dockerfile}
     echo "COPY . ${workername}" >> ${dockerfile}
     echo "RUN test ! -e ${workername}/requirements.txt || pip install --no-cache-dir -r ${workername}/requirements.txt" >> ${dockerfile}

@@ -1,6 +1,6 @@
 {
   "name": "Gatewatcher_CTI",
-  "version": "1.0",
+  "version": "2.0",
   "author": "Gatewatcher",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-3.0",
@@ -9,7 +9,9 @@
     "hash",
     "domain",
     "fqdn",
-    "url"
+    "url",
+    "ip",
+    "mail"
   ],
   "command": "Gatewatcher_CTI/Gatewatcher_CTI.py",
   "baseConfig": "Gatewatcher_CTI",

@@ -1,0 +1,210 @@
+<div ng-if="success && content && content.values && content.values.length">
+	<!-- verdict and summary -->
+	<div class="panel" ng-class="{'panel-danger': content.values[0].data.abuseConfidenceScore >= 80,
+                  'panel-warning': content.values[0].data.abuseConfidenceScore >= 1 && content.values[0].data.abuseConfidenceScore < 80,
+                  'panel-success': content.values[0].data.abuseConfidenceScore < 1}">
+		<div class="panel-heading">
+			<i class="fa" ng-class="{'fa-times-circle': content.values[0].data.abuseConfidenceScore >= 80,
+                    'fa-exclamation-triangle': content.values[0].data.abuseConfidenceScore >= 1 && content.values[0].data.abuseConfidenceScore < 80,
+                    'fa-check-circle': content.values[0].data.abuseConfidenceScore < 1}"></i>
+			AbuseIPDB Verdict:
+			<strong>{{content.values[0].data.ipAddress}}</strong>
+
+			<span class="pull-right">
+				<!-- compact context badges, subtle but handy -->
+				<span class="label label-default" title="IP Version">{{content.values[0].data.ipVersion === 4 ? 'IPv4' :
+					'IPv6'}}</span>
+				<span class="label label-info" ng-if="content.values[0].data.isPublic">Public</span>
+				<span class="label label-warning" ng-if="content.values[0].data.isWhitelisted">Whitelisted</span>
+				<span class="label label-primary" ng-if="content.values[0].data.isTor"><i class="fa fa-user-secret"></i>
+					Tor</span>
+				<span class="label label-info"
+					ng-if="content.values[0].data.countryName || content.values[0].data.countryCode">{{content.values[0].data.countryName
+					|| content.values[0].data.countryCode}}</span>
+				<span class="label label-default"
+					ng-if="content.values[0].data.domain">{{content.values[0].data.domain}}</span>
+			</span>
+		</div>
+
+		<div class="panel-body">
+			<div class="row" style="margin-bottom: 12px;">
+				<!-- key info (left panel) -->
+				<div class="col-md-8">
+					<dl class="dl-horizontal" style="margin-bottom:0;">
+						<dt>Confidence Score</dt>
+						<dd>
+							<!-- pretty score -->
+							<span style="font-size:2.2em; vertical-align:middle; line-height:1;">
+								<i class="fa" ng-class="{
+                     'fa-times-circle text-danger': content.values[0].data.abuseConfidenceScore >= 80,
+                     'fa-exclamation-triangle text-warning': content.values[0].data.abuseConfidenceScore >= 1 && content.values[0].data.abuseConfidenceScore < 80,
+                     'fa-check-circle text-success': content.values[0].data.abuseConfidenceScore < 1
+                   }"></i>
+							</span>
+							<span class="h3" ng-class="{
+                      'text-danger': content.values[0].data.abuseConfidenceScore >= 80,
+                      'text-warning': content.values[0].data.abuseConfidenceScore >= 1 && content.values[0].data.abuseConfidenceScore < 80,
+                      'text-success': content.values[0].data.abuseConfidenceScore < 1
+                    }" style="font-weight:bold; margin-left:6px;">
+								{{content.values[0].data.abuseConfidenceScore}}<span
+									style="font-size:0.6em; color:#888;">/100</span>
+							</span>
+							<span class="text-muted" style="margin-left:6px;">Abuse Confidence</span>
+						</dd>
+
+						<dt>Total Reports</dt>
+						<dd>{{content.values[0].data.totalReports || 0}}</dd>
+
+						<dt>Unique Reporters</dt>
+						<dd>{{content.values[0].data.numDistinctUsers || 0}}</dd>
+
+						<dt>Last Reported</dt>
+						<dd>
+							<span ng-if="content.values[0].data.lastReportedAt">{{content.values[0].data.lastReportedAt
+								| date:'yyyy-MM-dd HH:mm'}}</span>
+							<span ng-if="!content.values[0].data.lastReportedAt">Never</span>
+						</dd>
+
+						<dt>Usage Type</dt>
+						<dd>{{content.values[0].data.usageType || '-'}}</dd>
+
+						<dt>ISP</dt>
+						<dd>{{content.values[0].data.isp || '-'}}</dd>
+
+						<dt>Hostnames</dt>
+						<dd>
+							<span
+								ng-if="content.values[0].data.hostnames && content.values[0].data.hostnames.length > 0">
+								<span ng-repeat="h in content.values[0].data.hostnames"><strong>{{h}}</strong>{{$last ?
+									'' : ', '}}</span>
+							</span>
+							<span
+								ng-if="!content.values[0].data.hostnames || content.values[0].data.hostnames.length == 0">-</span>
+						</dd>
+					</dl>
+				</div>
+
+				<!-- Category overview and whitelist (right panel) -->
+				<div class="col-md-4">
+					<div>
+						<strong>Top Abuse Categories</strong><br>
+						<span
+							ng-if="content.values[0].categories_strings && content.values[0].categories_strings.length">
+							<span ng-repeat="cat in content.values[0].categories_strings | limitTo:3">
+								<span class="label label-primary"
+									style="margin-right:4px; margin-bottom:2px; display:inline-block;">{{cat}}</span>
+							</span>
+							<span ng-if="content.values[0].categories_strings.length > 3"
+								class="label label-default">+{{content.values[0].categories_strings.length - 3}}
+								more</span>
+						</span>
+						<span
+							ng-if="!content.values[0].categories_strings || !content.values[0].categories_strings.length">-</span>
+					</div>
+					<div style="margin-top:8px;">
+						<strong>Whitelisted:</strong>
+						<span ng-if="content.values[0].data.isWhitelisted" class="text-success">Yes</span>
+						<span ng-if="!content.values[0].data.isWhitelisted" class="text-danger">No</span>
+					</div>
+					<div style="margin-top:10px;">
+					<strong>Report Freshness</strong><br>
+					<span class="label label-default">24h: {{content.values[0].freshness.last24h || 0}}</span>
+					<span class="label label-default">7d: {{content.values[0].freshness.last7d || 0}}</span>
+					</div>
+
+					<div style="margin-top:10px;">
+					<strong>Top Reporter Countries</strong><br>
+					<span ng-if="content.values[0].reporting_countries && content.values[0].reporting_countries.length">
+						<span ng-repeat="rc in content.values[0].reporting_countries">
+						<span class="label label-info" style="margin-right:4px; margin-bottom:2px; display:inline-block;">
+							<span class="flag-icon flag-icon-{{(rc.code || '').toLowerCase()}}" style="margin-right:4px;"></span>
+							{{rc.name}} ({{rc.count}})
+						</span>
+						</span>
+					</span>
+					<span ng-if="!content.values[0].reporting_countries || !content.values[0].reporting_countries.length">-</span>
+					</div>
+
+					<div style="margin-top:10px;">
+					<strong>Most Reported Categories</strong><br>
+					<span ng-if="content.values[0].category_counts && content.values[0].category_counts.length">
+						<span ng-repeat="cc in content.values[0].category_counts">
+						<span class="label label-primary" style="margin-right:4px; margin-bottom:2px; display:inline-block;">
+							{{cc.category}} ({{cc.count}})
+						</span>
+						</span>
+					</span>
+					<span ng-if="!content.values[0].category_counts || !content.values[0].category_counts.length">-</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- Abuse Reports -->
+			<div ng-if="content.values[0].data.reports && content.values[0].data.reports.length > 0"
+				style="margin-top:10px;">
+				<button class="btn btn-xs btn-default" type="button" data-toggle="collapse"
+					data-target="#abuseipdb-reports" aria-expanded="false" aria-controls="abuseipdb-reports">
+					Show All Reports ({{content.values[0].data.reports.length}})
+				</button>
+				<div class="collapse in" id="abuseipdb-reports" style="margin-top:10px;">
+					<table class="table table-striped table-bordered table-condensed" style="table-layout: fixed;">
+						<thead>
+							<tr>
+								<th style="width: 130px;">Date</th>
+								<th style="width: 160px;">Country</th>
+								<th style="width: 180px;">Categories</th>
+								<th>Comment</th>
+								<th style="width: 110px;">Reporter ID</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="r in content.values[0].data.reports | orderBy:'-reportedAt' | limitTo:100">
+								<td class="text-nowrap">{{r.reportedAt | date:'yyyy-MM-dd HH:mm'}}</td>
+								<td>
+									<span ng-if="r.reporterCountryCode">
+										<span class="flag-icon flag-icon-{{r.reporterCountryCode.toLowerCase()}}"
+											style="margin-right:5px;"></span>
+										{{r.reporterCountryName || r.reporterCountryCode}}
+									</span>
+									<span ng-if="!r.reporterCountryCode">-</span>
+								</td>
+								<td>
+									<span ng-if="r.categories_strings && r.categories_strings.length">
+										<span ng-repeat="c in r.categories_strings">
+											<span class="label label-primary"
+												style="margin-right:3px; margin-bottom:2px; display:inline-block;">{{c}}</span>
+										</span>
+									</span>
+									<span ng-if="!r.categories_strings || !r.categories_strings.length">-</span>
+								</td>
+								<td style="white-space: pre-wrap; word-wrap: break-word;">{{r.comment || '-'}}</td>
+								<td class="text-nowrap">{{r.reporterId || '-'}}</td>
+							</tr>
+						</tbody>
+					</table>
+					<div ng-if="content.values[0].data.reports.length > 100" class="text-muted small">
+						Showing 100 of {{content.values[0].data.reports.length}} reports. See AbuseIPDB for more.
+					</div>
+				</div>
+			</div>
+
+			<div ng-if="!content.values[0].data.reports || content.values[0].data.reports.length === 0" class="alert"
+				style="margin-top:10px; background-color:#337ab7; color:#fff;">
+				<i class="fa fa-info-circle"></i> No abuse reports found for this IP.
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Error block -->
+<div class="panel panel-danger" ng-if="!success">
+	<div class="panel-heading">
+		<strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+	</div>
+	<div class="panel-body">
+		<dl class="dl-horizontal" ng-if="content && content.errorMessage">
+			<dt><i class="fa fa-warning"></i> AbuseIPDB:</dt>
+			<dd class="wrap">{{content.errorMessage}}</dd>
+		</dl>
+	</div>
+</div>

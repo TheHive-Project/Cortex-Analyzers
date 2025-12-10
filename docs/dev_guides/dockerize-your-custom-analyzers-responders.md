@@ -21,11 +21,12 @@ If you are using you own programs and want them to be processed as docker contai
 You need to build your docker image for each Analyzer/Responder. Ours are built with this *Dockerfile*  template except if a *Dockerfile* is present in the folder: 
 
 ```dockerfile
-FROM python:3
+FROM python:3-alpine
 WORKDIR /worker
-COPY . {worker_name}
-RUN test ! -e {worker_name}/requirements.txt || pip install --no-cache-dir -r{worker_name}/requirements.txt
-ENTRYPOINT {command}
+COPY requirements.txt {worker_name}/
+RUN test ! -e {worker_name}/requirements.txt || pip install --no-cache-dir -r {worker_name}/requirements.txt
+COPY . {worker_name}/
+ENTRYPOINT ["python", "{command}"]
 ```
 
 *update variables accordingly*

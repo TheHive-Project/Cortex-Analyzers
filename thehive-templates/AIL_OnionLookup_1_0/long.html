@@ -1,0 +1,131 @@
+<!-- Success -->
+<div class="panel panel-default" ng-if="success">
+    <div class="panel-heading">
+        <i class="fa fa-user-secret text-primary"></i>
+        AIL Onion Lookup Report
+        <span class="pull-right">
+            <span class="label label-info" ng-if="content.tags && content.tags.length">
+                <i class="fa fa-tags"></i> {{content.tags.length}} tag(s)
+            </span>
+        </span>
+    </div>
+    <div class="panel-body">
+        <!-- Info Alert -->
+        <div class="alert alert-info">
+            <i class="fa fa-info-circle"></i>
+            <strong>Intelligence Available:</strong>
+            Data retrieved from AIL Project onion database.
+        </div>
+
+        <!-- Onion Service Details -->
+        <div ng-if="content.id">
+            <dl class="dl-horizontal">
+                <dt><i class="fa fa-link"></i> Onion Address</dt>
+                <dd><code>{{content.id}}</code></dd>
+                
+                <dt><i class="fa fa-database"></i> Data Source</dt>
+                <dd>
+                    <a href="https://onion.ail-project.org" target="_blank" rel="noopener noreferrer">
+                        AIL Project <i class="fa fa-external-link"></i>
+                    </a>
+                </dd>
+
+                <dt><i class="fa fa-database"></i> Detection Status</dt>
+                <dd>
+                    <span class="label label-success" ng-if="content.tags && content.tags.length">
+                        <i class="fa fa-check"></i>
+                        {{content.tags.length}} detection(s) found
+                    </span>
+                    <span class="label label-default" ng-if="!content.tags || content.tags.length === 0">
+                        <i class="fa fa-minus"></i>
+                        No detections
+                    </span>
+                </dd>
+            </dl>
+        </div>
+
+        <!-- Intelligence Data Section -->
+        <div ng-if="content.id || content.first_seen || content.last_seen || content.titles || content.languages || content.tags" style="margin-top: 20px;">
+            <h4><i class="fa fa-info-circle text-info"></i> Intelligence Summary</h4>
+            
+            <dl class="dl-horizontal">
+                <dt><i class="fa fa-calendar"></i> First Seen</dt>
+                <dd>{{content.first_seen || 'Unknown'}}</dd>
+                
+                <dt><i class="fa fa-calendar-o"></i> Last Seen</dt>
+                <dd>{{content.last_seen || 'Unknown'}}</dd>
+                
+                <dt><i class="fa fa-globe"></i> Languages</dt>
+                <dd>
+                    <span ng-if="content.languages && content.languages.length">
+                        <span ng-repeat="lang in content.languages" class="label label-info" style="margin-right: 4px;">{{lang}}</span>
+                    </span>
+                    <span ng-if="!content.languages || !content.languages.length">-</span>
+                </dd>
+            </dl>
+
+            <!-- Page Titles -->
+            <div ng-if="content.titles && content.titles.length" style="margin-top: 15px;">
+                <strong><i class="fa fa-file-text-o text-primary"></i> Observed Page Titles:</strong>
+                <div style="margin-top: 8px;">
+                    <div ng-repeat="title in content.titles" style="padding: 8px 12px; margin-bottom: 4px; border-left: 3px solid #337ab7; background-color: rgba(51, 122, 183, 0.2); border-radius: 3px;">
+                        <i class="fa fa-angle-right" style="color: #337ab7;"></i> <strong>{{title}}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tags Section -->
+            <div ng-if="content.tags_enriched && content.tags_enriched.length" style="margin-top: 20px;">
+                <strong><i class="fa fa-tags text-info"></i> Detection Tags:</strong>
+                
+                <div style="margin-top: 8px;">
+                    <div ng-repeat="tag_info in content.tags_enriched" style="margin-bottom: 8px;">
+                        <span class="label label-primary" style="margin-right: 4px;">
+                            {{tag_info.expanded || tag_info.original}}
+                        </span>
+                        
+                        <div ng-if="tag_info.description" style="margin-top: 4px; padding: 8px; background-color: #fff3cd; border-left: 3px solid #ffc107; border-radius: 3px;">
+                            <small>
+                                <i class="fa fa-warning text-warning"></i>
+                                <strong>Context:</strong> {{tag_info.description}}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- External Link -->
+            <div style="margin-top: 20px;">
+                <a class="btn btn-primary btn-sm" 
+                   href="https://onion.ail-project.org/?lookup={{content.id}}" 
+                   target="_blank" rel="noopener noreferrer">
+                    <i class="fa fa-external-link"></i> View on AIL Project
+                </a>
+            </div>
+        </div>
+
+        <!-- No Result Message -->
+        <div ng-if="!content.id" class="alert alert-info" style="margin-top: 15px;">
+            <i class="fa fa-info-circle"></i> 
+            This onion service was not found in the AIL Project database. This could indicate:
+            <ul style="margin-top: 8px; margin-bottom: 0;">
+                <li>The service is new or recently created</li>
+                <li>The service has not been crawled by AIL</li>
+                <li>The service is inactive or no longer accessible</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> AIL Onion Lookup: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

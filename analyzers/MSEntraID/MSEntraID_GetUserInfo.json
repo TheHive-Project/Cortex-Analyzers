@@ -1,7 +1,7 @@
 {
     "name": "MSEntraID_GetUserInfo",
     "version": "1.0",
-    "author": "nusantara-self, StrangeBee",
+    "author": "Fabien Bloume, StrangeBee",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
     "description": "Get information about the user from Microsoft Entra ID, using the mail",

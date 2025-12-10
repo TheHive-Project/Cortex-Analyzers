@@ -15,7 +15,9 @@
    background-color: black;
    }
 </style>
-<div class="panel panel-info">
+
+<!-- Success -->
+<div class="panel panel-info" ng-if="content.success">
    <div class="panel-heading">Capa Analysis Results</div>
    <div class="panel-body">
       <table class="table">
@@ -59,4 +61,17 @@
          </tbody>
       </table>
    </div>
+</div>
+
+<!-- General error  -->
+<div class="panel panel-danger" ng-if="!content.success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> Capa: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
 </div>

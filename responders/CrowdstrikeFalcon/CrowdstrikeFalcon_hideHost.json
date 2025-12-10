@@ -1,7 +1,7 @@
 {
   "name": "CrowdStrikeFalcon_hideHost",
   "version": "1.0",
-  "author": "nusantara-self, StrangeBee",
+  "author": "Fabien Bloume, StrangeBee",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "This action will delete a host. After the host is deleted, no new detections for that host will be reported via UI or APIs",

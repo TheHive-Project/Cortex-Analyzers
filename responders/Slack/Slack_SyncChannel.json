@@ -1,0 +1,49 @@
+{
+  "name": "Slack_SyncChannel",
+  "version": "1.0",
+  "author": "Fabien Bloume, StrangeBee",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Syncs Slack channel conversations to TheHive task logs. Imports messages chronologically with file attachments for traceability.",
+  "dataTypeList": ["thehive:case"],
+  "command": "Slack/slack.py",
+  "baseConfig": "Slack",
+  "config": {
+    "service": "syncchannel"
+  },
+  "configurationItems": [
+    {
+      "name": "slack_token",
+      "description": "Slack Bot Token used for API authentication.",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "thehive_base_url",
+      "description": "TheHive base URL for API access.",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "thehive_apikey",
+      "description": "TheHive API key for authentication.",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "channel_prefix",
+      "description": "Prefix to use for the Slack channel name. By default, 'case-'",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "case-"
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://www.slack.com"
+}

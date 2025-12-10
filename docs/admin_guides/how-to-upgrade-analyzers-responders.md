@@ -21,6 +21,9 @@ Clicking on it will open a drawer indicating if there are any obsolete analyzers
 
 ![TheHive Obsolete Analyzers](<../images/thehive-cortex-obsolete-drawer.png>)
 
+> **Note:** The automatic catalog update behavior depends on your Cortex configuration. By default, Cortex's `application.conf` points to [`analyzers.json`](https://download.thehive-project.org/analyzers.json) and [`responders.json`](https://download.thehive-project.org/responders.json), which determines how updates are fetched. For more details, refer to the [official documentation](https://docs.strangebee.com/cortex/installation-and-configuration/analyzers-responders/#update-cortex-configuration).
+
+
 ## Step 2: Configure Analyzers & Responders in Cortex
 
 ### 2a. Setting Up Newly Available Analyzers or Responders

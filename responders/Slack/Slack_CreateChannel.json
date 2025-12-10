@@ -1,0 +1,73 @@
+{
+  "name": "Slack_CreateChannel",
+  "version": "1.0",
+  "author": "Fabien Bloume, StrangeBee",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Creates a Slack channel for a TheHive case, invites participants, and optionally posts a case summary and description.",
+  "dataTypeList": ["thehive:case"],
+  "command": "Slack/slack.py",
+  "baseConfig": "Slack",
+  "config": {
+    "service": "createchannel"
+  },
+  "configurationItems": [
+    {
+      "name": "slack_token",
+      "description": "Slack Bot Token used for API authentication.",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "participants",
+      "description": "List of email addresses to invite as default participants.",
+      "type": "string",
+      "multi": true,
+      "required": true
+    },
+    {
+      "name": "channel_prefix",
+      "description": "Prefix to use for the Slack channel name. By default, 'case-'",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "case-"
+    },
+    {
+      "name": "visibility",
+      "description": "Visibility of the channel: 'private' (default) or 'public'.",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "private"
+    },
+    {
+      "name": "thehive_base_url",
+      "description": "Base URL of TheHive instance to include a case link.",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "post_summary",
+      "description": "Include a case summary in the initial Slack message.",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "post_description",
+      "description": "Include the case description in the initial Slack summary message.",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://www.slack.com"
+}

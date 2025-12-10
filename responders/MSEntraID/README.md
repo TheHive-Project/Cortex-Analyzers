@@ -4,7 +4,7 @@ These responders provide various user management capabilities for Microsoft Entr
 
 ### Available Responders
 
-- **Token Revoker (`tokenRevoker`)** – Revokes session tokens for a Microsoft Entra ID user.
+- **Revoke Sign-In Sessions (`revokeSignInSessions`)** – Invalidates all the refresh tokens issued to applications for a Microsoft Entra ID user (as well as session cookies in a user's browser).
 
 - **Password Reset (`forcePasswordReset`)** – Forces a password reset at the next login.
 
@@ -53,7 +53,7 @@ The first two values can be found at any time in the application's ***Overview**
      *(These permissions cover all responder functionalities.)*
      
    - **Option B (Least Privileged – Recommended):**
-     - For the **Token Revoker** responder: `User.RevokeSessions.All`
+     - For the **Revoke SignIn Sessions** responder: `User.RevokeSessions.All`
      - For the **Enable User** and **Disable User** responders:
        - `User.EnableDisableAccount.All`
        - `User.Read.All`
