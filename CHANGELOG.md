@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.6.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.4) (2025-12-09)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.3...3.6.4)
+
+**Merged pull requests:**
+
+- New Orion Malware Analyzer integration [\#1394](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1394) ([meutal](https://github.com/meutal))
+- Add Google Threat Intelligence \(GTI\) analyzers [\#1393](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1393) ([avadhsonagara](https://github.com/avadhsonagara))
+- Handle arrays as hit results [\#1392](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1392) ([vpiserchia](https://github.com/vpiserchia))
+
 ## [3.6.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.3) (2025-11-11)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.2...3.6.3)
