@@ -14,7 +14,7 @@ class MSDefenderEndpoints(Responder):
         self.msdefenderSecret = self.get_param('config.appSecret', None, 'AppSecret missing!')
         self.msdefenderResourceAppIdUri = self.get_param('config.resourceAppIdUri', None, 'resourceAppIdUri missing!')
         self.msdefenderOAuthUri = self.get_param('config.oAuthUri', None, 'oAuthUri missing!')
-
+        self.msdefenderApiBaseUrl = self.msdefenderResourceAppIdUri.rstrip('/') + "/api/v1.0"
         self.observable = self.get_param('data.data', None, "Data is empty")
         self.observableType = self.get_param('data.dataType', None, "Data type is empty")
         self.caseId = self.get_param("data.case.caseId", None, "caseId is missing")
@@ -68,9 +68,9 @@ class MSDefenderEndpoints(Responder):
             time = time.strftime("%Y-%m-%dT%H:%M:%SZ")
 
             if self.observableType == "ip":
-                url = "https://api.securitycenter.windows.com/api/machines/findbyip(ip='{}',timestamp={})".format(id,time)
+                url = "{}/machines/findbyip(ip='{}',timestamp={})".format(self.msdefenderApiBaseUrl, id, time)
             else:
-                url = "https://api.securitycenter.windows.com/api/machines?$filter=computerDnsName+eq+'{}'".format(id)
+                url = "{}/machines?$filter=computerDnsName+eq+'{}'".format(self.msdefenderApiBaseUrl, id)
 
             try:
                 response = self.msdefenderSession.get(url=url)
@@ -88,9 +88,9 @@ class MSDefenderEndpoints(Responder):
         def isolateMachine(machineId):
             '''
             example
-            POST https://api.securitycenter.windows.com/api/machines/{id}/isolate
+            POST https://api.security.microsoft.com/api/v1.0/machines/{id}/isolate
             '''
-            url = 'https://api.securitycenter.windows.com/api/machines/{}/isolate'.format(machineId)
+            url = '{}/machines/{}/isolate'.format(self.msdefenderApiBaseUrl, machineId)
 
             body = {
                 'Comment': 'Isolate machine due to TheHive case {}'.format(self.caseId),
@@ -113,9 +113,9 @@ class MSDefenderEndpoints(Responder):
         def runFullVirusScan(machineId):
             '''
             example
-            POST https://api.securitycenter.windows.com/api/machines/{id}/runAntiVirusScan
+            POST https://api.security.microsoft.com/api/v1.0/machines/{id}/runAntiVirusScan
             '''
-            url = 'https://api.securitycenter.windows.com/api/machines/{}/runAntiVirusScan'.format(machineId)
+            url = '{}/machines/{}/runAntiVirusScan'.format(self.msdefenderApiBaseUrl, machineId)
 
             body = {
                 'Comment': 'Full scan to machine due to TheHive case {}'.format(self.caseId),
@@ -137,9 +137,9 @@ class MSDefenderEndpoints(Responder):
         def unisolateMachine(machineId):
             '''
             example
-            POST https://api.securitycenter.windows.com/api/machines/{id}/unisolate
+            POST https://api.security.microsoft.com/api/v1.0/machines/{id}/unisolate
             '''
-            url = 'https://api.securitycenter.windows.com/api/machines/{}/unisolate'.format(machineId)
+            url = '{}/machines/{}/unisolate'.format(self.msdefenderApiBaseUrl, machineId)
             body = {
                 'Comment': 'Unisolate machine due to TheHive case {}'.format(self.caseId)
                 }
@@ -159,9 +159,9 @@ class MSDefenderEndpoints(Responder):
         def restrictAppExecution(machineId):
             '''
             example
-            POST https://api.securitycenter.windows.com/api/machines/{id}/restrictCodeExecution
+            POST https://api.security.microsoft.com/api/v1.0/machines/{id}/restrictCodeExecution
             '''
-            url = 'https://api.securitycenter.windows.com/api/machines/{}/restrictCodeExecution'.format(machineId)
+            url = '{}/machines/{}/restrictCodeExecution'.format(self.msdefenderApiBaseUrl, machineId)
             body = {
                 'Comment': 'Restrict code execution due to TheHive case {}'.format(self.caseId)
                 }
@@ -177,13 +177,13 @@ class MSDefenderEndpoints(Responder):
             except requests.exceptions.RequestException as e:
                 self.error({'message': e})
 
-        
+
         def unrestrictAppExecution(machineId):
             '''
             example
-            POST https://api.securitycenter.windows.com/api/machines/{id}/unrestrictCodeExecution
+            POST https://api.security.microsoft.com/api/v1.0/machines/{id}/unrestrictCodeExecution
             '''
-            url = 'https://api.securitycenter.windows.com/api/machines/{}/unrestrictCodeExecution'.format(machineId)
+            url = '{}/machines/{}/unrestrictCodeExecution'.format(self.msdefenderApiBaseUrl, machineId)
             body = {
                 'Comment': '"Remove code execution restriction since machine was cleaned and validated due to TheHive case {}'.format(self.caseId)
                 }
@@ -199,13 +199,13 @@ class MSDefenderEndpoints(Responder):
             except requests.exceptions.RequestException as e:
                 self.error({'message': e})
 
-        
+
         def startAutoInvestigation(machineId):
             '''
             example
-            POST https://api.securitycenter.windows.com/api/machines/{id}/startInvestigation
+            POST https://api.security.microsoft.com/api/v1.0/machines/{id}/startInvestigation
             '''
-            url = 'https://api.securitycenter.windows.com/api/machines/{}/startInvestigation'.format(machineId)
+            url = '{}/machines/{}/startInvestigation'.format(self.msdefenderApiBaseUrl, machineId)
 
             body = {
                 'Comment': 'Start investigation due to TheHive case {}'.format(self.caseId)
@@ -224,7 +224,7 @@ class MSDefenderEndpoints(Responder):
 
 
         def pushCustomIocAlert(observable):
-            
+
             if self.observableType == 'ip':
                 indicatorType = 'IpAddress'
             elif self.observableType == 'url':
@@ -242,8 +242,8 @@ class MSDefenderEndpoints(Responder):
                     self.report({'message':"Observable is not a valid hash"})
             else:
                 self.error({'message':"Observable type must be ip, url, domain or hash"})
-            
-            url = 'https://api.securitycenter.windows.com/api/indicators'
+
+            url = '{}/indicators'.format(self.msdefenderApiBaseUrl)
             body = {
                 'indicatorValue': observable,
                 'indicatorType': indicatorType,
@@ -281,7 +281,7 @@ class MSDefenderEndpoints(Responder):
             else:
                 self.error({'message':"Observable type must be ip, url, domain or hash"})
 
-            url = 'https://api.securitycenter.windows.com/api/indicators'
+            url = '{}/indicators'.format(self.msdefenderApiBaseUrl)
             body = {
                 'indicatorValue' : observable,
                 'indicatorType' : indicatorType,
@@ -333,5 +333,5 @@ class MSDefenderEndpoints(Responder):
             return [self.build_operation("AddTagToArtifact", tag="MsDefender:unrestrictedAppExec")]
 
 if __name__ == '__main__':
-    
+
   MSDefenderEndpoints().run()
