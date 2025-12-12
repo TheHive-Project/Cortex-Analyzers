@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.6.5](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.5) (2025-12-11)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.4...3.6.5)
+
 ## [3.6.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.4) (2025-12-09)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.3...3.6.4)
