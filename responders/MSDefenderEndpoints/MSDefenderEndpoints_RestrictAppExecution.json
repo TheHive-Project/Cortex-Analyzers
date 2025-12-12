@@ -42,7 +42,7 @@
         "type": "string",
         "multi": false,
         "required": true,
-        "defaultValue": "https://api.securitycenter.windows.com"
+        "defaultValue": "https://api.security.microsoft.com"
       },
       {
         "name": "oAuthUri",
