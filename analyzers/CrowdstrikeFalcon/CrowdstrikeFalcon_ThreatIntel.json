@@ -1,0 +1,81 @@
+{
+    "name": "CrowdstrikeFalcon_ThreatIntel",
+    "version": "1.0",
+    "author": "Fabien Bloume, StrangeBee",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "baseConfig": "CrowdstrikeFalcon",
+    "config": {
+        "check_tlp": false,
+        "max_tlp": 3,
+        "service": ""
+    },
+    "description": "Query threat intelligence indicators from Crowdstrike Falcon Intelligence",
+    "dataTypeList": [
+        "hash",
+        "domain",
+        "ip",
+        "url"
+    ],
+    "command": "CrowdstrikeFalcon/CrowdstrikeFalcon_ThreatIntel.py",
+    "configurationItems": [
+        {
+            "name": "client_id",
+            "description": "Crowdstrike client ID key",
+            "type": "string",
+            "multi": false,
+            "required": true,
+            "defaultValue": ""
+        },
+        {
+            "name": "client_secret",
+            "description": "Crowdstrike client secret key",
+            "type": "string",
+            "multi": false,
+            "required": true,
+            "defaultValue": ""
+        },
+        {
+            "name": "base_url",
+            "description": "Crowdstrike base URL. Also supports US-1, US-2, EU-1, US-GOV-1 values",
+            "type": "string",
+            "multi": false,
+            "required": true,
+            "defaultValue": "https://api.crowdstrike.com"
+        },
+        {
+            "name": "include_deleted",
+            "description": "Include both published and deleted indicators in the response",
+            "type": "boolean",
+            "multi": false,
+            "required": false,
+            "defaultValue": false
+        },
+        {
+            "name": "limit",
+            "description": "Maximum number of indicators to return (Max: 5000)",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 100
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://www.crowdstrike.com",
+    "service_logo": {
+        "path": "assets/crowdstrike.png",
+        "caption": "Crowdstrike logo"
+    },
+    "screenshots": [
+        {
+            "path": "assets/short-report-threatintel.png",
+            "caption": "Crowdstrike: Short report template"
+        },
+        {
+            "path": "assets/long-report-threatintel.png",
+            "caption": "Crowdstrike: Long report template"
+        }
+    ]
+}
