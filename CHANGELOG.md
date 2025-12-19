@@ -1,8 +1,20 @@
 # Changelog
 
+## [3.6.6](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.6) (2025-12-12)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.5...3.6.6)
+
+**Merged pull requests:**
+
+- fix: Update Defender API base URL to unified v1.0 endpoint [\#1396](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1396) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.6.5](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.5) (2025-12-11)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.4...3.6.5)
+
+**Merged pull requests:**
+
+- ONYPHE : bugfix for running analyzer with data type IP and no hostname field in matching results [\#1395](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1395) ([jimbobnet](https://github.com/jimbobnet))
 
 ## [3.6.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.4) (2025-12-09)
 
