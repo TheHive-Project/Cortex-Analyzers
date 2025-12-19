@@ -5,14 +5,14 @@ from cortexutils.responder import Responder
 import requests
 
 
-class PaloAltoWildfire(Responder):
+class PaloAltoWildFire(Responder):
     def __init__(self):
         Responder.__init__(self)
         self.scheme = "https"
         self.api_key = self.get_param(
             'config.api_key', None, "API-key Missing")
         self.wildfire_url = self.get_param(
-            'config.wildfire_url', None, "Wildfire URL Missing")
+            'config.wildfire_url', None, "WildFire URL Missing")
         self.observable_type = self.get_param('data.dataType', None, "Data type is empty")
         self.observable_description = self.get_param('data.message', None, "Description is empty")
 
@@ -28,7 +28,7 @@ class PaloAltoWildfire(Responder):
                     observable = self.get_param('data.data')
 
                 headers = {
-                    'User-Agent': 'PaloAltoWildfire-Cortex-Responder'
+                    'User-Agent': 'PaloAltoWildFire-Cortex-Responder'
                 }
                 payload = {
                     'apikey': (None, self.api_key),
@@ -36,7 +36,7 @@ class PaloAltoWildfire(Responder):
                 }
                 response = requests.post(self.wildfire_url, files=payload, headers=headers)
                 if response.status_code == 200:
-                    self.report({'message': 'Observable sent to Wildfire. Message: {}'.format(response.text)})
+                    self.report({'message': 'Observable sent to WildFire. Message: {}'.format(response.text)})
                 elif response.status_code == 401:
                     self.error({'message': 'Failed authentication. Check API-Key. Message: {}'.format(response.text)})
                 else:
@@ -49,8 +49,8 @@ class PaloAltoWildfire(Responder):
             self.error(str(e))
 
     def operations(self, raw):
-        return [self.build_operation('AddTagToArtifact', tag='Wildfire:submit')]
+        return [self.build_operation('AddTagToArtifact', tag='WildFire:submit')]
 
 
 if __name__ == '__main__':
-    PaloAltoWildfire().run()
+    PaloAltoWildFire().run()

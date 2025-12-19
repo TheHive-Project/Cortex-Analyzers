@@ -1,24 +1,24 @@
 {
-  "name": "PaloAltoWildfire_URL_submission",
+  "name": "PaloAltoWildFire_URL_submission",
   "version": "1.0",
   "author": "Keijo Korte - @korteke",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Submit URL to PaloAlto Wildfire service.",
+  "description": "Submit URL to PaloAlto WildFire service.",
   "dataTypeList": ["url", "domain", "fqdn"],
-  "command": "PaloAltoWildfire/PaloAltoWildfire.py",
-  "baseConfig": "PaloAltoWildfire",
+  "command": "PaloAltoWildFire/PaloAltoWildFire.py",
+  "baseConfig": "PaloAltoWildFire",
   "configurationItems": [
     {
       "name": "api_key",
-      "description": "PaloAlto Wildfire API key",
+      "description": "PaloAlto WildFire API key",
       "type": "string",
       "multi": false,
       "required": true
     },
     {
       "name": "wildfire_url",
-      "description": "PaloAlto Wildfire Takedown URL",
+      "description": "PaloAlto WildFire Takedown URL",
       "type": "string",
       "multi": false,
       "required": true,
