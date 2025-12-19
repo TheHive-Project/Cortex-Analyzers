@@ -1,8 +1,6 @@
 # Slack Responders
 
-<div align="center">
-  <img src="./assets/slack-logo.png" alt="Slack Logo" width="150"/>
-</div>
+![Slack Logo](./assets/slack-logo.png)
 
 This directory contains two Slack responders for TheHive integration:
 
@@ -33,17 +31,12 @@ This directory contains two Slack responders for TheHive integration:
 
 ## Preview
 
-<div align="center">
-  <a href="./assets/slack-history.png" target="_blank">
-    <img src="./assets/slack-history.png" alt="Slack History" width="300" style="margin: 10px;"/>
-  </a>
-  <a href="./assets/thehive-slacksync-1.png" target="_blank">
-    <img src="./assets/thehive-slacksync-1.png" alt="TheHive Slack Sync 1" width="300" style="margin: 10px;"/>
-  </a>
-  <a href="./assets/thehive-slacksync-2.png" target="_blank">
-    <img src="./assets/thehive-slacksync-2.png" alt="TheHive Slack Sync 2" width="300" style="margin: 10px;"/>
-  </a>
-</div>
+![Slack History](./assets/slack-history.png)
+
+![TheHive Slack Sync 1](./assets/thehive-slacksync-1.png)
+
+![TheHive Slack Sync 2](./assets/thehive-slacksync-2.png)
+
 ---
 
 ## Requirements
