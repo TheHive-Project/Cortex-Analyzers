@@ -1,0 +1,11 @@
+{
+  "name": "SafeLinks_Decoder",
+  "version": "1.0",
+  "author": "Louis HUSSON",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Decodes Office 365 ATP Safe Links to extract original URLs. Supports url observables containing safelinks.protection.outlook.com domains.",
+  "dataTypeList": ["url"],
+  "baseConfig": "SafeLinks",
+  "command": "SafeLinks/safelinks_decoder.py"
+}
