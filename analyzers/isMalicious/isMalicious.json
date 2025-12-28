@@ -1,0 +1,47 @@
+{
+  "name": "isMalicious",
+  "version": "1.0",
+  "author": "isMalicious",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-v3",
+  "description": "Check if an IP address or domain is malicious using isMalicious.com threat intelligence. Returns risk score, threat categories, reputation data, and detection sources.",
+  "dataTypeList": ["ip", "domain", "fqdn"],
+  "baseConfig": "isMalicious",
+  "command": "isMalicious/ismalicious_analyzer.py",
+  "configurationItems": [
+    {
+      "name": "api_key",
+      "description": "isMalicious API key (get one at https://ismalicious.com)",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "api_url",
+      "description": "isMalicious API URL",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "https://ismalicious.com"
+    }
+  ],
+  "config": {
+    "check_tlp": true,
+    "max_tlp": 2,
+    "auto_extract": false
+  },
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://ismalicious.com",
+  "service_logo": {
+    "path": "assets/ismalicious.png",
+    "caption": "isMalicious logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report.png",
+      "caption": "isMalicious: Long report template"
+    }
+  ]
+}
