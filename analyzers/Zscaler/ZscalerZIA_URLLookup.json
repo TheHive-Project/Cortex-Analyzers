@@ -1,0 +1,126 @@
+{
+  "name": "ZscalerZIA_URLLookup",
+  "version": "1.0",
+  "author": "Fabien Bloume, StrangeBee",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Query Zscaler Internet Access for URL categorization and security classification. Supports OneAPI OAuth2 and legacy authentication.",
+  "dataTypeList": ["domain", "fqdn", "url", "ip"],
+  "command": "Zscaler/ZscalerZIA_URLLookup.py",
+  "baseConfig": "ZscalerZIA",
+  "config": {
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 2
+  },
+  "configurationItems": [
+    {
+      "name": "auth_type",
+      "description": "Authentication type: 'oneapi' for ZIdentity OAuth2 (default) or 'legacy' for legacy API credentials",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "oneapi"
+    },
+    {
+      "name": "zia_vanity_domain",
+      "description": "[OneAPI only] Zscaler ZIdentity vanity domain for your organization (eg, 'acme' from acme.zslogin.net)",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "zia_client_id",
+      "description": "[OneAPI only] Zscaler OneAPI OAuth Client ID created in ZIdentity Admin Portal",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "zia_client_secret",
+      "description": "[OneAPI only] Zscaler OneAPI OAuth Client Secret from ZIdentity Admin Portal",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "zia_username",
+      "description": "[Legacy only] ZIA API admin email address",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "zia_password",
+      "description": "[Legacy only] ZIA API admin password",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "zia_api_key",
+      "description": "[Legacy only] ZIA API key (obfuscated API key)",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "zia_cloud",
+      "description": "Cloud environment name. Required for legacy auth (eg, 'zscaler', 'zscalerone', 'zscalertwo'). Optional for OneAPI (use for beta/alpha environments).",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "malicious_categories",
+      "description": "List of Zscaler categories to be considered as malicious",
+      "type": "string",
+      "multi": true,
+      "required": false,
+      "defaultValue": [
+        "PHISHING",
+        "MALWARE_SITE",
+        "BOTNET",
+        "SPYWARE_OR_ADWARE",
+        "ADSPYWARE_SITES",
+        "ADWARE_OR_SPYWARE",
+        "CRYPTOMINING",
+        "WEB_SPAM",
+        "MALICIOUS_TLD",
+        "MALICIOUS_SITES",
+        "COMMAND_AND_CONTROL"
+      ]
+    },
+    {
+      "name": "suspicious_categories",
+      "description": "List of Zscaler categories to be considered as suspicious",
+      "type": "string",
+      "multi": true,
+      "required": false,
+      "defaultValue": [
+        "SHAREWARE_DOWNLOAD",
+        "REMOTE_ACCESS",
+        "MISCELLANEOUS_OR_UNKNOWN",
+        "NEWLY_REG_DOMAINS",
+        "OTHER_ILLEGAL_OR_QUESTIONABLE",
+        "COPYRIGHT_INFRINGEMENT",
+        "GAMBLING",
+        "COMPUTER_HACKING",
+        "ANONYMIZER",
+        "DNS_OVER_HTTPS",
+        "ENCR_WEB_CONTENT",
+        "PROXY_AVOIDANCE",
+        "SUSPICIOUS"
+      ]
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.zscaler.com/products/zscaler-internet-access",
+  "service_logo": {
+    "path": "assets/zscaler_logo.png",
+    "caption": "logo"
+  }
+}

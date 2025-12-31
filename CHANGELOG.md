@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.6.7](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.7) (2025-12-19)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.6...3.6.7)
+
+**Merged pull requests:**
+
+- Fix: PaloAltoWildFire typo [\#1398](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1398) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.6.6](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.6) (2025-12-12)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.5...3.6.6)
