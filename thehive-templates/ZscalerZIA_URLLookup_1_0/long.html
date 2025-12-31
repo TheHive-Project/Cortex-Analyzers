@@ -1,0 +1,192 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        Zscaler URL Lookup for <strong>{{content.query.original}}</strong>
+    </div>
+    <div class="panel-body">
+
+        <!-- Risk Assessment Summary -->
+        <div class="alert" ng-class="{
+            'alert-danger': content.assessment.is_malicious,
+            'alert-warning': content.assessment.is_suspicious && !content.assessment.is_malicious,
+            'alert-success': !content.assessment.is_suspicious
+        }">
+            <h4>
+                <span ng-if="content.assessment.is_malicious">
+                    <i class="fa fa-exclamation-triangle"></i> Malicious
+                </span>
+                <span ng-if="content.assessment.is_suspicious && !content.assessment.is_malicious">
+                    <i class="fa fa-exclamation-circle"></i> Suspicious
+                </span>
+                <span ng-if="!content.assessment.is_suspicious">
+                    <i class="fa fa-check-circle"></i> Safe
+                </span>
+            </h4>
+            <p ng-if="content.assessment.matched_threat_categories.length > 0">
+                Matched Categories: <strong>{{content.assessment.matched_threat_categories.join(', ')}}</strong>
+            </p>
+        </div>
+
+        <!-- Assessment Details -->
+        <h5><i class="fa fa-shield"></i> Assessment</h5>
+        <table class="table table-condensed table-bordered">
+            <tbody>
+                <tr>
+                    <td width="30%"><strong>Risk Level</strong></td>
+                    <td>
+                        <span class="label" ng-class="{
+                            'label-danger': content.assessment.risk_level === 'malicious',
+                            'label-warning': content.assessment.risk_level === 'suspicious',
+                            'label-success': content.assessment.risk_level === 'safe'
+                        }">
+                            {{content.assessment.risk_level | uppercase}}
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Security Alerts</strong></td>
+                    <td>
+                        <span ng-if="content.assessment.has_security_alerts" class="text-danger">
+                            <i class="fa fa-warning"></i> Yes
+                        </span>
+                        <span ng-if="!content.assessment.has_security_alerts" class="text-muted">
+                            No
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Category Count</strong></td>
+                    <td>{{content.assessment.category_count}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Categorization Details -->
+        <h5><i class="fa fa-tags"></i> Categorization</h5>
+        <table class="table table-condensed table-bordered">
+            <tbody>
+                <tr ng-if="content.categorization.url_classifications.length > 0">
+                    <td width="30%"><strong>URL Classifications</strong></td>
+                    <td>
+                        <span class="label label-primary" ng-repeat="cat in content.categorization.url_classifications" style="margin-right: 5px;">
+                            {{cat}}
+                        </span>
+                    </td>
+                </tr>
+                <tr ng-if="content.categorization.security_alerts.length > 0">
+                    <td><strong>Security Alerts</strong></td>
+                    <td>
+                        <span class="label label-danger" ng-repeat="alert in content.categorization.security_alerts" style="margin-right: 5px;">
+                            <i class="fa fa-exclamation-triangle"></i> {{alert}}
+                        </span>
+                    </td>
+                </tr>
+                <tr ng-if="content.categorization.custom_categories.length > 0">
+                    <td><strong>Custom Categories</strong></td>
+                    <td>
+                        <span class="label label-info" ng-repeat="custom in content.categorization.custom_categories" style="margin-right: 5px;">
+                            {{custom}}
+                        </span>
+                    </td>
+                </tr>
+                <tr ng-if="content.categorization.db_categorized_urls.length > 0">
+                    <td><strong>Database URLs</strong></td>
+                    <td>
+                        <div ng-repeat="url in content.categorization.db_categorized_urls">
+                            <code>{{url}}</code>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-if="content.categorization.url_classifications.length === 0 && content.categorization.security_alerts.length === 0">
+                    <td colspan="2" class="text-muted text-center">
+                        <em>No categories found</em>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Classification Metrics -->
+        <h5><i class="fa fa-bar-chart"></i> Metrics</h5>
+        <table class="table table-condensed table-bordered">
+            <tbody>
+                <tr>
+                    <td width="30%"><strong>Total Categories</strong></td>
+                    <td>{{content.classification.metrics.total_categories}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Security Alert Count</strong></td>
+                    <td>
+                        <span ng-if="content.classification.metrics.security_alert_count > 0" class="text-danger">
+                            {{content.classification.metrics.security_alert_count}}
+                        </span>
+                        <span ng-if="content.classification.metrics.security_alert_count === 0" class="text-muted">
+                            0
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Known to Zscaler</strong></td>
+                    <td>
+                        <span ng-if="content.classification.metrics.is_known_to_zscaler">
+                            <i class="fa fa-check text-success"></i> Yes
+                        </span>
+                        <span ng-if="!content.classification.metrics.is_known_to_zscaler">
+                            <i class="fa fa-times text-muted"></i> No
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Has Custom Categories</strong></td>
+                    <td>
+                        <span ng-if="content.classification.metrics.has_custom_categories">
+                            <i class="fa fa-check text-info"></i> Yes
+                        </span>
+                        <span ng-if="!content.classification.metrics.has_custom_categories">
+                            <i class="fa fa-times text-muted"></i> No
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Query Information -->
+        <h5><i class="fa fa-search"></i> Query Details</h5>
+        <table class="table table-condensed table-bordered">
+            <tbody>
+                <tr>
+                    <td width="30%"><strong>Original URL</strong></td>
+                    <td><code>{{content.query.original}}</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Normalized URL</strong></td>
+                    <td><code>{{content.query.normalized}}</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Observable Type</strong></td>
+                    <td>{{content.query.type}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Raw Response (Collapsible) -->
+        <div class="panel panel-default">
+            <div class="panel-heading" style="cursor: pointer;" ng-click="showRaw = !showRaw">
+                <i class="fa" ng-class="{'fa-chevron-down': !showRaw, 'fa-chevron-up': showRaw}"></i>
+                Raw API Response
+            </div>
+            <div class="panel-body" ng-show="showRaw">
+                <pre>{{content.raw_response | json}}</pre>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        Zscaler URL Lookup Error for <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
