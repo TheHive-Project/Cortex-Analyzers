@@ -1,0 +1,7 @@
+<span ng-if="content.malicious" class="label label-danger">Malicious</span>
+<span ng-if="!content.malicious" class="label label-success">Clean</span>
+<span ng-if="content.riskScore" class="label" ng-class="{'label-danger': content.riskScore >= 80, 'label-warning': content.riskScore >= 50 && content.riskScore < 80, 'label-info': content.riskScore < 50}">
+  Score: {{content.riskScore}}
+</span>
+<span ng-if="content.classification.primary" class="label label-info">{{content.classification.primary}}</span>
+<span ng-if="content.sources.length > 0" class="label label-default">{{content.sources.length}} sources</span>

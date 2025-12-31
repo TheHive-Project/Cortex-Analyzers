@@ -1,0 +1,158 @@
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <strong>isMalicious Report</strong>
+  </div>
+  <div class="panel-body">
+    <!-- Status -->
+    <dl class="dl-horizontal">
+      <dt>Status</dt>
+      <dd>
+        <span ng-if="content.malicious" class="label label-danger"
+          >Malicious</span
+        >
+        <span ng-if="!content.malicious" class="label label-success"
+          >Clean</span
+        >
+      </dd>
+    </dl>
+
+    <!-- Risk Score -->
+    <dl class="dl-horizontal" ng-if="content.riskScore">
+      <dt>Risk Score</dt>
+      <dd>
+        <span
+          ng-class="{'label-danger': content.riskScore >= 80, 'label-warning': content.riskScore >= 50 && content.riskScore < 80, 'label-success': content.riskScore < 50}"
+          class="label"
+        >
+          {{content.riskScore}}/100
+        </span>
+      </dd>
+    </dl>
+
+    <!-- Confidence -->
+    <dl class="dl-horizontal" ng-if="content.confidence">
+      <dt>Confidence</dt>
+      <dd>{{content.confidence}}%</dd>
+    </dl>
+
+    <!-- Classification -->
+    <dl class="dl-horizontal" ng-if="content.classification.primary">
+      <dt>Classification</dt>
+      <dd>
+        <span class="label label-info">{{content.classification.primary}}</span>
+        <span
+          ng-repeat="cat in content.classification.secondary"
+          class="label label-default"
+          style="margin-left: 5px"
+          >{{cat}}</span
+        >
+      </dd>
+    </dl>
+
+    <!-- Categories -->
+    <dl class="dl-horizontal" ng-if="content.categories.length > 0">
+      <dt>Categories</dt>
+      <dd>
+        <span
+          ng-repeat="cat in content.categories"
+          class="label label-warning"
+          style="margin-right: 5px"
+          >{{cat}}</span
+        >
+      </dd>
+    </dl>
+
+    <!-- Reputation -->
+    <div ng-if="content.reputation">
+      <h4>Reputation</h4>
+      <table class="table table-condensed">
+        <tr ng-if="content.reputation.malicious">
+          <td><span class="label label-danger">Malicious</span></td>
+          <td>{{content.reputation.malicious}}</td>
+        </tr>
+        <tr ng-if="content.reputation.suspicious">
+          <td><span class="label label-warning">Suspicious</span></td>
+          <td>{{content.reputation.suspicious}}</td>
+        </tr>
+        <tr ng-if="content.reputation.harmless">
+          <td><span class="label label-success">Harmless</span></td>
+          <td>{{content.reputation.harmless}}</td>
+        </tr>
+        <tr ng-if="content.reputation.undetected">
+          <td><span class="label label-default">Undetected</span></td>
+          <td>{{content.reputation.undetected}}</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Detection Sources -->
+    <div ng-if="content.sources.length > 0">
+      <h4>Detection Sources ({{content.sources.length}})</h4>
+      <table class="table table-striped table-condensed">
+        <thead>
+          <tr>
+            <th>Source</th>
+            <th>Category</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="source in content.sources">
+            <td>
+              <a ng-if="source.url" ng-href="{{source.url}}" target="_blank"
+                >{{source.name}}</a
+              >
+              <span ng-if="!source.url">{{source.name}}</span>
+            </td>
+            <td>
+              <span ng-if="source.category" class="label label-warning"
+                >{{source.category}}</span
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Geographic Information -->
+    <div ng-if="content.geo.country || content.geo.countryCode">
+      <h4>Geographic Information</h4>
+      <dl class="dl-horizontal">
+        <dt>Country</dt>
+        <dd>{{content.geo.country || content.geo.countryCode}}</dd>
+        <dt ng-if="content.geo.city">City</dt>
+        <dd ng-if="content.geo.city">{{content.geo.city}}</dd>
+        <dt ng-if="content.geo.isp">ISP</dt>
+        <dd ng-if="content.geo.isp">{{content.geo.isp}}</dd>
+      </dl>
+    </div>
+
+    <!-- WHOIS -->
+    <div ng-if="content.whois.asn">
+      <h4>Network Information</h4>
+      <dl class="dl-horizontal">
+        <dt ng-if="content.whois.asn.asn">ASN</dt>
+        <dd ng-if="content.whois.asn.asn">AS{{content.whois.asn.asn}}</dd>
+        <dt ng-if="content.whois.asn.org">Organization</dt>
+        <dd ng-if="content.whois.asn.org">{{content.whois.asn.org}}</dd>
+      </dl>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <a href="https://ismalicious.com" target="_blank"
+      >Powered by isMalicious.com</a
+    >
+  </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+  <div class="panel-heading">
+    <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+  </div>
+  <div class="panel-body">
+    <dl class="dl-horizontal" ng-if="content.errorMessage">
+      <dt><i class="fa fa-warning"></i> isMalicious:</dt>
+      <dd class="wrap">{{content.errorMessage}}</dd>
+    </dl>
+  </div>
+</div>
