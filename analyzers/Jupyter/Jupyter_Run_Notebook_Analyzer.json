@@ -1,20 +1,35 @@
 {
-  "name": "Jupyter_Run_Notebook_Responder",
+  "name": "Jupyter_Run_Notebook_Analyzer",
   "version": "1.0",
-  "author": "Alexandre Demeyer",
   "url": "https://jupyter.org/",
+  "author": "Alexandre Demeyer",
   "license": "AGPL-V3",
+  "dataTypeList": [
+    "domain",
+    "hostname",
+    "ip",
+    "url",
+    "fqdn",
+    "uri_path",
+    "user-agent",
+    "hash",
+    "mail",
+    "mail_subject",
+    "registry",
+    "regexp",
+    "other",
+    "filename",
+    "mail-subject"
+  ],
   "description": "Execute a parameterized notebook in Jupyter",
-  "dataTypeList": ["thehive:case","thehive:case_artifact","thehive:alert","thehive:case_task","thehive:case_task_log"],
-  "command": "Jupyter_Responder/jupyter.py",
-  "baseConfig": "Jupyter", 
+  "baseConfig": "Jupyter",
   "config": {
-    "service": "Run_Notebook",
     "check_tlp": true,
     "max_tlp": 4,
     "check_pap": true,
-    "max_pap": 3
-  },  
+    "max_pap": 3,
+    "service": "Run_Notebook"
+  },
   "configurationItems": [
     {
       "name": "input_hostname",
@@ -90,5 +105,24 @@
       "multi": false,
       "required": false
     }
+    ,
+    {
+      "name": "any_generate_html",
+      "description": "[ANY] Indicates if you want the HTML generation within the response. This setting is helpful if you want to reduce the size of the answer returned by the script and manage the HTML render yourself.",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": true
+    }
+  ],
+  "command": "Jupyter/jupyter.py",
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_logo": {
+    "path": "assets/jupyter.png",
+    "caption": "logo"
+  },
+  "screenshots": [
   ]
 }
