@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.6.8](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.8) (2025-12-31)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.7...3.6.8)
+
+**Merged pull requests:**
+
+- feat: Add isMalicious analyzer for threat intelligence [\#1401](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1401) ([hexablob](https://github.com/hexablob))
+- Add Zscaler Internet Access URL Lookup analyzer [\#1400](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1400) ([nusantara-self](https://github.com/nusantara-self))
+- add Safelink analyzer files [\#1399](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1399) ([Lohuss](https://github.com/Lohuss))
+
 ## [3.6.7](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.7) (2025-12-19)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.6...3.6.7)
