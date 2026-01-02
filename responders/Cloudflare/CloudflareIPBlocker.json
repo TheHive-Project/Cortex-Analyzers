@@ -6,7 +6,7 @@
     "license": "AGPL-V3",
     "description": "Block IP Address on Account level in Cloudflare",
     "dataTypeList": ["thehive:case_artifact"],
-    "command": "Cloudflare_IP_Blocker/CloudflareIPBlocker.py",
+    "command": "Cloudflare/CloudflareIPBlocker.py",
     "baseConfig": "CloudflareIPBlocker",
     "configurationItems": [
         {
