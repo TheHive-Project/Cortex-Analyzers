@@ -1,3 +1,4 @@
+<div ng-if="success">
 <!-- Summary Panel -->
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -228,15 +229,17 @@
         <p class="text-muted">This observable is not currently associated with any known threats in the CrowdStrike threat intelligence database.</p>
     </div>
 </div>
+</div>
 
-<!-- Errors -->
-<div class="panel panel-danger" ng-if="content.errors && content.errors.length > 0">
+<!-- Error Block -->
+<div class="panel panel-danger" ng-if="!success">
     <div class="panel-heading">
-        <strong><i class="fa fa-times-circle"></i> Errors</strong>
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
     </div>
     <div class="panel-body">
-        <ul>
-            <li ng-repeat="error in content.errors">{{ error }}</li>
-        </ul>
+        <dl class="dl-horizontal" ng-if="content && content.errorMessage">
+            <dt><i class="fa fa-warning"></i> CrowdStrike Falcon TI:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
     </div>
 </div>
