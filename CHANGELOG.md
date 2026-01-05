@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.6.9](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.9) (2026-01-02)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.8...3.6.9)
+
+**Merged pull requests:**
+
+- Rename jupyter neurons to correct vendor name [\#1403](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1403) ([nusantara-self](https://github.com/nusantara-self))
+- rename Cloudflare folder to proper vendor name [\#1402](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1402) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.6.8](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.8) (2025-12-31)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.7...3.6.8)
