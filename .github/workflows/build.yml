@@ -22,7 +22,8 @@ jobs:
     name: Generate Matrix
     runs-on: ubuntu-latest
     outputs:
-      analyzers_matrix: ${{ steps.set-matrix.outputs.analyzers_matrix }}
+      analyzers_matrix_a: ${{ steps.set-matrix.outputs.analyzers_matrix_a }}
+      analyzers_matrix_b: ${{ steps.set-matrix.outputs.analyzers_matrix_b }}
       responders_matrix: ${{ steps.set-matrix.outputs.responders_matrix }}
     steps:
       - name: Checkout repository
@@ -52,24 +53,35 @@ jobs:
           fi
           
           echo "Building analyzers matrix..."
-          analyzers_matrix=$(find analyzers -type f -name '*.json' -printf '%P\n' | \
+          all_analyzers=$(find analyzers -type f -name '*.json' -printf '%P\n' | \
             grep -E "^($allowed_analyzers)/" | \
-            jq -R -s -c 'split("\n")[:-1] | map({directory: (split("/")[0]), path: .}) | {include: .}')
-          
+            jq -R -s -c 'split("\n")[:-1] | map({directory: (split("/")[0]), path: .})')
+
+          # Split analyzers into two groups: 1-256 and 257+
+          analyzers_matrix_a=$(echo "$all_analyzers" | jq -c '{include: .[0:256]}')
+          analyzers_matrix_b=$(echo "$all_analyzers" | jq -c '{include: .[256:]}')
+
           echo "Building responders matrix..."
           responders_matrix=$(find responders -type f -name '*.json' -printf '%P\n' | \
             grep -E "^($allowed_responders)/" | \
             jq -R -s -c 'split("\n")[:-1] | map({directory: (split("/")[0]), path: .}) | {include: .}')
-          
-          echo "Generated analyzers matrix: $analyzers_matrix"
+
+          echo "Generated analyzers matrix A (1-256): $analyzers_matrix_a"
+          echo "Generated analyzers matrix B (257+): $analyzers_matrix_b"
           echo "Generated responders matrix: $responders_matrix"
-          
+
           {
-            echo "analyzers_matrix<<EOF"
-            echo "$analyzers_matrix"
+            echo "analyzers_matrix_a<<EOF"
+            echo "$analyzers_matrix_a"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
-          
+
+          {
+            echo "analyzers_matrix_b<<EOF"
+            echo "$analyzers_matrix_b"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
           {
             echo "responders_matrix<<EOF"
             echo "$responders_matrix"
@@ -79,14 +91,14 @@ jobs:
 
         
           
-  build_analyzers:
-    name: Build Analyzers
+  build_analyzers_A:
+    name: Build Analyzers A (1-256)
     needs: generate-matrix
     runs-on: ubuntu-latest
     continue-on-error: true
     strategy:
       max-parallel: 20
-      matrix: ${{ fromJson(needs.generate-matrix.outputs.analyzers_matrix) }}
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.analyzers_matrix_a) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -555,6 +567,487 @@ jobs:
               else:
                   print("✅ Import testing succeeded (arm64)")
       
+          except Exception as e:
+              print("::warning::Error during import testing (arm64):", e)
+              sys.exit(1)
+          EOF
+
+  build_analyzers_B:
+    name: Build Analyzers B (257+)
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      max-parallel: 20
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.analyzers_matrix_b) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: GHCR Login
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Convert directory to lowercase
+        id: lowercase_dir
+        run: |
+          lower_dir=$(echo "${{ matrix.directory }}" | tr '[:upper:]' '[:lower:]')
+          echo "lower_dir=${lower_dir}" >> $GITHUB_ENV
+
+      - name: Set lowercase repository owner
+        run: |
+          owner="${{ github.repository_owner }}"
+          lower_owner=$(echo "$owner" | tr '[:upper:]' '[:lower:]')
+          echo "LOWER_REPO_OWNER=$lower_owner" >> $GITHUB_ENV
+
+      - name: Parse JSON and set environment variables from matrix.path (using jq)
+        id: parse_json
+        run: |
+          json_file="./analyzers/${{ matrix.path }}"
+          if [ -f "$json_file" ]; then
+            lower_name=$(jq -r '.name | ascii_downcase' "$json_file")
+            version=$(jq -r '.version // empty' "$json_file")
+            description=$(jq -r '.description // empty' "$json_file")
+            command=$(jq -r '.command // empty' "$json_file")
+
+            echo "LOWERCASE_NAME=${lower_name}" >> $GITHUB_ENV
+            echo "VERSION=${version}" >> $GITHUB_ENV
+            echo "DESCRIPTION=${description}" >> $GITHUB_ENV
+            echo "COMMAND=${command}" >> $GITHUB_ENV
+
+            if [[ "$version" == *.* ]]; then
+              version_split=$(echo "$version" | cut -d '.' -f 1)
+              echo "VERSION_SPLIT=${version_split}" >> $GITHUB_ENV
+            else
+              echo "VERSION_SPLIT=${version}" >> $GITHUB_ENV
+            fi
+          else
+            echo "File not found: $json_file"
+            exit 1
+          fi
+
+      - name: Check and create Dockerfile if not present
+        run: |
+          dockerfile_path="analyzers/${{ matrix.directory }}/Dockerfile"
+          matrix_directory="${{ matrix.directory }}"
+          command_value="${{ env.COMMAND }}"
+
+          # Add multiple workers separated by spaces
+          special_alpine_workers="PaloAltoNGFW FileInfo Worker2 Worker3 AnotherWorker"
+
+          if [ ! -f "$dockerfile_path" ]; then
+            echo "Dockerfile not found in $dockerfile_path. Creating one..."
+
+            # Multi-stage build - Builder stage
+            echo "# Builder stage" > "$dockerfile_path"
+            echo "FROM python:3-slim AS builder" >> "$dockerfile_path"
+            echo "WORKDIR /build" >> "$dockerfile_path"
+
+            # Check if current worker is among special alpine workers and install build dependencies
+            if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
+              echo "RUN apt-get update && apt-get install -y --no-install-recommends libmagic-dev build-essential && rm -rf /var/lib/apt/lists/*" >> "$dockerfile_path"
+            fi
+
+            echo "COPY requirements.txt ." >> "$dockerfile_path"
+            echo "RUN test ! -e requirements.txt || pip install --user --no-cache-dir -r requirements.txt" >> "$dockerfile_path"
+            echo "" >> "$dockerfile_path"
+
+            # Runtime stage
+            echo "# Runtime stage" >> "$dockerfile_path"
+            echo "FROM python:3-slim" >> "$dockerfile_path"
+
+            # Check if current worker needs runtime libraries
+            if echo "$special_alpine_workers" | grep -qw "$matrix_directory"; then
+              echo "RUN apt-get update && apt-get install -y --no-install-recommends libmagic1 && rm -rf /var/lib/apt/lists/*" >> "$dockerfile_path"
+            fi
+
+            echo "WORKDIR /worker" >> "$dockerfile_path"
+            echo "COPY --from=builder /root/.local /root/.local" >> "$dockerfile_path"
+            echo "COPY . ${matrix_directory}/" >> "$dockerfile_path"
+            echo "ENV PATH=/root/.local/bin:\$PATH" >> "$dockerfile_path"
+            echo "ENTRYPOINT [\"python\", \"${command_value}\"]" >> "$dockerfile_path"
+          else
+            echo "Dockerfile exists: $dockerfile_path"
+          fi
+
+      - name: Check if image needs rebuild
+        id: check-rebuild
+        env:
+          IMAGE_NAME: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }}
+          CURRENT_SHA: ${{ github.sha }}
+          COMPONENT_DIR: analyzers/${{ matrix.directory }}
+        run: |
+          set +x  # Disable command echoing for security
+
+          # Force rebuild on scheduled runs (cron) and manual triggers
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Scheduled run or manual trigger detected - forcing rebuild"
+            echo "rebuild=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Try to pull the image to check if it exists
+          if docker pull --platform linux/amd64 "$IMAGE_NAME" >/dev/null 2>&1; then
+            # Image exists, check if it has the current SHA
+            EXISTING_SHA=$(docker inspect "$IMAGE_NAME" --format='{{index .Config.Labels "org.opencontainers.image.revision"}}' 2>/dev/null || echo "")
+
+            if [[ "$EXISTING_SHA" == "$CURRENT_SHA" ]]; then
+              echo "Image is up to date with current commit. No rebuild needed."
+              echo "rebuild=false" >> $GITHUB_OUTPUT
+            else
+              # Check if this specific component folder has changes since the image was built
+              if [[ -n "$EXISTING_SHA" ]] && git rev-parse --verify "$EXISTING_SHA" >/dev/null 2>&1; then
+                # Check if there are changes in the component directory since the existing SHA
+                if git diff --quiet "$EXISTING_SHA" "$CURRENT_SHA" -- "$COMPONENT_DIR"; then
+                  echo "No changes in $COMPONENT_DIR since last build. No rebuild needed."
+                  echo "rebuild=false" >> $GITHUB_OUTPUT
+                else
+                  echo "Changes detected in $COMPONENT_DIR. Rebuild needed."
+                  echo "rebuild=true" >> $GITHUB_OUTPUT
+                fi
+              else
+                echo "Cannot verify existing SHA. Rebuild needed."
+                echo "rebuild=true" >> $GITHUB_OUTPUT
+              fi
+            fi
+          else
+            # Image doesn't exist or can't be pulled
+            echo "Image not found or inaccessible. Rebuild needed."
+            echo "rebuild=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set build date
+        id: build_date
+        run: echo "date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
+
+      - name: Set Image Tags
+        run: |
+          if [[ "${{ github.ref }}" =~ ^refs/tags/ ]] || [ "${{ github.event_name }}" == "schedule" ]; then
+            # Keep one image tag for import testing
+            echo "IMAGE_TAG=${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
+            # Produce three tags:
+            #   1) :VERSION  (eg 2.0)
+            #   2) :VERSION_SPLIT  (eg 2)
+            #   3) :latest
+            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION }},ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.VERSION_SPLIT }}" >> $GITHUB_ENV
+          else
+            echo "IMAGE_TAG=devel" >> $GITHUB_ENV
+            # Only the :devel tag
+            echo "IMAGE_TAGS=ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:devel" >> $GITHUB_ENV
+          fi
+
+      - name: Set Platforms
+        id: set_platforms
+        run: |
+          NO_ARM64_DIRS="FileInfo"
+
+          CURRENT_DIR="${{ matrix.directory }}"
+          # Default to multi-arch
+          PLATFORMS="linux/amd64,linux/arm64"
+
+          # Check if CURRENT_DIR is in the NO_ARM64_DIRS list
+          if echo "$NO_ARM64_DIRS" | grep -qw "$CURRENT_DIR"; then
+            echo "Directory '$CURRENT_DIR' is in NO_ARM64_DIRS; limiting to linux/amd64 only."
+            PLATFORMS="linux/amd64"
+          fi
+
+          echo "PLATFORMS=$PLATFORMS" >> $GITHUB_ENV
+
+      # Only install QEMU when we actually build AND arm64 is targeted
+      - name: Set up QEMU
+        if: steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/arm64')
+        uses: docker/setup-qemu-action@v3
+
+      # Buildx is only needed when we build (and for imagetools)
+      - name: Set up Docker Buildx
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push multi-arch image to GHCR
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: analyzers/${{ matrix.directory }}
+          file: ./analyzers/${{ matrix.directory }}/Dockerfile
+          platforms: ${{ env.PLATFORMS }}
+          push: true
+          tags: ${{ env.IMAGE_TAGS }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max,scope=shared
+          labels: |
+            org.opencontainers.image.created=${{ steps.build_date.outputs.date }}
+            org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
+            org.opencontainers.image.description=${{ env.DESCRIPTION }}
+            org.opencontainers.image.url=https://thehive-project.org
+            org.opencontainers.image.source=https://github.com/TheHive-Project/Cortex-Analyzers
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.vendor=TheHive Project
+            org.opencontainers.image.version=${{ env.VERSION }}
+          annotations: |
+            org.opencontainers.image.description=${{ env.DESCRIPTION }}
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.title=${{ env.LOWERCASE_NAME }}
+            org.opencontainers.image.url=https://thehive-project.org
+            org.opencontainers.image.version=${{ env.VERSION }}
+
+      - name: Get image digest for Trivy scan
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        id: get-digest
+        run: |
+          # Get the digest of the pushed image using buildx imagetools
+          IMAGE_DIGEST=$(docker buildx imagetools inspect ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }} 2>/dev/null | grep "^Digest:" | awk '{print $2}' || echo "")
+
+          if [ -n "$IMAGE_DIGEST" ]; then
+            IMAGE_DIGEST="ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}@$IMAGE_DIGEST"
+          else
+            # Fallback: try docker inspect for RepoDigests
+            IMAGE_DIGEST=$(docker inspect ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }} --format='{{index .RepoDigests 0}}' 2>/dev/null || echo "")
+
+            if [ -z "$IMAGE_DIGEST" ]; then
+              # Fallback: try to get digest from local images
+              IMAGE_DIGEST=$(docker images --digests ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }} --format "table {{.Repository}}:{{.Tag}}\t{{.Digest}}" | grep ":${{ env.IMAGE_TAG }}" | awk '{print $2}' | head -1)
+              if [ -n "$IMAGE_DIGEST" ] && [ "$IMAGE_DIGEST" != "<none>" ]; then
+                IMAGE_DIGEST="ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}@$IMAGE_DIGEST"
+              else
+                # Ultimate fallback: use tag
+                IMAGE_DIGEST="ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
+              fi
+            fi
+          fi
+          echo "IMAGE_DIGEST=$IMAGE_DIGEST" >> $GITHUB_OUTPUT
+          echo "Using image reference for Trivy scan: $IMAGE_DIGEST"
+
+      - name: Scan image for vulnerabilities (Trivy)
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          image-ref: ${{ steps.get-digest.outputs.IMAGE_DIGEST }}
+          format: sarif
+          output: trivy.sarif
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH,MEDIUM'
+          exit-code: 0
+          ignore-unfixed: true
+          timeout: 10m
+          skip-files: '**/*.yara,**/*.cvd'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: trivy.sarif
+          category: trivy-${{ matrix.directory }}
+
+      - name: Test imports in the container (amd64)
+        if: ${{ steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/amd64') }}
+        run: |
+          python <<EOF
+          import subprocess
+          import sys
+          import textwrap
+
+          image_tag = "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
+          command = "${{ env.COMMAND }}"
+          worker_name = "${{ matrix.directory }}"
+
+          print(f"🔍 Testing (amd64) Python imports in built image '{image_tag}' for worker '{worker_name}'...")
+
+          # in-container python snippet (AST-based import checking):
+          test_code = textwrap.dedent(f'''
+              import os, sys, ast, os.path as osp
+
+              entrypoint_full = "{command}"
+              fallback_dir = "{worker_name}"
+
+              if "/" in entrypoint_full:
+                  dir_part = osp.dirname(entrypoint_full)
+                  file_part = osp.basename(entrypoint_full)
+                  # If directory doesn't exist but fallback_dir does, change to fallback.
+                  if not osp.isdir(dir_part) and osp.isdir(fallback_dir):
+                      dir_part = fallback_dir
+                  os.chdir(osp.join(os.getcwd(), dir_part))
+                  entrypoint = file_part
+              else:
+                  entrypoint = entrypoint_full
+
+              if not osp.exists(entrypoint):
+                  print("❌ ERROR: {{}} not found inside the container.".format(entrypoint))
+                  sys.exit(1)
+
+              with open(entrypoint, 'r', encoding='utf-8') as f:
+                  source = f.read()
+
+              try:
+                  tree = ast.parse(source)
+              except SyntaxError as e:
+                  print(f"❌ Syntax error in {{entrypoint}}: {{e}}")
+                  sys.exit(1)
+
+              imports = []
+              for node in ast.walk(tree):
+                  if isinstance(node, ast.Import):
+                      for alias in node.names:
+                          imports.append(alias.name)
+                  elif isinstance(node, ast.ImportFrom):
+                      if node.module:
+                          imports.append(node.module)
+
+              print("🔍 Checking Python imports from", entrypoint)
+              for mod in set(imports):
+                  try:
+                      __import__(mod)
+                      print(f"✅ {{mod}} - SUCCESS")
+                  except Exception as e:
+                      print(f"❌ {{mod}} - FAILED: {{e}}")
+                      sys.exit(1)
+
+              print("✅ All imports tested successfully!")
+          ''')
+
+          try:
+              # Pull the amd64 variant explicitly
+              pull_result = subprocess.run(
+                  ["docker", "pull", "--platform", "linux/amd64", image_tag],
+                  capture_output=True,
+                  text=True
+              )
+              print(pull_result.stdout, file=sys.stdout)
+              print(pull_result.stderr, file=sys.stderr)
+
+              # Run the container with the Python test code
+              result = subprocess.run(
+                  [
+                      "docker", "run", "--rm",
+                      "--platform", "linux/amd64",
+                      "--entrypoint", "python",
+                      image_tag,
+                      "-c", test_code
+                  ],
+                  capture_output=True,
+                  text=True
+              )
+              # Print container logs
+              print(result.stdout, file=sys.stdout)
+              print(result.stderr, file=sys.stderr)
+
+              if result.returncode != 0:
+                  warning_message = f"Import testing FAILED (amd64) for worker '{worker_name}' with exit code {result.returncode}"
+                  print("⚠️", warning_message)
+                  print(f"::warning::{warning_message}")
+              else:
+                  print("✅ Import testing succeeded (amd64)")
+
+          except Exception as e:
+              print("::warning::Error during import testing (amd64):", e)
+              sys.exit(1)
+          EOF
+
+
+      - name: Test imports in the container (arm64)
+        if: ${{ steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/arm64') }}
+        run: |
+          python <<EOF
+          import subprocess
+          import sys
+          import textwrap
+
+          image_tag = "ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}"
+          command = "${{ env.COMMAND }}"
+          worker_name = "${{ matrix.directory }}"
+
+          print(f"🔍 Testing (arm64) Python imports in built image '{image_tag}' for worker '{worker_name}'...")
+
+          # in-container python snippet (AST-based import checking):
+          test_code = textwrap.dedent(f'''
+              import os, sys, ast, os.path as osp
+
+              entrypoint_full = "{command}"
+              fallback_dir = "{worker_name}"
+
+              if "/" in entrypoint_full:
+                  dir_part = osp.dirname(entrypoint_full)
+                  file_part = osp.basename(entrypoint_full)
+                  # If directory doesn't exist but fallback_dir does, change to fallback.
+                  if not osp.isdir(dir_part) and osp.isdir(fallback_dir):
+                      dir_part = fallback_dir
+                  os.chdir(osp.join(os.getcwd(), dir_part))
+                  entrypoint = file_part
+              else:
+                  entrypoint = entrypoint_full
+
+              if not osp.exists(entrypoint):
+                  print("❌ ERROR: {{}} not found inside the container.".format(entrypoint))
+                  sys.exit(1)
+
+              with open(entrypoint, 'r', encoding='utf-8') as f:
+                  source = f.read()
+
+              try:
+                  tree = ast.parse(source)
+              except SyntaxError as e:
+                  print(f"❌ Syntax error in {{entrypoint}}: {{e}}")
+                  sys.exit(1)
+
+              imports = []
+              for node in ast.walk(tree):
+                  if isinstance(node, ast.Import):
+                      for alias in node.names:
+                          imports.append(alias.name)
+                  elif isinstance(node, ast.ImportFrom):
+                      if node.module:
+                          imports.append(node.module)
+
+              print("🔍 Checking Python imports from", entrypoint)
+              for mod in set(imports):
+                  try:
+                      __import__(mod)
+                      print(f"✅ {{mod}} - SUCCESS")
+                  except Exception as e:
+                      print(f"❌ {{mod}} - FAILED: {{e}}")
+                      sys.exit(1)
+
+              print("✅ All imports tested successfully!")
+          ''')
+
+          try:
+              # Pull the arm64 variant explicitly
+              pull_result = subprocess.run(
+                  ["docker", "pull", "--platform", "linux/arm64", image_tag],
+                  capture_output=True,
+                  text=True
+              )
+              print(pull_result.stdout, file=sys.stdout)
+              print(pull_result.stderr, file=sys.stderr)
+
+              # Run the container with the Python test code
+              result = subprocess.run(
+                  [
+                      "docker", "run", "--rm",
+                      "--platform", "linux/arm64",
+                      "--entrypoint", "python",
+                      image_tag,
+                      "-c", test_code
+                  ],
+                  capture_output=True,
+                  text=True
+              )
+              # Print container logs
+              print(result.stdout, file=sys.stdout)
+              print(result.stderr, file=sys.stderr)
+
+              if result.returncode != 0:
+                  warning_message = f"Import testing FAILED (arm64) for worker '{worker_name}' with exit code {result.returncode}"
+                  print("⚠️", warning_message)
+                  print(f"::warning::{warning_message}")
+              else:
+                  print("✅ Import testing succeeded (arm64)")
+
           except Exception as e:
               print("::warning::Error during import testing (arm64):", e)
               sys.exit(1)
@@ -1046,7 +1539,7 @@ jobs:
     name: Build Catalog
     runs-on: ubuntu-latest
     #needs: [ build_responders ]
-    needs: [ build_analyzers, build_responders ]
+    needs: [ build_analyzers_A, build_analyzers_B, build_responders ]
     if: always()
     steps:
       - name: Checkout repository
@@ -1105,7 +1598,7 @@ jobs:
     name: Build documentation
     runs-on: ubuntu-latest
     #needs: [ build_responders ]
-    needs: [ build_analyzers, build_responders ]
+    needs: [ build_analyzers_A, build_analyzers_B, build_responders ]
     if: startsWith(github.ref, 'refs/tags/') && always()
     steps:
       - uses: actions/checkout@v6
@@ -1130,7 +1623,7 @@ jobs:
   notify:
     name: Notify
     #needs: [ build_responders, build_catalog, build_docs ]
-    needs: [ build_analyzers, build_responders, build_catalog, build_docs ]
+    needs: [ build_analyzers_A, build_analyzers_B, build_responders, build_catalog, build_docs ]
     runs-on: ubuntu-latest
     if: true
     steps:
