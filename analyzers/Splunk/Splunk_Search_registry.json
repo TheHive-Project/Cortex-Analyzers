@@ -96,6 +96,7 @@
   "registration_required": false,
   "subscription_required": false,
   "free_subscription": true,
+  "service_homepage": "https://www.splunk.com",
   "service_logo": {
     "path": "assets/splunk_registry_logo.png",
     "caption": "logo"

@@ -1,0 +1,245 @@
+<div ng-if="success">
+<!-- Summary Panel -->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong><i class="fa fa-search"></i> Threat Intelligence Lookup</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-bordered">
+            <tr>
+                <td><strong>Observable</strong></td>
+                <td><code>{{ content.observable }}</code></td>
+            </tr>
+            <tr>
+                <td><strong>Indicators Found</strong></td>
+                <td>
+                    <span class="badge" ng-class="{
+                        'badge-danger': content.indicator_count > 0,
+                        'badge-success': content.indicator_count === 0
+                    }">
+                        {{ content.indicator_count }}
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- Threat Intelligence Indicators -->
+<div ng-if="content.indicators && content.indicators.length > 0">
+    <div class="panel" ng-repeat="indicator in content.indicators"
+         ng-class="{
+             'panel-danger': indicator.malicious_confidence === 'high',
+             'panel-warning': indicator.malicious_confidence === 'medium',
+             'panel-info': indicator.malicious_confidence === 'low',
+             'panel-default': indicator.malicious_confidence === 'unverified' || !indicator.malicious_confidence
+         }">
+        <div class="panel-heading">
+            <strong>
+                <i class="fa fa-shield"></i>
+                {{ indicator.type | uppercase }}: {{ indicator.indicator }}
+            </strong>
+        </div>
+        <div class="panel-body">
+            <!-- Basic Information -->
+            <h5><i class="fa fa-info-circle"></i> Basic Information</h5>
+            <table class="table table-bordered table-sm">
+                <tr>
+                    <td width="25%"><strong>Indicator Type</strong></td>
+                    <td>{{ indicator.type }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Malicious Confidence</strong></td>
+                    <td>
+                        <span class="label" ng-class="{
+                            'label-danger': indicator.malicious_confidence === 'high',
+                            'label-warning': indicator.malicious_confidence === 'medium',
+                            'label-info': indicator.malicious_confidence === 'low',
+                            'label-default': indicator.malicious_confidence === 'unverified' || !indicator.malicious_confidence
+                        }">
+                            {{ indicator.malicious_confidence | uppercase }}
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Published Date</strong></td>
+                    <td>{{ indicator.published_date * 1000 | date:'medium' }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Last Updated</strong></td>
+                    <td>{{ indicator.last_updated * 1000 | date:'medium' }}</td>
+                </tr>
+                <tr ng-if="indicator.deleted">
+                    <td><strong>Status</strong></td>
+                    <td><span class="label label-default">DELETED</span></td>
+                </tr>
+            </table>
+
+            <!-- Threat Intelligence -->
+            <div ng-if="indicator.threat_types.length > 0 || indicator.actors.length > 0 || indicator.malware_families.length > 0 || indicator.kill_chains.length > 0">
+                <h5><i class="fa fa-crosshairs"></i> Threat Intelligence</h5>
+                <table class="table table-bordered table-sm">
+                    <tr ng-if="indicator.threat_types.length > 0">
+                        <td width="25%"><strong>Threat Types</strong></td>
+                        <td>
+                            <span class="label label-danger" ng-repeat="type in indicator.threat_types" style="margin-right: 5px;">
+                                {{ type }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr ng-if="indicator.actors.length > 0">
+                        <td><strong>Threat Actors</strong></td>
+                        <td>
+                            <span class="label label-warning" ng-repeat="actor in indicator.actors" style="margin-right: 5px;">
+                                <i class="fa fa-user-secret"></i> {{ actor }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr ng-if="indicator.malware_families.length > 0">
+                        <td><strong>Malware Families</strong></td>
+                        <td>
+                            <span class="label label-primary" ng-repeat="malware in indicator.malware_families" style="margin-right: 5px;">
+                                <i class="fa fa-bug"></i> {{ malware }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr ng-if="indicator.kill_chains.length > 0">
+                        <td><strong>Kill Chain Stages</strong></td>
+                        <td>
+                            <span class="label label-info" ng-repeat="stage in indicator.kill_chains" style="margin-right: 5px;">
+                                {{ stage }}
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Infrastructure Classification -->
+            <div ng-if="indicator.domain_types.length > 0 || indicator.ip_address_types.length > 0">
+                <h5><i class="fa fa-server"></i> Infrastructure Classification</h5>
+                <table class="table table-bordered table-sm">
+                    <tr ng-if="indicator.domain_types.length > 0">
+                        <td width="25%"><strong>Domain Types</strong></td>
+                        <td>
+                            <span class="label label-warning" ng-repeat="dtype in indicator.domain_types" style="margin-right: 5px;">
+                                {{ dtype }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr ng-if="indicator.ip_address_types.length > 0">
+                        <td><strong>IP Address Types</strong></td>
+                        <td>
+                            <span class="label label-warning" ng-repeat="iptype in indicator.ip_address_types" style="margin-right: 5px;">
+                                {{ iptype }}
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Reports -->
+            <div ng-if="indicator.reports.length > 0">
+                <h5><i class="fa fa-file-text"></i> Associated Reports</h5>
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="report in indicator.reports">
+                        <i class="fa fa-book"></i> {{ report }}
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Vulnerabilities -->
+            <div ng-if="indicator.vulnerabilities.length > 0">
+                <h5><i class="fa fa-exclamation-triangle"></i> Vulnerabilities (CVEs)</h5>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>CVE ID</th>
+                            <th>NVD Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="cve in indicator.vulnerabilities">
+                            <td><code>{{ cve }}</code></td>
+                            <td>
+                                <a ng-href="https://nvd.nist.gov/vuln/detail/{{ cve }}" target="_blank">
+                                    <i class="fa fa-external-link"></i> View on NVD
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Targets -->
+            <div ng-if="indicator.targets.length > 0">
+                <h5><i class="fa fa-bullseye"></i> Targets</h5>
+                <ul>
+                    <li ng-repeat="target in indicator.targets">{{ target }}</li>
+                </ul>
+            </div>
+
+            <!-- Related Indicators -->
+            <div ng-if="indicator.relations.length > 0">
+                <h5><i class="fa fa-link"></i> Related Indicators</h5>
+                <table class="table table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Indicator</th>
+                            <th>First Seen</th>
+                            <th>Last Seen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="relation in indicator.relations">
+                            <td><span class="label label-default">{{ relation.type }}</span></td>
+                            <td><code>{{ relation.indicator }}</code></td>
+                            <td><small>{{ relation.created_date * 1000 | date:'short' }}</small></td>
+                            <td><small>{{ relation.last_valid_date * 1000 | date:'short' }}</small></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Labels -->
+            <div ng-if="indicator.labels.length > 0">
+                <h5><i class="fa fa-tags"></i> Labels</h5>
+                <div>
+                    <span class="label label-default" ng-repeat="label in indicator.labels" style="margin-right: 5px; margin-bottom: 5px; display: inline-block;">
+                        {{ label.name }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Raw Indicator ID -->
+            <div class="well well-sm" style="margin-top: 15px;">
+                <small><strong>Indicator ID:</strong> <code>{{ indicator.id }}</code></small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- No Indicators Found -->
+<div class="panel panel-success" ng-if="!content.indicators || content.indicators.length === 0">
+    <div class="panel-heading">
+        <strong><i class="fa fa-check-circle"></i> No Threat Intelligence Found</strong>
+    </div>
+    <div class="panel-body">
+        <p>No threat intelligence indicators were found for <code>{{ content.observable }}</code> in CrowdStrike Falcon Intelligence.</p>
+        <p class="text-muted">This observable is not currently associated with any known threats in the CrowdStrike threat intelligence database.</p>
+    </div>
+</div>
+</div>
+
+<!-- Error Block -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content && content.errorMessage">
+            <dt><i class="fa fa-warning"></i> CrowdStrike Falcon TI:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

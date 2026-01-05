@@ -23,7 +23,7 @@
         "required": true
     }
   ],
-  "command": "OktaUserLookup/oktauserlookup_analyzer.py",
+  "command": "Okta/oktauserlookup_analyzer.py",
   "registration_required": true,
   "subscription_required": false,
   "free_subscription": false,

@@ -5,11 +5,13 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Shodan",
   "license": "AGPL-V3",
   "description": "Retrieve Shodan history scan results  for an IP address.",
-  "dataTypeList": ["ip"],
+  "dataTypeList": [
+    "ip"
+  ],
   "command": "Shodan/shodan_analyzer.py",
   "baseConfig": "Shodan",
   "config": {
-      "service": "host_history"
+    "service": "host_history"
   },
   "configurationItems": [
     {
@@ -19,5 +21,9 @@
       "multi": false,
       "required": true
     }
-  ]
+  ],
+  "registration_required": true,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://www.shodan.io"
 }
