@@ -6,8 +6,8 @@
   "license": "AGPL-V3",
   "description": "Closing the QRadar Offense associated to your case in one clic !",
   "dataTypeList": ["thehive:case"],
-  "command": "QRadarAutoClose/QRadarAutoClose.py",
-  "baseConfig": "QRadarAutoClose",
+  "command": "IBMQRadar/QRadarAutoClose.py",
+  "baseConfig": "IBMQRadar",
   "configurationItems": [
     {
       "name": "QRadar_API_Key",
@@ -30,5 +30,8 @@
       "multi": false,
       "required": false
     }
-  ]
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
 }

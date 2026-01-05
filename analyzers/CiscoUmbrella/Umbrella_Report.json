@@ -1,13 +1,13 @@
 {
-  "name": "Umbrella_Report",
+  "name": "CiscoUmbrella_Report",
   "version": "1.0",
   "author": "Kyle Parrish",
   "url": "https://github.com/arnydo/thehive/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Query the Umbrella Reporting API for recent DNS queries and their status.",
+  "description": "Query the Cisco Umbrella Reporting API for recent DNS queries and their status.",
   "dataTypeList": ["domain", "fqdn"],
-  "command": "Umbrella/Umbrella.py",
-  "baseConfig": "Umbrella",
+  "command": "CiscoUmbrella/Umbrella.py",
+  "baseConfig": "CiscoUmbrella",
   "config": {
         "service": "get"
   },
@@ -41,5 +41,9 @@
         "required": false,
         "default": 20
     }
-  ]
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://umbrella.cisco.com"
 }

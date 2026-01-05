@@ -5,10 +5,13 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Decodes Office 365 ATP Safe Links to extract original URLs. Supports url observables containing safelinks.protection.outlook.com domains.",
-  "dataTypeList": ["url"],
+  "dataTypeList": [
+    "url"
+  ],
   "baseConfig": "SafeLinks",
   "registration_required": false,
   "subscription_required": false,
   "free_subscription": true,
-  "command": "MSDefenderOffice365/safelinks_decoder.py"
+  "command": "MSDefenderOffice365/safelinks_decoder.py",
+  "service_homepage": "https://www.microsoft.com/en-us/microsoft-365/security/office-365-defender"
 }
