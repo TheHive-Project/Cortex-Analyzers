@@ -6,7 +6,7 @@
   "version": "0.1.0",
   "description": "Perform a search on urlDNA.io for IPs, domains or URLs",
   "dataTypeList": ["ip", "domain", "url"],
-  "command": "UrlDna/urldna_analyzer.py",
+  "command": "urlDNA.io/urldna_analyzer.py",
   "baseConfig": "UrlDNA",
   "config": {
     "service":"search"

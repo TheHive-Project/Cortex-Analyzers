@@ -6,7 +6,7 @@
   "version": "0.1.0",
   "description": "Perform a new scan on urlDNA.io",
   "dataTypeList": ["url"],
-  "command": "UrlDna/urldna_analyzer.py",
+  "command": "urlDNA.io/urldna_analyzer.py",
   "baseConfig": "UrlDNA",
   "config": {
     "service":"new_scan"
