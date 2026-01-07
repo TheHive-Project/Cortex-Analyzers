@@ -19,5 +19,9 @@
       "multi": false,
       "required": true
     }
-  ]
+  ],
+  "registration_required": true,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://urldna.io"
 }

@@ -20,6 +20,14 @@
       "required": true
     },
 	{
+      "name": "private_scan",
+      "description": "The visibility setting for the new scan: False will make it publicly visible and searchable",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+	{
       "name": "device",
       "description": "The device type used for scraping, either DESKTOP or MOBILE. Ensure that the selected Device, User Agent, and Viewport settings are consistent to maintain coherence",
       "type": "string",
@@ -60,14 +68,10 @@
       "type": "number",
       "multi": false,
       "required": false
-    },
-	{
-      "name": "private_scan",
-      "description": "The visibility setting for the new scan: False will make it publicly visible and searchable",
-      "type": "boolean",
-      "multi": false,
-      "required": false
     }
-	
-  ]
+  ],
+  "registration_required": true,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://urldna.io"
 }
