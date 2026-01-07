@@ -1,0 +1,515 @@
+<div class="report-urlDNA" ng-if="success">
+    <style>
+        .report-urlDNA dl {
+            margin-bottom: 2px;
+        }
+        .report-urlDNA .verdict-badge {
+            font-size: 14px;
+            padding: 5px 10px;
+        }
+        .report-urlDNA .section-spacing {
+            margin-top: 15px;
+        }
+        .report-urlDNA pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        .report-urlDNA .tech-badge {
+            display: inline-block;
+            margin: 3px;
+            padding: 5px 10px;
+            background-color: #e3f2fd;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+    </style>
+
+    <!-- No Results Found -->
+    <div class="panel panel-warning" ng-if="!content.indicator || content.indicator.length === 0 || !content.indicator.scan">
+        <div class="panel-heading">
+            <strong>No Results Found</strong>
+        </div>
+        <div class="panel-body">
+            <p>No scan results were found for the queried URL.</p>
+            <dl class="dl-horizontal" ng-if="content.query">
+                <dt>Query</dt>
+                <dd>{{content.query}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.service">
+                <dt>Service</dt>
+                <dd>{{content.service}}</dd>
+            </dl>
+            <p class="text-muted" style="margin-top: 15px;">
+                This may indicate that the URL has not been previously scanned or is not in the urlDNA.io database.
+            </p>
+        </div>
+    </div>
+
+    <!-- Results Container -->
+    <div ng-if="content.indicator && content.indicator.length !== 0 && content.indicator.scan">
+
+    <!-- Classification and General Information -->
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Classification</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>Verdict</dt>
+                <dd>
+                    <span class="label verdict-badge"
+                          ng-class="{'label-success': content.indicator.classification.verdict === 'SAFE',
+                                     'label-warning': content.indicator.classification.verdict === 'SUSPICIOUS',
+                                     'label-danger': content.indicator.classification.verdict === 'MALICIOUS'}">
+                        {{content.indicator.classification.verdict}}
+                    </span>
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <!-- Scan Information -->
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Scan Information</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>Submitted URL</dt>
+                <dd>{{content.indicator.scan.submitted_url}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Target URL</dt>
+                <dd>{{content.indicator.scan.target_url}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Domain</dt>
+                <dd>{{content.indicator.scan.domain}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Scan Status</dt>
+                <dd>
+                    <span class="label"
+                          ng-class="{'label-success': content.indicator.scan.status === 'DONE',
+                                     'label-warning': content.indicator.scan.status === 'PENDING',
+                                     'label-danger': content.indicator.scan.status === 'ERROR'}">
+                        {{content.indicator.scan.status}}
+                    </span>
+                </dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Submitted Date</dt>
+                <dd>{{content.indicator.scan.submitted_date}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Device</dt>
+                <dd>{{content.indicator.scan.device}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Protocol</dt>
+                <dd>{{content.indicator.scan.protocol}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.scan.error_code">
+                <dt>Error Code</dt>
+                <dd><span class="label label-danger">{{content.indicator.scan.error_code}}</span></dd>
+            </dl>
+        </div>
+    </div>
+
+    <!-- Page Information -->
+    <div class="panel panel-info" ng-if="content.indicator.page">
+        <div class="panel-heading">
+            <strong>Page Information</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal" ng-if="content.indicator.page.title">
+                <dt>Title</dt>
+                <dd>{{content.indicator.page.title}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.page.url">
+                <dt>URL</dt>
+                <dd>{{content.indicator.page.url}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.page.domain">
+                <dt>Domain</dt>
+                <dd>{{content.indicator.page.domain}}</dd>
+            </dl>
+        </div>
+    </div>
+
+    <!-- IP Address and Location -->
+    <div class="panel panel-info" ng-if="content.indicator.ip_address">
+        <div class="panel-heading">
+            <strong>IP Address & Location</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>IP Address</dt>
+                <dd>{{content.indicator.ip_address.ip}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Type</dt>
+                <dd>{{content.indicator.ip_address.type}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.ip_address.country">
+                <dt>Country</dt>
+                <dd>{{content.indicator.ip_address.country}} ({{content.indicator.ip_address.country_code}})</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.ip_address.city">
+                <dt>City</dt>
+                <dd>{{content.indicator.ip_address.city}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.ip_address.region">
+                <dt>Region</dt>
+                <dd>{{content.indicator.ip_address.region}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.ip_address.asn">
+                <dt>ASN</dt>
+                <dd>{{content.indicator.ip_address.asn}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.ip_address.isp">
+                <dt>ISP</dt>
+                <dd>{{content.indicator.ip_address.isp}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.ip_address.org">
+                <dt>Organization</dt>
+                <dd>{{content.indicator.ip_address.org}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.ip_address.timezone_gmt">
+                <dt>Timezone</dt>
+                <dd>GMT {{content.indicator.ip_address.timezone_gmt}}</dd>
+            </dl>
+        </div>
+    </div>
+
+    <!-- Certificate Information -->
+    <div class="panel panel-info" ng-if="content.indicator.certificate">
+        <div class="panel-heading">
+            <strong>SSL/TLS Certificate</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal" ng-if="content.indicator.certificate.subject">
+                <dt>Subject</dt>
+                <dd>{{content.indicator.certificate.subject}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.certificate.issuer">
+                <dt>Issuer</dt>
+                <dd>{{content.indicator.certificate.issuer}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.certificate.serial_number">
+                <dt>Serial Number</dt>
+                <dd>{{content.indicator.certificate.serial_number}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.certificate.not_before">
+                <dt>Valid From</dt>
+                <dd>{{content.indicator.certificate.not_before}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.certificate.not_after">
+                <dt>Valid Until</dt>
+                <dd>{{content.indicator.certificate.not_after}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.certificate.version">
+                <dt>Version</dt>
+                <dd>{{content.indicator.certificate.version}}</dd>
+            </dl>
+        </div>
+    </div>
+
+    <!-- Technologies -->
+    <div class="panel panel-info" ng-if="content.indicator.technologies && content.indicator.technologies.length > 0">
+        <div class="panel-heading">
+            <strong>Technologies Detected</strong>
+        </div>
+        <div class="panel-body">
+            <div ng-repeat="tech in content.indicator.technologies track by $index">
+                <span class="tech-badge">
+                    <strong>{{tech.name}}</strong>
+                    <span ng-if="tech.version"> v{{tech.version}}</span>
+                    <span ng-if="tech.category"> - {{tech.category}}</span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- HTTP Transactions -->
+    <div class="panel panel-info" ng-if="content.indicator.http_transactions && content.indicator.http_transactions.length > 0">
+        <div class="panel-heading">
+            <strong>HTTP Transactions</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>Total Requests</dt>
+                <dd>{{content.indicator.http_transactions.length}}</dd>
+            </dl>
+            <div class="section-spacing">
+                <h5>Request Details (First 10)</h5>
+                <table class="table table-condensed table-hover">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>URL</th>
+                            <th>Status</th>
+                            <th>Content Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="tx in content.indicator.http_transactions | limitTo:10 track by $index">
+                            <td>{{tx.method}}</td>
+                            <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                                title="{{tx.url}}">{{tx.url}}</td>
+                            <td>
+                                <span class="label"
+                                      ng-class="{'label-success': tx.status_code >= 200 && tx.status_code < 300,
+                                                 'label-warning': tx.status_code >= 300 && tx.status_code < 400,
+                                                 'label-danger': tx.status_code >= 400}">
+                                    {{tx.status_code}}
+                                </span>
+                            </td>
+                            <td>{{tx.content_type}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookies -->
+    <div class="panel panel-info" ng-if="content.indicator.cookies && content.indicator.cookies.length > 0">
+        <div class="panel-heading">
+            <strong>Cookies</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>Total Cookies</dt>
+                <dd>{{content.indicator.cookies.length}}</dd>
+            </dl>
+            <div class="section-spacing">
+                <table class="table table-condensed table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Domain</th>
+                            <th>Path</th>
+                            <th>Secure</th>
+                            <th>HTTP Only</th>
+                            <th>Expiry</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="cookie in content.indicator.cookies track by $index">
+                            <td>{{cookie.name}}</td>
+                            <td>{{cookie.domain}}</td>
+                            <td>{{cookie.path}}</td>
+                            <td>
+                                <span class="label" ng-class="{'label-success': cookie.secure, 'label-default': !cookie.secure}">
+                                    {{cookie.secure ? 'Yes' : 'No'}}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="label" ng-class="{'label-success': cookie.http_only, 'label-default': !cookie.http_only}">
+                                    {{cookie.http_only ? 'Yes' : 'No'}}
+                                </span>
+                            </td>
+                            <td>{{cookie.expiry}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Console Messages -->
+    <div class="panel panel-info" ng-if="content.indicator.console_messages && content.indicator.console_messages.length > 0">
+        <div class="panel-heading">
+            <strong>Console Messages</strong>
+        </div>
+        <div class="panel-body">
+            <div ng-repeat="msg in content.indicator.console_messages track by $index" class="section-spacing">
+                <dl class="dl-horizontal">
+                    <dt>Type</dt>
+                    <dd>
+                        <span class="label"
+                              ng-class="{'label-info': msg.type === 'log',
+                                         'label-warning': msg.type === 'warning',
+                                         'label-danger': msg.type === 'error'}">
+                            {{msg.type}}
+                        </span>
+                    </dd>
+                </dl>
+                <pre>{{msg.text}}</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Redirect Chains -->
+    <div class="panel panel-info" ng-if="content.indicator.redirect_chains && content.indicator.redirect_chains.length > 0">
+        <div class="panel-heading">
+            <strong>Redirect Chains</strong>
+        </div>
+        <div class="panel-body">
+            <div ng-repeat="chain in content.indicator.redirect_chains track by $index" class="section-spacing">
+                <h5>Chain {{$index + 1}}</h5>
+                <ol>
+                    <li ng-repeat="url in chain track by $index">{{url}}</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screenshot -->
+    <div class="panel panel-info" ng-if="content.indicator.screenshot && (content.indicator.screenshot.base64_data || content.indicator.screenshot.blob_uri)">
+        <div class="panel-heading">
+            <strong>Screenshot</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>Format</dt>
+                <dd>{{content.indicator.screenshot.format}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Dimensions</dt>
+                <dd>{{content.indicator.screenshot.width}} x {{content.indicator.screenshot.height}}</dd>
+            </dl>
+            <div class="section-spacing">
+                <!-- Use base64 data if available, otherwise fall back to blob_uri -->
+                <img ng-if="content.indicator.screenshot.base64_data"
+                     ng-src="data:{{content.indicator.screenshot.mimetype}};base64,{{content.indicator.screenshot.base64_data}}"
+                     alt="Website Screenshot"
+                     style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px;" />
+                <img ng-if="!content.indicator.screenshot.base64_data && content.indicator.screenshot.blob_uri"
+                     ng-src="{{content.indicator.screenshot.blob_uri}}"
+                     alt="Website Screenshot"
+                     style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px;" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Favicon -->
+    <div class="panel panel-info" ng-if="content.indicator.favicon && (content.indicator.favicon.base64_data || content.indicator.favicon.blob_uri)">
+        <div class="panel-heading">
+            <strong>Favicon</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>Format</dt>
+                <dd>{{content.indicator.favicon.format}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.favicon.url">
+                <dt>Source URL</dt>
+                <dd>{{content.indicator.favicon.url}}</dd>
+            </dl>
+            <div class="section-spacing">
+                <!-- Use base64 data if available, otherwise fall back to blob_uri -->
+                <img ng-if="content.indicator.favicon.base64_data"
+                     ng-src="data:{{content.indicator.favicon.mimetype}};base64,{{content.indicator.favicon.base64_data}}"
+                     alt="Website Favicon"
+                     style="max-width: 144px; height: auto; border: 1px solid #ddd;" />
+                <img ng-if="!content.indicator.favicon.base64_data && content.indicator.favicon.blob_uri"
+                     ng-src="{{content.indicator.favicon.blob_uri}}"
+                     alt="Website Favicon"
+                     style="max-width: 144px; height: auto; border: 1px solid #ddd;" />
+            </div>
+        </div>
+    </div>
+
+    <!-- DOM Information -->
+    <div class="panel panel-info" ng-if="content.indicator.dom">
+        <div class="panel-heading">
+            <strong>DOM Information</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal" ng-if="content.indicator.dom.forms">
+                <dt>Forms Count</dt>
+                <dd>{{content.indicator.dom.forms.length}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.dom.iframes">
+                <dt>IFrames Count</dt>
+                <dd>{{content.indicator.dom.iframes.length}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.dom.scripts">
+                <dt>Scripts Count</dt>
+                <dd>{{content.indicator.dom.scripts.length}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.dom.links">
+                <dt>Links Count</dt>
+                <dd>{{content.indicator.dom.links.length}}</dd>
+            </dl>
+        </div>
+    </div>
+
+    <!-- WHOIS Information -->
+    <div class="panel panel-info" ng-if="content.indicator.scan_whois">
+        <div class="panel-heading">
+            <strong>WHOIS Information</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal" ng-if="content.indicator.scan_whois.registrar">
+                <dt>Registrar</dt>
+                <dd>{{content.indicator.scan_whois.registrar}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.scan_whois.creation_date">
+                <dt>Creation Date</dt>
+                <dd>{{content.indicator.scan_whois.creation_date}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.scan_whois.expiration_date">
+                <dt>Expiration Date</dt>
+                <dd>{{content.indicator.scan_whois.expiration_date}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.scan_whois.name_servers">
+                <dt>Name Servers</dt>
+                <dd>
+                    <ul>
+                        <li ng-repeat="ns in content.indicator.scan_whois.name_servers track by $index">{{ns}}</li>
+                    </ul>
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <!-- Scan Metadata -->
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong>Scan Metadata</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>Scan ID</dt>
+                <dd>{{content.indicator.scan.id}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Origin</dt>
+                <dd>{{content.indicator.scan.origin}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Scanned From</dt>
+                <dd>{{content.indicator.scan.scanned_from}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>User Agent</dt>
+                <dd style="word-break: break-all;">{{content.indicator.scan.user_agent}}</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Resolution</dt>
+                <dd>{{content.indicator.scan.width}} x {{content.indicator.scan.height}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.indicator.scan.waiting_time">
+                <dt>Waiting Time</dt>
+                <dd>{{content.indicator.scan.waiting_time}}s</dd>
+            </dl>
+        </div>
+    </div>
+
+    </div><!-- End Results Container -->
+</div><!-- End report-urlDNA -->
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>Error</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

@@ -1,0 +1,243 @@
+<div class="report-urlDNA-search" ng-if="success">
+    <style>
+        .report-urlDNA-search dl {
+            margin-bottom: 2px;
+        }
+        .report-urlDNA-search .result-count {
+            font-size: 16px;
+            font-weight: bold;
+            color: #31708f;
+        }
+        .report-urlDNA-search .clickable-row {
+            cursor: pointer;
+        }
+        .report-urlDNA-search .clickable-row:hover {
+            background-color: #f5f5f5;
+        }
+        .report-urlDNA-search .scan-id {
+            font-family: monospace;
+            font-size: 11px;
+            color: #666;
+        }
+    </style>
+
+    <!-- No Results Found -->
+    <div class="panel panel-warning" ng-if="!content.indicator || content.indicator.length === 0">
+        <div class="panel-heading">
+            <strong>No Results Found</strong>
+        </div>
+        <div class="panel-body">
+            <p>No search results were found for the queried URL.</p>
+            <dl class="dl-horizontal" ng-if="content.query">
+                <dt>Query</dt>
+                <dd>{{content.query}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.service">
+                <dt>Service</dt>
+                <dd>{{content.service}}</dd>
+            </dl>
+            <p class="text-muted" style="margin-top: 15px;">
+                This URL has not been previously scanned in the urlDNA.io database.
+            </p>
+        </div>
+    </div>
+
+    <!-- Search Results -->
+    <div ng-if="content.indicator && content.indicator.length > 0">
+        <!-- Search Summary -->
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <strong>Search Results</strong>
+            </div>
+            <div class="panel-body">
+                <dl class="dl-horizontal">
+                    <dt>Query</dt>
+                    <dd style="word-break: break-all;">{{content.query}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Results Found</dt>
+                    <dd>
+                        <span class="result-count">{{content.indicator.length}}</span>
+                        <span ng-if="content.indicator.length === 1"> scan</span>
+                        <span ng-if="content.indicator.length !== 1"> scans</span>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+        <!-- Results Table -->
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <strong>Scan History</strong>
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Scan Date</th>
+                            <th>Domain</th>
+                            <th>Status</th>
+                            <th>Device</th>
+                            <th>Protocol</th>
+                            <th>Origin</th>
+                            <th>Scan ID</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="scan in content.indicator track by $index">
+                            <td>{{scan.submitted_date | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                            <td>{{scan.domain}}</td>
+                            <td>
+                                <span class="label"
+                                      ng-class="{'label-success': scan.status === 'DONE',
+                                                 'label-warning': scan.status === 'PENDING' || scan.status === 'RUNNING',
+                                                 'label-danger': scan.status === 'ERROR'}">
+                                    {{scan.status}}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="label label-default">{{scan.device}}</span>
+                            </td>
+                            <td>{{scan.protocol}}</td>
+                            <td>{{scan.origin}}</td>
+                            <td>
+                                <span class="scan-id" title="{{scan.id}}">
+                                    {{scan.id}}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="https://urldna.io/scan/{{scan.id}}" target="_blank" class="btn btn-xs btn-primary">
+                                    <i class="glyphicon glyphicon-eye-open"></i> View Full Scan
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="alert alert-info" style="margin-top: 10px;">
+                    <i class="glyphicon glyphicon-info-sign"></i>
+                    <strong>Tip:</strong> Click "View Full Scan" to see complete details including screenshots, certificates, technologies, and more on urlDNA.io.
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Information for First Result -->
+        <div class="panel panel-info" ng-if="content.indicator[0]">
+            <div class="panel-heading">
+                <strong>Latest Scan Details</strong>
+                <a href="https://urldna.io/scan/{{content.indicator[0].id}}" target="_blank" class="btn btn-xs btn-primary pull-right" style="margin-top: -2px;">
+                    <i class="glyphicon glyphicon-eye-open"></i> View Full Scan on urlDNA.io
+                </a>
+            </div>
+            <div class="panel-body">
+                <dl class="dl-horizontal">
+                    <dt>Scan ID</dt>
+                    <dd class="scan-id">{{content.indicator[0].id}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Submitted URL</dt>
+                    <dd style="word-break: break-all;">{{content.indicator[0].submitted_url}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Target URL</dt>
+                    <dd style="word-break: break-all;">{{content.indicator[0].target_url}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Domain</dt>
+                    <dd>{{content.indicator[0].domain}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Status</dt>
+                    <dd>
+                        <span class="label"
+                              ng-class="{'label-success': content.indicator[0].status === 'DONE',
+                                         'label-warning': content.indicator[0].status === 'PENDING' || content.indicator[0].status === 'RUNNING',
+                                         'label-danger': content.indicator[0].status === 'ERROR'}">
+                            {{content.indicator[0].status}}
+                        </span>
+                    </dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Submitted Date</dt>
+                    <dd>{{content.indicator[0].submitted_date}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Device</dt>
+                    <dd>{{content.indicator[0].device}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Protocol</dt>
+                    <dd>{{content.indicator[0].protocol}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Resolution</dt>
+                    <dd>{{content.indicator[0].width}} x {{content.indicator[0].height}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>User Agent</dt>
+                    <dd style="word-break: break-all;">{{content.indicator[0].user_agent}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Origin</dt>
+                    <dd>{{content.indicator[0].origin}}</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Scanned From</dt>
+                    <dd>{{content.indicator[0].scanned_from}}</dd>
+                </dl>
+                <dl class="dl-horizontal" ng-if="content.indicator[0].waiting_time">
+                    <dt>Waiting Time</dt>
+                    <dd>{{content.indicator[0].waiting_time}}s</dd>
+                </dl>
+                <dl class="dl-horizontal" ng-if="content.indicator[0].private_scan !== undefined">
+                    <dt>Private Scan</dt>
+                    <dd>
+                        <span class="label"
+                              ng-class="{'label-warning': content.indicator[0].private_scan,
+                                         'label-default': !content.indicator[0].private_scan}">
+                            {{content.indicator[0].private_scan ? 'Yes' : 'No'}}
+                        </span>
+                    </dd>
+                </dl>
+                <dl class="dl-horizontal" ng-if="content.indicator[0].nsfw !== undefined">
+                    <dt>NSFW</dt>
+                    <dd>
+                        <span class="label"
+                              ng-class="{'label-danger': content.indicator[0].nsfw,
+                                         'label-success': !content.indicator[0].nsfw}">
+                            {{content.indicator[0].nsfw ? 'Yes' : 'No'}}
+                        </span>
+                    </dd>
+                </dl>
+                <dl class="dl-horizontal" ng-if="content.indicator[0].error_code">
+                    <dt>Error Code</dt>
+                    <dd>
+                        <span class="label label-danger">{{content.indicator[0].error_code}}</span>
+                    </dd>
+                </dl>
+                <dl class="dl-horizontal" ng-if="content.indicator[0].http_referer">
+                    <dt>HTTP Referer</dt>
+                    <dd>{{content.indicator[0].http_referer}}</dd>
+                </dl>
+                <dl class="dl-horizontal" ng-if="content.indicator[0].submitter_tags && content.indicator[0].submitter_tags.length > 0">
+                    <dt>Tags</dt>
+                    <dd>
+                        <span class="label label-info" ng-repeat="tag in content.indicator[0].submitter_tags" style="margin-right: 5px;">
+                            {{tag}}
+                        </span>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>Error</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
