@@ -10,7 +10,7 @@ class UrlDNAAnalyzer(Analyzer):
         """
         Initializes the analyzer with configuration parameters.
         """
-        super().__init__()
+        Analyzer.__init__(self)
         self.service = self.get_param('config.service', None, 'Service parameter is missing')
         self.api_key = self.get_param('config.key', None, 'Missing UrlDNA API key')
         self.device = self.get_param('config.device')
@@ -34,10 +34,8 @@ class UrlDNAAnalyzer(Analyzer):
                                    self.viewport_height, self.waiting_time, self.private_scan, self.scanned_from)
         except UrlDNAException as exc:
             self.error(f"Error during urlDNA scan: {exc}")
-            raise
         except Exception as exc:
             self.error(f"Unexpected error: {exc}")
-            raise
 
     def search(self, query):
         """
@@ -51,10 +49,8 @@ class UrlDNAAnalyzer(Analyzer):
             return urldna.search(self.api_key)
         except UrlDNAException as exc:
             self.error(f"Error during search: {exc}")
-            raise
         except Exception as exc:
             self.error(f"Unexpected error: {exc}")
-            raise
 
     def run(self):
         """
@@ -76,7 +72,6 @@ class UrlDNAAnalyzer(Analyzer):
                 })
             except Exception as exc:
                 self.error(f"Run failed: {exc}")
-                raise
         elif self.service == 'search':
             query = self.get_data()
             try:
@@ -89,7 +84,6 @@ class UrlDNAAnalyzer(Analyzer):
                 })
             except Exception as exc:
                 self.error(f"Run failed: {exc}")
-                raise
         else:
             self.error('Invalid service or unsupported data type.')
             raise ValueError('Unsupported service or data type.')

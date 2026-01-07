@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import requests
 import time
+import base64
 
 
 class UrlDNAException(Exception):
@@ -143,9 +144,48 @@ class UrlDNA:
 
             status = result.get("scan", {}).get("status")
             if status not in ["RUNNING", "PENDING"]:
+                # Convert screenshot and favicon to base64
+                self._convert_images_to_base64(result)
                 return result
 
         raise UrlDNAException("Polling timed out before the scan completed.")
+
+    def _convert_images_to_base64(self, result):
+        """
+        Downloads images from blob_uri and converts them to base64.
+
+        :param result: The scan result dictionary to modify in-place.
+        """
+        # Convert screenshot to base64
+        screenshot = result.get("screenshot")
+        if screenshot and screenshot.get("blob_uri"):
+            try:
+                img_data = self._download_image(screenshot["blob_uri"])
+                screenshot["base64_data"] = img_data
+            except Exception as e:
+                # If download fails, just log and continue without base64 data
+                print(f"Failed to download screenshot: {e}")
+
+        # Convert favicon to base64
+        favicon = result.get("favicon")
+        if favicon and favicon.get("blob_uri"):
+            try:
+                img_data = self._download_image(favicon["blob_uri"])
+                favicon["base64_data"] = img_data
+            except Exception as e:
+                # If download fails, just log and continue without base64 data
+                print(f"Failed to download favicon: {e}")
+
+    def _download_image(self, url):
+        """
+        Downloads an image from a URL and returns it as base64.
+
+        :param url: The URL of the image to download.
+        :return: Base64-encoded image data.
+        """
+        response = requests.get(url, timeout=30)
+        response.raise_for_status()
+        return base64.b64encode(response.content).decode('utf-8')
 
     def _init_session(self, api_key):
         """
