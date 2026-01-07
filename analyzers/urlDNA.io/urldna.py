@@ -107,10 +107,13 @@ class UrlDNA:
                 "(KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"),
             "width": viewport_width or 1920,
             "height": viewport_height or 1080,
-            "scanned_from": scanned_from,
             "waiting_time": waiting_time or 5,
-            "private_scan": private_scan,
+            "private_scan": private_scan if private_scan is not None else False,
         }
+
+        # Only include scanned_from if explicitly set (requires Premium API plan)
+        if scanned_from:
+            data["scanned_from"] = scanned_from
 
         response = self.session.post(f"{self.BASE_URL}/scan", json=data)
         response.raise_for_status()
@@ -154,6 +157,6 @@ class UrlDNA:
             self.session = requests.Session()
             self.session.headers.update({
                 "Content-Type": "application/json",
-                "User-Agent": "Cortex",
+                "User-Agent": "strangebee-thehive",
                 "Authorization": api_key
             })
