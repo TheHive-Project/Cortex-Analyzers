@@ -1,0 +1,27 @@
+{
+  "name": "UrlDNA_Search",
+  "author": "urlDNA.io (@urldna); Fabien Bloume, StrangeBee",
+  "license": "MIT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "version": "0.1.0",
+  "description": "Perform a search on urlDNA.io for IPs, domains or URLs",
+  "dataTypeList": ["ip", "domain", "url"],
+  "command": "urlDNA.io/urldna_analyzer.py",
+  "baseConfig": "UrlDNA",
+  "config": {
+    "service":"search"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "UrlDNA API Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://urldna.io"
+}

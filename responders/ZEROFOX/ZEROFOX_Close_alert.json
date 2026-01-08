@@ -1,12 +1,12 @@
 {
-  "name": "ZEROFOX_Takedown_request",
+  "name": "ZEROFOX_Close_alert",
   "version": "1.0",
   "author": "TheHive-Project",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Request for a takedown regarding the alert in Zerofox",
+  "description": "Close alert in Zerofox",
   "dataTypeList": ["thehive:case"],
-  "command": "ZEROFOX_Takedown_request/ZEROFOX_Takedown_request.py",
+  "command": "ZEROFOX/ZEROFOX_close_alert.py",
   "baseConfig": "ZEROFOX",
   "configurationItems": [
     {

@@ -1,0 +1,77 @@
+{
+  "name": "UrlDNA_New_Scan",
+  "author": "urlDNA.io (@urldna); Fabien Bloume, StrangeBee",
+  "license": "MIT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "version": "0.1.0",
+  "description": "Perform a new scan on urlDNA.io",
+  "dataTypeList": ["url"],
+  "command": "urlDNA.io/urldna_analyzer.py",
+  "baseConfig": "UrlDNA",
+  "config": {
+    "service":"new_scan"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "UrlDNA API Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+	{
+      "name": "private_scan",
+      "description": "The visibility setting for the new scan: False will make it publicly visible and searchable",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+	{
+      "name": "device",
+      "description": "The device type used for scraping, either DESKTOP or MOBILE. Ensure that the selected Device, User Agent, and Viewport settings are consistent to maintain coherence",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+	{
+      "name": "user_agent",
+      "description": "The browser User Agent used for the scan. Ensure that the selected Device, User Agent, and Viewport settings are consistent to maintain coherence",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+	{
+      "name": "viewport_width",
+      "description": "The screen width of the viewport used for the scan. Ensure that the selected Device, User Agent, and Viewport settings are consistent to maintain coherence",
+      "type": "number",
+      "multi": false,
+      "required": false
+    },
+	{
+      "name": "viewport_height",
+      "description": "The screen height of the viewport used for the scan. Ensure that the selected Device, User Agent, and Viewport settings are consistent to maintain coherence",
+      "type": "number",
+      "multi": false,
+      "required": false
+    },
+	{
+      "name": "scanned_from",
+      "description": "Specifies the country from which the new scan is performed. This feature is available exclusively with the API Premium plan.",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+	{
+      "name": "waiting_time",
+      "description": "The waiting time for the page to load during the scan. It can be a number between 5 and 15 seconds",
+      "type": "number",
+      "multi": false,
+      "required": false
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://urldna.io"
+}
