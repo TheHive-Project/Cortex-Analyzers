@@ -1,5 +1,24 @@
 # Changelog
 
+## [3.7.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.1) (2026-01-08)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.0...3.7.1)
+
+**Closed issues:**
+
+- \[FR\] New Analyzer urlDNA.io [\#1303](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1303)
+
+## [3.7.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.0) (2026-01-05)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.9...3.7.0)
+
+**Merged pull requests:**
+
+- Rename okta folder to correct vendor name [\#1404](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1404) ([nusantara-self](https://github.com/nusantara-self))
+- CI - support build for more than 256 analyzers [\#1406](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1406) ([nusantara-self](https://github.com/nusantara-self))
+- Folder/vendor structure & subscription/homepage info improvements [\#1405](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1405) ([nusantara-self](https://github.com/nusantara-self))
+- Add CrowdStrike Falcon Threat Intelligence analyzer [\#1397](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1397) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.6.9](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.6.9) (2026-01-02)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.8...3.6.9)
