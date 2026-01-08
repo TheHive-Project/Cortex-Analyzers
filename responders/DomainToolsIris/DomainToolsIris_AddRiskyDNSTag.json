@@ -6,7 +6,7 @@
   "license": "AGPL-V3",
   "description": "Add Tag saying that the case contains a risky DNS.",
   "dataTypeList": ["thehive:case_artifact"],
-  "command": "DomainToolsIris_AddRiskyDNSTag/domaintoolsiris_responder.py",
+  "command": "DomainToolsIris/DomainToolsIris_add_risky_dns_tag.py",
   "baseConfig": "DomainToolsIris",
   "configurationItems": [
     {
