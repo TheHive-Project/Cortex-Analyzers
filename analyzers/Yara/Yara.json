@@ -42,5 +42,6 @@
   "registration_required": false,
   "subscription_required": false,
   "free_subscription": true,
+  "integration_type": "local",
   "service_homepage": "https://virustotal.github.io/yara/"
 }

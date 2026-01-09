@@ -7,5 +7,6 @@
   "description": "Extracts data from one or more QR codes.",
   "dataTypeList": ["file"],
   "command": "QrDecode/qrdecode.py",
-  "baseConfig": "QrDecode"
+  "baseConfig": "QrDecode",
+  "integration_type": "local"
 }

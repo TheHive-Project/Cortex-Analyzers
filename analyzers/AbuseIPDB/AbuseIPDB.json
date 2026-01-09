@@ -33,6 +33,7 @@
     "registration_required": true,
     "subscription_required": true,
     "free_subscription": true,
+    "integration_type": "external_api",
     "service_homepage": "https://www.abuseipdb.com/",
     "service_logo": {
         "path": "assets/abuseipdb.png",
