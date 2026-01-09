@@ -7,7 +7,7 @@
   "description": "Use Clamscan with custom rules",
   "dataTypeList": ["file"],
   "command": "ClamAV/pyclam_analyzer.py",
-  "baseConfig": "ClamAV"
-  
+  "baseConfig": "ClamAV",
+  "integration_type": "local"
 }
 

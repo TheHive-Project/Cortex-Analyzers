@@ -65,5 +65,6 @@
       "multi": false,
       "default": 4
     }
-  ]
+  ],
+  "integration_type": "local"
 }
