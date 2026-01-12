@@ -7,5 +7,6 @@
   "description": "Parse Outlook MSG files and extract the main artifacts.",
   "dataTypeList": ["file"],
   "baseConfig": "MsgParser",
-  "command": "MsgParser/parse.py"
+  "command": "MsgParser/parse.py",
+  "integration_type": "local"
 }

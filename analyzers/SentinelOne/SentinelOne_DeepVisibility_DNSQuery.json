@@ -44,5 +44,8 @@
             "multi": false,
             "required": false
         }
-    ]
+    ],
+    "subscription_required": true,
+    "registration_required": true,
+    "free_subscription": false
 }
