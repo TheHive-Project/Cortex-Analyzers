@@ -35,6 +35,7 @@
     ],
     "registration_required": false,
     "subscription_required": false,
+    "integration_type": "local",
     "service_homepage": "https://www.strangebee.com",
     "service_logo": {
         "path": "assets/sb-logo.jpg",

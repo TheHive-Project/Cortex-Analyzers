@@ -75,6 +75,7 @@
           <tr>
             <th>IP</th>
             <th>Cluster</th>
+            <th>Label</th>
             <th>Confidence</th>
             <th>Uncertainty</th>
             <th>Model Variance</th>
@@ -92,12 +93,16 @@
                     }">{{ p.cluster }}</span>
               <div class="kh-subtle" ng-if="p.cluster_description"><em>{{ p.cluster_description }}</em></div>
             </td>
+            <td>
+              <span ng-if="p.label">{{ p.label }}</span>
+              <span ng-if="!p.label" class="kh-subtle">-</span>
+            </td>
             <td>{{ p.confidence | number:3 }}</td>
             <td>{{ p.uncertainty | number:3 }}</td>
             <td>{{ p.model_variance | number:4 }}</td>
           </tr>
           <tr ng-repeat-end ng-if="p.cluster_indicators">
-            <td colspan="5" class="kh-subtle" style="background:#f9f9f9">
+            <td colspan="6" class="kh-subtle" style="background:#f9f9f9">
               <strong>Indicators:</strong> {{ p.cluster_indicators }}
             </td>
           </tr>
