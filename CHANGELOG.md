@@ -8,6 +8,11 @@
 
 - \[FR\] New Analyzer urlDNA.io [\#1303](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1303)
 
+**Merged pull requests:**
+
+- More vendors rename [\#1407](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1407) ([nusantara-self](https://github.com/nusantara-self))
+- feature: add urlDNA.io analyzers [\#1304](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1304) ([redaelli](https://github.com/redaelli))
+
 ## [3.7.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.0) (2026-01-05)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.6.9...3.7.0)
