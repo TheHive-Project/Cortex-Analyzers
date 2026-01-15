@@ -1,0 +1,47 @@
+{
+    "name": "AbuseIPDB_Report",
+    "version": "1.0",
+    "author": "Fabien Bloume, StrangeBee",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Report an IP address to AbuseIPDB for abuse tracking and community sharing",
+    "dataTypeList": ["thehive:case_artifact"],
+    "command": "AbuseIPDB/abuseipdb_responder.py",
+    "baseConfig": "AbuseIPDB",
+    "config": {
+        "service": "report"
+    },
+    "configurationItems": [
+        {
+            "name": "key",
+            "description": "API key for AbuseIPDB",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "categories",
+            "description": "Comma-separated list of category IDs (e.g., '18,22' for Brute Force and SSH). See https://www.abuseipdb.com/categories for full list",
+            "type": "string",
+            "multi": false,
+            "required": true,
+            "defaultValue": "18"
+        },
+        {
+            "name": "comment",
+            "description": "Optional comment describing the abuse (max 1024 characters)",
+            "type": "string",
+            "multi": false,
+            "required": false
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": true,
+    "integration_type": "external_api",
+    "service_homepage": "https://www.abuseipdb.com/",
+    "service_logo": {
+        "path": "assets/abuseipdb.png",
+        "caption": "AbuseIPDB logo"
+    }
+}
