@@ -172,7 +172,7 @@ class AbuseIPDBAnalyzer(Analyzer):
         if "abuseConfidenceScore" in data:
             score = int(data.get("abuseConfidenceScore") or 0)
             level = (
-                "malicious" if score >= 80 else ("suspicious" if score > 0 else "safe")
+                "malicious" if score >= 75 else ("suspicious" if score > 0 else "safe")
             )
             taxonomies.append(
                 self.build_taxonomy(level, "AbuseIPDB", "Abuse Confidence Score", score)
