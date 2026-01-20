@@ -59,6 +59,7 @@ class AbuseIPDBAnalyzer(Analyzer):
                     "Accept": "application/json",
                     "Content-Type": "application/x-www-form-urlencoded",
                     "Key": "%s" % api_key,
+                    "User-Agent": "strangebee-thehive/1.0",
                 }
                 params = {
                     "maxAgeInDays": days_to_check,

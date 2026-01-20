@@ -96,6 +96,7 @@ class AbuseIPDBResponder(Responder):
         headers = {
             "Accept": "application/json",
             "Key": self.api_key,
+            "User-Agent": "strangebee-thehive/1.0",
         }
         payload = {
             "ip": ip_address,
