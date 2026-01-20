@@ -4,7 +4,7 @@
     "author": "Fabien Bloume, StrangeBee",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "description": "Report an IP address to AbuseIPDB for abuse tracking and community sharing",
+    "description": "Report an IP address to AbuseIPDB for abuse tracking and community sharin. Please, make sure to use the correct category in your Cortex responder configuration.",
     "dataTypeList": ["thehive:case_artifact"],
     "command": "AbuseIPDB/abuseipdb_responder.py",
     "baseConfig": "AbuseIPDB",
@@ -21,11 +21,11 @@
         },
         {
             "name": "categories",
-            "description": "Comma-separated list of category IDs (e.g., '18,22' for Brute Force and SSH). See https://www.abuseipdb.com/categories for full list",
+            "description": "Select one or more abuse categories: DNS Compromise, DNS Poisoning, Fraud Orders, DDoS Attack, FTP Brute-Force, Ping of Death, Phishing, Fraud VoIP, Open Proxy, Web Spam, Email Spam, Blog Spam, VPN IP, Port Scan, Hacking, SQL Injection, Spoofing, Brute Force, Bad Web Bot, Exploited Host, Web App Attack, SSH, IoT Targeted",
             "type": "string",
-            "multi": false,
+            "multi": true,
             "required": true,
-            "defaultValue": "18"
+            "defaultValue": ["Brute Force"]
         },
         {
             "name": "comment",
