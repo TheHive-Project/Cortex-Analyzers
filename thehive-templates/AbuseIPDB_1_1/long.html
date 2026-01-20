@@ -9,6 +9,7 @@
                     'fa-check-circle': content.values[0].data.abuseConfidenceScore < 1}"></i>
 			AbuseIPDB Verdict:
 			<strong>{{content.values[0].data.ipAddress}}</strong>
+			<a ng-href="https://www.abuseipdb.com/check/{{content.values[0].data.ipAddress}}" target="_blank" title="View on AbuseIPDB" style="margin-left:6px;"><i class="fa fa-external-link"></i></a>
 
 			<span class="pull-right">
 				<!-- compact context badges, subtle but handy -->
