@@ -4,7 +4,7 @@
     "author": "Fabien Bloume, StrangeBee",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "description": "Report an IP address to AbuseIPDB for abuse tracking and community sharin. Please, make sure to use the correct category in your Cortex responder configuration.",
+    "description": "Report an IP address to AbuseIPDB for abuse tracking and community sharing. Please, make sure to use the correct category in your Cortex responder configuration.",
     "dataTypeList": ["thehive:case_artifact"],
     "command": "AbuseIPDB/abuseipdb_responder.py",
     "baseConfig": "AbuseIPDB",
@@ -25,7 +25,7 @@
             "type": "string",
             "multi": true,
             "required": true,
-            "defaultValue": ["Brute Force"]
+            "defaultValue": ["Hacking"]
         },
         {
             "name": "comment",
