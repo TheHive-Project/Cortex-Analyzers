@@ -36,7 +36,7 @@ class Minemeld(Responder):
                    ipaddress.IPv6Address(self.observable)
                    indicator_type= "IPv6"
                except ValueError:
-                   self.error({'message': "Not a valid IPv4/IPv6 address!"})
+                   self.error("Not a valid IPv4/IPv6 address!")
        elif self.observable_type == "url":
          indicator_type = "URL"
        elif self.observable_type == "domain":
@@ -63,7 +63,7 @@ class Minemeld(Responder):
            r = requests.post(str(self.minemeld_url) + '/config/data/' + str(self.minemeld_indicator_list) + '_indicators' + '/append?h=' + str(self.minemeld_indicator_list) + '&t=localdb',data=json.dumps(payload),headers=headers,auth=auth,verify=False)
            self.report({'message': "Indicator " + self.observable + " submitted to Minemeld."  })
        except:
-           self.error({'message': r.text })
+           self.error(r.text)
    
    def operations(self, raw):
       return [self.build_operation('AddTagToCase', tag='Minemeld:Indicator Added')] 

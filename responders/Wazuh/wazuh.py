@@ -24,9 +24,9 @@ class Wazuh(Responder):
            try:
                ipaddress.ip_address(self.observable)
            except ValueError:
-               self.error({'message': "Not a valid IPv4/IPv6 address!"})
+               self.error("Not a valid IPv4/IPv6 address!")
        else: 
-           self.error({'message': "Not a valid IPv4/IPv6 address!"})
+           self.error("Not a valid IPv4/IPv6 address!")
        payload = '{"command":"firewall-drop.sh", "arguments": ["-", "' +  self.observable + '", "' + self.wazuh_alert_id + '", "' + self.wazuh_rule_id + '", "' + self.wazuh_agent_id + '", "var/log/test.log"], "custom": "True"}'
        r = requests.put(self.wazuh_manager + '/active-response/' + self.wazuh_agent_id, headers=headers, data=payload, verify=False, auth=auth)
        if r.status_code == 200:
