@@ -1,5 +1,22 @@
 # Changelog
 
+## [3.7.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.3) (2026-01-21)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.2...3.7.3)
+
+**Closed issues:**
+
+- \[FR\] Clusterhawk template enhancement [\#1410](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1410)
+
+## [3.7.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.2) (2026-01-13)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.1...3.7.2)
+
+**Merged pull requests:**
+
+- Clusterhawk template enhancement [\#1409](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1409) ([marvinuku](https://github.com/marvinuku))
+- Better context for analyzers & responders - integration type / subscription info [\#1408](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1408) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.7.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.1) (2026-01-08)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.0...3.7.1)
