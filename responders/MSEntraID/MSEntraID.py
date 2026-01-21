@@ -194,5 +194,19 @@ class MSEntraID(Responder):
         else:
             self.error({'message': "Unidentified service"})
 
+    def operations(self, raw):
+        # self.build_operation('AddTagToCase', tag='MSEntraIDResponder:run')
+        if self.service == "disableUser":
+            return [self.build_operation("AddTagToArtifact", tag="MSEntraID:disableUser")]
+        elif self.service == "enableUser":
+            return [self.build_operation("AddTagToArtifact", tag="MSEntraID:enableUser")]
+        elif self.service == "forcePasswordReset":
+            return [self.build_operation("AddTagToArtifact", tag="MSEntraID:forcePasswordReset")]
+        elif self.service == "forcePasswordResetWithMFA":
+            return [self.build_operation("AddTagToArtifact", tag="MSEntraID:forcePasswordResetWithMFA")]
+        elif self.service == "revokeSignInSessions":
+            return [self.build_operation("AddTagToArtifact", tag="MSEntraID:revokeSignInSessions")]
+
+
 if __name__ == '__main__':
     MSEntraID().run()
