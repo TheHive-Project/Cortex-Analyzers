@@ -1,0 +1,177 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+<div ng-if="success">
+<div class="panel panel-info">
+	<div class="panel-heading">
+		Summary
+	</div>
+	<div class="panel-body">
+
+		<dl class="dl-horizontal" ng-if="content.errortext">
+			<dt><i class="fa fa-warning"></i> ERROR: </dt>
+			<dd class="wrap">{{content.errortext}}&nbsp;</dd>
+		</dl>
+		
+		<dl class="dl-horizontal">
+			<dt>Domain: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.domainName| fang}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Organisation: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.registrant.organization}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Name Servers: </dt>
+			<dd class="wrap" ng-if="content.whoisxmlapi.WhoisRecord.nameServers.hostNames" ng-repeat="ns in content.whoisxmlapi.WhoisRecord.nameServers.hostNames">{{ns}}</dd>
+			<dd class="wrap" ng-if="content.whoisxmlapi.WhoisRecord.registryData.nameServers.hostNames && content.whoisxmlapi.WhoisRecord.nameServers.hostNames == undefined" ng-repeat="ns in content.whoisxmlapi.WhoisRecord.registryData.nameServers.hostNames">{{ns}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Updated Date: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.registryData.updatedDate || content.whoisxmlapi.WhoisRecord.registryData.audit.updatedDate}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Creation Date: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.registryData.createdDate || content.whoisxmlapi.WhoisRecord.registryData.audit.createdDate}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Expiration Date: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.registryData.expiresDate || content.whoisxmlapi.WhoisRecord.registryData.audit.expiresDate}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Registrar: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.registrarName || content.whoisxmlapi.WhoisRecord.registryData.registrarName}}</dd>
+		</dl>
+		
+	</div>
+</div>
+
+<div class="panel panel-info">
+	<div class="panel-heading">
+		Registrant Info
+	</div>
+	<div class="panel-body">
+		
+		<dl class="dl-horizontal">
+			<dt>Name: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.registrant.name || content.whoisxmlapi.WhoisRecord.registryData.registrant.name}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Email: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.registrant.email || content.whoisxmlapi.WhoisRecord.contactEmail}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Phone: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.registrant.telephone || content.whoisxmlapi.WhoisRecord.registryData.registrant.telephone}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Organisation: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.registrant.organization || content.whoisxmlapi.WhoisRecord.registryData.registrant.organization}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Address: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.registrant.street1 || content.whoisxmlapi.WhoisRecord.registryData.registrant.street1}}, {{content.whoisxmlapi.WhoisRecord.registrant.city || content.whoisxmlapi.WhoisRecord.registryData.registrant.city}}, {{content.whoisxmlapi.WhoisRecord.registrant.state || content.whoisxmlapi.WhoisRecord.registryData.registrant.state}}, {{content.whoisxmlapi.WhoisRecord.registrant.postalCode || content.whoisxmlapi.WhoisRecord.registryData.registrant.postalCode}}, {{content.whoisxmlapi.WhoisRecord.registrant.country || content.whoisxmlapi.WhoisRecord.registryData.registrant.country}}</dd>
+		</dl>
+		
+	</div>
+</div>
+
+<div class="panel panel-info">
+	<div class="panel-heading">
+		Registrar Info
+	</div>
+	<div class="panel-body">
+		
+		<dl class="dl-horizontal">
+			<dt>Registrar: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.registrarName}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>IANA ID: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.registrarIANAID}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>URL: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.registryData.referralURL}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Whois Server: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.registryData.whoisServer}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Email: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.customField1Value}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Phone: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.customField2Value}}</dd>
+		</dl>
+		
+	</div>
+</div>
+
+<div class="panel panel-info">
+	<div class="panel-heading">
+		Technical Contact
+	</div>
+	<div class="panel-body">
+		
+		<dl class="dl-horizontal">
+			<dt>Name: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.technicalContact.name || content.whoisxmlapi.WhoisRecord.registryData.technicalContact.name}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Email: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.technicalContact.email || content.whoisxmlapi.WhoisRecord.registryData.technicalContact.email}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Phone: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.technicalContact.telephone || content.whoisxmlapi.WhoisRecord.registryData.technicalContact.telephone}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Organisation: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.technicalContact.organization || content.whoisxmlapi.WhoisRecord.registryData.technicalContact.organization}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Address: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.technicalContact.street1 || content.whoisxmlapi.WhoisRecord.registryData.technicalContact.street1}}, {{content.whoisxmlapi.WhoisRecord.technicalContact.city || content.whoisxmlapi.WhoisRecord.registryData.technicalContact.city}}, {{content.whoisxmlapi.WhoisRecord.technicalContact.state || content.whoisxmlapi.WhoisRecord.registryData.technicalContact.state}}, {{content.whoisxmlapi.WhoisRecord.technicalContact.postalCode || content.whoisxmlapi.WhoisRecord.registryData.technicalContact.postalCode}}, {{content.whoisxmlapi.WhoisRecord.technicalContact.country || content.whoisxmlapi.WhoisRecord.registryData.technicalContact.country}}</dd>
+		</dl>
+		
+	</div>
+</div>
+<div class="panel panel-info">
+	<div class="panel-heading">
+		Administrative Contact
+	</div>
+	<div class="panel-body">
+		
+		<dl class="dl-horizontal">
+			<dt>Name: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.administrativeContact.name || content.whoisxmlapi.WhoisRecord.registryData.administrativeContact.name}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Email: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.administrativeContact.email || content.whoisxmlapi.WhoisRecord.registryData.administrativeContact.email}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Phone: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.administrativeContact.telephone || content.whoisxmlapi.WhoisRecord.registryData.administrativeContact.telephone}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Organisation: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.administrativeContact.organization || content.whoisxmlapi.WhoisRecord.registryData.administrativeContact.organization}}</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Address: </dt>
+			<dd class="wrap">{{content.whoisxmlapi.WhoisRecord.administrativeContact.street1 || content.whoisxmlapi.WhoisRecord.registryData.administrativeContact.street1}}, {{content.whoisxmlapi.WhoisRecord.administrativeContact.city || content.whoisxmlapi.WhoisRecord.registryData.administrativeContact.city}}, {{content.whoisxmlapi.WhoisRecord.administrativeContact.state || content.whoisxmlapi.WhoisRecord.registryData.administrativeContact.state}}, {{content.whoisxmlapi.WhoisRecord.administrativeContact.postalCode || content.whoisxmlapi.WhoisRecord.registryData.administrativeContact.postalCode}}, {{content.whoisxmlapi.WhoisRecord.administrativeContact.country || content.whoisxmlapi.WhoisRecord.registryData.administrativeContact.country}}</dd>
+		</dl>
+
+	</div>
+</div>
+</div>
