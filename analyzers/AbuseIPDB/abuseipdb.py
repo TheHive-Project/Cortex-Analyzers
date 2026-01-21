@@ -59,6 +59,7 @@ class AbuseIPDBAnalyzer(Analyzer):
                     "Accept": "application/json",
                     "Content-Type": "application/x-www-form-urlencoded",
                     "Key": "%s" % api_key,
+                    "User-Agent": "strangebee-thehive/1.0",
                 }
                 params = {
                     "maxAgeInDays": days_to_check,
@@ -172,7 +173,7 @@ class AbuseIPDBAnalyzer(Analyzer):
         if "abuseConfidenceScore" in data:
             score = int(data.get("abuseConfidenceScore") or 0)
             level = (
-                "malicious" if score >= 80 else ("suspicious" if score > 0 else "safe")
+                "malicious" if score >= 75 else ("suspicious" if score > 0 else "safe")
             )
             taxonomies.append(
                 self.build_taxonomy(level, "AbuseIPDB", "Abuse Confidence Score", score)
