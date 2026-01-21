@@ -1,0 +1,47 @@
+{
+    "name": "AbuseIPDB_Report",
+    "version": "1.0",
+    "author": "Fabien Bloume, StrangeBee",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Report an IP address to AbuseIPDB for abuse tracking and community sharing. Please, make sure to use the correct category in your Cortex responder configuration.",
+    "dataTypeList": ["thehive:case_artifact"],
+    "command": "AbuseIPDB/abuseipdb_responder.py",
+    "baseConfig": "AbuseIPDB",
+    "config": {
+        "service": "report"
+    },
+    "configurationItems": [
+        {
+            "name": "key",
+            "description": "API key for AbuseIPDB",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "categories",
+            "description": "Select one or more abuse categories: DNS Compromise, DNS Poisoning, Fraud Orders, DDoS Attack, FTP Brute-Force, Ping of Death, Phishing, Fraud VoIP, Open Proxy, Web Spam, Email Spam, Blog Spam, VPN IP, Port Scan, Hacking, SQL Injection, Spoofing, Brute Force, Bad Web Bot, Exploited Host, Web App Attack, SSH, IoT Targeted",
+            "type": "string",
+            "multi": true,
+            "required": true,
+            "defaultValue": ["Hacking"]
+        },
+        {
+            "name": "comment",
+            "description": "Optional comment describing the abuse (max 1024 characters)",
+            "type": "string",
+            "multi": false,
+            "required": false
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": true,
+    "integration_type": "external_api",
+    "service_homepage": "https://www.abuseipdb.com/",
+    "service_logo": {
+        "path": "assets/abuseipdb.png",
+        "caption": "AbuseIPDB logo"
+    }
+}
