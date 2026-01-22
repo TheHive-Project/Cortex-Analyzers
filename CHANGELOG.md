@@ -8,6 +8,10 @@
 
 - \[FR\] Clusterhawk template enhancement [\#1410](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1410)
 
+**Merged pull requests:**
+
+- AbuseIPDB - Report Responder & improvements [\#1411](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1411) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.7.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.2) (2026-01-13)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.1...3.7.2)
