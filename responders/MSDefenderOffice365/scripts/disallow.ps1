@@ -7,6 +7,8 @@ param (
     [string] $appId,
     [parameter(mandatory=$true)]
     [string] $organization,
+    [parameter(mandatory=$true)]
+    [string] $listType,
     [parameter(mandatory=$true, valueFromRemainingArguments=$true)]
     [string[]] $entries
 )
@@ -18,11 +20,12 @@ $connectSplat = @{
     Organization = $organization
 }
 
+Import-Module ExchangeOnlineManagement -ErrorAction SilentlyContinue -WarningAction SilentlyContinue | Out-Null
 Connect-ExchangeOnline @connectSplat
 
 $allResults = @()
 ForEach ($entry in $entries) {
-    $result = Remove-TenantAllowBlockListItems -ListType Sender -Entries $entry | ConvertTo-Json
+    $result = Remove-TenantAllowBlockListItems -ListType $listType -Entries $entry | ConvertTo-Json
     $allResults += @{
         entry = $entry;
         result = $result;

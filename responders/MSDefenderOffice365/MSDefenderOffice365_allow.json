@@ -1,7 +1,7 @@
 {
-  "name": "MSDefenderOffice365_unblock",
+  "name": "MSDefenderOffice365_allow",
   "version": "1.0",
-  "author": "Joe Lazaro",
+  "author": "Vito Piserchia",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Add entries to the Tenant Allow/Block List in the Microsoft 365 Defender",
@@ -11,7 +11,7 @@
   "command": "MSDefenderOffice365/ms_defender_office.py",
   "baseConfig": "MSDefenderOffice365",
   "config": {
-    "service": "unblock"
+    "service": "allow"
   },
   "registration_required": true,
   "subscription_required": true,
@@ -55,6 +55,14 @@
       "type": "string",
       "multi": false,
       "required": true
+    },
+    {
+      "name": "block_expiration_days",
+      "description": "How many days out should we set the expiration? A value <= 0 means to set no expiration.",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 0
     }
   ]
 }
