@@ -31,8 +31,31 @@ class Slack(Responder):
         self.thehive_base_url = self.get_param("config.thehive_base_url", None)
         self.thehive_apikey = self.get_param("config.thehive_apikey", None)
 
-    def find_existing_channel(self, name, headers):
-        url = "https://slack.com/api/conversations.list"
+    def get_channel_info(self, channel_id, headers):
+        """Direct lookup by channel ID"""
+        try:
+            url = "https://slack.com/api/conversations.info"
+            resp = requests.get(url, headers=headers, params={"channel": channel_id}).json()
+            if resp.get("ok"):
+                return resp.get("channel")
+        except Exception:
+            pass
+        return None
+
+    def find_existing_channel(self, name, headers, channel_ids=None):
+        """
+        Find channel by name. If channel_ids provided, tries direct lookup first.
+        Falls back to searching only channels the bot is a member of.
+        """
+        # Try direct lookup if we have IDs
+        if channel_ids:
+            for cid in channel_ids:
+                ch = self.get_channel_info(cid, headers)
+                if ch and ch.get("name") == name:
+                    return cid
+
+        # Fallback: search through bot's channels only (security + performance)
+        url = "https://slack.com/api/users.conversations"
         cursor = None
         while True:
             params = {
@@ -43,6 +66,8 @@ class Slack(Responder):
             if cursor:
                 params["cursor"] = cursor
             resp = requests.get(url, headers=headers, params=params).json()
+            if not resp.get("ok"):
+                break
             for ch in resp.get("channels", []):
                 if ch["name"] == name:
                     return ch["id"]
@@ -96,10 +121,7 @@ class Slack(Responder):
 
             # 2. create channel only after we have valid users
             channel_id = self.find_existing_channel(channel_name, headers)
-            if channel_id:
-                # Channel already exists, reuse it
-                pass
-            else:
+            if not channel_id:
                 create_url = "https://slack.com/api/conversations.create"
                 payload = {
                     "name": channel_name,
@@ -112,6 +134,8 @@ class Slack(Responder):
                         f"Slack channel creation failed: {create_data.get('error')}"
                     )
                 channel_id = create_data["channel"]["id"]
+
+            self.channel_id = channel_id
 
             # 3. invite users
             if user_ids:
@@ -192,13 +216,16 @@ class Slack(Responder):
         elif self.service == "syncchannel":
             case_id = self.get_param("data.caseId")
             case_unique_id = self.get_param("data.id")
-
-            # Collect all channel names from tags
-            channel_names = []
             case_tags = self.get_param("data.tags", [])
+
+            # Extract channel IDs and names from tags
+            channel_ids = []
+            channel_names = []
             for tag in case_tags:
-                if tag.startswith("slack:"):
-                    channel_names.append(tag[6:])  # Remove "slack:" prefix
+                if tag.startswith("slack-id:"):
+                    channel_ids.append(tag[9:])
+                elif tag.startswith("slack:"):
+                    channel_names.append(tag[6:])
 
             # Fallback to reconstructing channel name if no tags found
             if not channel_names:
@@ -207,8 +234,7 @@ class Slack(Responder):
                     .replace(".", "")
                     .replace(",", "")
                     .lower()
-                )
-                channel_name = channel_name[:80]
+                )[:80]
                 channel_names.append(channel_name)
 
             headers = {
@@ -222,8 +248,8 @@ class Slack(Responder):
 
             for channel_name in channel_names:
                 try:
-                    # Find the channel
-                    channel_id = self.find_existing_channel(channel_name, headers)
+                    # Find the channel (uses IDs for direct lookup if available)
+                    channel_id = self.find_existing_channel(channel_name, headers, channel_ids)
                     if not channel_id:
                         errors.append(f"Channel '{channel_name}' not found")
                         continue
@@ -731,15 +757,13 @@ class Slack(Responder):
                 self.error(f"Failed to create task: {str(e)}")
                 
     def operations(self, raw):
-        artifacts = []
-        # AddTagToArtifact ({ "type": "AddTagToArtifact", "tag": "tag to add" }): add a tag to the artifact related to the object
-        # AddTagToCase ({ "type": "AddTagToCase", "tag": "tag to add" }): add a tag to the case related to the object
-        # MarkAlertAsRead: mark the alert related to the object as read
-        # AddCustomFields ({"name": "key", "value": "value", "tpe": "type"): add a custom field to the case related to the object
+        ops = []
         if self.service == "createchannel":
             if hasattr(self, 'channel_name'):
-                artifacts.append(self.build_operation("AddTagToCase", tag=f"slack:{self.channel_name}"))
-        return artifacts
+                ops.append(self.build_operation("AddTagToCase", tag=f"slack:{self.channel_name}"))
+            if hasattr(self, 'channel_id'):
+                ops.append(self.build_operation("AddTagToCase", tag=f"slack-id:{self.channel_id}"))
+        return ops
 
 
 if __name__ == "__main__":
