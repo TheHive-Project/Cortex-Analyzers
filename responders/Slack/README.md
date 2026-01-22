@@ -16,7 +16,7 @@ This directory contains two Slack responders for TheHive integration:
 - Invites default participants by email
 - Sets channel visibility (private or public)
 - Posts case summary and/or case description (optional)
-- **Automatically tags the case** with `slack:<channel_name>` for easy tracking
+- **Automatically tags the case** with `slack:<channel_name>` and `slack-id:<channel_id>` for fast lookups
 
 ### Slack_SyncChannel
 - **Syncs all Slack channels tagged with `slack:` prefix** on the case
@@ -89,10 +89,19 @@ Log into your Cortex instance, go to Organization > Responders and enable the de
 ## Privacy & Security Considerations
 
 ### Channel Tagging
-When `Slack_CreateChannel` runs, it automatically adds a `slack:<channel_name>` tag to the case. This tag:
-- Makes it easy to identify which Slack channel(s) are associated with a case
-- Enables `Slack_SyncChannel` to reliably find channels without reconstructing names
-- Can be manually added to sync additional channels (see warning below)
+When `Slack_CreateChannel` runs, it automatically adds two tags to the case:
+- `slack:<channel_name>` - Human-readable channel name
+- `slack-id:<channel_id>` - Channel ID for fast direct lookups
+
+This enables `Slack_SyncChannel` to find channels instantly without searching through all workspace channels.
+
+### Syncing Existing Channels
+To sync a channel that wasn't created via `Slack_CreateChannel`:
+1. Invite the Slack bot to the channel
+2. Add `slack:<channel-name>` tag to the case
+3. (Optional) Add `slack-id:<channel-id>` for faster lookups
+   - Get the ID: right-click channel in Slack → "View channel details" → ID at bottom
+4. Run `Slack_SyncChannel`
 
 ### Multi-Channel Syncing
 `Slack_SyncChannel` will sync **all** channels that have `slack:` tags on the case:
@@ -100,8 +109,8 @@ When `Slack_CreateChannel` runs, it automatically adds a `slack:<channel_name>` 
 - Partial failures are handled gracefully (some channels may sync, others may fail)
 - Failed channels are reported in the responder output
 
-### Access Control Warning ⚠️
-- The bot can only read channels it has been **invited to**
+### Access Control
+- The bot only searches channels it's a **member of** (security + performance)
+- Channels created via `Slack_CreateChannel` automatically include the bot
 - Syncing brings Slack conversations into TheHive: ensure case permissions align with channel access
 - Private Slack channels synced to non-private TheHive cases may expose sensitive information
-- Consider your organization's data governance policies before syncing channels
