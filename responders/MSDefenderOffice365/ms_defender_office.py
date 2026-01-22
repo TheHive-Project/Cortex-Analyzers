@@ -68,8 +68,8 @@ ACTIONS = {
     'url': ['allow', 'block', 'disallow', 'unblock'],
     'domain': ['block', 'disallow', 'unblock'],
     'fqdn': ['block', 'disallow', 'unblock'],
-    'mail': ['block', 'disallow', 'unblock'].
-    'hash'  ['block', 'disallow', 'unblock'],
+    'mail': ['block', 'disallow', 'unblock'],
+    'hash': ['block', 'disallow', 'unblock'],
     'sha256': ['block', 'disallow', 'unblock'],
 }
 
