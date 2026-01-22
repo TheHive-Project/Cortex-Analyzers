@@ -1,0 +1,69 @@
+{
+  "name": "SecurityCenter",
+  "version": "1.0",
+  "author": "Tommy Bohde",
+  "url": "https://github.com/InsanesTheName/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Launch a scan through Tenable SecurityCenter",
+  "dataTypeList": ["ip", "fqdn"],
+  "baseConfig": "SecurityCenter",
+  "command": "SecurityCenter/SecurityCenter.py",
+  "configurationItems": [
+    {
+      "name": "host",
+      "description": "IP address of the host running the SecurityCenter API",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "login",
+      "description": "Login for SecurityCenter API",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "password",
+      "description": "Password for SecurityCenter API",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "policy",
+      "description": "Scan policy ID",
+      "type": "number",
+      "multi": false,
+      "required": true 
+    },
+    {
+      "name": "credential",
+      "description": "Scan credential ID",
+      "type": "number",
+      "multi": false,
+      "required": true 
+    },
+    {
+      "name": "emailOnLaunch",
+      "description": "Send an email when the scan is launched",
+      "type": "boolean",
+      "multi": false,
+      "required": true 
+    },
+    {
+      "name": "emailOnComplete",
+      "description": "Send an email when the scan is completed",
+      "type": "boolean",
+      "multi": false,
+      "required": true 
+    },
+    {
+      "name": "report",
+      "description": "Report ID to run post-scan",
+      "type": "number",
+      "multi": false,
+      "required": true 
+    }
+  ]
+}
