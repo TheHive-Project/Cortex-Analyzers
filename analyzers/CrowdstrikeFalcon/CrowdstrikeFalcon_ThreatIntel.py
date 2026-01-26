@@ -33,10 +33,10 @@ class CrowdstrikeFalcon_ThreatIntel(Analyzer):
         if data_type == 'hash':
             hash_type = self._detect_hash_type(observable)
             if hash_type:
-                return f"type:'{hash_type}'+indicator:'{observable.upper()}'"
+                return f"type:'{hash_type}'+indicator:'{observable.lower()}'"
             else:
                 # Search across all hash types if we can't determine
-                return f"indicator:'{observable.upper()}'"
+                return f"indicator:'{observable.lower()}'"
         elif data_type == 'domain':
             return f"type:'domain'+indicator:'{observable}'"
         elif data_type == 'ip':
