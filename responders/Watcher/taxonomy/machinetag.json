@@ -1,0 +1,157 @@
+{
+  "namespace": "watcher",
+  "description": "Watcher taxonomy provides standardized tags for domain management operations and automated TheHive/Cortex responders.",
+  "version": 1,
+  "exclusive": false,
+  "expanded": "Watcher Domain Management",
+  "refs": [
+    "https://github.com/thalesgroup-cert/Watcher"
+  ],
+  "predicates": [
+    {
+      "value": "module",
+      "expanded": "Watcher Module",
+      "description": "Target Watcher module (required for responders)",
+      "exclusive": true
+    },
+    {
+      "value": "legitimacy",
+      "expanded": "Legitimacy Level",
+      "description": "Generic level of domain maliciousness or suspiciousness (scale 1-6)",
+      "exclusive": true
+    },
+    {
+      "value": "takedown_request",
+      "expanded": "Takedown Request",
+      "description": "Request domain takedown (optional for WebsiteMonitoring operations)",
+      "exclusive": true
+    },
+    {
+      "value": "legal_team",
+      "expanded": "Legal Team Notification",
+      "description": "Notify legal team (optional for WebsiteMonitoring operations)",
+      "exclusive": true
+    },
+    {
+      "value": "blocking_request",
+      "expanded": "Blocking Request",
+      "description": "Request domain blocking (optional for WebsiteMonitoring operations)",
+      "exclusive": true
+    },
+    {
+      "value": "repurchased",
+      "expanded": "Repurchased",
+      "description": "Whether the domain has been repurchased",
+      "exclusive": true
+    }
+  ],
+  "values": [
+    {
+      "predicate": "module",
+      "entry": [
+        {
+          "value": "LegitDomain",
+          "expanded": "Legitimate Domain Module",
+          "description": "Organization-owned or authorized domains",
+          "colour": "#6f42c1"
+        },
+        {
+          "value": "WebsiteMonitoring",
+          "expanded": "Website Monitoring Module",
+          "description": "Suspicious or malicious domains under active monitoring",
+          "colour": "#6f42c1"
+        }
+      ]
+    },
+    {
+      "predicate": "legitimacy",
+      "entry": [
+        {
+          "value": "2",
+          "expanded": "Suspicious, not harmful",
+          "colour": "#ffc107"
+        },
+        {
+          "value": "3",
+          "expanded": "Suspicious, likely harmful (registered)",
+          "colour": "#fd7e14"
+        },
+        {
+          "value": "4",
+          "expanded": "Suspicious, likely harmful (available/disabled)",
+          "colour": "#fd7e14"
+        },
+        {
+          "value": "5",
+          "expanded": "Malicious (registered)",
+          "colour": "#dc3545"
+        },
+        {
+          "value": "6",
+          "expanded": "Malicious (available/disabled)",
+          "colour": "#dc3545"
+        }
+      ]
+    },
+    {
+      "predicate": "takedown_request",
+      "entry": [
+        {
+          "value": "Yes",
+          "expanded": "Yes - Takedown requested",
+          "colour": "#5cb85c"
+        },
+        {
+          "value": "No",
+          "expanded": "No - No takedown requested",
+          "colour": "#d9534f"
+        }
+      ]
+    },
+    {
+      "predicate": "legal_team",
+      "entry": [
+        {
+          "value": "Yes",
+          "expanded": "Yes - Legal team notified",
+          "colour": "#5cb85c"
+        },
+        {
+          "value": "No",
+          "expanded": "No - Legal team not notified",
+          "colour": "#d9534f"
+        }
+      ]
+    },
+    {
+      "predicate": "blocking_request",
+      "entry": [
+        {
+          "value": "Yes",
+          "expanded": "Yes - Blocking requested",
+          "colour": "#5cb85c"
+        },
+        {
+          "value": "No",
+          "expanded": "No - No blocking requested",
+          "colour": "#d9534f"
+        }
+      ]
+    },
+    {
+      "predicate": "repurchased",
+      "entry": [
+        {
+          "value": "Yes",
+          "expanded": "Yes - Domain has been repurchased",
+          "colour": "#5cb85c"
+        },
+        {
+          "value": "No",
+          "expanded": "No - Domain has not been repurchased",
+          "colour": "#d9534f"
+        }
+      ]
+    }
+  ]
+}

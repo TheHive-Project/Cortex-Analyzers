@@ -1,0 +1,216 @@
+<!-- Error panel -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+<!-- Main panel -->
+<div class="panel" ng-if="success" ng-class="{'panel-success': content.status !== 'NotFound', 'panel-info': content.status === 'NotFound'}">
+    <div class="panel-heading">
+        <strong>Watcher Check: {{artifact.data || '-' | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <!-- Status Badge -->
+        <dl class="dl-horizontal" style="margin-bottom: 25px;">
+            <dt style="width: 100px;">Status:</dt>
+            <dd class="wrap" style="margin-left: 120px;">
+                <span ng-if="content.status === 'FoundOnBoth'" style="background-color: #389e0d; color: white; padding: 3px 10px; border-radius: 3px; display: inline-block;">Watcher:Check="FoundOnBothModules"</span>
+                <span ng-if="content.status === 'FoundOnLegitDomain'" style="background-color: #389e0d; color: white; padding: 3px 10px; border-radius: 3px; display: inline-block;">Watcher:Check="FoundOnLegitDomain"</span>
+                <span ng-if="content.status === 'FoundOnWebsiteMonitoring'" style="background-color: #389e0d; color: white; padding: 3px 10px; border-radius: 3px; display: inline-block;">Watcher:Check="FoundOnWebsiteMonitoring"</span>
+                <span ng-if="content.status === 'NotFound'" style="background-color:  #5bc0de; color:  white; padding: 3px 10px; border-radius: 3px; display: inline-block;">Watcher:Check="NotFound"</span>
+            </dd>
+        </dl>
+        
+        <!-- Message -->
+        <dl class="dl-horizontal" style="margin-bottom: 25px;">
+            <dt style="width: 100px;">Message:</dt>
+            <dd class="wrap" style="margin-left: 120px; font-style: italic;">
+                {{content.Message || 'No message available.'}}
+            </dd>
+        </dl>
+        <hr style="margin: 25px 0; border-top: 2px solid #000000;">
+
+        <!-- ============================================ -->
+        <!-- LEGITIMATE DOMAIN MODULE -->
+        <!-- ============================================ -->
+        <div ng-if="content.LegitDomain">
+            <h5 style="color: #000; font-weight: bold; margin-bottom: 15px;">
+                <i class="fa fa-check-circle" style="color: #5cb85c;"></i> Legitimate Domain
+            </h5>
+
+            <dl class="dl-horizontal" style="margin-bottom: 15px;">
+                <dt style="width: 100px;">Domain:</dt>
+                <dd class="wrap" style="margin-left: 120px;">{{content.LegitDomain.domain_name || '-' | fang}}</dd>
+            </dl>
+
+            <dl class="dl-horizontal" ng-if="content.LegitDomain['Ticket ID'] && content.LegitDomain['Ticket ID'] !== '-'">
+                <dt style="width: 100px;">Ticket ID:</dt>
+                <dd class="wrap" style="margin-left: 120px;">{{content.LegitDomain['Ticket ID']}}</dd>
+            </dl>
+
+            <dl class="dl-horizontal">
+                <dt style="width: 100px;">Repurchased:</dt>
+                <dd class="wrap" style="margin-left: 120px;">
+                    <span ng-if="content.LegitDomain.repurchased === true" style="background-color: #5cb85c; color: white; padding: 3px 10px; border-radius: 3px; display: inline-block;">Yes</span>
+                    <span ng-if="content.LegitDomain.repurchased === false" style="background-color: #d9534f; color: white; padding: 3px 10px; border-radius: 3px; display: inline-block;">No</span>
+                    <span ng-if="content.LegitDomain.repurchased !== true && content.LegitDomain.repurchased !== false" style="background-color: #bdbdbd; color: #333; padding: 3px 10px; border-radius: 3px; display: inline-block;">-</span>
+                </dd>
+            </dl>
+
+            <dl class="dl-horizontal" ng-if="content.LegitDomain.contact && content.LegitDomain.contact !== '-'">
+                <dt style="width: 100px;">Contact:</dt>
+                <dd class="wrap" style="margin-left: 120px;">{{content.LegitDomain.contact}}</dd>
+            </dl>
+
+            <dl class="dl-horizontal" ng-if="content.LegitDomain.created_at && content.LegitDomain.created_at !== '-'">
+                <dt style="width: 100px;">Created:</dt>
+                <dd class="wrap" style="margin-left: 120px;">{{content.LegitDomain.created_at}}</dd>
+            </dl>
+
+            <dl class="dl-horizontal" ng-if="content.LegitDomain.updated_at && content.LegitDomain.updated_at !== '-'">
+                <dt style="width: 100px;">Updated:</dt>
+                <dd class="wrap" style="margin-left: 120px;">{{content.LegitDomain.updated_at}}</dd>
+            </dl>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- WEBSITE MONITORING MODULE -->
+        <!-- ============================================ -->
+        <div ng-if="content.WebsiteMonitoring" ng-class="{'margin-top-20': content.LegitDomain}">
+            <h5 style="color: #000; font-weight: bold; margin-top: 25px; margin-bottom: 15px;">
+                <i class="fa fa-eye" style="color: #5cb85c;"></i> Website Monitoring
+            </h5>
+
+            <dl class="dl-horizontal" style="margin-bottom: 15px;">
+                <dt style="width: 100px;">Domain:</dt>
+                <dd class="wrap" style="margin-left: 120px;">{{content.WebsiteMonitoring.domain_name || '-' | fang}}</dd>
+            </dl>
+
+            <dl class="dl-horizontal" ng-if="content.WebsiteMonitoring['Ticket ID'] && content.WebsiteMonitoring['Ticket ID'] !== '-'">
+                <dt style="width: 100px;">Ticket ID:</dt>
+                <dd class="wrap" style="margin-left: 120px;">{{content.WebsiteMonitoring['Ticket ID']}}</dd>
+            </dl>
+
+            <dl class="dl-horizontal" ng-if="content.WebsiteMonitoring.legitimacy && content.WebsiteMonitoring.legitimacy !== '-'">
+                <dt style="width: 100px;">Legitimacy:</dt>
+                <dd class="wrap" style="margin-left: 120px;">
+                    <span ng-if="content.WebsiteMonitoring.legitimacy >= 5" style="background-color: #d9534f; color: white; padding: 3px 10px; border-radius: 3px; display: inline-block;">{{content.WebsiteMonitoring.legitimacy}}</span>
+                    <span ng-if="content.WebsiteMonitoring.legitimacy >= 3 && content.WebsiteMonitoring.legitimacy < 5" style="background-color: #f0ad4e; color: white; padding: 3px 10px; border-radius: 3px; display: inline-block;">{{content.WebsiteMonitoring.legitimacy}}</span>
+                    <span ng-if="content.WebsiteMonitoring.legitimacy < 3" style="background-color: #5cb85c; color: white; padding: 3px 10px; border-radius: 3px; display: inline-block;">{{content.WebsiteMonitoring.legitimacy}}</span>
+                </dd>
+            </dl>
+
+            <dl class="dl-horizontal" ng-if="content.WebsiteMonitoring.Ip && content.WebsiteMonitoring.Ip !== '-'">
+                <dt style="width: 100px;">IP:</dt>
+                <dd class="wrap" style="margin-left: 120px;">{{content.WebsiteMonitoring.Ip}}</dd>
+            </dl>
+
+            <dl class="dl-horizontal" ng-if="content.WebsiteMonitoring['Ip Second'] && content.WebsiteMonitoring['Ip Second'] !== '-'">
+                <dt style="width: 100px;">IP Second:</dt>
+                <dd class="wrap" style="margin-left: 120px;">{{content.WebsiteMonitoring['Ip Second']}}</dd>
+            </dl>
+
+            <dl class="dl-horizontal" ng-if="content.WebsiteMonitoring['MX Records'] && content.WebsiteMonitoring['MX Records'].length > 0 && content.WebsiteMonitoring['MX Records'][0] !== '-'">
+                <dt style="width: 100px;">MX Records:</dt>
+                <dd class="wrap" style="margin-left: 120px;">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li ng-repeat="mx in content.WebsiteMonitoring['MX Records']">• {{mx}}</li>
+                    </ul>
+                </dd>
+            </dl>
+
+            <dl class="dl-horizontal" ng-if="content.WebsiteMonitoring['Mail Server'] && content.WebsiteMonitoring['Mail Server'] !== '-'">
+                <dt style="width: 100px;">Mail Server:</dt>
+                <dd class="wrap" style="margin-left: 120px;">{{content.WebsiteMonitoring['Mail Server']}}</dd>
+            </dl>
+
+            <dl class="dl-horizontal">
+                <dt style="width: 100px;">Takedown Request:</dt>
+                <dd class="wrap" style="margin-left: 120px;">
+                    <span ng-if="content.WebsiteMonitoring.takedown_request === true" style="background-color: #5cb85c; color: white; padding: 3px 10px; border-radius: 3px; display: inline-block;">Yes</span>
+                    <span ng-if="content.WebsiteMonitoring.takedown_request === false" style="background-color: #bdbdbd; color: #333; padding: 3px 10px; border-radius: 3px; display: inline-block;">No</span>
+                </dd>
+            </dl>
+
+            <dl class="dl-horizontal">
+                <dt style="width: 100px;">Legal Team:</dt>
+                <dd class="wrap" style="margin-left: 120px;">
+                    <span ng-if="content.WebsiteMonitoring.legal_team === true" style="background-color: #5cb85c; color: white; padding: 3px 10px; border-radius: 3px; display: inline-block;">Yes</span>
+                    <span ng-if="content.WebsiteMonitoring.legal_team === false" style="background-color: #bdbdbd; color: #333; padding: 3px 10px; border-radius: 3px; display: inline-block;">No</span>
+                </dd>
+            </dl>
+
+            <dl class="dl-horizontal">
+                <dt style="width: 100px;">Blocking Request:</dt>
+                <dd class="wrap" style="margin-left: 120px;">
+                    <span ng-if="content.WebsiteMonitoring.blocking_request === true" style="background-color: #5cb85c; color: white; padding: 3px 10px; border-radius: 3px; display: inline-block;">Yes</span>
+                    <span ng-if="content.WebsiteMonitoring.blocking_request === false" style="background-color: #bdbdbd; color: #333; padding: 3px 10px; border-radius: 3px; display: inline-block;">No</span>
+                </dd>
+            </dl>
+
+            <dl class="dl-horizontal" ng-if="content.WebsiteMonitoring.created_at && content.WebsiteMonitoring.created_at !== '-'">
+                <dt style="width: 100px;">Created:</dt>
+                <dd class="wrap" style="margin-left: 120px;">{{content.WebsiteMonitoring.created_at}}</dd>
+            </dl>
+
+            <dl class="dl-horizontal" ng-if="content.WebsiteMonitoring.updated_at && content.WebsiteMonitoring.updated_at !== '-'">
+                <dt style="width: 100px;">Updated:</dt>
+                <dd class="wrap" style="margin-left: 120px;">{{content.WebsiteMonitoring.updated_at}}</dd>
+            </dl>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- ALERT WHEN FOUND ON BOTH MODULES -->
+        <!-- ============================================ -->
+        <div ng-if="content.status === 'FoundOnBoth'">
+            <div class="alert alert-warning" style="margin-top: 20px;">
+                <strong><i class="fa fa-exclamation-triangle"></i> Note:</strong> This domain is monitored in both modules. You can use <strong>Watcher_Transfer</strong> to consolidate it into one module if needed.
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- ACTIONS BLOCK -->
+        <!-- ============================================ -->
+        <dl class="dl-horizontal" style="margin-top: 25px;">
+            <dt style="width: 100px;">Actions:</dt>
+            <dd class="wrap" style="margin-left: 120px;">
+                <!-- CASE: NotFound, show "Available Actions" -->
+                <div ng-if="content.status === 'NotFound'">
+                    <div style="margin-bottom: 10px;">
+                        <span style="background-color: #428bca; color: white; padding: 3px 10px; border-radius: 3px; display: inline-block; margin-right: 5px;">
+                            <i class="fa fa-plus"></i> Add with Watcher_Add
+                        </span>
+                    </div>
+                </div>
+                <!-- CASE: LegitDomain present, show its module actions -->
+                <div ng-if="content.LegitDomain && content.status !== 'NotFound'">
+                    <span style="background-color: #5bc0de; color: white; padding: 3px 10px; border-radius: 3px; display: inline-block; margin-right: 5px;">
+                        <i class="fa fa-edit"></i> Update with Watcher_Update
+                    </span>
+                    <span style="background-color: #f0ad4e; color: white; padding: 3px 10px; border-radius: 3px; display: inline-block; margin-right: 5px;">
+                        <i class="fa fa-exchange"></i> Transfer with Watcher_Transfer
+                    </span>
+                    <span style="background-color: #d9534f; color: white; padding: 3px 10px; border-radius: 3px; display: inline-block;">
+                        <i class="fa fa-trash"></i> Remove with Watcher_Remove
+                    </span>
+                </div>
+                <!-- CASE: WebsiteMonitoring present, show its module actions -->
+                <div ng-if="content.WebsiteMonitoring && content.status !== 'NotFound'">
+                    <span style="background-color: #5bc0de; color: white; padding: 3px 10px; border-radius: 3px; display: inline-block; margin-right: 5px;">
+                        <i class="fa fa-edit"></i> Update with Watcher_Update
+                    </span>
+                    <span style="background-color: #f0ad4e; color: white; padding: 3px 10px; border-radius: 3px; display: inline-block; margin-right: 5px;">
+                        <i class="fa fa-exchange"></i> Transfer with Watcher_Transfer
+                    </span>
+                    <span style="background-color: #d9534f; color: white; padding: 3px 10px; border-radius: 3px; display: inline-block;">
+                        <i class="fa fa-trash"></i> Remove with Watcher_Remove
+                    </span>
+                </div>
+            </dd>
+        </dl>
+    </div>
+</div>

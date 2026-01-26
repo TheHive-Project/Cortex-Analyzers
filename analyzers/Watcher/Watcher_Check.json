@@ -1,0 +1,25 @@
+{
+  "name": "Watcher_Check",
+  "version": "1.0",
+  "author": "THA-CERT // YNE",
+  "url": "https://github.com/thalesgroup-cert/Watcher",
+  "license": "AGPL-V3",
+  "description": "Check if a domain is monitored in Watcher (Legitimate Domain and/or Website Monitoring modules) and retrieve all details.",
+  "dataTypeList": ["domain"],
+  "command": "Watcher/watcher.py",
+  "baseConfig": "Watcher",
+  "configurationItems": [
+    {
+      "name": "watcher_url",
+      "description": "URL of Watcher instance.",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "watcher_api_key",
+      "description": "API key for authenticating requests to Watcher",
+      "type": "string",
+      "required": true
+    }
+  ]
+}
