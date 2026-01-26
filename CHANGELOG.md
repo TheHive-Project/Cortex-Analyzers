@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.7.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.4) (2026-01-22)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.3...3.7.4)
+
+**Merged pull requests:**
+
+- Slack - Fix lookup performance issues [\#1415](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1415) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.7.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.3) (2026-01-21)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.2...3.7.3)
