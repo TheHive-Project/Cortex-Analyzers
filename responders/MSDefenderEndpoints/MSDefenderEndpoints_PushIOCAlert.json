@@ -4,7 +4,7 @@
   "author": "Keijo Korte, Louis-Maximilien Dupouy",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Push IOC to Defender client. Alert mode",
+  "description": "Push IOC to Defender client. Alert mode. This mode is Deprecated and Audit should be used instead.",
   "dataTypeList": ["thehive:case_artifact"],
   "command": "MSDefenderEndpoints/MSDefenderEndpoints.py",
   "baseConfig": "MSDefenderforEndpoints",

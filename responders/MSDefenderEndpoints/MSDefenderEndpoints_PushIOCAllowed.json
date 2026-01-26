@@ -1,15 +1,15 @@
 {
-  "name": "MSDefender-PushIOC-Block",
-  "version": "2.1",
-  "author": "Keijo Korte, Louis-Maximilien Dupouy, Vito Piserchia",
+  "name": "MSDefender-PushIOC-Allowed",
+  "version": "1.0",
+  "author": "Vito Piserchia",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Push IOC to Defender client. Block mode",
+  "description": "Push IOC to Defender client. Allowed mode",
   "dataTypeList": ["thehive:case_artifact"],
   "command": "MSDefenderEndpoints/MSDefenderEndpoints.py",
   "baseConfig": "MSDefenderforEndpoints",
   "config": {
-    "service": "pushIOCBlock"
+    "service": "pushIOCAllowed"
   },
   "configurationItems": [
     {
