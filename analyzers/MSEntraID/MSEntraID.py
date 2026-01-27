@@ -204,7 +204,7 @@ class MSEntraID(Analyzer):
 
             self.report(new_json)
 
-        except Exception as ex:
+        except Exception:
             self.error(traceback.format_exc())
 
     def handle_get_userinfo(self, headers, base_url):
@@ -411,7 +411,7 @@ class MSEntraID(Analyzer):
 
             self.report(user_details)
 
-        except Exception as ex:
+        except Exception:
             self.error(traceback.format_exc())
 
     def handle_get_directoryAuditLogs(self, headers, base_url):
@@ -548,7 +548,7 @@ class MSEntraID(Analyzer):
         elif self.service == "getManagedDevicesInfo":
             self.handle_get_devices(headers, base_url)
         else:
-            self.error({"message": "Unidentified service"})
+            self.error("Unidentified service")
 
     def summary(self, raw):
         taxonomies = []

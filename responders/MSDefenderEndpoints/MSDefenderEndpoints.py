@@ -49,10 +49,10 @@ class MSDefenderEndpoints(Responder):
             response = urllib.request.urlopen(req)
         except urllib.error.HTTPError as e:
             #print("message: HTTP ErrorCode {}. Reason: {}".format(e.code,e.reason))
-            self.error({'message': "HTTP ErrorCode {}. Reason: {}".format(e.code,e.reason)})
+            self.error("HTTP ErrorCode {}. Reason: {}".format(e.code,e.reason))
         except urllib.error.URLError as e:
             #print("message: URL Error: {}".format(e.reason))
-            self.error({'message': "URL Error: {}".format(e.reason)})
+            self.error("URL Error: {}".format(e.reason))
 
         jsonResponse = json.loads(response.read())
         token = jsonResponse["access_token"]
@@ -81,9 +81,9 @@ class MSDefenderEndpoints(Responder):
                            return jsonResponse["value"][0]["id"]
                         return jsonResponse["value"][0]["aadDeviceId"]
                     else:
-                        self.error({'message': "Can't get hostname from Microsoft API"})
+                        self.error("Can't get hostname from Microsoft API")
             except requests.exceptions.RequestException as e:
-                self.error({'message': e})
+                self.error("Error: {}".format(str(e)))
 
         def isolateMachine(machineId):
             '''
@@ -104,9 +104,9 @@ class MSDefenderEndpoints(Responder):
                 elif response.status_code == 400 and "ActiveRequestAlreadyExists" in response.content.decode("utf-8"):
                     self.report({'message': "Error isolating machine: ActiveRequestAlreadyExists"})
                 else:
-                    self.error({'message': "Can't isolate machine"})
+                    self.error("Can't isolate machine")
             except requests.exceptions.RequestException as e:
-                self.error({'message': e})
+                self.error("Error: {}".format(str(e)))
 
             self.report({'message': "Isolated machine: " + self.observable })
 
@@ -129,9 +129,9 @@ class MSDefenderEndpoints(Responder):
                 elif response.status_code == 400 and "ActiveRequestAlreadyExists" in response.content.decode("utf-8"):
                     self.report({'message': "Error full VirusScan on machine: ActiveRequestAlreadyExists"})
                 else:
-                    self.error({'message': "Error full VirusScan on machine"})
+                    self.error("Error full VirusScan on machine")
             except requests.exceptions.RequestException as e:
-                self.error({'message': e})
+                self.error("Error: {}".format(str(e)))
 
 
         def unisolateMachine(machineId):
@@ -151,9 +151,9 @@ class MSDefenderEndpoints(Responder):
                 elif response.status_code == 400 and "ActiveRequestAlreadyExists" in response.content.decode("utf-8"):
                     self.report({'message': "Error unisolating machine: ActiveRequestAlreadyExists"})
                 else:
-                    self.error({'message': "Can't unisolate machine"})
+                    self.error("Can't unisolate machine")
             except requests.exceptions.RequestException as e:
-                self.error({'message': e})
+                self.error("Error: {}".format(str(e)))
 
 
         def restrictAppExecution(machineId):
@@ -173,9 +173,9 @@ class MSDefenderEndpoints(Responder):
                 elif response.status_code == 400 and "ActiveRequestAlreadyExists" in response.content.decode("utf-8"):
                     self.report({'message': "Error restricting app execution on machine: ActiveRequestAlreadyExists"})
                 else:
-                    self.error({'message': "Can't restrict app execution"})
+                    self.error("Can't restrict app execution")
             except requests.exceptions.RequestException as e:
-                self.error({'message': e})
+                self.error("Error: {}".format(str(e)))
 
 
         def unrestrictAppExecution(machineId):
@@ -195,9 +195,9 @@ class MSDefenderEndpoints(Responder):
                 elif response.status_code == 400 and "ActiveRequestAlreadyExists" in response.content.decode("utf-8"):
                     self.report({'message': "Error removing app execution restriction on machine: ActiveRequestAlreadyExists"})
                 else:
-                    self.error({'message': "Can't unrestrict app execution"})
+                    self.error("Can't unrestrict app execution")
             except requests.exceptions.RequestException as e:
-                self.error({'message': e})
+                self.error("Error: {}".format(str(e)))
 
 
         def startAutoInvestigation(machineId):
@@ -218,9 +218,9 @@ class MSDefenderEndpoints(Responder):
                 elif response.status_code == 400 and "ActiveRequestAlreadyExists" in response.content.decode("utf-8"):
                     self.report({'message': "Error lauching auto investigation on machine: ActiveRequestAlreadyExists"})
                 else:
-                    self.error({'message': "Error auto investigation on machine"})
+                    self.error("Error auto investigation on machine")
             except requests.exceptions.RequestException as e:
-                self.error({'message': e})
+                self.error("Error: {}".format(str(e)))
 
 
         def pushCustomIocAlert(observable):
@@ -241,7 +241,7 @@ class MSDefenderEndpoints(Responder):
                 else:
                     self.report({'message':"Observable is not a valid hash"})
             else:
-                self.error({'message':"Observable type must be ip, url, domain or hash"})
+                self.error("Observable type must be ip, url, domain or hash")
 
             url = '{}/indicators'.format(self.msdefenderApiBaseUrl)
             body = {
@@ -259,7 +259,7 @@ class MSDefenderEndpoints(Responder):
                 if response.status_code == 200:
                     self.report({'message': "Added IOC to Defender with Alert mode: " + self.observable })
             except requests.exceptions.RequestException as e:
-                self.error({'message': e})
+                self.error("Error: {}".format(str(e)))
 
         def pushCustomIocBlock(observable):
 
@@ -279,7 +279,7 @@ class MSDefenderEndpoints(Responder):
                 else:
                     self.report({'message':"Observable is not a valid hash"})
             else:
-                self.error({'message':"Observable type must be ip, url, domain or hash"})
+                self.error("Observable type must be ip, url, domain or hash")
 
             url = '{}/indicators'.format(self.msdefenderApiBaseUrl)
             body = {
@@ -297,7 +297,7 @@ class MSDefenderEndpoints(Responder):
                 if response.status_code == 200:
                     self.report({'message': "Added IOC to Defender with Alert and Block mode: " + self.observable })
             except requests.exceptions.RequestException as e:
-                self.error({'message': e})
+                self.error("Error: {}".format(str(e)))
 
 
         if self.service == "isolateMachine":
@@ -317,7 +317,7 @@ class MSDefenderEndpoints(Responder):
         elif self.service == "pushIOCAlert":
             pushCustomIocAlert(self.observable)
         else:
-            self.error({'message': "Unidentified service"})
+            self.error("Unidentified service")
 
     def operations(self, raw):
         self.build_operation('AddTagToCase', tag='MSDefenderResponder:run')

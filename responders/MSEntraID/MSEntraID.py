@@ -192,7 +192,7 @@ class MSEntraID(Responder):
                 self.error('Incorrect dataType. "mail" expected.')
         
         else:
-            self.error({'message': "Unidentified service"})
+            self.error("Unidentified service")
 
 if __name__ == '__main__':
     MSEntraID().run()

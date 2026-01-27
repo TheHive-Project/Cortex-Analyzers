@@ -34,7 +34,7 @@ class QRadarAutoClose(Responder):
                 r.status_code == 409:
             self.report({'message': 'QRadar Offense succesfully closed !'})
         else:
-            self.error({'message': r.status_code})
+            self.error(r.status_code)
 
 
 if __name__ == '__main__':
