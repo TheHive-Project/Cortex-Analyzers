@@ -1,55 +1,151 @@
-# [Watcher](https://github.com/thalesgroup-cert/Watcher)
+# [Watcher](https://github.com/thalesgroup-cert/Watcher) Responders
 
-## Watcher Monitor Manager Responder
+## Watcher Responder Suite
 
 ### Description
-Watcher Monitor Manager is a Responder for TheHive/Cortex that allows adding or removing a domain from monitoring in the Watcher website monitoring module.
+
+Intelligent Watcher Responder Suite for TheHive/Cortex with unified tag-based routing.
+
+**4 Responders** manage two Watcher modules:
+
+- **Legitimate Domain Module** (`/api/common/legitimate_domains/`) - Company-owned domains
+- **Website Monitoring Module** (`/api/site_monitoring/site/`) - Suspicious/malicious domains
+
+All operations use a single Python file (`watcher.py`) with intelligent routing via the **`watcher:module`** tag.
+
+---
 
 ### Features
-- **Add a domain to monitoring** (`WatcherAddDomain`)
-- **Remove a domain from monitoring** (`WatcherRemoveDomain`)
+
+#### Universal Operations (4 Responders)
+
+| Responder | Description |
+|----------------------|-------------------------------------------------------|
+| **Watcher_Add** | Add domain to LegitDomain or WebsiteMonitoring |
+| **Watcher_Update** | Update domain in LegitDomain or WebsiteMonitoring |
+| **Watcher_Remove** | Remove domain from LegitDomain or WebsiteMonitoring |
+| **Watcher_Transfer** | Transfer domain between modules |
+
+---
 
 ### Prerequisites
+
 - Access to the Watcher API
-- A valid API key of Watcher
+- A valid API key for Watcher
 - A functional instance of Cortex and TheHive
 
+---
+
 ### Installation
-- Add the configuration files (`Watcher_AddDomain.json` and `Watcher_RemoveDomain.json`) to the Cortex configurations.
+
+Add the configuration files to the Cortex configurations.
+
+---
 
 ### Configuration
-In Cortex, configure the following parameters for the Responder:
 
-| Parameter               | Description                                                              | Required | Default Value |
-|-------------------------|--------------------------------------------------------------------------|----------|----------------|
-| `watcher_url`           | URL of Watcher (e.g. `https://example.watcher.local:9002`)           | Yes      | -              |
-| `watcher_api_key`       | API key for authentication                                               | Yes      | -              |
-| `the_hive_custom_field` | Name of the custom field (same as .env variable)                         | Yes      | `watcher-id`   |
+Configure the following parameters in Cortex for each responder:
 
-### Usage
-When an artifact of type `domain` is submitted to this Responder, it will:
-1. Extract the Watcher ID from the `customFieldValues` of the alert or case.
-2. Perform the requested action (`add` or `remove`) based on the specified service.
-3. Return a report indicating the success or failure of the operation.
+| Parameter | Description | Type | Required | Default Value |
+|-------------------------|-------------------------------------------------------------------|--------|----------|---------------|
+| `watcher_url` | Base URL of Watcher instance (e.g., `https://watcher.local:9002`) | String | Yes | - |
+| `watcher_api_key` | API authentication token for Watcher | String | Yes | - |
+| `the_hive_custom_field` | Custom field name storing the Watcher ticket ID | String | Yes | `watcher-id` |
 
-### Example JSON Response
-#### Adding a Domain
+**Example Configuration:**
+
 ```json
 {
-  "Message": "Domain 'example.com' successfully added to monitoring with watcher-id: '12345'.",
-  "WatcherResponse": {"status": "success"}
+  "watcher_url": "https://watcher.example.com:9002",
+  "watcher_api_key": "your-api-token-here",
+  "the_hive_custom_field": "watcher-id"
 }
 ```
 
-#### Removing a Domain
-```json
-{
-  "Message": "Domain 'example.com' successfully removed from monitoring.",
-  "WatcherResponse": {"status": "success"}
-}
+---
+
+### Tag-Based Routing
+
+#### **Required Tag for ALL Responders**
+
+```
+watcher:module = LegitDomain | WebsiteMonitoring
 ```
 
-### Author
+#### **Module-Specific Tags**
 
-**Thales Group CERT** - [thalesgroup-cert on GitHub](https://github.com/thalesgroup-cert)  
+##### **LegitDomain Module**
+
+| Tag | Values | Required | Description |
+|---------------------------|-----------------|------------------|---------------------------------|
+| `watcher:repurchased` | `Yes` / `No` | Add: ✅ Yes | Domain repurchase status |
+| | | Update: ❌ No | |
+| | | Transfer: ✅ Yes | |
+| `watcher:contact` | Email address | ❌ No | Contact email |
+
+##### **WebsiteMonitoring Module**
+
+| Tag | Values | Required | Description |
+|------------------------------|---------------|------------------|---------------------------------|
+| `watcher:legitimacy` | `2` to `6` | Add: ✅ Yes | Threat level (see table below) |
+| | | Update: ❌ No | |
+| | | Transfer: ✅ Yes | |
+| `watcher:takedown_request` | `Yes` / `No` | ❌ No | Request takedown |
+| `watcher:legal_team` | `Yes` / `No` | ❌ No | Notify legal team |
+| `watcher:blocking_request` | `Yes` / `No` | ❌ No | Request blocking |
+
+**Legitimacy Score Values:**
+| Score | Meaning | Color |
+|-------|------------------------------------------------|-----------|
+| `2` | Suspicious, not harmful | Yellow |
+| `3` | Suspicious, likely harmful (registered) | Orange |
+| `4` | Suspicious, likely harmful (available/disabled)| Orange |
+| `5` | Malicious (registered) | Red |
+| `6` | Malicious (available/disabled) | Red |
+
+---
+
+### API Endpoints Used
+
+#### Legitimate Domain Module
+
+```
+GET    /api/common/legitimate_domains/?search={domain}  # Search domain
+POST   /api/common/legitimate_domains/                  # Create new domain
+PATCH  /api/common/legitimate_domains/{id}/             # Update domain
+DELETE /api/common/legitimate_domains/{id}/             # Remove domain
+```
+
+#### Website Monitoring Module
+
+```
+GET    /api/site_monitoring/site/                       # List monitored sites
+POST   /api/site_monitoring/site/                       # Add site to monitoring
+PATCH  /api/site_monitoring/site/{id}/                  # Update monitored site
+DELETE /api/site_monitoring/site/{id}/                  # Remove from monitoring
+```
+
+---
+
+### Best Practices
+
+1. **Always set `watcher:module` tag** before running responders
+2. **Use taxonomy import** for consistent tag naming
+3. **Transfer operations**: Tag indicates DESTINATION module
+4. **Update operations**: Only include tags for fields you want to change
+5. **Legitimacy scoring**: Choose appropriate level based on threat assessment
+
+---
+
+### Support
+
+For issues, questions, or feature requests:
+
+- **GitHub Issues**: [Watcher Repository](https://github.com/thalesgroup-cert/Watcher/issues)
+
+---
+
+### Authors
+
+**Thales Group CERT** - [thalesgroup-cert on GitHub](https://github.com/thalesgroup-cert)
 **Ygal NEZRI** - [@ygalnezri](https://github.com/ygalnezri)

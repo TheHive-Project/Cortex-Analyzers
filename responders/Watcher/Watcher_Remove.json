@@ -1,32 +1,32 @@
 {
-  "name": "Watcher_RemoveDomain",
-  "version": "1.2",
+  "name": "Watcher_Remove",
+  "version": "1.1",
   "author": "THA-CERT // YNE",
   "url": "https://github.com/thalesgroup-cert/Watcher",
   "license": "AGPL-V3",
-  "description": "Removes a domain from monitoring in the Website Monitoring module on Watcher.",
+  "description": "Remove domain from Watcher. Required tag: watcher:module=LegitDomain|WebsiteMonitoring",
   "dataTypeList": ["thehive:case_artifact"],
   "command": "Watcher/watcher.py",
   "baseConfig": "Watcher",
   "config": {
-    "service": "WatcherRemoveDomain"
+    "service": "WatcherRemove"
   },
   "configurationItems": [
     {
       "name": "watcher_url",
-      "description": "URL of Watcher.",
+      "description": "URL of Watcher instance",
       "type": "string",
       "required": true
     },
     {
       "name": "watcher_api_key",
-      "description": "API key used for authenticating requests to Watcher.",
+      "description": "API key for authenticating requests to Watcher",
       "type": "string",
       "required": true
     },
     {
       "name": "the_hive_custom_field",
-      "description": "Name of the custom field (same as .env variable).",
+      "description": "Custom field name for ticket ID",
       "type": "string",
       "required": true,
       "defaultValue": "watcher-id"

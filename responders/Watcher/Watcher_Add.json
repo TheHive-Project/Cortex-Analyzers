@@ -1,0 +1,35 @@
+{
+  "name": "Watcher_Add",
+  "version": "1.1",
+  "author": "THA-CERT // YNE",
+  "url": "https://github.com/thalesgroup-cert/Watcher",
+  "license": "AGPL-V3",
+  "description": "Add domain to Watcher. Required tags: watcher:module=LegitDomain|WebsiteMonitoring. For LegitDomain: watcher:repurchased=Yes/No (required), watcher:contact=email (optional). For WebsiteMonitoring: watcher:legitimacy=2-6 (required), watcher:takedown_request=Yes/No, watcher:legal_team=Yes/No, watcher:blocking_request=Yes/No",
+  "dataTypeList": ["thehive:case_artifact"],
+  "command": "Watcher/watcher.py",
+  "baseConfig": "Watcher",
+  "config": {
+    "service": "WatcherAdd"
+  },
+  "configurationItems": [
+    {
+      "name": "watcher_url",
+      "description": "URL of Watcher instance",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "watcher_api_key",
+      "description": "API key for authenticating requests to Watcher",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "the_hive_custom_field",
+      "description": "Custom field name for ticket ID",
+      "type": "string",
+      "required": true,
+      "defaultValue": "watcher-id"
+    }
+  ]
+}
