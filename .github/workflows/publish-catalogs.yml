@@ -1,0 +1,251 @@
+name: Publish Catalogs
+
+on:
+  push:
+    branches:
+      - develop
+    tags:
+      - "*"
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build:
+    name: Build Catalogs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set lowercase repository owner
+        run: |
+          owner="${{ github.repository_owner }}"
+          lower_owner=$(echo "$owner" | tr '[:upper:]' '[:lower:]')
+          echo "LOWER_REPO_OWNER=$lower_owner" >> $GITHUB_ENV
+
+      - name: Validate analyzer/responder definitions
+        run: |
+          set -euo pipefail
+
+          REQUIRED_FIELDS='["name", "version", "author", "url", "license", "description", "dataTypeList", "command", "baseConfig"]'
+          CONFIG_ITEM_FIELDS='["name", "description", "type", "multi", "required"]'
+
+          errors=0
+
+          validate_json() {
+            local file="$1"
+
+            # Check required top-level fields
+            local missing
+            missing=$(jq -r --argjson required "$REQUIRED_FIELDS" '
+              $required - keys | if length > 0 then @json else empty end
+            ' "$file")
+
+            if [ -n "$missing" ]; then
+              echo "::error file=$file::Missing required fields: $missing"
+              ((errors++)) || true
+            fi
+
+            # Check name is safe (no whitespace, path traversal, or path separators)
+            local name_invalid
+            name_invalid=$(jq -r '
+              if .name then
+                if (.name | test("\\s")) then "name contains whitespace"
+                elif (.name | test("[/\\\\]")) then "name contains path separators"
+                elif (.name | test("\\.\\.")) then "name contains path traversal (..)"
+                else empty end
+              else empty end
+            ' "$file")
+            if [ -n "$name_invalid" ]; then
+              echo "::error file=$file::$name_invalid"
+              ((errors++)) || true
+            fi
+
+            # Check dataTypeList is array
+            local dtype_invalid
+            dtype_invalid=$(jq -r 'if .dataTypeList and (.dataTypeList | type) != "array" then "dataTypeList must be array" else empty end' "$file")
+            if [ -n "$dtype_invalid" ]; then
+              echo "::error file=$file::$dtype_invalid"
+              ((errors++)) || true
+            fi
+
+            # Check configurationItems entries (if present) - warnings only
+            local incomplete_items
+            incomplete_items=$(jq -r --argjson required "$CONFIG_ITEM_FIELDS" '
+              .configurationItems // [] | to_entries[] |
+              ($required - (.value | keys)) as $missing |
+              if ($missing | length) > 0 then
+                "configurationItems[\(.key)]: missing \($missing | @json)"
+              else empty end
+            ' "$file")
+
+            if [ -n "$incomplete_items" ]; then
+              echo "$incomplete_items" | while read -r line; do
+                echo "::warning file=$file::$line"
+              done
+            fi
+          }
+
+          echo "Validating analyzers..."
+          for file in analyzers/*/*.json; do
+            [ -f "$file" ] && validate_json "$file"
+          done
+
+          echo "Validating responders..."
+          for file in responders/*/*.json; do
+            [ -f "$file" ] && validate_json "$file"
+          done
+
+          if [ "$errors" -gt 0 ]; then
+            echo "::error::Validation failed with $errors error(s)"
+            exit 1
+          fi
+
+          echo "All definitions valid"
+
+      - name: Check for rogue dockerImage references
+        env:
+          ALLOWED_REGISTRY: "ghcr.io/${{ env.LOWER_REPO_OWNER }}/"
+        run: |
+          set -euo pipefail
+
+          rogue_found=0
+
+          for file in analyzers/*/*.json responders/*/*.json; do
+            [ -f "$file" ] || continue
+
+            # Check if dockerImage field exists and doesn't match allowed registry
+            rogue=$(jq -r --arg allowed "$ALLOWED_REGISTRY" '
+              if .dockerImage and (.dockerImage | startswith($allowed) | not) then
+                .dockerImage
+              else empty end
+            ' "$file")
+
+            if [ -n "$rogue" ]; then
+              echo "::error file=$file::Rogue dockerImage detected: $rogue (must start with $ALLOWED_REGISTRY)"
+              rogue_found=1
+            fi
+          done
+
+          if [ "$rogue_found" -eq 1 ]; then
+            echo "::error::Security check failed: rogue dockerImage references found"
+            exit 1
+          fi
+
+          echo "No rogue dockerImage references found"
+
+      - name: Build catalog JSON files
+        run: |
+          build_catalog() {
+            DIR=$1
+            jq -s '[.[] | del(.command) + { dockerImage: ("ghcr.io/${{ env.LOWER_REPO_OWNER }}/" + (.name | ascii_downcase) + ":devel") }]' \
+              ${DIR}/*/*.json > ${DIR}/${DIR}-devel.json
+            jq -s '[.[] | del(.command) + { dockerImage: ("ghcr.io/${{ env.LOWER_REPO_OWNER }}/" + (.name | ascii_downcase) + ":" + .version) }]' \
+              ${DIR}/*/*.json > ${DIR}/${DIR}-stable.json
+            jq -s '[.[] | del(.command) + { dockerImage: ("ghcr.io/${{ env.LOWER_REPO_OWNER }}/" + (.name | ascii_downcase) + ":" + (.version | split("."))[0]) }]' \
+              ${DIR}/*/*.json > ${DIR}/${DIR}.json
+          }
+          build_catalog analyzers
+          build_catalog responders
+
+      - name: Zip report-templates
+        run: zip -r report-templates.zip *
+        working-directory: thehive-templates
+
+      - name: Move zip to analyzers
+        run: mv thehive-templates/report-templates.zip analyzers/
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: catalogs
+          path: |
+            analyzers/*.json
+            analyzers/report-templates.zip
+            responders/*.json
+          retention-days: 1
+
+  publish:
+    name: Publish to AWS (${{ matrix.account }})
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        account: [1, 2, 3]
+        include:
+          - account: 1
+            role_secret: AWS_ROLE_ARN_1
+          - account: 2
+            role_secret: AWS_ROLE_ARN_2
+          - account: 3
+            role_secret: AWS_ROLE_ARN_3
+    env:
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      S3_BUCKET_PRIMARY: ${{ secrets.AWS_S3_CATALOG_BUCKET }}
+      S3_BUCKET_LEGACY: ${{ secrets.AWS_S3_CATALOG_BUCKET_LEGACY }}
+    steps:
+      - name: Check if account is configured
+        id: check
+        env:
+          ROLE_ARN: ${{ secrets[matrix.role_secret] }}
+        run: |
+          if [ -z "$ROLE_ARN" ]; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "Account ${{ matrix.account }} not configured, skipping"
+          else
+            echo "::add-mask::$ROLE_ARN"
+            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "role_arn=$ROLE_ARN" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Validate required secrets
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          missing=""
+          [ -z "${{ env.AWS_REGION }}" ] && missing="$missing AWS_REGION"
+          [ -z "${{ env.S3_BUCKET_PRIMARY }}" ] && missing="$missing AWS_S3_CATALOG_BUCKET"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing required secrets:$missing"
+            exit 1
+          fi
+
+      - name: Download build artifacts
+        if: steps.check.outputs.skip == 'false'
+        uses: actions/download-artifact@v4
+        with:
+          name: catalogs
+
+      - name: Configure AWS credentials (OIDC)
+        if: steps.check.outputs.skip == 'false'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ steps.check.outputs.role_arn }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Upload devel catalogs to S3
+        if: steps.check.outputs.skip == 'false' && github.ref == 'refs/heads/develop'
+        run: |
+          set -euo pipefail
+          aws s3 cp analyzers/analyzers-devel.json "s3://${S3_BUCKET_PRIMARY}/latest/json/analyzers-devel.json" --no-progress --content-type "application/json"
+          aws s3 cp responders/responders-devel.json "s3://${S3_BUCKET_PRIMARY}/latest/json/responders-devel.json" --no-progress --content-type "application/json"
+          if [ -n "${S3_BUCKET_LEGACY}" ]; then
+            aws s3 cp analyzers/analyzers-devel.json "s3://${S3_BUCKET_LEGACY}/analyzers-devel.json" --no-progress --content-type "application/json"
+            aws s3 cp responders/responders-devel.json "s3://${S3_BUCKET_LEGACY}/responders-devel.json" --no-progress --content-type "application/json"
+          fi
+
+      - name: Upload production catalogs to S3
+        if: steps.check.outputs.skip == 'false' && startsWith(github.ref, 'refs/tags/')
+        run: |
+          set -euo pipefail
+          aws s3 cp analyzers/analyzers.json "s3://${S3_BUCKET_PRIMARY}/latest/json/analyzers.json" --no-progress --content-type "application/json"
+          aws s3 cp responders/responders.json "s3://${S3_BUCKET_PRIMARY}/latest/json/responders.json" --no-progress --content-type "application/json"
+          aws s3 cp analyzers/report-templates.zip "s3://${S3_BUCKET_PRIMARY}/latest/zip/report-templates.zip" --no-progress --content-type "application/zip"
+          if [ -n "${S3_BUCKET_LEGACY}" ]; then
+            aws s3 cp analyzers/analyzers.json "s3://${S3_BUCKET_LEGACY}/analyzers.json" --no-progress --content-type "application/json"
+            aws s3 cp responders/responders.json "s3://${S3_BUCKET_LEGACY}/responders.json" --no-progress --content-type "application/json"
+            aws s3 cp analyzers/report-templates.zip "s3://${S3_BUCKET_LEGACY}/report-templates.zip" --no-progress --content-type "application/zip"
+          fi
