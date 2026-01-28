@@ -4,11 +4,25 @@ from elasticsearch import Elasticsearch, VERSION as ES_VERSION
 from cortexutils.analyzer import Analyzer
 import dateutil.parser
 from datetime import datetime
-import pytz
 from packaging.version import Version
 
 # utils
 import operator
+
+# support ECS
+FILENAME = ["dll.pe.original_file_name","email.attachments.file.name","file.name","file.pe.original_file_name","process.pe.original_file_name"]
+PROCESS = ["process.name",]
+PROCESS_ARGS = ["process.args",]
+PROCESS_PARENT = ["process.parent.name","process.session_leader.name","process.parent.pe.original_file_name","process.entry_leader.name","process.group_leader.name"]
+IP = ["client.ip","client.nat.ip","destination.ip","destination.nat.ip","dns.resolved_ip","network.forwarded_ip","orchestrator.resource.ip","related.ip","server.ip","server.nat.ip","source.ip","source.nat.ip"]
+URL = ["url.path","url.full","url.original"]
+USERNAME = ["client.user.id","client.user.name","destination.user.id","destination.user.name","destination.user.email","source.user.id","source.user.name","source.user.email","url.username","user.changes.email","user.changes.id","user.effective.email","user.id","user.name","user.email","user.target.name"]
+HASH = ["dll.pe.imphash","file.pe.imphash","process.parent.pe.imphash","process.pe.imphash","dll.hash.md5","email.attachments.file.hash.md5","file.hash.md5","process.hash.md5","process.parent.hash.md5","tls.client.hash.md5","tls.server.hash.md5","dll.pe.pehash","file.pe.pehash","process.parent.pe.pehash","process.pe.pehash","dll.hash.sha1","email.attachments.file.hash.sha1","file.hash.sha1","process.hash.sha1","process.parent.hash.sha1","tls.client.hash.sha1","tls.server.hash.sha1","dll.code_signature.thumbprint_sha256","dll.hash.sha256","email.attachments.file.hash.sha256","file.code_signature.thumbprint_sha256","file.hash.sha256","process.code_signature.thumbprint_sha256","process.hash.sha256","process.parent.code_signature.thumbprint_sha256","process.parent.hash.sha256","tls.client.hash.sha256","tls.server.hash.sha256","dll.hash.sha384","email.attachments.file.hash.sha384","file.hash.sha384","process.hash.sha384","process.parent.hash.sha384","dll.hash.sha512","email.attachments.file.hash.sha512","file.hash.sha512","process.hash.sha512","process.parent.hash.sha512","dll.hash.ssdeep","email.attachments.file.hash.ssdeep","file.hash.ssdeep","process.hash.ssdeep","process.parent.hash.ssdeep","dll.hash.tlsh","email.attachments.file.hash.tlsh","file.hash.tlsh","process.hash.tlsh","process.parent.hash.tlsh"]
+USER_AGENT = ["user_agent.name","user_agent.original"]
+MAIL_SUBJECT = ["email.subject"]
+MAIL = ["source.user.email","user.changes.email","user.effective.email","user.email","user.target.name"]
+DOMAIN = ["client.domain","destination.domain","dns.answers.name","dns.question.name","server.domain","source.domain","url.domain","url.registered_domain","client.registered_domain","destination.registered_domain","dns.question.registered_domain","server.registered_domain","source.registered_domain","url.registered_domain"]
+HOSTNAME = ["host.name",]
 
 class Hit:
     def __init__(self,hitindex,hitid,process_parent_name,process_name,process_args,user_name,host_name,timestamp,time,\
@@ -172,7 +186,6 @@ class ElasticsearchAnalyzer(Analyzer):
 
                     info = {}
                     hits = []
-                    devices = []
                     total = 'eq'
                     #url that links to kibana dashboard
                     info['query'] = ""
@@ -180,17 +193,34 @@ class ElasticsearchAnalyzer(Analyzer):
                     info['querystring'] = ""
                     self.fields = [x.lower() for x in self.fields]
                     #remove all hash fields if not a hash
+                    if self.data_type != 'hostname':
+                        self.fields = list(filter( lambda s: s not in HOSTNAME, self.fields))
                     if self.data_type != 'hash':
-                        self.fields = list(filter( lambda s: not ("hash" in s), self.fields))
+                        self.fields = list(filter( lambda s: s not in HASH, self.fields))
                     #remove all ip fields if not an ip
                     if self.data_type != 'ip':
-                        self.fields = list(filter( lambda s: not ("ip" in s), self.fields))
+                        self.fields = list(filter( lambda s: s not in IP, self.fields))
                     #remove all url and domain fields if not a url or domain or fqdn
                     if self.data_type != 'domain' and self.data_type != 'url' and self.data_type != 'fqdn':
-                        self.fields = list(filter( lambda s: not ("url" in s or "domain" in s), self.fields))
+                        self.fields = list(filter( lambda s: s not in DOMAIN+URL, self.fields))
+                    if self.data_type != 'domain':
+                        self.fields = list(filter( lambda s: s not in DOMAIN, self.fields))
+                    if self.data_type != "url":
+                        self.fields = list(filter( lambda s: s not in URL, self.fields))
+                    if self.data_type != 'mail':
+                        self.fields = list(filter( lambda s: not ("mail" in s) and (s not in MAIL), self.fields))
+                    if self.data_type != 'mail-subject':
+                        self.fields = list(filter( lambda s: s not in MAIL_SUBJECT, self.fields))
+                    if self.data_type != 'filename':
+                        self.fields = list(filter( lambda s: s not in FILENAME+PROCESS_PARENT+PROCESS, self.fields))
+                    if self.data_type != 'user-agent':
+                        self.fields = list(filter( lambda s: s not in USER_AGENT, self.fields))
+                    if self.data_type != "username":
+                        self.fields = list(filter( lambda s: s not in USERNAME, self.fields))
+
                     if self.kibana and self.dashboard:
                         #building query
-                        info['query'] += self.kibana+"/app/kibana#/dashboard/"+self.dashboard+\
+                        info['query'] += f'{self.kibana}/app/kibana#/dashboard/{self.dashboard}' + \
                         "?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-1M,to:now))&_a=(columns:!(_source),interval:auto,query:(language:kuery,query:'"
                         #building query and query string
                         info['query'] += self.fields[0] + "%20:%20%22" + self.data
@@ -368,3 +398,4 @@ class ElasticsearchAnalyzer(Analyzer):
 
 if __name__ == '__main__':
     ElasticsearchAnalyzer().run()
+
