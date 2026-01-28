@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set lowercase repository owner
         run: |
@@ -159,7 +159,7 @@ jobs:
         run: mv thehive-templates/report-templates.zip analyzers/
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: catalogs
           path: |
@@ -215,13 +215,13 @@ jobs:
 
       - name: Download build artifacts
         if: steps.check.outputs.skip == 'false'
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: catalogs
 
       - name: Configure AWS credentials (OIDC)
         if: steps.check.outputs.skip == 'false'
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: ${{ steps.check.outputs.role_arn }}
           aws-region: ${{ env.AWS_REGION }}
