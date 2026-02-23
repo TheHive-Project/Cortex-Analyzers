@@ -1,0 +1,48 @@
+<!-- Success -->
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        <strong>{{name}}</strong>
+    </div>
+    <div class="panel-body">
+        <div class="panel-heading">
+            <strong>{{content.Qintel_QWatch.meta.total}} exposed credentials in QWatch</strong>
+        </div><br/>
+        <div class="panel-body">
+            <div class="panel-heading">
+                <strong>{{artifact.data | fang}}</strong>
+            </div><br/>
+            <table class="table" class="table-hover">
+                    <thead>
+                        <tr>
+                            <td text-align="center"><u>Login Name</u></td>
+                            <td text-align="center"><u>Password</u></td>
+                            <td text-align="center"><u>Source Name</u></td>
+                            <td text-align="center"><u>Timestamp</u></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="r in content.Qintel_QWatch.data | orderBy:['+attributes.login_name','-attributes.timestamps[0].iso']" class="panel panel-default">
+                            <td text-align="center">{{ r.attributes.login_name }}</td>
+                            <td text-align="center">{{ r.attributes.password }}</td>
+                            <td text-align="center">{{ r.attributes.source_name }}</td>
+                            <td text-align="center">{{ r.attributes.timestamps[0].iso }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Failure case -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> {{name}} </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
