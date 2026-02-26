@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 import os
+import re
 import time
 import hashlib
 import magic
@@ -237,6 +238,7 @@ class VirusTotalAnalyzer(Analyzer):
         iocs['ip'] = list()
         iocs['domain'] = list()
         iocs['url'] = list()
+        iocs['file'] = list()
         iocs['other'] = list()
         
         if self.service == "scan":
@@ -373,25 +375,39 @@ class VirusTotalAnalyzer(Analyzer):
         else:
             return o
     def get_yararuleset(self, results, iocs):
-        for yara_result in results["attributes"].get( "crowdsourced_yara_results", []):
+        for yara_result in results["attributes"].get("crowdsourced_yara_results", []):
             yara_ruleset = self.vt.get_object(
                         "/yara_rulesets/{}".format(yara_result["ruleset_id"])
                         ).to_dict()
-            iocs["other"].append({
-                "data": yara_ruleset["attributes"]["rules"],
+            ruleset_name = yara_ruleset["attributes"]["name"]
+            rules_text = yara_ruleset["attributes"]["rules"]
+            # Save as file to avoid TheHive splitting multi-line rules into separate observables
+            safe_name = re.sub(r'[^\w\-.]', '_', ruleset_name)
+            filepath = os.path.join(tempfile.gettempdir(), "{}.yar".format(safe_name))
+            with open(filepath, "w") as f:
+                f.write(rules_text)
+            iocs["file"].append({
+                "data": filepath,
                 "tags": [
                     "detection:YARA",
-                    "ruleset:{}".format(yara_ruleset["attributes"]["name"])
+                    "ruleset:{}".format(ruleset_name)
                 ]
             })
 
     def get_ids_results(self, results, iocs):
-        for ids_result in results["attributes"].get("crowdsourced_ids_results", []):
-            iocs["other"].append({
-                "data": ids_result["rule_raw"],
+        for idx, ids_result in enumerate(results["attributes"].get("crowdsourced_ids_results", [])):
+            rule_source = ids_result["rule_source"]
+            rule_raw = ids_result["rule_raw"]
+            # Save as file to avoid TheHive splitting multi-line rules into separate observables
+            safe_source = re.sub(r'[^\w\-.]', '_', rule_source)
+            filepath = os.path.join(tempfile.gettempdir(), "ids_{}_{}.rules".format(safe_source, idx))
+            with open(filepath, "w") as f:
+                f.write(rule_raw)
+            iocs["file"].append({
+                "data": filepath,
                 "tags": [
                     "detection:IDS",
-                    "rule-src:{}".format(ids_result["rule_source"])
+                    "rule-src:{}".format(rule_source)
                 ]
             })
 
