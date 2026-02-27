@@ -1,5 +1,22 @@
 # Changelog
 
+## [3.7.8](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.8) (2026-02-27)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.7...3.7.8)
+
+**Merged pull requests:**
+
+- Bump aquasecurity/trivy-action from 0.33.1 to 0.34.1 in /.github/workflows [\#1425](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1425) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [3.7.7](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.7) (2026-02-11)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.6...3.7.7)
+
+**Merged pull requests:**
+
+- MSEntraID - Add support for extended search and other datatypes [\#1424](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1424) ([nusantara-self](https://github.com/nusantara-self))
+- URLHaus - Error handling improvements [\#1423](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1423) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.7.6](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.6) (2026-02-05)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.5...3.7.6)

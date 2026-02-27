@@ -344,7 +344,7 @@ jobs:
 
       - name: Scan image for vulnerabilities (Trivy)
         if: steps.check-rebuild.outputs.rebuild == 'true'
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@0.34.1
         with:
           image-ref: ${{ steps.get-digest.outputs.IMAGE_DIGEST }}
           format: sarif
@@ -825,7 +825,7 @@ jobs:
 
       - name: Scan image for vulnerabilities (Trivy)
         if: steps.check-rebuild.outputs.rebuild == 'true'
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@0.34.1
         with:
           image-ref: ${{ steps.get-digest.outputs.IMAGE_DIGEST }}
           format: sarif
@@ -1306,7 +1306,7 @@ jobs:
 
       - name: Scan image for vulnerabilities (Trivy)
         if: steps.check-rebuild.outputs.rebuild == 'true'
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@0.34.1
         with:
           image-ref: ${{ steps.get-digest-responder.outputs.IMAGE_DIGEST }}
           format: sarif
