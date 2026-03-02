@@ -8,7 +8,7 @@
     "dataTypeList": [
         "thehive:case"
     ],
-    "command": "Gatewatcher_CTI_Identity/Gatewatcher_CTI_Identity.py",
+    "command": "Gatewatcher_CTI/Gatewatcher_CTI_Identity.py",
     "baseConfig": "Gatewatcher_CTI_Identity",
     "configurationItems": [
         {
