@@ -6,6 +6,9 @@
 
 **Merged pull requests:**
 
+- SentinelOne: Add SDL PowerQuery support, fix DV bugs, add DNS Reverse Lookup [\#1429](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1429) ([nusantara-self](https://github.com/nusantara-self))
+- Lookyloo - Add ability to configure capture listing public [\#1427](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1427) ([nusantara-self](https://github.com/nusantara-self))
+- EmlParser analyzer improvements [\#1426](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1426) ([nusantara-self](https://github.com/nusantara-self))
 - Bump aquasecurity/trivy-action from 0.33.1 to 0.34.1 in /.github/workflows [\#1425](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1425) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [3.7.7](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.7) (2026-02-11)
