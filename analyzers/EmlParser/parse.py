@@ -368,10 +368,18 @@ def parseEml(filepath, job_directory, wkhtmltoimage, sanitized_rendering):
     from_addr = decoded_email.get("header").get("from", "")
     if from_addr:
         _add_ioc(iocs["email"], from_addr, ["header:From", "envelope"])
+        if "@" in from_addr:
+            from_domain = from_addr.split("@")[-1].strip().rstrip(">").lower()
+            if from_domain:
+                _add_ioc(iocs["domain"], from_domain, ["header:From", "sender-domain"])
     ### Reply-To
     for reply_to in decoded_email.get("header").get("header").get("reply-to", []):
         for addr in extract_emails_from_text(reply_to):
             _add_ioc(iocs["email"], addr, ["header:Reply-To", "envelope"])
+            if "@" in addr:
+                rt_domain = addr.split("@")[-1].strip().lower()
+                if rt_domain:
+                    _add_ioc(iocs["domain"], rt_domain, ["header:Reply-To", "reply-to-domain"])
 
     result["iocs"] = iocs
 
