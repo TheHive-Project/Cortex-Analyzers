@@ -1,0 +1,104 @@
+
+<head>
+    <title>Elastic Observable Analyzer</title>
+</head>
+<body>
+<div>
+    <!-- General Error -->
+    <div class="panel panel-danger" ng-if="!success">
+        <div class="panel-heading">
+            <strong>Error</strong>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal" ng-if="content.errorMessage">
+                <dt><i class="fa fa-warning"></i> Message: </dt>
+                <dd class="wrap">{{ content.errorMessage }}</dd>
+            </dl>
+        </div>
+    </div>
+
+    <!-- Information Section -->
+    <div class="panel" ng-if="success">
+        <div class="panel-heading">
+            <i class="fa fa-info-circle"></i> Query Information
+        </div>
+        <div>
+            <table class="table">
+                <tr>
+                    <td><strong>Query</strong></td>
+                    <td>
+                        <span ng-if="!content.info.query || content.info.query === ''">
+                            No Kibana URL & Dashboard ID setup
+                        </span>
+                        <a ng-if="content.info.query && content.info.query !== ''" 
+                           href="{{ content.info.query }}" target="_blank">
+                            Kibana Dashboard URL
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Query String</strong></td>
+                    <td>{{ content.info.querystring || 'N/A' }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Observable Data</strong></td>
+                    <td>{{ content.info.data || 'N/A' }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Unique Users</strong></td>
+                    <td>{{ content.info.uniqueusers.join(', ') || 'N/A' }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Total User Hits</strong></td>
+                    <td>{{ content.info.userhitcount || 0 }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Unique Devices</strong></td>
+                    <td>{{ content.info.uniquedevices.length > 0 ? content.info.uniquedevices.join(', ') : 'N/A' }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Total Device Hits</strong></td>
+                    <td>{{ content.info.devicehitcount || 0 }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Total Hits</strong></td>
+                    <td>{{ content.info.hitcount || 0 }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Hits -->
+    <div class="panel" ng-if="success && content.hits && content.hits.length > 0" ng-repeat="hit in content.hits">
+        <div class="panel-heading">
+            <i class="fa fa-info-circle"></i> Hit - {{ hit["hitid"] }}
+        </div>
+        <div>
+            <table class="table">
+                <tr>
+                    <td><strong>Index</strong></td>
+                    <td>{{ hit["hitindex"] || 'N/A' }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Timestamp</strong></td>
+                    <td>{{ hit["timestamp"] || 'N/A' }}</td>
+                </tr>
+                <!-- All other fields -->
+                <tr ng-repeat="(key, value) in hit" ng-if="['hitid', 'hitindex', 'timestamp'].indexOf(key) === -1">
+                    <td><strong>{{ key }}</strong></td>
+                    <td>{{ value || 'N/A' }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- No Hits -->
+    <div class="panel" ng-if="success && (!content.hits || content.hits.length === 0)">
+        <div class="panel-heading">
+            <i class="fa fa-info-circle"></i> No Hits
+        </div>
+        <div>No hits are available for this query.</div>
+    </div>
+</div>
+
+</body>
