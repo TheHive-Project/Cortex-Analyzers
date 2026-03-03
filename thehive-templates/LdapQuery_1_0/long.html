@@ -26,3 +26,15 @@
   </div>
 
 </div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong><i class="fa fa-warning"></i> LdapQuery - Error for {{artifact.data}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Error:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
