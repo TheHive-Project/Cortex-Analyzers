@@ -17,12 +17,20 @@ class Lookyloo(Analyzer):
         self.lookyloo_instance = self.get_param("config.Lookyloo_instance", "https://lookyloo.circl.lu/") # By default, it will query the public instance of Lookyloo
         self.timeout = self.get_param("config.Capture_timeout", 120) # Default timeout set at 120s
         self.listing = self.get_param("config.Capture_listing", False) # If True, capture will appear on Lookyloo's public index page
+        self.api_key = self.get_param("config.api_key", None)
+        self.categories = self.get_param("config.categories", None)
 
         # The proxy will be automatically setup by Cortex
         self.lookyloo = LK(self.lookyloo_instance)
 
         if not self.lookyloo.is_up:  # to make sure it is up and reachable
             self.error("Lookyloo is not reachable or not up. Exit")
+
+        if self.categories and not self.api_key:
+            self.error("Categories require an API key. Please set the api_key configuration.")
+
+        if self.api_key:
+            self.lookyloo.init_apikey(apikey=self.api_key)
 
     def summary(self, raw):
         taxonomies = []
@@ -91,7 +99,7 @@ class Lookyloo(Analyzer):
         print("Submitting the url " + site + " to Lookyloo")
         # parameter listing: If False, the capture will be not be on the publicly accessible index page of lookyloo
         # parameter quiet: Returns the UUID only, instead of the whole URL
-        return self.lookyloo.submit(url=site, listing=self.listing, quiet=True)
+        return self.lookyloo.submit(url=site, listing=self.listing, categories=self.categories, quiet=True)
 
     # Query Lookyloo each seconds to get status. If status is 1 (capture OK), then return.
     # If timeout of 120s is exceeded, return the status code
