@@ -32,6 +32,20 @@
             "multi": false,
             "required": false,
             "defaultValue": false
+        },
+        {
+            "name": "api_key",
+            "description": "Lookyloo API key. Required for setting categories on captures.",
+            "type": "string",
+            "multi": false,
+            "required": false
+        },
+        {
+            "name": "categories",
+            "description": "Categories to tag captures with. Requires an API key.",
+            "type": "string",
+            "multi": true,
+            "required": false
         }
     ],
     "registration_required": false,
