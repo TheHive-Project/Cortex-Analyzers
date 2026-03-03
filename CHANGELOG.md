@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.7.9](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.9) (2026-03-02)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.8...3.7.9)
+
+**Merged pull requests:**
+
+- Virustotal - save IDS rules and YARA rules as files [\#1428](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1428) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.7.8](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.8) (2026-02-27)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.7...3.7.8)
