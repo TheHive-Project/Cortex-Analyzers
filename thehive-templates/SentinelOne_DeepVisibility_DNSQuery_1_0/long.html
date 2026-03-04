@@ -1,12 +1,26 @@
-<div class="panel panel-info">
+<div ng-if="success">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <strong> Hosts with DNSQueries for {{artifact.data}}.</strong>
+        </div>
+        <div class="panel-body">
+            <p>The following hosts made a least one DNS request for the domain pulled from {{artifact.data}} within the time
+                window of hours_ago (set in analyzer config) to the time the action was initiated.</p>
+            <ol>
+                <li ng-repeat="agent in content.agent_names">{{agent}}</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
     <div class="panel-heading">
-        <strong> Hosts with DNSQueries for {{artifact.data}}.</strong>
+        <strong><i class="fa fa-warning"></i> SentinelOne - Error for {{artifact.data}}</strong>
     </div>
     <div class="panel-body">
-        <p>The following hosts made a least one DNS request for the domain pulled from {{artifact.data}} within the time
-            window of hours_ago (set in analyzer config) to the time the action was initiated.</p>
-        <ol>
-            <li ng-repeat="agent in content.agent_names">{{agent}}</li>
-        </ol>
+        <dl class="dl-horizontal">
+            <dt>Error:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
     </div>
 </div>
