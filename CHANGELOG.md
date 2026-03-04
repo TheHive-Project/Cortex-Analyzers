@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.7.10](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.10) (2026-03-03)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.9...3.7.10)
+
+**Merged pull requests:**
+
+- Folder structure - Matching analyzer & responder folder name for same vendor [\#1431](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1431) ([nusantara-self](https://github.com/nusantara-self))
+- EmlParser - Extract sender domain & reply-to domain [\#1430](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1430) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.7.9](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.9) (2026-03-02)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.8...3.7.9)
