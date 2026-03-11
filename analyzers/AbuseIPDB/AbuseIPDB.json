@@ -1,10 +1,10 @@
 {
     "name": "AbuseIPDB",
-    "version": "1.1",
+    "version": "2.0",
     "author": "Matteo Lodi; Fabien Bloume, StrangeBee",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-v3",
-    "description": "Checks an IP against AbuseIPDB for abuse score, categories, and recent reports.",
+    "description": "Check IP addresses or CIDR blocks against AbuseIPDB. Returns abuse confidence score, report categories, reporter countries, and detailed report history.",
     "dataTypeList": ["ip"],
     "baseConfig": "AbuseIPDB",
     "command": "AbuseIPDB/abuseipdb.py",
