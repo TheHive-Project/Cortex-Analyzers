@@ -1,0 +1,23 @@
+{
+    "name": "Zetalytics_email_domain",
+    "version": "1.0",
+    "author": "Ben",
+    "url": "None",
+    "license": "None",
+    "description": "Zetalytics transform for email_domain",
+    "dataTypeList": ["mail"],
+    "baseConfig": "Zetalytics",
+    "command": "Zetalytics/zetalytics.py",
+    "configurationItems": [
+      {
+        "name": "key",
+        "description": "API key for Zetalytics",
+        "type": "string",
+        "multi": false,
+        "required": true
+      }
+    ],
+    "config": {
+        "service": "email_domain"
+    }
+}
