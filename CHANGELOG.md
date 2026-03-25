@@ -1,5 +1,26 @@
 # Changelog
 
+## [3.7.12](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.12) (2026-03-11)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.11...3.7.12)
+
+**Merged pull requests:**
+
+- Disable VirustotalDownloader - use newer VirusTotal integrations [\#1437](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1437) ([nusantara-self](https://github.com/nusantara-self))
+- AbuseIPDB v2 - support CIDRs & improvements [\#1436](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1436) ([nusantara-self](https://github.com/nusantara-self))
+- DomainMailSPFDMARC v1.2 - Support analysis for sender domain in .eml files  [\#1435](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1435) ([nusantara-self](https://github.com/nusantara-self))
+- CSFalcon - disable unofficial/deprecated analyzers & responders [\#1434](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1434) ([nusantara-self](https://github.com/nusantara-self))
+- Analyzer templates - Add error templates [\#1433](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1433) ([nusantara-self](https://github.com/nusantara-self))
+
+## [3.7.11](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.11) (2026-03-04)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.10...3.7.11)
+
+**Merged pull requests:**
+
+- Lookyloo - support for categories [\#1432](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1432) ([nusantara-self](https://github.com/nusantara-self))
+- Analyzer templates - Add error templates [\#1433](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1433) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.7.10](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.10) (2026-03-03)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.9...3.7.10)
@@ -566,7 +587,7 @@
 
 - Capa Analyzer - auto-download latest capa binary [\#1301](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1301) ([nusantara-self](https://github.com/nusantara-self))
 - Domaintools dependency issues [\#1300](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1300) ([nusantara-self](https://github.com/nusantara-self))
-- Fix anyrun\_analyzer.py for submit file [\#1299](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1299) ([ralph-loop](https://github.com/ralph-loop))
+- Fix anyrun\_analyzer.py for submit file [\#1299](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1299) ([dollce](https://github.com/dollce))
 - add proxies to phishtank\_checkurl.py [\#1298](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1298) ([Labuiga](https://github.com/Labuiga))
 
 ## [3.4.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.4.0) (2024-12-09)
