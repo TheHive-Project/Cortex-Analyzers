@@ -27,7 +27,7 @@ jobs:
       responders_matrix: ${{ steps.set-matrix.outputs.responders_matrix }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
 
@@ -101,12 +101,12 @@ jobs:
       matrix: ${{ fromJson(needs.generate-matrix.outputs.analyzers_matrix_a) }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
 
       - name: GHCR Login
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -280,16 +280,16 @@ jobs:
       # Only install QEMU when we actually build AND arm64 is targeted
       - name: Set up QEMU
         if: steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/arm64')
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
 
       # Buildx is only needed when we build (and for imagetools)
       - name: Set up Docker Buildx
         if: steps.check-rebuild.outputs.rebuild == 'true'
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
 
       - name: Build and push multi-arch image to GHCR
         if: steps.check-rebuild.outputs.rebuild == 'true'
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6.19.2
         with:
           context: analyzers/${{ matrix.directory }}
           file: ./analyzers/${{ matrix.directory }}/Dockerfile
@@ -344,7 +344,7 @@ jobs:
 
       - name: Scan image for vulnerabilities (Trivy)
         if: steps.check-rebuild.outputs.rebuild == 'true'
-        uses: aquasecurity/trivy-action@0.35.0
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # 0.35.0
         with:
           image-ref: ${{ steps.get-digest.outputs.IMAGE_DIGEST }}
           format: sarif
@@ -358,7 +358,7 @@ jobs:
 
       - name: Upload Trivy scan results to GitHub Security tab
         if: steps.check-rebuild.outputs.rebuild == 'true'
-        uses: github/codeql-action/upload-sarif@v4
+        uses: github/codeql-action/upload-sarif@38697555549f1db7851b81482ff19f1fa5c4fedc # v4.34.1
         with:
           sarif_file: trivy.sarif
           category: trivy-${{ matrix.directory }}
@@ -582,12 +582,12 @@ jobs:
       matrix: ${{ fromJson(needs.generate-matrix.outputs.analyzers_matrix_b) }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
 
       - name: GHCR Login
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -761,16 +761,16 @@ jobs:
       # Only install QEMU when we actually build AND arm64 is targeted
       - name: Set up QEMU
         if: steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/arm64')
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
 
       # Buildx is only needed when we build (and for imagetools)
       - name: Set up Docker Buildx
         if: steps.check-rebuild.outputs.rebuild == 'true'
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
 
       - name: Build and push multi-arch image to GHCR
         if: steps.check-rebuild.outputs.rebuild == 'true'
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6.19.2
         with:
           context: analyzers/${{ matrix.directory }}
           file: ./analyzers/${{ matrix.directory }}/Dockerfile
@@ -825,7 +825,7 @@ jobs:
 
       - name: Scan image for vulnerabilities (Trivy)
         if: steps.check-rebuild.outputs.rebuild == 'true'
-        uses: aquasecurity/trivy-action@0.35.0
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # 0.35.0
         with:
           image-ref: ${{ steps.get-digest.outputs.IMAGE_DIGEST }}
           format: sarif
@@ -839,7 +839,7 @@ jobs:
 
       - name: Upload Trivy scan results to GitHub Security tab
         if: steps.check-rebuild.outputs.rebuild == 'true'
-        uses: github/codeql-action/upload-sarif@v4
+        uses: github/codeql-action/upload-sarif@38697555549f1db7851b81482ff19f1fa5c4fedc # v4.34.1
         with:
           sarif_file: trivy.sarif
           category: trivy-${{ matrix.directory }}
@@ -1063,12 +1063,12 @@ jobs:
       matrix: ${{ fromJson(needs.generate-matrix.outputs.responders_matrix) }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
 
       - name: GHCR Login
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -1242,16 +1242,16 @@ jobs:
       # Only install QEMU when we actually build AND arm64 is targeted
       - name: Set up QEMU
         if: steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/arm64')
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
 
       # Buildx is only needed when we build (and for imagetools)
       - name: Set up Docker Buildx
         if: steps.check-rebuild.outputs.rebuild == 'true'
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
 
       - name: Build and push multi-arch image to GHCR
         if: steps.check-rebuild.outputs.rebuild == 'true'
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6.19.2
         with:
           context: responders/${{ matrix.directory }}
           file: ./responders/${{ matrix.directory }}/Dockerfile
@@ -1306,7 +1306,7 @@ jobs:
 
       - name: Scan image for vulnerabilities (Trivy)
         if: steps.check-rebuild.outputs.rebuild == 'true'
-        uses: aquasecurity/trivy-action@0.35.0
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # 0.35.0
         with:
           image-ref: ${{ steps.get-digest-responder.outputs.IMAGE_DIGEST }}
           format: sarif
@@ -1320,7 +1320,7 @@ jobs:
 
       - name: Upload Trivy scan results to GitHub Security tab
         if: steps.check-rebuild.outputs.rebuild == 'true'
-        uses: github/codeql-action/upload-sarif@v4
+        uses: github/codeql-action/upload-sarif@38697555549f1db7851b81482ff19f1fa5c4fedc # v4.34.1
         with:
           sarif_file: trivy.sarif
           category: trivy-${{ matrix.directory }}
@@ -1543,7 +1543,7 @@ jobs:
     if: always()
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Set lowercase repository owner
         run: |
           owner="${{ github.repository_owner }}"
@@ -1570,7 +1570,7 @@ jobs:
         run: zip -r ../analyzers/report-templates.zip *
         working-directory: thehive-templates
       - name: Save Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: catalog
           path: |
@@ -1582,7 +1582,7 @@ jobs:
             responders/responders-devel.json
             responders/responders-stable.json
       - name: Make Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe # v2.6.1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           generate_release_notes: true
@@ -1601,13 +1601,13 @@ jobs:
     needs: [ build_analyzers_A, build_analyzers_B, build_responders ]
     if: startsWith(github.ref, 'refs/tags/') && always()
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Prepare documentation files
         uses: docker://thehiveproject/doc-builder
         with:
           args: --type Cortex-Neurons
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: "3.x"
           architecture: x64
@@ -1627,12 +1627,65 @@ jobs:
     runs-on: ubuntu-latest
     if: true
     steps:
+      - name: Determine overall status
+        id: status
+        run: |
+          results=("${{ needs.build_analyzers_A.result }}" "${{ needs.build_analyzers_B.result }}" "${{ needs.build_responders.result }}" "${{ needs.build_catalog.result }}" "${{ needs.build_docs.result }}")
+          overall="success"
+          for r in "${results[@]}"; do
+            case "$r" in
+              failure)  overall="failure"; break ;;
+              cancelled) [[ "$overall" != "failure" ]] && overall="cancelled" ;;
+              skipped)  [[ "$overall" == "success" ]] && overall="skipped" ;;
+            esac
+          done
+          echo "result=$overall" >> $GITHUB_OUTPUT
+          case "$overall" in
+            success)   echo "color=#36a64f" >> $GITHUB_OUTPUT ;;
+            failure)   echo "color=#dc3545" >> $GITHUB_OUTPUT ;;
+            cancelled) echo "color=#ffc107" >> $GITHUB_OUTPUT ;;
+            *)         echo "color=#808080" >> $GITHUB_OUTPUT ;;
+          esac
+
+      - name: Sanitize commit message
+        id: commit
+        env:
+          RAW_MSG: ${{ github.event.head_commit.message }}
+        run: |
+          msg=$(printf '%s' "$RAW_MSG" | head -1 | cut -c1-100 | sed 's/[\"\\]/\\&/g')
+          echo "message=$msg" >> $GITHUB_OUTPUT
+
       - name: Slack notification
-        uses: Gamesight/slack-workflow-status@master
+        uses: slackapi/slack-github-action@af78098f536edbc4de71162a307590698245be95 # v3.0.1
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
-          channel: "#ci-cortex"
-          name: Cortex Analyzers build
-          include_commit_message: true
-          include_jobs: true
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "channel": "#ci-cortex",
+              "username": "Cortex Analyzers build",
+              "attachments": [
+                {
+                  "color": "${{ steps.status.outputs.color }}",
+                  "blocks": [
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "*${{ github.workflow }}* — *${{ steps.status.outputs.result }}*\nBranch: `${{ github.ref_name }}` • Commit: `${{ steps.commit.outputs.message }}`\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>"
+                      }
+                    },
+                    {
+                      "type": "section",
+                      "fields": [
+                        { "type": "mrkdwn", "text": "*Analyzers A:*\n${{ needs.build_analyzers_A.result }}" },
+                        { "type": "mrkdwn", "text": "*Analyzers B:*\n${{ needs.build_analyzers_B.result }}" },
+                        { "type": "mrkdwn", "text": "*Responders:*\n${{ needs.build_responders.result }}" },
+                        { "type": "mrkdwn", "text": "*Catalog:*\n${{ needs.build_catalog.result }}" },
+                        { "type": "mrkdwn", "text": "*Docs:*\n${{ needs.build_docs.result }}" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
