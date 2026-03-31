@@ -1662,7 +1662,7 @@ jobs:
           webhook-type: incoming-webhook
           payload: |
             {
-              "channel": "#ci-cortex",
+              "channel": "#proj-ci-cortex",
               "username": "Cortex Analyzers build",
               "attachments": [
                 {
