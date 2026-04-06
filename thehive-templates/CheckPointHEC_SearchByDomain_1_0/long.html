@@ -1,0 +1,100 @@
+<!-- Error panel -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+<!-- Not found -->
+<div class="panel panel-warning" ng-if="success && !content.found">
+    <div class="panel-heading">
+        <strong>Check Point HEC - No Results</strong>
+    </div>
+    <div class="panel-body">
+        <p>No emails found for domain <code>{{content.query}}</code> in Check Point Harmony Email &amp; Collaboration.</p>
+    </div>
+</div>
+
+<!-- Results -->
+<div class="panel panel-info" ng-if="success && content.found">
+    <div class="panel-heading">
+        <strong>Check Point HEC — Emails from domain <code>{{content.query}}</code></strong>
+    </div>
+    <div class="panel-body">
+
+        <!-- Summary -->
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>Summary</strong></div>
+            <div class="panel-body">
+                <table class="table table-condensed table-hover">
+                    <tr>
+                        <td><strong>Total emails</strong></td>
+                        <td>{{content.total_count}}</td>
+                    </tr>
+                    <tr ng-repeat="(verdict, count) in content.verdict_summary">
+                        <td><strong>{{verdict}}</strong></td>
+                        <td>
+                            <span ng-if="verdict == 'clean'" class="label label-success">{{count}}</span>
+                            <span ng-if="verdict == 'phishing' || verdict == 'malicious'" class="label label-danger">{{count}}</span>
+                            <span ng-if="verdict == 'suspicious' || verdict == 'spam'" class="label label-warning">{{count}}</span>
+                            <span ng-if="verdict != 'clean' && verdict != 'phishing' && verdict != 'malicious' && verdict != 'suspicious' && verdict != 'spam'" class="label label-default">{{count}}</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Email List -->
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>Emails ({{content.total_count}})</strong></div>
+            <div class="panel-body">
+                <table class="table table-condensed table-hover">
+                    <thead>
+                        <tr>
+                            <th>Received</th>
+                            <th>Subject</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Verdict</th>
+                            <th>Location</th>
+                            <th>User Exposed</th>
+                            <th ng-if="content.emails[0].portal_link">HEC</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="e in content.emails">
+                            <td>{{e.received}}</td>
+                            <td>{{e.subject}}</td>
+                            <td>{{e.from_email}}</td>
+                            <td>
+                                <span ng-repeat="r in e.to">{{r}}<br ng-if="!$last"/></span>
+                            </td>
+                            <td>
+                                <span ng-if="e.ap_verdict == 'clean'" class="label label-success">{{e.ap_verdict}}</span>
+                                <span ng-if="e.ap_verdict == 'phishing' || e.ap_verdict == 'malicious'" class="label label-danger">{{e.ap_verdict}}</span>
+                                <span ng-if="e.ap_verdict == 'suspicious' || e.ap_verdict == 'spam'" class="label label-warning">{{e.ap_verdict}}</span>
+                                <span ng-if="!e.ap_verdict" class="text-muted">N/A</span>
+                            </td>
+                            <td>
+                                <span ng-if="e.is_quarantined" class="label label-danger">Quarantined</span>
+                                <span ng-if="e.is_junk && !e.is_quarantined" class="label label-warning">Junk</span>
+                                <span ng-if="!e.is_quarantined && !e.is_junk" class="label label-info">Inbox</span>
+                            </td>
+                            <td>
+                                <span ng-if="e.is_user_exposed" class="label label-warning">Yes</span>
+                                <span ng-if="!e.is_user_exposed" class="label label-success">No</span>
+                            </td>
+                            <td ng-if="e.portal_link">
+                                <a ng-href="{{e.portal_link}}" target="_blank">View</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
