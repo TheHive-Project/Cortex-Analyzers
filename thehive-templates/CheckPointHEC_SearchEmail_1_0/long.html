@@ -1,0 +1,267 @@
+<!-- Error panel -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+<!-- Not found -->
+<div class="panel panel-warning" ng-if="success && !content.found">
+    <div class="panel-heading">
+        <strong>Check Point HEC - Email Not Found</strong>
+    </div>
+    <div class="panel-body">
+        <p>Message-ID <code>{{content.message_id}}</code> was not found in Check Point Harmony Email &amp; Collaboration.</p>
+    </div>
+</div>
+
+<!-- Results -->
+<div class="panel panel-info" ng-if="success && content.found">
+    <div class="panel-heading">
+        <strong>Check Point Harmony Email &amp; Collaboration</strong>
+    </div>
+    <div class="panel-body">
+
+        <!-- Email Details -->
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>Email Details</strong></div>
+            <div class="panel-body">
+                <table class="table table-condensed table-hover">
+                    <tr>
+                        <td><strong>Subject</strong></td>
+                        <td>{{content.email.subject}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>From</strong></td>
+                        <td>{{content.email.from_name}} &lt;{{content.email.from_email}}&gt;</td>
+                    </tr>
+                    <tr>
+                        <td><strong>From Domain</strong></td>
+                        <td>{{content.email.from_domain}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>To</strong></td>
+                        <td>
+                            <span ng-repeat="r in content.email.to">{{r}}<br/></span>
+                        </td>
+                    </tr>
+                    <tr ng-if="content.email.cc.length > 0">
+                        <td><strong>Cc</strong></td>
+                        <td>
+                            <span ng-repeat="r in content.email.cc">{{r}}<br/></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Received</strong></td>
+                        <td>{{content.email.received}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Message-ID</strong></td>
+                        <td><code>{{content.email.internet_message_id}}</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Size</strong></td>
+                        <td>{{content.email.size}} bytes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Attachments</strong></td>
+                        <td>{{content.email.attachment_count}}</td>
+                    </tr>
+                    <tr ng-if="content.email.sender_server_ip">
+                        <td><strong>Sender Server IP</strong></td>
+                        <td>{{content.email.sender_server_ip}}</td>
+                    </tr>
+                    <tr ng-if="content.email.sender_client_ip">
+                        <td><strong>Sender Client IP</strong></td>
+                        <td>{{content.email.sender_client_ip}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Status -->
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>Email Status</strong></div>
+            <div class="panel-body">
+                <table class="table table-condensed table-hover">
+                    <tr>
+                        <td><strong>Direction</strong></td>
+                        <td>
+                            <span ng-if="content.email.is_incoming" class="label label-info">Incoming</span>
+                            <span ng-if="content.email.is_outgoing" class="label label-default">Outgoing</span>
+                            <span ng-if="content.email.is_internal" class="label label-default">Internal</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Location</strong></td>
+                        <td>
+                            <span ng-if="content.email.is_quarantined" class="label label-danger">Quarantined</span>
+                            <span ng-if="content.email.is_junk && !content.email.is_quarantined" class="label label-warning">Junk / Spam</span>
+                            <span ng-if="content.email.is_deleted && !content.email.is_quarantined" class="label label-default">Deleted</span>
+                            <span ng-if="!content.email.is_quarantined && !content.email.is_junk && !content.email.is_deleted" class="label label-info">Inbox</span>
+                            <span ng-if="content.email.is_restored" class="label label-warning" style="margin-left: 4px;">Restored</span>
+                            <span ng-if="content.email.folder_name" class="text-muted" style="margin-left: 6px;">({{content.email.folder_name}})</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>User Exposed</strong></td>
+                        <td>
+                            <span ng-if="content.email.is_user_exposed" class="label label-warning">Yes</span>
+                            <span ng-if="!content.email.is_user_exposed" class="label label-success">No</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>SPF Result</strong></td>
+                        <td>
+                            <span ng-if="content.email.spf_result == 'pass'" class="label label-success">{{content.email.spf_result}}</span>
+                            <span ng-if="content.email.spf_result != 'pass'" class="label label-danger">{{content.email.spf_result}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Spam Verdict</strong></td>
+                        <td>
+                            <span ng-if="content.email.saas_spam_verdict == 'spam'" class="label label-warning">{{content.email.saas_spam_verdict}}</span>
+                            <span ng-if="content.email.saas_spam_verdict != 'spam'">{{content.email.saas_spam_verdict}}</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Security Verdicts -->
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>Security Verdicts</strong></div>
+            <div class="panel-body">
+                <table class="table table-condensed table-hover">
+                    <tr>
+                        <th>Engine</th>
+                        <th>Verdict</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Anti-Phishing</strong></td>
+                        <td>
+                            <span ng-if="content.security.combined_verdict.ap == 'clean'" class="label label-success">{{content.security.combined_verdict.ap}}</span>
+                            <span ng-if="content.security.combined_verdict.ap == 'phishing' || content.security.combined_verdict.ap == 'malicious'" class="label label-danger">{{content.security.combined_verdict.ap}}</span>
+                            <span ng-if="content.security.combined_verdict.ap == 'suspicious' || content.security.combined_verdict.ap == 'spam'" class="label label-warning">{{content.security.combined_verdict.ap}}</span>
+                            <span ng-if="!content.security.combined_verdict.ap" class="text-muted">N/A</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Anti-Virus</strong></td>
+                        <td>
+                            <span ng-if="content.security.combined_verdict.av == 'clean'" class="label label-success">{{content.security.combined_verdict.av}}</span>
+                            <span ng-if="content.security.combined_verdict.av == 'malicious'" class="label label-danger">{{content.security.combined_verdict.av}}</span>
+                            <span ng-if="!content.security.combined_verdict.av" class="text-muted">N/A</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>DLP</strong></td>
+                        <td>
+                            <span ng-if="content.security.combined_verdict.dlp == 'clean'" class="label label-success">{{content.security.combined_verdict.dlp}}</span>
+                            <span ng-if="content.security.combined_verdict.dlp == 'malicious'" class="label label-danger">{{content.security.combined_verdict.dlp}}</span>
+                            <span ng-if="!content.security.combined_verdict.dlp" class="text-muted">N/A</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Click-Time Protection</strong></td>
+                        <td>
+                            <span ng-if="content.security.combined_verdict.clicktimeProtection == 'clean'" class="label label-success">{{content.security.combined_verdict.clicktimeProtection}}</span>
+                            <span ng-if="content.security.combined_verdict.clicktimeProtection == 'malicious'" class="label label-danger">{{content.security.combined_verdict.clicktimeProtection}}</span>
+                            <span ng-if="!content.security.combined_verdict.clicktimeProtection" class="text-muted">N/A</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Shadow IT</strong></td>
+                        <td>
+                            <span ng-if="content.security.combined_verdict.shadowIt == 'clean'" class="label label-success">{{content.security.combined_verdict.shadowIt}}</span>
+                            <span ng-if="content.security.combined_verdict.shadowIt == 'malicious'" class="label label-danger">{{content.security.combined_verdict.shadowIt}}</span>
+                            <span ng-if="content.security.combined_verdict.shadowIt == 'suspicious'" class="label label-warning">{{content.security.combined_verdict.shadowIt}}</span>
+                            <span ng-if="!content.security.combined_verdict.shadowIt" class="text-muted">N/A</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Anti-Phishing Details -->
+        <div class="panel panel-default" ng-if="content.security.ap.length > 0">
+            <div class="panel-heading"><strong>Anti-Phishing Scan Details</strong></div>
+            <div class="panel-body">
+                <div ng-repeat="scan in content.security.ap">
+                    <table class="table table-condensed table-hover">
+                        <tr>
+                            <td><strong>Verdict</strong></td>
+                            <td>
+                                <span ng-if="scan.verdict == 'clean'" class="label label-success">{{scan.verdict}}</span>
+                                <span ng-if="scan.verdict == 'phishing' || scan.verdict == 'malicious'" class="label label-danger">{{scan.verdict}}</span>
+                                <span ng-if="scan.verdict == 'suspicious' || scan.verdict == 'spam'" class="label label-warning">{{scan.verdict}}</span>
+                            </td>
+                        </tr>
+                        <tr ng-if="scan.score">
+                            <td><strong>Score</strong></td>
+                            <td>{{scan.score}}</td>
+                        </tr>
+                    </table>
+                    <div ng-if="scan.payload.reasons.length > 0">
+                        <strong>Detection Reasons:</strong>
+                        <ul>
+                            <li ng-repeat="reason in scan.payload.reasons">{{reason}}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Links -->
+        <div class="panel panel-default" ng-if="content.email.links.length > 0">
+            <div class="panel-heading"><strong>Email Links</strong></div>
+            <div class="panel-body">
+                <table class="table table-condensed table-hover">
+                    <tr>
+                        <th>URL</th>
+                    </tr>
+                    <tr ng-repeat="link in content.email.links">
+                        <td><code>{{link | fang}}</code></td>
+                    </tr>
+                </table>
+                <div ng-if="content.email.links_domains.length > 0">
+                    <strong>Domains:</strong>
+                    <span ng-repeat="d in content.email.links_domains" class="label label-default" style="margin-right: 4px;">{{d}}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Entity Info -->
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>Entity Info</strong></div>
+            <div class="panel-body">
+                <table class="table table-condensed table-hover">
+                    <tr>
+                        <td><strong>Entity ID</strong></td>
+                        <td><code>{{content.entity_id}}</code></td>
+                    </tr>
+                    <tr ng-if="content.portal_link">
+                        <td><strong>View in HEC</strong></td>
+                        <td><a ng-href="{{content.portal_link}}" target="_blank">Open in Check Point HEC Portal</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>SaaS</strong></td>
+                        <td>{{content.entity_info.saas}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Created</strong></td>
+                        <td>{{content.entity_info.created}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Updated</strong></td>
+                        <td>{{content.entity_info.updated}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>

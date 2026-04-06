@@ -1,0 +1,58 @@
+{
+  "name": "CheckPointHEC_SearchByDomain",
+  "version": "1.0",
+  "author": "Fabien Bloume, StrangeBee",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Search for all emails from a sender domain in Check Point Harmony Email & Collaboration. Accepts a domain observable or an .eml file (sender domain is extracted automatically, with forwarded email support).",
+  "dataTypeList": ["domain", "file"],
+  "command": "CheckPointHEC/checkpointhec.py",
+  "baseConfig": "CheckPointHEC",
+  "config": {
+    "service": "search_by_domain"
+  },
+  "configurationItems": [
+    {
+      "name": "client_id",
+      "description": "Check Point Infinity Portal API Client ID",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "client_secret",
+      "description": "Check Point Infinity Portal API Secret Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "region",
+      "description": "Check Point HEC region: us, eu, ca, au, uk, uae, in, sg",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "eu"
+    },
+    {
+      "name": "saas",
+      "description": "SaaS platform to query: office365_emails or google_mail",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "office365_emails"
+    },
+    {
+      "name": "portal_url",
+      "description": "Check Point HEC portal base URL for direct links (eg https://COMPANYID.checkpointcloudsec.com). Optional.",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": ""
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.checkpoint.com/harmony/email-security/"
+}
