@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.7.13](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.13) (2026-03-25)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.12...3.7.13)
+
 ## [3.7.12](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.12) (2026-03-11)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.11...3.7.12)
@@ -10,7 +14,6 @@
 - AbuseIPDB v2 - support CIDRs & improvements [\#1436](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1436) ([nusantara-self](https://github.com/nusantara-self))
 - DomainMailSPFDMARC v1.2 - Support analysis for sender domain in .eml files  [\#1435](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1435) ([nusantara-self](https://github.com/nusantara-self))
 - CSFalcon - disable unofficial/deprecated analyzers & responders [\#1434](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1434) ([nusantara-self](https://github.com/nusantara-self))
-- Analyzer templates - Add error templates [\#1433](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1433) ([nusantara-self](https://github.com/nusantara-self))
 
 ## [3.7.11](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.11) (2026-03-04)
 
@@ -18,8 +21,8 @@
 
 **Merged pull requests:**
 
-- Lookyloo - support for categories [\#1432](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1432) ([nusantara-self](https://github.com/nusantara-self))
 - Analyzer templates - Add error templates [\#1433](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1433) ([nusantara-self](https://github.com/nusantara-self))
+- Lookyloo - support for categories [\#1432](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1432) ([nusantara-self](https://github.com/nusantara-self))
 
 ## [3.7.10](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.10) (2026-03-03)
 
