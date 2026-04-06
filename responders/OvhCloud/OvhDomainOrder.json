@@ -1,0 +1,81 @@
+{
+    "name": "OVH_Domain_Order",
+    "version": "1.0",
+    "author": "THA-CERT",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers/blob/master/responders/OvhCloud",
+    "license": "AGPL-V3",
+    "description": "Buy an available Domain Name on OVH Cloud.",
+    "dataTypeList": ["thehive:case_artifact"],
+    "command": "OvhCloud/ovh_cloud.py",
+    "baseConfig": "OvhCloud",
+    "config": {
+      "service": "OvhDomainOrder"
+    },
+    "configurationItems": [
+        {
+            "name": "API_endpoint",
+            "description": "Specify here OVH API's endpoint. Eg: 'ovh-eu', 'ovh-us' or 'ovh-ca'.",
+            "type": "string",
+            "multi": false,
+            "required": true,
+            "defaultValue": "ovh-eu"
+        },
+        {
+            "name": "API_ovh_subsidiary",
+            "description": "Specify here which OVH subsidiary where you want to order. Will be 'EU', 'US' or 'CA' by default.",
+            "type": "string",
+            "multi": false,
+            "required": false
+        },
+        {
+            "name": "API_ak",
+            "description": "Specify here the Application key of your OVH Cloud account.",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "API_as",
+            "description": "Specify here the Application secret of your OVH Cloud account.",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "API_cs",
+            "description": "Specify here the Consumer secret of your OVH Cloud account.",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "price_limit",
+            "description": "Maximum allowed price to buy one domain name, WITHOUT Taxes. ⚠ PRICE LIMIT USES OVH SUBSIDIARY DEFAULT CURRENCY ⚠",
+            "type": "number",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "required_configuration",
+            "description": "Set required confirguration values needed by OVH, in order to be able to finalize the order. More info: https://docs.ovh.com/fr/domains/api-order/#recuperation-des-configurations-requises. Format: 'LABEL:VALUE', EG: 'OWNER_CONTACT:/me/contact/1234'",
+            "type": "string",
+            "multi": true,
+            "required": false
+        },
+        {
+            "name": "thehive_url",
+            "description": "Optionally, specify here the API URL to add informational tags to observable.",
+            "type": "string",
+            "multi": false,
+            "required": false,
+            "defaultValue": "http://thehive:9000"
+        },
+        {
+            "name": "thehive_token",
+            "description": "Optionally, specify here the API Key to add informational tags to observable.",
+            "type": "string",
+            "multi": false,
+            "required": false
+        }
+    ]
+}
