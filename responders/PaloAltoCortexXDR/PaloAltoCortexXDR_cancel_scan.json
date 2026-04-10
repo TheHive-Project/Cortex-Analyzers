@@ -1,0 +1,71 @@
+{
+    "name": "PaloAltoCortexXDR_cancel_scan",
+    "version": "1.0",
+    "author": "Joe Lazaro; Fabien Bloume, StrangeBee",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Cancel a running scan on endpoints identified by hostname or IP list",
+    "dataTypeList": [
+        "thehive:case_artifact"
+    ],
+    "command": "PaloAltoCortexXDR/cortex_xdr.py",
+    "baseConfig": "PaloAltoCortexXDR",
+    "config": {
+        "service": "cancel_scan"
+    },
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://www.paloaltonetworks.com/cortex/cortex-xdr",
+    "service_logo": {
+        "path": "assets/cortex_logo.png",
+        "caption": "logo"
+    },
+    "screenshots": [],
+    "configurationItems": [
+        {
+            "name": "api_key",
+            "description": "API key",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "api_key_id",
+            "description": "API key ID",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "advanced_security",
+            "description": "Set True if the API key was generated with Advanced security level. False for a Standard security key.",
+            "type": "boolean",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "api_host",
+            "description": "Fully qualified domain name for the API host. Example: api-example.xdr.us.paloaltonetworks.com",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "scan_polling_interval",
+            "description": "Interval, in seconds between requests for scan actions.",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 30
+        },
+        {
+            "name": "scan_max_polling_retries",
+            "description": "Maximum number of time to retry action status when a cancel scan action is still in progress.",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 30
+        }
+    ]
+}

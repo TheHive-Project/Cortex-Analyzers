@@ -1,0 +1,85 @@
+{
+    "name": "PaloAltoCortexXDR_quarantine",
+    "version": "1.0",
+    "author": "Joe Lazaro",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Quarantine a file on endpoints identified by hostname or IP list. The file hash (SHA256) must be set in the responder configuration.",
+    "dataTypeList": [
+        "thehive:case_artifact"
+    ],
+    "command": "PaloAltoCortexXDR/cortex_xdr.py",
+    "baseConfig": "PaloAltoCortexXDR",
+    "config": {
+        "service": "quarantine"
+    },
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://www.paloaltonetworks.com/cortex/cortex-xdr",
+    "service_logo": {
+        "path": "assets/cortex_logo.png",
+        "caption": "logo"
+    },
+    "screenshots": [],
+    "configurationItems": [
+        {
+            "name": "api_key",
+            "description": "API key",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "api_key_id",
+            "description": "API key ID",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "advanced_security",
+            "description": "Set True if the API key was generated with Advanced security level. False for a Standard security key.",
+            "type": "boolean",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "api_host",
+            "description": "Fully qualified domain name for the API host. Example: api-example.xdr.us.paloaltonetworks.com",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "file_hash",
+            "description": "SHA256 hash of the file to quarantine.",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "file_path",
+            "description": "Optional full path of the file to quarantine (e.g. C:\\path\\to\\file.exe). Do not use symbolic links.",
+            "type": "string",
+            "multi": false,
+            "required": false
+        },
+        {
+            "name": "scan_polling_interval",
+            "description": "Interval, in seconds between requests for quarantine actions.",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 30
+        },
+        {
+            "name": "scan_max_polling_retries",
+            "description": "Maximum number of time to retry action status when a quarantine action is still in progress.",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 30
+        }
+    ]
+}
