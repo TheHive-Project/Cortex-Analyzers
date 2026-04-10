@@ -67,6 +67,11 @@ class PaloAltoCortexXDRResponder(Responder):
             'config.allow_multiple_isolation_targets', False)
         self.service = self.get_param(
             'config.service', None, 'Missing config.service')
+        self.quarantine_file_hash = self.get_param('config.file_hash', None)
+        self.quarantine_file_path = self.get_param('config.file_path', None)
+        self.forensics_collector_uuid = self.get_param(
+            'config.collector_uuid', None)
+        self.hash_comment = self.get_param('config.comment', None)
         if self.api_host.startswith('http'):
             self.error('api_host should be a FQDN, not a URL')
         self.api_root = f'https://{self.api_host}/public_api/v1'
@@ -180,6 +185,187 @@ class PaloAltoCortexXDRResponder(Responder):
         self.current_endpoints = response_json.get(
             'reply', {}).get('endpoints')
         return response_json['reply']
+
+    def cancel_scan_endpoints(self, endpoints: List[Endpoint]):
+        """Cancel a running scan on selected endpoints."""
+        url = f'{self.api_root}/endpoints/abort_scan'
+        endpoint_ids = [e['endpoint_id'] for e in endpoints]
+        endpoints_terse = [
+            f"Name: {e['endpoint_name']} | ID: {e['endpoint_id']}"
+            for e in endpoints
+        ]
+
+        response_json = self._make_api_request(
+            'post',
+            'cancel_scan:',
+            url=url,
+            json={
+                'request_data': {
+                    'filters': [
+                        {
+                            'field': 'endpoint_id_list',
+                            'operator': 'in',
+                            'value': endpoint_ids
+                        }
+                    ]
+                }
+            }
+        )
+        action_id = response_json['reply']['action_id']
+        action_result = self.poll_action_status(action_id, 'cancel_scan')
+        if not action_result['success']:
+            self.error(str(action_result))
+
+        self.report({
+            'success': True,
+            'message': 'Finished cancel scan action.',
+            'action_status': action_result['action_status'],
+            'endpoints': endpoints_terse
+        })
+
+    def _make_boolean_api_request(self, url: str, error_prefix: str, body: dict):
+        """Make an API request whose success response is a raw boolean (not a reply object)."""
+        headers = self._get_auth_header()
+        response = self.session.request('post', url=url, headers=headers,
+                                        json=body)
+        if response.status_code != 200:
+            self.error(f'{error_prefix} request failed with status'
+                       f' {response.status_code}: {response.text}')
+        result = response.json()
+        if result is not True:
+            self.error(f'{error_prefix} unexpected response: {result}')
+
+    def block_list_hashes(self, hash_list: List[str]):
+        """Add file hashes to the block list."""
+        url = f'{self.api_root}/hash_exceptions/blocklist'
+        request_data = {'hash_list': hash_list}
+        if self.hash_comment:
+            request_data['comment'] = self.hash_comment
+        self._make_boolean_api_request(
+            url, 'block_list:',
+            {'request_data': request_data}
+        )
+        self.report({
+            'success': True,
+            'message': (
+                f'Successfully added {len(hash_list)} hash(es) to the'
+                ' block list.'),
+            'hashes': hash_list
+        })
+
+    def initiate_forensics_triage(self, endpoints: List[Endpoint]):
+        """Initiate forensics triage collection on selected endpoints.
+
+        Requires Forensics add-on license. Agents must have Forensics
+        License enabled and must all be the same OS (Windows or macOS).
+        Maximum 10 concurrent triage actions.
+        """
+        url = f'{self.api_root}/triage_endpoint'
+        agent_ids = [e['endpoint_id'] for e in endpoints]
+
+        request_data = {'agent_ids': agent_ids}
+        if self.forensics_collector_uuid:
+            request_data['collector_uuid'] = self.forensics_collector_uuid
+
+        response_json = self._make_api_request(
+            'post',
+            'initiate_forensics:',
+            url=url,
+            json={'request_data': request_data}
+        )
+        reply = response_json['reply']
+        self.report({
+            'success': True,
+            'message': 'Forensics triage initiated.',
+            'group_action_id': reply.get('group_action_id'),
+            'successful_agent_ids': reply.get('successful_agent_ids', []),
+            'unsuccessful_agent_ids': reply.get('unsuccessful_agent_ids', [])
+        })
+
+    def allow_list_hashes(self, hash_list: List[str]):
+        """Add file hashes to the allow list."""
+        url = f'{self.api_root}/hash_exceptions/allowlist'
+        request_data = {'hash_list': hash_list}
+        if self.hash_comment:
+            request_data['comment'] = self.hash_comment
+        self._make_boolean_api_request(
+            url, 'allow_list:',
+            {'request_data': request_data}
+        )
+        self.report({
+            'success': True,
+            'message': (
+                f'Successfully added {len(hash_list)} hash(es) to the'
+                ' allow list.'),
+            'hashes': hash_list
+        })
+
+    def restore_file(self, file_hash: str):
+        """Restore a quarantined file on all endpoints where it was quarantined."""
+        url = f'{self.api_root}/endpoints/restore'
+        response_json = self._make_api_request(
+            'post',
+            'restore_file:',
+            url=url,
+            json={
+                'request_data': {
+                    'file_hash': file_hash
+                }
+            }
+        )
+        reply = response_json['reply']
+        action_id = reply['action_id']
+        action_result = self.poll_action_status(action_id, 'restore_file')
+        if not action_result['success']:
+            self.error(str(action_result))
+        self.report({
+            'success': True,
+            'message': 'File restore action completed.',
+            'action_status': action_result['action_status'],
+            'endpoints_count': reply.get('endpoints_count'),
+            'file_hash': file_hash
+        })
+
+    def quarantine_file(self, endpoints: List[Endpoint],
+                        file_hash: str, file_path: str = None):
+        """Quarantine a file by hash on selected endpoints."""
+        url = f'{self.api_root}/endpoints/quarantine'
+        endpoint_ids = [e['endpoint_id'] for e in endpoints]
+        endpoints_terse = [
+            f"Name: {e['endpoint_name']} | ID: {e['endpoint_id']}"
+            for e in endpoints
+        ]
+
+        request_data = {
+            'filters': [
+                {
+                    'field': 'endpoint_id_list',
+                    'operator': 'in',
+                    'value': endpoint_ids
+                }
+            ],
+            'file_hash': file_hash
+        }
+        if file_path:
+            request_data['file_path'] = file_path
+
+        response_json = self._make_api_request(
+            'post',
+            'quarantine:',
+            url=url,
+            json={'request_data': request_data}
+        )
+        action_id = response_json['reply']['action_id']
+        action_result = self.poll_action_status(action_id, 'quarantine')
+        if not action_result['success']:
+            self.error(str(action_result))
+        self.report({
+            'success': True,
+            'message': 'File quarantine action completed.',
+            'action_status': action_result['action_status'],
+            'endpoints': endpoints_terse,
+            'file_hash': file_hash
+        })
 
     def scan_endpoints(self, endpoints: List[Endpoint]):
         """Run a scan on selected endpoints."""
@@ -368,6 +554,29 @@ class PaloAltoCortexXDRResponder(Responder):
     def run(self):
         observable = self.get_data()
 
+        # Hash-only services — no endpoint lookup needed
+        if self.service in ['block_list', 'allow_list', 'restore_file']:
+            if observable['dataType'] != 'hash':
+                self.error(f"Only 'hash' observables are supported for"
+                           f" {self.service}.")
+            o_data = observable['data']
+            if isinstance(o_data, str) and '\n' in o_data:
+                o_data = o_data.splitlines()
+            if not isinstance(o_data, list):
+                o_data = [o_data]
+            o_data = list(filter(None, map(str.strip, o_data)))
+            if self.service == 'block_list':
+                self.block_list_hashes(o_data)
+            elif self.service == 'allow_list':
+                self.allow_list_hashes(o_data)
+            elif self.service == 'restore_file':
+                if len(o_data) != 1:
+                    self.error('restore_file supports exactly one hash'
+                               ' observable.')
+                self.restore_file(o_data[0])
+            return
+
+        # All other services work on endpoints (ip/fqdn)
         if observable['dataType'] not in ['fqdn', 'ip']:
             self.error("Only 'fqdn' and 'ip' observables are supported.")
 
@@ -380,7 +589,7 @@ class PaloAltoCortexXDRResponder(Responder):
         # Make sure there are no empty/whitespace strings in the list
         o_data = list(filter(None, map(str.strip, o_data)))
 
-        if (self.service != 'scan'
+        if (self.service in ['isolate', 'unisolate']
                 and len(o_data) > 1
                 and not self.allow_multi_target):
             self.error(
@@ -432,6 +641,17 @@ class PaloAltoCortexXDRResponder(Responder):
             self.unisolate_endpoints(actionable_endpoints)
         elif self.service == 'scan':
             self.scan_endpoints(endpoints)
+        elif self.service == 'cancel_scan':
+            self.cancel_scan_endpoints(endpoints)
+        elif self.service == 'initiate_forensics':
+            self.initiate_forensics_triage(endpoints)
+        elif self.service == 'quarantine':
+            if not self.quarantine_file_hash:
+                self.error(
+                    'config.file_hash is required for the quarantine service.')
+            self.quarantine_file(
+                endpoints, self.quarantine_file_hash,
+                self.quarantine_file_path)
         else:
             self.error(f'Service {self.service} is not implemented')
 

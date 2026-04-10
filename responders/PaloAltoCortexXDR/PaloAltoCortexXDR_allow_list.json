@@ -1,0 +1,63 @@
+{
+    "name": "PaloAltoCortexXDR_allow_list",
+    "version": "1.0",
+    "author": "Joe Lazaro; Fabien Bloume, StrangeBee",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Add a file hash to the Cortex XDR allow list",
+    "dataTypeList": [
+        "thehive:case_artifact"
+    ],
+    "command": "PaloAltoCortexXDR/cortex_xdr.py",
+    "baseConfig": "PaloAltoCortexXDR",
+    "config": {
+        "service": "allow_list"
+    },
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://www.paloaltonetworks.com/cortex/cortex-xdr",
+    "service_logo": {
+        "path": "assets/cortex_logo.png",
+        "caption": "logo"
+    },
+    "screenshots": [],
+    "configurationItems": [
+        {
+            "name": "api_key",
+            "description": "API key",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "api_key_id",
+            "description": "API key ID",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "advanced_security",
+            "description": "Set True if the API key was generated with Advanced security level. False for a Standard security key.",
+            "type": "boolean",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "api_host",
+            "description": "Fully qualified domain name for the API host. Example: api-example.xdr.us.paloaltonetworks.com",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "comment",
+            "description": "Optional comment added to the allow list entry for audit purposes.",
+            "type": "string",
+            "multi": false,
+            "required": false,
+            "defaultValue": "Allowed via TheHive"
+        }
+    ]
+}
