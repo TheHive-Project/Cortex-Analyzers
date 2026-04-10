@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.8.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.8.0) (2026-04-06)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.13...3.8.0)
+
+**Merged pull requests:**
+
+- Checkpoint Harmony Email & Collaboration analyzers [\#1442](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1442) ([nusantara-self](https://github.com/nusantara-self))
+- OVH Cloud Analyzers & Responders [\#1441](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1441) ([kiaora17](https://github.com/kiaora17))
+- GHA - SHA pinning [\#1439](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1439) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.7.13](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.13) (2026-03-25)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.12...3.7.13)
