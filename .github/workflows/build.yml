@@ -133,11 +133,13 @@ jobs:
             version=$(jq -r '.version // empty' "$json_file")
             description=$(jq -r '.description // empty' "$json_file")
             command=$(jq -r '.command // empty' "$json_file")
+            requirements=$(jq -r '.requirements // "requirements.txt"' "$json_file")
 
             echo "LOWERCASE_NAME=${lower_name}" >> $GITHUB_ENV
             echo "VERSION=${version}" >> $GITHUB_ENV
             echo "DESCRIPTION=${description}" >> $GITHUB_ENV
             echo "COMMAND=${command}" >> $GITHUB_ENV
+            echo "REQUIREMENTS=${requirements}" >> $GITHUB_ENV
 
             if [[ "$version" == *.* ]]; then
               version_split=$(echo "$version" | cut -d '.' -f 1)
@@ -296,6 +298,7 @@ jobs:
           platforms: ${{ env.PLATFORMS }}
           push: true
           tags: ${{ env.IMAGE_TAGS }}
+          build-args: REQUIREMENTS=${{ env.REQUIREMENTS }}
           cache-from: type=gha
           cache-to: type=gha,mode=max,scope=shared
           labels: |
@@ -614,11 +617,13 @@ jobs:
             version=$(jq -r '.version // empty' "$json_file")
             description=$(jq -r '.description // empty' "$json_file")
             command=$(jq -r '.command // empty' "$json_file")
+            requirements=$(jq -r '.requirements // "requirements.txt"' "$json_file")
 
             echo "LOWERCASE_NAME=${lower_name}" >> $GITHUB_ENV
             echo "VERSION=${version}" >> $GITHUB_ENV
             echo "DESCRIPTION=${description}" >> $GITHUB_ENV
             echo "COMMAND=${command}" >> $GITHUB_ENV
+            echo "REQUIREMENTS=${requirements}" >> $GITHUB_ENV
 
             if [[ "$version" == *.* ]]; then
               version_split=$(echo "$version" | cut -d '.' -f 1)
@@ -777,6 +782,7 @@ jobs:
           platforms: ${{ env.PLATFORMS }}
           push: true
           tags: ${{ env.IMAGE_TAGS }}
+          build-args: REQUIREMENTS=${{ env.REQUIREMENTS }}
           cache-from: type=gha
           cache-to: type=gha,mode=max,scope=shared
           labels: |
@@ -1095,11 +1101,13 @@ jobs:
             version=$(jq -r '.version // empty' "$json_file")
             description=$(jq -r '.description // empty' "$json_file")
             command=$(jq -r '.command // empty' "$json_file")
+            requirements=$(jq -r '.requirements // "requirements.txt"' "$json_file")
 
             echo "LOWERCASE_NAME=${lower_name}" >> $GITHUB_ENV
             echo "VERSION=${version}" >> $GITHUB_ENV
             echo "DESCRIPTION=${description}" >> $GITHUB_ENV
             echo "COMMAND=${command}" >> $GITHUB_ENV
+            echo "REQUIREMENTS=${requirements}" >> $GITHUB_ENV
 
             if [[ "$version" == *.* ]]; then
               version_split=$(echo "$version" | cut -d '.' -f 1)
@@ -1258,6 +1266,7 @@ jobs:
           platforms: ${{ env.PLATFORMS }}
           push: true
           tags: ${{ env.IMAGE_TAGS }}
+          build-args: REQUIREMENTS=${{ env.REQUIREMENTS }}
           cache-from: type=gha
           cache-to: type=gha,mode=max,scope=shared
           labels: |
