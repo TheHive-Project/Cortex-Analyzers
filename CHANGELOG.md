@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.8.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.8.1) (2026-04-10)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.8.0...3.8.1)
+
+**Merged pull requests:**
+
+- Cortex XDR - new responder flavors [\#1446](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1446) ([nusantara-self](https://github.com/nusantara-self))
+- Restore original LdapQuery Dockerfile [\#1445](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1445) ([nusantara-self](https://github.com/nusantara-self))
+- Add Dockerfile with openssl [\#1444](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1444) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.8.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.8.0) (2026-04-06)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.7.13...3.8.0)
