@@ -1,0 +1,69 @@
+{
+  "name": "AnyRun_TI_Lookup",
+  "version": "1.0",
+  "author": "ANY.RUN Integrations Team",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Check URL/IP/Domain/File reputation",
+  "dataTypeList": ["ip", "domain", "url", "hash"],
+  "command": "AnyRun/anyrun_analyzer.py",
+  "baseConfig": "AnyRun",
+  "config": {
+    "analysis_type": "ti_lookup"
+  },
+  "configurationItems": [
+    {
+      "name": "api_key",
+      "description": "ANY.RUN TI Lookup API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "verify_ssl",
+      "description": "Verify SSL certificate",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "get_iocs",
+      "description": "Attach Analysis IOCs to the case as observables",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "extract_malicious_iocs",
+      "description": "When enabled, extracts only Suspicious and Malicious IOCs. When disabled, extracts all IOCs",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "lookup_depth",
+      "description": "Specify the number of days from the current date for which you want to lookup",
+      "type": "Number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 180
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://any.run/",
+  "service_logo": {
+      "path": "assets/anyrun.png",
+      "caption": "AnyRun logo"
+  },
+  "screenshots": [
+      {
+          "path": "assets/long_report.png",
+          "caption": "AnyRun: Long report template"
+      }
+  ]
+}

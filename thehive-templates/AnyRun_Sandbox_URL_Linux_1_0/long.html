@@ -1,0 +1,236 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong><i class="fa fa-exclamation-triangle"></i> {{ artifact.data }}</strong>
+    </div>
+    <div class="panel-body">
+        <strong>Execution Error:</strong> {{ errorMessage }}
+    </div>
+</div>
+
+<div ng-if="success">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 20px;">
+        <h3 style="margin: 0; color: #333;">
+            <i class="fa fa-shield text-primary" style="margin-right: 8px;"></i> 
+            <strong>ANY.RUN</strong> Sandbox Analysis Report
+        </h3>
+        
+        <div style="display: flex; align-items: center;">
+            <div class="btn-group" ng-if="content.reports" style="margin-right: 15px;">
+                <a ng-repeat="(repName, repUrl) in content.reports" ng-href="{{ repUrl }}" target="_blank" class="btn btn-default btn-sm">
+                    <i class="fa fa-cloud-download"></i> {{ repName }}
+                </a>
+            </div>
+            
+            <a ng-href="{{ content.permanentUrl }}" target="_blank" class="btn btn-info" ng-if="content.permanentUrl" style="font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
+                Open ANY.RUN Sandbox <i class="fa fa-external-link" style="margin-left: 3px;"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="alert" style="border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);"
+         ng-class="{'alert-danger': content.verdict == 'Malicious activity', 
+                    'alert-warning': content.verdict == 'Suspicious activity', 
+                    'alert-success': content.verdict == 'No threats detected',
+                    'alert-info': !content.verdict}">
+        <div class="row">
+            <div class="col-md-8">
+                <h3 style="margin-top: 0;">
+                    <i class="fa" ng-class="{'fa-bug': content.verdict == 'Malicious activity', 'fa-exclamation-triangle': content.verdict == 'Suspicious activity', 'fa-check-circle': content.verdict == 'No threats detected', 'fa-question-circle': !content.verdict}"></i>
+                    <strong>Verdict:</strong> {{ content.verdict || 'Unknown' }}
+                </h3>
+                
+                <div ng-if="content.tags" style="margin-top: 12px;">
+                    <span class="label" ng-repeat="t in content.tags.split(',') track by $index" 
+                          style="margin-right: 6px; font-size: 13px; padding: 6px 8px; background-color: rgba(255, 255, 255, 0.4); border: 1px solid rgba(255, 255, 255, 0.6); color: #333; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: inline-block; margin-bottom: 4px;">
+                        <i class="fa fa-tag text-muted"></i> {{ t.trim() }}
+                    </span>
+                </div>
+            </div>
+            
+            <div class="col-md-4 text-right" ng-if="content.mitre">
+                <h5 style="margin-top: 0; color: inherit; opacity: 0.8;">MITRE ATT&CK</h5>
+                <span class="label" ng-repeat="m in content.mitre.split(',') track by $index" 
+                      style="margin-left: 5px; font-size: 13px; padding: 6px 8px; display: inline-block; margin-bottom: 5px; background-color: rgba(255, 255, 255, 0.4); border: 1px solid rgba(255, 255, 255, 0.6); color: #333; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                    <i class="fa fa-crosshairs text-muted"></i> {{ m.trim() }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default" ng-if="content.mainObject" style="box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+        <div class="panel-heading" style="background-color: #f9f9f9; border-bottom: 1px solid #eee; color: #444;">
+            <strong><i class="fa fa-bullseye" style="color: #777; margin-right: 5px;"></i> Main Object: <span class="text-uppercase text-primary">{{ content.mainObject.type }}</span></strong>
+        </div>
+        <div class="panel-body" style="padding: 15px;">
+            
+            <div style="display: flex; align-items: flex-start; margin-bottom: 8px;" ng-if="content.mainObject.url">
+                <div style="flex: 0 0 100px; color: #777; font-size: 13px; padding-top: 5px;">
+                    <i class="fa fa-link" style="width: 14px; text-align: center; margin-right: 4px;"></i> <strong>URL:</strong>
+                </div>
+                <div style="flex: 1; background-color: #f8f9fa; border: 1px solid #f0f0f0; padding: 6px 10px; border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; color: #333; word-break: break-all;">
+                    {{ content.mainObject.url }}
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: flex-start; margin-bottom: 8px;" ng-if="content.mainObject.hashes.sha256">
+                <div style="flex: 0 0 100px; color: #777; font-size: 13px; padding-top: 5px;">
+                    <i class="fa fa-hashtag" style="width: 14px; text-align: center; margin-right: 4px;"></i> <strong>SHA256:</strong>
+                </div>
+                <div style="flex: 1; background-color: #f8f9fa; border: 1px solid #f0f0f0; padding: 6px 10px; border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; color: #333; word-break: break-all;">
+                    {{ content.mainObject.hashes.sha256 }}
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: flex-start; margin-bottom: 8px;" ng-if="content.mainObject.hashes.md5">
+                <div style="flex: 0 0 100px; color: #777; font-size: 13px; padding-top: 5px;">
+                    <i class="fa fa-hashtag" style="width: 14px; text-align: center; margin-right: 4px;"></i> <strong>MD5:</strong>
+                </div>
+                <div style="flex: 1; background-color: #f8f9fa; border: 1px solid #f0f0f0; padding: 6px 10px; border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; color: #333; word-break: break-all;">
+                    {{ content.mainObject.hashes.md5 }}
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: flex-start; margin-bottom: 8px;" ng-if="content.mainObject.hashes.sha1">
+                <div style="flex: 0 0 100px; color: #777; font-size: 13px; padding-top: 5px;">
+                    <i class="fa fa-hashtag" style="width: 14px; text-align: center; margin-right: 4px;"></i> <strong>SHA1:</strong>
+                </div>
+                <div style="flex: 1; background-color: #f8f9fa; border: 1px solid #f0f0f0; padding: 6px 10px; border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; color: #333; word-break: break-all;">
+                    {{ content.mainObject.hashes.sha1 }}
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: flex-start; margin-bottom: 0;" ng-if="content.mainObject.hashes.ssdeep">
+                <div style="flex: 0 0 100px; color: #777; font-size: 13px; padding-top: 5px;">
+                    <i class="fa fa-paw" style="width: 14px; text-align: center; margin-right: 4px;"></i> <strong>SSDEEP:</strong>
+                </div>
+                <div style="flex: 1; background-color: #f8f9fa; border: 1px solid #f0f0f0; padding: 6px 10px; border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; color: #333; word-break: break-all;">
+                    {{ content.mainObject.hashes.ssdeep }}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <h4 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; margin-top: 25px;"><i class="fa fa-bar-chart"></i> Execution Activity</h4>
+    <div class="row" style="margin-bottom: 20px;" ng-if="content.counters">
+        <div class="col-sm-6 col-md-6" style="margin-bottom: 15px;">
+            <div class="well well-sm text-left" style="background-color: #fff; border-top: 3px solid #337ab7; box-shadow: 0 1px 3px rgba(0,0,0,0.08); padding: 12px;">
+                <div style="display: flex; align-items: center; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; margin-bottom: 10px;">
+                    <i class="fa fa-cogs fa-lg" style="color: #337ab7; margin-right: 8px;"></i>
+                    <h5 style="margin: 0; color: #444; text-transform: uppercase; font-size: 12px; font-weight: bold;">Processes</h5>
+                </div>
+                <div style="font-size: 13px;">
+                    <div style="display: flex; justify-content: space-between; padding: 3px 0;">
+                        <span style="color: #777;">Total:</span> <strong style="font-size: 14px;">{{ content.counters.processes.total || 0 }}</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 3px 0;">
+                        <span style="color: #777;">Monitored:</span> <strong style="font-size: 14px;">{{ content.counters.processes.monitored || 0 }}</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 3px 0;">
+                        <span class="text-warning" style="font-weight: 500;">Suspicious:</span> <strong class="text-warning" style="font-size: 14px;">{{ content.counters.processes.suspicious || 0 }}</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 3px 0;">
+                        <span class="text-danger" style="font-weight: 500;">Malicious:</span> <strong class="text-danger" style="font-size: 14px;">{{ content.counters.processes.malicious || 0 }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-sm-6 col-md-6" style="margin-bottom: 15px;">
+            <div class="well well-sm text-left" style="background-color: #fff; border-top: 3px solid #5cb85c; box-shadow: 0 1px 3px rgba(0,0,0,0.08); padding: 12px;">
+                <div style="display: flex; align-items: center; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; margin-bottom: 10px;">
+                    <i class="fa fa-globe fa-lg" style="color: #5cb85c; margin-right: 8px;"></i>
+                    <h5 style="margin: 0; color: #444; text-transform: uppercase; font-size: 12px; font-weight: bold;">Network</h5>
+                </div>
+                <div style="font-size: 13px;">
+                    <div style="display: flex; justify-content: space-between; padding: 3px 0;">
+                        <span style="color: #777;">Connections:</span> <strong style="font-size: 14px;">{{ content.counters.network.connections || 0 }}</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 3px 0;">
+                        <span style="color: #777;">HTTP Reqs:</span> <strong style="font-size: 14px;">{{ content.counters.network.http || 0 }}</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 3px 0;">
+                        <span style="color: #777;">DNS Reqs:</span> <strong style="font-size: 14px;">{{ content.counters.network.dns || 0 }}</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 3px 0;">
+                        <span class="text-danger" style="font-weight: 500;">Threats:</span> <strong class="text-danger" style="font-size: 14px;">{{ content.counters.network.threats || 0 }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-sm-6 col-md-6" style="margin-bottom: 15px;">
+            <div class="well well-sm text-left" style="background-color: #fff; border-top: 3px solid #f0ad4e; box-shadow: 0 1px 3px rgba(0,0,0,0.08); padding: 12px;">
+                <div style="display: flex; align-items: center; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; margin-bottom: 10px;">
+                    <i class="fa fa-file-text fa-lg" style="color: #f0ad4e; margin-right: 8px;"></i>
+                    <h5 style="margin: 0; color: #444; text-transform: uppercase; font-size: 12px; font-weight: bold;">Files</h5>
+                </div>
+                <div style="font-size: 13px;">
+                    <div style="display: flex; justify-content: space-between; padding: 3px 0;">
+                        <span style="color: #777;">Text:</span> <strong style="font-size: 14px;">{{ content.counters.files.text || 0 }}</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 3px 0;">
+                        <span style="color: #777;">Unknown:</span> <strong style="font-size: 14px;">{{ content.counters.files.unknown || 0 }}</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 3px 0;">
+                        <span class="text-warning" style="font-weight: 500;">Suspicious:</span> <strong class="text-warning" style="font-size: 14px;">{{ content.counters.files.suspicious || 0 }}</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 3px 0;">
+                        <span class="text-danger" style="font-weight: 500;">Malicious:</span> <strong class="text-danger" style="font-size: 14px;">{{ content.counters.files.malicious || 0 }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-sm-6 col-md-6" style="margin-bottom: 15px;">
+            <div class="well well-sm text-left" style="background-color: #fff; border-top: 3px solid #5bc0de; box-shadow: 0 1px 3px rgba(0,0,0,0.08); padding: 12px;">
+                <div style="display: flex; align-items: center; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; margin-bottom: 10px;">
+                    <i class="fa fa-windows fa-lg" style="color: #5bc0de; margin-right: 8px;"></i>
+                    <h5 style="margin: 0; color: #444; text-transform: uppercase; font-size: 12px; font-weight: bold;">Registry</h5>
+                </div>
+                <div style="font-size: 13px;">
+                    <div style="display: flex; justify-content: space-between; padding: 3px 0;">
+                        <span style="color: #777;">Total Events:</span> <strong style="font-size: 14px;">{{ content.counters.registry.total || 0 }}</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 3px 0;">
+                        <span style="color: #777;">Read:</span> <strong style="font-size: 14px;">{{ content.counters.registry.read || 0 }}</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 3px 0;">
+                        <span style="color: #777;">Write:</span> <strong style="font-size: 14px;">{{ content.counters.registry.write || 0 }}</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 3px 0;">
+                        <span style="color: #777;">Delete:</span> <strong style="font-size: 14px;">{{ content.counters.registry.delete || 0 }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; margin-top: 25px;"><i class="fa fa-sitemap"></i> Related Entities</h4>
+    <div ng-if="content.related_domains || content.related_ips || content.related_urls">
+        <div class="panel panel-default" style="box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+            <div class="list-group">
+                <div class="list-group-item" ng-if="content.related_domains">
+                    <div style="color: #777; font-size: 12px; margin-bottom: 5px; text-transform: uppercase;"><strong>Domains</strong></div>
+                    <span ng-repeat="dom in content.related_domains.split(',') track by $index" class="label label-warning" style="margin-right: 5px; font-size: 12px; display: inline-block; margin-bottom: 4px;">
+                        {{ dom.trim() }}
+                    </span>
+                </div>
+                <div class="list-group-item" ng-if="content.related_ips">
+                    <div style="color: #777; font-size: 12px; margin-bottom: 5px; text-transform: uppercase;"><strong>IP Addresses</strong></div>
+                    <span ng-repeat="ip in content.related_ips.split(',') track by $index" class="label label-danger" style="margin-right: 5px; font-size: 12px; display: inline-block; margin-bottom: 4px;">
+                        {{ ip.trim() }}
+                    </span>
+                </div>
+                <div class="list-group-item" ng-if="content.related_urls">
+                    <div style="color: #777; font-size: 12px; margin-bottom: 5px; text-transform: uppercase;"><strong>URLs</strong></div>
+                    <span ng-repeat="url in content.related_urls.split(',') track by $index" class="label label-danger" style="margin-right: 5px; font-size: 12px; display: inline-block; margin-bottom: 4px;">
+                        {{ url.trim() }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

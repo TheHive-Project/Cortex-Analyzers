@@ -1,2 +1,3 @@
 cortexutils
 requests
+anyrun-sdk==1.14.12
