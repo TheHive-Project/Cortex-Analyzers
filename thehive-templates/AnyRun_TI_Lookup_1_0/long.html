@@ -1,0 +1,268 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong><i class="fa fa-exclamation-triangle"></i> {{ artifact.data }}</strong>
+    </div>
+    <div class="panel-body">
+        <strong>Execution Error:</strong> {{ errorMessage }}
+    </div>
+</div>
+
+<div ng-if="success" ng-init="urlSort='toString()'; urlRev=true; ipSort='toString()'; ipRev=true">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 20px;">
+        <h3 style="margin: 0; color: #333;">
+            <i class="fa fa-shield text-primary" style="margin-right: 8px;"></i> 
+            <strong>ANY.RUN</strong> Threat Intelligence Lookup
+        </h3>
+        
+        <div style="display: flex; align-items: center;">
+            <a ng-href="{{ content.ti_lookup_url }}" target="_blank" class="btn btn-info" ng-if="content.ti_lookup_url" style="font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
+                Open ANY.RUN TI Lookup <i class="fa fa-external-link" style="margin-left: 3px;"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="alert" style="border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);"
+         ng-class="{'alert-danger': content.treat_level == 'Malicious', 
+                    'alert-warning': content.treat_level == 'Suspicious', 
+                    'alert-success': content.treat_level == 'Clean' || content.treat_level == 'No threats detected',
+                    'alert-info': !content.treat_level}">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 style="margin-top: 0;">
+                    <i class="fa" ng-class="{'fa-bug': content.treat_level == 'Malicious', 'fa-exclamation-triangle': content.treat_level == 'Suspicious', 'fa-check-circle': content.treat_level == 'Clean', 'fa-question-circle': !content.treat_level}"></i>
+                    <strong>Verdict:</strong> {{ content.treat_level || 'Unknown' }}
+                </h3>
+                
+                <div ng-if="content.tags" style="margin-top: 12px;">
+                    <span class="label" ng-repeat="t in content.tags.split(',') track by $index" 
+                          style="margin-right: 6px; font-size: 13px; padding: 6px 8px; background-color: rgba(255, 255, 255, 0.4); border: 1px solid rgba(255, 255, 255, 0.6); color: #333; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: inline-block; margin-bottom: 4px;">
+                        <i class="fa fa-tag text-muted"></i> {{ t.trim() }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default" style="box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+        <div class="panel-heading" style="background-color: #f9f9f9; border-bottom: 1px solid #eee; color: #444;">
+            <strong><i class="fa fa-bullseye" style="color: #777; margin-right: 5px;"></i> Main Object</strong>
+        </div>
+        <div class="panel-body" style="padding: 15px;">
+            
+            <div style="display: flex; align-items: flex-start; margin-bottom: 8px;" ng-if="content.detected_type">
+                <div style="flex: 0 0 100px; color: #444; font-size: 13px; padding-top: 5px;">
+                    <i class="fa fa-crosshairs" style="width: 14px; text-align: center; margin-right: 4px;"></i> <strong>Object:</strong>
+                </div>
+                <div style="flex: 1; background-color: #f8f9fa; border: 1px solid #f0f0f0; padding: 6px 10px; border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; color: #333; word-break: break-all;">
+                    {{ content.detected_type }}
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: flex-start; margin-bottom: 8px;" ng-if="content.filename">
+                <div style="flex: 0 0 100px; color: #444; font-size: 13px; padding-top: 5px;">
+                    <i class="fa fa-file" style="width: 14px; text-align: center; margin-right: 4px;"></i> <strong>Name:</strong>
+                </div>
+                <div style="flex: 1; background-color: #f8f9fa; border: 1px solid #f0f0f0; padding: 6px 10px; border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; color: #333; word-break: break-all;">
+                    {{ content.filename }}
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: flex-start; margin-bottom: 8px;" ng-if="content.last_seen">
+                <div style="flex: 0 0 100px; color: #444; font-size: 13px; padding-top: 5px;">
+                    <i class="fa fa-history" style="width: 14px; text-align: center; margin-right: 4px;"></i> <strong>Last Seen:</strong>
+                </div>
+                <div style="flex: 1; background-color: #f8f9fa; border: 1px solid #f0f0f0; padding: 6px 10px; border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; color: #333; word-break: break-all;">
+                    {{ content.last_seen }}
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: flex-start; margin-bottom: 8px;" ng-if="content.geo">
+                <div style="flex: 0 0 100px; color: #444; font-size: 13px; padding-top: 5px;">
+                    <i class="fa fa-map-marker" style="width: 14px; text-align: center; margin-right: 4px;"></i> <strong>GEO:</strong>
+                </div>
+                <div style="flex: 1; background-color: #f8f9fa; border: 1px solid #f0f0f0; padding: 6px 10px; border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; color: #333; text-transform: uppercase;">
+                    {{ content.geo }}
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: flex-start; margin-bottom: 8px;" ng-if="content.asn">
+                <div style="flex: 0 0 100px; color: #444; font-size: 13px; padding-top: 5px;">
+                    <i class="fa fa-sitemap" style="width: 14px; text-align: center; margin-right: 4px;"></i> <strong>ASN:</strong>
+                </div>
+                <div style="flex: 1; background-color: #f8f9fa; border: 1px solid #f0f0f0; padding: 6px 10px; border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; color: #333; text-transform: uppercase;">
+                    {{ content.asn }}
+                </div>
+            </div>
+
+            <hr style="margin: 15px 0; border-top: 1px dashed #ddd;" ng-if="content.filepath || content.sha256 || content.md5 || content.sha1 || content.ssdeep">
+
+            <div style="display: flex; align-items: flex-start; margin-bottom: 8px;" ng-if="content.filepath">
+                <div style="flex: 0 0 100px; color: #444; font-size: 13px; padding-top: 5px;">
+                    <i class="fa fa-folder-open" style="width: 14px; text-align: center; margin-right: 4px;"></i> <strong>Path:</strong>
+                </div>
+                <div style="flex: 1; background-color: #f8f9fa; border: 1px solid #f0f0f0; padding: 6px 10px; border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; color: #333; word-break: break-all;">
+                    {{ content.filepath }}
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: flex-start; margin-bottom: 8px;" ng-if="content.sha256">
+                <div style="flex: 0 0 100px; color: #444; font-size: 13px; padding-top: 5px;">
+                    <i class="fa fa-hashtag" style="width: 14px; text-align: center; margin-right: 4px;"></i> <strong>SHA256:</strong>
+                </div>
+                <div style="flex: 1; background-color: #f8f9fa; border: 1px solid #f0f0f0; padding: 6px 10px; border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; color: #333; word-break: break-all;">
+                    {{ content.sha256 }}
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: flex-start; margin-bottom: 8px;" ng-if="content.sha1">
+                <div style="flex: 0 0 100px; color: #444; font-size: 13px; padding-top: 5px;">
+                    <i class="fa fa-hashtag" style="width: 14px; text-align: center; margin-right: 4px;"></i> <strong>SHA1:</strong>
+                </div>
+                <div style="flex: 1; background-color: #f8f9fa; border: 1px solid #f0f0f0; padding: 6px 10px; border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; color: #333; word-break: break-all;">
+                    {{ content.sha1 }}
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: flex-start; margin-bottom: 8px;" ng-if="content.md5">
+                <div style="flex: 0 0 100px; color: #444; font-size: 13px; padding-top: 5px;">
+                    <i class="fa fa-hashtag" style="width: 14px; text-align: center; margin-right: 4px;"></i> <strong>MD5:</strong>
+                </div>
+                <div style="flex: 1; background-color: #f8f9fa; border: 1px solid #f0f0f0; padding: 6px 10px; border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; color: #333; word-break: break-all;">
+                    {{ content.md5 }}
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: flex-start; margin-bottom: 0;" ng-if="content.ssdeep">
+                <div style="flex: 0 0 100px; color: #444; font-size: 13px; padding-top: 5px;">
+                    <i class="fa fa-paw" style="width: 14px; text-align: center; margin-right: 4px;"></i> <strong>SSDEEP:</strong>
+                </div>
+                <div style="flex: 1; background-color: #f8f9fa; border: 1px solid #f0f0f0; padding: 6px 10px; border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; color: #333; word-break: break-all;">
+                    {{ content.ssdeep }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; margin-top: 25px;" ng-if="content.industries">
+        <i class="fa fa-industry"></i> Risk score by industry
+    </h4>
+    <div style="margin-bottom: 25px;" ng-if="content.industries">
+        <span class="label label-default" ng-repeat="ind in content.industries.split(',') track by $index" 
+              style="margin-right: 6px; font-size: 12px; display: inline-block; margin-bottom: 6px; padding: 6px 10px; background-color: #f5f5f5; color: #333; border: 1px solid #ddd;">
+            <i class="fa fa-building-o text-muted"></i> {{ ind.trim() }}
+        </span>
+    </div>
+
+    <h4 style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; margin-top: 25px;" ng-if="(content.related_urls && content.related_urls.length > 0) || (content.related_ips && content.related_ips.length > 0) || content.last_tasks">
+        <i class="fa fa-sitemap"></i> Intelligence Context
+    </h4>
+    
+    <div class="row">
+        <div class="col-md-12" style="margin-bottom: 15px;" ng-if="content.related_urls && content.related_urls.length > 0"
+             ng-init='urlS = content.related_urls.join(""); hUrlM = urlS.indexOf("\"isMalconf\":true") !== -1; hUrlT = urlS.indexOf("\"threatName\":[\"") !== -1'>
+            <div class="panel panel-default" style="box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                <div class="panel-heading" style="background-color: #f9f9f9; padding: 8px 15px;">
+                    <strong>Related URLs ({{ content.related_urls.length }})</strong>
+                </div>
+                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                    <table class="table table-bordered table-striped table-condensed" style="margin-bottom: 0; font-size: 12px;">
+                        <thead style="background-color: #f5f5f5; cursor: pointer;">
+                            <tr>
+                                <th ng-click="urlSort='toString()'; urlRev=!urlRev">URL <i class="fa fa-sort text-muted small"></i></th>
+                                <th style="width: 100px; text-align: center;" ng-click="urlSort='toString()'; urlRev=!urlRev">Verdict <i class="fa fa-sort text-muted small"></i></th>
+                                <th style="width: 220px; white-space: nowrap;" ng-click="urlSort='toString()'; urlRev=!urlRev">Date <i class="fa fa-sort text-muted small"></i></th>
+                                <th style="width: 140px;" ng-if="hUrlT">Threat Name</th>
+                                <th style="width: 80px; text-align: center;" ng-if="hUrlM">Malconf</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="urlStr in content.related_urls | orderBy:urlSort:urlRev" 
+                                ng-init="pU = (urlStr.split('&quot;url&quot;:&quot;')[1] || '').split('&quot;')[0];
+                                         pT = (urlStr.split('&quot;threatLevel&quot;:')[1] || '').split(',')[0];
+                                         pD = (urlStr.split('&quot;date&quot;:&quot;')[1] || '').split('&quot;')[0];
+                                         pN = (urlStr.split('&quot;threatName&quot;:')[1] || '').split(',&quot;isMalconf&quot;')[0];
+                                         pM = (urlStr.split('&quot;isMalconf&quot;:')[1] || '').split('}')[0]">
+                                <td style="font-family: Consolas, monospace; word-break: break-all; vertical-align: middle;">{{ pU }}</td>
+                                <td class="text-center" style="vertical-align: middle;">
+                                    <span class="label label-danger" ng-if="pT == '2' || pT == '3'">Malicious</span>
+                                    <span class="label label-warning" ng-if="pT == '1'">Suspicious</span>
+                                    <span class="label label-default" ng-if="pT == '0' || !pT" style="background-color: #e0e0e0; color: #777;">Info</span>
+                                </td>
+                                <td style="color: #777; vertical-align: middle; white-space: nowrap;"><i class="fa fa-clock-o"></i> {{ pD }}</td>
+                                <td style="color: #d9534f; font-weight: bold; vertical-align: middle;" ng-if="hUrlT">
+                                    <span ng-if="pN && pN != '[]'">{{ pN }}</span><span ng-if="!pN || pN == '[]'" style="color: #ccc;">-</span>
+                                </td>
+                                <td class="text-center" style="vertical-align: middle;" ng-if="hUrlM">
+                                    <span class="label label-danger" ng-if="pM.includes('true')">Yes</span><span style="color: #ccc;" ng-if="!pM.includes('true')">-</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" style="margin-bottom: 15px;" ng-if="content.related_ips && content.related_ips.length > 0"
+             ng-init='ipS = content.related_ips.join(""); hIpM = ipS.indexOf("\"isMalconf\":true") !== -1; hIpT = ipS.indexOf("\"threatName\":[\"") !== -1'>
+            <div class="panel panel-default" style="box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                <div class="panel-heading" style="background-color: #f9f9f9; padding: 8px 15px;">
+                    <strong>Related IPs ({{ content.related_ips.length }})</strong>
+                </div>
+                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                    <table class="table table-bordered table-striped table-condensed" style="margin-bottom: 0; font-size: 12px;">
+                        <thead style="background-color: #f5f5f5; cursor: pointer;">
+                            <tr>
+                                <th ng-click="ipSort='toString()'; ipRev=!ipRev">IP Address <i class="fa fa-sort text-muted small"></i></th>
+                                <th style="width: 100px; text-align: center;" ng-click="ipSort='toString()'; ipRev=!ipRev">Verdict <i class="fa fa-sort text-muted small"></i></th>
+                                <th style="width: 220px; white-space: nowrap;" ng-click="ipSort='toString()'; ipRev=!ipRev">Date <i class="fa fa-sort text-muted small"></i></th>
+                                <th style="width: 140px;" ng-if="hIpT">Threat Name</th>
+                                <th style="width: 80px; text-align: center;" ng-if="hIpM">Malconf</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="ipStr in content.related_ips | orderBy:ipSort:ipRev" 
+                                ng-init="pI = (ipStr.split('&quot;destinationIP&quot;:&quot;')[1] || '').split('&quot;')[0];
+                                         pT = (ipStr.split('&quot;threatLevel&quot;:')[1] || '').split(',')[0];
+                                         pD = (ipStr.split('&quot;date&quot;:&quot;')[1] || '').split('&quot;')[0];
+                                         pN = (ipStr.split('&quot;threatName&quot;:')[1] || '').split(',&quot;isMalconf&quot;')[0];
+                                         pM = (ipStr.split('&quot;isMalconf&quot;:')[1] || '').split('}')[0]">
+                                <td style="font-family: Consolas, monospace; vertical-align: middle;"><strong>{{ pI }}</strong></td>
+                                <td class="text-center" style="vertical-align: middle;">
+                                    <span class="label label-danger" ng-if="pT == '2' || pT == '3'">Malicious</span>
+                                    <span class="label label-warning" ng-if="pT == '1'">Suspicious</span>
+                                    <span class="label label-default" ng-if="pT == '0' || !pT" style="background-color: #e0e0e0; color: #777;">Info</span>
+                                </td>
+                                <td style="color: #777; vertical-align: middle; white-space: nowrap;"><i class="fa fa-clock-o"></i> {{ pD }}</td>
+                                <td style="color: #d9534f; font-weight: bold; vertical-align: middle;" ng-if="hIpT">
+                                    <span ng-if="pN && pN != '[]'">{{ pN }}</span><span ng-if="!pN || pN == '[]'" style="color: #ccc;">-</span>
+                                </td>
+                                <td class="text-center" style="vertical-align: middle;" ng-if="hIpM">
+                                    <span class="label label-danger" ng-if="pM.includes('true')">Yes</span><span style="color: #ccc;" ng-if="!pM.includes('true')">-</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" style="margin-bottom: 15px;" ng-if="content.last_tasks">
+            <div class="panel panel-default" style="box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                <div class="panel-heading" style="background-color: #f9f9f9; padding: 8px 15px;">
+                    <strong><i class="fa fa-tasks" style="color: #337ab7;"></i> Recent ANY.RUN Sandbox Analysis</strong>
+                </div>
+                <div class="panel-body" style="max-height: 300px; overflow-y: auto; padding: 10px;">
+                    <ul class="list-group" style="margin-bottom: 0;">
+                        <li class="list-group-item" ng-repeat="task in content.last_tasks.split(',') track by $index" 
+                            style="font-family: Consolas, monospace; font-size: 12px; word-break: break-all; border: 1px solid #eee; border-left: 3px solid #337ab7; border-radius: 4px; margin-bottom: 5px; padding: 8px 10px; background-color: #fafafa;">
+                            <a ng-href="{{ task.trim() }}" target="_blank" style="color: #337ab7; text-decoration: none; display: block;">
+                                <i class="fa fa-external-link" style="margin-right: 8px; opacity: 0.6;"></i>{{ task.trim() }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

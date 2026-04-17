@@ -1,0 +1,179 @@
+{
+  "name": "AnyRun_Sandbox_URL_Android",
+  "version": "1.0",
+  "author": "ANY.RUN Integrations Team",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Run URL analysis using Android VM",
+  "dataTypeList": ["url"],
+  "command": "AnyRun/anyrun_analyzer.py",
+  "baseConfig": "AnyRun",
+   "config": {
+    "os": "android",
+    "analysis_type": "url"
+  },
+  "configurationItems": [
+    {
+      "name": "api_key",
+      "description": "ANY.RUN Sandbox API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "verify_ssl",
+      "description": "Verify SSL certificate",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "get_html_report",
+      "description": "Attach HTML report to the case as observable",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "get_network_traffic_dump",
+      "description": "Attach PCAP file to the case as observable",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+      {
+      "name": "get_iocs",
+      "description": "Attach Analysis IOCs to the case as observables",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "extract_malicious_iocs",
+      "description": "When enabled, extracts only Suspicious and Malicious IOCs. When disabled, extracts all IOCs",
+      "type": "boolean",
+      "multi": false,
+      "required": true,
+      "defaultValue": true
+    },
+    {
+      "name": "obj_url",
+      "description": "Target URL. Size range 5-512. Example -> (http/https)://(your-link)",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "env_locale",
+      "description": "Operation System language. Use locale identifier or country name Example - ( \"en-US\" or \"Brazil\"). Case insensitive",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "en-US"
+    },
+    {
+      "name": "opt_network_connect",
+      "description": "Network connection state",
+      "type": "Boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": true
+    },
+    {
+      "name": "opt_network_fakenet",
+      "description": "FakeNet feature status",
+      "type": "Boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    },
+    {
+      "name": "opt_network_tor",
+      "description": "TOR using",
+      "type": "Boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    },
+    {
+      "name": "opt_network_geo",
+      "description": "TOR geo location option",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "fastest"
+    },
+    {
+      "name": "opt_network_mitm",
+      "description": "HTTPS MITM proxy option",
+      "type": "Boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    },
+    {
+      "name": "opt_network_residential_proxy",
+      "description": "Residential Proxy option",
+      "type": "Boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    },
+    {
+      "name": "opt_network_residential_proxy_geo",
+      "description": "Residential Proxy Geo option",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "fastest"
+    },
+    {
+      "name": "opt_privacy_type",
+      "description": "Privacy settings. Supports: public, bylink, owner, byteam",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "bylink"
+    },
+    {
+      "name": "opt_timeout",
+      "description": "Timeout option, size range 10-660",
+      "type": "Number",
+      "multi": false,
+      "required": false,
+      "defaultValue": "120"
+    },
+    {
+      "name": "opt_auto_delete_after",
+      "description": "Specify after what period of time this report should be deleted. Supports: day, week, 2 weeks, month. Leave blank for the task's infinite lifetime",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "user_tags",
+      "description": "Append User Tags to new analysis. Only characters a-z, A-Z, 0-9, hyphen (-), and comma (,) are allowed. Max tag length - 16 characters. Max unique tags per analysis - 8",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://any.run/",
+  "service_logo": {
+      "path": "assets/anyrun.png",
+      "caption": "AnyRun logo"
+  },
+  "screenshots": [
+      {
+          "path": "assets/long_report.png",
+          "caption": "AnyRun: Long report template"
+      }
+  ]
+}
