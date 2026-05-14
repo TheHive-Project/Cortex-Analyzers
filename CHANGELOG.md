@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.8.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.8.3) (2026-05-06)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.8.2...3.8.3)
+
+**Merged pull requests:**
+
+- MSOffice365 Responder - Fix Dockerfile [\#1450](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1450) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.8.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.8.2) (2026-04-14)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.8.1...3.8.2)
