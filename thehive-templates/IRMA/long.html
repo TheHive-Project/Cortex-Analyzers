@@ -1,0 +1,25 @@
+<div ng-if="success">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <strong>Summary</strong>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <tr>
+                        <th>Scanner</th>
+                        <th>Detected</th>
+                        <th>Result</th>
+                    </tr>
+                    <tr ng-repeat="probe in content.probe_results">
+                        <td>
+                            <strong>{{probe.name}}</strong>
+                        </td>
+                        <td>
+                            <i ng-class="{'text-danger fa fa-bug': probe.results != null, 'text-info fa fa-question-circle': probe.results == null}"></i>
+                        </td>
+                        <td ng-class="{'text-info': probe.results == null, 'text-danger': probe.results != null}" class="wrap">{{probe.results}}</td>
+               
+                    </tr>
+                </table>
+            </div>
+        </div>  
