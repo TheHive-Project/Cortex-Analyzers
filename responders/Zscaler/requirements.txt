@@ -1,0 +1,3 @@
+cortexutils
+zscaler-sdk-python>=1.9.11
+tldextract
