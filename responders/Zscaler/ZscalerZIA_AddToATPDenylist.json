@@ -89,7 +89,7 @@
     },
     {
       "name": "allow_risky_iocs",
-      "description": "Allow adding risky IOCs like bare TLDs (like 'com') to blacklist",
+      "description": "Allow adding risky IOCs like bare TLDs (like 'com') to the ATP Denylist",
       "type": "boolean",
       "multi": false,
       "required": false,

@@ -1,17 +1,17 @@
 {
-  "name": "ZscalerZIA_RemoveFromCloudFirewallRule",
+  "name": "ZscalerZIA_AddToURLCategory",
   "version": "1.0",
   "author": "Fabien Bloume, StrangeBee",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Remove an IP address or CIDR from the destination address list of a ZIA Cloud Firewall rule - network-layer block, all ports/protocols (Policy > Cloud Firewall)",
+  "description": "Add observables (domain, fqdn, url, ip, cidr) to a custom ZIA URL category",
   "dataTypeList": [
     "thehive:case_artifact"
   ],
-  "command": "Zscaler/ZscalerZIA_CloudFirewall.py",
+  "command": "Zscaler/ZscalerZIA_URLCategory.py",
   "baseConfig": "ZscalerZIA",
   "config": {
-    "action_type": "remove"
+    "action_type": "add"
   },
   "configurationItems": [
     {
@@ -66,21 +66,21 @@
     },
     {
       "name": "zia_cloud",
-      "description": "Cloud environment name. Required for legacy auth (zscaler, zscalerone, zscalertwo). Optional for OneAPI.",
+      "description": "Cloud environment name. Required for legacy auth (zscaler, zscalerone, zscalertwo). Optional for OneAPI (use for beta/alpha environments).",
       "type": "string",
       "multi": false,
       "required": false
     },
     {
-      "name": "firewall_rule_id",
-      "description": "ZIA Cloud Firewall Rule ID (integer). Either this OR firewall_rule_name must be provided.",
-      "type": "number",
+      "name": "zia_url_category_id",
+      "description": "Custom URL Category ID in ZIA (like 'CUSTOM_02'). Either this OR zia_url_category_name must be provided.",
+      "type": "string",
       "multi": false,
       "required": false
     },
     {
-      "name": "firewall_rule_name",
-      "description": "ZIA Cloud Firewall Rule name (like 'TheHive-BlockedIPs'). Either this OR firewall_rule_id must be provided. Name lookup is case-insensitive.",
+      "name": "zia_url_category_name",
+      "description": "Custom URL Category Name in ZIA (like 'Malicious-Blocklist'). Either this OR zia_url_category_id must be provided. Name lookup is case-insensitive.",
       "type": "string",
       "multi": false,
       "required": false
@@ -103,7 +103,7 @@
     },
     {
       "name": "allow_private_ips",
-      "description": "Allow removing RFC1918 private IP addresses (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16)",
+      "description": "Allow adding RFC1918 private IP addresses (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16)",
       "type": "boolean",
       "multi": false,
       "required": false,
@@ -111,7 +111,15 @@
     },
     {
       "name": "allow_risky_iocs",
-      "description": "Allow removing overly broad CIDR ranges (>/24, more than 256 addresses)",
+      "description": "Allow adding risky IOCs like bare TLDs (like 'com') and overly broad CIDRs",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    },
+    {
+      "name": "allow_wildcards",
+      "description": "Allow wildcard domains (like *.example.com)",
       "type": "boolean",
       "multi": false,
       "required": false,

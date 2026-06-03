@@ -4,7 +4,7 @@
   "author": "Fabien Bloume, StrangeBee",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Block an IP address or CIDR range in a ZIA Cloud Firewall rule - network-layer block, all ports/protocols (Policy > Cloud Firewall)",
+  "description": "Add an IP address or CIDR to the destination address list of a ZIA Cloud Firewall rule - network-layer block, all ports/protocols (Policy > Cloud Firewall)",
   "dataTypeList": [
     "thehive:case_artifact"
   ],

@@ -416,7 +416,7 @@ class ZscalerZIA_CloudFirewall(Responder):
                     self.audit_data['errors'].append(error)
                     self.error(error)
 
-                self.audit_data['action_taken'] = 'manage_firewall_rule'
+                self.audit_data['action_taken'] = 'manage_cloud_firewall'
                 success, rule_name, already_present, error = self._manage_firewall_rule(normalized, rule_id)
 
                 if not success:
@@ -431,7 +431,7 @@ class ZscalerZIA_CloudFirewall(Responder):
                     self.audit_data['errors'].append(error)
                     self.error(error)
 
-                self.audit_data['action_taken'] = 'manage_firewall_rule'
+                self.audit_data['action_taken'] = 'manage_cloud_firewall'
                 success, rule_name, already_present, error = self._manage_firewall_rule(normalized, rule_id)
 
                 if not success:

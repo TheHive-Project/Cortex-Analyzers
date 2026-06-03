@@ -228,14 +228,11 @@ class ZscalerZIA_ATPDenylist(Responder):
         self._init_zia_client()
 
         try:
-            # Get current blacklist - SDK returns (data, response, error)
             blacklist_data, _, err = self.zia_client.security_policy_settings.get_blacklist()
 
             if err:
                 return False, False, f"Failed to get blacklist: {err}"
 
-            # Extract current blacklisted URLs (normalize to lowercase for comparison)
-            # Try different possible field names (SDK uses snake_case: blacklist_urls)
             if hasattr(blacklist_data, 'blacklist_urls'):
                 blacklist_urls = blacklist_data.blacklist_urls or []
             elif hasattr(blacklist_data, 'blacklistUrls'):
@@ -247,8 +244,7 @@ class ZscalerZIA_ATPDenylist(Responder):
 
             current_urls = set(url.lower() for url in blacklist_urls if url)
 
-            # Debug: Log blacklist info (useful for troubleshooting)
-            self.audit_data['blacklist_info'] = {
+            self.audit_data['atp_denylist_info'] = {
                 'total_urls': len(current_urls),
                 'response_type': type(blacklist_data).__name__
             }
@@ -303,10 +299,8 @@ class ZscalerZIA_ATPDenylist(Responder):
             return False, False, f"ZIA API error: {str(e)}"
 
     def run(self):
-        """Main execution method"""
         Responder.run(self)
 
-        # Get observable data
         data_type = self.get_param('data.dataType')
         data_value = self.get_param('data.data', None, 'No observable data available')
 
@@ -314,29 +308,21 @@ class ZscalerZIA_ATPDenylist(Responder):
         self.audit_data['ioc_type'] = data_type
 
         try:
-            # Process based on data type
             if data_type in ['domain', 'fqdn']:
                 is_valid, normalized, error = self._validate_domain(data_value)
                 if not is_valid:
                     self.audit_data['errors'].append(error)
                     self.error(error)
 
-                self.audit_data['action_taken'] = 'manage_blacklist'
+                self.audit_data['action_taken'] = 'manage_atp_denylist'
                 success, already_present, error = self._manage_blacklist(normalized)
 
                 if not success:
                     self.audit_data['errors'].append(error)
                     self.error(error)
 
-                # Build message
                 action_verb = 'added to' if self.action_type == 'add' else 'removed from'
-                if already_present:
-                    if self.action_type == 'add':
-                        status = 'already in'
-                    else:
-                        status = 'not found in'
-                else:
-                    status = action_verb
+                status = ('already in' if self.action_type == 'add' else 'not found in') if already_present else action_verb
 
                 if normalized.startswith('.') and not data_value.strip().startswith('*.'):
                     domain_display = f"'{data_value}' (blocked as '{normalized}' - parent domain)"
@@ -350,33 +336,41 @@ class ZscalerZIA_ATPDenylist(Responder):
                 self.report({'message': message, 'audit': self.audit_data})
 
             elif data_type == 'url':
-                is_valid, normalized_url, full_url, error = self._validate_url(data_value)
-                if not is_valid:
-                    self.audit_data['errors'].append(error)
-                    self.error(error)
-
-                self.audit_data['action_taken'] = 'manage_blacklist'
-                # For URL blacklisting, we add the full URL (without protocol)
-                success, already_present, error = self._manage_blacklist(full_url)
-
-                if not success:
-                    self.audit_data['errors'].append(error)
-                    self.error(error)
-
-                # Build message
-                action_verb = 'added to' if self.action_type == 'add' else 'removed from'
-                if already_present:
-                    if self.action_type == 'add':
-                        status = 'already in'
-                    else:
-                        status = 'not found in'
+                if self.allow_wildcards:
+                    # Wildcard mode: block the parent domain only, path is irrelevant
+                    raw = data_value if data_value.startswith(('http://', 'https://')) else 'http://' + data_value
+                    hostname = urlparse(raw).hostname or ''
+                    if not hostname:
+                        self.error('Could not extract hostname from URL')
+                    is_valid, normalized, error = self._validate_domain(hostname)
+                    if not is_valid:
+                        self.audit_data['errors'].append(error)
+                        self.error(error)
+                    self.audit_data['action_taken'] = 'manage_atp_denylist'
+                    success, already_present, error = self._manage_blacklist(normalized)
+                    if not success:
+                        self.audit_data['errors'].append(error)
+                        self.error(error)
+                    action_verb = 'added to' if self.action_type == 'add' else 'removed from'
+                    status = ('already in' if self.action_type == 'add' else 'not found in') if already_present else action_verb
+                    message = f"URL '{data_value}' {status} ZIA ATP Denylist as '{normalized}' (parent domain)"
+                    if self.dry_run and not already_present:
+                        message = f"[DRY RUN] Would have {action_verb} ZIA ATP Denylist as '{normalized}' (parent domain)"
                 else:
-                    status = action_verb
-
-                message = f"URL '{data_value}' (added as: '{full_url}') {status} ZIA ATP Denylist"
-
-                if self.dry_run and not already_present:
-                    message = f"[DRY RUN] Would have {action_verb} ZIA ATP Denylist"
+                    is_valid, normalized_url, full_url, error = self._validate_url(data_value)
+                    if not is_valid:
+                        self.audit_data['errors'].append(error)
+                        self.error(error)
+                    self.audit_data['action_taken'] = 'manage_atp_denylist'
+                    success, already_present, error = self._manage_blacklist(full_url)
+                    if not success:
+                        self.audit_data['errors'].append(error)
+                        self.error(error)
+                    action_verb = 'added to' if self.action_type == 'add' else 'removed from'
+                    status = ('already in' if self.action_type == 'add' else 'not found in') if already_present else action_verb
+                    message = f"URL '{data_value}' (added as: '{full_url}') {status} ZIA ATP Denylist"
+                    if self.dry_run and not already_present:
+                        message = f"[DRY RUN] Would have {action_verb} ZIA ATP Denylist"
 
                 self.report({'message': message, 'audit': self.audit_data})
 
