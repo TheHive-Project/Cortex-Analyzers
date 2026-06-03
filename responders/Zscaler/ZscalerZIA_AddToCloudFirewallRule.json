@@ -1,0 +1,125 @@
+{
+  "name": "ZscalerZIA_AddToCloudFirewallRule",
+  "version": "1.0",
+  "author": "Fabien Bloume, StrangeBee",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Add an IP address or CIDR to the destination address list of a ZIA Cloud Firewall rule - network-layer block, all ports/protocols (Policy > Cloud Firewall)",
+  "dataTypeList": [
+    "thehive:case_artifact"
+  ],
+  "command": "Zscaler/ZscalerZIA_CloudFirewall.py",
+  "baseConfig": "ZscalerZIA",
+  "config": {
+    "action_type": "add"
+  },
+  "configurationItems": [
+    {
+      "name": "auth_type",
+      "description": "Authentication type: 'oneapi' for ZIdentity OAuth2 (default) or 'legacy' for legacy API credentials",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "oneapi"
+    },
+    {
+      "name": "zia_vanity_domain",
+      "description": "[OneAPI only] Zscaler ZIdentity vanity domain for your organization (example: 'acme' from acme.zslogin.net)",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "zia_client_id",
+      "description": "[OneAPI only] Zscaler OneAPI OAuth Client ID created in ZIdentity Admin Portal",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "zia_client_secret",
+      "description": "[OneAPI only] Zscaler OneAPI OAuth Client Secret from ZIdentity Admin Portal",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "zia_username",
+      "description": "[Legacy only] ZIA API admin email address",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "zia_password",
+      "description": "[Legacy only] ZIA API admin password",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "zia_api_key",
+      "description": "[Legacy only] ZIA API key (obfuscated API key)",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "zia_cloud",
+      "description": "Cloud environment name. Required for legacy auth (zscaler, zscalerone, zscalertwo). Optional for OneAPI.",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "firewall_rule_id",
+      "description": "ZIA Cloud Firewall Rule ID (integer). Either this OR firewall_rule_name must be provided. The rule must already exist in ZIA with action DENY.",
+      "type": "number",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "firewall_rule_name",
+      "description": "ZIA Cloud Firewall Rule name (like 'TheHive-BlockedIPs'). Either this OR firewall_rule_id must be provided. Name lookup is case-insensitive.",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "dry_run",
+      "description": "Dry run mode: if true, validation runs but no changes are made to ZIA",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    },
+    {
+      "name": "activate_changes",
+      "description": "Activate changes after modifying ZIA configuration (recommended). If false, changes remain pending until manual activation or logout.",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": true
+    },
+    {
+      "name": "allow_private_ips",
+      "description": "Allow adding RFC1918 private IP addresses (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16)",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    },
+    {
+      "name": "allow_risky_iocs",
+      "description": "Allow adding overly broad CIDR ranges (>/24, more than 256 addresses)",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.zscaler.com/products/zscaler-internet-access"
+}

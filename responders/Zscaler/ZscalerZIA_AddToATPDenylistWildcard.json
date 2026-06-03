@@ -1,0 +1,104 @@
+{
+  "name": "ZscalerZIA_AddToATPDenylistWildcard",
+  "version": "1.0",
+  "author": "Fabien Bloume, StrangeBee",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Block a domain and all its subdomains in the ZIA ATP Denylist (Policy > Security > Advanced Threat Protection > Blocked Malicious URLs)",
+  "dataTypeList": [
+    "thehive:case_artifact"
+  ],
+  "command": "Zscaler/ZscalerZIA_ATPDenylist.py",
+  "baseConfig": "ZscalerZIA",
+  "config": {
+    "action_type": "add",
+    "allow_wildcards": true
+  },
+  "configurationItems": [
+    {
+      "name": "auth_type",
+      "description": "Authentication type: 'oneapi' for ZIdentity OAuth2 (default) or 'legacy' for legacy API credentials",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "oneapi"
+    },
+    {
+      "name": "zia_vanity_domain",
+      "description": "[OneAPI only] Zscaler ZIdentity vanity domain for your organization (example: 'acme' from acme.zslogin.net)",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "zia_client_id",
+      "description": "[OneAPI only] Zscaler OneAPI OAuth Client ID created in ZIdentity Admin Portal",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "zia_client_secret",
+      "description": "[OneAPI only] Zscaler OneAPI OAuth Client Secret from ZIdentity Admin Portal",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "zia_username",
+      "description": "[Legacy only] ZIA API admin email address",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "zia_password",
+      "description": "[Legacy only] ZIA API admin password",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "zia_api_key",
+      "description": "[Legacy only] ZIA API key (obfuscated API key)",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "zia_cloud",
+      "description": "Cloud environment name. Required for legacy auth (zscaler, zscalerone, zscalertwo). Optional for OneAPI (use for beta/alpha environments).",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "dry_run",
+      "description": "Dry run mode: if true, validation runs but no changes are made to ZIA",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    },
+    {
+      "name": "activate_changes",
+      "description": "Activate changes after modifying ZIA configuration (recommended). If false, changes remain pending until manual activation or logout.",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": true
+    },
+    {
+      "name": "allow_risky_iocs",
+      "description": "Allow adding risky IOCs like bare TLDs (like 'com') to the ATP Denylist",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.zscaler.com/products/zscaler-internet-access"
+}
