@@ -14,13 +14,14 @@ For domain/fqdn/url observables use the URLCategory responder instead.
 import ipaddress
 import time
 from datetime import datetime
+from urllib.parse import urlparse
 
 from cortexutils.responder import Responder
 from zscaler import ZscalerClient
 from zscaler.oneapi_client import LegacyZIAClient
 
 
-class ZscalerZIA_FirewallRule(Responder):
+class ZscalerZIA_CloudFirewall(Responder):
     """
     Cortex Responder to manage IP/CIDR entries in a ZIA Cloud Firewall Rule.
     Supports: ip, cidr
@@ -72,8 +73,8 @@ class ZscalerZIA_FirewallRule(Responder):
         self.activate_changes = self.get_param('config.activate_changes', True)
         self.allow_private_ips = self.get_param('config.allow_private_ips', False)
         self.allow_risky_iocs = self.get_param('config.allow_risky_iocs', False)
-        self.http_proxy_hostname = self.get_param('config.http_proxy_hostname', None)
-        self.http_proxy_port = self.get_param('config.http_proxy_port', None)
+        proxy_url = self.get_param('config.proxy_https', None) or self.get_param('config.proxy_http', None)
+        self.proxy_config = self._parse_proxy(proxy_url)
 
         self.zia_client = None
         self.audit_data = {
@@ -88,6 +89,16 @@ class ZscalerZIA_FirewallRule(Responder):
             'errors': []
         }
 
+    @staticmethod
+    def _parse_proxy(proxy_url):
+        if not proxy_url:
+            return None
+        parsed = urlparse(proxy_url)
+        cfg = {"host": parsed.hostname}
+        if parsed.port:
+            cfg["port"] = parsed.port
+        return cfg
+
     def _init_zia_client(self):
         if self.zia_client is None:
             try:
@@ -100,8 +111,8 @@ class ZscalerZIA_FirewallRule(Responder):
                     }
                     if self.zia_cloud:
                         config["cloud"] = self.zia_cloud
-                    if self.http_proxy_hostname and self.http_proxy_port:
-                        config["proxy"] = {"host": self.http_proxy_hostname, "port": self.http_proxy_port}
+                    if self.proxy_config:
+                        config["proxy"] = self.proxy_config
                     try:
                         zscaler_client = ZscalerClient(config)
                         self.zia_client = zscaler_client.zia
@@ -117,8 +128,8 @@ class ZscalerZIA_FirewallRule(Responder):
                         "cloud": self.zia_cloud,
                         "logging": {"enabled": False, "verbose": False}
                     }
-                    if self.http_proxy_hostname and self.http_proxy_port:
-                        config["proxy"] = {"host": self.http_proxy_hostname, "port": self.http_proxy_port}
+                    if self.proxy_config:
+                        config["proxy"] = self.proxy_config
                     try:
                         legacy_client = LegacyZIAClient(config)
                         self.zia_client = legacy_client.zia
@@ -440,14 +451,12 @@ class ZscalerZIA_FirewallRule(Responder):
             self.error(error_msg)
 
     def operations(self, raw):
-        timestamp = datetime.utcnow().strftime('%Y-%m-%d_%H:%M:%S')
-
         if self.audit_data.get('already_present'):
-            tag = f'ZIA:firewall:already-present:{timestamp}' if self.action_type == 'add' else f'ZIA:firewall:not-found:{timestamp}'
+            tag = 'ZIA:cloud-firewall:already-present' if self.action_type == 'add' else 'ZIA:cloud-firewall:not-found'
         elif self.dry_run:
-            tag = f'ZIA:firewall:dry-run:{timestamp}'
+            tag = 'ZIA:cloud-firewall:dry-run'
         else:
-            tag = f'ZIA:firewall:added:{timestamp}' if self.action_type == 'add' else f'ZIA:firewall:removed:{timestamp}'
+            tag = 'ZIA:cloud-firewall:added' if self.action_type == 'add' else 'ZIA:cloud-firewall:removed'
 
         return [
             self.build_operation('AddTagToCase', tag='ZIA:action-taken'),
@@ -456,4 +465,4 @@ class ZscalerZIA_FirewallRule(Responder):
 
 
 if __name__ == '__main__':
-    ZscalerZIA_FirewallRule().run()
+    ZscalerZIA_CloudFirewall().run()
