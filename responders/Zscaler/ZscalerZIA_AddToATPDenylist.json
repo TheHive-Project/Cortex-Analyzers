@@ -1,15 +1,17 @@
 {
-  "name": "ZscalerZIA_RemoveFromBlacklist",
+  "name": "ZscalerZIA_AddToATPDenylist",
   "version": "1.0",
   "author": "Fabien Bloume, StrangeBee",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Remove URLs (domain, fqdn, url) from Zscaler Internet Access Blocked Malicious URLs - Denylist specific URLs (Policy > Security > Advanced Threat Protection > Blocked Malicious URLs)",
-  "dataTypeList": ["thehive:case_artifact"],
-  "command": "Zscaler/ZscalerZIA_Blacklist.py",
+  "description": "Block domains, FQDNs and URLs in the ZIA ATP Denylist (Policy > Security > Advanced Threat Protection > Blocked Malicious URLs)",
+  "dataTypeList": [
+    "thehive:case_artifact"
+  ],
+  "command": "Zscaler/ZscalerZIA_ATPDenylist.py",
   "baseConfig": "ZscalerZIA",
   "config": {
-    "action_type": "remove"
+    "action_type": "add"
   },
   "configurationItems": [
     {
@@ -22,7 +24,7 @@
     },
     {
       "name": "zia_vanity_domain",
-      "description": "[OneAPI only] Zscaler ZIdentity vanity domain for your organization (e.g., 'acme' from acme.zslogin.net)",
+      "description": "[OneAPI only] Zscaler ZIdentity vanity domain for your organization (example: 'acme' from acme.zslogin.net)",
       "type": "string",
       "multi": false,
       "required": false
@@ -64,7 +66,7 @@
     },
     {
       "name": "zia_cloud",
-      "description": "Cloud environment name. Required for legacy auth (e.g., 'zscaler', 'zscalerone', 'zscalertwo'). Optional for OneAPI (use for beta/alpha environments).",
+      "description": "Cloud environment name. Required for legacy auth (zscaler, zscalerone, zscalertwo). Optional for OneAPI (use for beta/alpha environments).",
       "type": "string",
       "multi": false,
       "required": false
@@ -87,7 +89,7 @@
     },
     {
       "name": "allow_risky_iocs",
-      "description": "Allow removing risky IOCs like bare TLDs (e.g., 'com') from blacklist",
+      "description": "Allow adding risky IOCs like bare TLDs (like 'com') to blacklist",
       "type": "boolean",
       "multi": false,
       "required": false,
@@ -95,25 +97,11 @@
     },
     {
       "name": "allow_wildcards",
-      "description": "Allow wildcard domains (e.g., *.example.com)",
+      "description": "Allow wildcard domains (like *.example.com)",
       "type": "boolean",
       "multi": false,
       "required": false,
       "defaultValue": false
-    },
-    {
-      "name": "http_proxy_hostname",
-      "description": "HTTP proxy hostname if Cortex requires one to reach the Zscaler API (e.g., 'proxy.internal')",
-      "type": "string",
-      "multi": false,
-      "required": false
-    },
-    {
-      "name": "http_proxy_port",
-      "description": "HTTP proxy port (e.g., 3128)",
-      "type": "number",
-      "multi": false,
-      "required": false
     }
   ],
   "registration_required": true,
