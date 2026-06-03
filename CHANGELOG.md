@@ -1,5 +1,23 @@
 # Changelog
 
+## [3.8.5](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.8.5) (2026-06-03)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.8.4...3.8.5)
+
+**Closed issues:**
+
+- \[FR\] ClusterHawk prediction response enhancement [\#1451](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1451)
+- \[ENG\] Feature Request: Create OVH Cloud Neurons to check Domain Name availability, Buy it & Redirect it. [\#1440](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1440)
+
+## [3.8.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.8.4) (2026-05-14)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.8.3...3.8.4)
+
+**Merged pull requests:**
+
+- Changes to prediction responses [\#1452](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1452) ([marvinuku](https://github.com/marvinuku))
+- \[ANY.RUN Analyzers update\] Update and improve Sandbox analyzers, add TI Lookup analyzer [\#1449](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1449) ([semayellow](https://github.com/semayellow))
+
 ## [3.8.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.8.3) (2026-05-06)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.8.2...3.8.3)
