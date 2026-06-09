@@ -168,7 +168,7 @@ class EmlParserAnalyzer(Analyzer):
                             tags=["body:attachment", "autoImport:true"] + h["tag"],
                         )
                     )
-                filepath = os.path.join(self.job_directory, "output", h.get("filename"))
+                filepath = os.path.join(self.job_directory, "output", os.path.basename(h.get("filename", "")))
                 file_key = ("file", filepath)
                 if file_key not in seen:
                     seen.add(file_key)
@@ -191,6 +191,15 @@ def _add_ioc(ioc_list, data, tags):
                     existing["tag"].append(tag)
             return
     ioc_list.append({"data": data, "tag": list(tags)})
+
+
+def _safe_attachment_filename(raw_name):
+    if not raw_name or "\x00" in raw_name:
+        raise ValueError("invalid attachment filename")
+    base = os.path.basename(raw_name)
+    if not base or base in (".", "..") or os.path.isabs(base) or re.match(r"^[A-Za-z]:", base):
+        raise ValueError("invalid attachment filename")
+    return base
 
 
 def parseEml(filepath, job_directory, wkhtmltoimage, sanitized_rendering):
@@ -322,16 +331,15 @@ def parseEml(filepath, job_directory, wkhtmltoimage, sanitized_rendering):
         for a in decoded_email.get("attachment"):
             a["mime"] = magic.from_buffer(binascii.a2b_base64(a.get("raw")))
             if isinstance(a.get("raw"), bytes):
-                path, filename = os.path.split(a.get("filename", ""))
-                if path != "":
-                    os.umask(0)
-                    os.makedirs(
-                        f"{job_directory}/output/{path}", exist_ok=True, mode=0o777
-                    )
-                filepath = os.path.join(job_directory, "output", path, filename)
+                filename = _safe_attachment_filename(a.get("filename", ""))
+                out_dir = os.path.join(job_directory, "output")
+                filepath = os.path.join(out_dir, filename)
+                if not os.path.realpath(filepath).startswith(
+                    os.path.realpath(out_dir) + os.sep
+                ):
+                    raise ValueError("attachment path escapes sandbox")
                 with open(filepath, "wb") as f:
                     f.write(base64.b64decode(a["raw"]))
-                f.close()
                 a["raw"] = a.get("raw").decode("ascii")
             result["attachments"].append(a)
             iocs["hash"].append(
