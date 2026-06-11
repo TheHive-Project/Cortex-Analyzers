@@ -9,6 +9,10 @@
 - \[FR\] ClusterHawk prediction response enhancement [\#1451](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1451)
 - \[ENG\] Feature Request: Create OVH Cloud Neurons to check Domain Name availability, Buy it & Redirect it. [\#1440](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1440)
 
+**Merged pull requests:**
+
+- Zscaler - URL filtering, Denylist, Cloud Firewall, SecurityExceptions responders [\#1454](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1454) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.8.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.8.4) (2026-05-14)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.8.3...3.8.4)
