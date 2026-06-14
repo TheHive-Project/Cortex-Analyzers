@@ -1,0 +1,88 @@
+<!-- Error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt><i class="fa fa-warning"></i> Error: </dt>
+            <dd>{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
+
+<!-- CVE not found in OpenCVE -->
+<div class="panel panel-warning" ng-if="success && !content.found">
+    <div class="panel-heading">
+        OpenCVE: <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        No record for <strong>{{content.cve_id}}</strong> was found in OpenCVE.
+    </div>
+</div>
+
+<!-- Success -->
+<div class="panel panel-info" ng-if="success && content.found">
+    <div class="panel-heading">
+        OpenCVE information for <strong>{{content.cve_id | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <h3 align="center"><b>{{content.cve_id}}</b></h3>
+        <p ng-if="content.title" align="center">{{content.title}}</p>
+        <dl class="dl-horizontal">
+            <dt>Published: </dt><dd>{{content.created_at | limitTo : 10}}</dd>
+            <dt>Updated: </dt><dd>{{content.updated_at | limitTo : 10}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.metrics.cvssV3_1.data.score">
+            <dt>CVSS v3.1: </dt>
+            <dd>{{content.metrics.cvssV3_1.data.score}}
+                <small>{{content.metrics.cvssV3_1.data.vector}}</small></dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.metrics.cvssV4_0.data.score">
+            <dt>CVSS v4.0: </dt>
+            <dd>{{content.metrics.cvssV4_0.data.score}}
+                <small>{{content.metrics.cvssV4_0.data.vector}}</small></dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.metrics.cvssV2_0.data.score">
+            <dt>CVSS v2.0: </dt>
+            <dd>{{content.metrics.cvssV2_0.data.score}}
+                <small>{{content.metrics.cvssV2_0.data.vector}}</small></dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.metrics.threat_severity.data">
+            <dt>Severity: </dt><dd>{{content.metrics.threat_severity.data}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.metrics.epss.data.score">
+            <dt>EPSS: </dt><dd>{{content.metrics.epss.data.score}}</dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.metrics.kev.data">
+            <dt>CISA KEV: </dt>
+            <dd style="color:#ff0000">Known Exploited
+                <span ng-if="content.metrics.kev.data.dateAdded">(added {{content.metrics.kev.data.dateAdded | limitTo : 10}})</span>
+            </dd>
+        </dl>
+        <dl class="dl-horizontal" ng-if="content.weaknesses.length">
+            <dt>CWE: </dt>
+            <dd><span class="label label-default" ng-repeat="cwe in content.weaknesses">{{cwe}} </span></dd>
+        </dl>
+        <hr>
+        <h3>Description</h3>
+        <p>{{content.description}}</p>
+        <div ng-if="content.vendors_list.length">
+            <hr>
+            <h3>Affected vendors</h3>
+            <p><span class="label label-primary" ng-repeat="v in content.vendors_list">{{v}} </span></p>
+        </div>
+        <div ng-if="content.products.length">
+            <hr>
+            <h3>Affected products</h3>
+            <table class="table table-striped">
+                <thead><tr><th>Vendor</th><th>Product</th></tr></thead>
+                <tbody>
+                    <tr ng-repeat="p in content.products">
+                        <td>{{p.vendor}}</td><td>{{p.product}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,32 @@
+{
+  "name": "OpenCVE",
+  "version": "1.0",
+  "author": "Ali Bhutto",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Enrich a CVE with OpenCVE data: CVSS metrics, CISA KEV status, EPSS score, CWE weaknesses and affected vendors/products.",
+  "dataTypeList": ["cve"],
+  "command": "OpenCVE/opencve_analyzer.py",
+  "baseConfig": "OpenCVE",
+  "configurationItems": [
+    {
+      "name": "token",
+      "description": "OpenCVE organization API token (Bearer). Create one for free at app.opencve.io under your organization settings.",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "base_url",
+      "description": "OpenCVE API base URL. Keep the default for the hosted instance, or set it to your self-hosted OpenCVE API.",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "https://app.opencve.io/api"
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://www.opencve.io"
+}
