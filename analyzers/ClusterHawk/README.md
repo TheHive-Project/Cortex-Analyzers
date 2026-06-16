@@ -92,7 +92,7 @@ Before using this analyzer, you must:
 
 ### Supported Data Types
 
-- **ip**: IPv4 addresses
+- **ip**: IPv4 and IPv6 addresses
 
 ## Output Format
 
@@ -147,6 +147,16 @@ For prebuilt models, additional fields are included:
           "label": "['Web Crawler']"
         },
         {
+          "ip": "2001:db8:3c4d:15::1a2f",
+          "predicted_cluster": 5,
+          "confidence": 0.91,
+          "kind": "confident_match",
+          "top1_minus_top2": 0.77,
+          "effective_n": 1.28,
+          "candidates": [{ "cluster_id": 5, "confidence": 0.91 }],
+          "label": "['Botnet C2']"
+        },
+        {
           "ip": "10.0.0.50",
           "predicted_cluster": 1,
           "confidence": 0.42,
@@ -171,7 +181,7 @@ For prebuilt models, additional fields are included:
           "label": null
         }
       ],
-      "total_predictions": 3,
+      "total_predictions": 4,
       "model_info": {
         "model_id": "job_abc123def456"
       }
