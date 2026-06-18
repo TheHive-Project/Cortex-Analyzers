@@ -1,3 +1,6 @@
+<style>
+  .kh-ip { overflow-wrap: anywhere; word-break: break-all; }
+</style>
 <div ng-if="success">
     <div ng-if="content">
 
@@ -93,7 +96,7 @@
               <tr>
                 <th>IP Addresses</th>
                 <td>
-                  <span class="kh-chip" ng-repeat="ip in info.ips track by $index">{{ ip }}</span>
+                  <span class="kh-chip kh-ip" ng-repeat="ip in info.ips track by $index">{{ ip }}</span>
                 </td>
               </tr>
             </table>
@@ -117,7 +120,7 @@
             </thead>
             <tbody>
               <tr ng-repeat-start="p in content.predictions track by $index">
-                <td><span class="kh-chip">{{ p.ip }}</span></td>
+                <td><span class="kh-chip kh-ip">{{ p.ip }}</span></td>
                 <td>
                   <span class="label label-default" ng-if="p.cluster === null || p.cluster === undefined">
                     No match
