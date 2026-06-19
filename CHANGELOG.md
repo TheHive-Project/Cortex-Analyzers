@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.8.6](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.8.6) (2026-06-11)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.8.5...3.8.6)
+
+**Merged pull requests:**
+
+- UnshortenLink - Security Hardening [\#1457](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1457) ([nusantara-self](https://github.com/nusantara-self))
+- EmlParser - Security Hardening [\#1456](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1456) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.8.5](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.8.5) (2026-06-03)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.8.4...3.8.5)
