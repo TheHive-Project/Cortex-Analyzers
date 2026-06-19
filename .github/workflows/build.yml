@@ -1634,7 +1634,7 @@ jobs:
     #needs: [ build_responders, build_catalog, build_docs ]
     needs: [ build_analyzers_A, build_analyzers_B, build_responders, build_catalog, build_docs ]
     runs-on: ubuntu-latest
-    if: true
+    if: always() && startsWith(github.ref, 'refs/tags/')
     steps:
       - name: Determine overall status
         id: status
@@ -1665,36 +1665,29 @@ jobs:
           echo "message=$msg" >> $GITHUB_OUTPUT
 
       - name: Slack notification
-        uses: slackapi/slack-github-action@af78098f536edbc4de71162a307590698245be95 # v3.0.1
+        uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
+          errors: true
           payload: |
-            {
-              "channel": "#proj-ci-cortex",
-              "username": "Cortex Analyzers build",
-              "attachments": [
-                {
-                  "color": "${{ steps.status.outputs.color }}",
-                  "blocks": [
-                    {
-                      "type": "section",
-                      "text": {
-                        "type": "mrkdwn",
-                        "text": "*${{ github.workflow }}* — *${{ steps.status.outputs.result }}*\nBranch: `${{ github.ref_name }}` • Commit: `${{ steps.commit.outputs.message }}`\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>"
-                      }
-                    },
-                    {
-                      "type": "section",
-                      "fields": [
-                        { "type": "mrkdwn", "text": "*Analyzers A:*\n${{ needs.build_analyzers_A.result }}" },
-                        { "type": "mrkdwn", "text": "*Analyzers B:*\n${{ needs.build_analyzers_B.result }}" },
-                        { "type": "mrkdwn", "text": "*Responders:*\n${{ needs.build_responders.result }}" },
-                        { "type": "mrkdwn", "text": "*Catalog:*\n${{ needs.build_catalog.result }}" },
-                        { "type": "mrkdwn", "text": "*Docs:*\n${{ needs.build_docs.result }}" }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
+            text: "${{ github.workflow }} — ${{ steps.status.outputs.result }} | ${{ github.ref_name }} @ ${{ steps.commit.outputs.message }}"
+            attachments:
+              - color: "${{ steps.status.outputs.color }}"
+                blocks:
+                  - type: section
+                    text:
+                      type: mrkdwn
+                      text: "*${{ github.workflow }}* — *${{ steps.status.outputs.result }}*\nBranch: `${{ github.ref_name }}` • Commit: `${{ steps.commit.outputs.message }}`\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>"
+                  - type: section
+                    fields:
+                      - type: mrkdwn
+                        text: "*Analyzers A:*\n${{ needs.build_analyzers_A.result }}"
+                      - type: mrkdwn
+                        text: "*Analyzers B:*\n${{ needs.build_analyzers_B.result }}"
+                      - type: mrkdwn
+                        text: "*Responders:*\n${{ needs.build_responders.result }}"
+                      - type: mrkdwn
+                        text: "*Catalog:*\n${{ needs.build_catalog.result }}"
+                      - type: mrkdwn
+                        text: "*Docs:*\n${{ needs.build_docs.result }}"
