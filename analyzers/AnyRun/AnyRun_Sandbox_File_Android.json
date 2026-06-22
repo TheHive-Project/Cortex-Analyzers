@@ -4,7 +4,7 @@
   "author": "ANY.RUN Integrations Team",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Run File analysis using Android VM",
+  "description": "Submit files for Android sandbox analysis and retrieve verdicts, IOCs, reports, and tags.",
   "dataTypeList": [
     "file"
   ],

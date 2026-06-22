@@ -4,7 +4,7 @@
   "author": "ANY.RUN Integrations Team",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Check URL/IP/Domain/File reputation",
+  "description": "Enrich URLs, hashes, domains, and IPs with ANY.RUN Threat Intelligence.",
   "dataTypeList": [
     "ip",
     "domain",
