@@ -52,6 +52,7 @@ class EmlParserAnalyzer(Analyzer):
             "width_size": self.get_param("config.width_size", 1024),
         }
         self.sanitized_rendering = self.get_param("config.sanitized_rendering", False)
+        self.autoImport = self.get_param("config.autoImport_obersables", True)
 
     def run(self):
         if self.data_type == "file":
@@ -113,9 +114,12 @@ class EmlParserAnalyzer(Analyzer):
                 key = ("url", str(u["data"]))
                 if key not in seen:
                     seen.add(key)
+                    tags = u["tag"]
+                    if self.autoImport:
+                        tags.append("autoImport:true")
                     artifacts.append(
                         self.build_artifact(
-                            "url", str(u["data"]), tags=u["tag"] + ["autoImport:true"]
+                            "url", str(u["data"]), tags=tags
                         )
                     )
         if ip:
@@ -123,9 +127,12 @@ class EmlParserAnalyzer(Analyzer):
                 key = ("ip", str(i["data"]))
                 if key not in seen:
                     seen.add(key)
+                    tags = i["tag"]
+                    if self.autoImport:
+                        tags.append("autoImport:true")
                     artifacts.append(
                         self.build_artifact(
-                            "ip", str(i["data"]), tags=i["tag"] + ["autoImport:true"]
+                            "ip", str(i["data"]), tags=tags
                         )
                     )
         if mail_addresses:
@@ -133,9 +140,12 @@ class EmlParserAnalyzer(Analyzer):
                 key = ("mail", str(e["data"]))
                 if key not in seen:
                     seen.add(key)
+                    tags = e["tag"]
+                    if self.autoImport:
+                        tags.append("autoImport:true")
                     artifacts.append(
                         self.build_artifact(
-                            "mail", str(e["data"]), tags=e["tag"] + ["autoImport:true"]
+                            "mail", str(e["data"]), tags=tags
                         )
                     )
         if domains:
@@ -143,29 +153,38 @@ class EmlParserAnalyzer(Analyzer):
                 key = ("domain", str(d["data"]))
                 if key not in seen:
                     seen.add(key)
+                    tags = d["tag"]
+                    if self.autoImport:
+                        tags.append("autoImport:true")
                     artifacts.append(
-                        self.build_artifact("domain", str(d["data"]), tags=d["tag"])
+                        self.build_artifact("domain", str(d["data"]), tags=tags)
                     )
         if hashes:
             for h in hashes:
                 hash_key = ("hash", str(h["hash"]))
                 if hash_key not in seen:
                     seen.add(hash_key)
+                    tags = h["tag"] + ["body:attachment"]
+                    if self.autoImport:
+                        tags.append("autoImport:true")
                     artifacts.append(
                         self.build_artifact(
                             "hash",
                             str(h["hash"]),
-                            tags=["body:attachment", "autoImport:true"] + h["tag"],
+                            tags=tags,
                         )
                     )
                 fname_key = ("filename", str(h["filename"]))
                 if fname_key not in seen:
                     seen.add(fname_key)
+                    tags = h["tag"] + ["body:attachment"]
+                    if self.autoImport:
+                        tags.append("autoImport:true")
                     artifacts.append(
                         self.build_artifact(
                             "filename",
                             str(h["filename"]),
-                            tags=["body:attachment", "autoImport:true"] + h["tag"],
+                            tags=tags,
                         )
                     )
                 filepath = os.path.join(
@@ -176,11 +195,14 @@ class EmlParserAnalyzer(Analyzer):
                 file_key = ("file", filepath)
                 if file_key not in seen:
                     seen.add(file_key)
+                    tags = h["tag"] + ["body:attachment"]
+                    if self.autoImport:
+                        tags.append("autoImport:true")
                     artifacts.append(
                         self.build_artifact(
                             "file",
                             filepath,
-                            tags=["body:attachment", "autoImport:true"] + h["tag"],
+                            tags=tags,
                         )
                     )
         return artifacts
