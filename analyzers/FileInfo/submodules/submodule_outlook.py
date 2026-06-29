@@ -1,4 +1,5 @@
 import os
+import re
 import hashlib
 import magic
 import tempfile
@@ -7,6 +8,17 @@ from .submodule_base import SubmoduleBaseclass
 #  from ExtractMsg import Message, Attachment
 from extract_msg import Message, Attachment
 from imapclient.imapclient import decode_utf7
+
+
+def _safe_attachment_filename(raw_name):
+    """Reduce an attachment name to a safe basename, or None if unusable."""
+    if not raw_name or "\x00" in raw_name:
+        return None
+    # normalise Windows separators first; "\" is not a separator on POSIX
+    base = os.path.basename(raw_name.replace("\\", "/"))
+    if not base or base in (".", "..") or os.path.isabs(base) or re.match(r"^[A-Za-z]:", base):
+        return None
+    return base
 
 
 class OutlookSubmodule(SubmoduleBaseclass):
@@ -49,9 +61,16 @@ class OutlookSubmodule(SubmoduleBaseclass):
                         "mimeinfo": minfo,
                     }
                 )
-                with open(os.path.join(outdir, attachment.longFilename), "wb") as f:
+                filename = _safe_attachment_filename(attachment.longFilename) or \
+                    "attachment_{}".format(sha256.hexdigest()[:16])
+                filepath = os.path.join(outdir, filename)
+                if not os.path.realpath(filepath).startswith(
+                    os.path.realpath(outdir) + os.sep
+                ):
+                    continue
+                with open(filepath, "wb") as f:
                     f.write(attachment.data)
-                    observables.append(os.path.join(outdir, attachment.longFilename))
+                    observables.append(filepath)
 
         email = {
             "header": xstr(m.header),
