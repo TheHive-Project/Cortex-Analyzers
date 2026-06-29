@@ -485,16 +485,19 @@ class Slack(Responder):
                     import tempfile
                     temp_dir = tempfile.gettempdir()
                     original_name = attachment.get('name', 'attachment')
-                    temp_path = os.path.join(temp_dir, f"slack_attachment_{original_name}")
-                    
+                    safe_name = os.path.basename(original_name.replace("\\", "/"))
+                    if not safe_name or safe_name in (".", "..") or "\x00" in safe_name:
+                        safe_name = "attachment"
+                    temp_path = os.path.join(temp_dir, f"slack_attachment_{safe_name}")
+
                     # Handle duplicate names
                     counter = 1
                     while os.path.exists(temp_path):
-                        name_parts = original_name.rsplit('.', 1)
+                        name_parts = safe_name.rsplit('.', 1)
                         if len(name_parts) == 2:
                             temp_path = os.path.join(temp_dir, f"slack_attachment_{name_parts[0]}_{counter}.{name_parts[1]}")
                         else:
-                            temp_path = os.path.join(temp_dir, f"slack_attachment_{original_name}_{counter}")
+                            temp_path = os.path.join(temp_dir, f"slack_attachment_{safe_name}_{counter}")
                         counter += 1
                     
                     with open(temp_path, 'wb') as temp_file:
