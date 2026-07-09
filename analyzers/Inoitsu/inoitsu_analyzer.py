@@ -28,17 +28,15 @@ class InoitsuAnalyzer(Analyzer):
 		if 'BREACH DETECTED!' in response:
 			cleantext = self.remove_html_tags(response)
 			text = cleantext.replace('&nbsp;','')
-			Breached_data_finder = re.search('Breached Personal Data(.*)Critical Identity Alerts', text)
+			Breached_data_finder = re.search('Breached Personal Data(.*)Total Breaches', text)
 			Breached_data = Breached_data_finder.group(1)[1:]
-			Critical_data_finder = re.search('Critical Identity Alerts(.*)Total Breaches', text)
-			Critical_data = Critical_data_finder.group(1)[1:]
 			Total_breaches_finder = re.search('Total Breaches(.*)Most Recent Breach', text)
 			Total_breaches = Total_breaches_finder.group(1)[1:]
 			Most_recent_breach_finder = re.search('Most Recent Breach(.*)Relative Exposure Rating', text)
 			Most_recent_breach = Most_recent_breach_finder.group(1)[2:]
 			Exposure_rating_finder = re.search('Relative Exposure Rating(.*)breach data from', text)
 			Exposure_rating = Exposure_rating_finder.group(1)[2:]
-			result = dict(Email = email, Leaked = True, Breached_data = Breached_data, Critical_data = Critical_data,
+			result = dict(Email = email, Leaked = True, Breached_data = Breached_data,
 			Total_breaches = int(Total_breaches), Most_recent_breach = Most_recent_breach,
 			Exposure_rating = Exposure_rating)
 			return result
