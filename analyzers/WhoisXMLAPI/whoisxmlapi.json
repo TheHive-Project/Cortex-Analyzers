@@ -1,0 +1,13 @@
+{
+    "name": "WhoisXMLAPI",
+    "description": "Query a domain against the WhoisXMLAPI",
+    "dataTypeList": ["domain", "ip", "fqdn", "ip"],
+    "version": "0.1",
+    "baseConfig": "WhoisXMLAPI",
+    "config": {
+      "check_tlp": true,
+      "max_tlp": 3,
+      "service": "query"
+    },
+    "command": "WhoisXMLAPI/whoisxmlapi.py"
+}
