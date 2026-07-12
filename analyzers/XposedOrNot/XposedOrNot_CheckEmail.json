@@ -1,0 +1,35 @@
+{
+  "name": "XposedOrNot_CheckEmail",
+  "version": "1.0",
+  "author": "XposedOrNot",
+  "url": "https://github.com/XposedOrNot",
+  "license": "AGPL-V3",
+  "description": "Fast check of an email address against the XposedOrNot data-breach database. Returns the list of breaches the address appears in. Free, no API key required.",
+  "dataTypeList": ["mail"],
+  "command": "XposedOrNot/xposedornot_analyzer.py",
+  "baseConfig": "XposedOrNot",
+  "config": {
+    "service": "check_email",
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 2
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Optional XposedOrNot API key (console.xposedornot.com) for higher rate limits and detailed responses. The analyzer is fully functional without it.",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ],
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://xposedornot.com",
+  "service_logo": {
+    "path": "assets/xposedornot-logo.png",
+    "caption": "logo"
+  }
+}
