@@ -7,8 +7,10 @@ class UrlscanAnalyzer(Analyzer):
     def __init__(self):
         Analyzer.__init__(self)
         self.service = self.get_param('config.service', None, 'Service parameter is missing')
-        if self.service == 'scan':
-            self.api_key = self.get_param('config.key', None, 'Missing URLScan API key')
+        self.api_key = self.get_param('config.key', None, 'Missing URLScan API key')
+        self.visibility = self.get_param('config.visibility', 'public')
+        if self.visibility not in ('public', 'unlisted', 'private'):
+            self.error('Invalid visibility. Expected one of: public, unlisted, private')
 
     def search(self, indicator):
         """
@@ -17,7 +19,7 @@ class UrlscanAnalyzer(Analyzer):
         :type indicator: str
         :return: dict
         """
-        res = Urlscan(indicator).search()
+        res = Urlscan(indicator).search(self.api_key)
         return res
 
     def scan(self, indicator):
@@ -27,7 +29,7 @@ class UrlscanAnalyzer(Analyzer):
         :type indicator: str
         :return: dict
         """
-        res = Urlscan(indicator).scan(self.api_key)
+        res = Urlscan(indicator).scan(self.api_key, self.visibility)
         return res
 
     def run(self):
