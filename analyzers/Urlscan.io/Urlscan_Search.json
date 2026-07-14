@@ -3,7 +3,7 @@
   "author": "ninoseki, Kyle Parrish (@arnydo)",
   "license": "MIT",
   "url": "https://github.com/arnydo/Cortex-Analyzers",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Search IPs, domains, hashes or URLs on urlscan.io",
   "dataTypeList": ["ip", "domain", "hash", "fqdn", "url"],
   "command": "Urlscan.io/urlscan_analyzer.py",
@@ -11,7 +11,16 @@
   "config": {
     "service": "get"
   },
-  "registration_required": false,
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "API key for Urlscan.io",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "registration_required": true,
   "subscription_required": false,
   "free_subscription": true,
   "service_homepage": "https://urlscan.io/"
