@@ -1,0 +1,4 @@
+cortexutils>=2.1.0
+pdf2image
+python-magic
+Pillow

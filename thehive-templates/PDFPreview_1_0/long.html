@@ -1,0 +1,54 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        <strong>PDF Preview: {{content.filename}}</strong>
+    </div>
+    <div class="panel-body">
+
+        <!-- Page count -->
+        <div class="panel panel-default">
+            <div class="panel-heading">Pages</div>
+            <div class="panel-body">
+                <dl class="dl-horizontal" style="margin-bottom:0;">
+                    <dt>Rendered</dt>
+                    <dd>
+                        {{content.pages_rendered}}
+                        <span ng-if="content.page_count_total"> / {{content.page_count_total}} total</span>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+        <!-- Page limit banner -->
+        <div class="alert alert-info" ng-if="content.page_count_total && content.pages_rendered < content.page_count_total">
+            <strong>Limit reached:</strong> only the first {{content.pages_rendered}} of {{content.page_count_total}}
+            pages were rendered, per the analyzer's <code>max_pages</code> setting. Increase it in the analyzer
+            configuration in Cortex to preview more pages.
+        </div>
+
+        <!-- Render failure banner -->
+        <div class="alert alert-warning" ng-if="content.render_error && content.pages.length === 0">
+            <strong>Page rendering failed:</strong> {{content.render_error}}<br>
+            A common cause is a password-protected PDF; attackers frequently password-protect attachments
+            (password in the email body) to evade scanning.
+        </div>
+
+        <!-- Preview -->
+        <div ng-if="content.pages.length === 0 && !content.render_error">
+            <p class="text-muted">No pages could be rendered.</p>
+        </div>
+        <div ng-repeat="page in content.pages" style="margin-bottom: 16px;">
+            <p class="text-muted" style="margin-bottom: 4px;">Page {{page.index}}</p>
+            <img ng-src="{{page.image}}" style="width: 100%; border: 1px solid #ccc; display: block;">
+        </div>
+
+    </div>
+</div>

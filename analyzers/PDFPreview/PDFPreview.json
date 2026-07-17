@@ -1,0 +1,38 @@
+{
+  "name": "PDFPreview",
+  "version": "1.0",
+  "author": "Fabien Bloume, StrangeBee",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Minimal-attack-surface PDF preview: renders pages as images via poppler (and nothing more).",
+  "dataTypeList": [
+    "file"
+  ],
+  "baseConfig": "PDFPreview",
+  "command": "PDFPreview/preview.py",
+  "config": {
+    "check_tlp": false,
+    "max_tlp": 3
+  },
+  "configurationItems": [
+    {
+      "name": "max_pages",
+      "description": "Maximum number of pages to render as images. Larger values increase processing time and report size.",
+      "type": "number",
+      "required": false,
+      "multi": false,
+      "defaultValue": 10
+    },
+    {
+      "name": "dpi",
+      "description": "Rendering resolution in DPI. Higher values produce sharper images but larger output. Recommended range: 72-150.",
+      "type": "number",
+      "required": false,
+      "multi": false,
+      "defaultValue": 100
+    }
+  ],
+  "registration_required": false,
+  "subscription_required": false,
+  "integration_type": "local"
+}
