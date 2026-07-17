@@ -1,0 +1,31 @@
+{
+    "name": "DFIRPlatform_ExposureScan",
+    "version": "1.0",
+    "author": "DFIR Lab",
+    "url": "https://github.com/dfir-lab/dfir-cortex-analyzers",
+    "license": "MIT",
+    "description": "Scan a domain's attack surface using the DFIR Platform API. Aggregates data from 11 providers including Shodan, Criminal IP, SSL Labs, crt.sh, and more to identify exposed services, misconfigurations, and vulnerabilities.",
+    "dataTypeList": ["domain"],
+    "command": "DFIRPlatform_ExposureScan/DFIRPlatform_ExposureScan.py",
+    "baseConfig": "DFIRPlatform",
+    "registration_required": true,
+    "subscription_required": false,
+    "free_subscription": true,
+    "configurationItems": [
+        {
+            "name": "api_key",
+            "description": "API key for the DFIR Platform. Obtain one at https://platform.dfir-lab.ch",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "base_url",
+            "description": "Base URL for the DFIR Platform API",
+            "type": "string",
+            "multi": false,
+            "required": false,
+            "defaultValue": "https://api.dfir-lab.ch/v1"
+        }
+    ]
+}
