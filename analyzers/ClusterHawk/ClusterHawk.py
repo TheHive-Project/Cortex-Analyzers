@@ -254,6 +254,7 @@ class ClusterHawkAnalyzer(Analyzer):
                 candidates = pred.get("candidates") or []
                 label = pred.get("label")
                 is_ood = cluster is None or kind == "out_of_distribution"
+                is_noise = not is_ood and cluster == -1
                 cluster_key = "Out of distribution" if is_ood else f"Cluster {cluster}"
 
                 if cluster_key not in cluster_summary:
@@ -264,6 +265,7 @@ class ClusterHawkAnalyzer(Analyzer):
                         "avg_confidence": 0.0,
                         "ips": [],
                         "is_ood": is_ood,
+                        "is_noise": is_noise,
                     }
 
                     if "primary_characteristic" in pred:
@@ -324,6 +326,13 @@ class ClusterHawkAnalyzer(Analyzer):
                         "key_indicators", ""
                     )
 
+                expl_status = pred.get("explanation_status")
+                if expl_status:
+                    processed_pred["explanation_status"] = str(expl_status)
+                explanation = pred.get("explanation")
+                if explanation:
+                    processed_pred["explanation"] = explanation
+
                 processed_predictions.append(processed_pred)
 
             for bucket in cluster_summary.values():
@@ -339,11 +348,16 @@ class ClusterHawkAnalyzer(Analyzer):
                 "summary": {
                     "total_analyzed": len(predictions),
                     "clusters_found": sum(
-                        1 for k in cluster_summary if k != "Out of distribution"
+                        1
+                        for v in cluster_summary.values()
+                        if not v["is_ood"] and not v["is_noise"]
                     ),
                     "model_used": self.model_name,
                     "job_id": results.get("job_id", "unknown"),
                     "has_cluster_descriptions": has_cluster_descriptions,
+                    "has_explanations": any(
+                        "explanation" in p for p in processed_predictions
+                    ),
                     "is_prebuilt_model": bool(
                         results.get("results", {})
                         .get("model_info", {})
