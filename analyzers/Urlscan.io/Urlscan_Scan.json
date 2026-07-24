@@ -1,9 +1,9 @@
 {
   "name": "Urlscan.io_Scan",
-  "author": "ninoseki, Kyle Parrish (@arnydo)",
+  "author": "ninoseki; Kyle Parrish (@arnydo); Fabien Bloume, StrangeBee",
   "license": "MIT",
   "url": "https://github.com/arnydo/Cortex-Analyzers",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Scan URLs on urlscan.io",
   "dataTypeList": ["url", "domain", "fqdn"],
   "command": "Urlscan.io/urlscan_analyzer.py",
@@ -18,6 +18,14 @@
       "type": "string",
       "multi": false,
       "required": true
+    },
+    {
+      "name": "visibility",
+      "description": "Visibility of the scan result on Urlscan.io (public, unlisted or private)",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "public"
     }
   ],
   "registration_required": true,

@@ -1,0 +1,195 @@
+<!-- Author: Maxime Hezard-Pautrat-->
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        GreyNoise results for <strong>{{artifact.data}}</strong>
+    </div>
+    
+    <div class="panel-body" ng-if="content.internet_scanner_intelligence">
+        
+        <h4><i class="fa fa-info-circle"></i> General Information</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Classification</th>
+                    <th>Actor</th>
+                    <th>Last Seen (Global)</th>
+                    <th>Last Seen (Malicious)</th>
+                    <th>Last Seen (Suspicious)</th>
+                    <th>Last Seen (Benign)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span class="label" ng-class="{'malicious': 'label-danger', 'suspicious': 'label-warning', 'benign': 'label-success', 'unknown': 'label-default'}[content.internet_scanner_intelligence.classification] || 'label-info'">
+                            {{content.internet_scanner_intelligence.classification | uppercase}}
+                        </span>
+                    </td>
+                    <td>{{content.internet_scanner_intelligence.actor || 'None'}}</td>
+                    <td>{{content.internet_scanner_intelligence.last_seen_timestamp || content.internet_scanner_intelligence.last_seen || 'None'}}</td>
+                    <td>{{content.internet_scanner_intelligence.last_seen_malicious || 'None'}}</td>
+                    <td>{{content.internet_scanner_intelligence.last_seen_suspicious || 'None'}}</td>
+                    <td>{{content.internet_scanner_intelligence.last_seen_benign || 'None'}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4><i class="fa fa-server"></i> Source Network & Location</h4>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th style="width: 20%;">Organization</th>
+                    <td>{{content.internet_scanner_intelligence.metadata.organization || 'None'}}</td>
+                    <th style="width: 20%;">Carrier</th>
+                    <td>{{content.internet_scanner_intelligence.metadata.carrier || 'None'}}</td>
+                </tr>
+                <tr>
+                    <th>Source Country</th>
+                    <td>{{content.internet_scanner_intelligence.metadata.source_country || 'None'}} ({{content.internet_scanner_intelligence.metadata.source_country_code || 'None'}})</td>
+                    <th>Datacenter</th>
+                    <td>{{content.internet_scanner_intelligence.metadata.datacenter || 'None'}}</td>
+                </tr>
+                <tr>
+                    <th>Coordinates (Lat, Long)</th>
+                    <td colspan="3">
+                        Latitude: {{content.internet_scanner_intelligence.metadata.latitude !== undefined ? content.internet_scanner_intelligence.metadata.latitude : 'None'}}, 
+                        Longitude: {{content.internet_scanner_intelligence.metadata.longitude !== undefined ? content.internet_scanner_intelligence.metadata.longitude : 'None'}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div ng-if="content.internet_scanner_intelligence.tags.length > 0">
+            <hr>
+            <h4><i class="fa fa-tags"></i> Behaviors & Tags</h4>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Tag Name</th>
+                        <th>Category</th>
+                        <th>Intention</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="tag in content.internet_scanner_intelligence.tags">
+                        <td><strong>{{tag.name}}</strong></td>
+                        <td><span class="label label-default">{{tag.category}}</span></td>
+                        <td>
+                            <span class="label" ng-class="{'malicious': 'label-danger', 'suspicious': 'label-warning'}[tag.intention] || 'label-info'">
+                                {{tag.intention}}
+                            </span>
+                        </td>
+                        <td><small>{{tag.description}}</small></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <hr>
+        <h4><i class="fa fa-globe"></i> Destination Targets</h4>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th style="width: 20%;">Destination Countries</th>
+                    <td ng-init="mappedCountries = []">
+                        <span style="display:none;" ng-repeat="code in content.internet_scanner_intelligence.metadata.destination_country_codes track by $index" 
+                              ng-init="mappedCountries.push({code: code, name: content.internet_scanner_intelligence.metadata.destination_countries[$index]})"></span>
+                        
+                        <span ng-if="mappedCountries.length > 0">
+                            <span ng-repeat="country in mappedCountries | orderBy:'code'" style="margin-right: 5px; margin-bottom: 5px; display: inline-block;">
+                                <span class="label label-primary" title="{{country.name}}" style="font-size: 13px; cursor: help;">
+                                    {{country.code}}
+                                </span>
+                            </span>
+                        </span>
+                        
+                        <span ng-if="!content.internet_scanner_intelligence.metadata.destination_country_codes || content.internet_scanner_intelligence.metadata.destination_country_codes.length === 0">None</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Destination Cities</th>
+                    <td>
+                        <span ng-if="content.internet_scanner_intelligence.metadata.destination_cities.length > 0">
+                            <span ng-repeat="city in content.internet_scanner_intelligence.metadata.destination_cities | orderBy:'toString()'" class="label label-info" style="margin-right: 5px;">{{city}}</span>
+                        </span>
+                        <span ng-if="!content.internet_scanner_intelligence.metadata.destination_cities || content.internet_scanner_intelligence.metadata.destination_cities.length === 0">None</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Destination ASNs</th>
+                    <td>
+                        <span ng-if="content.internet_scanner_intelligence.metadata.destination_asns.length > 0">
+                            <span ng-repeat="asn in content.internet_scanner_intelligence.metadata.destination_asns | orderBy:'toString()'" class="label label-default" style="margin-right: 5px;">{{asn}}</span>
+                        </span>
+                        <span ng-if="!content.internet_scanner_intelligence.metadata.destination_asns || content.internet_scanner_intelligence.metadata.destination_asns.length === 0">None</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr>
+        <h4><i class="fa fa-cogs"></i> Raw Data / Technical Footprints</h4>
+        <table class="table table-bordered table-striped">
+            <tbody>
+                <tr ng-if="content.internet_scanner_intelligence.raw_data.scan.length > 0">
+                    <th style="width: 25%;">Scan Protocols</th>
+                    <td><span ng-repeat="item in content.internet_scanner_intelligence.raw_data.scan">{{item}}{{$last ? '' : ', '}}</span></td>
+                </tr>
+                <tr ng-if="content.internet_scanner_intelligence.raw_data.ja3.length > 0">
+                    <th>JA3 Fingerprints</th>
+                    <td><span ng-repeat="item in content.internet_scanner_intelligence.raw_data.ja3">{{item}}{{$last ? '' : ', '}}</span></td>
+                </tr>
+                <tr ng-if="content.internet_scanner_intelligence.raw_data.hassh.length > 0">
+                    <th>HASSH Fingerprints</th>
+                    <td><span ng-repeat="item in content.internet_scanner_intelligence.raw_data.hassh">{{item}}{{$last ? '' : ', '}}</span></td>
+                </tr>
+                <tr ng-if="content.internet_scanner_intelligence.raw_data.source.bytes !== undefined && Number(content.internet_scanner_intelligence.raw_data.source.bytes) === 0">
+                    <th>Source Bytes</th>
+                    <td>{{content.internet_scanner_intelligence.raw_data.source.bytes}}</td>
+                </tr>
+                
+                <tr ng-if="content.internet_scanner_intelligence.raw_data.http.md5.length > 0"><th>HTTP MD5</th><td><span ng-repeat="item in content.internet_scanner_intelligence.raw_data.http.md5">{{item}}{{$last ? '' : ', '}}</span></td></tr>
+                <tr ng-if="content.internet_scanner_intelligence.raw_data.http.cookie_keys.length > 0"><th>HTTP Cookie Keys</th><td><span ng-repeat="item in content.internet_scanner_intelligence.raw_data.http.cookie_keys">{{item}}{{$last ? '' : ', '}}</span></td></tr>
+                <tr ng-if="content.internet_scanner_intelligence.raw_data.http.ja4h.length > 0"><th>HTTP JA4H</th><td><span ng-repeat="item in content.internet_scanner_intelligence.raw_data.http.ja4h">{{item}}{{$last ? '' : ', '}}</span></td></tr>
+                <tr ng-if="content.internet_scanner_intelligence.raw_data.http.request_authorization.length > 0"><th>HTTP Request Auth</th><td><span ng-repeat="item in content.internet_scanner_intelligence.raw_data.http.request_authorization">{{item}}{{$last ? '' : ', '}}</span></td></tr>
+                <tr ng-if="content.internet_scanner_intelligence.raw_data.http.request_cookies.length > 0"><th>HTTP Request Cookies</th><td><span ng-repeat="item in content.internet_scanner_intelligence.raw_data.http.request_cookies">{{item}}{{$last ? '' : ', '}}</span></td></tr>
+                <tr ng-if="content.internet_scanner_intelligence.raw_data.http.request_header.length > 0"><th>HTTP Request Header</th><td><span ng-repeat="item in content.internet_scanner_intelligence.raw_data.http.request_header">{{item}}{{$last ? '' : ', '}}</span></td></tr>
+                <tr ng-if="content.internet_scanner_intelligence.raw_data.http.method.length > 0"><th>HTTP Method</th><td><span ng-repeat="item in content.internet_scanner_intelligence.raw_data.http.method">{{item}}{{$last ? '' : ', '}}</span></td></tr>
+                <tr ng-if="content.internet_scanner_intelligence.raw_data.http.path.length > 0"><th>HTTP Path</th><td><span ng-repeat="item in content.internet_scanner_intelligence.raw_data.http.path">{{item}}{{$last ? '' : ', '}}</span></td></tr>
+                <tr ng-if="content.internet_scanner_intelligence.raw_data.http.request_origin.length > 0"><th>HTTP Request Origin</th><td><span ng-repeat="item in content.internet_scanner_intelligence.raw_data.http.request_origin">{{item}}{{$last ? '' : ', '}}</span></td></tr>
+                <tr ng-if="content.internet_scanner_intelligence.raw_data.http.useragent.length > 0"><th>HTTP User Agent</th><td><span ng-repeat="item in content.internet_scanner_intelligence.raw_data.http.useragent">{{item}}{{$last ? '' : ', '}}</span></td></tr>
+
+                <tr ng-if="content.internet_scanner_intelligence.raw_data.tls.cipher.length > 0"><th>TLS Cipher</th><td><span ng-repeat="item in content.internet_scanner_intelligence.raw_data.tls.cipher">{{item}}{{$last ? '' : ', '}}</span></td></tr>
+                <tr ng-if="content.internet_scanner_intelligence.raw_data.tls.ja4.length > 0"><th>TLS JA4</th><td><span ng-repeat="item in content.internet_scanner_intelligence.raw_data.tls.ja4">{{item}}{{$last ? '' : ', '}}</span></td></tr>
+
+                <tr ng-if="content.internet_scanner_intelligence.raw_data.ssh.key.length > 0"><th>SSH Key</th><td><span ng-repeat="item in content.internet_scanner_intelligence.raw_data.ssh.key">{{item}}{{$last ? '' : ', '}}</span></td></tr>
+                <tr ng-if="content.internet_scanner_intelligence.raw_data.ssh.ja4ssh.length > 0"><th>SSH JA4SSH</th><td><span ng-repeat="item in content.internet_scanner_intelligence.raw_data.ssh.ja4ssh">{{item}}{{$last ? '' : ', '}}</span></td></tr>
+
+                <tr ng-if="content.internet_scanner_intelligence.raw_data.tcp.ja4t.length > 0"><th>TCP JA4T</th><td><span ng-repeat="item in content.internet_scanner_intelligence.raw_data.tcp.ja4t">{{item}}{{$last ? '' : ', '}}</span></td></tr>
+                <tr ng-if="content.internet_scanner_intelligence.raw_data.tcp.ja4l.length > 0"><th>TCP JA4L</th><td><span ng-repeat="item in content.internet_scanner_intelligence.raw_data.tcp.ja4l">{{item}}{{$last ? '' : ', '}}</span></td></tr>
+            </tbody>
+        </table>
+
+        <hr>
+        <p>
+            <a target="_blank" href="https://viz.greynoise.io/ip/{{content.ip}}" class="btn btn-sm btn-default">
+                <i class="fa fa-external-link"></i> View detailed analysis on GreyNoise Visualizer
+            </a>
+        </p>
+
+    </div>
+
+    <div class="panel-body" ng-if="!content.internet_scanner_intelligence && content.ip">
+        <p>No active scanner data found for <strong>{{artifact.data}}</strong>.</p>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>Analysis error for {{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

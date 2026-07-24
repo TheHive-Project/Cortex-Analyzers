@@ -5,6 +5,7 @@ from cortexutils.analyzer import Analyzer
 import dateutil.parser
 from datetime import datetime
 from packaging.version import Version
+from itertools import zip_longest
 
 # utils
 import operator
@@ -156,7 +157,28 @@ class ElasticsearchAnalyzer(Analyzer):
             # client-side numeric timeout (works across 8.x/9.x)
             client_timeout = 30  # seconds
 
-            for endpoint,key,user,password in zip(self.endpoints,self.keys,self.users,self.passwords):
+            # Normalize parameter lists to handle optional omitted config items
+            if self.endpoints is None:
+                self.endpoints = []
+            elif isinstance(self.endpoints, str):
+                self.endpoints = [self.endpoints]
+
+            if self.keys is None:
+                self.keys = []
+            elif not isinstance(self.keys, list):
+                self.keys = [self.keys]
+
+            if self.users is None:
+                self.users = []
+            elif not isinstance(self.users, list):
+                self.users = [self.users]
+
+            if self.passwords is None:
+                self.passwords = []
+            elif not isinstance(self.passwords, list):
+                self.passwords = [self.passwords]
+
+            for endpoint,key,user,password in zip_longest(self.endpoints,self.keys,self.users,self.passwords, fillvalue=None):
                 hosts = [endpoint] if isinstance(endpoint, str) else endpoint
                 es_dict = dict(
                             hosts=hosts,

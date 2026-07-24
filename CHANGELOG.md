@@ -1,5 +1,38 @@
 # Changelog
 
+## [3.8.9](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.8.9) (2026-07-14)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.8.8...3.8.9)
+
+**Closed issues:**
+
+- \[ENG\] Analyzer template missing for GreyNoise version 3.2 [\#1469](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1469)
+- \[Bug\] Urlscan.io\_Scan analyzer doesn't work anymore [\#1468](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1468)
+- \[FR\] ClusterHawk IPv6 support [\#1459](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1459)
+- \[Bug\] Elasticsearch analyzer "keys" field is required but should not be [\#1291](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1291)
+
+## [3.8.8](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.8.8) (2026-06-29)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.8.7...3.8.8)
+
+**Merged pull requests:**
+
+- Analyzers - Security hardening [\#1466](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1466) ([nusantara-self](https://github.com/nusantara-self))
+- ANY.RUN - update analyzers description [\#1461](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1461) ([nusantara-self](https://github.com/nusantara-self))
+
+## [3.8.7](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.8.7) (2026-06-19)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.8.6...3.8.7)
+
+**Closed issues:**
+
+- \[FR\] OpenCVE cortex analyzer [\#1236](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1236)
+
+**Merged pull requests:**
+
+- Platform supports IPv6 now, clarification [\#1460](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1460) ([marvinuku](https://github.com/marvinuku))
+- Add OpenCVE analyzer [\#1458](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1458) ([thunderstornX](https://github.com/thunderstornX))
+
 ## [3.8.6](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.8.6) (2026-06-11)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.8.5...3.8.6)
@@ -1664,7 +1697,6 @@
 
 - added custom Dns sinkholed ip [\#482](https://github.com/TheHive-Project/Cortex-Analyzers/pull/482) ([garanews](https://github.com/garanews))
 - remove extra slash [\#488](https://github.com/TheHive-Project/Cortex-Analyzers/pull/488) ([garanews](https://github.com/garanews))
-- EmlParser - Fixed headers and displayTo  [\#486](https://github.com/TheHive-Project/Cortex-Analyzers/pull/486) ([mgabriel-silva](https://github.com/mgabriel-silva))
 - yeti api key [\#478](https://github.com/TheHive-Project/Cortex-Analyzers/pull/478) ([siisar](https://github.com/siisar))
 - Possibility to use a Yeti apikey. [\#477](https://github.com/TheHive-Project/Cortex-Analyzers/pull/477) ([siisar](https://github.com/siisar))
 - Utility to make running an Analyzer locally easier, helpful in development [\#471](https://github.com/TheHive-Project/Cortex-Analyzers/pull/471) ([ndejong](https://github.com/ndejong))
@@ -2270,7 +2302,6 @@
 
 - fixed line break in WOT requirements.txt [\#132](https://github.com/TheHive-Project/Cortex-Analyzers/pull/132) ([peasead](https://github.com/peasead))
 - Revert "Updated VT links in Long report" [\#110](https://github.com/TheHive-Project/Cortex-Analyzers/pull/110) ([saadkadhi](https://github.com/saadkadhi))
-- Updated VT links in Long report [\#98](https://github.com/TheHive-Project/Cortex-Analyzers/pull/98) ([mthlvt](https://github.com/mthlvt))
 
 ## [1.6.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.6.3) (2017-09-10)
 
