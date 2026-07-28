@@ -1,0 +1,91 @@
+<!-- GUID lookup failed / informational message -->
+<div class="panel panel-info" ng-if="success && content.message">
+    <div class="panel-heading">
+        <i class="fa fa-info-circle"></i> MS Exchange Online - Inbox Rules
+    </div>
+    <div class="panel-body">
+        {{content.message}}
+    </div>
+</div>
+
+<!-- No rules found -->
+<div class="panel panel-success" ng-if="success && content.rules && content.rules.length == 0">
+    <div class="panel-heading">
+        <i class="fa fa-envelope"></i> MS Exchange Online - Inbox Rules
+    </div>
+    <div class="panel-body">
+        <p>No inbox rules found for <strong>{{content.user}}</strong>.</p>
+    </div>
+</div>
+
+<!-- Rules available -->
+<div class="panel" ng-class="content.suspiciousRuleCount > 0 ? 'panel-danger' : 'panel-primary'" ng-if="success && content.rules && content.rules.length > 0">
+    <div class="panel-heading">
+        <i class="fa fa-envelope"></i> MS Exchange Online - Inbox Rules for {{content.user}}
+        <span ng-if="content.suspiciousRuleCount > 0">
+            : {{content.suspiciousRuleCount}} suspicious rule(s)
+        </span>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th><i class="fa fa-sort-numeric-asc"></i> Seq</th>
+                    <th><i class="fa fa-tag"></i> Name</th>
+                    <th><i class="fa fa-toggle-on"></i> Enabled</th>
+                    <th><i class="fa fa-exclamation-triangle"></i> Suspicious</th>
+                    <th><i class="fa fa-comment"></i> Reasons</th>
+                    <th><i class="fa fa-id-badge"></i> Rule ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="r in content.rules" ng-style="{'background-color': r.suspicious ? '#f2dede' : 'inherit'}">
+                    <td>{{r.sequence}}</td>
+                    <td>{{r.displayName}}</td>
+                    <td>{{r.isEnabled ? 'Yes' : 'No'}}</td>
+                    <td>{{r.suspicious ? 'Yes' : 'No'}}</td>
+                    <td>
+                        <ul ng-if="r.suspiciousReasons.length > 0" style="margin-bottom: 0; padding-left: 15px;">
+                            <li ng-repeat="reason in r.suspiciousReasons">{{reason}}</li>
+                        </ul>
+                    </td>
+                    <td class="wrap" title="{{r.id}}">{{r.id}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="text-muted">
+            <i class="fa fa-info-circle"></i> To remove a malicious rule, run the <strong>MSExchangeOnline_RemoveInboxRule</strong> responder on the case with the custom field <code>inbox-rule-input</code> set to <code>{{content.user}}|&lt;Rule ID&gt;</code>.
+        </p>
+    </div>
+</div>
+
+<!-- Rule details -->
+<div class="panel panel-primary" ng-if="success && content.rules && content.rules.length > 0">
+    <div class="panel-heading">
+        <i class="fa fa-info-circle"></i> Rule Details (conditions &amp; actions)
+    </div>
+    <div class="panel-body">
+        <div ng-repeat="r in content.rules">
+            <h4>{{r.displayName}} <small ng-if="r.suspicious" class="text-danger">suspicious</small></h4>
+            <dl class="dl-horizontal">
+                <dt>Conditions</dt>
+                <dd class="wrap"><pre>{{r.conditions | json}}</pre></dd>
+                <dt>Actions</dt>
+                <dd class="wrap"><pre>{{r.actions | json}}</pre></dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <i class="fa fa-warning"></i> <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> MSExchangeOnline_GetInboxRules:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

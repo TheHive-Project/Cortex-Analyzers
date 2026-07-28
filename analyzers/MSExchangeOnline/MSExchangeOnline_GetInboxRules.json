@@ -1,0 +1,46 @@
+{
+    "name": "MSExchangeOnline_GetInboxRules",
+    "version": "1.1",
+    "author": "Fabien Bloume ,StrangeBee",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "List a mailbox's inbox rules via Microsoft Graph and flag rules commonly abused after a mailbox compromise/BEC: external auto-forwarding, silent delete/move rules, keyword filters on security or financial terms, hiding folders (RSS Feeds...), obfuscated rule names.",
+    "dataTypeList": ["mail"],
+    "command": "MSExchangeOnline/MSExchangeOnline.py",
+    "baseConfig": "MSExchangeOnline",
+    "config": {
+        "service": "getInboxRules"
+    },
+    "configurationItems": [
+        {"name": "tenant_id",
+        "description": "Microsoft Entra ID Tenant ID",
+        "type": "string",
+        "multi": false,
+        "required": true
+        },
+        {"name": "client_id",
+        "description": "Client ID/Application ID of Microsoft Entra ID Registered App (requires MailboxSettings.Read and User.Read.All application permissions)",
+        "type": "string",
+        "multi": false,
+        "required": true
+        },
+        {"name": "client_secret",
+        "description": "Secret for Microsoft Entra ID Registered Application",
+        "type": "string",
+        "multi": false,
+        "required": true
+        },
+        {
+            "name": "extended_search",
+            "description": "Search by additional fields (onPremisesSamAccountName, employeeId) in addition to UPN and mail",
+            "type": "boolean",
+            "multi": false,
+            "required": false,
+            "defaultValue": true
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://learn.microsoft.com/en-us/graph/api/mailfolder-list-messagerules"
+}
