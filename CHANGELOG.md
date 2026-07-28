@@ -11,6 +11,12 @@
 - \[FR\] ClusterHawk IPv6 support [\#1459](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1459)
 - \[Bug\] Elasticsearch analyzer "keys" field is required but should not be [\#1291](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1291)
 
+**Merged pull requests:**
+
+- Urlscan.io - Fix analyzers & bump to 0.2.0 [\#1472](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1472) ([nusantara-self](https://github.com/nusantara-self))
+- Update GreyNoise analyzer template for version 3.2 [\#1470](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1470) ([kiaora17](https://github.com/kiaora17))
+- Fix Elasticsearch analyzer TypeError when optional configurations are… [\#1455](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1455) ([jeffrey-theog06](https://github.com/jeffrey-theog06))
+
 ## [3.8.8](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.8.8) (2026-06-29)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.8.7...3.8.8)
@@ -87,8 +93,8 @@
 **Merged pull requests:**
 
 - Cortex XDR - new responder flavors [\#1446](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1446) ([nusantara-self](https://github.com/nusantara-self))
-- Restore original LdapQuery Dockerfile [\#1445](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1445) ([nusantara-self](https://github.com/nusantara-self))
 - Add Dockerfile with openssl [\#1444](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1444) ([nusantara-self](https://github.com/nusantara-self))
+- Restore original LdapQuery Dockerfile [\#1445](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1445) ([nusantara-self](https://github.com/nusantara-self))
 
 ## [3.8.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.8.0) (2026-04-06)
 
@@ -96,9 +102,9 @@
 
 **Merged pull requests:**
 
+- GHA - SHA pinning [\#1439](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1439) ([nusantara-self](https://github.com/nusantara-self))
 - Checkpoint Harmony Email & Collaboration analyzers [\#1442](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1442) ([nusantara-self](https://github.com/nusantara-self))
 - OVH Cloud Analyzers & Responders [\#1441](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1441) ([kiaora17](https://github.com/kiaora17))
-- GHA - SHA pinning [\#1439](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1439) ([nusantara-self](https://github.com/nusantara-self))
 
 ## [3.7.13](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.7.13) (2026-03-25)
 
