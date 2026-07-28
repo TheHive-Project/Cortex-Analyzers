@@ -1,5 +1,13 @@
 <style>
   .kh-ip { overflow-wrap: anywhere; word-break: break-all; }
+  .kh-explain { margin-top: 8px; border-top: 1px dashed #ddd; padding-top: 8px; }
+  .kh-pull { height: 5px; margin: 3px 0; background: #eef0f3; border-radius: 3px; }
+  .kh-pull > .progress-bar { height: 5px; min-width: 0; box-shadow: none; }
+  .kh-sig-hd { color: #555; font-weight: 600; display: block; margin: 8px 0 2px; }
+  .kh-sig-row { margin: 3px 0 7px; padding-left: 8px; border-left: 2px solid #e3e6ee; }
+  .kh-sig-top { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+  .kh-sig-val { color: #888; }
+  .kh-pull-pct { color: #888; white-space: nowrap; }
 </style>
 <div ng-if="success">
     <div ng-if="content">
@@ -32,10 +40,19 @@
                 <th>Cluster Descriptions</th>
                 <td><span class="label label-success">Available</span></td>
               </tr>
+              <tr ng-if="content.summary.has_explanations">
+                <th>
+                  Per-Prediction Explanations
+                  <span class="kh-subtle" title="Each prediction can carry specific signals that drove THAT assignment, plus which models weighed in.">
+                    (why)
+                  </span>
+                </th>
+                <td><span class="label label-success">Available</span></td>
+              </tr>
               <tr ng-if="content.summary.kind_distribution">
                 <th>
                   Trust Bands
-                  <span class="kh-subtle" title="Read the prediction kind first — it is the trust gate. Confident matches are actionable; ambiguous rows need candidate-set review; out-of-distribution rows have null cluster id by design and should not be acted on as a cluster match.">
+                  <span class="kh-subtle" title="Read the prediction kind first — it is the trust gate. Confident matches are actionable; ambiguous rows need review; out-of-distribution rows have null cluster id by design and should not be acted on as a cluster match.">
                     (kind)
                   </span>
                 </th>
@@ -70,7 +87,7 @@
           <div class="kh-panel-hd">
             <strong>{{ name }}</strong>
             <span class="label label-default label-space" ng-if="info.is_ood"
-                  title="Out-of-distribution rows have no fingerprint match — the cluster id was nulled by the contract layer. Investigate via behavioral evidence rather than relying on a cluster attribution.">
+                  title="Out-of-distribution rows have no fingerprint match — the cluster id was nulled. Investigate via behavioral evidence rather than relying on a cluster attribution.">
               No fingerprint match
             </span>
             <span class="label label-default label-space" ng-if="info.description && !info.is_ood">{{ info.description }}</span>
@@ -115,7 +132,7 @@
                 <th>Kind</th>
                 <th>Label</th>
                 <th>Confidence</th>
-                <th title="exp(entropy) — interpretable as the candidates-worth of probability mass">Effective N</th>
+                <th title="Interpretable as the candidates-worth of probability mass">Effective N</th>
               </tr>
             </thead>
             <tbody>
@@ -173,7 +190,7 @@
                 </td>
               </tr>
               <tr ng-repeat-end
-                  ng-if="p.cluster_indicators || (p.candidates && p.candidates.length > 1)">
+                  ng-if="p.cluster_indicators || (p.candidates && p.candidates.length > 1) || p.explanation || (p.explanation_status && p.explanation_status != 'ok')">
                 <td colspan="6" class="kh-subtle" style="background:#f9f9f9">
                   <div ng-if="p.cluster_indicators" style="margin-bottom:4px">
                     <strong>Indicators:</strong> {{ p.cluster_indicators }}
@@ -186,6 +203,158 @@
                     <span class="kh-chip" ng-repeat="c in p.candidates track by $index">
                       Cluster {{ c.cluster_id }} · {{ (c.confidence * 100) | number:1 }}%
                     </span>
+                  </div>
+
+                  <div ng-if="p.explanation" class="kh-explain">
+                    <div>
+                      <strong>Why this IP was assigned here</strong>
+                      <span class="label label-warning label-space"
+                            ng-if="p.explanation_status == 'partial'"
+                            title="Part of the decision could not be attributed to features — read this as a partial explanation.">
+                        Partial
+                      </span>
+                    </div>
+                    <div class="kh-subtle" style="font-style:italic; margin:2px 0 6px">
+                      The specific signals that drove THIS assignment — not typical hosts in the cluster.
+                    </div>
+
+                    <div class="kh-note" style="margin-bottom:6px"
+                         ng-if="p.explanation.interpretable_share != null && p.explanation.interpretable_share < 0.5">
+                      This assignment also drew on proprietary features not shown here.
+                    </div>
+
+                    <div ng-if="p.explanation.mode == 'single'" style="margin-bottom:2px">
+                      TOP Strongest signals pushing toward <strong>Cluster {{ p.explanation.target }}</strong>:
+                    </div>
+                    <div ng-if="p.explanation.mode == 'contrastive'" style="margin-bottom:2px">
+                      No single cluster fits decisively; closest are
+                      <strong>Cluster {{ p.explanation.candidates[0].cluster_id }}</strong>
+                      ({{ p.explanation.candidates[0].confidence * 100 | number:1 }}%)<span
+                        ng-if="p.explanation.candidates[1]"> and
+                        <strong>Cluster {{ p.explanation.candidates[1].cluster_id }}</strong>
+                        ({{ p.explanation.candidates[1].confidence * 100 | number:1 }}%)</span>.
+                    </div>
+                    <div ng-if="p.explanation.mode == 'diffuse'" style="margin-bottom:2px">
+                      Best guess <strong>Cluster {{ p.explanation.target }}</strong><span
+                        ng-if="p.explanation.candidates[0]"> ({{ p.explanation.candidates[0].confidence * 100 | number:1 }}%)</span>,
+                      but the model is uncertain — probability spread across
+                      <span ng-if="p.effective_n">~{{ p.effective_n | number:0 }} clusters</span><span ng-if="!p.effective_n">many clusters</span>.
+                    </div>
+                    <div ng-if="p.explanation.mode == 'none_fits'" style="margin-bottom:2px">
+                      No cluster fits this host.
+                    </div>
+
+                    <div ng-if="p.explanation.mode == 'single'">
+                      <div class="kh-sig-row" ng-repeat="s in p.explanation.candidates[0].toward track by $index">
+                        <div class="kh-sig-top">
+                          <span><strong>{{ s.label | uppercase }}</strong></span>
+                          <span class="kh-pull-pct" title="Relative pull on the decision margin — a share of total absolute pull, not a match probability.">{{ (s.weight < 0 ? -s.weight : s.weight) * 100 | number:0 }}% pull</span>
+                        </div>
+                        <div class="progress kh-pull"><div class="progress-bar" ng-style="{width: ((s.weight < 0 ? -s.weight : s.weight) * 100) + '%'}"></div></div>
+                        <div class="kh-sig-val" ng-if="s.value_state == 'oov'"><span ng-if="s.observed != null">{{ (('' + s.observed).indexOf('.') > -1 && (+s.observed % 1 === 0)) ? ('' + s.observed).split('.')[0] : s.observed }} — </span>value present but not recognized by the model</div>
+                        <div class="kh-sig-val" ng-if="s.value_state == 'absent'">not presented by this host</div>
+                        <div class="kh-sig-val" ng-if="s.value_state != 'oov' && s.value_state != 'absent' && s.observed != null">{{ (('' + s.observed).indexOf('.') > -1 && (+s.observed % 1 === 0)) ? ('' + s.observed).split('.')[0] : s.observed }}</div>
+                      </div>
+                      <div ng-if="p.explanation.candidates[0].away.length">
+                        <span class="kh-sig-hd">TOP Strongest signals pulling away from <strong>Cluster {{ p.explanation.target }}</strong>:</span>
+                        <div class="kh-sig-row" ng-repeat="s in p.explanation.candidates[0].away track by $index">
+                          <div class="kh-sig-top">
+                            <span><strong>{{ s.label | uppercase }}</strong></span>
+                            <span class="kh-pull-pct" title="Relative pull on the decision margin — a share of total absolute pull, not a match probability.">{{ (s.weight < 0 ? -s.weight : s.weight) * 100 | number:0 }}% pull</span>
+                          </div>
+                          <div class="progress kh-pull"><div class="progress-bar" ng-style="{width: ((s.weight < 0 ? -s.weight : s.weight) * 100) + '%'}"></div></div>
+                          <div class="kh-sig-val" ng-if="s.value_state == 'oov'"><span ng-if="s.observed != null">{{ (('' + s.observed).indexOf('.') > -1 && (+s.observed % 1 === 0)) ? ('' + s.observed).split('.')[0] : s.observed }} — </span>value present but not recognized by the model</div>
+                          <div class="kh-sig-val" ng-if="s.value_state == 'absent'">not presented by this host</div>
+                          <div class="kh-sig-val" ng-if="s.value_state != 'oov' && s.value_state != 'absent' && s.observed != null">{{ (('' + s.observed).indexOf('.') > -1 && (+s.observed % 1 === 0)) ? ('' + s.observed).split('.')[0] : s.observed }}</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div ng-if="p.explanation.mode == 'contrastive' && p.explanation.contrast && p.explanation.contrast.signals.length">
+                      <span class="kh-sig-hd">What separates
+                        Cluster {{ p.explanation.contrast.pair[0] }} and
+                        Cluster {{ p.explanation.contrast.pair[1] }}:</span>
+                      <div class="kh-sig-row" ng-repeat="s in p.explanation.contrast.signals track by $index">
+                        <div class="kh-sig-top">
+                          <span><strong>{{ s.label | uppercase }}</strong></span>
+                          <span class="kh-pull-pct" title="Relative pull on the decision margin — a share of total absolute pull, not a match probability.">{{ (s.weight < 0 ? -s.weight : s.weight) * 100 | number:0 }}% pull</span>
+                        </div>
+                        <div class="progress kh-pull"><div class="progress-bar" ng-style="{width: ((s.weight < 0 ? -s.weight : s.weight) * 100) + '%'}"></div></div>
+                        <div class="kh-sig-val" ng-if="s.value_state == 'oov'"><span ng-if="s.observed != null">{{ (('' + s.observed).indexOf('.') > -1 && (+s.observed % 1 === 0)) ? ('' + s.observed).split('.')[0] : s.observed }} — </span>value present but not recognized by the model</div>
+                        <div class="kh-sig-val" ng-if="s.value_state == 'absent'">not presented by this host</div>
+                        <div class="kh-sig-val" ng-if="s.value_state != 'oov' && s.value_state != 'absent' && s.observed != null">{{ (('' + s.observed).indexOf('.') > -1 && (+s.observed % 1 === 0)) ? ('' + s.observed).split('.')[0] : s.observed }}</div>
+                      </div>
+                    </div>
+
+                    <div ng-if="p.explanation.mode != 'single'">
+                      <div ng-repeat="c in p.explanation.candidates track by $index">
+                        <div ng-if="((p.explanation.mode == 'contrastive' || p.explanation.mode == 'diffuse') && c.toward.length) || (p.explanation.mode == 'none_fits' && c.non_match)">
+                          <span class="kh-sig-hd" ng-switch="p.explanation.mode">
+                            <span ng-switch-when="contrastive">TOP Toward Cluster {{ c.cluster_id }} ({{ c.confidence * 100 | number:1 }}%):</span>
+                            <span ng-switch-when="diffuse">TOP Weak accumulations toward Cluster {{ c.cluster_id }}:</span>
+                            <span ng-switch-when="none_fits">Cluster {{ c.cluster_id }} · {{ c.confidence * 100 | number:1 }}% · does not fit:</span>
+                          </span>
+                          <div class="kh-sig-row" ng-repeat="s in c.toward track by $index">
+                            <div class="kh-sig-top">
+                              <span><strong>{{ s.label | uppercase }}</strong></span>
+                              <span class="kh-pull-pct" title="Relative pull on the decision margin — a share of total absolute pull, not a match probability.">{{ (s.weight < 0 ? -s.weight : s.weight) * 100 | number:0 }}% pull</span>
+                            </div>
+                            <div class="progress kh-pull"><div class="progress-bar" ng-style="{width: ((s.weight < 0 ? -s.weight : s.weight) * 100) + '%'}"></div></div>
+                            <div class="kh-sig-val" ng-if="s.value_state == 'oov'"><span ng-if="s.observed != null">{{ (('' + s.observed).indexOf('.') > -1 && (+s.observed % 1 === 0)) ? ('' + s.observed).split('.')[0] : s.observed }} — </span>value present but not recognized by the model</div>
+                            <div class="kh-sig-val" ng-if="s.value_state == 'absent'">not presented by this host</div>
+                            <div class="kh-sig-val" ng-if="s.value_state != 'oov' && s.value_state != 'absent' && s.observed != null">{{ (('' + s.observed).indexOf('.') > -1 && (+s.observed % 1 === 0)) ? ('' + s.observed).split('.')[0] : s.observed }}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div ng-if="p.explanation.model_votes.length" style="margin-top:6px">
+                      <span class="kh-sig-hd">Which models drove this decision:</span>
+                      <div ng-repeat="v in p.explanation.model_votes track by $index" class="kh-sig-row">
+                        <div class="kh-sig-top">
+                          <span>
+                            <strong>{{ v.model.replace('model_', 'Model ') }}</strong>
+                            <span class="kh-subtle" ng-if="v.top_cluster != null"> → Cluster {{ v.top_cluster }}</span>
+                          </span>
+                          <span class="kh-pull-pct">{{ (v.share < 0 ? -v.share : v.share) * 100 | number:0 }}% pull</span>
+                        </div>
+                        <div class="progress kh-pull">
+                          <div class="progress-bar" ng-style="{width: ((v.share < 0 ? -v.share : v.share) * 100) + '%'}"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div ng-if="p.explanation.unmatched_observations.length" style="margin-top:6px">
+                      <span class="kh-sig-hd">Presented by this host but matching nothing the model knows:</span>
+                      <span class="kh-chip" ng-repeat="u in p.explanation.unmatched_observations track by $index">{{ u }}</span>
+                    </div>
+
+                    <div ng-if="p.explanation.caveats.length" style="margin-top:6px">
+                      <span class="kh-sig-hd">Why to be careful with this explanation:</span>
+                      <span class="label label-warning label-space"
+                            ng-repeat="c in p.explanation.caveats track by $index">
+                        <span ng-switch="c">
+                          <span ng-switch-when="out_of_distribution">Out of distribution — resembles no trained cluster</span>
+                          <span ng-switch-when="no_cluster_fits">No cluster fits this host</span>
+                          <span ng-switch-when="quantized_argmax_mismatch">Quantized inference disagreed with the explained model — partial</span>
+                          <span ng-switch-when="quantized_inference_divergence">Quantized vs float inference diverged</span>
+                          <span ng-switch-when="partly_internal_features">Partly driven by proprietary features not shown here</span>
+                          <span ng-switch-default ng-init="ct = c.split('_').join(' ')">{{ ct.charAt(0).toUpperCase() + ct.slice(1) }}</span>
+                        </span>
+                      </span>
+                    </div>
+
+                    <div class="kh-subtle" style="margin-top:6px"
+                         ng-if="p.explanation.explained_share != null || p.explanation.interpretable_share != null">
+                      <span ng-if="p.explanation.explained_share != null">Feature coverage {{ p.explanation.explained_share * 100 | number:0 }}% of deciding models</span>
+                      <span ng-if="p.explanation.explained_share != null && p.explanation.interpretable_share != null"> · </span>
+                      <span ng-if="p.explanation.interpretable_share != null">{{ p.explanation.interpretable_share * 100 | number:0 }}% analyst-interpretable</span>
+                    </div>
+                  </div>
+
+                  <div ng-if="!p.explanation && p.explanation_status && p.explanation_status != 'ok' && p.explanation_status != 'disabled'"
+                       class="kh-explain" style="font-style:italic">
+                    No explanation available for this prediction ({{ p.explanation_status }}).
                   </div>
                 </td>
               </tr>

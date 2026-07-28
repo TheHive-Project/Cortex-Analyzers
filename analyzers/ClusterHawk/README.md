@@ -18,6 +18,7 @@ This Cortex analyzer integrates with ClusterHawk's prediction API to provide thr
 - **Threat Pattern Recognition**: Identify infrastructure patterns that match known threat actor behaviors
 - **Cluster Classification**: Identify which threat cluster an IP belongs to based on existing models
 - **Confidence Scoring**: Get confidence levels and uncertainty metrics for predictions
+- **Per-Prediction Explanations**: Each prediction can carry a decision breakdown — the specific signals that drove the assignment and which models weighed in — rendered as an expandable section in the long report
 - **Quota Management**: Automatic concurrent job quota checking before submission
 - **Model Selection**: Use any pre-trained ClusterHawk model available in your account
 - **API Integration**: Seamless integration with ClusterHawk's prediction API
@@ -118,6 +119,27 @@ Every prediction row carries a **`kind`** field — the contract's trust gate. R
 - **`candidates`**: Top-K candidate clusters above an entropy-aware confidence floor, each `{cluster_id, confidence}`. Empty array on OOD rows.
 - **`label`** _(user-trained models only)_: Actor label from the training job.
 - **`primary_characteristic`** / **`key_indicators`** _(prebuilt models only)_: Cluster fingerprint description from the prebuilt model's cluster
+- **`explanation_status`** _(when available)_: `ok`, `partial`, `unavailable:<reason>`, or `disabled` — the state of the per-prediction "why did it land here" breakdown.
+- **`explanation`** _(when available)_: a compact **"why did it land here"** object for THAT prediction — the specific signals that drove the assignment (not typical hosts in the cluster), which models weighed in.
+
+### Per-Prediction Explanation
+
+Each prediction may carry an `explanation` object answering **"why did THIS IP land in THIS cluster"** — the specific signals that drove the assignment, not a description of typical hosts in the cluster. Key fields:
+
+- **`mode`**: drives the whole shape — a non-confident mode never reads like a confident story.
+  - `single` — one cluster clearly fits.
+  - `contrastive` — a close call; two-or-few candidates nearly tie.
+  - `diffuse` — top-1 leans, but probability mass is spread thin across many clusters.
+  - `none_fits` — out of distribution; no cluster fits (target/reference/margin are `null`).
+- **`target`** / **`reference`**: the assigned cluster and what its decision margin is measured against.
+- **`candidates[]`**: per candidate `{cluster_id, confidence, non_match, toward[], away[]}`. Each signal is `{label, weight, observed, value_state}`, where **`weight` is a signed share of total absolute pull** on the decision margin — a magnitude, **not** a match probability. `value_state` is `oov` (host presented a value the model doesn't recognise) or `absent` (not presented by this host).
+- **`contrast`**: `{pair: [a, b], signals[]}` — what little separates the two closest clusters.
+- **`model_votes[]`**: `{model, share, top_cluster}` — which models drove the decision.
+- **`unmatched_observations[]`**: values the host presented that matched nothing the model knows.
+- **`caveats[]`**: machine tokens (e.g. `near_tie_gap_0.05`, `mass_spread_across_9_clusters`) flagging why to read the explanation with care.
+- **`explained_share`** / **`interpretable_share`**: 0–1 coverage — the fraction of deciding-model mass with feature attributions, and the fraction of signal mass that is human-interpretable.
+
+`explanation_status` reports the state independently: `ok`, `partial` (some of the decision could not be attributed), `unavailable:<reason>`, or `disabled`. An explanation never alters or fails a prediction — a row always returns even when its explanation is unavailable.
 
 ### Prebuilt Models (Enterprise Only)
 
@@ -144,7 +166,42 @@ For prebuilt models, additional fields are included:
           "top1_minus_top2": 0.83,
           "effective_n": 1.21,
           "candidates": [{ "cluster_id": 2, "confidence": 0.94 }],
-          "label": "['Web Crawler']"
+          "label": "['Web Crawler']",
+          "explanation_status": "ok",
+          "explanation": {
+            "mode": "single",
+            "target": 2,
+            "reference": "weighted_alternatives",
+            "candidates": [
+              {
+                "cluster_id": 2,
+                "confidence": 0.94,
+                "toward": [
+                  {
+                    "label": "Product",
+                    "weight": 0.42,
+                    "observed": "nginx/1.18.0"
+                  },
+                  {
+                    "label": "TLS JA3 fingerprint",
+                    "weight": 0.31,
+                    "observed": "a0e9f5b2...",
+                    "value_state": "oov"
+                  }
+                ],
+                "away": []
+              }
+            ],
+            "model_votes": [
+              {
+                "model": "model_1",
+                "share": 0.55,
+                "top_cluster": 2
+              }
+            ],
+            "explained_share": 0.92,
+            "interpretable_share": 0.74
+          }
         },
         {
           "ip": "2001:db8:3c4d:15::1a2f",
