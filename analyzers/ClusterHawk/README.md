@@ -25,7 +25,7 @@ This Cortex analyzer integrates with ClusterHawk's prediction API to provide thr
 
 ## Prerequisites
 
-- ClusterHawk account with **Hobby tier or higher subscription** (API access not available on Basic plans)
+- ClusterHawk account with **Team tier or higher subscription** (API access not available on Basic plans)
 - At least one **pre-trained model** in your ClusterHawk account
 - Valid API key generated from your ClusterHawk profile (shown for 30 seconds only)
 
