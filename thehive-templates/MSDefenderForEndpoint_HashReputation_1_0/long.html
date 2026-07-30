@@ -1,0 +1,74 @@
+<div class="panel panel-info" ng-if="success">
+  <div class="panel-heading">
+    <strong>Microsoft Defender for Endpoint — File Reputation: {{ (artifact.data) | fang }}</strong>
+  </div>
+  <div class="panel-body">
+    <div ng-if="!content.found" class="alert alert-warning">
+      This file hash has not been observed in your organization by Microsoft Defender for Endpoint.
+    </div>
+
+    <dl class="dl-horizontal" ng-if="content.found">
+      <dt>SHA1</dt>
+      <dd>{{ content.file.sha1 || 'N/A' }}</dd>
+
+      <dt>SHA256</dt>
+      <dd>{{ content.file.sha256 || 'N/A' }}</dd>
+
+      <dt>File type</dt>
+      <dd>{{ content.file.fileType || 'N/A' }}</dd>
+
+      <dt>Signer</dt>
+      <dd>{{ content.file.signer || 'N/A' }}</dd>
+
+      <dt>Org prevalence</dt>
+      <dd>{{ content.stats.orgPrevalence !== undefined ? content.stats.orgPrevalence : 'N/A' }}</dd>
+
+      <dt>Global prevalence</dt>
+      <dd>{{ content.file.globalPrevalence !== undefined ? content.file.globalPrevalence : 'N/A' }}</dd>
+
+      <dt>Max alert severity</dt>
+      <dd>
+        <span class="label" ng-class="{
+          'label-danger': (content.maxSeverity | lowercase) === 'high',
+          'label-warning': (content.maxSeverity | lowercase) === 'medium',
+          'label-info': (content.maxSeverity | lowercase) === 'low' || (content.maxSeverity | lowercase) === 'informational',
+          'label-default': !content.maxSeverity
+        }">{{ content.maxSeverity || 'None' }}</span>
+      </dd>
+
+      <dt ng-if="content.alerts.length">Related alerts ({{ content.alerts.length }})</dt>
+      <dd ng-if="content.alerts.length">
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Severity</th>
+              <th>Status</th>
+              <th>Category</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="alert in content.alerts">
+              <td>{{ alert.title }}</td>
+              <td>
+                <span class="label" ng-class="{
+                  'label-danger': (alert.severity | lowercase) === 'high',
+                  'label-warning': (alert.severity | lowercase) === 'medium',
+                  'label-info': (alert.severity | lowercase) === 'low' || (alert.severity | lowercase) === 'informational'
+                }">{{ alert.severity }}</span>
+              </td>
+              <td>{{ alert.status }}</td>
+              <td>{{ alert.category }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </dd>
+    </dl>
+  </div>
+</div>
+<div class="panel panel-danger" ng-if="!success">
+  <div class="panel-heading">
+    <strong>{{ (artifact.data) | fang }}</strong>
+  </div>
+  <div class="panel-body">{{ content.errorMessage }}</div>
+</div>
