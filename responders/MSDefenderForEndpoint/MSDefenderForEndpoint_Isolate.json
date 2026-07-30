@@ -1,13 +1,13 @@
 {
-  "name": "MSDefender-IsolateMachine",
+  "name": "MSDefenderForEndpoint-IsolateMachine",
   "version": "1.0",
   "author": "Keijo Korte",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Isolate machine with Microsoft Defender for Endpoints",
   "dataTypeList": ["thehive:case_artifact"],
-  "command": "MSDefenderEndpoints/MSDefenderEndpoints.py",
-  "baseConfig": "MSDefenderforEndpoints",
+  "command": "MSDefenderForEndpoint/msdefender_for_endpoint.py",
+  "baseConfig": "MSDefenderForEndpoint",
   "config": {
     "service": "isolateMachine"
   },

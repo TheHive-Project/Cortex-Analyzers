@@ -9,9 +9,12 @@
 * Run full antivirus scan
 * Run an automated scan
 * Push IoC to Microsoft defender
-  * Alert
-  * BlockAndAlert
-* (future: Collect investigation package)
+  * Block
+  * Audit
+  * Allowed
+  * Warn
+  * BlockAndRemediate
+* Stop and quarantine a file (SHA1 hashes only) on every machine where it was seen
 
 **NOTE: Microsft API for finding machines via IP-addresses is little bit limited "Find Machines seen with the requested internal IP in the time range of 15 minutes prior and after a given timestamp.", because of this "hostname" is preferable observable type"**
 
@@ -40,7 +43,9 @@ In the registration form:
 ##### API permission
 
 On your new application page, click API Permissions > Add permission > APIs my organization uses > type **WindowsDefenderATP** and click on WindowsDefenderATP
-Choose Application permissions, select **Alert.Read.All** AND **TI.ReadWrite.All** AND **Machine.ReadAll** AND **Machine.Isolate** AND **Machine.Scan** AND **Machine.RestrictExecution** > Click on Add permissions.
+Choose Application permissions, select **Alert.Read.All** AND **TI.ReadWrite.All** AND **Machine.ReadAll** AND **Machine.Isolate** AND **Machine.Scan** AND **Machine.RestrictExecution** AND **Machine.ReadWrite.All** > Click on Add permissions.
+
+**NOTE: `Machine.ReadWrite.All` is required for the "Stop and quarantine file" action — it's the only permission accepted by the API used to look up which machines have seen a given file hash.**
 
 After clicking the Add Permissions button, on the next screen we need to grant consent for the permission to take effect.
 Press the "Grant admin consent for {your tenant name}" button.

@@ -1,15 +1,15 @@
 {
-  "name": "MSDefender-PushIOC-Allowed",
+  "name": "MSDefenderForEndpoint-StopAndQuarantineFile",
   "version": "1.0",
-  "author": "Vito Piserchia",
+  "author": "Elina Galvao, StrangeBee",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Push IOC to Defender client. Allowed mode",
+  "description": "Stop execution of a file and delete it on every machine where it was seen (SHA1 hashes only)",
   "dataTypeList": ["thehive:case_artifact"],
-  "command": "MSDefenderEndpoints/MSDefenderEndpoints.py",
-  "baseConfig": "MSDefenderforEndpoints",
+  "command": "MSDefenderForEndpoint/msdefender_for_endpoint.py",
+  "baseConfig": "MSDefenderForEndpoint",
   "config": {
-    "service": "pushIOCAllowed"
+    "service": "stopAndQuarantineFile"
   },
   "configurationItems": [
     {
