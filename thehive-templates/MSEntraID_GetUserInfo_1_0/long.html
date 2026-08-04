@@ -120,12 +120,15 @@
                 <div>
                     <table class="table">
                         <tr>
-                            <th>Service Plan ID</th>
-                            <th>Plan Name</th>
+                            <th>License (SKU)</th>
+                            <th>Service Plans</th>
                         </tr>
                         <tr ng-repeat="license in content.assignedLicenses">
-                            <td>{{ license.skuPartNumber }}</td>
-                            <td>{{ license.servicePlanName || 'N/A' }}</td>
+                            <td>{{ license.skuPartNumber || 'N/A' }}</td>
+                            <td ng-if="!license.servicePlans.length">N/A</td>
+                            <td ng-if="license.servicePlans.length">
+                                <span ng-repeat="sp in license.servicePlans">{{ sp.servicePlanName }}{{ $last ? '' : ', ' }}</span>
+                            </td>
                         </tr>
                     </table>
                 </div>

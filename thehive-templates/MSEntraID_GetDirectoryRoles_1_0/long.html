@@ -1,0 +1,91 @@
+<!-- Success -->
+<div class="panel panel-danger" ng-if="success">
+    <div class="panel-body">
+        <div>
+            <!-- Queried User -->
+            <div class="panel">
+                <div class="panel-heading">
+                    <i class="fa fa-envelope"></i> Queried User
+                </div>
+                <div>
+                    <table class="table">
+                        <tr>
+                            <td><strong>User Principal Name</strong></td>
+                            <td>{{ content.userPrincipalName || 'N/A' }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- No Roles Assigned -->
+            <div class="panel panel-success" ng-if="content.directoryRoles.length === 0">
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle"></i> No Directory Roles Assigned
+                </div>
+                <div class="panel-body">
+                    <p>This user has no built-in Entra ID directory role assigned directly.</p>
+                </div>
+            </div>
+
+            <!-- Privileged Roles Warning -->
+            <div class="panel panel-warning" ng-if="content.privilegedRoles.length > 0">
+                <div class="panel-heading">
+                    <i class="fa fa-exclamation-triangle"></i> Privileged Role(s) Detected
+                </div>
+                <div>
+                    <table class="table">
+                        <tr>
+                            <th>Role Name</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr ng-repeat="role in content.privilegedRoles">
+                            <td><span class="label label-danger">{{ role.displayName || 'N/A' }}</span></td>
+                            <td>{{ role.description || 'N/A' }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- All Directory Roles -->
+            <div class="panel" ng-if="content.directoryRoles.length > 0">
+                <div class="panel-heading">
+                    <i class="fa fa-user-shield"></i> All Assigned Directory Roles
+                </div>
+                <div>
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Role Name</th>
+                            <th>Description</th>
+                            <th>Role ID</th>
+                        </tr>
+                        <tr ng-repeat="role in content.directoryRoles">
+                            <td>{{ role.displayName || 'N/A' }}</td>
+                            <td>{{ role.description || 'N/A' }}</td>
+                            <td title="{{ role.id }}">{{ role.id | limitTo: 8 }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Not a GUID match -->
+            <div class="panel panel-warning" ng-if="content.message">
+                <div class="panel-body">
+                    <p><i class="fa fa-warning"></i> {{ content.message }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> getDirectoryRoles: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

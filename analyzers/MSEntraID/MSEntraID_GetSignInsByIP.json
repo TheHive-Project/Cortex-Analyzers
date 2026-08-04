@@ -1,0 +1,59 @@
+{
+    "name": "MSEntraID_GetSignInsByIP",
+    "version": "1.0",
+    "author": "3lina, StrangeBee",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Pull all Microsoft Entra ID sign ins across the tenant that originated from a given IP address, within the specified amount of time.",
+    "dataTypeList": [
+        "ip"
+    ],
+    "command": "MSEntraID/MSEntraID.py",
+    "baseConfig": "MSEntraID",
+    "config": {
+        "service": "getSignInsByIP"
+    },
+    "configurationItems": [
+        {
+            "name": "tenant_id",
+            "description": "Microsoft Entra ID Tenant ID",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "client_id",
+            "description": "Client ID/Application ID of Microsoft Entra ID Registered App",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "client_secret",
+            "description": "Secret for Microsoft Entra ID Registered Application",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "lookup_range",
+            "description": "Check for sign ins in the last X days. Should be between 1 and 31 days.",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 7
+        },
+        {
+            "name": "lookup_limit",
+            "description": "Display no more than this many sign ins.",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 50
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://www.microsoft.com/security/business/identity-access/microsoft-entra-id"
+}
