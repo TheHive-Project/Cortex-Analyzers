@@ -94,7 +94,7 @@ class MSEntraID(Responder):
                     if r.status_code != 200:
                         self.error(f'Failure to revoke access tokens of user {self.user}: {r.content}')
                     else:
-                        self.time = datetime.datetime.utcnow()
+                        self.time = datetime.datetime.now(datetime.timezone.utc)
                 except Exception:
                     self.error(traceback.format_exc())
                 
@@ -124,21 +124,24 @@ class MSEntraID(Responder):
                 self.error('Incorrect dataType. "mail" expected.')
         
         elif self.service == "forcePasswordResetWithMFA":
-            try:
-                self.user = self.get_param('data.data', None, 'No UPN supplied for password reset with MFA')
-                if not self.user:
-                    self.error("No user supplied")
-                self.ensure_guid(headers, base_url)
+            if self.get_param('data.dataType') == 'mail':
+                try:
+                    self.user = self.get_param('data.data', None, 'No UPN supplied for password reset with MFA')
+                    if not self.user:
+                        self.error("No user supplied")
+                    self.ensure_guid(headers, base_url)
 
-                data = {"passwordProfile": {"forceChangePasswordNextSignIn": True, "forceChangePasswordNextSignInWithMfa": True}}
-                r = requests.patch(f"{base_url}users/{self.guid}", headers=headers, json=data)
-                
-                if r.status_code != 204:
-                    self.error(f'Failure to reset password with MFA for user {self.user}: {r.content}')
-                
-                self.report({"message": f"Password reset initiated for user {self.user}, user will be prompted for MFA and password change at next sign-in"})
-            except Exception:
-                self.error(traceback.format_exc())
+                    data = {"passwordProfile": {"forceChangePasswordNextSignIn": True, "forceChangePasswordNextSignInWithMfa": True}}
+                    r = requests.patch(f"{base_url}users/{self.guid}", headers=headers, json=data)
+
+                    if r.status_code != 204:
+                        self.error(f'Failure to reset password with MFA for user {self.user}: {r.content}')
+
+                    self.report({"message": f"Password reset initiated for user {self.user}, user will be prompted for MFA and password change at next sign-in"})
+                except Exception:
+                    self.error(traceback.format_exc())
+            else:
+                self.error('Incorrect dataType. "mail" expected.')
                        
         elif self.service == "enableUser":
             if self.get_param('data.dataType') == 'mail':
