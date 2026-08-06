@@ -1,0 +1,81 @@
+<!-- When no sign-ins found -->
+<div class="panel panel-success" ng-if="success && content.signIns.length == 0">
+    <div class="panel-heading">
+        <i class="fa fa-info-circle"></i> Microsoft Entra ID Sign Ins by IP
+    </div>
+    <div class="panel-body">
+        <p><strong>IP:</strong> {{content.ip}}</p>
+        <p><i class="fa fa-filter"></i> Analyzers searched for: {{content.filterParameters}}</p>
+    </div>
+</div>
+
+<!-- When sign-ins are available -->
+<div class="panel panel-primary" ng-if="success && content.signIns.length > 0">
+    <div class="panel-heading">
+        <i class="fa fa-sign-in-alt"></i> Microsoft Entra ID Sign Ins from {{content.ip}}
+    </div>
+    <div class="panel-body">
+        <!-- Summary stats -->
+        <table class="table">
+            <tr>
+                <td><strong>Distinct Users</strong></td>
+                <td>
+                    <span class="label" ng-class="{
+                        'label-danger': content.sum_stats.distinctUsers > 1,
+                        'label-success': content.sum_stats.distinctUsers <= 1
+                    }">
+                        {{ content.sum_stats.distinctUsers }}
+                    </span>
+                </td>
+                <td><strong>Failed Sign-Ins</strong></td>
+                <td>{{ content.sum_stats.failedSignIns }}</td>
+                <td><strong>Risky Sign-Ins</strong></td>
+                <td>{{ content.sum_stats.riskySignIns }}</td>
+            </tr>
+        </table>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th><i class="fa fa-id-badge"></i> SignIn ID</th>
+                    <th><i class="fa fa-clock"></i> Time</th>
+                    <th><i class="fa fa-user"></i> User</th>
+                    <th><i class="fa fa-info"></i> Status</th>
+                    <th><i class="fa fa-th"></i> App Name</th>
+                    <th><i class="fa fa-exclamation-triangle"></i> Risk</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="r in content.signIns">
+                    <td title="{{r.id}}">{{r.id | limitTo: 8}}</td>
+                    <td>{{r.signInTime}}</td>
+                    <td title="{{r.userPrincipalName}}">{{r.userDisplayName || r.userPrincipalName}}</td>
+                    <td title="{{r.result}}">{{r.result | limitTo: 20}}</td>
+                    <td>{{r.appName}}</td>
+                    <td>
+                        <span class="label" ng-class="{
+                            'label-danger': r.riskLevel === 'high',
+                            'label-warning': r.riskLevel === 'medium' || r.riskLevel === 'low',
+                            'label-default': r.riskLevel === 'none' || r.riskLevel === 'hidden'
+                        }">
+                            {{ r.riskLevel }}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <i class="fa fa-warning"></i> <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> MSEntraID_GetSignInsByIP:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

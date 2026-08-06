@@ -6,7 +6,6 @@ import traceback
 from datetime import datetime, timedelta
 from cortexutils.analyzer import Analyzer
 import re
-#import json
 
 
 GUID_RE = re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-"
@@ -14,6 +13,27 @@ GUID_RE = re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-"
 
 class NoGUIDException(Exception):
     pass
+
+# Built-in Microsoft Entra ID roles considered highly privileged, used to flag
+# directory role assignments that warrant priority attention during an investigation.
+PRIVILEGED_ROLE_NAMES = {
+    "global administrator",
+    "privileged role administrator",
+    "privileged authentication administrator",
+    "security administrator",
+    "user administrator",
+    "application administrator",
+    "cloud application administrator",
+    "conditional access administrator",
+    "authentication administrator",
+    "exchange administrator",
+    "sharepoint administrator",
+    "intune administrator",
+    "compliance administrator",
+    "billing administrator",
+    "hybrid identity administrator",
+    "partner tier2 support",
+}
 
 # Initialize Azure Class
 class MSEntraID(Analyzer):
@@ -243,7 +263,6 @@ class MSEntraID(Analyzer):
                     }
 
             user_info_url = f"{base_url}users/{self.guid}"
-#            user_info_url = f"{base_url}users/{self.user}"
 
             user_response = requests.get(user_info_url, headers=headers, params=params)
 
@@ -509,7 +528,6 @@ class MSEntraID(Analyzer):
                     self.error("No device name supplied")
                 else:
                     self.error("No user UPN supplied")
-            
             if self.data_type == 'mail':
                 self.user = query_value
                 # Resolve UPN to GUID and use exact match
@@ -550,7 +568,221 @@ class MSEntraID(Analyzer):
         except Exception:
             self.error(traceback.format_exc())
 
-    
+    def handle_get_directory_roles(self, headers, base_url):
+        """
+        Retrieves the Microsoft Entra ID directory roles (built-in admin roles) directly
+        assigned to a user, to help prioritize investigations involving privileged accounts.
+
+        Reference: https://learn.microsoft.com/en-us/graph/api/user-list-transitivememberof
+
+        Limitation: only active/direct role assignments are returned. PIM-eligible roles
+        that haven't been activated, and roles granted through a role-assignable group,
+        are not included.
+        """
+        if self.data_type != 'mail':
+            self.error('Incorrect dataType. "mail" expected.')
+
+        try:
+            self.user = self.get_data()
+            if not self.user:
+                self.error("No user supplied")
+            self.guid = self.ensure_user_guid(base_url, headers)
+
+            url = f"{base_url}users/{self.guid}/transitiveMemberOf/microsoft.graph.directoryRole"
+            params = {"$select": "id,displayName,description"}
+
+            roles = []
+            while url:
+                r = requests.get(url, headers=headers, params=params)
+                if r.status_code != 200:
+                    self.error(f"Failed to fetch directory roles for {self.user}: {r.text}")
+                data = r.json()
+                roles.extend(data.get("value", []))
+                url = data.get("@odata.nextLink")
+                params = None
+
+            privileged_roles = [
+                role for role in roles
+                if role.get("displayName", "").strip().lower() in PRIVILEGED_ROLE_NAMES
+            ]
+
+            self.report({
+                "userPrincipalName": self.user,
+                "directoryRoles": roles,
+                "privilegedRoles": privileged_roles,
+            })
+
+        except NoGUIDException as ex:
+            self.report({'message': str(ex)})
+        except Exception:
+            self.error(traceback.format_exc())
+
+    def handle_get_signins_by_ip(self, headers, base_url):
+        """
+        Retrieve sign-in logs across the whole tenant for a given source IP address,
+        within a specified time range. Useful to pivot from a suspicious IP observable
+        to every account it interacted with (e.g. credential stuffing, password spray).
+        """
+        if self.data_type != 'ip':
+            self.error('Incorrect dataType. "ip" expected.')
+
+        try:
+            ip = self.get_data()
+            if not ip:
+                self.error("No IP address supplied")
+
+            filter_time = datetime.utcnow() - timedelta(days=self.time_range)
+            format_time = filter_time.strftime('%Y-%m-%dT00:00:00Z')
+
+            url = f"{base_url}auditLogs/signIns"
+            params = {
+                "$filter": f"ipAddress eq '{ip}' and createdDateTime ge {format_time}",
+                "$top": self.lookup_limit,
+            }
+
+            r = requests.get(url, headers=headers, params=params)
+            if r.status_code != 200:
+                self.error(f"Failure to pull sign-ins for IP {ip}: {r.content}")
+
+            signins_data = r.json().get('value', [])
+
+            signins = []
+            distinct_users = set()
+            failed = 0
+            risky = 0
+
+            for signin in signins_data:
+                upn = signin.get("userPrincipalName", "N/A")
+                distinct_users.add(upn)
+
+                status_info = signin.get("status", {})
+                success = status_info.get("errorCode") == 0
+                if not success:
+                    failed += 1
+
+                risk_level = signin.get("riskLevelDuringSignIn", "none")
+                if risk_level in ["low", "medium", "high"] and success:
+                    risky += 1
+
+                signins.append({
+                    "id": signin.get("id", "N/A"),
+                    "signInTime": signin.get("createdDateTime", "N/A"),
+                    "userPrincipalName": upn,
+                    "userDisplayName": signin.get("userDisplayName", "N/A"),
+                    "appName": signin.get("appDisplayName", "N/A"),
+                    "result": "Success" if success else f"Failure: {status_info.get('failureReason', 'N/A')}",
+                    "riskLevel": risk_level,
+                })
+
+            self.report({
+                "ip": ip,
+                "filterParameters": (
+                    f"Top {self.lookup_limit} signins from the last {self.time_range} days. "
+                    f"Displaying {len(signins)} signins."
+                ),
+                "signIns": signins,
+                "sum_stats": {
+                    "distinctUsers": len(distinct_users),
+                    "failedSignIns": failed,
+                    "riskySignIns": risky,
+                },
+            })
+
+        except Exception:
+            self.error(traceback.format_exc())
+
+    def handle_get_risky_user(self, headers, base_url):
+        """
+        Retrieves Microsoft Entra ID Identity Protection risk information for a user:
+        their current aggregate risk state (riskyUsers) and their risk detection
+        history (riskDetections).
+
+        Reference:
+        https://learn.microsoft.com/en-us/graph/api/riskyuser-get
+        https://learn.microsoft.com/en-us/graph/api/riskdetection-list
+
+        Requires a Microsoft Entra ID P2 license for riskyUsers and P1/P2 for
+        riskDetections. Each is fetched independently and degrades gracefully (with
+        an explanatory message) instead of failing the whole analyzer if the tenant
+        isn't licensed, or the app is missing one of the two permissions.
+        """
+        if self.data_type != 'mail':
+            self.error('Incorrect dataType. "mail" expected.')
+
+        try:
+            self.user = self.get_data()
+            if not self.user:
+                self.error("No user supplied")
+            self.guid = self.ensure_user_guid(base_url, headers)
+
+            result = {
+                "userPrincipalName": self.user,
+                "riskyUser": None,
+                "riskyUserError": None,
+                "riskDetections": [],
+                "riskDetectionsError": None,
+            }
+
+            # Current aggregate risk state. riskyUser.id is the user's own object ID,
+            # so it can be fetched directly without a $filter.
+            risky_user_resp = requests.get(
+                f"{base_url}identityProtection/riskyUsers/{self.guid}", headers=headers
+            )
+            if risky_user_resp.status_code in (200, 404):
+                risky_user = risky_user_resp.json() if risky_user_resp.status_code == 200 else {}
+                result["riskyUser"] = {
+                    "riskLevel": risky_user.get("riskLevel", "none"),
+                    "riskState": risky_user.get("riskState", "none"),
+                    "riskDetail": risky_user.get("riskDetail", "none"),
+                    "riskLastUpdatedDateTime": risky_user.get("riskLastUpdatedDateTime", "N/A"),
+                    "isProcessing": risky_user.get("isProcessing", False),
+                }
+            else:
+                result["riskyUserError"] = (
+                    f"Failed to retrieve current risk state (HTTP {risky_user_resp.status_code}). "
+                    f"Requires Entra ID P2 and the IdentityRiskyUser.Read.All permission. "
+                    f"Details: {risky_user_resp.text}"
+                )
+
+            # Risk detection history
+            filter_time = (datetime.utcnow() - timedelta(days=self.time_range)).strftime('%Y-%m-%dT%H:%M:%SZ')
+            url = f"{base_url}identityProtection/riskDetections"
+            params = {
+                "$filter": f"userId eq '{self.guid}' and detectedDateTime ge {filter_time}",
+                "$top": min(self.lookup_limit, 500),
+            }
+
+            detections_resp = requests.get(url, headers=headers, params=params)
+            if detections_resp.status_code == 200:
+                detections = detections_resp.json().get("value", [])
+
+                result["riskDetections"] = [
+                    {
+                        "riskEventType": d.get("riskEventType", "N/A"),
+                        "riskLevel": d.get("riskLevel", "N/A"),
+                        "riskState": d.get("riskState", "N/A"),
+                        "riskDetail": d.get("riskDetail", "N/A"),
+                        "activity": d.get("activity", "N/A"),
+                        "ipAddress": d.get("ipAddress", "N/A"),
+                        "location": d.get("location", {}),
+                        "detectedDateTime": d.get("detectedDateTime", "N/A"),
+                    }
+                    for d in detections
+                ]
+            else:
+                result["riskDetectionsError"] = (
+                    f"Failed to retrieve risk detection history (HTTP {detections_resp.status_code}). "
+                    f"Requires Entra ID P1/P2 and the IdentityRiskEvent.Read.All permission. "
+                    f"Details: {detections_resp.text}"
+                )
+
+            self.report(result)
+
+        except NoGUIDException as ex:
+            self.report({'message': str(ex)})
+        except Exception:
+            self.error(traceback.format_exc())
+
     def run(self):
         Analyzer.run(self)
 
@@ -570,6 +802,12 @@ class MSEntraID(Analyzer):
             self.handle_get_directoryAuditLogs(headers, base_url)
         elif self.service == "getManagedDevicesInfo":
             self.handle_get_devices(headers, base_url)
+        elif self.service == "getDirectoryRoles":
+            self.handle_get_directory_roles(headers, base_url)
+        elif self.service == "getSignInsByIP":
+            self.handle_get_signins_by_ip(headers, base_url)
+        elif self.service == "getRiskyUser":
+            self.handle_get_risky_user(headers, base_url)
         else:
             self.error({"message": "Unidentified service"})
 
@@ -630,17 +868,49 @@ class MSEntraID(Analyzer):
             # Get the count of devices returned.
             count = len(raw.get("devices", []))
             taxonomies.append(self.build_taxonomy('info', 'MSEntraIDManagedDevices', 'count', count))
+        elif self.service == "getDirectoryRoles":
+            privileged = raw.get("privilegedRoles", [])
+            total = len(raw.get("directoryRoles", []))
+            if privileged:
+                names = ", ".join(r.get("displayName", "Unknown") for r in privileged)
+                taxonomies.append(self.build_taxonomy('suspicious', 'MSEntraIDRoles', 'Privileged', names))
+            elif total:
+                taxonomies.append(self.build_taxonomy('info', 'MSEntraIDRoles', 'Count', total))
+            else:
+                taxonomies.append(self.build_taxonomy('safe', 'MSEntraIDRoles', 'Count', 0))
+        elif self.service == "getSignInsByIP":
+            stats = raw.get("sum_stats", {})
+            taxonomies.append(self.build_taxonomy('info', 'MSEntraIDSigninsByIP', 'DistinctUsers', stats.get("distinctUsers", 0)))
+            if stats.get("riskySignIns", 0) != 0:
+                taxonomies.append(self.build_taxonomy('suspicious', 'MSEntraIDSigninsByIP', 'Risky', stats["riskySignIns"]))
+            if stats.get("distinctUsers", 0) > 1 and stats.get("failedSignIns", 0) > 0:
+                taxonomies.append(self.build_taxonomy('suspicious', 'MSEntraIDSigninsByIP', 'FailedAcrossUsers', stats["failedSignIns"]))
+        elif self.service == "getRiskyUser":
+            if raw.get("riskyUserError"):
+                taxonomies.append(self.build_taxonomy('info', 'MSEntraIDRisk', 'Status', 'Unavailable'))
+            else:
+                risky_user = raw.get("riskyUser") or {}
+                risk_state = risky_user.get("riskState", "none")
+                risk_level = risky_user.get("riskLevel", "none")
+
+                if risk_state == "atRisk" and risk_level == "high":
+                    level = "malicious"
+                elif risk_state == "atRisk":
+                    level = "suspicious"
+                elif risk_state in ("remediated", "dismissed", "confirmedSafe"):
+                    level = "safe"
+                else:
+                    level = "info"
+                taxonomies.append(self.build_taxonomy(level, 'MSEntraIDRisk', 'State', risk_state))
+
+            detections = len(raw.get("riskDetections", []))
+            if detections:
+                taxonomies.append(self.build_taxonomy('suspicious', 'MSEntraIDRisk', 'Detections', detections))
         return {'taxonomies': taxonomies}
 
     def artifacts(self, raw):
         artifacts = []
         raw_str = str(raw)
-
-        # Attempt to parse the raw data as JSON to later capture structured fields
-        #try:
-        #    data = json.loads(raw_str)
-        #except Exception:
-        #    data = None
 
         extracted_data = self.get_data()  # Store observed value
         observed_type = self.data_type    # Store expected data type

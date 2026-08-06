@@ -1,0 +1,155 @@
+<!-- Success -->
+<div class="panel panel-danger" ng-if="success">
+    <div class="panel-body">
+        <div>
+            <!-- Queried User -->
+            <div class="panel">
+                <div class="panel-heading">
+                    <i class="fa fa-envelope"></i> Queried User
+                </div>
+                <div>
+                    <table class="table">
+                        <tr>
+                            <td><strong>User Principal Name</strong></td>
+                            <td>{{ content.userPrincipalName || 'N/A' }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Current Risk State: unavailable -->
+            <div class="panel panel-warning" ng-if="content.riskyUserError">
+                <div class="panel-heading">
+                    <i class="fa fa-exclamation-triangle"></i> Current Risk State Unavailable
+                </div>
+                <div class="panel-body">
+                    <p>{{ content.riskyUserError }}</p>
+                </div>
+            </div>
+
+            <!-- Current Risk State -->
+            <div class="panel" ng-if="content.riskyUser">
+                <div class="panel-heading">
+                    <i class="fa fa-user-shield"></i> Current Risk State (Identity Protection)
+                </div>
+                <div>
+                    <table class="table">
+                        <tr>
+                            <td><strong>Risk State</strong></td>
+                            <td>
+                                <span class="label" ng-class="{
+                                    'label-danger': content.riskyUser.riskState === 'atRisk' || content.riskyUser.riskState === 'confirmedCompromised',
+                                    'label-success': content.riskyUser.riskState === 'remediated' || content.riskyUser.riskState === 'dismissed' || content.riskyUser.riskState === 'confirmedSafe',
+                                    'label-default': content.riskyUser.riskState === 'none'
+                                }">
+                                    {{ content.riskyUser.riskState }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Risk Level</strong></td>
+                            <td>
+                                <span class="label" ng-class="{
+                                    'label-danger': content.riskyUser.riskLevel === 'high',
+                                    'label-warning': content.riskyUser.riskLevel === 'medium' || content.riskyUser.riskLevel === 'low',
+                                    'label-default': content.riskyUser.riskLevel === 'none' || content.riskyUser.riskLevel === 'hidden'
+                                }">
+                                    {{ content.riskyUser.riskLevel }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Risk Detail</strong></td>
+                            <td>{{ content.riskyUser.riskDetail || 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Last Updated</strong></td>
+                            <td>{{ content.riskyUser.riskLastUpdatedDateTime || 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Processing</strong></td>
+                            <td>{{ content.riskyUser.isProcessing ? 'Yes' : 'No' }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Risk Detections: unavailable -->
+            <div class="panel panel-warning" ng-if="content.riskDetectionsError">
+                <div class="panel-heading">
+                    <i class="fa fa-exclamation-triangle"></i> Risk Detection History Unavailable
+                </div>
+                <div class="panel-body">
+                    <p>{{ content.riskDetectionsError }}</p>
+                </div>
+            </div>
+
+            <!-- No Risk Detections -->
+            <div class="panel panel-success" ng-if="!content.riskDetectionsError && content.riskDetections.length === 0">
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle"></i> No Risk Detections
+                </div>
+                <div class="panel-body">
+                    <p>No risk detection events found for this user in the selected time range.</p>
+                </div>
+            </div>
+
+            <!-- Risk Detections -->
+            <div class="panel" ng-if="content.riskDetections.length > 0">
+                <div class="panel-heading">
+                    <i class="fa fa-history"></i> Risk Detection History
+                </div>
+                <div>
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Detected</th>
+                            <th>Event Type</th>
+                            <th>Level</th>
+                            <th>State</th>
+                            <th>Activity</th>
+                            <th>IP</th>
+                            <th>Location</th>
+                        </tr>
+                        <tr ng-repeat="d in content.riskDetections">
+                            <td>{{ d.detectedDateTime || 'N/A' }}</td>
+                            <td>{{ d.riskEventType || 'N/A' }}</td>
+                            <td>
+                                <span class="label" ng-class="{
+                                    'label-danger': d.riskLevel === 'high',
+                                    'label-warning': d.riskLevel === 'medium' || d.riskLevel === 'low',
+                                    'label-default': d.riskLevel === 'none' || d.riskLevel === 'hidden'
+                                }">
+                                    {{ d.riskLevel }}
+                                </span>
+                            </td>
+                            <td>{{ d.riskState || 'N/A' }}</td>
+                            <td>{{ d.activity || 'N/A' }}</td>
+                            <td>{{ d.ipAddress || 'N/A' }}</td>
+                            <td>{{ d.location.city }}, {{ d.location.state }}, {{ d.location.countryOrRegion }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Not a GUID match -->
+            <div class="panel panel-warning" ng-if="content.message">
+                <div class="panel-body">
+                    <p><i class="fa fa-warning"></i> {{ content.message }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> getRiskyUser: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

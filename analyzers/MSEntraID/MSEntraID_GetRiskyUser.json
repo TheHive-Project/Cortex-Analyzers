@@ -1,0 +1,59 @@
+{
+    "name": "MSEntraID_GetRiskyUser",
+    "version": "1.0",
+    "author": "StrangeBee",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Retrieve Microsoft Entra ID Identity Protection risk information for a user: current risk state (riskyUsers) and risk detection history (riskDetections). Requires Entra ID P1/P2.",
+    "dataTypeList": [
+        "mail"
+    ],
+    "command": "MSEntraID/MSEntraID.py",
+    "baseConfig": "MSEntraID",
+    "config": {
+        "service": "getRiskyUser"
+    },
+    "configurationItems": [
+        {
+            "name": "tenant_id",
+            "description": "Microsoft Entra ID Tenant ID",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "client_id",
+            "description": "Client ID/Application ID of Microsoft Entra ID Registered App",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "client_secret",
+            "description": "Secret for Microsoft Entra ID Registered Application",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "lookup_range",
+            "description": "Check for risk detections in the last X days. Should be between 1 and 90 days.",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 30
+        },
+        {
+            "name": "lookup_limit",
+            "description": "Display no more than this many risk detections.",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 20
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://www.microsoft.com/security/business/identity-access/microsoft-entra-id"
+}

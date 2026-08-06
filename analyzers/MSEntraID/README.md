@@ -16,6 +16,9 @@ This repository provides a set of **Cortex** analyzers to enrich your investigat
         - [getUserInfo](#getuserinfo)  
         - [getDirectoryAuditLogs](#getdirectoryauditlogs)  
         - [getManagedDevicesInfo](#getmanageddevicesinfo-requires-ms-intune)  
+        - [getDirectoryRoles](#getdirectoryroles)  
+        - [getSignInsByIP](#getsigninsbyip)  
+        - [getRiskyUser (requires Entra ID P1/P2)](#getriskyuser-requires-entra-id-p1p2)  
 5. [Customization](#customization)  
 6. [General Notes on Permissions](#general-notes-on-permissions)  
 7. [References](#references)
@@ -26,10 +29,12 @@ This repository provides a set of **Cortex** analyzers to enrich your investigat
 
 These analyzers provide useful context for Incident Response teams, such as:
 
-- **Sign-in logs** (location, risk, IP, etc.)
+- **Sign-in logs** (location, risk, IP, etc.), by user or by source IP address
 - **User profile details** (manager, licenses, groups, MFA methods)
 - **Directory audit logs** (object changes in Azure AD)
 - **Intune-managed devices** (compliance, OS, last sync)
+- **Directory role assignments** (is this user a privileged/admin account?)
+- **Identity Protection risk signals** (current risk state and risk detection history)
 
 ---
 
@@ -40,7 +45,7 @@ All analyzers share these config fields:
 - **`client_id`**: Application (client) ID of your Azure AD app registration  
 - **`client_secret`**: Client Secret generated for that app  
 - **`tenant_id`**: Azure AD Tenant ID  
-- **`service`**: Which analyzer action to run, hardcoded (such as `getSignIns`, `getUserInfo`, `getDirectoryAuditLogs`, `getManagedDevicesInfo`)  
+- **`service`**: Which analyzer action to run, hardcoded (such as `getSignIns`, `getUserInfo`, `getDirectoryAuditLogs`, `getManagedDevicesInfo`, `getDirectoryRoles`, `getSignInsByIP`, `getRiskyUser`)  
 
 Additional parameters (such as **lookup_range**, **lookup_limit**, **state**, **country**) appear in certain analyzers. They allow you to define:
 
@@ -75,6 +80,8 @@ Additional parameters (such as **lookup_range**, **lookup_limit**, **state**, **
    - **`AuditLog.Read.All`**  
    - **`DeviceManagementManagedDevices.Read.All`** (Intune analyzers)
    - **`UserAuthenticationMethod.Read.All`** (if fetching MFA)  
+   - **`IdentityRiskyUser.Read.All`** (getRiskyUser — current risk state, requires Entra ID P2)
+   - **`IdentityRiskEvent.Read.All`** (getRiskyUser — risk detection history, requires Entra ID P1/P2)  
 9. For each **Application** permission, use a **Global Administrator** account to **Grant admin consent**.  
 10. Copy your **Tenant ID**, **Application (Client) ID**, and the **Client Secret** into the analyzer configuration in Cortex.
 
@@ -125,6 +132,7 @@ Enriches context around a user with **user profile details** from Microsoft Entr
 **Required Permissions**  
 - **`Directory.Read.All`** or **`User.Read.All`** for user properties & group membership.  
 - **`UserAuthenticationMethod.Read.All`** if retrieving MFA methods.
+- **`AuditLog.Read.All`** is required if you add `signInActivity` to `params_list` to populate `lastSignInDateTime` (not in the default list). ⚠️ Selecting it without this permission makes the *entire* `/users` request fail with a 403, not just that field — only add it if you're sure the permission is granted.
 
 **Sample Usage**
 
@@ -168,6 +176,73 @@ Returns **Intune-managed devices** for a given user’s principal name or hostna
 - Run on TheHive’s observable of type `mail` or `hostname`
 - Analyzer returns a list of Intune devices assigned to that user.
 
+### getDirectoryRoles
+
+**Purpose**  
+Lists the Microsoft Entra ID **directory roles** (built-in admin roles, such as Global Administrator, User Administrator...) directly assigned to a user, to help prioritize investigations involving privileged accounts.
+
+**Key Points**  
+- **Graph Endpoint**  
+- [`GET /users/{id}/transitiveMemberOf/microsoft.graph.directoryRole`](https://learn.microsoft.com/en-us/graph/api/user-list-transitivememberof?view=graph-rest-1.0)  
+- Flags a curated list of highly-privileged built-in role names (Global Administrator, Privileged Role Administrator, Security Administrator, etc.) as `suspicious` in the taxonomy.
+- **Limitation**: only active/direct role assignments are returned. PIM-eligible roles that haven't been activated, and roles granted through a role-assignable group, aren't included.
+
+**Required Permissions**  
+- **`Directory.Read.All`** (same permission already used by `getUserInfo`, no extra consent needed)
+
+**Sample Usage**
+
+- Run on TheHive’s observable of type `mail`
+- Analyzer returns every directory role assigned to that user, and flags privileged ones.
+
+### getSignInsByIP
+
+**Purpose**  
+Pivots from a suspicious **IP address** observable to every Entra ID account that signed in from it, within the specified time range. Useful for spotting credential stuffing / password spray patterns (many distinct users, many failures, from the same IP).
+
+**Key Points**  
+- **Graph Endpoint**  
+- [`GET /auditLogs/signIns`](https://learn.microsoft.com/en-us/graph/api/signin-list?view=graph-rest-1.0)  
+- Filters sign-ins tenant-wide by `ipAddress eq 'x.x.x.x'` and time range.
+
+**Required Permissions**  
+- **`AuditLog.Read.All`** (Application permission, same as `getSignIns`)
+
+**Example Configuration**
+
+- **lookup_range** = 7 (past 7 days)  
+- **lookup_limit** = 50
+
+**Sample Usage**
+
+- Run on TheHive’s observable of type `ip`
+- Analyzer returns every sign-in from that IP in the last 7 days, the number of distinct accounts involved, and flags risky/failed sign-ins.
+
+### getRiskyUser (requires Entra ID P1/P2)
+
+**Purpose**  
+Retrieves Microsoft Entra ID **Identity Protection** risk information for a user: their current aggregate risk state, and their risk detection history (impossible travel, leaked credentials, anonymous IP, etc.).
+
+**Key Points**  
+- **Graph Endpoints**  
+- [`GET /identityProtection/riskyUsers/{id}`](https://learn.microsoft.com/en-us/graph/api/riskyuser-get?view=graph-rest-1.0) current risk state. Requires **Entra ID P2**.
+- [`GET /identityProtection/riskDetections`](https://learn.microsoft.com/en-us/graph/api/riskdetection-list?view=graph-rest-1.0) risk detection history, filtered by `userId` and time range. Requires **Entra ID P1 or P2**.
+- The two calls are independent: if the tenant/app isn't entitled or permissioned for one of them, that part of the report explains why (`riskyUserError` / `riskDetectionsError`) instead of failing the whole analyzer.
+
+**Required Permissions**  
+- **`IdentityRiskyUser.Read.All`** (Application permission)  
+- **`IdentityRiskEvent.Read.All`** (Application permission)
+
+**Example Configuration**
+
+- **lookup_range** = 30 (past 30 days of risk detections)  
+- **lookup_limit** = 20
+
+**Sample Usage**
+
+- Run on TheHive’s observable of type `mail`
+- Analyzer returns the user's current risk level/state and their recent risk detection history.
+
 ---
 
 ## Customization
@@ -190,11 +265,12 @@ To do this, modify **`long.html`** for the analyzer (Sign In). For example, use 
     - Ensure you **Grant admin consent** for the required permissions in Azure AD.
 
 - **Minimal Scopes**  
-    - If you want all analyzers to function, add each relevant scope (such as `AuditLog.Read.All`, `Directory.Read.All`, `DeviceManagementManagedDevices.Read.All`, `UserAuthenticationMethod.Read.All`) to the same app registration.  
+    - If you want all analyzers to function, add each relevant scope (such as `AuditLog.Read.All`, `Directory.Read.All`, `DeviceManagementManagedDevices.Read.All`, `UserAuthenticationMethod.Read.All`, `IdentityRiskyUser.Read.All`, `IdentityRiskEvent.Read.All`) to the same app registration.  
     - Alternatively, create separate app registrations to follow least-privilege principles.
 
 - **Licensing**  
-    - Some features (such as Identity Protection, advanced audit logs) require Azure AD Premium licensing.
+    - `getRiskyUser` requires **Entra ID P2** (riskyUsers) and **Entra ID P1 or P2** (riskDetections). Without the right license, Microsoft Graph returns an authorization error rather than an empty result, the analyzer reports this explicitly instead of failing outright.
+    - Other features (such as advanced audit log retention) may also require Azure AD Premium licensing depending on your tenant configuration.
 
 ---
 
@@ -205,4 +281,7 @@ To do this, modify **`long.html`** for the analyzer (Sign In). For example, use 
 - [Microsoft Graph Query Parameters](https://learn.microsoft.com/en-us/graph/query-parameters?view=graph-rest-1.0)  
 - [Sign In Logs (auditLogs/signIns)](https://learn.microsoft.com/en-us/graph/api/signin-list?view=graph-rest-1.0)  
 - [Directory Audits (auditLogs/directoryAudits)](https://learn.microsoft.com/en-us/graph/api/directoryaudit-list?view=graph-rest-1.0)  
-- [Managed Devices (deviceManagement/managedDevices)](https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-list?view=graph-rest-1.0)
+- [Managed Devices (deviceManagement/managedDevices)](https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-list?view=graph-rest-1.0)  
+- [Directory Roles (transitiveMemberOf)](https://learn.microsoft.com/en-us/graph/api/user-list-transitivememberof?view=graph-rest-1.0)  
+- [Risky Users (identityProtection/riskyUsers)](https://learn.microsoft.com/en-us/graph/api/riskyuser-get?view=graph-rest-1.0)  
+- [Risk Detections (identityProtection/riskDetections)](https://learn.microsoft.com/en-us/graph/api/riskdetection-list?view=graph-rest-1.0)
