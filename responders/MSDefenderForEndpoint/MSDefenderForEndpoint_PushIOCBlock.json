@@ -1,15 +1,15 @@
 {
-  "name": "MSDefender-PushIOC-Alert",
-  "version": "2.0",
-  "author": "Keijo Korte, Louis-Maximilien Dupouy",
+  "name": "MSDefenderForEndpoint-PushIOC-Block",
+  "version": "2.1",
+  "author": "Keijo Korte, Louis-Maximilien Dupouy, Vito Piserchia",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Push IOC to Defender client. Alert mode. This mode is Deprecated and Audit should be used instead.",
+  "description": "Push IOC to Defender client. Block mode",
   "dataTypeList": ["thehive:case_artifact"],
-  "command": "MSDefenderEndpoints/MSDefenderEndpoints.py",
-  "baseConfig": "MSDefenderforEndpoints",
+  "command": "MSDefenderForEndpoint/msdefender_for_endpoint.py",
+  "baseConfig": "MSDefenderForEndpoint",
   "config": {
-    "service": "pushIOCAlert"
+    "service": "pushIOCBlock"
   },
   "configurationItems": [
     {

@@ -1,15 +1,15 @@
 {
-  "name": "MSDefender-PushIOC-Warn",
+  "name": "MSDefenderForEndpoint-PushIOC-Allowed",
   "version": "1.0",
   "author": "Vito Piserchia",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Push IOC to Defender client. Warn mode (Microsoft Defender for Cloud only)",
+  "description": "Push IOC to Defender client. Allowed mode",
   "dataTypeList": ["thehive:case_artifact"],
-  "command": "MSDefenderEndpoints/MSDefenderEndpoints.py",
-  "baseConfig": "MSDefenderforEndpoints",
+  "command": "MSDefenderForEndpoint/msdefender_for_endpoint.py",
+  "baseConfig": "MSDefenderForEndpoint",
   "config": {
-    "service": "pushIOCWarn"
+    "service": "pushIOCAllowed"
   },
   "configurationItems": [
     {

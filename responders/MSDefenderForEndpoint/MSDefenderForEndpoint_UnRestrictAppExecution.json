@@ -1,13 +1,13 @@
 {
-  "name": "MSDefender-UnRestrictAppExecution",
+  "name": "MSDefenderForEndpoint-UnRestrictAppExecution",
   "version": "1.0",
   "author": "Keijo Korte, Louis-Maximilien Dupouy",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Enable execution of any application on the device",
   "dataTypeList": ["thehive:case_artifact"],
-  "command": "MSDefenderEndpoints/MSDefenderEndpoints.py",
-  "baseConfig": "MSDefenderforEndpoints",
+  "command": "MSDefenderForEndpoint/msdefender_for_endpoint.py",
+  "baseConfig": "MSDefenderForEndpoint",
   "config": {
     "service": "unrestrictAppExecution"
   },
