@@ -1,0 +1,41 @@
+{
+  "name": "MSDefenderForEndpoint_HashReputation",
+  "version": "1.0",
+  "author": "Elina Galvao, StrangeBee",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Check a file hash (SHA1 or SHA256) against Microsoft Defender for Endpoint: organization prevalence and related alerts.",
+  "dataTypeList": ["hash"],
+  "baseConfig": "MSDefenderForEndpoint",
+  "command": "MSDefenderForEndpoint/msdefender_for_endpoint.py",
+  "config": {
+    "service": "hash_reputation",
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 2
+  },
+  "configurationItems": [
+    {
+      "name": "tenant_id",
+      "description": "Azure AD tenant ID",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "client_id",
+      "description": "Azure AD application (client) ID granted File.Read.All and Alert.Read.All permissions on the WindowsDefenderATP API",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "client_secret",
+      "description": "Azure AD application client secret",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "name": "MSDefenderForEndpoint_DeviceLookup",
+  "version": "1.0",
+  "author": "Elina Galvao, StrangeBee",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Look up a device (by IP or hostname/FQDN) in Microsoft Defender for Endpoint: risk score, exposure level, health status and related alerts.",
+  "dataTypeList": ["ip", "fqdn"],
+  "baseConfig": "MSDefenderForEndpoint",
+  "command": "MSDefenderForEndpoint/msdefender_for_endpoint.py",
+  "config": {
+    "service": "device_lookup",
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 2
+  },
+  "configurationItems": [
+    {
+      "name": "tenant_id",
+      "description": "Azure AD tenant ID",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "client_id",
+      "description": "Azure AD application (client) ID granted Machine.Read.All and Alert.Read.All permissions on the WindowsDefenderATP API",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "client_secret",
+      "description": "Azure AD application client secret",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}
