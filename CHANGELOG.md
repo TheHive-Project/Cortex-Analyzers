@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.9.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.9.0) (2026-07-28)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.8.9...3.9.0)
+
+**Merged pull requests:**
+
+- MSExchangeOnline - Inbox rules integration [\#1478](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1478) ([nusantara-self](https://github.com/nusantara-self))
+- Prediction explanations [\#1477](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1477) ([marvinuku](https://github.com/marvinuku))
+- Add PDFPreview Analyzer [\#1473](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1473) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.8.9](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.8.9) (2026-07-14)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.8.8...3.8.9)
