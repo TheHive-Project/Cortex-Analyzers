@@ -1,12 +1,12 @@
 {
-  "name": "DuoUnlockUserAccount",
+  "name": "DuoBypassUserAccount",
   "version": "1.0",
-  "author": "Sven Kutzer / Gyorgy Acs, @oscd_initiative",
+  "author": "jahamilto",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Unlock User Account in Duo Security via AdminAPI (The user must complete secondary authentication)",
+  "description": "Put User Account into Bypass mode in Duo Security via AdminAPI (The user will not be prompted when logging in.)",
   "dataTypeList": ["thehive:case_artifact"],
-  "command": "Duo_Security/duoUnlockUserAccount.py",
+  "command": "CiscoDuo/duoBypassUserAccount.py",
   "baseConfig": "Duo_Security_main",
   "configurationItems": [
     {

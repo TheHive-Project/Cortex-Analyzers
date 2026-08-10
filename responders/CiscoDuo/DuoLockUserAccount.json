@@ -6,7 +6,7 @@
   "license": "AGPL-V3",
   "description": "Lock User Account in Duo Security via AdminAPI (The user will not be able to log in)",
   "dataTypeList": ["thehive:case_artifact"],
-  "command": "Duo_Security/duoLockUserAccount.py",
+  "command": "CiscoDuo/duoLockUserAccount.py",
   "baseConfig": "Duo_Security_main",
   "configurationItems": [
     {
