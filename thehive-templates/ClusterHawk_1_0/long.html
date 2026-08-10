@@ -73,6 +73,26 @@
                         ng-if="content.summary.kind_distribution.out_of_distribution">
                     Out of distribution: {{ content.summary.kind_distribution.out_of_distribution }}
                   </span>
+                  <span class="label label-default label-space"
+                        ng-if="content.summary.kind_distribution.no_input_features"
+                        title="The host presented no usable input — nothing to judge with; cluster id and confidence are null.">
+                    No input: {{ content.summary.kind_distribution.no_input_features }}
+                  </span>
+                  <span class="label label-default label-space"
+                        ng-if="content.summary.kind_distribution.no_covered_features"
+                        title="None of the host's features are covered by this model; cluster id and confidence are null.">
+                    Not covered: {{ content.summary.kind_distribution.no_covered_features }}
+                  </span>
+                  <span class="label label-default label-space"
+                        ng-if="content.summary.kind_distribution.not_enriched"
+                        title="Enrichment returned nothing for this host; cluster id and confidence are null.">
+                    Not enriched: {{ content.summary.kind_distribution.not_enriched }}
+                  </span>
+                  <span class="label label-default label-space"
+                        ng-if="content.summary.kind_distribution.model_uninformative"
+                        title="The model carries no discriminating signal for this row; cluster id and confidence are null.">
+                    Model has no opinion: {{ content.summary.kind_distribution.model_uninformative }}
+                  </span>
                 </td>
               </tr>
             </table>
@@ -89,6 +109,10 @@
             <span class="label label-default label-space" ng-if="info.is_ood"
                   title="Out-of-distribution rows have no fingerprint match — the cluster id was nulled. Investigate via behavioral evidence rather than relying on a cluster attribution.">
               No fingerprint match
+            </span>
+            <span class="label label-default label-space" ng-if="info.is_sentinel"
+                  title="Reserved marker id (-1 noise, -2 honeypot, -3 NIL) — a marker the pipeline assigned, not a cluster the model found. Excluded from the Clusters Found count.">
+              Marker, not a cluster
             </span>
             <span class="label label-default label-space" ng-if="info.description && !info.is_ood">{{ info.description }}</span>
           </div>
@@ -145,10 +169,10 @@
                   <span class="label"
                         ng-if="p.cluster !== null && p.cluster !== undefined"
                         ng-class="{
-                          'label-default': (p.cluster == -1),
-                          'label-warning': (p.cluster != -1 && p.confidence != null && p.confidence < 0.95),
-                          'label-danger':  (p.cluster != -1 && p.confidence != null && p.confidence >= 0.95),
-                          'label-info':    (p.cluster != -1 && p.confidence == null)
+                          'label-default': (p.cluster < 0),
+                          'label-warning': (p.cluster >= 0 && p.confidence != null && p.confidence < 0.95),
+                          'label-danger':  (p.cluster >= 0 && p.confidence != null && p.confidence >= 0.95),
+                          'label-info':    (p.cluster >= 0 && p.confidence == null)
                         }">{{ p.cluster }}</span>
                   <div class="kh-subtle" ng-if="p.cluster_description"><em>{{ p.cluster_description }}</em></div>
                 </td>
@@ -174,7 +198,28 @@
                         title="No fingerprint match — the IP does not resemble any trained cluster. Investigate via behavioral evidence rather than the cluster id.">
                     Out of distribution
                   </span>
-                  <span class="kh-subtle" ng-if="!p.kind">-</span>
+                  <span class="label label-default"
+                        ng-if="p.kind == 'no_input_features'"
+                        title="The host presented no usable input — nothing to judge with. Not clean, not anomalous: unjudged.">
+                    No input
+                  </span>
+                  <span class="label label-default"
+                        ng-if="p.kind == 'no_covered_features'"
+                        title="None of the host's features are covered by this model — a different model may attribute it.">
+                    Not covered by this model
+                  </span>
+                  <span class="label label-default"
+                        ng-if="p.kind == 'not_enriched'"
+                        title="Enrichment returned nothing for this host — no data existed to attribute.">
+                    Not enriched
+                  </span>
+                  <span class="label label-default"
+                        ng-if="p.kind == 'model_uninformative'"
+                        title="The model carries no discriminating signal for this row.">
+                    Model has no opinion
+                  </span>
+                  <span class="kh-subtle" ng-if="!p.kind"
+                        title="Reserved marker rows (honeypot -2, NIL -3) carry no kind by contract.">-</span>
                 </td>
                 <td>
                   <span ng-if="p.label">{{ p.label }}</span>
@@ -209,7 +254,7 @@
                     <div>
                       <strong>Why this IP was assigned here</strong>
                       <span class="label label-warning label-space"
-                            ng-if="p.explanation_status == 'partial'"
+                            ng-if="p.explanation_status && p.explanation_status.indexOf('partial') === 0"
                             title="Part of the decision could not be attributed to features — read this as a partial explanation.">
                         Partial
                       </span>
@@ -352,7 +397,7 @@
                     </div>
                   </div>
 
-                  <div ng-if="!p.explanation && p.explanation_status && p.explanation_status != 'ok' && p.explanation_status != 'disabled'"
+                  <div ng-if="!p.explanation && p.explanation_status && p.explanation_status.indexOf('ok') !== 0 && p.explanation_status != 'disabled'"
                        class="kh-explain" style="font-style:italic">
                     No explanation available for this prediction ({{ p.explanation_status }}).
                   </div>

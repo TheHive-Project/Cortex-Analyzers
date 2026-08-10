@@ -166,6 +166,17 @@ class ClusterHawkAnalyzer(Analyzer):
                         )
                         self.error(f"Job failed: {error_msg}")
                         return False
+                    elif status in ("cancelled", "insufficient_data"):
+                        detail = (
+                            status_data.get("error_message")
+                            if isinstance(status_data, dict)
+                            else None
+                        )
+                        self.error(
+                            f"Job ended without results: {status}"
+                            + (f" - {detail}" if detail else "")
+                        )
+                        return False
                     elif status in ["running", "pending", "processing"]:
                         # Job still processing, wait and check again
                         time.sleep(self.poll_interval)
@@ -238,6 +249,10 @@ class ClusterHawkAnalyzer(Analyzer):
                 "ambiguous_diffuse": 0,
                 "ambiguous_split": 0,
                 "out_of_distribution": 0,
+                "no_input_features": 0,
+                "no_covered_features": 0,
+                "not_enriched": 0,
+                "model_uninformative": 0,
                 "unknown": 0,
             }
 
@@ -255,7 +270,17 @@ class ClusterHawkAnalyzer(Analyzer):
                 label = pred.get("label")
                 is_ood = cluster is None or kind == "out_of_distribution"
                 is_noise = not is_ood and cluster == -1
-                cluster_key = "Out of distribution" if is_ood else f"Cluster {cluster}"
+                is_sentinel = not is_ood and cluster in (-1, -2, -3)
+                if is_ood:
+                    cluster_key = "Out of distribution"
+                elif cluster == -1:
+                    cluster_key = "Noise"
+                elif cluster == -2:
+                    cluster_key = "Honeypot"
+                elif cluster == -3:
+                    cluster_key = "Insufficient data (NIL)"
+                else:
+                    cluster_key = f"Cluster {cluster}"
 
                 if cluster_key not in cluster_summary:
                     cluster_info: Dict[str, Any] = {
@@ -266,6 +291,7 @@ class ClusterHawkAnalyzer(Analyzer):
                         "ips": [],
                         "is_ood": is_ood,
                         "is_noise": is_noise,
+                        "is_sentinel": is_sentinel,
                     }
 
                     if "primary_characteristic" in pred:
@@ -350,7 +376,7 @@ class ClusterHawkAnalyzer(Analyzer):
                     "clusters_found": sum(
                         1
                         for v in cluster_summary.values()
-                        if not v["is_ood"] and not v["is_noise"]
+                        if not v["is_ood"] and not v.get("is_sentinel")
                     ),
                     "model_used": self.model_name,
                     "job_id": results.get("job_id", "unknown"),
@@ -387,6 +413,16 @@ class ClusterHawkAnalyzer(Analyzer):
         "ambiguous_split": "suspicious",
         "ambiguous_diffuse": "suspicious",
         "out_of_distribution": "info",
+        "no_input_features": "info",
+        "no_covered_features": "info",
+        "not_enriched": "info",
+        "model_uninformative": "info",
+    }
+
+    _SENTINEL_PREDICATES = {
+        -1: "Noise",
+        -2: "Honeypot",
+        -3: "Insufficient data",
     }
 
     def _create_taxonomies(self, processed: Dict[str, Any]):
@@ -401,7 +437,11 @@ class ClusterHawkAnalyzer(Analyzer):
             cluster = p.get("cluster")
             confidence = p.get("confidence")
 
-            if cluster is not None:
+            if cluster is not None and cluster in self._SENTINEL_PREDICATES:
+                predicate = self._SENTINEL_PREDICATES[cluster]
+                value = "detected"
+                level = "info"
+            elif cluster is not None:
                 if kind == "confident_match":
                     predicate = "Cluster"
                 else:
