@@ -6,7 +6,7 @@
   "license": "AGPL-v3",
   "description": "Submit observables to the Crowdstrike FalconX Sandbox",
   "dataTypeList": ["file"],
-  "command": "FalconSandbox/FalconSandbox.py",
+  "command": "CrowdstrikeFalconSandbox/FalconSandbox.py",
   "baseConfig": "FalconSandbox",
   "configurationItems": [
     {
