@@ -6,7 +6,7 @@
   "license": "AGPL-V3",
   "description": "Retrieve Investigate categorization and security features for a domain.",
   "dataTypeList": ["domain", "fqdn"],
-  "command": "Investigate/investigate_analyzer.py",
+  "command": "CiscoUmbrellaInvestigate/investigate_analyzer.py",
   "baseConfig": "Investigate",
   "config": {
       "service": "categorization"
