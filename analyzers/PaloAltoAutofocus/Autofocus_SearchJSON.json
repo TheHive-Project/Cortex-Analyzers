@@ -10,7 +10,7 @@
     },
     "description": "Search samples in Autofocus with a full search query in JSON",
     "dataTypeList": ["other"],
-    "command": "Autofocus/analyzer.py",
+    "command": "PaloAltoAutofocus/analyzer.py",
     "configurationItems": [
         {
           "name": "apikey",

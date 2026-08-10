@@ -10,7 +10,7 @@
     },
     "description": "Search samples in Autofocus based on a single IOC",
     "dataTypeList": ["domain","fqdn","user-agent","imphash","ip","mutex","tag","url"],
-    "command": "Autofocus/analyzer.py",
+    "command": "PaloAltoAutofocus/analyzer.py",
     "configurationItems": [
         {
           "name": "apikey",

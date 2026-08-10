@@ -10,7 +10,7 @@
     },
     "description": "Get full analysis from a sample based on its hash",
     "dataTypeList": ["hash"],
-    "command": "Autofocus/analyzer.py",
+    "command": "PaloAltoAutofocus/analyzer.py",
     "configurationItems": [
         {
           "name": "apikey",
