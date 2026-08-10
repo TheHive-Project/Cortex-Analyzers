@@ -1,15 +1,15 @@
 {
-  "name": "AMPforEndpoints_SCDRemove",
+  "name": "AMPforEndpoints_IsolationStart",
   "version": "1.0",
   "author": "Cisco Security",
   "url": "https://github.com/CiscoSecurity",
   "license": "MIT",
-  "description": "Remove a SHA256 to an AMP for Endpoints Simple Custom Detection list",
+  "description": "Start host isolation for an AMP for Endpoints connector",
   "dataTypeList": ["thehive:case_artifact"],
-  "command": "AMPforEndpoints/AMPforEndpoints.py",
+  "command": "CiscoAMPforEndpoints/AMPforEndpoints.py",
   "baseConfig": "AMPforEndpoints",
   "config": {
-    "service": "scdremove"
+    "service": "isolationstart"
   },
   "configurationItems": [
     {
@@ -34,11 +34,11 @@
       "required": true
     },
     {
-      "name": "scd_guid",
-      "description": "AMP for Endpoints Simple Custom Detection GUID",
+      "name": "unlock_code",
+      "description": "Custom unlock code used to stop isolation from the endpoint (Maximum 24 characters)",
       "type": "string",
       "multi": false,
-      "required": true
+      "required": false
     }
   ]
 }
