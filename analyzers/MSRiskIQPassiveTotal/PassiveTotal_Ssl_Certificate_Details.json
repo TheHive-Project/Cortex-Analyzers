@@ -1,15 +1,15 @@
 {
-  "name": "PassiveTotal_Enrichment",
+  "name": "PassiveTotal_Ssl_Certificate_Details",
   "version": "2.0",
   "author": "CERT-BDF",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "PassiveTotal Enrichment Lookup.",
-  "dataTypeList": ["domain", "fqdn", "ip"],
-  "command": "PassiveTotal/passivetotal_analyzer.py",
+  "description": "PassiveTotal SSL Certificate Details Lookup.",
+  "dataTypeList": ["hash", "ip"],
+  "command": "MSRiskIQPassiveTotal/passivetotal_analyzer.py",
   "baseConfig": "PassiveTotal",
   "config": {
-    "service": "enrichment",
+    "service": "ssl_certificate_details",
     "auto_extract": true
   },
   "configurationItems": [

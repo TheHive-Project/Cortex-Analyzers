@@ -1,15 +1,15 @@
 {
-  "name": "PassiveTotal_Host_Pairs",
+  "name": "PassiveTotal_Trackers",
   "version": "2.0",
   "author": "Brandon Dixon (9bplus)",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "PassiveTotal Host Pairs Lookup.",
+  "description": "PassiveTotal Trackers Lookup.",
   "dataTypeList": ["domain", "fqdn", "ip"],
-  "command": "PassiveTotal/passivetotal_analyzer.py",
+  "command": "MSRiskIQPassiveTotal/passivetotal_analyzer.py",
   "baseConfig": "PassiveTotal",
   "config": {
-    "service": "host_pairs",
+    "service": "trackers",
     "auto_extract": true
   },
   "configurationItems": [
