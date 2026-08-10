@@ -1,10 +1,10 @@
 {
   "author": "RiskIQ",
   "baseConfig": "RiskIQ",
-  "command": "RiskIQ/_analyzer.py",
+  "command": "MSRiskIQ/_analyzer.py",
   "config": {
     "auto_extract": true,
-    "property": "articles"
+    "property": "certificates"
   },
   "configurationItems": [
     {
@@ -35,9 +35,9 @@
     "fqdn",
     "ip"
   ],
-  "description": "RiskIQ: OSINT articles that reference an indicator.",
+  "description": "RiskIQ: SSL/TLS certificates associated with an indicator.",
   "license": "AGPL-V3",
-  "name": "RiskIQ_Articles",
+  "name": "RiskIQ_Certificates",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "version": "1.0"
 }

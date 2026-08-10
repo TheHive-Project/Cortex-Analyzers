@@ -1,10 +1,10 @@
 {
   "author": "RiskIQ",
   "baseConfig": "RiskIQ",
-  "command": "RiskIQ/_analyzer.py",
+  "command": "MSRiskIQ/_analyzer.py",
   "config": {
     "auto_extract": true,
-    "property": "whois"
+    "property": "articles"
   },
   "configurationItems": [
     {
@@ -35,9 +35,9 @@
     "fqdn",
     "ip"
   ],
-  "description": "RiskIQ Whois lookup for an indicator.",
+  "description": "RiskIQ: OSINT articles that reference an indicator.",
   "license": "AGPL-V3",
-  "name": "RiskIQ_Whois",
+  "name": "RiskIQ_Articles",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "version": "1.0"
 }

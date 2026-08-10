@@ -1,10 +1,10 @@
 {
   "author": "RiskIQ",
   "baseConfig": "RiskIQ",
-  "command": "RiskIQ/_analyzer.py",
+  "command": "MSRiskIQ/_analyzer.py",
   "config": {
     "auto_extract": true,
-    "property": "hostpair_children"
+    "property": "subdomains"
   },
   "configurationItems": [
     {
@@ -31,13 +31,12 @@
     }
   ],
   "dataTypeList": [
-    "domain",
     "fqdn",
-    "ip"
+    "domain"
   ],
-  "description": "RiskIQ: hosts with a child web component relationship to an IOC.",
+  "description": "RiskIQ: subdomains observed historically in pDNS records.",
   "license": "AGPL-V3",
-  "name": "RiskIQ_HostpairChildren",
+  "name": "RiskIQ_Subdomains",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "version": "1.0"
 }

@@ -1,10 +1,10 @@
 {
   "author": "RiskIQ",
   "baseConfig": "RiskIQ",
-  "command": "RiskIQ/_analyzer.py",
+  "command": "MSRiskIQ/_analyzer.py",
   "config": {
     "auto_extract": true,
-    "property": "subdomains"
+    "property": "reputation"
   },
   "configurationItems": [
     {
@@ -31,12 +31,13 @@
     }
   ],
   "dataTypeList": [
+    "domain",
     "fqdn",
-    "domain"
+    "ip"
   ],
-  "description": "RiskIQ: subdomains observed historically in pDNS records.",
+  "description": "RiskIQ Illuminate Reputation Score for an indicator.",
   "license": "AGPL-V3",
-  "name": "RiskIQ_Subdomains",
+  "name": "RiskIQ_Reputation",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "version": "1.0"
 }

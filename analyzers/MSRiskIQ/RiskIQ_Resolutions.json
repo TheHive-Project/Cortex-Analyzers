@@ -1,10 +1,10 @@
 {
   "author": "RiskIQ",
   "baseConfig": "RiskIQ",
-  "command": "RiskIQ/_analyzer.py",
+  "command": "MSRiskIQ/_analyzer.py",
   "config": {
     "auto_extract": true,
-    "property": "services"
+    "property": "resolutions"
   },
   "configurationItems": [
     {
@@ -31,11 +31,13 @@
     }
   ],
   "dataTypeList": [
+    "domain",
+    "fqdn",
     "ip"
   ],
-  "description": "RiskIQ: services observed on an IP address.",
+  "description": "RiskIQ: PDNS resolutions for an IOC.",
   "license": "AGPL-V3",
-  "name": "RiskIQ_Services",
+  "name": "RiskIQ_Resolutions",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "version": "1.0"
 }

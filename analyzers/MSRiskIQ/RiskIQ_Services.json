@@ -1,10 +1,10 @@
 {
   "author": "RiskIQ",
   "baseConfig": "RiskIQ",
-  "command": "RiskIQ/_analyzer.py",
+  "command": "MSRiskIQ/_analyzer.py",
   "config": {
     "auto_extract": true,
-    "property": "artifacts"
+    "property": "services"
   },
   "configurationItems": [
     {
@@ -31,13 +31,11 @@
     }
   ],
   "dataTypeList": [
-    "domain",
-    "fqdn",
     "ip"
   ],
-  "description": "RiskIQ: Illuminate / PassiveTotal project artifacts that match an indicator.",
+  "description": "RiskIQ: services observed on an IP address.",
   "license": "AGPL-V3",
-  "name": "RiskIQ_Artifacts",
+  "name": "RiskIQ_Services",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "version": "1.0"
 }

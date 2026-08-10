@@ -1,10 +1,10 @@
 {
   "author": "RiskIQ",
   "baseConfig": "RiskIQ",
-  "command": "RiskIQ/_analyzer.py",
+  "command": "MSRiskIQ/_analyzer.py",
   "config": {
     "auto_extract": true,
-    "property": "components"
+    "property": "summary"
   },
   "configurationItems": [
     {
@@ -35,9 +35,9 @@
     "fqdn",
     "ip"
   ],
-  "description": "RiskIQ: web components observed during crawls on a hostname.",
+  "description": "RiskIQ Illuminate and PassiveTotal datasets with records for an indicator.",
   "license": "AGPL-V3",
-  "name": "RiskIQ_Components",
+  "name": "RiskIQ_Summary",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "version": "1.0"
 }

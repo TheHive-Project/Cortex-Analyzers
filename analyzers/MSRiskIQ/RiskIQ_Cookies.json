@@ -1,10 +1,10 @@
 {
   "author": "RiskIQ",
   "baseConfig": "RiskIQ",
-  "command": "RiskIQ/_analyzer.py",
+  "command": "MSRiskIQ/_analyzer.py",
   "config": {
     "auto_extract": true,
-    "property": "reputation"
+    "property": "cookies"
   },
   "configurationItems": [
     {
@@ -35,9 +35,9 @@
     "fqdn",
     "ip"
   ],
-  "description": "RiskIQ Illuminate Reputation Score for an indicator.",
+  "description": "RiskIQ: cookies observed during crawls on a hostname.",
   "license": "AGPL-V3",
-  "name": "RiskIQ_Reputation",
+  "name": "RiskIQ_Cookies",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "version": "1.0"
 }

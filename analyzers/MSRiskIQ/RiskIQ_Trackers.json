@@ -1,10 +1,10 @@
 {
   "author": "RiskIQ",
   "baseConfig": "RiskIQ",
-  "command": "RiskIQ/_analyzer.py",
+  "command": "MSRiskIQ/_analyzer.py",
   "config": {
     "auto_extract": true,
-    "property": "resolutions"
+    "property": "trackers"
   },
   "configurationItems": [
     {
@@ -35,9 +35,9 @@
     "fqdn",
     "ip"
   ],
-  "description": "RiskIQ: PDNS resolutions for an IOC.",
+  "description": "RiskIQ: trackers observed during a crawl on a host.",
   "license": "AGPL-V3",
-  "name": "RiskIQ_Resolutions",
+  "name": "RiskIQ_Trackers",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "version": "1.0"
 }

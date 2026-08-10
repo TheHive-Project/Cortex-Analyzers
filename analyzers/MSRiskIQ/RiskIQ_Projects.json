@@ -1,10 +1,10 @@
 {
   "author": "RiskIQ",
   "baseConfig": "RiskIQ",
-  "command": "RiskIQ/_analyzer.py",
+  "command": "MSRiskIQ/_analyzer.py",
   "config": {
     "auto_extract": true,
-    "property": "cookies"
+    "property": "projects"
   },
   "configurationItems": [
     {
@@ -35,9 +35,9 @@
     "fqdn",
     "ip"
   ],
-  "description": "RiskIQ: cookies observed during crawls on a hostname.",
+  "description": "RiskIQ: Illuminate / PassiveTotal projects that contain an artifact which matches an IOC.",
   "license": "AGPL-V3",
-  "name": "RiskIQ_Cookies",
+  "name": "RiskIQ_Projects",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "version": "1.0"
 }
