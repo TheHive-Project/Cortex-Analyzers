@@ -6,6 +6,6 @@
   "license": "AGPL-V3",
   "description": "Get the Talos IP reputation",
   "dataTypeList": ["ip"],
-  "command": "TalosReputation/TalosReputation.py",
+  "command": "CiscoTalosReputation/TalosReputation.py",
   "baseConfig": "TalosReputation"
 }
