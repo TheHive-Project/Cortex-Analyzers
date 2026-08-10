@@ -6,7 +6,7 @@
   "version": "1.0",
   "description": "Threat Grid Sandbox",
   "dataTypeList": ["file", "url", "hash"],
-  "command": "ThreatGrid/ThreatGrid.py",
+  "command": "CiscoThreatGrid/ThreatGrid.py",
   "baseConfig": "ThreatGrid",
   "configurationItems": [
     {
