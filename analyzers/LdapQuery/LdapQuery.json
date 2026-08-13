@@ -1,6 +1,6 @@
 {
   "name": "Ldap_Query",
-  "version": "3.0",
+  "version": "3.1",
   "author": "Florian Perret @cyber_pescadito & THA-CERT @tha_cert",
   "url": "https://github.com/cyberpescadito/Cortex-Analyzers/tree/master/analyzers/LdapQuery",
   "license": "AGPL-V3",
@@ -43,6 +43,13 @@
         "type": "string",
         "multi": false,
         "required": true
+    },
+    {
+        "name": "LDAP_tls_seclevel",
+        "description": "OpenSSL security level (0-5), lower to allow connecting to legacy LDAP/AD servers with old certificates or ciphers. Leave empty to use OpenSSL's default (2, requires >=2048-bit keys). '1' allows >=1024-bit keys and SHA-1 certs; '0' removes all restrictions, including unauthenticated ciphers. Only set this if you hit a TLS handshake failure against an older server; lowering it weakens transport security.",
+        "type": "string",
+        "multi": false,
+        "required": false
     },
     {
         "name": "uid_search_fields",
