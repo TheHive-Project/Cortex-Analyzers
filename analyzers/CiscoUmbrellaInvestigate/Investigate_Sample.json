@@ -1,0 +1,26 @@
+{
+  "name": "Investigate_Sample",
+  "version": "1.0",
+  "author": "Cisco Umbrella Research @opendns",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Investigate",
+  "license": "AGPL-V3",
+  "description": "Retrieve sample data from Investigate for a hash. (Sample data provided by ThreatGrid)",
+  "dataTypeList": [
+    "hash"
+  ],
+  "command": "CiscoUmbrellaInvestigate/investigate_analyzer.py",
+  "baseConfig": "Investigate",
+  "config": {
+    "service": "sample"
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Define the Investigate API Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "service_homepage": "https://umbrella.cisco.com/products/umbrella-investigate"
+}

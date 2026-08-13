@@ -64,5 +64,6 @@
   "registration_required": false,
   "subscription_required": false,
   "free_subscription": false,
-  "serviceHomepage": "None"
+  "serviceHomepage": "None",
+  "integration_type": "local"
 }

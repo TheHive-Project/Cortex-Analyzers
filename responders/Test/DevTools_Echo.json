@@ -12,5 +12,9 @@
     "service": "echo"
   },
   "configurationItems": [
-  ]
+  ],
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": false,
+  "integration_type": "local"
 }
