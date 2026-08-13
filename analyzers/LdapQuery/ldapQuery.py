@@ -44,18 +44,21 @@ class LdapQuery(Analyzer):
         # Get attributes to export as custom fields
         self.attributes_to_custom_fields, self.attributes_to_custom_fields_prefix = self.get_attribute_mapping("config.attributes_to_custom_fields")
 
+        tls_seclevel = self.get_param("config.LDAP_tls_seclevel", None)
+
         # Establish LDAP server connexion
         try:
-            # tls_configuration = Tls(
-            #     validate=ssl.CERT_REQUIRED,
-            #     version=ssl.PROTOCOL_TLSv1_2 # Or Version 1.3 if supported.
-            # )
+            tls_kwargs = {"validate": ssl.CERT_NONE}
+            if tls_seclevel:
+                # allows handshakes with older LDAP/AD certs OpenSSL 3.x rejects by default
+                tls_kwargs["ciphers"] = "DEFAULT@SECLEVEL={}".format(tls_seclevel)
+            tls_configuration = Tls(**tls_kwargs)
             s = Server(
                 ldap_address,
                 port=ldap_port,
                 get_info=ALL,
                 use_ssl=True if ldap_port == 636 else False,
-                # tls=tls_configuration if ldap_port == 636 else None,
+                tls=tls_configuration if ldap_port == 636 else None,
             )
             self.connection = Connection(
                 s,

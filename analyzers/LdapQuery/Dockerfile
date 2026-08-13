@@ -1,21 +1,13 @@
-# pull official base image
-FROM python:3.9-slim
+# Builder stage
+FROM python:3-slim AS builder
+WORKDIR /build
+COPY requirements.txt .
+RUN test ! -e requirements.txt || pip install --user --no-cache-dir -r requirements.txt
 
-# Set ARGS
-ARG ANALYZER_NAME
-
-# set work directory
-WORKDIR /app/
-
-# Copy the current directory contents into the container at /worker
+# Runtime stage
+FROM python:3-slim
+WORKDIR /worker
+COPY --from=builder /root/.local /root/.local
 COPY . LdapQuery/
-
-# install python3 pip3 and openssl
-RUN apt update
-RUN apt install python3 python3-pip openssl -y
-
-# install dependencies using builder
-RUN pip3 install -r LdapQuery/requirements.txt
-
-# Run app.py when the container launches
-ENTRYPOINT ["python","LdapQuery/ldapQuery.py"]
+ENV PATH=/root/.local/bin:$PATH
+ENTRYPOINT ["python", "LdapQuery/ldapQuery.py"]
