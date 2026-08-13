@@ -1,5 +1,26 @@
 # Changelog
 
+## [3.9.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.9.2) (2026-08-13)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.9.1...3.9.2)
+
+**Closed issues:**
+
+- \[FR\] Clarification based on recent changes [\#1486](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1486)
+- \[FR\] ClusterHawk explanations for predictions [\#1476](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1476)
+
+## [3.9.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.9.1) (2026-08-06)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.9.0...3.9.1)
+
+**Merged pull requests:**
+
+- FileInfo - Update Dockerfile [\#1483](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1483) ([nusantara-self](https://github.com/nusantara-self))
+- MSEntraID responders - Fix missing dataType check & update datetime usage [\#1482](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1482) ([3lina](https://github.com/3lina))
+- MSEntraID analyzers - Bug fix & 3 new analyzers \(directory roles, sign-ins by IP and risky user\) [\#1481](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1481) ([3lina](https://github.com/3lina))
+- Initial commit - MSDefenderForEndpoint analyzers v1 \(device lookup & hash reputation\) [\#1480](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1480) ([3lina](https://github.com/3lina))
+- MSDefenderForEndpoint responder - Rename, OAuth v2.0 migration, bug fixes & new action [\#1479](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1479) ([3lina](https://github.com/3lina))
+
 ## [3.9.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.9.0) (2026-07-28)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.8.9...3.9.0)
