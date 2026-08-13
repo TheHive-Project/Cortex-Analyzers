@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Lock User Account in Duo Security via AdminAPI (The user will not be able to log in)",
-  "dataTypeList": ["thehive:case_artifact"],
+  "dataTypeList": [
+    "thehive:case_artifact"
+  ],
   "command": "CiscoDuo/duoLockUserAccount.py",
   "baseConfig": "Duo_Security_main",
   "configurationItems": [
@@ -16,7 +18,7 @@
       "multi": false,
       "required": true
     },
-   {
+    {
       "name": "Integration_Key",
       "description": "Integration Key",
       "type": "string",
@@ -30,5 +32,6 @@
       "multi": false,
       "required": true
     }
-  ]
+  ],
+  "service_homepage": "https://duo.com/"
 }

@@ -9,15 +9,18 @@
         "service": "search_json"
     },
     "description": "Search samples in Autofocus with a full search query in JSON",
-    "dataTypeList": ["other"],
+    "dataTypeList": [
+        "other"
+    ],
     "command": "PaloAltoAutofocus/analyzer.py",
     "configurationItems": [
         {
-          "name": "apikey",
-          "description": "Autofocus API key",
-          "type": "string",
-          "multi": false,
-          "required": true
+            "name": "apikey",
+            "description": "Autofocus API key",
+            "type": "string",
+            "multi": false,
+            "required": true
         }
-    ]
+    ],
+    "service_homepage": "https://www.paloaltonetworks.com/cortex/autofocus"
 }

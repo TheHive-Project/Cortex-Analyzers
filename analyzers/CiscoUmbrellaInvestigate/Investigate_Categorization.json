@@ -5,11 +5,14 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers/Investigate",
   "license": "AGPL-V3",
   "description": "Retrieve Investigate categorization and security features for a domain.",
-  "dataTypeList": ["domain", "fqdn"],
+  "dataTypeList": [
+    "domain",
+    "fqdn"
+  ],
   "command": "CiscoUmbrellaInvestigate/investigate_analyzer.py",
   "baseConfig": "Investigate",
   "config": {
-      "service": "categorization"
+    "service": "categorization"
   },
   "configurationItems": [
     {
@@ -19,5 +22,6 @@
       "multi": false,
       "required": true
     }
-  ]
+  ],
+  "service_homepage": "https://umbrella.cisco.com/products/umbrella-investigate"
 }

@@ -9,15 +9,18 @@
         "service": "get_sample_analysis"
     },
     "description": "Get full analysis from a sample based on its hash",
-    "dataTypeList": ["hash"],
+    "dataTypeList": [
+        "hash"
+    ],
     "command": "PaloAltoAutofocus/analyzer.py",
     "configurationItems": [
         {
-          "name": "apikey",
-          "description": "Autofocus API key",
-          "type": "string",
-          "multi": false,
-          "required": true
+            "name": "apikey",
+            "description": "Autofocus API key",
+            "type": "string",
+            "multi": false,
+            "required": true
         }
-    ]
+    ],
+    "service_homepage": "https://www.paloaltonetworks.com/cortex/autofocus"
 }

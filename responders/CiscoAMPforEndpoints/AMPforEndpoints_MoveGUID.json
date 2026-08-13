@@ -5,7 +5,9 @@
   "url": "https://github.com/CiscoSecurity",
   "license": "MIT",
   "description": "Move an AMP for Endpoints connector GUID to a different Group",
-  "dataTypeList": ["thehive:case_artifact"],
+  "dataTypeList": [
+    "thehive:case_artifact"
+  ],
   "command": "CiscoAMPforEndpoints/AMPforEndpoints.py",
   "baseConfig": "AMPforEndpoints",
   "config": {
@@ -40,5 +42,6 @@
       "multi": false,
       "required": true
     }
-  ]
+  ],
+  "service_homepage": "https://www.cisco.com/site/us/en/products/security/endpoint-security/secure-endpoint/index.html"
 }

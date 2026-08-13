@@ -39,5 +39,6 @@
   "license": "AGPL-V3",
   "name": "RiskIQ_Articles",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
-  "version": "1.0"
+  "version": "1.0",
+  "service_homepage": "https://www.microsoft.com/en-us/security/business/siem-and-xdr/microsoft-defender-threat-intelligence"
 }

@@ -5,11 +5,15 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "PassiveTotal Whois Details Lookup.",
-  "dataTypeList": ["domain", "fqdn", "ip"],
+  "dataTypeList": [
+    "domain",
+    "fqdn",
+    "ip"
+  ],
   "command": "MSRiskIQPassiveTotal/passivetotal_analyzer.py",
   "baseConfig": "PassiveTotal",
   "config": {
-      "service": "whois_details",
+    "service": "whois_details",
     "auto_extract": true
   },
   "configurationItems": [
@@ -27,5 +31,6 @@
       "multi": false,
       "required": true
     }
-  ]
+  ],
+  "service_homepage": "https://www.microsoft.com/en-us/security/business/siem-and-xdr/microsoft-defender-threat-intelligence"
 }

@@ -5,7 +5,10 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Get the Talos IP reputation",
-  "dataTypeList": ["ip"],
+  "dataTypeList": [
+    "ip"
+  ],
   "command": "CiscoTalosReputation/TalosReputation.py",
-  "baseConfig": "TalosReputation"
+  "baseConfig": "TalosReputation",
+  "service_homepage": "https://www.talosintelligence.com/reputation_center"
 }

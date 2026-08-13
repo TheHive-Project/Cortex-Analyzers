@@ -5,7 +5,11 @@
   "url": "https://github.com/CiscoSecurity",
   "version": "1.0",
   "description": "Threat Grid Sandbox",
-  "dataTypeList": ["file", "url", "hash"],
+  "dataTypeList": [
+    "file",
+    "url",
+    "hash"
+  ],
   "command": "CiscoThreatGrid/ThreatGrid.py",
   "baseConfig": "ThreatGrid",
   "configurationItems": [
@@ -23,5 +27,6 @@
       "multi": false,
       "required": true
     }
-  ]
+  ],
+  "service_homepage": "https://www.cisco.com/site/us/en/products/security/security-analytics/malware-analytics/index.html"
 }

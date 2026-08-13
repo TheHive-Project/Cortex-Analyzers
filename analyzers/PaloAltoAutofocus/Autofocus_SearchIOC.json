@@ -9,15 +9,25 @@
         "service": "search_ioc"
     },
     "description": "Search samples in Autofocus based on a single IOC",
-    "dataTypeList": ["domain","fqdn","user-agent","imphash","ip","mutex","tag","url"],
+    "dataTypeList": [
+        "domain",
+        "fqdn",
+        "user-agent",
+        "imphash",
+        "ip",
+        "mutex",
+        "tag",
+        "url"
+    ],
     "command": "PaloAltoAutofocus/analyzer.py",
     "configurationItems": [
         {
-          "name": "apikey",
-          "description": "Autofocus API key",
-          "type": "string",
-          "multi": false,
-          "required": true
+            "name": "apikey",
+            "description": "Autofocus API key",
+            "type": "string",
+            "multi": false,
+            "required": true
         }
-    ]
+    ],
+    "service_homepage": "https://www.paloaltonetworks.com/cortex/autofocus"
 }
