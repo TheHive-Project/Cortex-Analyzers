@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1.3-labs
 FROM python:3.12-slim-bookworm
 WORKDIR /worker
+RUN pip install --no-cache-dir --upgrade pip
 COPY . Jupyter
 RUN test ! -e Jupyter/requirements.txt || pip install --no-cache-dir -r Jupyter/requirements.txt
 COPY ./patches /patches
