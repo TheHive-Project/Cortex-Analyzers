@@ -1,2 +1,3 @@
 cortexutils
 checkdmarc
+cryptography>=50.0.0

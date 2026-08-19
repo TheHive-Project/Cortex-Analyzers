@@ -21,6 +21,7 @@ RUN curl -SL https://github.com/mandiant/flare-floss/releases/download/v3.1.1/fl
     unzip floss.zip -d /usr/bin
 COPY . FileInfo
 RUN pip install --no-cache-dir "setuptools<81" wheel cffi pycparser  && \
-    pip install --no-cache-dir --no-build-isolation -r FileInfo/requirements.txt
+    pip install --no-cache-dir --no-build-isolation -r FileInfo/requirements.txt && \
+    pip install --no-cache-dir --upgrade "setuptools>=83" "pip>=26.1.2"
 
 ENTRYPOINT ["python","FileInfo/fileinfo_analyzer.py"]
