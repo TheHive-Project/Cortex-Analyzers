@@ -9,6 +9,12 @@
 - \[FR\] Clarification based on recent changes [\#1486](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1486)
 - \[FR\] ClusterHawk explanations for predictions [\#1476](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1476)
 
+**Merged pull requests:**
+
+- LdapQuery 3.1 - Add configurable TLS security level [\#1488](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1488) ([nusantara-self](https://github.com/nusantara-self))
+- Vendor folder renaming / improvements [\#1487](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1487) ([nusantara-self](https://github.com/nusantara-self))
+- ClusterHawk - Clarification [\#1485](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1485) ([marvinuku](https://github.com/marvinuku))
+
 ## [3.9.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.9.1) (2026-08-06)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.9.0...3.9.1)
