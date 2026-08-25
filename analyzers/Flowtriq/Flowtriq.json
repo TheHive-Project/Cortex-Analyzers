@@ -1,0 +1,41 @@
+{
+    "name": "Flowtriq",
+    "version": "1.0",
+    "author": "Flowtriq",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Check IP addresses against Flowtriq for DDoS attack history. Returns risk score, attack families, severity breakdown, peak traffic rates, and related attacker IPs.",
+    "dataTypeList": ["ip"],
+    "baseConfig": "Flowtriq",
+    "command": "Flowtriq/flowtriq_analyzer.py",
+    "configurationItems": [
+        {
+            "name": "api_key",
+            "description": "Flowtriq API key",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "api_url",
+            "description": "Flowtriq API base URL",
+            "type": "string",
+            "multi": false,
+            "required": false,
+            "defaultValue": "https://flowtriq.com"
+        }
+    ],
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 2,
+        "auto_extract": false
+    },
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://flowtriq.com",
+    "service_logo": {
+        "path": "assets/flowtriq.png",
+        "caption": "Flowtriq logo"
+    }
+}
