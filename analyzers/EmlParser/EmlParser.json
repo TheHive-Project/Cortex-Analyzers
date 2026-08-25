@@ -1,6 +1,6 @@
 {
     "name": "EmlParser",
-    "version": "2.1",
+    "version": "2.2",
     "author": "StrangeBee",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
@@ -29,6 +29,14 @@
             "description": "Path of wkhtmltoimage program on the system. This program is required to generate visualisation of the message as it seen in mail client program. If using Docker image, use default configuration.",
             "defaultValue": "/usr/bin/wkhtmltoimage",
             "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "autoImport_observables",
+            "description": "Enables automatic import of extracted observables in TheHive. Extracted observables have to be manually imported via the report ui if set to 'False'.",
+            "type": "boolean",
+            "defaultValue": true,
             "multi": false,
             "required": true
         }
