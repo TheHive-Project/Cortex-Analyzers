@@ -9,6 +9,11 @@
   "command": "Inoitsu/inoitsu_analyzer.py",
   "baseConfig": "Inoitsu",
   "configurationItems": [],
+  "config": {
+    "check_tlp": true,
+    "max_tlp": 2,
+    "auto_extract": false
+  },
   "registration_required": false,
   "subscription_required": false,
   "free_subscription": true,
