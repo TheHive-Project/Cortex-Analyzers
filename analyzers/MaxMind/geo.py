@@ -4,9 +4,15 @@ import os
 import geoip2.database
 from geoip2.errors import AddressNotFoundError
 from cortexutils.analyzer import Analyzer
+from geoip2.webservice import Client
 
 
 class MaxMindAnalyzer(Analyzer):
+
+    def __init__(self):
+        Analyzer.__init__(self)
+        self.user_id = self.get_param('config.user_id', None, 'Missing MaxMind API user_id')
+        self.license_key = self.get_param('config.license_key', None, 'Missing MaxMind API license_key')
 
     def dump_city(self, city):
         return {
@@ -74,7 +80,10 @@ class MaxMindAnalyzer(Analyzer):
             try:
                 data = self.get_data()
 
-                city = geoip2.database.Reader(os.path.dirname(__file__) + '/GeoLite2-City.mmdb').city(data)
+                if self.user_id != None and self.license_key != None:
+                    city = Client(self.user_id, self.license_key).city(data)
+                else:
+                    city = geoip2.database.Reader(os.path.dirname(__file__) + '/GeoLite2-City.mmdb').city(data)
 
                 self.report({
                     'city': self.dump_city(city.city),
