@@ -1,0 +1,137 @@
+{
+  "name": "ElasticSecurity_AlertStatusSync",
+  "version": "1.0",
+  "author": "Fabien Bloume, StrangeBee",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Sync TheHive case/alert status back to the corresponding Elastic Security detection alert(s), including a closing reason",
+  "dataTypeList": [
+    "thehive:case",
+    "thehive:alert"
+  ],
+  "command": "Elasticsearch/ElasticSecurity_AlertStatusSync.py",
+  "baseConfig": "ElasticSecurity",
+  "config": {
+    "service": "sync"
+  },
+  "configurationItems": [
+    {
+      "name": "kibana_url",
+      "description": "Base Kibana URL, for example https://my-deployment.kb.eu-west-1.aws.found.io. Not the Elasticsearch URL",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": ""
+    },
+    {
+      "name": "api_key",
+      "description": "Kibana API key. Needs write access to Elastic Security alerts. Use this or username/password, not both",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": ""
+    },
+    {
+      "name": "username",
+      "description": "Kibana username, only if not using an API key",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": ""
+    },
+    {
+      "name": "password",
+      "description": "Kibana password, only if not using an API key",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": ""
+    },
+    {
+      "name": "verify_ssl",
+      "description": "Verify Kibana's TLS certificate. Disable only for self-signed or lab instances",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": true
+    },
+    {
+      "name": "space_id",
+      "description": "Kibana space holding the alerts. Leave empty for the default space",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": ""
+    },
+    {
+      "name": "custom_field_name_alert_id",
+      "description": "Custom field in TheHive holding the Elastic alert _id(s), comma separated if more than one. Falls back to the native sourceRef field when empty, which works for alerts imported by Elastic's stock TheHive connector because it sets sourceRef to the alert UUID, and that equals the alert _id. sourceRef does not exist on cases, so set this if the responder will ever run on a thehive:case",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "elastic-alert-uuid"
+    },
+    {
+      "name": "status_new",
+      "description": "Elastic status for TheHive's 'New' stage. One of open, acknowledged, in-progress, closed",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "open"
+    },
+    {
+      "name": "status_in_progress",
+      "description": "Elastic status for TheHive's 'InProgress' stage. Set to 'acknowledged' instead if your team treats acknowledgement as the working state",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "in-progress"
+    },
+    {
+      "name": "status_imported",
+      "description": "Elastic status for TheHive's 'Imported' stage (alerts promoted to a case)",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "in-progress"
+    },
+    {
+      "name": "status_closed",
+      "description": "Elastic status for TheHive's 'Closed' stage",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "closed"
+    },
+    {
+      "name": "reason_map",
+      "description": "How a TheHive resolution status becomes an Elastic closing reason, as 'TheHiveStatus:elastic_reason' pairs (for example 'Contained:true_positive'). The full mapping is pre-filled with sensible defaults; edit, add or remove pairs as needed. Anything not listed here falls back to default_close_reason. Elastic's own reasons are false_positive, duplicate, true_positive, benign_positive, automated_closure and other, but any text up to 1024 characters is accepted. If this list is cleared entirely the built-in defaults are used",
+      "type": "string",
+      "multi": true,
+      "required": false,
+      "defaultValue": [
+        "FalsePositive:false_positive",
+        "TruePositive:true_positive",
+        "BenignPositive:benign_positive",
+        "Duplicated:duplicate",
+        "Duplicate:duplicate",
+        "Indeterminate:other",
+        "Ignored:other",
+        "Other:other"
+      ]
+    },
+    {
+      "name": "default_close_reason",
+      "description": "Closing reason used when a TheHive status has no mapping. Elastic's own values are false_positive, duplicate, true_positive, benign_positive, automated_closure and other, but any text up to 1024 characters is accepted",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "other"
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "integration_type": "external_api",
+  "service_homepage": "https://www.elastic.co/security"
+}
