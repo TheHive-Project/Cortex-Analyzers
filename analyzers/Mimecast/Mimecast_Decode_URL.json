@@ -1,0 +1,56 @@
+{
+    "name": "Mimecast_Decode_URL",
+    "version": "0.3",
+    "author": "Jared Jennings <jjennings@fastmail.fm>",
+    "license": "AGPL-V3",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "description": "Decode Mimecast-protected URLs from emails",
+    "dataTypeList": ["url"],
+    "command": "Mimecast/mimecast_analyzer.py",
+    "baseConfig": "Mimecast API",
+    "config": {
+        "service": "decode_url",
+        "max_tlp": 2,
+        "check_tlp": true,
+        "max_pap": 2,
+        "check_pap": true
+    },
+    "configurationItems": [
+        {
+            "name": "base_url",
+            "description": "Base URL",
+            "type": "string",
+            "multi": false,
+            "required": true,
+            "defaultValue": "https://us-api.mimecast.com"
+        },
+        {
+            "name": "app_id",
+            "description": "Application ID, a GUID",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "app_key",
+            "description": "App key, a GUID",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "access_key",
+            "description": "Access key, some Base64 text",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "secret_key",
+            "description": "Secret key, some Base64 text",
+            "type": "string",
+            "multi": false,
+            "required": true
+        }
+    ]
+}
