@@ -1,0 +1,64 @@
+Cortex Analyzer AzureAlerts
+===========================
+
+The AzureAlert Cortex Analyzer ingest one of the following observable type:
+
+- URL
+- Mail
+
+When provided an URL, the analyzer will run the getAlertDetails service, which checks if the URL belongs to one of the supported security alerts type from Microsoft Azure, and query's additional information about this alert via the Microsoft Graph API. Note: The Analyzer supports the used of Microsoft Safe Links as Observable URLs.
+
+If provided a Mail, the analyzer will run the getRiskySignIn service, which checks for any Risky Sign-In alerts related to this Mail in the Microsoft Azure AD Identity Protection alerts.
+
+Currently the following are tested and supported:
+
+1. Office365 Alerts (protection.office.com)
+ - Default Alerts
+ - Custom Alerts 
+2. Microsoft 365 Compliance Center (compliance.microsoft.com)
+3. Azure AD Alerts (portal.azure.com)
+ - Identity Protection Alerts
+
+**Additional context**
+In order to make this Cortex Analyzer work, you will need to register an "app" in your Microsoft Azure AD. This app will serve to provide the Identity token with the assigned authorization to the Cortex Analyzer. Without it, you cannot use the Microsoft Graph API.
+
+The README of the Analyzer contains detailed instructions on how to add such an app to your Azure AD.
+
+There are currently some limitations on how much details the Microsoft Graph API can pull back. As the Microsoft Graph API project grows, and new features are added, this will enable this analyzer to perform more complex queries and correlations as well.
+
+Creating a Microsoft Azure AD "App" for AzureAlerts
+---------------------------------------------------
+
+- In azure AD go to : App Registration
+- Register new app
+- Give it a Friendly name: Cortex Analyzer MS Graph API App
+- In API Permission
+-- Add SecurityEvents.Read.All (enables to read alerts content)
+-- Admin must grant the use of the permission
+-- Remove the User profile read permission if present (not needed)
+- In Certificate & Secret
+-- Upload the public key of the certificate which will be used by the Cortex Analyzer
+-- OR Add a secret (password) for the App
+
+In the overview: 
+- Get the App ID
+
+In Azure AD, get the tenant ID:
+- Top right corner, the filter icone, find your tenant in the list of tenant, copy the unique ID
+
+In Certificate & Secret
+- The Certificate thumbprint
+- OR the password
+
+Mandatory Configuration for the Cortex Analyzer
+-----------------------------------------------
+
+You will need to provide the following in the Analyzer common configuration on Cortex:
+
+1) The tenant ID
+2) The App ID
+3) Either one of:
+  The filepath to the private key of your certificate (which matches the public key uploaded to the Azure AD App)
+  The password you set in the Azure AD App
+4) The Certificate thumbprint
+  Only if you are using a certificate to authenticate with the Microsoft Azure AD App
