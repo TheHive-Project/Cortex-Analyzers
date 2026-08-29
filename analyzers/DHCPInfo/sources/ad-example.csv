@@ -1,0 +1,3 @@
+#TYPE Microsoft.Management.Infrastructure.CimInstance#root/Microsoft/Windows/DHCP/DhcpServerv4Scope
+"ScopeId","SubnetMask","StartRange","EndRange","ActivatePolicies","Delay","Description","LeaseDuration","MaxBootpClients","Name","NapEnable","NapProfile","State","SuperscopeName","Type","PSComputerName"
+"192.0.2.0","255.255.255.0","192.0.2.51","192.0.2.254","True","0","Office1","08:00:00","4294967295","Office Floor 1","False","","Active","","Dhcp",
