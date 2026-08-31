@@ -1,0 +1,35 @@
+{
+  "name": "Macadress",
+  "version": "1.0",
+  "author": "Samy Massoud",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Identify the vendor, inferred device category, virtualization, special-use role and MAC-randomization confidence of a MAC address using macadress.com.",
+  "dataTypeList": ["mac", "other"],
+  "command": "Macadress/macadress.py",
+  "baseConfig": "Macadress",
+  "config": {
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 2
+  },
+  "configurationItems": [
+    {
+      "name": "api_key",
+      "description": "macadress.com API key (Bearer token, starts with mk_). Free tier is 1,000 lookups per month with no card; sign up at https://macadress.com/signup",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://macadress.com",
+  "service_logo": {
+    "path": "assets/macadress.png",
+    "caption": "macadress.com"
+  },
+  "screenshots": []
+}
