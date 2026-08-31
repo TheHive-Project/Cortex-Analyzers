@@ -5,7 +5,10 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Search for an email in Check Point Harmony Email & Collaboration and retrieve its security verdict, phishing confidence, classification and scan results. Accepts an .eml file or a Message-ID as an 'other' observable.",
-  "dataTypeList": ["file", "other"],
+  "dataTypeList": [
+    "file",
+    "other"
+  ],
   "command": "CheckPointHEC/checkpointhec.py",
   "baseConfig": "CheckPointHEC",
   "config": {

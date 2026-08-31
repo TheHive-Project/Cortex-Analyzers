@@ -10,7 +10,7 @@ Query the Check Point Harmony Email & Collaboration platform to retrieve securit
 2. An **Account API Key** (Client ID + Secret Key) created in the Infinity Portal:
    - Navigate to **Global Settings > API Keys**.
    - Create a key scoped to **Email & Collaboration**.
-   - Note: **User API keys are not supported** — only account-level keys work with the HEC search API.
+   - Note: **User API keys are not supported**; only account-level keys work with the HEC search API.
 
 ---
 
@@ -18,10 +18,14 @@ Query the Check Point Harmony Email & Collaboration platform to retrieve securit
 
 | Parameter | Description | Required | Default |
 |-----------|-------------|----------|---------|
-| `client_id` | Infinity Portal API Client ID | Yes | — |
-| `client_secret` | Infinity Portal API Secret Key | Yes | — |
+| `client_id` | Infinity Portal API Client ID | Yes | N/A |
+| `client_secret` | Infinity Portal API Secret Key | Yes | N/A |
 | `region` | Portal region: `us`, `eu`, `ca`, `au`, `uk`, `uae`, `in`, `sg` | Yes | `eu` |
 | `saas` | SaaS platform to query: `office365_emails` or `google_mail` | Yes | `office365_emails` |
+| `lookback_days` | (SearchBySender/ByDomain/ByURL/BySenderIP) How many days back to search | No | `90` |
+| `portal_url` | Portal base URL for direct links to emails (for example `https://COMPANYID.checkpointcloudsec.com`) | No | N/A |
+
+The search analyzers query a single page of results from the HEC API. If more results exist, the report sets `results_truncated: true` and the email-count taxonomy shows a `+` suffix (for example `Emails: 100+`). Narrow the `lookback_days` window or check the Infinity Portal for the full list.
 
 ---
 
@@ -29,14 +33,15 @@ Query the Check Point Harmony Email & Collaboration platform to retrieve securit
 
 ### 1. SearchEmail
 
-- **Observable type**: `file` (.eml)
-- **Description**: Extracts the Message-ID from an .eml file, searches for the email in HEC, and returns full details including security verdicts, email metadata, links, and status flags.
+- **Observable type**: `file` (.eml) or `other` (Message-ID string, with or without angle brackets)
+- **Description**: Extracts the Message-ID from an .eml file (or takes it directly from an `other` observable), searches for the email in HEC, and returns full details including security verdicts, email metadata, links, and status flags.
 
 #### Forwarded email handling
 
-When emails are reported by users to a security mailbox and then imported into TheHive, the .eml is typically a forwarded envelope where the reporter appears as the sender. This analyzer **automatically detects** if the .eml contains an attached original email (`message/rfc822` MIME part) and extracts the Message-ID from the inner message instead. If no inner message is found, it falls back to the outer envelope's Message-ID. This requires no configuration — it works transparently.
+When emails are reported by users to a security mailbox and then imported into TheHive, the .eml is typically a forwarded envelope where the reporter appears as the sender. This analyzer **automatically detects** if the .eml contains an attached original email (`message/rfc822` MIME part) and extracts the Message-ID from the inner message instead. If no inner message is found, it falls back to the outer envelope's Message-ID. This requires no configuration; it works transparently.
 
 #### Report includes
+
 - Email metadata: subject, sender, recipients, date, size, attachments
 - Sender IPs (server and client)
 - Email status: direction, quarantined, restored, deleted, user exposed
@@ -47,13 +52,14 @@ When emails are reported by users to a security mailbox and then imported into T
 - Available actions and action history
 
 #### Extracted artifacts
+
 - Sender email address (`mail`)
 - Sender domain (`domain`)
 - Sender server and client IPs (`ip`)
 - URLs found in the email (`url`)
 - Link domains (`domain`)
 
-All artifacts are tagged with the HEC verdict (e.g. `CPHEC:verdict=phishing`).
+All artifacts are tagged with the HEC verdict (for example `CPHEC:verdict=phishing`).
 
 ---
 
@@ -80,7 +86,7 @@ Useful for evaluating domain-level reputation across the mailbox estate.
 - **Observable type**: `url`
 - **Description**: Searches HEC for all emails containing a specific URL. Returns matching emails with their verdicts and exposure status.
 
-Critical during phishing campaigns to gauge blast radius — how many users received an email with that link, how many read it, how many are still exposed.
+Critical during phishing campaigns to gauge blast radius: how many users received an email with that link, how many read it, how many are still exposed.
 
 ---
 
