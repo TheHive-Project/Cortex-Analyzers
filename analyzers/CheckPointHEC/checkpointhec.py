@@ -3,9 +3,11 @@
 
 import email
 import email.utils
+import ipaddress
 import re
 import time
 import uuid
+from datetime import datetime, timedelta, timezone
 
 import requests
 from cortexutils.analyzer import Analyzer
@@ -21,6 +23,9 @@ REGION_URLS = {
     "in": "https://cloudinfra-gw.in.portal.checkpoint.com",
     "sg": "https://cloudinfra-gw.sg.portal.checkpoint.com",
 }
+
+REQUEST_TIMEOUT = 30
+DEFAULT_SEARCH_START_DATE = "2020-01-01T00:00:00Z"
 
 
 class CheckPointHECAnalyzer(Analyzer):
@@ -45,22 +50,31 @@ class CheckPointHECAnalyzer(Analyzer):
         self.base_url = REGION_URLS[region]
         self.saas = self.get_param("config.saas", "office365_emails")
         self.portal_url = self.get_param("config.portal_url", "").rstrip("/")
+        try:
+            self.lookback_days = int(self.get_param("config.lookback_days", 90))
+        except (TypeError, ValueError):
+            self.error("Invalid lookback_days value: must be a number of days")
         self.token = None
         self.token_expiry = 0
 
     def _authenticate(self):
         if self.token and time.time() < self.token_expiry:
             return
-        url = "{}/auth/external".format(self.base_url)
-        payload = {"clientId": self.client_id, "accessKey": self.client_secret}
-        resp = requests.post(url, json=payload)
+        url = "{}/v2/auth/external".format(self.base_url)
+        resp = requests.post(
+            url,
+            json={"accessKey": self.client_secret},
+            headers={"cloudinfra-external-client-id": self.client_id},
+            timeout=REQUEST_TIMEOUT,
+        )
         if resp.status_code != 200:
             self.error(
                 "Authentication failed (HTTP {}): {}".format(
                     resp.status_code, resp.text
                 )
             )
-        data = resp.json().get("data", resp.json())
+        body = resp.json()
+        data = body.get("data", body)
         self.token = data.get("token")
         if not self.token:
             self.error("Authentication failed: no token in response")
@@ -95,14 +109,20 @@ class CheckPointHECAnalyzer(Analyzer):
             self.portal_url, self.saas, entity_id
         )
 
+    def _normalize_message_id(self, message_id):
+        message_id = message_id.strip()
+        if not message_id.startswith("<"):
+            message_id = "<{}".format(message_id)
+        if not message_id.endswith(">"):
+            message_id = "{}>".format(message_id)
+        return message_id
+
     def _extract_message_id(self, filepath):
         msg = self._parse_eml(filepath)
         message_id = msg.get("Message-ID", "").strip()
         if not message_id:
             self.error("No Message-ID header found in the .eml file")
-        if not message_id.startswith("<"):
-            message_id = "<{}>".format(message_id)
-        return message_id
+        return self._normalize_message_id(message_id)
 
     def _parse_eml(self, filepath):
         """Parse .eml file and return the relevant message (inner if forwarded)."""
@@ -137,8 +157,11 @@ class CheckPointHECAnalyzer(Analyzer):
             match = ip_pattern.search(header)
             if match:
                 ip = match.group(1)
-                if not ip.startswith(("10.", "192.168.", "127.")):
-                    return ip
+                try:
+                    if ipaddress.ip_address(ip).is_global:
+                        return ip
+                except ValueError:
+                    continue
         # Fallback: return first IP found even if private
         for header in received_headers:
             match = ip_pattern.search(header)
@@ -146,19 +169,22 @@ class CheckPointHECAnalyzer(Analyzer):
                 return match.group(1)
         self.error("No sender IP found in the .eml Received headers")
 
-    def _search_by_filter(self, extended_filters):
+    def _search_by_filter(self, extended_filters, start_date=DEFAULT_SEARCH_START_DATE):
         self._authenticate()
         payload = {
             "requestData": {
                 "entityFilter": {
                     "saas": self.saas,
-                    "startDate": "2020-01-01T00:00:00Z",
+                    "startDate": start_date,
                 },
                 "entityExtendedFilter": extended_filters,
             }
         }
         resp = requests.post(
-            self._api_url("search/query"), headers=self._headers(), json=payload
+            self._api_url("search/query"),
+            headers=self._headers(),
+            json=payload,
+            timeout=REQUEST_TIMEOUT,
         )
         if resp.status_code != 200:
             self.error(
@@ -171,6 +197,7 @@ class CheckPointHECAnalyzer(Analyzer):
         resp = requests.get(
             self._api_url("search/entity/{}".format(entity_id)),
             headers=self._headers(),
+            timeout=REQUEST_TIMEOUT,
         )
         if resp.status_code != 200:
             self.error(
@@ -224,8 +251,8 @@ class CheckPointHECAnalyzer(Analyzer):
                     self.error("Only .eml files are supported")
                 message_id = self._extract_message_id(filepath)
             elif self.data_type == "other":
-                message_id = self.get_param("data", "").strip()
-                if not (message_id.startswith("<") and message_id.endswith(">")):
+                message_id = self._normalize_message_id(self.get_param("data", ""))
+                if "@" not in message_id:
                     self.error(
                         "Invalid Message-ID format. Expected '<...@...>' but got '{}'".format(
                             message_id
@@ -390,15 +417,23 @@ class CheckPointHECAnalyzer(Analyzer):
                 }]
                 query_type = "url"
 
-            search_result = self._search_by_filter(filters)
+            start_date = (
+                datetime.now(timezone.utc) - timedelta(days=self.lookback_days)
+            ).strftime("%Y-%m-%dT%H:%M:%SZ")
+            search_result = self._search_by_filter(filters, start_date=start_date)
             response_data = search_result.get("responseData", [])
             emails = [self._build_email_summary(e) for e in response_data]
+            truncated = bool(
+                search_result.get("responseEnvelope", {}).get("scrollId")
+            )
 
             self.report({
                 "query": data,
                 "query_type": query_type,
                 "found": len(emails) > 0,
                 "total_count": len(emails),
+                "results_truncated": truncated,
+                "lookback_days": self.lookback_days,
                 "verdict_summary": self._verdict_stats(emails),
                 "emails": emails,
             })
@@ -471,8 +506,11 @@ class CheckPointHECAnalyzer(Analyzer):
                 )
                 return {"taxonomies": taxonomies}
 
+            email_count = str(total)
+            if raw.get("results_truncated"):
+                email_count += "+"
             taxonomies.append(
-                self.build_taxonomy("info", namespace, "Emails", str(total))
+                self.build_taxonomy("info", namespace, "Emails", email_count)
             )
             verdict_summary = raw.get("verdict_summary", {})
             for verdict, count in verdict_summary.items():

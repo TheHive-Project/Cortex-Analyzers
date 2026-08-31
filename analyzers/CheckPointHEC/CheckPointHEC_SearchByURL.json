@@ -5,7 +5,9 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Search for all emails containing a specific URL in Check Point Harmony Email & Collaboration and retrieve their security verdicts.",
-  "dataTypeList": ["url"],
+  "dataTypeList": [
+    "url"
+  ],
   "command": "CheckPointHEC/checkpointhec.py",
   "baseConfig": "CheckPointHEC",
   "config": {
@@ -41,6 +43,14 @@
       "multi": false,
       "required": true,
       "defaultValue": "office365_emails"
+    },
+    {
+      "name": "lookback_days",
+      "description": "How many days back to search for matching emails (default: 90)",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 90
     },
     {
       "name": "portal_url",

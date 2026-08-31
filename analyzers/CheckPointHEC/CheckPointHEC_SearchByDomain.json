@@ -5,7 +5,10 @@
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
   "description": "Search for all emails from a sender domain in Check Point Harmony Email & Collaboration. Accepts a domain observable or an .eml file (sender domain is extracted automatically, with forwarded email support).",
-  "dataTypeList": ["domain", "file"],
+  "dataTypeList": [
+    "domain",
+    "file"
+  ],
   "command": "CheckPointHEC/checkpointhec.py",
   "baseConfig": "CheckPointHEC",
   "config": {
@@ -41,6 +44,14 @@
       "multi": false,
       "required": true,
       "defaultValue": "office365_emails"
+    },
+    {
+      "name": "lookback_days",
+      "description": "How many days back to search for matching emails (default: 90)",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 90
     },
     {
       "name": "portal_url",

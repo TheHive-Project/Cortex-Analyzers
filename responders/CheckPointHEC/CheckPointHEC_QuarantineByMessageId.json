@@ -1,18 +1,15 @@
 {
-  "name": "CheckPointHEC_SearchEmail",
+  "name": "CheckPointHEC_QuarantineByMessageId",
   "version": "1.0",
   "author": "Fabien Bloume, StrangeBee",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
-  "description": "Search for an email in Check Point Harmony Email & Collaboration and retrieve its security verdict, phishing confidence, classification and scan results. Accepts an .eml file or a Message-ID as an 'other' observable.",
-  "dataTypeList": [
-    "file",
-    "other"
-  ],
-  "command": "CheckPointHEC/checkpointhec.py",
+  "description": "Quarantine an email in Check Point Harmony Email & Collaboration by its Message-ID (text observable).",
+  "dataTypeList": ["thehive:case_artifact"],
+  "command": "CheckPointHEC/CheckPointHEC.py",
   "baseConfig": "CheckPointHEC",
   "config": {
-    "service": "search_email"
+    "service": "quarantine_by_message_id"
   },
   "configurationItems": [
     {
@@ -39,23 +36,20 @@
     },
     {
       "name": "saas",
-      "description": "SaaS platform to query: office365_emails or google_mail",
+      "description": "SaaS platform: office365_emails or google_mail",
       "type": "string",
       "multi": false,
       "required": true,
       "defaultValue": "office365_emails"
-    },
-    {
-      "name": "portal_url",
-      "description": "Check Point HEC portal base URL for direct links (eg https://COMPANYID.checkpointcloudsec.com). Optional.",
-      "type": "string",
-      "multi": false,
-      "required": false,
-      "defaultValue": ""
     }
   ],
   "registration_required": true,
   "subscription_required": true,
   "free_subscription": false,
-  "service_homepage": "https://www.checkpoint.com/harmony/email-security/"
+  "service_homepage": "https://www.checkpoint.com/harmony/email-collaboration/",
+  "service_logo": {
+    "path": "",
+    "caption": "logo"
+  },
+  "screenshots": []
 }
