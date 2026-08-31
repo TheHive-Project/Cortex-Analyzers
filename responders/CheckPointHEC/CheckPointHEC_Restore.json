@@ -1,0 +1,55 @@
+{
+  "name": "CheckPointHEC_Restore",
+  "version": "1.0",
+  "author": "Fabien Bloume, StrangeBee",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Restore (resend) a quarantined email in Check Point Harmony Email & Collaboration by its Message-ID extracted from an .eml file observable.",
+  "dataTypeList": ["thehive:case_artifact"],
+  "command": "CheckPointHEC/CheckPointHEC.py",
+  "baseConfig": "CheckPointHEC",
+  "config": {
+    "service": "restore"
+  },
+  "configurationItems": [
+    {
+      "name": "client_id",
+      "description": "Check Point Infinity Portal API Client ID",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "client_secret",
+      "description": "Check Point Infinity Portal API Secret Key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "region",
+      "description": "Check Point HEC region: us, eu, ca, au, uk, uae, in, sg",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "eu"
+    },
+    {
+      "name": "saas",
+      "description": "SaaS platform: office365_emails or google_mail",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "office365_emails"
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.checkpoint.com/harmony/email-collaboration/",
+  "service_logo": {
+    "path": "",
+    "caption": "logo"
+  },
+  "screenshots": []
+}
