@@ -1,0 +1,46 @@
+<div class="panel panel-info" ng-if="success">
+	<div class="panel-heading">
+		ThreatFox Report for {{content.observable}}
+	</div>
+	<div class="panel-body">
+        <p ng-if="content.iocs.length == 0">
+            No matching IOC found.
+        </p>
+        <table class="table" ng-if="content.iocs.length > 0">
+            <thead>
+                <th>IOC</th>
+                <th>Type</th>
+                <th>Threat type</th>
+                <th>Malware</th>
+                <th>Confidence</th>
+                <th>First seen</th>
+                <th>Last seen</th>
+                <th>Reporter</th>
+            </thead>
+            <tbody ng-repeat="i in content.iocs">
+                <tr>
+                    <td>{{i.ioc}}</td>
+                    <td>{{i.ioc_type}}</td>
+                    <td>{{i.threat_type}}</td>
+                    <td>{{i.malware_printable || i.malware}}</td>
+                    <td>{{i.confidence_level}}%</td>
+                    <td>{{i.first_seen}}</td>
+                    <td>{{i.last_seen || 'N/A'}}</td>
+                    <td>{{i.reporter}}</td>
+                </tr>
+            </tbody>
+        </table>
+	</div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+	<div class="panel-heading">
+		ThreatFox Report <b>Error</b>
+	</div>
+	<div class="panel-body">
+		<dl class="dl-horizontal">
+			<dt>Error: </dt>
+			<dd>{{content.errorMessage}}</dd>
+		</dl>
+	</div>
+</div>

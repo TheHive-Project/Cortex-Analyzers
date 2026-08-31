@@ -1,0 +1,24 @@
+{
+  "name": "ThreatFox",
+  "version": "1.0",
+  "author": "Fabien Bloume, StrangeBee",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Check an IP, domain, URL or hash against ThreatFox (abuse.ch), a free platform for sharing indicators of compromise associated with malware.",
+  "dataTypeList": ["ip", "domain", "fqdn", "url", "hash"],
+  "baseConfig": "ThreatFox",
+  "command": "ThreatFox/threatfox.py",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Auth-Key for ThreatFox / abuse.ch (free, obtained at https://auth.abuse.ch/)",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://threatfox.abuse.ch/"
+}
