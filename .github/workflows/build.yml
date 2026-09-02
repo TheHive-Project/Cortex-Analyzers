@@ -128,35 +128,55 @@ jobs:
         id: parse_json
         run: |
           json_file="./analyzers/${{ matrix.path }}"
-          if [ -f "$json_file" ]; then
-            lower_name=$(jq -r '.name | ascii_downcase' "$json_file")
-            version=$(jq -r '.version // empty' "$json_file")
-            description=$(jq -r '.description // empty' "$json_file")
-            command=$(jq -r '.command // empty' "$json_file")
-            requirements=$(jq -r '.requirements // "requirements.txt"' "$json_file")
-
-            echo "LOWERCASE_NAME=${lower_name}" >> $GITHUB_ENV
-            echo "VERSION=${version}" >> $GITHUB_ENV
-            echo "DESCRIPTION=${description}" >> $GITHUB_ENV
-            echo "COMMAND=${command}" >> $GITHUB_ENV
-            echo "REQUIREMENTS=${requirements}" >> $GITHUB_ENV
-
-            if [[ "$version" == *.* ]]; then
-              version_split=$(echo "$version" | cut -d '.' -f 1)
-              echo "VERSION_SPLIT=${version_split}" >> $GITHUB_ENV
-            else
-              echo "VERSION_SPLIT=${version}" >> $GITHUB_ENV
-            fi
-          else
+          if [ ! -f "$json_file" ]; then
             echo "File not found: $json_file"
             exit 1
           fi
+
+          lower_name=$(jq -r '.name | ascii_downcase' "$json_file")
+          version=$(jq -r '.version // empty' "$json_file")
+          description=$(jq -r '.description // empty' "$json_file")
+          command=$(jq -r '.command // empty' "$json_file")
+          requirements=$(jq -r '.requirements // "requirements.txt"' "$json_file")
+
+          # Fields are used in shell, the Dockerfile and labels: accept single-line tokens only.
+          # [[ =~ ]] matches the whole string; grep -E is per-line and lets a newline through.
+          reject() { echo "::error file=$json_file::invalid definition: $1"; exit 1; }
+          re_name='^[a-z0-9._-]+$'
+          re_ver='^[A-Za-z0-9._-]+$'
+          re_cmd='^[A-Za-z0-9 ._/-]+$'
+          re_req='^[A-Za-z0-9._/-]+$'
+          [[ "$lower_name"   =~ $re_name ]] || reject "name '$lower_name'"
+          [[ "$version"      =~ $re_ver  ]] || reject "version '$version'"
+          [[ "$command"      =~ $re_cmd  ]] || reject "command '$command'"
+          [[ "$requirements" =~ $re_req  ]] || reject "requirements '$requirements'"
+          description=$(printf '%s' "$description" | tr -d '\r\n')
+
+          version_split="$version"
+          if [[ "$version" == *.* ]]; then
+            version_split=$(printf '%s' "$version" | cut -d '.' -f 1)
+          fi
+
+          {
+            echo "LOWERCASE_NAME=${lower_name}"
+            echo "VERSION=${version}"
+            echo "VERSION_SPLIT=${version_split}"
+            echo "COMMAND=${command}"
+            echo "REQUIREMENTS=${requirements}"
+          } >> "$GITHUB_ENV"
+          desc_delim="DESC_EOF_$(date +%s%N)_${RANDOM}"
+          {
+            echo "DESCRIPTION<<${desc_delim}"
+            echo "${description}"
+            echo "${desc_delim}"
+          } >> "$GITHUB_ENV"
 
       - name: Check and create Dockerfile if not present
         run: |
           dockerfile_path="analyzers/${{ matrix.directory }}/Dockerfile"
           matrix_directory="${{ matrix.directory }}"
-          command_value="${{ env.COMMAND }}"
+          # env var, not ${{ }}: never expanded into the script text
+          command_value="$COMMAND"
 
           # Add multiple workers separated by spaces
           special_alpine_workers="PaloAltoNGFW FileInfo Worker2 Worker3 AnotherWorker"
@@ -613,35 +633,55 @@ jobs:
         id: parse_json
         run: |
           json_file="./analyzers/${{ matrix.path }}"
-          if [ -f "$json_file" ]; then
-            lower_name=$(jq -r '.name | ascii_downcase' "$json_file")
-            version=$(jq -r '.version // empty' "$json_file")
-            description=$(jq -r '.description // empty' "$json_file")
-            command=$(jq -r '.command // empty' "$json_file")
-            requirements=$(jq -r '.requirements // "requirements.txt"' "$json_file")
-
-            echo "LOWERCASE_NAME=${lower_name}" >> $GITHUB_ENV
-            echo "VERSION=${version}" >> $GITHUB_ENV
-            echo "DESCRIPTION=${description}" >> $GITHUB_ENV
-            echo "COMMAND=${command}" >> $GITHUB_ENV
-            echo "REQUIREMENTS=${requirements}" >> $GITHUB_ENV
-
-            if [[ "$version" == *.* ]]; then
-              version_split=$(echo "$version" | cut -d '.' -f 1)
-              echo "VERSION_SPLIT=${version_split}" >> $GITHUB_ENV
-            else
-              echo "VERSION_SPLIT=${version}" >> $GITHUB_ENV
-            fi
-          else
+          if [ ! -f "$json_file" ]; then
             echo "File not found: $json_file"
             exit 1
           fi
+
+          lower_name=$(jq -r '.name | ascii_downcase' "$json_file")
+          version=$(jq -r '.version // empty' "$json_file")
+          description=$(jq -r '.description // empty' "$json_file")
+          command=$(jq -r '.command // empty' "$json_file")
+          requirements=$(jq -r '.requirements // "requirements.txt"' "$json_file")
+
+          # Fields are used in shell, the Dockerfile and labels: accept single-line tokens only.
+          # [[ =~ ]] matches the whole string; grep -E is per-line and lets a newline through.
+          reject() { echo "::error file=$json_file::invalid definition: $1"; exit 1; }
+          re_name='^[a-z0-9._-]+$'
+          re_ver='^[A-Za-z0-9._-]+$'
+          re_cmd='^[A-Za-z0-9 ._/-]+$'
+          re_req='^[A-Za-z0-9._/-]+$'
+          [[ "$lower_name"   =~ $re_name ]] || reject "name '$lower_name'"
+          [[ "$version"      =~ $re_ver  ]] || reject "version '$version'"
+          [[ "$command"      =~ $re_cmd  ]] || reject "command '$command'"
+          [[ "$requirements" =~ $re_req  ]] || reject "requirements '$requirements'"
+          description=$(printf '%s' "$description" | tr -d '\r\n')
+
+          version_split="$version"
+          if [[ "$version" == *.* ]]; then
+            version_split=$(printf '%s' "$version" | cut -d '.' -f 1)
+          fi
+
+          {
+            echo "LOWERCASE_NAME=${lower_name}"
+            echo "VERSION=${version}"
+            echo "VERSION_SPLIT=${version_split}"
+            echo "COMMAND=${command}"
+            echo "REQUIREMENTS=${requirements}"
+          } >> "$GITHUB_ENV"
+          desc_delim="DESC_EOF_$(date +%s%N)_${RANDOM}"
+          {
+            echo "DESCRIPTION<<${desc_delim}"
+            echo "${description}"
+            echo "${desc_delim}"
+          } >> "$GITHUB_ENV"
 
       - name: Check and create Dockerfile if not present
         run: |
           dockerfile_path="analyzers/${{ matrix.directory }}/Dockerfile"
           matrix_directory="${{ matrix.directory }}"
-          command_value="${{ env.COMMAND }}"
+          # env var, not ${{ }}: never expanded into the script text
+          command_value="$COMMAND"
 
           # Add multiple workers separated by spaces
           special_alpine_workers="PaloAltoNGFW FileInfo Worker2 Worker3 AnotherWorker"
@@ -1098,35 +1138,55 @@ jobs:
         id: parse_json
         run: |
           json_file="./responders/${{ matrix.path }}"
-          if [ -f "$json_file" ]; then
-            lower_name=$(jq -r '.name | ascii_downcase' "$json_file")
-            version=$(jq -r '.version // empty' "$json_file")
-            description=$(jq -r '.description // empty' "$json_file")
-            command=$(jq -r '.command // empty' "$json_file")
-            requirements=$(jq -r '.requirements // "requirements.txt"' "$json_file")
-
-            echo "LOWERCASE_NAME=${lower_name}" >> $GITHUB_ENV
-            echo "VERSION=${version}" >> $GITHUB_ENV
-            echo "DESCRIPTION=${description}" >> $GITHUB_ENV
-            echo "COMMAND=${command}" >> $GITHUB_ENV
-            echo "REQUIREMENTS=${requirements}" >> $GITHUB_ENV
-
-            if [[ "$version" == *.* ]]; then
-              version_split=$(echo "$version" | cut -d '.' -f 1)
-              echo "VERSION_SPLIT=${version_split}" >> $GITHUB_ENV
-            else
-              echo "VERSION_SPLIT=${version}" >> $GITHUB_ENV
-            fi
-          else
+          if [ ! -f "$json_file" ]; then
             echo "File not found: $json_file"
             exit 1
           fi
+
+          lower_name=$(jq -r '.name | ascii_downcase' "$json_file")
+          version=$(jq -r '.version // empty' "$json_file")
+          description=$(jq -r '.description // empty' "$json_file")
+          command=$(jq -r '.command // empty' "$json_file")
+          requirements=$(jq -r '.requirements // "requirements.txt"' "$json_file")
+
+          # Fields are used in shell, the Dockerfile and labels: accept single-line tokens only.
+          # [[ =~ ]] matches the whole string; grep -E is per-line and lets a newline through.
+          reject() { echo "::error file=$json_file::invalid definition: $1"; exit 1; }
+          re_name='^[a-z0-9._-]+$'
+          re_ver='^[A-Za-z0-9._-]+$'
+          re_cmd='^[A-Za-z0-9 ._/-]+$'
+          re_req='^[A-Za-z0-9._/-]+$'
+          [[ "$lower_name"   =~ $re_name ]] || reject "name '$lower_name'"
+          [[ "$version"      =~ $re_ver  ]] || reject "version '$version'"
+          [[ "$command"      =~ $re_cmd  ]] || reject "command '$command'"
+          [[ "$requirements" =~ $re_req  ]] || reject "requirements '$requirements'"
+          description=$(printf '%s' "$description" | tr -d '\r\n')
+
+          version_split="$version"
+          if [[ "$version" == *.* ]]; then
+            version_split=$(printf '%s' "$version" | cut -d '.' -f 1)
+          fi
+
+          {
+            echo "LOWERCASE_NAME=${lower_name}"
+            echo "VERSION=${version}"
+            echo "VERSION_SPLIT=${version_split}"
+            echo "COMMAND=${command}"
+            echo "REQUIREMENTS=${requirements}"
+          } >> "$GITHUB_ENV"
+          desc_delim="DESC_EOF_$(date +%s%N)_${RANDOM}"
+          {
+            echo "DESCRIPTION<<${desc_delim}"
+            echo "${description}"
+            echo "${desc_delim}"
+          } >> "$GITHUB_ENV"
 
       - name: Check and create Dockerfile if not present
         run: |
           dockerfile_path="responders/${{ matrix.directory }}/Dockerfile"
           matrix_directory="${{ matrix.directory }}"
-          command_value="${{ env.COMMAND }}"
+          # env var, not ${{ }}: never expanded into the script text
+          command_value="$COMMAND"
 
           # Add multiple workers separated by spaces
           special_alpine_workers="PaloAltoNGFW FileInfo Worker2 Worker3 AnotherWorker"
