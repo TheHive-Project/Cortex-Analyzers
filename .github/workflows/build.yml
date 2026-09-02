@@ -366,26 +366,55 @@ jobs:
           echo "IMAGE_DIGEST=$IMAGE_DIGEST" >> $GITHUB_OUTPUT
           echo "Using image reference for Trivy scan: $IMAGE_DIGEST"
 
-      - name: Scan image for vulnerabilities (Trivy)
+      - name: Scan image for vulnerabilities (Trivy, OS packages)
         if: steps.check-rebuild.outputs.rebuild == 'true'
         uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # 0.36.0
         with:
           image-ref: ${{ steps.get-digest.outputs.IMAGE_DIGEST }}
           format: sarif
           output: trivy.sarif
-          vuln-type: 'os,library'
+          vuln-type: 'os'
+          severity: 'CRITICAL,HIGH'
+          exit-code: 0
+          ignore-unfixed: true
+          timeout: 10m
+          skip-files: '**/*.yara,**/*.cvd'
+
+      - name: Upload OS-package scan results to GitHub Security tab
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        uses: github/codeql-action/upload-sarif@faaa5d804fc648d0fdb28822a8e36cf7d0a6132c # v4.37.7
+        with:
+          sarif_file: trivy.sarif
+          category: trivy-${{ matrix.directory }}
+
+      - name: Scan image for vulnerabilities (Trivy, Python libraries)
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # 0.36.0
+        with:
+          image-ref: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
+          format: sarif
+          output: trivy-lib.sarif
+          vuln-type: 'library'
           severity: 'CRITICAL,HIGH,MEDIUM'
           exit-code: 0
           ignore-unfixed: true
           timeout: 10m
           skip-files: '**/*.yara,**/*.cvd'
 
-      - name: Upload Trivy scan results to GitHub Security tab
+      # Code scanning filters by tool.driver.name; OS results keep "Trivy" so existing alerts stay linked.
+      - name: Label library findings as a distinct code-scanning tool
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        run: |
+          jq '.runs[].tool.driver.name = "Trivy (Python libraries)"' trivy-lib.sarif > trivy-lib.tmp \
+            && mv trivy-lib.tmp trivy-lib.sarif \
+            || echo "::warning::could not relabel library SARIF; uploading as-is"
+
+      - name: Upload library scan results to GitHub Security tab
         if: steps.check-rebuild.outputs.rebuild == 'true'
         uses: github/codeql-action/upload-sarif@faaa5d804fc648d0fdb28822a8e36cf7d0a6132c # v4.37.7
         with:
-          sarif_file: trivy.sarif
-          category: trivy-${{ matrix.directory }}
+          sarif_file: trivy-lib.sarif
+          category: trivy-lib-${{ matrix.directory }}
 
       - name: Test imports in the container (amd64)
         if: ${{ steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/amd64') }}
@@ -871,26 +900,55 @@ jobs:
           echo "IMAGE_DIGEST=$IMAGE_DIGEST" >> $GITHUB_OUTPUT
           echo "Using image reference for Trivy scan: $IMAGE_DIGEST"
 
-      - name: Scan image for vulnerabilities (Trivy)
+      - name: Scan image for vulnerabilities (Trivy, OS packages)
         if: steps.check-rebuild.outputs.rebuild == 'true'
         uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # 0.36.0
         with:
           image-ref: ${{ steps.get-digest.outputs.IMAGE_DIGEST }}
           format: sarif
           output: trivy.sarif
-          vuln-type: 'os,library'
+          vuln-type: 'os'
+          severity: 'CRITICAL,HIGH'
+          exit-code: 0
+          ignore-unfixed: true
+          timeout: 10m
+          skip-files: '**/*.yara,**/*.cvd'
+
+      - name: Upload OS-package scan results to GitHub Security tab
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        uses: github/codeql-action/upload-sarif@faaa5d804fc648d0fdb28822a8e36cf7d0a6132c # v4.37.7
+        with:
+          sarif_file: trivy.sarif
+          category: trivy-${{ matrix.directory }}
+
+      - name: Scan image for vulnerabilities (Trivy, Python libraries)
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # 0.36.0
+        with:
+          image-ref: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
+          format: sarif
+          output: trivy-lib.sarif
+          vuln-type: 'library'
           severity: 'CRITICAL,HIGH,MEDIUM'
           exit-code: 0
           ignore-unfixed: true
           timeout: 10m
           skip-files: '**/*.yara,**/*.cvd'
 
-      - name: Upload Trivy scan results to GitHub Security tab
+      # Code scanning filters by tool.driver.name; OS results keep "Trivy" so existing alerts stay linked.
+      - name: Label library findings as a distinct code-scanning tool
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        run: |
+          jq '.runs[].tool.driver.name = "Trivy (Python libraries)"' trivy-lib.sarif > trivy-lib.tmp \
+            && mv trivy-lib.tmp trivy-lib.sarif \
+            || echo "::warning::could not relabel library SARIF; uploading as-is"
+
+      - name: Upload library scan results to GitHub Security tab
         if: steps.check-rebuild.outputs.rebuild == 'true'
         uses: github/codeql-action/upload-sarif@faaa5d804fc648d0fdb28822a8e36cf7d0a6132c # v4.37.7
         with:
-          sarif_file: trivy.sarif
-          category: trivy-${{ matrix.directory }}
+          sarif_file: trivy-lib.sarif
+          category: trivy-lib-${{ matrix.directory }}
 
       - name: Test imports in the container (amd64)
         if: ${{ steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/amd64') }}
@@ -1376,26 +1434,55 @@ jobs:
           echo "IMAGE_DIGEST=$IMAGE_DIGEST" >> $GITHUB_OUTPUT
           echo "Using image reference for Trivy scan: $IMAGE_DIGEST"
 
-      - name: Scan image for vulnerabilities (Trivy)
+      - name: Scan image for vulnerabilities (Trivy, OS packages)
         if: steps.check-rebuild.outputs.rebuild == 'true'
         uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # 0.36.0
         with:
           image-ref: ${{ steps.get-digest-responder.outputs.IMAGE_DIGEST }}
           format: sarif
           output: trivy.sarif
-          vuln-type: 'os,library'
+          vuln-type: 'os'
+          severity: 'CRITICAL,HIGH'
+          exit-code: 0
+          ignore-unfixed: true
+          timeout: 10m
+          skip-files: '**/*.yara,**/*.cvd'
+
+      - name: Upload OS-package scan results to GitHub Security tab
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        uses: github/codeql-action/upload-sarif@faaa5d804fc648d0fdb28822a8e36cf7d0a6132c # v4.37.7
+        with:
+          sarif_file: trivy.sarif
+          category: trivy-${{ matrix.directory }}
+
+      - name: Scan image for vulnerabilities (Trivy, Python libraries)
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # 0.36.0
+        with:
+          image-ref: ghcr.io/${{ env.LOWER_REPO_OWNER }}/${{ env.LOWERCASE_NAME }}:${{ env.IMAGE_TAG }}
+          format: sarif
+          output: trivy-lib.sarif
+          vuln-type: 'library'
           severity: 'CRITICAL,HIGH,MEDIUM'
           exit-code: 0
           ignore-unfixed: true
           timeout: 10m
           skip-files: '**/*.yara,**/*.cvd'
 
-      - name: Upload Trivy scan results to GitHub Security tab
+      # Code scanning filters by tool.driver.name; OS results keep "Trivy" so existing alerts stay linked.
+      - name: Label library findings as a distinct code-scanning tool
+        if: steps.check-rebuild.outputs.rebuild == 'true'
+        run: |
+          jq '.runs[].tool.driver.name = "Trivy (Python libraries)"' trivy-lib.sarif > trivy-lib.tmp \
+            && mv trivy-lib.tmp trivy-lib.sarif \
+            || echo "::warning::could not relabel library SARIF; uploading as-is"
+
+      - name: Upload library scan results to GitHub Security tab
         if: steps.check-rebuild.outputs.rebuild == 'true'
         uses: github/codeql-action/upload-sarif@faaa5d804fc648d0fdb28822a8e36cf7d0a6132c # v4.37.7
         with:
-          sarif_file: trivy.sarif
-          category: trivy-${{ matrix.directory }}
+          sarif_file: trivy-lib.sarif
+          category: trivy-lib-${{ matrix.directory }}
 
       - name: Test imports in the container (amd64)
         if: ${{ steps.check-rebuild.outputs.rebuild == 'true' && contains(env.PLATFORMS, 'linux/amd64') }}
