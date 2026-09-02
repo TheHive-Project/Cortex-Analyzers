@@ -409,7 +409,41 @@ def parseEml(filepath, job_directory, wkhtmltoimage, sanitized_rendering):
     return result
 
 
+
+def _neutralize_css_fetches(css):
+    # drop @import and blank url(...) so offline rendering fetches nothing
+    css = re.sub(r"@import[^;]*;", "", css or "", flags=re.I)
+    css = re.sub(r"url\s*\([^)]*\)", "url()", css, flags=re.I)
+    return css
+
+
+def _sanitize_html_for_render(html_str):
+    # Hardening: remove resource fetches before offline rendering, keep styling.
+    try:
+        soup = BeautifulSoup(html_str or "", "html.parser")
+    except Exception:
+        return "<html><body></body></html>"
+    for tag in soup.find_all(["link", "iframe", "frame", "object", "embed",
+                              "base", "script", "meta"]):
+        tag.decompose()
+    for tag in soup.find_all("style"):
+        tag.string = _neutralize_css_fetches(tag.get_text())
+    url_attrs = {"src", "href", "background", "poster", "data", "srcset",
+                 "action", "formaction", "cite", "longdesc"}
+    for el in soup.find_all(True):
+        for attr in list(el.attrs):
+            low = attr.lower()
+            if low in url_attrs or low.rsplit(":", 1)[-1] in ("href", "src") or low.startswith("on"):
+                del el.attrs[attr]
+            elif low == "style":
+                v = el.attrs.get(attr)
+                v = " ".join(v) if isinstance(v, list) else str(v)
+                el.attrs[attr] = _neutralize_css_fetches(v)
+    return str(soup)
+
+
 def convert_png(content: str, i, wkhtmltoimage_path: str, output_path: str):
+    content = _sanitize_html_for_render(content)
     config = imgkit.config(wkhtmltoimage=wkhtmltoimage_path)
     options = {
         "no-images": "",
@@ -417,6 +451,7 @@ def convert_png(content: str, i, wkhtmltoimage_path: str, output_path: str):
         "disable-javascript": "",
         "load-media-error-handling": "ignore",
         "load-error-handling": "ignore",
+        "disable-local-file-access": "",
     }
     imgkit.from_string(
         content, "{}/{}.png".format(output_path, i), options=options, config=config
