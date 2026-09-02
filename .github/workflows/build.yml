@@ -175,7 +175,7 @@ jobs:
         run: |
           dockerfile_path="analyzers/${{ matrix.directory }}/Dockerfile"
           matrix_directory="${{ matrix.directory }}"
-          # env var, not ${{ }}: never expanded into the script text
+          # env var, not an Actions expression: never expanded into the script text
           command_value="$COMMAND"
 
           # Add multiple workers separated by spaces
@@ -680,7 +680,7 @@ jobs:
         run: |
           dockerfile_path="analyzers/${{ matrix.directory }}/Dockerfile"
           matrix_directory="${{ matrix.directory }}"
-          # env var, not ${{ }}: never expanded into the script text
+          # env var, not an Actions expression: never expanded into the script text
           command_value="$COMMAND"
 
           # Add multiple workers separated by spaces
@@ -1185,7 +1185,7 @@ jobs:
         run: |
           dockerfile_path="responders/${{ matrix.directory }}/Dockerfile"
           matrix_directory="${{ matrix.directory }}"
-          # env var, not ${{ }}: never expanded into the script text
+          # env var, not an Actions expression: never expanded into the script text
           command_value="$COMMAND"
 
           # Add multiple workers separated by spaces
