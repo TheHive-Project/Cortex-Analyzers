@@ -164,9 +164,9 @@ Retrieves **Directory Audit** records—administrative and policy changes made w
 Returns **Intune-managed devices** for a given user’s principal name or hostname, letting IR see device compliance, OS, last check-in, etc.
 
 **Key Points**  
-- **Graph Endpoint**  
-- [`GET /deviceManagement/managedDevices`](https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-list?view=graph-rest-1.0)  
-- Filters with `startswith(userPrincipalName,'xxx')` or an exact match (`eq`), with observable value.
+- **Graph Endpoints**  
+- `mail`: [`GET /users/{id}/managedDevices`](https://learn.microsoft.com/en-us/graph/api/resources/intune-devices-user?view=graph-rest-1.0) after resolving the UPN to its object ID (Intune rejects `$filter` on `userId`).  
+- `hostname`: [`GET /deviceManagement/managedDevices`](https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-list?view=graph-rest-1.0) with `$filter=startswith(deviceName,'xxx')`.
 
 **Required Permissions**  
 - **`DeviceManagementManagedDevices.Read.All`** (Application permission)
