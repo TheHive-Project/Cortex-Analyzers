@@ -76,9 +76,10 @@ class SafeLinksDecoder(Analyzer):
                     
                     return decoded_url
                     
-                except Exception as e:
-                    # Log error but don't stop - try next pattern
-                    self.error(f"Error decoding URL with pattern '{pattern}': {e}")
+                except Exception:
+                    # Decoding failed for this pattern - try the next one.
+                    # (self.error() would terminate the analyzer, which defeats
+                    # the point of trying further patterns.)
                     continue
         
         # No pattern matched - return None
@@ -87,21 +88,22 @@ class SafeLinksDecoder(Analyzer):
     def is_safelink(self, url: str) -> bool:
         """
         Check if the provided URL is a Microsoft Safe Link.
-        
-        Safe Links always contain 'safelinks.protection.outlook.com' in their domain,
-        regardless of region (nam, eur, can, aus, etc.)
-        
+
+        Safe Links always live on a '*.safelinks.protection.outlook.com' host,
+        regardless of region (nam, eur, can, aus, etc.). Checking against the
+        actual host (not the whole URL string) matters: a phishing URL can
+        embed that substring elsewhere (e.g. in a query parameter) to get
+        misclassified as a legitimate, already-vetted Safe Link.
+
         Args:
             url: The URL to check
-            
+
         Returns:
-            True if the URL is a Safe Link, False otherwise
+            True if the URL's host is a Safe Links domain, False otherwise
         """
-        return bool(re.search(
-            r'\.safelinks\.protection\.outlook\.com', 
-            url, 
-            re.IGNORECASE
-        ))
+        host = urllib.parse.urlparse(url).netloc.lower()
+        host = host.rsplit('@', 1)[-1].split(':', 1)[0]  # strip userinfo/port
+        return host == 'safelinks.protection.outlook.com' or host.endswith('.safelinks.protection.outlook.com')
 
     def run(self):
         """
