@@ -39,30 +39,6 @@ def ipv4_to_ipv6(ipv4):
         return ipv6_mapped(ipaddress.IPv4Address(ipv4)).compressed
 
 
-def ipv6_to_ipv4(ipv6: str):
-    """
-        If ipv6 is an IPv4-mapped IPv6 address, return the IPv4 string.
-        Otherwise return the IPv6 address.
-    """
-    if "." in ipv6:
-        return ipv6
-    try:
-        ipv4 = ipaddress.ip_address(ipv6)
-        # Only IPv6 objects have .ipv4_mapped; for others, return None
-        if isinstance(ipv4, ipaddress.IPv6Address) and ipv4.ipv4_mapped:
-            return str(ipv4.ipv4_mapped)
-    except:
-        try:
-            if "/" in ipv6:
-                ipv6_net = ipaddress.ip_network(ipv6, False)
-                ipv4_prefixlen = ipv6_net.prefixlen  - 96 # mapped IPv4 prefix
-                ipv6 = ipv6_net.network_address.ipv4_mapped.compressed
-                return f'{ipv6}/{ipv4_prefixlen}'
-        except:
-            pass
-    return str(ipv6)
-
-
 ACTIONS = {
     'ip': ['allow', 'block', 'disallow', 'unblock'],
     'url': ['allow', 'block', 'disallow', 'unblock'],
@@ -120,13 +96,15 @@ class MsDefenderOffice365Responder(Responder):
               {'message': f"Action '{self.service}' not supported for type '{observableType}'.\n"
                           f"Valid actions are {ACTIONS[observableType]}" })
 
+        skipped_entries = []
         if observableType == 'ip':
             o_data_fix = []
             for o in o_data:
                 try:
                     o = ipv4_to_ipv6(o)
-                except:
-                    self.report({'message':"Observable is not a valid ip: %s, skipping" % o })
+                except Exception:
+                    skipped_entries.append(f"Observable is not a valid ip: {o}, skipping")
+                    continue
                 o_data_fix.append(o)
             if len(o_data_fix) == 0:
                 self.error("Observable is not a valid IP nor CIDR")
@@ -140,7 +118,7 @@ class MsDefenderOffice365Responder(Responder):
             o_data_fix = []
             for o in o_data:
                 if not len(o) == 64:
-                    self.report({'message':"Observable is not a valid hash: %s, skipping" % o })
+                    skipped_entries.append(f"Observable is not a valid hash: {o}, skipping")
                 else:
                     o_data_fix.append(o)
             if len(o_data_fix) == 0:
@@ -275,6 +253,8 @@ class MsDefenderOffice365Responder(Responder):
                 'message': "All endpoint actions completed with no error",
                 'entries': successful_entries,
             }
+        if skipped_entries:
+            report['skipped_entries'] = skipped_entries
         self.report(report)
 
     def operations(self, raw):
