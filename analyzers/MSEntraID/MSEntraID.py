@@ -512,7 +512,10 @@ class MSEntraID(Analyzer):
         """
         Retrieves enrolled device(s) from Intune by either:
         - deviceName (hostname) if self.data_type == 'hostname', or
-        - userPrincipalName (mail) if self.data_type == 'mail'.
+        - the user's Entra object ID (mail) if self.data_type == 'mail',
+          via GET /users/{id}/managedDevices. No $filter on the user: Intune
+          only honours $filter on a few managedDevice properties (not userId)
+          and rejects others with "Unsupported parameter found in query".
 
         Reference: https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-list
         """
@@ -530,20 +533,13 @@ class MSEntraID(Analyzer):
                     self.error("No user UPN supplied")
             if self.data_type == 'mail':
                 self.user = query_value
-                # Resolve UPN to GUID and use exact match
                 self.guid = self.ensure_user_guid(base_url, headers)
-                safe_upn = self.user.replace("'", "''")
-
-                filter_q = (
-                    f"(userPrincipalName eq '{safe_upn}' "
-                    f"or userId eq '{self.guid}')"
-                )
+                url    = f"{base_url}users/{self.guid}/managedDevices"
+                params = {"$top": 100}                    # 100 = max page size
             else:  # hostname
                 safe_name = query_value.replace("'", "''")
-                filter_q = f"startswith(deviceName,'{safe_name}')"
-
-            url    = f"{base_url}deviceManagement/managedDevices"
-            params = {"$filter": filter_q, "$top": 100}   # 100 = max page size
+                url    = f"{base_url}deviceManagement/managedDevices"
+                params = {"$filter": f"startswith(deviceName,'{safe_name}')", "$top": 100}
 
             devices = []
             while url and len(devices) < self.lookup_limit:
