@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.9.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.9.3) (2026-08-20)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.9.2...3.9.3)
+
+**Merged pull requests:**
+
+- Analyzer dependency updates [\#1492](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1492) ([nusantara-self](https://github.com/nusantara-self))
+- CI Dependencies update [\#1489](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1489) ([nusantara-self](https://github.com/nusantara-self))
+
 ## [3.9.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.9.2) (2026-08-13)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.9.1...3.9.2)
@@ -1740,6 +1749,7 @@
 
 - added custom Dns sinkholed ip [\#482](https://github.com/TheHive-Project/Cortex-Analyzers/pull/482) ([garanews](https://github.com/garanews))
 - remove extra slash [\#488](https://github.com/TheHive-Project/Cortex-Analyzers/pull/488) ([garanews](https://github.com/garanews))
+- EmlParser - Fixed headers and displayTo  [\#486](https://github.com/TheHive-Project/Cortex-Analyzers/pull/486) ([mgabriel-silva](https://github.com/mgabriel-silva))
 - yeti api key [\#478](https://github.com/TheHive-Project/Cortex-Analyzers/pull/478) ([siisar](https://github.com/siisar))
 - Possibility to use a Yeti apikey. [\#477](https://github.com/TheHive-Project/Cortex-Analyzers/pull/477) ([siisar](https://github.com/siisar))
 - Utility to make running an Analyzer locally easier, helpful in development [\#471](https://github.com/TheHive-Project/Cortex-Analyzers/pull/471) ([ndejong](https://github.com/ndejong))
@@ -2345,6 +2355,7 @@
 
 - fixed line break in WOT requirements.txt [\#132](https://github.com/TheHive-Project/Cortex-Analyzers/pull/132) ([peasead](https://github.com/peasead))
 - Revert "Updated VT links in Long report" [\#110](https://github.com/TheHive-Project/Cortex-Analyzers/pull/110) ([saadkadhi](https://github.com/saadkadhi))
+- Updated VT links in Long report [\#98](https://github.com/TheHive-Project/Cortex-Analyzers/pull/98) ([mthlvt](https://github.com/mthlvt))
 
 ## [1.6.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/1.6.3) (2017-09-10)
 
