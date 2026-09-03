@@ -1,0 +1,35 @@
+<div class="panel" ng-class="content.found ? 'panel-info' : 'panel-default'">
+  <div class="panel-heading">
+    <strong>HashScanner</strong> &mdash; NIST NSRL
+  </div>
+  <div class="panel-body">
+
+    <div ng-if="content.found">
+      <dl class="dl-horizontal">
+        <dt>Status</dt><dd><span class="label label-info">Known (cataloged in NSRL)</span></dd>
+        <dt>Hash</dt><dd>{{content.hash}}</dd>
+        <dt>Type</dt><dd>{{content.type}}</dd>
+        <dt ng-if="content.data.file.file_name">File name</dt>
+        <dd ng-if="content.data.file.file_name">{{content.data.file.file_name}}</dd>
+        <dt ng-if="content.data.file.file_size">File size</dt>
+        <dd ng-if="content.data.file.file_size">{{content.data.file.file_size}} bytes</dd>
+        <dt ng-if="content.data.package.name">Product</dt>
+        <dd ng-if="content.data.package.name">{{content.data.package.name}}</dd>
+        <dt ng-if="content.data.operating_system.name">OS</dt>
+        <dd ng-if="content.data.operating_system.name">{{content.data.operating_system.name}}</dd>
+        <dt ng-if="content.data.manufacturer">Manufacturer</dt>
+        <dd ng-if="content.data.manufacturer">{{content.data.manufacturer}}</dd>
+        <dt ng-if="content.data.reputation.source">Source</dt>
+        <dd ng-if="content.data.reputation.source">{{content.data.reputation.source}}</dd>
+      </dl>
+      <p><em>&ldquo;Known&rdquo; means the file is cataloged in NSRL &mdash; not that it is
+      safe, clean, or malicious.</em></p>
+    </div>
+
+    <div ng-if="!content.found">
+      <p><strong>Not found in NSRL.</strong> This hash is not cataloged &mdash; it may
+      warrant a closer look.</p>
+    </div>
+
+  </div>
+</div>

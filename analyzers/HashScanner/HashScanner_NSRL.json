@@ -1,0 +1,46 @@
+{
+  "name": "HashScanner_NSRL",
+  "author": "HashScanner",
+  "license": "MIT",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "version": "1.0",
+  "description": "Look up a file hash (MD5/SHA-1/SHA-256) in the NIST NSRL via HashScanner — instantly tell whether it is a known (cataloged) file so you can filter the known and focus on the unknown.",
+  "dataTypeList": ["hash"],
+  "baseConfig": "HashScanner",
+  "config": {
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 2
+  },
+  "command": "HashScanner/hashscanner_analyzer.py",
+  "configurationItems": [
+    {
+      "name": "api_key",
+      "description": "HashScanner API key (hs_..._sk_...). Get a free key at https://www.hashscanner.com/register",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "api_url",
+      "description": "HashScanner API base URL",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "https://api.hashscanner.com/v1"
+    },
+    {
+      "name": "timeout",
+      "description": "Request timeout in seconds",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 30
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://www.hashscanner.com"
+}
