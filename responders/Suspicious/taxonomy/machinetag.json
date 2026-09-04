@@ -1,0 +1,40 @@
+{
+  "namespace": "suspicious",
+  "description": "Suspicious taxonomy provides standardized tags for case management operations and automated TheHive/Cortex responders.",
+  "version": 1,
+  "exclusive": false,
+  "expanded": "Suspicious Management",
+  "refs": [
+    "https://github.com/thalesgroup-cert/suspicious"
+  ],
+  "predicates": [
+    {
+      "value": "verdict",
+      "expanded": "Verdict",
+      "description": "Classifies cases as Safe, Suspicious, or Dangerous.",
+      "exclusive": true
+    }
+  ],
+  "values": [
+    {
+      "predicate": "verdict",
+      "entry": [
+        {
+          "value": "SAFE",
+          "expanded": "SAFE - Classification",
+          "colour": "#00ad1c"
+        },
+        {
+          "value": "SUSPICIOUS",
+          "expanded": "SUSPICIOUS - Classification",
+          "colour": "#ffa800"
+        },
+        {
+          "value": "DANGEROUS",
+          "expanded": "DANGEROUS - Classification",
+          "colour": "#ff0000"
+        }
+      ]
+    }
+  ]
+}
