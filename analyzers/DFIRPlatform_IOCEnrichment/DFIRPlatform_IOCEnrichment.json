@@ -1,0 +1,31 @@
+{
+    "name": "DFIRPlatform_IOCEnrichment",
+    "version": "1.0",
+    "author": "DFIR Lab",
+    "url": "https://github.com/dfir-lab/dfir-cortex-analyzers",
+    "license": "MIT",
+    "description": "Enrich indicators of compromise (IPs, domains, hashes, URLs) using the DFIR Platform API. Aggregates intelligence from 14+ sources including VirusTotal, AbuseIPDB, Shodan, and more.",
+    "dataTypeList": ["ip", "domain", "hash", "url"],
+    "command": "DFIRPlatform_IOCEnrichment/DFIRPlatform_IOCEnrichment.py",
+    "baseConfig": "DFIRPlatform",
+    "registration_required": true,
+    "subscription_required": false,
+    "free_subscription": true,
+    "configurationItems": [
+        {
+            "name": "api_key",
+            "description": "API key for the DFIR Platform. Obtain one at https://platform.dfir-lab.ch",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "base_url",
+            "description": "Base URL for the DFIR Platform API",
+            "type": "string",
+            "multi": false,
+            "required": false,
+            "defaultValue": "https://api.dfir-lab.ch/v1"
+        }
+    ]
+}
