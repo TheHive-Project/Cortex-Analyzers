@@ -1,0 +1,27 @@
+{
+  "name": "Qintel_QSentry",
+  "version": "1.0",
+  "url": "None",
+  "author": "Qintel, LLC",
+  "license": "Apache 2.0",
+  "description": "Queries Qintel QSentry for ip reputation data",
+  "dataTypeList": ["ip"],
+  "command": "Qintel/qintel_qsentry.py",
+  "baseConfig": "Qintel_QSentry",
+  "configurationItems": [
+    {
+      "name": "token",
+      "description": "API token for Qintel",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "remote",
+      "description": "API URL (optional)",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ]
+}
