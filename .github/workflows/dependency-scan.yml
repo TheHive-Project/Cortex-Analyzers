@@ -1,0 +1,66 @@
+name: dependency-scan
+
+on:
+  pull_request:
+    paths:
+      - "analyzers/**/requirements*.txt"
+      - "responders/**/requirements*.txt"
+      - ".github/workflows/dependency-scan.yml"
+  push:
+    branches:
+      - develop
+    paths:
+      - "analyzers/**/requirements*.txt"
+      - "responders/**/requirements*.txt"
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  # Every direct dependency must be pinned (== or a git commit SHA).
+  pins:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Check pins
+        run: |
+          set -euo pipefail
+          status=0
+          for dir in $(find analyzers responders -maxdepth 2 -name '*.json' -not -name '*.disabled' -exec dirname {} \; | sort -u); do
+            for f in "$dir"/requirements*.txt; do
+              [ -f "$f" ] || continue
+              while IFS= read -r line || [ -n "$line" ]; do
+                body=$(printf '%s' "$line" | sed -E 's/#.*//; s/^[[:space:]]+//; s/[[:space:]]+$//')
+                [ -z "$body" ] && continue
+                case "$body" in
+                  -*) continue ;;
+                  *://*|*git+*)
+                    printf '%s' "$body" | grep -qE '@[0-9a-f]{40}([/#.]|$)|/archive/[0-9a-f]{40}\.' && continue
+                    echo "::error file=$f::git/URL dependency not pinned to a commit SHA: $body"; status=1; continue ;;
+                  *==*) continue ;;
+                esac
+                echo "::error file=$f::dependency not pinned with ==: $body"; status=1
+              done < "$f"
+            done
+          done
+          exit $status
+
+  # Known vulnerabilities / malicious releases in the pinned versions.
+  # --no-resolve: scan the pins as written, not the scanner's own transitive model.
+  osv-scanner:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: google/osv-scanner-action/osv-scanner-action@a345acffa64b0eaede81a3d9aae6141214d9c8fc # v2.6.0
+        with:
+          scan-args: |-
+            --recursive
+            --no-resolve
+            --config=osv-scanner.toml
+            ./analyzers
+            ./responders

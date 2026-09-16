@@ -1,0 +1,30 @@
+# Accepted findings for .github/workflows/dependency-scan.yml
+
+# pycti (analyzers/OpenCTI/requirements_v6.txt)
+# Server-side OpenCTI CVEs tagged on the pycti client package. Not reachable
+# from an API client. v6 flavors stay on pycti 6.x for OpenCTI 6 users.
+[[IgnoredVulns]]
+id = "PYSEC-2026-203"
+reason = "OpenCTI server vulnerability, not reachable from the pycti client"
+
+[[IgnoredVulns]]
+id = "PYSEC-2026-3445"
+reason = "OpenCTI server vulnerability, not reachable from the pycti client"
+
+[[IgnoredVulns]]
+id = "PYSEC-2026-3446"
+reason = "OpenCTI server vulnerability, not reachable from the pycti client"
+
+# diskcache 5.6.3 (TorBlutmagie, TorProject)
+# Pickle from the cache dir; needs write access inside the container. No fix released.
+[[IgnoredVulns]]
+id = "GHSA-w8v5-vhqr-4h9v"
+ignoreUntil = 2027-03-31
+reason = "no fixed release; requires write access inside the container"
+
+# setuptools 80.10.2 (GRR)
+# sdist build issue on macOS; setuptools only installs packages here. GRR needs <81.
+[[IgnoredVulns]]
+id = "GHSA-h35f-9h28-mq5c"
+ignoreUntil = 2027-03-31
+reason = "sdist-build-only issue; GRR requires setuptools<81"
