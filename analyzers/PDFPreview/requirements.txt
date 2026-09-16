@@ -1,4 +1,4 @@
-cortexutils>=2.1.0
-pdf2image
-python-magic
-Pillow
+cortexutils==2.2.1
+pdf2image==1.17.0
+python-magic==0.4.27
+Pillow==12.3.0

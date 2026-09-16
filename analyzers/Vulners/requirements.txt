@@ -1,2 +1,2 @@
-cortexutils
-vulners
+cortexutils==2.2.1
+vulners==4.3.0

@@ -1,3 +1,3 @@
-cortexutils
-requests
+cortexutils==2.2.1
+requests==2.34.2
 anyrun-sdk==1.14.12

@@ -1,4 +1,4 @@
-cortexutils
-ovh
-thehive4py>=2.0.0b
-tldextract
+cortexutils==2.2.1
+ovh==1.2.0
+thehive4py==2.1.0
+tldextract==5.3.2

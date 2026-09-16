@@ -1,2 +1,2 @@
-cortexutils
-passivetotal
+cortexutils==2.2.1
+passivetotal==2.5.9

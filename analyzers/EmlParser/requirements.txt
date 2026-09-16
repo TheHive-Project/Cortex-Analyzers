@@ -1,7 +1,7 @@
-cortexutils>=2.1.0; python_version >= "3.5"
-eml_parser
-python-magic
-iocextract
-imgkit
-Pillow
-bs4
+cortexutils==2.2.1 ; python_version >= "3.5"
+eml_parser==3.0.4
+python-magic==0.4.27
+iocextract==1.16.1
+imgkit==1.2.3
+Pillow==12.3.0
+bs4==0.0.2

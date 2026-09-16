@@ -1,2 +1,2 @@
-cortexutils
-ldap3
+cortexutils==2.2.1
+ldap3==2.9.1

@@ -1,2 +1,2 @@
-pypdns
-cortexutils
+pypdns==2.3.2
+cortexutils==2.2.1

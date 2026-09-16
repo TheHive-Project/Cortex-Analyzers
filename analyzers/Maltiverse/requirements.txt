@@ -1,5 +1,5 @@
-cortexutils
-future
-requests
-maltiverse
-PyJWT
+cortexutils==2.2.1
+future==1.0.0
+requests==2.34.2
+maltiverse==1.2.13
+PyJWT==2.14.0

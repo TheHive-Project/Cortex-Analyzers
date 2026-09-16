@@ -1,2 +1,2 @@
-cortexutils
-requests
+cortexutils==2.2.1
+requests==2.34.2

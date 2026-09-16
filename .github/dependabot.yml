@@ -1,0 +1,26 @@
+version: 2
+updates:
+  - package-ecosystem: pip
+    directories:
+      - "/analyzers/*"
+      - "/responders/*"
+    target-branch: develop
+    schedule:
+      interval: weekly
+      day: monday
+    # wait a week after a release before proposing it
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+    groups:
+      python-dependencies:
+        patterns:
+          - "*"
+    ignore:
+      # OpenCTI v6 flavors must stay on pycti 6.x
+      - dependency-name: "pycti"
+        update-types: ["version-update:semver-major"]
+    labels:
+      - dependencies
+    commit-message:
+      prefix: "deps"

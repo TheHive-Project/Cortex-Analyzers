@@ -1,4 +1,4 @@
-cortexutils
-cp-mgmt-api-sdk
+cortexutils==2.2.1
+cp-mgmt-api-sdk==1.9.0
 # -e git+https://github.com/CheckPointSW/cp_mgmt_api_python_sdk#egg=cpapi cpapi
 #git+https://github.com/CheckPointSW/cp_mgmt_api_python_sdk

@@ -1,2 +1,2 @@
-cortexutils
-autofocus-client-library
+cortexutils==2.2.1
+autofocus-client-library==4.0.12

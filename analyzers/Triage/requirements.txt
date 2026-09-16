@@ -1,2 +1,2 @@
-cortexutils
-hatching-triage
+cortexutils==2.2.1
+hatching-triage==0.2.0
