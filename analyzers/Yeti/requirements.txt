@@ -1,2 +1,2 @@
 cortexutils
-git+https://github.com/yeti-platform/pyeti
+git+https://github.com/yeti-platform/pyeti@b37001ef1ddf60f4ca7846963a1eb83d9722967f

@@ -4,10 +4,10 @@ python-magic-debian-bin
 ssdeep
 pyexifinfo
 pefile
-git+https://github.com/AnyMaster/pehashng
-git+https://github.com/Rafiot/pdfid.git
+git+https://github.com/AnyMaster/pehashng@10c7bc52998f4042bc89c5564c4298288af49a9c
+git+https://github.com/Rafiot/pdfid.git@10c10fa1a79cddc84845726ae389a54812b7116f
 oletools>=0.52
 extract-msg
 IMAPClient
-git+https://github.com/SteveClement/ioc_parser.git
+git+https://github.com/SteveClement/ioc_parser.git@1d7671189ae4aeab28dcd5195c575c6845e8870a
 stringsifter
