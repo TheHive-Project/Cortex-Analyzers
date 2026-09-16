@@ -1,0 +1,92 @@
+<!-- Success: a MAC address that parsed -->
+<div class="panel panel-info" ng-if="success && content.valid">
+    <div class="panel-heading">
+        macadress.com report for <strong>{{content.mac}}</strong>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr>
+                <th>Vendor</th>
+                <td>
+                    <span ng-if="content.organization">{{content.organization}}</span>
+                    <span ng-if="!content.organization && content.locally_administered">Locally administered (no IEEE assignment)</span>
+                    <span ng-if="!content.organization && !content.locally_administered">Unregistered</span>
+                </td>
+            </tr>
+            <tr ng-if="content.country">
+                <th>Vendor country</th>
+                <td>{{content.country}}</td>
+            </tr>
+            <tr ng-if="content.matched_prefix">
+                <th>Matched registry block</th>
+                <td><code>{{content.matched_prefix}}</code> <span ng-if="content.block_type">({{content.block_type}})</span></td>
+            </tr>
+            <tr ng-if="content.oui">
+                <th>OUI</th>
+                <td><code>{{content.oui}}</code></td>
+            </tr>
+            <tr>
+                <th>Administration</th>
+                <td>{{content.administration_type}} &middot; {{content.transmission_type}}</td>
+            </tr>
+            <tr ng-if="content.device && content.device.category && content.device.category !== 'unknown'">
+                <th>Device category</th>
+                <td>{{content.device.category}} <span ng-if="content.device.confidence">(confidence: {{content.device.confidence}})</span></td>
+            </tr>
+            <tr ng-if="content.virtualization && content.virtualization.detected">
+                <th>Virtualization</th>
+                <td>{{content.virtualization.platform || 'virtual interface'}} <span ng-if="content.virtualization.confidence">(confidence: {{content.virtualization.confidence}})</span></td>
+            </tr>
+            <tr ng-if="content.special_use && content.special_use.detected">
+                <th>Special use</th>
+                <td>{{content.special_use.name || content.special_use.type}}<span ng-if="content.special_use.protocol"> &middot; {{content.special_use.protocol}}</span></td>
+            </tr>
+            <tr ng-if="content.potentially_randomized">
+                <th>Randomization</th>
+                <td>potentially randomized &middot; confidence: {{content.randomization_confidence}}</td>
+            </tr>
+            <tr ng-if="content.local_vendor_derivation && content.local_vendor_derivation.detected">
+                <th>Possible vendor (U/L bit flip)</th>
+                <td>
+                    {{content.local_vendor_derivation.organization || content.local_vendor_derivation.matched_prefix}}
+                    <span ng-if="content.local_vendor_derivation.country"> ({{content.local_vendor_derivation.country}})</span>
+                    &middot; low confidence
+                </td>
+            </tr>
+            <tr ng-if="content.explanation">
+                <th>Explanation</th>
+                <td class="wrap">{{content.explanation}}</td>
+            </tr>
+            <tr ng-if="content.meta && content.meta.database_version">
+                <th>Database version</th>
+                <td>{{content.meta.database_version}}</td>
+            </tr>
+        </table>
+        <p ng-if="content.vendor && content.vendor.lookup_url">
+            <a href="{{content.vendor.lookup_url}}" target="_blank" rel="noopener">View this vendor on macadress.com</a>
+        </p>
+    </div>
+</div>
+
+<!-- Success but the input did not parse as a MAC address -->
+<div class="panel panel-warning" ng-if="success && !content.valid">
+    <div class="panel-heading">
+        <strong>{{artifact.data}}</strong> is not a valid MAC address
+    </div>
+    <div class="panel-body">
+        <p ng-if="content.error">{{content.error}}</p>
+    </div>
+</div>
+
+<!-- Analyzer error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        macadress.com
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> Error:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
