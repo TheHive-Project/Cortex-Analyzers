@@ -1,6 +1,6 @@
-elasticsearch>=8.0.0,<9.0.0
-cortexutils
-requests
-pytz
-python-dateutil
-packaging
+elasticsearch==8.19.3
+cortexutils==2.2.1
+requests==2.34.2
+pytz==2026.3.post1
+python-dateutil==2.9.0.post0
+packaging==26.3

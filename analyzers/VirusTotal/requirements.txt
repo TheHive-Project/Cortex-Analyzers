@@ -1,6 +1,6 @@
-cortexutils
-future
-requests
-vt-py
-python-magic
-filetype
+cortexutils==2.2.1
+future==1.0.0
+requests==2.34.2
+vt-py==0.22.0
+python-magic==0.4.27
+filetype==1.2.0

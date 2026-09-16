@@ -1,2 +1,2 @@
-cortexutils
-thehive4py~=1.8.1
+cortexutils==2.2.1
+thehive4py==1.8.2

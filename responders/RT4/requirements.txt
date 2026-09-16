@@ -1,5 +1,5 @@
-defang
-jinja2
-rt
-requests
-cortexutils
+defang==0.5.3
+jinja2==3.1.6
+rt==3.8.1
+requests==2.34.2
+cortexutils==2.2.1

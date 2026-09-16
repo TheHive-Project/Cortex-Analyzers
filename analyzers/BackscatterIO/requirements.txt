@@ -1,2 +1,2 @@
-cortexutils
-backscatter
+cortexutils==2.2.1
+backscatter==0.2.4

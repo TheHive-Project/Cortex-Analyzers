@@ -1,2 +1,2 @@
-cortexutils
-cybercrimetracker
+cortexutils==2.2.1
+cybercrimetracker==0.0.2

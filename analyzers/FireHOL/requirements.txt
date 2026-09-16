@@ -1,5 +1,5 @@
-ipaddress
-pytz
-python-dateutil
-datetime
-cortexutils
+ipaddress==1.0.23
+pytz==2026.3.post1
+python-dateutil==2.9.0.post0
+datetime==6.0
+cortexutils==2.2.1

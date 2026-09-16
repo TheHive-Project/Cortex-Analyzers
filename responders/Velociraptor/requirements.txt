@@ -1,4 +1,4 @@
-cortexutils
-cryptography
-grpcio-tools
-pyvelociraptor
+cortexutils==2.2.1
+cryptography==50.0.1
+grpcio-tools==1.84.0
+pyvelociraptor==0.1.14

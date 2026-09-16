@@ -1,2 +1,2 @@
-pypssl
-cortexutils
+pypssl==2.2
+cortexutils==2.2.1

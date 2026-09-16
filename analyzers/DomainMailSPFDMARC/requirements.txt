@@ -1,3 +1,3 @@
-cortexutils
-checkdmarc
-cryptography>=50.0.0
+cortexutils==2.2.1
+checkdmarc==6.0.1
+cryptography==50.0.1

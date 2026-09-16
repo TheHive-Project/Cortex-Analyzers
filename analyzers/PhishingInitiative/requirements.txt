@@ -1,2 +1,2 @@
-cortexutils
-pyeupi
+cortexutils==2.2.1
+pyeupi==1.3.0

@@ -35,7 +35,10 @@ send a file to VirusTotal for analysis or get the last report using its hash.
 
 ### Python Requirements
 If the analyzer is written in Python, a `requirements.txt` must be provided
-with the list of all the dependencies.
+with the list of all the dependencies. Pin every dependency to an exact
+version (`requests==2.32.4`); git dependencies must reference a commit SHA
+(`git+https://github.com/org/repo@<sha>`). CI rejects unpinned lines.
+Dependabot updates the pins weekly.
 
 ### Example: VirusTotal Analyzer Files
 Below is a directory listing of the files corresponding to the VirusTotal

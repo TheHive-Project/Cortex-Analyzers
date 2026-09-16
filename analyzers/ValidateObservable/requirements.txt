@@ -1,3 +1,3 @@
-cortexutils
-validators
-idna
+cortexutils==2.2.1
+validators==0.35.0
+idna==3.19

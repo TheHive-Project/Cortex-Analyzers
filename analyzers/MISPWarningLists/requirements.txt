@@ -1,6 +1,6 @@
-cortexutils
-requests
-ipaddress
-tld
-sqlalchemy
-psycopg2-binary
+cortexutils==2.2.1
+requests==2.34.2
+ipaddress==1.0.23
+tld==0.13.2
+sqlalchemy==2.0.54
+psycopg2-binary==2.9.13

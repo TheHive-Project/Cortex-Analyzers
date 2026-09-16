@@ -1,2 +1,2 @@
-cortexutils
-crowdstrike-falconpy
+cortexutils==2.2.1
+crowdstrike-falconpy==1.6.5

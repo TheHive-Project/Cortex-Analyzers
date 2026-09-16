@@ -1,2 +1,2 @@
-sendgrid
-cortexutils
+sendgrid==6.12.5
+cortexutils==2.2.1
