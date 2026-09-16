@@ -1,0 +1,77 @@
+<!-- Error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt><i class="fa fa-warning"></i> Error: </dt>
+            <dd>{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
+
+<!-- Not found in any breach -->
+<div class="panel panel-success" ng-if="success && !content.found">
+    <div class="panel-heading">
+        XposedOrNot: <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        This email address was not found in any known data breach.
+    </div>
+</div>
+
+<!-- Breaches found -->
+<div class="panel panel-warning" ng-if="success && content.found">
+    <div class="panel-heading">
+        XposedOrNot breach analytics for <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Breaches: </dt><dd>{{content.count}}</dd>
+            <dt ng-if="content.first_year">First exposure: </dt><dd ng-if="content.first_year">{{content.first_year}}</dd>
+            <dt ng-if="content.latest_year">Latest exposure: </dt><dd ng-if="content.latest_year">{{content.latest_year}}</dd>
+            <dt ng-if="content.total_records">Total records: </dt><dd ng-if="content.total_records">{{content.total_records | number}}</dd>
+            <dt ng-if="content.risk_label">Risk: </dt><dd ng-if="content.risk_label">{{content.risk_label}} <span ng-if="content.risk_score">({{content.risk_score}}/100)</span></dd>
+        </dl>
+        <div class="alert alert-danger" ng-if="content.plaintext_exposure">
+            <i class="fa fa-warning"></i> At least one breach stored passwords in <strong>plaintext</strong>.
+        </div>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th>Breach</th>
+                    <th>Date</th>
+                    <th>Records</th>
+                    <th>Domain</th>
+                    <th>Exposed data</th>
+                    <th>Password risk</th>
+                    <th>Verified</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="b in content.breaches">
+                    <td>
+                        <img ng-if="b.logo" ng-src="{{b.logo}}" width="18" height="18" style="margin-right:6px;" onerror="this.style.display='none'"/>
+                        <strong>{{b.name}}</strong>
+                    </td>
+                    <td>{{b.date}}</td>
+                    <td>{{b.records | number}}</td>
+                    <td>{{b.domain | fang}}</td>
+                    <td>
+                        <span class="label label-default" style="display:inline-block; margin:1px;"
+                              ng-repeat="c in b.data_classes">{{c}}</span>
+                    </td>
+                    <td>
+                        <span class="label"
+                              ng-class="{'plaintextpassword': 'label-danger', 'easytocrack': 'label-warning',
+                              'hardtocrack': 'label-success', 'unknown': 'label-default'}[b.password_risk] || 'label-default'">
+                            {{b.password_risk || 'unknown'}}
+                        </span>
+                    </td>
+                    <td>{{b.verified}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
