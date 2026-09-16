@@ -1,0 +1,27 @@
+{
+  "name": "Suspicious_Verdict",
+  "version": "1.0",
+  "author": "THA-CERT // EBA",
+  "url": "https://github.com/thalesgroup-cert/suspicious",
+  "license": "AGPL-V3",
+  "description": "Classifies cases or alerts on the Suspicious platform.",
+  "dataTypeList": ["thehive:case", "thehive:alert"],
+  "command": "Suspicious/suspicious_verdict.py",
+  "baseConfig": "Suspicious",
+  "configurationItems": [
+    {
+      "name": "suspicious_url",
+      "description": "Suspicious Base URL, e.g.,  http://localhost:9020",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "suspicious_token",
+      "description": "Suspicious API token for authentication",
+      "type": "string",
+      "multi": false,
+      "required": true
+    }
+  ]
+}
