@@ -6,8 +6,8 @@ updates:
       - "/responders/*"
     target-branch: develop
     schedule:
-      interval: weekly
-      day: monday
+      interval: cron
+      cronjob: "0 6 1,15 * *"
     # wait a week after a release before proposing it
     cooldown:
       default-days: 7
