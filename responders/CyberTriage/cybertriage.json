@@ -1,0 +1,75 @@
+{
+  "name": "CyberTriage",
+  "version": "1.0",
+  "author": "David Strassegger",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Conduct a forensic investigation on the endpoint via a CyberTriage team server instance",
+  "dataTypeList": ["thehive:case_artifact"],
+  "command": "CyberTriage/cybertriage.py",
+  "baseConfig": "CyberTriage",
+  "config": {
+    "max_tlp": 3,
+    "check_tlp": false,
+    "max_pap": 1,
+    "check_pap": true
+  },
+  "configurationItems": [
+    {
+      "name": "ct_server",
+      "description": "CyberTriage Team Server IP address",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "127.0.0.1"
+    },
+    {
+      "name": "ct_port",
+      "description": "API port for the CyberTriage API",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": 9443
+    },
+    {
+      "name": "ct_api_key",
+      "description": "API key for CyberTriage server",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": ""
+    },
+    {
+      "name": "ct_username",
+      "description": "CyberTriage investigation username (domain\\username)",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": ""
+    },
+    {
+      "name": "ct_password",
+      "description": "CyberTriage investivation user password",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": ""
+    },
+    {
+      "name": "ct_upload_hash",
+      "description": "Upload malware hash to cloud service",
+      "type": "boolean",
+      "multi": false,
+      "defaultValue": true,
+      "required": false
+    },
+    {
+      "name": "ct_upload_file",
+      "description": "Upload malware file content to cloud service",
+      "type": "boolean",
+      "multi": false,
+      "defaultValue": false,
+      "required": true
+    }
+  ]
+}
