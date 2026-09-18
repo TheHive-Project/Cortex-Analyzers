@@ -1,0 +1,39 @@
+{
+  "name": "RDAP",
+  "author": "yatuk",
+  "license": "AGPL-V3",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "version": "1.0",
+  "baseConfig": "RDAP",
+  "config": {
+    "check_tlp": false,
+    "max_tlp": 3
+  },
+  "description": "Look up domain and IP registration data over RDAP, the IETF successor to WHOIS. No API key required.",
+  "dataTypeList": ["domain", "ip"],
+  "command": "RDAP/RDAP_analyzer.py",
+  "configurationItems": [
+    {
+      "name": "timeout",
+      "description": "HTTP timeout in seconds",
+      "multi": false,
+      "required": false,
+      "type": "number",
+      "defaultValue": 15
+    }
+  ],
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://rdap.org/",
+  "service_logo": {
+    "path": "assets/rdap.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/long_report.png",
+      "caption": "RDAP: long report"
+    }
+  ]
+}
