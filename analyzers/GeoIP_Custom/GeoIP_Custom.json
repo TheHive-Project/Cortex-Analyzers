@@ -1,0 +1,25 @@
+{
+  "name": "GeoIP_Custom",
+  "version": "1.0",
+  "author": "Ommmdevv19",
+  "url": "https://github.com/Ommmdevv19/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Custom GeoIP Analyzer with country-based IOC flagging",
+  "dataTypeList": [
+    "ip"
+  ],
+  "baseConfig": "GeoIP_Custom",
+  "command": "GeoIP_Custom/GeoIP_Custom.py",
+  "configurationItems": [
+    {
+      "name": "flagged_countries",
+      "description": "Comma-separated list of country codes to flag as IOC (e.g. RU,CN,KP)",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ],
+  "registration_required": false,
+  "subscription_required": false,
+  "service_homepage": "https://ip-api.com"
+}
