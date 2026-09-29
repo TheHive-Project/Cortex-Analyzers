@@ -1,4 +1,4 @@
-<div class="panel panel-info">
+<div class="panel panel-info" ng-if="success">
   <div class="panel-heading">
     <strong>isMalicious Report</strong>
   </div>
@@ -17,15 +17,16 @@
     </dl>
 
     <!-- Risk Score -->
-    <dl class="dl-horizontal" ng-if="content.riskScore">
+    <dl class="dl-horizontal" ng-if="content.riskScore !== null && content.riskScore !== undefined">
       <dt>Risk Score</dt>
       <dd>
         <span
-          ng-class="{'label-danger': content.riskScore >= 80, 'label-warning': content.riskScore >= 50 && content.riskScore < 80, 'label-success': content.riskScore < 50}"
+          ng-class="{'label-danger': content.riskScore >= 60, 'label-warning': content.riskScore >= 40 && content.riskScore < 60, 'label-success': content.riskScore < 40}"
           class="label"
         >
           {{content.riskScore}}/100
         </span>
+        <span ng-if="content.riskLevel" style="margin-left: 5px">{{content.riskLevel}}</span>
       </dd>
     </dl>
 
@@ -58,6 +59,22 @@
           class="label label-warning"
           style="margin-right: 5px"
           >{{cat}}</span
+        >
+      </dd>
+    </dl>
+
+    <!-- Infrastructure: what the observable is known as, not a verdict -->
+    <dl
+      class="dl-horizontal"
+      ng-if="content.infrastructure.attributes.length > 0"
+    >
+      <dt>Infrastructure</dt>
+      <dd>
+        <span
+          ng-repeat="attr in content.infrastructure.attributes"
+          class="label label-info"
+          style="margin-right: 5px"
+          >{{attr}}</span
         >
       </dd>
     </dl>
