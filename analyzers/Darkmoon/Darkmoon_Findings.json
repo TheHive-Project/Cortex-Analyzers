@@ -1,0 +1,82 @@
+{
+  "name": "Darkmoon_Findings",
+  "version": "1.0",
+  "author": "ASC-IT, Darkmoon",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Look up the vulnerabilities that a Darkmoon autonomous AI pentest campaign has already found on a URL, domain, FQDN or IP address. Read-only: it never launches a scan. Requires the Darkmoon Pro dashboard API.",
+  "dataTypeList": ["url", "domain", "fqdn", "ip"],
+  "baseConfig": "Darkmoon",
+  "command": "Darkmoon/darkmoon.py",
+  "config": {
+    "check_tlp": true,
+    "max_tlp": 2,
+    "service": "findings"
+  },
+  "configurationItems": [
+    {
+      "name": "url",
+      "description": "Base URL of the Darkmoon dashboard API, with or without the /api/v1 suffix (e.g. https://darkmoon.example.org:8000)",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "token",
+      "description": "Darkmoon API bearer token. Leave empty to log in with username and password instead",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "username",
+      "description": "Darkmoon dashboard username, used only when no token is set",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "password",
+      "description": "Darkmoon dashboard password, used only when no token is set",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "verify_ssl",
+      "description": "Verify the TLS certificate of the Darkmoon API",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": true
+    },
+    {
+      "name": "min_severity",
+      "description": "Only report findings at or above this severity: info, low, medium, high or critical",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "info"
+    },
+    {
+      "name": "include_unconfirmed",
+      "description": "Also report findings that the agents could not confirm or exploit (status unconfirmed)",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": true
+    },
+    {
+      "name": "max_findings",
+      "description": "Maximum number of findings kept in the report (most severe first)",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 100
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://github.com/ASCIT31/Dark-Moon"
+}
