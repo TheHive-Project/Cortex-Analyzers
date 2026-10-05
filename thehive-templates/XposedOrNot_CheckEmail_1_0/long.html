@@ -1,0 +1,42 @@
+<!-- Error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt><i class="fa fa-warning"></i> Error: </dt>
+            <dd>{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
+
+<!-- Not found in any breach -->
+<div class="panel panel-success" ng-if="success && !content.found">
+    <div class="panel-heading">
+        XposedOrNot: <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        This email address was not found in any known data breach.
+    </div>
+</div>
+
+<!-- Breaches found -->
+<div class="panel panel-warning" ng-if="success && content.found">
+    <div class="panel-heading">
+        XposedOrNot breach check for <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Breaches: </dt><dd>{{content.count}}</dd>
+        </dl>
+        <p>
+            <span class="label label-default" style="display:inline-block; margin:2px;"
+                  ng-repeat="b in content.breaches">{{b}}</span>
+        </p>
+        <p class="text-muted">
+            <small>Run the XposedOrNot_BreachAnalytics analyzer for per-breach detail
+            (dates, records, exposed data classes, password risk).</small>
+        </p>
+    </div>
+</div>
