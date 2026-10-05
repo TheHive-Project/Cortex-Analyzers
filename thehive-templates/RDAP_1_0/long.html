@@ -1,0 +1,68 @@
+<div class="panel panel-info" ng-if="success && content.found">
+    <div class="panel-heading">
+        RDAP registration data for <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt ng-if="content.ldhName">Name</dt>
+            <dd ng-if="content.ldhName" class="wrap">{{content.ldhName | fang}}</dd>
+
+            <dt ng-if="content.handle">Handle</dt>
+            <dd ng-if="content.handle">{{content.handle}}</dd>
+
+            <dt ng-if="content.startAddress">Range</dt>
+            <dd ng-if="content.startAddress">
+                {{content.startAddress}} - {{content.endAddress}}
+                <span ng-if="content.ipVersion" class="label label-default">{{content.ipVersion}}</span>
+            </dd>
+
+            <dt ng-if="content.country">Country</dt>
+            <dd ng-if="content.country">{{content.country}}</dd>
+
+            <dt ng-if="content.status">Status</dt>
+            <dd ng-if="content.status">
+                <span ng-repeat="s in content.status" class="label label-default">{{s}}</span>
+            </dd>
+
+            <dt ng-if="content.events">Events (UTC)</dt>
+            <dd ng-if="content.events">
+                <div ng-repeat="e in content.events">
+                    {{e.eventAction}}: {{e.eventDate}}
+                </div>
+            </dd>
+
+            <dt ng-if="content.entities">Entities</dt>
+            <dd ng-if="content.entities">
+                <div ng-repeat="ent in content.entities">
+                    <span ng-repeat="r in ent.roles" class="label label-primary">{{r}}</span>
+                    {{ent.handle}}
+                </div>
+            </dd>
+
+            <dt ng-if="content.nameservers.length > 0">Nameservers</dt>
+            <dd ng-if="content.nameservers.length > 0" class="wrap">
+                <div ng-repeat="ns in content.nameservers">{{ns.ldhName | fang}}</div>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success && !content.found">
+    <div class="panel-heading">
+        RDAP registration data for <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        No registration record found. The object may be unregistered, or the responsible
+        registry may not publish RDAP data for it.
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">{{(artifact.data || fileName) | fang}}</div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Error</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
