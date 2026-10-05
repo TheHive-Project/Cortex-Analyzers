@@ -29,11 +29,5 @@
   "service_logo": {
     "path": "assets/rdap.png",
     "caption": "logo"
-  },
-  "screenshots": [
-    {
-      "path": "assets/long_report.png",
-      "caption": "RDAP: long report"
-    }
-  ]
+  }
 }
