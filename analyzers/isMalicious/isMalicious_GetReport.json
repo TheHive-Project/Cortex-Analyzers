@@ -11,7 +11,7 @@
   "configurationItems": [
     {
       "name": "api_key",
-      "description": "isMalicious API key (get one at https://ismalicious.com)",
+      "description": "isMalicious API key: the X-API-KEY value (Base64 of apiKey:apiSecret) shown under API credentials on your isMalicious account page",
       "type": "string",
       "multi": false,
       "required": true
@@ -22,7 +22,7 @@
       "type": "string",
       "multi": false,
       "required": false,
-      "defaultValue": "https://ismalicious.com"
+      "defaultValue": "https://api.ismalicious.com"
     }
   ],
   "config": {
@@ -37,11 +37,5 @@
   "service_logo": {
     "path": "assets/ismalicious.png",
     "caption": "isMalicious logo"
-  },
-  "screenshots": [
-    {
-      "path": "assets/long_report.png",
-      "caption": "isMalicious: Long report template"
-    }
-  ]
+  }
 }
