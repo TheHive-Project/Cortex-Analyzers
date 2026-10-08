@@ -1,6 +1,6 @@
 {
   "name": "AnyRun_TI_Lookup",
-  "version": "1.0",
+  "version": "1.1",
   "author": "ANY.RUN Integrations Team",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -12,7 +12,7 @@
     "hash"
   ],
   "command": "AnyRun/anyrun_analyzer.py",
-  "baseConfig": "AnyRun",
+  "baseConfig": "AnyRunLookup",
   "config": {
     "analysis_type": "ti_lookup"
   },
