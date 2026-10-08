@@ -1,2 +1,2 @@
-pylookyloo
-cortexutils
+pylookyloo==1.41.1
+cortexutils==2.2.1

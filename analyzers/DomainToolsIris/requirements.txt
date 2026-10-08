@@ -1,2 +1,2 @@
-cortexutils
+cortexutils==2.2.1
 domaintools_api==0.6.2

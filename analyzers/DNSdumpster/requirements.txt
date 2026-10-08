@@ -1,4 +1,4 @@
-cortexutils
-requests
-iocextract
-beautifulsoup4
+cortexutils==2.2.1
+requests==2.34.2
+iocextract==1.16.1
+beautifulsoup4==4.15.0

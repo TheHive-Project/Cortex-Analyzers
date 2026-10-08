@@ -1,0 +1,116 @@
+{
+  "name": "SplunkES_NotableStatusSync",
+  "version": "1.0",
+  "author": "Fabien Bloume, StrangeBee",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Sync TheHive case/alert status back to the corresponding Splunk Enterprise Security notable event(s)",
+  "dataTypeList": [
+    "thehive:case",
+    "thehive:alert"
+  ],
+  "command": "Splunk/SplunkES_NotableStatusSync.py",
+  "baseConfig": "SplunkES",
+  "config": {
+    "service": "sync"
+  },
+  "configurationItems": [
+    {
+      "name": "host",
+      "description": "Splunk search head / Enterprise Security host or IP",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": ""
+    },
+    {
+      "name": "port",
+      "description": "Splunk management (REST API) port",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "8089"
+    },
+    {
+      "name": "auth_token",
+      "description": "Splunk authentication token (Bearer). Splunk 7.3+, token auth must be enabled on the instance. The token's roles must grant the ess_analyst role and edit_notable_events capability. Use this or username/password, not both",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": ""
+    },
+    {
+      "name": "username",
+      "description": "Splunk username, only if not using an auth token. Must have the ess_analyst role and edit_notable_events capability",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": ""
+    },
+    {
+      "name": "password",
+      "description": "Splunk password, only if not using an auth token",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": ""
+    },
+    {
+      "name": "verify_ssl",
+      "description": "Verify the Splunk management port's TLS certificate. Disable only for self-signed/lab instances",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": true
+    },
+    {
+      "name": "custom_field_name_notable_event_id",
+      "description": "Recommended: custom field in TheHive containing the Splunk ES notable event ruleUID(s) (format: {UUID}@@notable@@{hash}), comma separated if more than one. Falls back to the native sourceRef field if left empty (or empty on that particular object), but sourceRef only exists on alerts, not cases - set this if the responder will ever run on a thehive:case.",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "splunk-notable-event-id"
+    },
+    {
+      "name": "status_id_new",
+      "description": "Splunk ES status ID to set for the TheHive 'New'/'Imported' stage. Status IDs are defined per-instance in reviewstatuses.conf; default matches Splunk ES's factory 'New' status",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "1"
+    },
+    {
+      "name": "status_id_in_progress",
+      "description": "Splunk ES status ID to set for the TheHive 'InProgress' stage. Default matches Splunk ES's factory 'In Progress' status",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "2"
+    },
+    {
+      "name": "status_id_closed",
+      "description": "Splunk ES status ID to set for the TheHive 'Closed' stage. Default matches Splunk ES's factory 'Closed' status",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "5"
+    },
+    {
+      "name": "sync_owner",
+      "description": "Also set the notable event's owner (newOwner) to the case/alert's TheHive assignee. Off by default: TheHive logins and Splunk usernames are different identity spaces with no guaranteed mapping - only enable this once you've confirmed they line up (e.g. both are email addresses, or your Splunk usernames match TheHive logins).",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    }
+  ],
+  "integration_type": "external_api",
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://www.splunk.com/en_us/products/enterprise-security.html",
+  "service_logo": {
+    "path": "assets/splunk.png",
+    "caption": "Splunk logo"
+  }
+}

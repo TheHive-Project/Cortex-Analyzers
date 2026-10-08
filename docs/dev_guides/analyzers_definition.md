@@ -106,4 +106,7 @@ This file is using Mardkown text formatting. There is no specific requirements e
 
 ### requirements.txt
 
+Python dependencies, one per line, pinned with `==`. Git dependencies must
+reference a commit SHA.
+
 

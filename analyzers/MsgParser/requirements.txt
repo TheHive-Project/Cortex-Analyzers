@@ -1,2 +1,2 @@
-cortexutils
-olefile
+cortexutils==2.2.1
+olefile==0.47

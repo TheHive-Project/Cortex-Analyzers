@@ -1,2 +1,2 @@
-cortexutils
+cortexutils==2.2.1
 greynoise==3.0.1

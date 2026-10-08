@@ -1,2 +1,2 @@
-cortexutils
-pyclamd
+cortexutils==2.2.1
+pyclamd==0.4.0

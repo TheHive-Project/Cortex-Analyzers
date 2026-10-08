@@ -1,3 +1,3 @@
-cortexutils
-requests
-datetime
+cortexutils==2.2.1
+requests==2.34.2
+datetime==6.0

@@ -1,2 +1,2 @@
-cortexutils
-ivre
+cortexutils==2.2.1
+ivre==0.9.20

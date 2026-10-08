@@ -1,3 +1,3 @@
-cortexutils
-grr-api-client
-setuptools<81
+cortexutils==2.2.1
+grr-api-client==4.0.0.post0
+setuptools==80.10.2

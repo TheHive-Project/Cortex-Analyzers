@@ -1,4 +1,4 @@
-cortexutils
+cortexutils==2.2.1
 domaintools_api==0.6.2
-setuptools>=83.0.0
-msgpack>=1.2.1
+setuptools==84.0.0
+msgpack==1.2.2

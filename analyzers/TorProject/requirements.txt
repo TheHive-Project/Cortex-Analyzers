@@ -1,6 +1,6 @@
-cortexutils
-requests
-datetime
-python-dateutil
-pytz
-diskcache
+cortexutils==2.2.1
+requests==2.34.2
+datetime==6.0
+python-dateutil==2.9.0.post0
+pytz==2026.3.post1
+diskcache==5.6.3

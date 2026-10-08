@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.10.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.10.0) (2026-09-03)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.9.3...3.10.0)
+
+**Merged pull requests:**
+
+- MSEntraID - GetManagedDevices tentative fix [\#1502](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1502) ([nusantara-self](https://github.com/nusantara-self))
+- EmlParser - Security hardening [\#1501](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1501) ([nusantara-self](https://github.com/nusantara-self))
+- New analyzer - ThreatFox [\#1500](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1500) ([nusantara-self](https://github.com/nusantara-self))
+- CheckPoint Harmony Email & Collaboration - Responders [\#1498](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1498) ([nusantara-self](https://github.com/nusantara-self))
+- Add Elastic Security responder to sync alert statuses [\#1493](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1493) ([nusantara-self](https://github.com/nusantara-self))
+- MSDefenderOffice365 - Fix wrong json descriptions & output-corrupting error handling [\#1491](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1491) ([3lina](https://github.com/3lina))
+- MSDefenderOffice365 - Fix SafeLinks host-detection bypass & misused error handling [\#1490](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1490) ([3lina](https://github.com/3lina))
+
 ## [3.9.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.9.3) (2026-08-20)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.9.2...3.9.3)

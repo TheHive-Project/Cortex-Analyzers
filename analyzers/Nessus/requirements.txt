@@ -1,3 +1,3 @@
-cortexutils
-nessrest
-netaddr
+cortexutils==2.2.1
+nessrest==0.40
+netaddr==1.3.0

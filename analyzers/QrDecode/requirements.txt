@@ -1,4 +1,4 @@
-cortexutils
-pyzbar
-pdf2image
-pillow
+cortexutils==2.2.1
+pyzbar==0.1.9
+pdf2image==1.17.0
+pillow==12.3.0

@@ -1,3 +1,3 @@
-requests
-cortexutils
-threatresponse
+requests==2.34.2
+cortexutils==2.2.1
+threatresponse==0.15.0
