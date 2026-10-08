@@ -1,6 +1,6 @@
 {
   "name": "AnyRun_Sandbox_File_Windows",
-  "version": "1.0",
+  "version": "1.1",
   "author": "ANY.RUN Integrations Team",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -9,7 +9,7 @@
     "file"
   ],
   "command": "AnyRun/anyrun_analyzer.py",
-  "baseConfig": "AnyRun",
+  "baseConfig": "AnyRunSandbox",
   "config": {
     "os": "windows",
     "analysis_type": "file"
@@ -21,6 +21,14 @@
       "type": "string",
       "multi": false,
       "required": true
+    },
+    {
+      "name": "base_domain",
+      "description": "Base domain for the ANY.RUN connection. Enter the domain only (for example, any.run), without http://, https://, or a trailing slash. Alternative domains described in docs.",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "any.run"
     },
     {
       "name": "verify_ssl",
@@ -172,6 +180,14 @@
       "type": "string",
       "multi": false,
       "required": false
+    },
+    {
+      "name": "opt_automated_interactivity",
+      "description": "Whether to enable automated interactivity",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": true
     },
     {
       "name": "obj_ext_extension",
