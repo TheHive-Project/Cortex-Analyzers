@@ -271,7 +271,7 @@ class ElasticsearchAnalyzer(Analyzer):
                             "track_total_hits": 10000
                         }
                         #search elastic for fields in each index
-                        res = es.search(size=self.size,index=index,body=body, timeout="30s")
+                        res = es.search(size=self.size,index=index,body=body,timeout=f"{self.client_timeout}s")
                         #if relation is gte then more logs exist than we will display
                         if res['hits']['total']['relation'] == 'gte' or res['hits']['total']['relation'] == 'gt':
                             total = 'gte'
