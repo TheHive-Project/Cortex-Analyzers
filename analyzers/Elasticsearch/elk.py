@@ -17,22 +17,24 @@ FILENAME = [
     "file.name",
     "file.pe.original_file_name",
     "process.pe.original_file_name",
+    "process.parent.pe.original_file_name",
 ]
 
 PROCESS = [
     "process.name",
+    "process.parent.name",
+    "process.pe.original_file_name",
+    "process.parent.pe.original_file_name",
+    "process.session_leader.name",
+    "process.parent.session_leader.name
+    "process.entry_leader.name",
+    "process.parent.entry_leader.name",
+    "process.group_leader.name",
+    "process.parent.group_leader.name",
 ]
 
 PROCESS_ARGS = [
     "process.args",
-]
-
-PROCESS_PARENT = [
-    "process.parent.name",
-    "process.session_leader.name",
-    "process.parent.pe.original_file_name",
-    "process.entry_leader.name",
-    "process.group_leader.name",
 ]
 
 IP = [
@@ -79,17 +81,11 @@ HASH = [
     f"{x}.{y}"
     for x in [
         "hash",
-        "dll.pe",
-        "file.pe",
-        "process.parent.pe",
         "dll.hash",
         "email.attachments.file.hash",
         "file.hash",
         "process.hash",
-        "process.pe",
         "process.parent.hash",
-        "tls.client.hash",
-        "tls.server.hash",
     ]
     for y in [
         "cdhash",
@@ -113,6 +109,29 @@ HASH = [
     ]
     for y in [
         "thumbprint_sha256",
+    ]
+] + [
+    f"{x}.{y}"
+    for x in [
+        "tls.client.hash",
+        "tls.server.hash",
+    ]
+    for y in [
+        "md5",
+        "sha1",
+        "sha256",
+    ]
+] + [
+    f"{x}.{y}"
+    for x in [
+        "dll.pe",
+        "file.pe",
+        "process.pe",
+        "process.parent.pe",
+    ]
+    for y in [
+        "imphash",
+        "pehash",
     ]
 ]
 
@@ -153,6 +172,8 @@ DOMAIN = [
 HOSTNAME = [
     "host.name",
 ]
+
+
 class Hit:
     def __init__(self,hitindex,hitid,process_parent_name,process_name,process_args,user_name,host_name,timestamp,time,\
                  destination_ip,destination_port,source_ip,source_port,source_user_name,url_domain,url_path,url_full,\
@@ -362,7 +383,7 @@ class ElasticsearchAnalyzer(Analyzer):
                     if self.data_type != 'mail-subject':
                         self.fields = list(filter( lambda s: s not in MAIL_SUBJECT, self.fields))
                     if self.data_type != 'filename':
-                        self.fields = list(filter( lambda s: s not in FILENAME+PROCESS_PARENT+PROCESS+PROCESS_ARGS, self.fields))
+                        self.fields = list(filter( lambda s: s not in FILENAME+PROCESS+PROCESS_ARGS, self.fields))
                     if self.data_type != 'user-agent':
                         self.fields = list(filter( lambda s: s not in USER_AGENT, self.fields))
                     if self.data_type != "username":
