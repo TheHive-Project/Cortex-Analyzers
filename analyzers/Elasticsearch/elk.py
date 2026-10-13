@@ -11,20 +11,133 @@ from itertools import zip_longest
 import operator
 
 # support ECS
-FILENAME = ["dll.pe.original_file_name","email.attachments.file.name","file.name","file.pe.original_file_name","process.pe.original_file_name"]
-PROCESS = ["process.name",]
-PROCESS_ARGS = ["process.args",]
-PROCESS_PARENT = ["process.parent.name","process.session_leader.name","process.parent.pe.original_file_name","process.entry_leader.name","process.group_leader.name"]
-IP = ["client.ip","client.nat.ip","destination.ip","destination.nat.ip","dns.resolved_ip","network.forwarded_ip","orchestrator.resource.ip","related.ip","server.ip","server.nat.ip","source.ip","source.nat.ip"]
-URL = ["url.path","url.full","url.original"]
-USERNAME = ["client.user.id","client.user.name","destination.user.id","destination.user.name","destination.user.email","source.user.id","source.user.name","source.user.email","url.username","user.changes.email","user.changes.id","user.effective.email","user.id","user.name","user.email","user.target.name"]
-HASH = ["dll.pe.imphash","file.pe.imphash","process.parent.pe.imphash","process.pe.imphash","dll.hash.md5","email.attachments.file.hash.md5","file.hash.md5","process.hash.md5","process.parent.hash.md5","tls.client.hash.md5","tls.server.hash.md5","dll.pe.pehash","file.pe.pehash","process.parent.pe.pehash","process.pe.pehash","dll.hash.sha1","email.attachments.file.hash.sha1","file.hash.sha1","process.hash.sha1","process.parent.hash.sha1","tls.client.hash.sha1","tls.server.hash.sha1","dll.code_signature.thumbprint_sha256","dll.hash.sha256","email.attachments.file.hash.sha256","file.code_signature.thumbprint_sha256","file.hash.sha256","process.code_signature.thumbprint_sha256","process.hash.sha256","process.parent.code_signature.thumbprint_sha256","process.parent.hash.sha256","tls.client.hash.sha256","tls.server.hash.sha256","dll.hash.sha384","email.attachments.file.hash.sha384","file.hash.sha384","process.hash.sha384","process.parent.hash.sha384","dll.hash.sha512","email.attachments.file.hash.sha512","file.hash.sha512","process.hash.sha512","process.parent.hash.sha512","dll.hash.ssdeep","email.attachments.file.hash.ssdeep","file.hash.ssdeep","process.hash.ssdeep","process.parent.hash.ssdeep","dll.hash.tlsh","email.attachments.file.hash.tlsh","file.hash.tlsh","process.hash.tlsh","process.parent.hash.tlsh"]
-USER_AGENT = ["user_agent.name","user_agent.original"]
-MAIL_SUBJECT = ["email.subject"]
-MAIL = ["source.user.email","user.changes.email","user.effective.email","user.email","user.target.name"]
-DOMAIN = ["client.domain","destination.domain","dns.answers.name","dns.question.name","server.domain","source.domain","url.domain","url.registered_domain","client.registered_domain","destination.registered_domain","dns.question.registered_domain","server.registered_domain","source.registered_domain","url.registered_domain"]
-HOSTNAME = ["host.name",]
+FILENAME = [
+    "dll.pe.original_file_name",
+    "email.attachments.file.name",
+    "file.name",
+    "file.pe.original_file_name",
+    "process.pe.original_file_name",
+]
 
+PROCESS = [
+    "process.name",
+]
+
+PROCESS_ARGS = [
+    "process.args",
+]
+
+PROCESS_PARENT = [
+    "process.parent.name",
+    "process.session_leader.name",
+    "process.parent.pe.original_file_name",
+    "process.entry_leader.name",
+    "process.group_leader.name",
+]
+
+IP = [
+    "client.ip",
+    "client.nat.ip",
+    "destination.ip",
+    "destination.nat.ip",
+    "dns.resolved_ip",
+    "network.forwarded_ip",
+    "orchestrator.resource.ip",
+    "related.ip",
+    "server.ip",
+    "server.nat.ip",
+    "source.ip",
+    "source.nat.ip",
+]
+
+URL = [
+    "url.path",
+    "url.full",
+    "url.original",
+]
+
+USERNAME = [
+    "client.user.id",
+    "client.user.name",
+    "destination.user.id",
+    "destination.user.name",
+    "destination.user.email",
+    "source.user.id",
+    "source.user.name",
+    "source.user.email",
+    "url.username",
+    "user.changes.email",
+    "user.changes.id",
+    "user.effective.email",
+    "user.id",
+    "user.name",
+    "user.email",
+    "user.target.name",
+]
+
+HASH = [
+    f"{x}.{y}"
+    for x in [
+        "hash",
+        "dll.pe",
+        "file.pe",
+        "process.parent.pe",
+        "dll.hash",
+        "email.attachments.file.hash",
+        "file.hash",
+        "process.hash",
+        "process.parent.hash",
+        "tls.client.hash",
+    ]
+    for y in [
+        "cdhash",
+        "md5",
+        "sha1",
+        "sha256",
+        "sha384",
+        "sha512",
+        "ssdeep",
+        "tlsh",
+    ]
+]
+
+USER_AGENT = [
+    "user_agent.name",
+    "user_agent.original",
+]
+
+MAIL_SUBJECT = [
+    "email.subject",
+]
+
+MAIL = [
+    "source.user.email",
+    "user.changes.email",
+    "user.effective.email",
+    "user.email",
+    "user.target.name",
+]
+
+DOMAIN = [
+    "client.domain",
+    "destination.domain",
+    "dns.answers.name",
+    "dns.question.name",
+    "server.domain",
+    "source.domain",
+    "url.domain",
+    "url.registered_domain",
+    "client.registered_domain",
+    "destination.registered_domain",
+    "dns.question.registered_domain",
+    "server.registered_domain",
+    "source.registered_domain",
+    "url.registered_domain",
+]
+
+HOSTNAME = [
+    "host.name",
+]
 class Hit:
     def __init__(self,hitindex,hitid,process_parent_name,process_name,process_args,user_name,host_name,timestamp,time,\
                  destination_ip,destination_port,source_ip,source_port,source_user_name,url_domain,url_path,url_full,\
@@ -234,7 +347,7 @@ class ElasticsearchAnalyzer(Analyzer):
                     if self.data_type != 'mail-subject':
                         self.fields = list(filter( lambda s: s not in MAIL_SUBJECT, self.fields))
                     if self.data_type != 'filename':
-                        self.fields = list(filter( lambda s: s not in FILENAME+PROCESS_PARENT+PROCESS, self.fields))
+                        self.fields = list(filter( lambda s: s not in FILENAME+PROCESS_PARENT+PROCESS+PROCESS_ARGS, self.fields))
                     if self.data_type != 'user-agent':
                         self.fields = list(filter( lambda s: s not in USER_AGENT, self.fields))
                     if self.data_type != "username":
