@@ -26,7 +26,7 @@ PROCESS = [
     "process.pe.original_file_name",
     "process.parent.pe.original_file_name",
     "process.session_leader.name",
-    "process.parent.session_leader.name
+    "process.parent.session_leader.name",
     "process.entry_leader.name",
     "process.parent.entry_leader.name",
     "process.group_leader.name",
