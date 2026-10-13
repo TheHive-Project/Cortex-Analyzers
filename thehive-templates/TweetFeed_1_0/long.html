@@ -1,0 +1,153 @@
+<div class="panel panel-info" ng-if="success">
+	<div class="panel-heading">
+		TweetFeed Report for {{content.observable}}
+	</div>
+	<div class="panel-body">
+        <p ng-if="!content.listed">
+            No report found in TweetFeed (live window: {{content.window}}, and archive).
+        </p>
+
+        <div ng-if="content.listed">
+            <dl class="dl-horizontal">
+                <dt>Reports:</dt>
+                <dd>{{content.reports}}</dd>
+                <dt ng-if="content.external_exclusive !== undefined">Exclusive:</dt>
+                <dd ng-if="content.external_exclusive !== undefined">
+                    {{content.external_exclusive ? 'Yes, no other tracked feed lists this IOC' : 'No, other feeds list this IOC too'}}
+                </dd>
+            </dl>
+
+            <h4 ng-if="content.records.length > 0">Reports in the last {{content.window}}</h4>
+            <table class="table" ng-if="content.records.length > 0">
+                <thead>
+                    <th>Type</th>
+                    <th>IOC</th>
+                    <th>Count</th>
+                    <th>First seen</th>
+                    <th>Last seen</th>
+                    <th>Tags</th>
+                    <th>Users</th>
+                    <th>Posts</th>
+                </thead>
+                <tbody ng-repeat="r in content.records">
+                    <tr>
+                        <td>{{r.type}}</td>
+                        <td>{{r.value}}</td>
+                        <td>{{r.count}}</td>
+                        <td>{{r.first_seen}}</td>
+                        <td>{{r.last_seen}}</td>
+                        <td>{{r.tags.join(', ')}}</td>
+                        <td>{{r.users.join(', ')}}</td>
+                        <td>
+                            <span ng-repeat="t in r.tweets | limitTo:5">
+                                <a ng-href="{{t}}" target="_blank" rel="noopener noreferrer">post {{$index + 1}}</a>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4 ng-if="content.archive.records.length > 0">Older reports (archive, {{content.archive.window}})</h4>
+            <table class="table" ng-if="content.archive.records.length > 0">
+                <thead>
+                    <th>Type</th>
+                    <th>IOC</th>
+                    <th>Count</th>
+                    <th>First seen</th>
+                    <th>Last seen</th>
+                    <th>Tags</th>
+                </thead>
+                <tbody ng-repeat="a in content.archive.records">
+                    <tr>
+                        <td>{{a.type}}</td>
+                        <td>{{a.value}}</td>
+                        <td>{{a.count}}</td>
+                        <td>{{a.first_seen}}</td>
+                        <td>{{a.last_seen}}</td>
+                        <td>{{a.tags.join(', ')}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4 ng-if="content.ai">AI summary (generated from the post, untrusted)</h4>
+            <dl class="dl-horizontal" ng-if="content.ai">
+                <dt>Threat type:</dt>
+                <dd>{{content.ai.threat_type || 'N/A'}}</dd>
+                <dt>Family:</dt>
+                <dd>{{content.ai.family || 'N/A'}}</dd>
+                <dt>Confidence:</dt>
+                <dd>{{content.ai.confidence}}</dd>
+                <dt>Summary:</dt>
+                <dd>{{content.ai.summary}}</dd>
+            </dl>
+
+            <h4 ng-if="content.campaigns.length > 0">Campaigns</h4>
+            <table class="table" ng-if="content.campaigns.length > 0">
+                <thead>
+                    <th>Name</th>
+                    <th>Confidence</th>
+                    <th>Threat types</th>
+                    <th>IOCs</th>
+                    <th>Last seen</th>
+                </thead>
+                <tbody ng-repeat="c in content.campaigns">
+                    <tr>
+                        <td>{{c.name}}</td>
+                        <td>{{c.confidence}}</td>
+                        <td>{{c.threat_types.join(', ')}}</td>
+                        <td>{{c.ioc_count}}</td>
+                        <td>{{c.last_seen}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4 ng-if="content.external.length > 0">Other feeds that list this IOC</h4>
+            <table class="table" ng-if="content.external.length > 0">
+                <thead>
+                    <th>Feed</th>
+                    <th>Threat</th>
+                    <th>Added</th>
+                    <th>Link</th>
+                </thead>
+                <tbody ng-repeat="e in content.external">
+                    <tr>
+                        <td>{{e.src}}</td>
+                        <td>{{e.threat}}</td>
+                        <td>{{e.added}}</td>
+                        <td><a ng-if="e.link" ng-href="{{e.link}}" target="_blank" rel="noopener noreferrer">{{e.src}}</a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4 ng-if="content.reg || content.net">Registration and network data</h4>
+            <dl class="dl-horizontal" ng-if="content.reg">
+                <dt>Registrar:</dt>
+                <dd>{{content.reg.registrar || 'N/A'}}</dd>
+                <dt>Created:</dt>
+                <dd>{{content.reg.created || 'N/A'}}</dd>
+                <dt>Age at first report:</dt>
+                <dd>{{content.reg.age_days_at_report}} days <span ng-if="content.reg.newly_registered">(newly registered)</span></dd>
+                <dt>ASN / org:</dt>
+                <dd>{{content.reg.asn || 'N/A'}} {{content.reg.org}}</dd>
+            </dl>
+            <dl class="dl-horizontal" ng-if="content.net">
+                <dt>Network:</dt>
+                <dd>{{content.net.org || 'N/A'}}</dd>
+                <dt>Location:</dt>
+                <dd>{{content.net.city}} {{content.net.country}}</dd>
+            </dl>
+        </div>
+	</div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+	<div class="panel-heading">
+		TweetFeed Report <b>Error</b>
+	</div>
+	<div class="panel-body">
+		<dl class="dl-horizontal">
+			<dt>Error: </dt>
+			<dd>{{content.errorMessage}}</dd>
+		</dl>
+	</div>
+</div>
