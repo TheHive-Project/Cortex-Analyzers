@@ -86,18 +86,33 @@ HASH = [
         "email.attachments.file.hash",
         "file.hash",
         "process.hash",
+        "process.pe",
         "process.parent.hash",
         "tls.client.hash",
+        "tls.server.hash",
     ]
     for y in [
         "cdhash",
+        "imphash",
         "md5",
+        "pehash",
         "sha1",
         "sha256",
         "sha384",
         "sha512",
         "ssdeep",
         "tlsh",
+    ]
+] + [
+    f"{x}.{y}"
+    for x in [
+        "dll.code_signature",
+        "file.code_signature",
+        "process.code_signature",
+        "process.parent.code_signature",
+    ]
+    for y in [
+        "thumbprint_sha256",
     ]
 ]
 
