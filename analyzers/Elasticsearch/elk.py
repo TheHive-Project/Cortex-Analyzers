@@ -11,6 +11,25 @@ from itertools import zip_longest
 import operator
 
 # support ECS
+DOMAIN = [
+    f"{x}.{y}"
+    for x in [
+        "client",
+        "destination",
+        "server",
+        "source",
+        "url",
+    ]
+    for y in [
+        "domain",
+        "registered_domain"
+    ]
+] + [
+    "dns.answers.name",
+    "dns.question.name",
+    "dns.question.registered_domain",
+]
+
 FILENAME = [
     "dll.pe.original_file_name",
     "email.attachments.file.name",
@@ -26,50 +45,6 @@ FILENAME = [
     "process.parent.entry_leader.name",
     "process.group_leader.name",
     "process.parent.group_leader.name",
-]
-
-PROCESS_ARGS = [
-    "process.args",
-]
-
-IP = [
-    "client.ip",
-    "client.nat.ip",
-    "destination.ip",
-    "destination.nat.ip",
-    "dns.resolved_ip",
-    "network.forwarded_ip",
-    "orchestrator.resource.ip",
-    "related.ip",
-    "server.ip",
-    "server.nat.ip",
-    "source.ip",
-    "source.nat.ip",
-]
-
-URL = [
-    "url.path",
-    "url.full",
-    "url.original",
-]
-
-USERNAME = [
-    "client.user.id",
-    "client.user.name",
-    "destination.user.id",
-    "destination.user.name",
-    "destination.user.email",
-    "source.user.id",
-    "source.user.name",
-    "source.user.email",
-    "url.username",
-    "user.changes.email",
-    "user.changes.id",
-    "user.effective.email",
-    "user.id",
-    "user.name",
-    "user.email",
-    "user.target.name",
 ]
 
 HASH = [
@@ -128,15 +103,27 @@ HASH = [
         "imphash",
         "pehash",
     ]
+] + [
+    "user.hash"
 ]
 
-USER_AGENT = [
-    "user_agent.name",
-    "user_agent.original",
+HOSTNAME = [
+    "host.name",
 ]
 
-MAIL_SUBJECT = [
-    "email.subject",
+IP = [
+    "client.ip",
+    "client.nat.ip",
+    "destination.ip",
+    "destination.nat.ip",
+    "dns.resolved_ip",
+    "network.forwarded_ip",
+    "orchestrator.resource.ip",
+    "related.ip",
+    "server.ip",
+    "server.nat.ip",
+    "source.ip",
+    "source.nat.ip",
 ]
 
 MAIL = [
@@ -147,25 +134,47 @@ MAIL = [
     "user.target.name",
 ]
 
-DOMAIN = [
-    "client.domain",
-    "destination.domain",
-    "dns.answers.name",
-    "dns.question.name",
-    "server.domain",
-    "source.domain",
-    "url.domain",
-    "url.registered_domain",
-    "client.registered_domain",
-    "destination.registered_domain",
-    "dns.question.registered_domain",
-    "server.registered_domain",
-    "source.registered_domain",
-    "url.registered_domain",
+MAIL_SUBJECT = [
+    "email.subject",
 ]
 
-HOSTNAME = [
-    "host.name",
+PROCESS_ARGS = [
+    "process.args",
+]
+
+URL = [
+    "url.path",
+    "url.full",
+    "url.original",
+]
+
+USERNAME = [
+    f"{x}.{y}"
+    for x in [
+        "client.user",
+        "destination.user",
+        "process.attested_user",
+        "process.real_user",
+        "process.saved_user",
+        "process.user",
+        "server.user",
+        "source.user",
+        "user.changes",
+        "user.effective",
+        "user.target"
+    ]
+    for y in [
+        "email",
+        "id",
+        "name"
+    ]
+] + [
+    "url.username",
+]
+
+USER_AGENT = [
+    "user_agent.name",
+    "user_agent.original",
 ]
 
 
