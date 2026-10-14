@@ -16,11 +16,6 @@ FILENAME = [
     "email.attachments.file.name",
     "file.name",
     "file.pe.original_file_name",
-    "process.pe.original_file_name",
-    "process.parent.pe.original_file_name",
-]
-
-PROCESS = [
     "process.name",
     "process.parent.name",
     "process.pe.original_file_name",
@@ -383,7 +378,7 @@ class ElasticsearchAnalyzer(Analyzer):
                     if self.data_type != 'mail-subject':
                         self.fields = list(filter( lambda s: s not in MAIL_SUBJECT, self.fields))
                     if self.data_type != 'filename':
-                        self.fields = list(filter( lambda s: s not in FILENAME+PROCESS+PROCESS_ARGS, self.fields))
+                        self.fields = list(filter( lambda s: s not in FILENAME+PROCESS_ARGS, self.fields))
                     if self.data_type != 'user-agent':
                         self.fields = list(filter( lambda s: s not in USER_AGENT, self.fields))
                     if self.data_type != "username":
