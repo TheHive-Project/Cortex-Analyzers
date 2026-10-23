@@ -6,4 +6,4 @@ tornado==6.5.10
 ipython==9.17.1
 ipykernel==7.3.0
 cortexutils==2.2.1
-black==26.5.1
+black==26.10.1
