@@ -77,6 +77,13 @@ There are a number of configuration options, which are set either in Cortex UI.
 | `get_network_traffic_dump`                                    | Yes        | Attach PCAP file to the case as observable.                                                  |
 | `get_iocs`                                    | Yes        | Attach Analysis IOCs to the case as observables.                                             |
 | `extract_malicious_iocs`                                       | Yes        | When enabled, extracts only Suspicious and Malicious IOCs. When disabled, extracts all IOCs. |
+| `base_domain`                 | Yes       | Base domain for the ANY.RUN connection. Enter the domain only (for example, any.run), without http://, https://, or a trailing slash. Using an alternative domain requires special access. 
+
+#### ANY.RUN base domain parameter
+| Base domain | Usage                             |
+|-------------|-----------------------------------|
+| any.run     | default                           |
+| anyrun.us   | available for configured accounts |
 
 #### ANY.RUN environment parameters
 | Parameter                           | Mandatory | Description                                                                                                                                                               |
@@ -270,4 +277,4 @@ graph LR
 ## Support
 
 This is an ANY.RUN’s supported connector. You can write to us for help with integration via [techsupport@any.run](mailto:techsupport@any.run) .
-Contact us for a quote or demo via [this form](https://app.any.run/contact-us/?utm_source=thehivegithub&utm_medium=documentation&utm_campaign=thehive_sandbox&utm_content=linktocontactus). 
+Contact us for a quote or demo via [this form](https://app.any.run/contact-us/?utm_source=thehivegithub&utm_medium=documentation&utm_campaign=thehive_sandbox&utm_content=linktocontactus).

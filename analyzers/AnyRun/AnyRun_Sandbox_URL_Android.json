@@ -1,6 +1,6 @@
 {
   "name": "AnyRun_Sandbox_URL_Android",
-  "version": "1.0",
+  "version": "1.1",
   "author": "ANY.RUN Integrations Team",
   "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
   "license": "AGPL-V3",
@@ -9,7 +9,7 @@
     "url"
   ],
   "command": "AnyRun/anyrun_analyzer.py",
-  "baseConfig": "AnyRun",
+  "baseConfig": "AnyRunSandbox",
   "config": {
     "os": "android",
     "analysis_type": "url"
@@ -61,13 +61,6 @@
       "multi": false,
       "required": true,
       "defaultValue": true
-    },
-    {
-      "name": "obj_url",
-      "description": "Target URL. Size range 5-512. Example -> (http/https)://(your-link)",
-      "type": "string",
-      "multi": false,
-      "required": false
     },
     {
       "name": "env_locale",
