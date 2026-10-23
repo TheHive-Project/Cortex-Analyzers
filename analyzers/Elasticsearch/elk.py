@@ -69,7 +69,8 @@ class ElasticsearchAnalyzer(Analyzer):
         self.fields = self.get_param('config.field', None, 'Field is missing')
         self.data = self.get_param('data', None, 'Data is missing')
         self.size = self.get_param('config.size', None, 'size is missing')
-
+        # client-side numeric timeout (works across 8.x/9.x)
+        self.client_timeout = self.get_param('client_timeout', 30, None)
 
     def summary(self, raw):
         taxonomies = []
@@ -154,9 +155,6 @@ class ElasticsearchAnalyzer(Analyzer):
     def run(self):
         Analyzer.run(self)
         try:
-            # client-side numeric timeout (works across 8.x/9.x)
-            client_timeout = 30  # seconds
-
             # Normalize parameter lists to handle optional omitted config items
             if self.endpoints is None:
                 self.endpoints = []
@@ -184,7 +182,7 @@ class ElasticsearchAnalyzer(Analyzer):
                             hosts=hosts,
                             ca_certs=self.cert,
                             verify_certs=self.verify,
-                            request_timeout=client_timeout,
+                            request_timeout=self.client_timeout,
                             max_retries=3,
                             retry_on_timeout=True,
                             http_compress=True,
@@ -273,7 +271,7 @@ class ElasticsearchAnalyzer(Analyzer):
                             "track_total_hits": 10000
                         }
                         #search elastic for fields in each index
-                        res = es.search(size=self.size,index=index,body=body, timeout="30s")
+                        res = es.search(size=self.size,index=index,body=body,timeout=f"{self.client_timeout}s")
                         #if relation is gte then more logs exist than we will display
                         if res['hits']['total']['relation'] == 'gte' or res['hits']['total']['relation'] == 'gt':
                             total = 'gte'

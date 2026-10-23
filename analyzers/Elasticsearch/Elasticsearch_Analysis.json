@@ -229,6 +229,14 @@
       "type": "string",
       "multi": false,
       "required": false
+    },
+    {
+      "name": "client_timeout",
+      "description": "Elasticsearch client timeout (in seconds)",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 30
     }
   ],
   "registration_required": false,
