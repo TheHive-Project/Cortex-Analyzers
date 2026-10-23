@@ -19,34 +19,67 @@ on:
 permissions:
   contents: read
 
+# PRs check only the requirements files they touch; push, schedule and dispatch
+# runs cover the whole tree. A pull_request checkout is the merge commit (first
+# parent = base), so HEAD^1..HEAD is the PR's change set and fetch-depth 2 suffices.
+
 jobs:
   # Every direct dependency must be pinned (== or a git commit SHA).
   pins:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 2
+
+      - name: Select requirements files
+        id: select
+        run: |
+          set -euo pipefail
+          active_dirs=$(find analyzers responders -maxdepth 2 -name '*.json' -not -name '*.disabled' -exec dirname {} \; | sort -u)
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            git rev-parse -q --verify 'HEAD^2' >/dev/null || { echo "::error::HEAD is not the PR merge commit"; exit 1; }
+            changed=$(git diff --name-only --diff-filter=AMR 'HEAD^1' HEAD -- 'analyzers/*/requirements*.txt' 'responders/*/requirements*.txt')
+            files=""
+            while IFS= read -r f; do
+              [ -n "$f" ] || continue
+              grep -qxF "$(dirname "$f")" <<< "$active_dirs" && files="$files$f"$'\n'
+            done <<< "$changed"
+          else
+            files=""
+            while IFS= read -r d; do
+              for f in "$d"/requirements*.txt; do [ -f "$f" ] && files="$files$f"$'\n'; done
+            done <<< "$active_dirs"
+          fi
+          echo "Requirements files in scope:"
+          printf '%s\n' "$files" | sed '/^$/d; s/^/  /'
+          {
+            echo "files<<EOF_FILES"
+            printf '%s\n' "${files%$'\n'}"
+            echo "EOF_FILES"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Check pins
+        env:
+          FILES: ${{ steps.select.outputs.files }}
         run: |
           set -euo pipefail
           status=0
-          for dir in $(find analyzers responders -maxdepth 2 -name '*.json' -not -name '*.disabled' -exec dirname {} \; | sort -u); do
-            for f in "$dir"/requirements*.txt; do
-              [ -f "$f" ] || continue
-              while IFS= read -r line || [ -n "$line" ]; do
-                body=$(printf '%s' "$line" | sed -E 's/#.*//; s/^[[:space:]]+//; s/[[:space:]]+$//')
-                [ -z "$body" ] && continue
-                case "$body" in
-                  -*) continue ;;
-                  *://*|*git+*)
-                    printf '%s' "$body" | grep -qE '@[0-9a-f]{40}([/#.]|$)|/archive/[0-9a-f]{40}\.' && continue
-                    echo "::error file=$f::git/URL dependency not pinned to a commit SHA: $body"; status=1; continue ;;
-                  *==*) continue ;;
-                esac
-                echo "::error file=$f::dependency not pinned with ==: $body"; status=1
-              done < "$f"
-            done
-          done
+          while IFS= read -r f; do
+            [ -f "$f" ] || continue
+            while IFS= read -r line || [ -n "$line" ]; do
+              body=$(printf '%s' "$line" | sed -E 's/#.*//; s/^[[:space:]]+//; s/[[:space:]]+$//')
+              [ -z "$body" ] && continue
+              case "$body" in
+                -*) continue ;;
+                *://*|*git+*)
+                  printf '%s' "$body" | grep -qE '@[0-9a-f]{40}([/#.]|$)|/archive/[0-9a-f]{40}\.' && continue
+                  echo "::error file=$f::git/URL dependency not pinned to a commit SHA: $body"; status=1; continue ;;
+                *==*) continue ;;
+              esac
+              echo "::error file=$f::dependency not pinned with ==: $body"; status=1
+            done < "$f"
+          done <<< "$FILES"
           exit $status
 
   # Known vulnerabilities / malicious releases in the pinned versions.
@@ -55,8 +88,43 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 2
 
-      - uses: google/osv-scanner-action/osv-scanner-action@a345acffa64b0eaede81a3d9aae6141214d9c8fc # v2.6.0
+      - name: Select changed directories
+        id: select
+        if: github.event_name == 'pull_request'
+        run: |
+          set -euo pipefail
+          git rev-parse -q --verify 'HEAD^2' >/dev/null || { echo "::error::HEAD is not the PR merge commit"; exit 1; }
+          dirs=$(git diff --name-only --diff-filter=AMR 'HEAD^1' HEAD -- 'analyzers/*/requirements*.txt' 'responders/*/requirements*.txt' \
+            | xargs -r -n1 dirname | sort -u | while IFS= read -r d; do [ -d "$d" ] && printf '%s\n' "$d"; done || true)
+          echo "Directories in scope:"
+          printf '%s\n' "$dirs" | sed '/^$/d; s/^/  /'
+          {
+            echo "any=$([ -n "$dirs" ] && echo true || echo false)"
+            echo "dirs<<EOF_DIRS"
+            printf '%s\n' "$dirs"
+            echo "EOF_DIRS"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Nothing to scan
+        if: github.event_name == 'pull_request' && steps.select.outputs.any != 'true'
+        run: echo "No active requirements file changed in this PR"
+
+      # scan-args must be newline separated.
+      - name: Scan changed directories
+        if: github.event_name == 'pull_request' && steps.select.outputs.any == 'true'
+        uses: google/osv-scanner-action/osv-scanner-action@a345acffa64b0eaede81a3d9aae6141214d9c8fc # v2.6.0
+        with:
+          scan-args: |-
+            --no-resolve
+            --config=osv-scanner.toml
+            ${{ steps.select.outputs.dirs }}
+
+      - name: Scan everything
+        if: github.event_name != 'pull_request'
+        uses: google/osv-scanner-action/osv-scanner-action@a345acffa64b0eaede81a3d9aae6141214d9c8fc # v2.6.0
         with:
           scan-args: |-
             --recursive
