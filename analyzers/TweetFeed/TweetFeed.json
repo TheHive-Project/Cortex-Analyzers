@@ -1,0 +1,16 @@
+{
+  "name": "TweetFeed",
+  "version": "1.0",
+  "author": "Daniel López, TweetFeed",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Check an IP, domain, URL or hash (MD5, SHA256) against TweetFeed, a free feed of indicators of compromise collected from posts on X by security researchers.",
+  "dataTypeList": ["ip", "domain", "fqdn", "url", "hash"],
+  "baseConfig": "TweetFeed",
+  "command": "TweetFeed/tweetfeed.py",
+  "configurationItems": [],
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": false,
+  "service_homepage": "https://tweetfeed.live"
+}
