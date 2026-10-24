@@ -1,0 +1,33 @@
+{
+  "name": "SoChain",
+  "version": "1.0",
+  "author": "Atif Nazir",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Look up a BTC, LTC, DOGE or ZEC address on SoChain: balance, totals, activity, recent counterparties and address poisoning. No API key required.",
+  "dataTypeList": [
+    "crypto_address",
+    "btc_address"
+  ],
+  "baseConfig": "SoChain",
+  "config": {
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 2
+  },
+  "command": "SoChain/SoChain.py",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Optional SoChain API key from https://sochain.com/dashboard. Without one, lookups work up to 2,500 a day per IP.",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ],
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://sochain.com/"
+}
