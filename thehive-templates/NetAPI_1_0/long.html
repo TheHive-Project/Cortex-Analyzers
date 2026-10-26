@@ -1,0 +1,48 @@
+<!-- Error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">NetAPI Error</div>
+    <div class="panel-body">{{content.errorMessage}}</div>
+</div>
+
+<!-- Compromised feed -->
+<div class="panel" ng-if="success" ng-class="content.compromised.listed_now ? 'panel-danger' : (content.compromised.listed_ever ? 'panel-warning' : 'panel-info')">
+    <div class="panel-heading">
+        NetAPI compromised feed: {{::content.observable}}
+        <span class="pull-right" ng-if="::content.compromised.listed_now">listed now</span>
+        <span class="pull-right" ng-if="::!content.compromised.listed_now && content.compromised.listed_ever">listed in the past</span>
+        <span class="pull-right" ng-if="::!content.compromised.listed_ever">not listed</span>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Type</dt><dd>{{::content.compromised.type}}</dd>
+            <dt ng-if="::content.compromised.matched_value">Listed entry</dt>
+            <dd ng-if="::content.compromised.matched_value">{{::content.compromised.matched_value}}</dd>
+            <dt ng-if="::content.compromised.block_reason">Reported by</dt>
+            <dd ng-if="::content.compromised.block_reason">{{::content.compromised.block_reason}}</dd>
+            <dt ng-if="::content.compromised.first_seen">First seen</dt>
+            <dd ng-if="::content.compromised.first_seen">{{::content.compromised.first_seen}}</dd>
+            <dt ng-if="::content.compromised.last_seen">Last seen</dt>
+            <dd ng-if="::content.compromised.last_seen">{{::content.compromised.last_seen}}</dd>
+            <dt ng-if="::content.compromised.registrar">Registrar</dt>
+            <dd ng-if="::content.compromised.registrar">
+                <a href="{{::content.compromised.registrar.page}}" target="_blank">{{::content.compromised.registrar.brand_name || content.compromised.registrar.name}}</a>
+            </dd>
+        </dl>
+        <p>{{::content.compromised.note}}</p>
+    </div>
+</div>
+
+<!-- Top 1M rank -->
+<div class="panel panel-info" ng-if="success && content.rank">
+    <div class="panel-heading">NetAPI Top 1M: {{::content.rank.domain}}</div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Rank</dt>
+            <dd>{{::content.rank.in_top_1m ? content.rank.rank : 'not in the Top 1M'}}</dd>
+            <dt ng-if="::content.rank.in_top_1m">Rank in .{{::content.rank.tld}}</dt>
+            <dd ng-if="::content.rank.in_top_1m">{{::content.rank.rank_in_tld}}</dd>
+            <dt>List of</dt><dd>{{::content.rank.snapshot_date}}</dd>
+        </dl>
+        <p>{{::content.rank.note}}</p>
+    </div>
+</div>
