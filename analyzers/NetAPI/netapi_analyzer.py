@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 
+import ipaddress
 from urllib.parse import urlparse
 
 import requests
@@ -11,7 +12,7 @@ API_URL = "https://netapi.com/api-json/"
 
 
 class NetAPIAnalyzer(Analyzer):
-    """Check a domain, URL or IP against the NetAPI compromised feed and the NetAPI Top 1M.
+    """Check a domain or URL against the NetAPI compromised feed and the NetAPI Top 1M.
 
     Two free JSON methods, no account needed:
     - compromised-check: is the value, or the registered domain it belongs to, in the feed of
@@ -66,13 +67,17 @@ class NetAPIAnalyzer(Analyzer):
             host = urlparse(data if "://" in data else "http://" + data).hostname
             if not host:
                 self.error("Could not extract a host from URL {}".format(data))
-            return host
+            try:
+                ipaddress.ip_address(host)
+            except ValueError:
+                return host
+            self.error("URL host {} is an IP address, not a domain name".format(host))
         return data
 
     # --- Cortex -------------------------------------------------------------
 
     def run(self):
-        if self.data_type not in ("domain", "fqdn", "url", "ip"):
+        if self.data_type not in ("domain", "fqdn", "url"):
             self.notSupported()
 
         value = self._value()
@@ -108,7 +113,7 @@ class NetAPIAnalyzer(Analyzer):
             )
         elif check.get("listed_ever"):
             # An old listing is mostly a past incident, often a compromised legitimate host
-            # that was cleaned up (1.1.1.1 was reported once in 2026-06): context, not a verdict.
+            # that was cleaned up since: context, not a verdict.
             last_seen = str(check.get("last_seen") or "")[:10]
             taxonomies.append(
                 self.build_taxonomy(
