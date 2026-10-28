@@ -1,0 +1,40 @@
+{
+    "name": "NetAPI",
+    "version": "1.0",
+    "author": "Slava Olesik",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Check a domain, URL or IP against the NetAPI compromised feed (hosts that public threat feeds report for malware or phishing, now and in the past) and get the domain's position in the NetAPI Top 1M. No API key required.",
+    "dataTypeList": [
+        "domain",
+        "fqdn",
+        "url",
+        "ip"
+    ],
+    "command": "NetAPI/netapi_analyzer.py",
+    "baseConfig": "NetAPI",
+    "config": {
+        "service": "lookup"
+    },
+    "configurationItems": [
+        {
+            "name": "timeout",
+            "description": "HTTP timeout in seconds",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 30
+        },
+        {
+            "name": "key",
+            "description": "Optional NetAPI API token. The lookups are free without one; a token of a free account only raises the rate limits.",
+            "type": "string",
+            "multi": false,
+            "required": false
+        }
+    ],
+    "registration_required": false,
+    "subscription_required": false,
+    "free_subscription": true,
+    "service_homepage": "https://netapi.com/"
+}
