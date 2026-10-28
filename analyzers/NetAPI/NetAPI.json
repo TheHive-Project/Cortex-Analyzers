@@ -4,11 +4,12 @@
     "author": "Slava Olesik",
     "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
     "license": "AGPL-V3",
-    "description": "Check a domain or URL against the NetAPI compromised feed (hosts that public threat feeds report for malware or phishing, now and in the past) and get the domain's position in the NetAPI Top 1M. No API key required.",
+    "description": "Check a domain, URL or IP against the NetAPI compromised feed (hosts that public threat feeds report for malware or phishing, now and in the past) and get the domain's position in the NetAPI Top 1M. No API key required.",
     "dataTypeList": [
         "domain",
         "fqdn",
-        "url"
+        "url",
+        "ip"
     ],
     "command": "NetAPI/netapi_analyzer.py",
     "baseConfig": "NetAPI",
