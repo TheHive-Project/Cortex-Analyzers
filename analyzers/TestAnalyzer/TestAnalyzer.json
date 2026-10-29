@@ -44,6 +44,14 @@
     "multi": false,
     "required": true,
     "defaultValue": false
+  },
+  {
+    "name": "artifact_count",
+    "description": "number of artifacts",
+    "type": "number",
+    "multi": false,
+    "required": false,
+    "defaultValue": 1
   }
   ],
   "registration_required": false,
