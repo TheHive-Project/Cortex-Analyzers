@@ -1,0 +1,23 @@
+{
+    "name": "Zetalytics_ip2nsglue",
+    "version": "1.0",
+    "author": "Ben",
+    "url": "None",
+    "license": "None",
+    "description": "Zetalytics transform for ip2nsglue",
+    "dataTypeList": ["ip"],
+    "baseConfig": "Zetalytics",
+    "command": "Zetalytics/zetalytics.py",
+    "configurationItems": [
+      {
+        "name": "key",
+        "description": "API key for Zetalytics",
+        "type": "string",
+        "multi": false,
+        "required": true
+      }
+    ],
+    "config": {
+        "service": "ip2nsglue"
+    }
+}
