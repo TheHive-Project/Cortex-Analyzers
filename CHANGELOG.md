@@ -1,8 +1,50 @@
 # Changelog
 
+## [3.10.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.10.2) (2026-10-29)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.10.1...3.10.2)
+
+**Closed issues:**
+
+- New Responder: Suspicious\_Verdict [\#1496](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1496)
+
+**Merged pull requests:**
+
+- TestAnalyzer - Artifacts support [\#1528](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1528) ([nusantara-self](https://github.com/nusantara-self))
+- Bump nbconvert from 7.17.1 to 7.17.2 in /responders/Jupyter [\#1524](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1524) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump setuptools from 84.0.0 to 84.1.0 in /responders/PaloAltoNGFW [\#1523](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1523) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump black from 26.5.1 to 26.10.1 in /responders/Jupyter [\#1522](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1522) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump pillow from 12.3.0 to 13.0.0 in /analyzers/QrDecode [\#1521](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1521) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump pillow from 12.3.0 to 13.0.0 in /analyzers/PDFPreview [\#1519](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1519) ([dependabot[bot]](https://github.com/apps/dependabot))
+- ES timeout [\#1512](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1512) ([vpiserchia](https://github.com/vpiserchia))
+- \[ANY.RUN Analyzers update\] Add proxy feature, alternative domains, and opt\_automated\_interactivity [\#1511](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1511) ([anyrun-integrations](https://github.com/anyrun-integrations))
+- ScanMalware: take a verdict only from a scan of the observable [\#1510](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1510) ([jonaslejon](https://github.com/jonaslejon))
+- Bump setuptools from 80.10.2 to 83.0.0 in /analyzers/GRR [\#1509](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1509) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [3.10.1](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.10.1) (2026-10-06)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.10.0...3.10.1)
+
+**Merged pull requests:**
+
+- isMalicious - Fix mini-report, count threat listings only, default to the API host [\#1507](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1507) ([hexablob](https://github.com/hexablob))
+- Run Dependabot on the 1st and 15th [\#1505](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1505) ([nusantara-self](https://github.com/nusantara-self))
+- Security/pin python dependencies [\#1504](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1504) ([nusantara-self](https://github.com/nusantara-self))
+- Add Suspicious\_Verdict Responder [\#1503](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1503) ([EnzoCyberSec](https://github.com/EnzoCyberSec))
+- Splunk Integration - ES notable status sync [\#1499](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1499) ([nusantara-self](https://github.com/nusantara-self))
+- Add ScanMalware analyzer [\#1497](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1497) ([jonaslejon](https://github.com/jonaslejon))
+- Add macadress.com analyzer for MAC address enrichment [\#1495](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1495) ([samymassoud](https://github.com/samymassoud))
+- Add RDAP analyzer [\#1484](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1484) ([yatuk](https://github.com/yatuk))
+- Add XposedOrNot analyzer \(email breach lookup, no API key
+  required\) [\#1471](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1471) ([DevaOnBreaches](https://github.com/DevaOnBreaches))
+
 ## [3.10.0](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.10.0) (2026-09-03)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.9.3...3.10.0)
+
+**Closed issues:**
+
+- \[FR\] New analyzer: macadress.com \(MAC address enrichment\) [\#1494](https://github.com/TheHive-Project/Cortex-Analyzers/issues/1494)
 
 **Merged pull requests:**
 
