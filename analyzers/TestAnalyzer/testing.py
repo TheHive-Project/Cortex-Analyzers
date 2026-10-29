@@ -1,7 +1,19 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 
+import hashlib
+import random
+
 from cortexutils.analyzer import Analyzer
+
+MAX_ARTIFACTS = 10_000
+ARTIFACT_TYPES = ["ip", "domain", "url", "hash", "mail"]
+WORDS = [
+    "alpha", "bravo", "charlie", "delta", "echo", "foxtrot", "golf", "hotel",
+    "india", "juliet", "kilo", "lima", "mike", "november", "oscar", "papa",
+    "quebec", "romeo", "sierra", "tango", "uniform", "victor", "whiskey",
+    "xray", "yankee", "zulu",
+]
 
 
 class TestAnalyzer(Analyzer):
@@ -10,9 +22,8 @@ class TestAnalyzer(Analyzer):
         self.some_string = self.get_param("config.some_string", None)
         self.some_list = self.get_param("config.some_list", ["item1", "item2", "item3"])
         self.some_number = self.get_param("config.some_number", 1)
-        self.throw_error = self.get_param(
-            "config.throw_error", False, "throw_error parameter is missing"
-        )
+        self.throw_error = self.get_param("config.throw_error", False)
+        self.artifact_count = self.get_param("config.artifact_count", 1)
         self.service = self.get_param(
             "config.service", None, "Service parameter is missing"
         )
@@ -98,9 +109,27 @@ class TestAnalyzer(Analyzer):
                     "unicodeTest": unicode_test_string,
                 }
 
+            else:
+                self.error(f"Unknown service: {self.service}")
+
             self.report(result)
         except Exception as e:
             self.error(f"Unhandled exception: {e}")
+
+    @staticmethod
+    def _artifact_value(data_type, index, rng):
+        word = WORDS[index % len(WORDS)]
+        domain = f"sample-{index}-{word}.example"
+        if data_type == "ip":
+            return f"10.{(index >> 16) & 255}.{(index >> 8) & 255}.{index & 255}"
+        if data_type == "domain":
+            return domain
+        if data_type == "url":
+            return f"https://{domain}/{word}/{rng.getrandbits(32)}"
+        if data_type == "mail":
+            return f"user-{index}@{domain}"
+        digest = hashlib.sha256(f"sample-{index}-{rng.getrandbits(64)}".encode()).hexdigest()
+        return digest[: (32, 40, 64)[index % 3]]
 
     def summary(self, raw):
         taxonomies = []
@@ -145,10 +174,15 @@ class TestAnalyzer(Analyzer):
     def artifacts(self, raw):
         artifacts = []
         if self.service == "testing":
-            data_type = "ip"
-            value = "8.8.8.8"
-            extra_args = {"tags": ["test"]}
-            artifacts.append(self.build_artifact(data_type, value, **extra_args))
+            try:
+                count = min(max(int(self.artifact_count), 0), MAX_ARTIFACTS)
+            except (TypeError, ValueError):
+                count = 1
+            rng = random.Random(42)
+            for index in range(count):
+                data_type = ARTIFACT_TYPES[index % len(ARTIFACT_TYPES)]
+                value = self._artifact_value(data_type, index, rng)
+                artifacts.append(self.build_artifact(data_type, value, tags=["test"]))
         return artifacts
 
 
