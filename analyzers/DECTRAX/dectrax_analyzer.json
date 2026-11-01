@@ -1,0 +1,50 @@
+{
+    "name": "DECTRAX",
+    "version": "1.0",
+    "author": "DECTRAX Security Engineering",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Query DECTRAX Autonomous Cyber Deception & Line-Rate Firewall Interdiction platform to evaluate IP observables against honeypots, canary tokens, and dynamic firewall blocklists.",
+    "dataTypeList": [
+        "ip",
+        "domain",
+        "fqdn"
+    ],
+    "baseConfig": "DECTRAX",
+    "command": "DECTRAX/dectrax.py",
+    "configurationItems": [
+        {
+            "name": "url",
+            "description": "DECTRAX API endpoint (e.g. https://api.dectrax.com)",
+            "type": "string",
+            "multi": false,
+            "required": true,
+            "defaultValue": "https://api.dectrax.com"
+        },
+        {
+            "name": "key",
+            "description": "DECTRAX API key / Bearer token (optional for public EDL queries)",
+            "type": "string",
+            "multi": false,
+            "required": false
+        },
+        {
+            "name": "cert_check",
+            "description": "Verify TLS/SSL certificate",
+            "type": "boolean",
+            "multi": false,
+            "required": false,
+            "defaultValue": true
+        }
+    ],
+    "config": {
+        "check_tlp": true,
+        "max_tlp": 2,
+        "auto_extract": false
+    },
+    "registration_required": false,
+    "subscription_required": false,
+    "free_subscription": true,
+    "integration_type": "external_api",
+    "service_homepage": "https://dectrax.com"
+}
