@@ -1,0 +1,47 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        WhoisFreaks DNS History for <strong>{{content.observable}}</strong>
+    </div>
+    <div class="panel-body" ng-init="r = content.result">
+        <p ng-if="!content.found">No record found{{content.message ? ': ' + content.message : ''}}.</p>
+        <div class="alert alert-info" ng-if="content.partial">WhoisFreaks returned a partial record: some fields could not be collected.</div>
+        <div class="alert alert-info" ng-if="content.cached">WhoisFreaks returned a cached record because the live WHOIS server did not answer.</div>
+        <div class="alert alert-warning" ng-if="content.artifacts_truncated">Only the first 1000 of {{content.artifacts_truncated}} suggested observables are offered for import.</div>
+        <div ng-if="content.found">
+            <p>{{r.totalRecords}} historical DNS records on {{r.totalPages}} page(s)<span ng-if="content.query.record_types">, record types {{content.query.record_types}}</span>.</p>
+            <div class="alert alert-warning" ng-if="r.error">{{r.error}}</div>
+            <p class="text-muted" ng-if="r.pages_fetched < r.totalPages">Pages fetched: {{r.pages_fetched}}. Raise <code>max_pages</code> in the analyzer configuration to fetch more.</p>
+            <table class="table table-condensed table-hover">
+                <thead>
+                    <tr><th>Seen</th><th>Type</th><th>Value</th><th>TTL</th></tr>
+                </thead>
+                <tbody ng-repeat="snap in r.historicalDnsRecords">
+                    <tr ng-repeat="rec in snap.dnsRecords">
+                        <td>{{snap.queryTime}}</td>
+                        <td><span class="label label-primary">{{rec.dnsType}}</span></td>
+                        <td class="wrap">
+                    <span ng-if="rec.address">{{rec.address}}</span>
+                    <span ng-if="rec.singleName">{{rec.singleName}}</span>
+                    <span ng-if="rec.target">{{rec.priority}} {{rec.target}}</span>
+                    <span ng-if="rec.dnsType == 'SOA'">{{rec.host}} {{rec.admin}} (serial {{rec.serial}})</span>
+                    <span ng-repeat="s in rec.strings">{{s}} </span>
+                        </td>
+                        <td>{{rec.ttl}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        WhoisFreaks DNS History <strong>Error</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> WhoisFreaks:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
