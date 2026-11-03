@@ -1,0 +1,65 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        WhoisFreaks Domain Reputation for <strong>{{content.observable}}</strong>
+    </div>
+    <div class="panel-body" ng-init="r = content.result">
+        <p ng-if="!content.found">No record found{{content.message ? ': ' + content.message : ''}}.</p>
+        <div class="alert alert-info" ng-if="content.partial">WhoisFreaks returned a partial record: some fields could not be collected.</div>
+        <div class="alert alert-info" ng-if="content.cached">WhoisFreaks returned a cached record because the live WHOIS server did not answer.</div>
+        <div class="alert alert-warning" ng-if="content.artifacts_truncated">Only the first 1000 of {{content.artifacts_truncated}} suggested observables are offered for import.</div>
+        <div ng-if="content.found">
+            <dl class="dl-horizontal">
+                <dt>Verdict</dt>
+                <dd><span class="label" ng-class="{'malicious': 'label-danger', 'suspicious': 'label-warning', 'safe': 'label-success'}[r.risk_category.verdict] || 'label-info'">{{r.risk_category.verdict}}</span>
+                    confidence {{r.risk_category.confidence}}, severity {{r.risk_category.severity}}</dd>
+                <dt>Primary threat</dt><dd>{{r.risk_category.primary_threat || '-'}}</dd>
+                <dt>Threat types</dt><dd><span class="label label-warning" ng-repeat="t in r.risk_category.threat_types" style="margin-right: 4px">{{t}}</span><span ng-if="!r.risk_category.threat_types.length">-</span></dd>
+                <dt>Recommended action</dt><dd>{{r.intelligence.recommended_action || '-'}}</dd>
+                <dt>Trust score</dt><dd>{{r.trust_signals.trust_score}} ({{r.trust_signals.trust_band}})</dd>
+                <dt>DGA score</dt><dd>{{r.dga_score.score}}<span ng-if="r.dga_score.is_dga"> <span class="label label-warning">DGA</span></span> {{r.dga_score.interpretation}}</dd>
+                <dt>Domain age</dt><dd>{{r.trust_signals.indicators.domain_age_days != null ? r.trust_signals.indicators.domain_age_days + ' days' : 'unknown'}}</dd>
+                <dt>Registrar</dt><dd>{{r.trust_signals.indicators.registrar || '-'}}</dd>
+                <dt>Email</dt><dd>{{r.email_deliverability.grade}} ({{r.email_deliverability.score}}): SPF {{r.email_deliverability.authentication.spf.present ? r.email_deliverability.authentication.spf.policy : 'missing'}}, DMARC {{r.email_deliverability.authentication.dmarc.present ? r.email_deliverability.authentication.dmarc.policy : 'missing'}}, DKIM {{r.email_deliverability.authentication.dkim.found ? 'found' : 'not found'}}</dd>
+            </dl>
+            <h4>Trust signals</h4>
+            <table class="table table-condensed">
+                <thead>
+                    <tr><th>Polarity</th><th>Signal</th><th>Category</th><th>Evidence</th><th>Weight</th></tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="s in r.trust_signals.signals.negative">
+                        <td><span class="label label-warning">negative</span></td><td>{{s.code}}</td><td>{{s.category}}</td><td>{{s.evidence}}</td><td>{{s.weight}}</td>
+                    </tr>
+                    <tr ng-repeat="s in r.trust_signals.signals.positive">
+                        <td><span class="label label-success">positive</span></td><td>{{s.code}}</td><td>{{s.category}}</td><td>{{s.evidence}}</td><td>{{s.weight}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h4 ng-if="r.intelligence.related_iocs.length">Related IOCs</h4>
+            <table class="table table-condensed" ng-if="r.intelligence.related_iocs.length">
+                <thead>
+                    <tr><th>Type</th><th>Value</th><th>Confidence</th></tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="i in r.intelligence.related_iocs">
+                        <td>{{i.type}}</td><td>{{i.value}}</td><td>{{i.confidence}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h4 ng-if="r.intelligence.stix_pattern">STIX pattern</h4>
+            <pre ng-if="r.intelligence.stix_pattern" style="white-space: pre-wrap; word-break: break-all">{{r.intelligence.stix_pattern}}</pre>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        WhoisFreaks Domain Reputation <strong>Error</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> WhoisFreaks:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

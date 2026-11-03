@@ -1,0 +1,47 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        WhoisFreaks DNS for <strong>{{content.observable}}</strong>
+    </div>
+    <div class="panel-body" ng-init="r = content.result">
+        <p ng-if="!content.found">No record found{{content.message ? ': ' + content.message : ''}}.</p>
+        <div class="alert alert-info" ng-if="content.partial">WhoisFreaks returned a partial record: some fields could not be collected.</div>
+        <div class="alert alert-info" ng-if="content.cached">WhoisFreaks returned a cached record because the live WHOIS server did not answer.</div>
+        <div class="alert alert-warning" ng-if="content.artifacts_truncated">Only the first 1000 of {{content.artifacts_truncated}} suggested observables are offered for import.</div>
+        <div ng-if="content.found">
+            <p ng-if="r.domainRegistered === false"><span class="label label-default">Domain not registered</span></p>
+            <p>Queried at {{r.queryTime}}: {{r.dnsRecords.length}} records.</p>
+            <p class="text-muted" ng-if="content.query">Options: <span ng-if="content.query.record_types">record types {{content.query.record_types}}; </span><span ng-if="content.query.cname_depth !== undefined">CNAME depth {{content.query.cname_depth}}; </span><span ng-if="content.query.relative_records === false">CNAME target records excluded</span></p>
+            <table class="table table-condensed table-hover" ng-if="r.dnsRecords.length">
+                <thead>
+                    <tr><th>Type</th><th>Name</th><th>Value</th><th>TTL</th></tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="rec in r.dnsRecords">
+                        <td><span class="label label-primary">{{rec.dnsType}}</span></td>
+                        <td>{{rec.name}}</td>
+                        <td class="wrap">
+                    <span ng-if="rec.address">{{rec.address}}</span>
+                    <span ng-if="rec.singleName">{{rec.singleName}}</span>
+                    <span ng-if="rec.target">{{rec.priority}} {{rec.target}}</span>
+                    <span ng-if="rec.dnsType == 'SOA'">{{rec.host}} {{rec.admin}} (serial {{rec.serial}})</span>
+                    <span ng-repeat="s in rec.strings">{{s}} </span>
+                        </td>
+                        <td>{{rec.ttl}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        WhoisFreaks DNS <strong>Error</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> WhoisFreaks:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

@@ -1,0 +1,61 @@
+{
+  "name": "WhoisFreaks_BulkIPReputation",
+  "version": "1.0",
+  "author": "WhoisFreaks",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get the threat score and Tor, proxy, bot, spam and known-attacker signals of every public IP address listed in a text file. 1 credit per IP.",
+  "dataTypeList": [
+    "file"
+  ],
+  "command": "WhoisFreaks/whoisfreaks.py",
+  "baseConfig": "WhoisFreaks",
+  "config": {
+    "service": "bulk_ip_reputation",
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 2
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "WhoisFreaks API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "max_items",
+      "description": "Entries of the file to look up per run (each entry is billed 1 credit; sent in batches of 100); 1 to 1000",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 100
+    },
+    {
+      "name": "ip_malicious_score",
+      "description": "Threat score from which an IP is tagged malicious, 1 to 100 (WhoisFreaks defines no threshold; a known attacker is always malicious)",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 75
+    },
+    {
+      "name": "ip_suspicious_score",
+      "description": "Threat score from which an IP is tagged suspicious, 1 to 100, at most ip_malicious_score (a Tor, VPN, proxy, bot or spam flag is always suspicious)",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 40
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://whoisfreaks.com",
+  "service_logo": {
+    "path": "assets/whoisfreaks.png",
+    "caption": "logo"
+  }
+}

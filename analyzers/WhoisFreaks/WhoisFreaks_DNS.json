@@ -1,0 +1,62 @@
+{
+  "name": "WhoisFreaks_DNS",
+  "version": "1.0",
+  "author": "WhoisFreaks",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get the current DNS records of a domain, or the PTR record of an IP. 1 credit.",
+  "dataTypeList": [
+    "domain",
+    "fqdn",
+    "ip"
+  ],
+  "command": "WhoisFreaks/whoisfreaks.py",
+  "baseConfig": "WhoisFreaks",
+  "config": {
+    "service": "dns",
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 2
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "WhoisFreaks API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "dns_record_types",
+      "description": "Record types to return: all, or a comma-separated list of A, AAAA, CNAME, MX, NS, SOA, SPF, TXT (IP lookups always return PTR)",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "all"
+    },
+    {
+      "name": "dns_cname_depth",
+      "description": "CNAME hops to follow before collecting records, 0 to 4; leave empty for the API default",
+      "type": "number",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "dns_relative_records",
+      "description": "Also return the records of CNAME targets (live DNS)",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": true
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://whoisfreaks.com",
+  "service_logo": {
+    "path": "assets/whoisfreaks.png",
+    "caption": "logo"
+  }
+}
