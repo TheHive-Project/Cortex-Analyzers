@@ -12,12 +12,16 @@ the rate limits.
 | --- | --- |
 | `domain`, `fqdn` | whether the host, or the registered domain it belongs to, is in the compromised feed now (seen in the last 24 hours) or was in the past, with first and last seen, the feed that reported it and the registrar; plus the domain's rank in the NetAPI Top 1M and within its TLD |
 | `url` | the same for the URL's host name |
-| `ip` | whether the address is in the compromised feed now or was in the past, with first and last seen and the reporting feed |
+| `ip` | whether the address is in NetAPI's own IP feed now (it attacked a NetAPI Nightwatch sensor within the last 48 hours) or was in the past, with first and last seen and the attack type |
 
-The compromised feed collects hosts that public threat feeds report for malware or phishing
-(URLhaus, CERT Polska, blackbook and others) and keeps their history, so a host that left the
-blocklists months ago still shows when it was listed. The Top 1M rank helps to read a listing: a
-popular domain in the feed is more likely a compromised legitimate site than attacker infrastructure.
+For domains the compromised feed collects hosts that public threat feeds report for malware or
+phishing (CERT Polska, blackbook and other sources) and keeps their history, so a host that left the
+blocklists months ago still shows when it was listed. For IP addresses the feed used to be a
+compilation of third-party blocklists. It is now NetAPI's own: the IPv4 addresses that attacked the
+sensors of NetAPI Nightwatch, NetAPI's own honeypot network (brute force, exploits, malware
+downloads, etc.), updated every hour. About 65% of them are not in any other public blocklist.
+The Top 1M rank helps to read a listing: a popular domain in the feed is more likely a compromised
+legitimate site than attacker infrastructure.
 
 ## Taxonomies
 

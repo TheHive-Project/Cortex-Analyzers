@@ -15,8 +15,10 @@ class NetAPIAnalyzer(Analyzer):
 
     Two free JSON methods, no account needed:
     - compromised-check: is the value, or the registered domain it belongs to, in the feed of
-      hosts that public threat feeds report for malware or phishing, now (seen in the last 24 h)
-      or in the past, with first / last seen, the reporting feed and the registrar;
+      domains that public threat feeds report for malware or phishing (now = seen in the last
+      24 h) or of IPv4 addresses that attacked NetAPI's own honeypot network (now = last 48 h),
+      now or in the past, with first / last seen, the reporting feed or attack type and the
+      registrar;
     - domain-rank: the domain's position in the NetAPI Top 1M, rebuilt daily.
 
     An optional NetAPI API token only raises the rate limits.
@@ -108,7 +110,7 @@ class NetAPIAnalyzer(Analyzer):
             )
         elif check.get("listed_ever"):
             # An old listing is mostly a past incident, often a compromised legitimate host
-            # that was cleaned up (1.1.1.1 was reported once in 2026-06): context, not a verdict.
+            # that was cleaned up: context, not a verdict.
             last_seen = str(check.get("last_seen") or "")[:10]
             taxonomies.append(
                 self.build_taxonomy(
