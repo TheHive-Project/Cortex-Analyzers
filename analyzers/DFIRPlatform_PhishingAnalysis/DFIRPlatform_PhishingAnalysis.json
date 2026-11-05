@@ -1,0 +1,31 @@
+{
+    "name": "DFIRPlatform_PhishingAnalysis",
+    "version": "1.0",
+    "author": "DFIR Lab",
+    "url": "https://github.com/dfir-lab/dfir-cortex-analyzers",
+    "license": "MIT",
+    "description": "Analyze phishing emails (EML files) using the DFIR Platform API. Runs 26+ analysis modules including SPF/DKIM/DMARC validation, header anomaly detection, URL reputation checks, attachment scanning, and more.",
+    "dataTypeList": ["file"],
+    "command": "DFIRPlatform_PhishingAnalysis/DFIRPlatform_PhishingAnalysis.py",
+    "baseConfig": "DFIRPlatform",
+    "registration_required": true,
+    "subscription_required": false,
+    "free_subscription": true,
+    "configurationItems": [
+        {
+            "name": "api_key",
+            "description": "API key for the DFIR Platform. Obtain one at https://platform.dfir-lab.ch",
+            "type": "string",
+            "multi": false,
+            "required": true
+        },
+        {
+            "name": "base_url",
+            "description": "Base URL for the DFIR Platform API",
+            "type": "string",
+            "multi": false,
+            "required": false,
+            "defaultValue": "https://api.dfir-lab.ch/v1"
+        }
+    ]
+}
