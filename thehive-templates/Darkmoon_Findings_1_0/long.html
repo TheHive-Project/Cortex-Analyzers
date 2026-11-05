@@ -1,0 +1,61 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        Darkmoon findings for <strong>{{content.observable}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Host: </dt><dd>{{content.host}}</dd>
+            <dt>Campaigns: </dt><dd>{{content.campaigns.length}}</dd>
+            <dt>Findings: </dt><dd>{{content.total}} ({{content.proven}} exploited or confirmed)</dd>
+            <dt>Critical / High / Medium / Low / Info: </dt>
+            <dd>{{content.by_severity.critical}} / {{content.by_severity.high}} / {{content.by_severity.medium}} / {{content.by_severity.low}} / {{content.by_severity.info}}</dd>
+        </dl>
+        <p ng-if="content.total == 0">
+            No finding recorded by Darkmoon for this host. This is not proof that the host is secure.
+        </p>
+        <p ng-if="content.truncated">
+            Only the most severe findings are listed, the report was truncated.
+        </p>
+        <table class="table" ng-if="content.findings.length > 0">
+            <thead>
+                <th>Severity</th>
+                <th>Status</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>CVE</th>
+                <th>CVSS</th>
+                <th>Endpoint</th>
+                <th>Remediation</th>
+            </thead>
+            <tbody ng-repeat="f in content.findings">
+                <tr>
+                    <td>
+                        <span class="label"
+                              ng-class="{'critical': 'label-danger', 'high': 'label-danger', 'medium': 'label-warning', 'low': 'label-info', 'info': 'label-default'}[f.severity]">
+                            {{f.severity}}
+                        </span>
+                    </td>
+                    <td>{{f.status}}</td>
+                    <td>{{f.title}}</td>
+                    <td>{{f.category}}</td>
+                    <td>{{f.cve}}</td>
+                    <td>{{f.cvss_score}}</td>
+                    <td>{{f.endpoint}}</td>
+                    <td>{{f.remediation}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        Darkmoon Report <b>Error</b>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Error: </dt>
+            <dd>{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
