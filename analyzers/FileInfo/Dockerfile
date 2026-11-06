@@ -1,4 +1,4 @@
-FROM python:3.11-slim-bookworm
+FROM python:3.11-slim-trixie
 
 WORKDIR /worker
 RUN apt update
