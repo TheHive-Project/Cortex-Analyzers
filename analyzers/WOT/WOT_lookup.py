@@ -33,10 +33,10 @@ class WOTAnalyzer(Analyzer):
 
         categories = [x.get('name', None) for x in raw.get("categories", [])]
         blacklists = raw.get("blackList", [])
-        min_categories = min([x.get('id', 501) for x in raw.get("categories", [])])
 
         if categories:
-            value = "|".join(categories)         
+            value = "|".join(categories)
+            min_cat = min([x.get('id', 501) for x in raw.get("categories", [])])
             if min_cat > 300:
                 level = "safe"
             elif min_cat > 200:
