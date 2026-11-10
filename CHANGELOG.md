@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.10.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.10.3) (2026-11-10)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.10.2...3.10.3)
+
+**Merged pull requests:**
+
+- Update Dockerfile - base image from bookworm to trixie [\#1536](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1536) ([nusantara-self](https://github.com/nusantara-self))
+- WOT: fix summary\(\) so the analyzer returns a taxonomy [\#1535](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1535) ([arpitjain099](https://github.com/arpitjain099))
+- ScanMalware: fix www. lookups and the search link [\#1533](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1533) ([jonaslejon](https://github.com/jonaslejon))
+- Bump msgpack from 1.2.2 to 1.2.3 in /analyzers/DomainTools [\#1531](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1531) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump tornado from 6.5.10 to 6.6 in /responders/Jupyter [\#1530](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1530) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump dnspython from 2.8.0 to 2.9.0 in /responders/DNS-RPZ [\#1529](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1529) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [3.10.2](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.10.2) (2026-10-29)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.10.1...3.10.2)
