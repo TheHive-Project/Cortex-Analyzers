@@ -3,5 +3,5 @@ eml_parser==3.0.4
 python-magic==0.4.27
 iocextract==1.16.1
 imgkit==1.2.3
-Pillow==12.3.0
+Pillow==13.0.0
 bs4==0.0.2
