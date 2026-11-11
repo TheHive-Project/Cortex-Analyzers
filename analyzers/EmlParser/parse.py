@@ -474,7 +474,7 @@ def base64_image(img_path, width):
         wpercent = width / float(image.size[0])
         if image.size[0] > width:
             hsize = int(float(image.size[1]) * float(wpercent))
-            image = image.resize((width, hsize), Image.ANTIALIAS)
+            image = image.resize((width, hsize), Image.LANCZOS)
         ImgByteArr = BytesIO()
         image.save(ImgByteArr, format=ft)
         ImgByteArr = ImgByteArr.getvalue()
