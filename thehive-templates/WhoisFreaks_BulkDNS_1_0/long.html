@@ -1,0 +1,63 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        WhoisFreaks Bulk DNS for <strong>{{content.observable}}</strong>
+    </div>
+    <div class="panel-body" ng-init="r = content.result">
+        <p ng-if="!content.found">No record found{{content.message ? ': ' + content.message : ''}}.</p>
+        <div class="alert alert-info" ng-if="content.partial">WhoisFreaks returned a partial record: some fields could not be collected.</div>
+        <div class="alert alert-info" ng-if="content.cached">WhoisFreaks returned a cached record because the live WHOIS server did not answer.</div>
+        <div class="alert alert-warning" ng-if="content.artifacts_truncated">Only the first 1000 of {{content.artifacts_truncated}} suggested observables are offered for import.</div>
+        <div ng-if="content.found">
+            <p>{{r.results.length}} result(s) for {{r.submitted}} entries sent in {{r.requests}} request(s)<span ng-if="r.missing">; {{r.missing}} entries got no answer</span>.</p>
+            <p class="text-muted" ng-if="content.query">Options: <span ng-if="content.query.record_types">record types {{content.query.record_types}}; </span><span ng-if="content.query.cname_depth !== undefined">CNAME depth {{content.query.cname_depth}}</span></p>
+            <div class="alert alert-warning" ng-if="r.error">{{r.error}}</div>
+            <table class="table table-condensed table-hover" ng-if="r.results.length">
+                <thead>
+                    <tr><th>Entry</th><th>Registered</th><th>Records</th></tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="d in r.results">
+                        <td>{{d.ipAddress || d.domainName}}</td>
+                        <td colspan="2" class="text-danger" ng-if="!d.status">{{d.message || d.error || 'Lookup failed'}}</td>
+                        <td ng-if="d.status">{{d.ipAddress ? '-' : (d.domainRegistered === true ? 'yes' : (d.domainRegistered === false ? 'no' : 'unknown'))}}</td>
+                        <td ng-if="d.status" class="wrap">
+                            <div ng-repeat="rec in d.dnsRecords">
+                                <span class="label label-primary">{{rec.dnsType}}</span>
+                                <span ng-if="rec.address">{{rec.address}}</span>
+                                <span ng-if="rec.singleName">{{rec.singleName}}</span>
+                                <span ng-if="rec.target">{{rec.priority}} {{rec.target}}</span>
+                                <span ng-if="rec.dnsType == 'SOA'">{{rec.host}} {{rec.admin}}</span>
+                                <span ng-repeat="s in rec.strings">{{s}} </span>
+                            </div>
+                            <span class="text-muted" ng-if="!d.dnsRecords.length">no records</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div ng-if="r.skipped_count">
+                <h4>Skipped entries ({{r.skipped_count}})</h4>
+                <table class="table table-condensed" style="width: auto">
+                    <thead>
+                        <tr><th>Entry</th><th>Reason</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="s in r.skipped"><td class="wrap">{{s.value}}</td><td>{{s.reason}}</td></tr>
+                    </tbody>
+                </table>
+                <p class="text-muted" ng-if="r.skipped_count > r.skipped.length">Showing the first {{r.skipped.length}}.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        WhoisFreaks Bulk DNS <strong>Error</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> WhoisFreaks:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

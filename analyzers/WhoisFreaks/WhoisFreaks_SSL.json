@@ -1,0 +1,46 @@
+{
+  "name": "WhoisFreaks_SSL",
+  "version": "1.0",
+  "author": "WhoisFreaks",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get the TLS certificate a domain serves: issuer, validity, subject and alternative names. 1 credit; with ssl_chain, plus 1 per 2 certificates.",
+  "dataTypeList": [
+    "domain",
+    "fqdn"
+  ],
+  "command": "WhoisFreaks/whoisfreaks.py",
+  "baseConfig": "WhoisFreaks",
+  "config": {
+    "service": "ssl",
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 2
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "WhoisFreaks API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "ssl_chain",
+      "description": "Also return the intermediate and root certificates of the chain",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://whoisfreaks.com",
+  "service_logo": {
+    "path": "assets/whoisfreaks.png",
+    "caption": "logo"
+  }
+}
