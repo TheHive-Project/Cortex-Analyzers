@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.10.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.10.4) (2026-11-12)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.10.3...3.10.4)
+
+**Merged pull requests:**
+
+- EmlParser - bump pillow version and preview fix [\#1541](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1541) ([nusantara-self](https://github.com/nusantara-self))
+- Bump setuptools from 83.0.0 to 84.1.0 in /analyzers/GRR [\#1540](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1540) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump dnspython from 2.8.0 to 2.9.0 in /analyzers/DNSSinkhole [\#1539](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1539) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump black from 26.5.1 to 26.10.1 in /analyzers/Jupyter [\#1538](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1538) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump nbconvert from 7.17.1 to 7.17.2 in /analyzers/Jupyter [\#1537](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1537) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [3.10.3](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.10.3) (2026-11-10)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.10.2...3.10.3)
