@@ -1,0 +1,117 @@
+<!-- Error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> IPGeolocation.io</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
+
+<!-- Security -->
+<div class="panel" ng-if="success" ng-class="{'malicious': 'panel-danger', 'suspicious': 'panel-warning'}[content.threat_level] || 'panel-info'">
+    <div class="panel-heading">
+        IPGeolocation.io security of <strong>{{::content.ip}}</strong>
+        <span class="pull-right">Threat score <strong>{{::content.security.threat_score}}</strong>/100</span>
+    </div>
+    <div class="panel-body">
+        <p ng-if="::!content.security">No security data was returned for this address.</p>
+        <table class="table table-condensed" ng-if="::content.security">
+            <thead>
+                <tr><th>Signal</th><th>Detected</th><th>Provider or type</th><th>Confidence</th><th>Last seen</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Tor exit node</td>
+                    <td><span class="label" ng-class="::content.security.is_tor ? 'label-danger' : 'label-default'">{{::content.security.is_tor ? "Yes" : "No"}}</span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>VPN</td>
+                    <td><span class="label" ng-class="::content.security.is_vpn ? 'label-warning' : 'label-default'">{{::content.security.is_vpn ? "Yes" : "No"}}</span></td>
+                    <td>{{::content.security.vpn_provider_names.join(", ")}}</td>
+                    <td><span ng-if="::content.security.vpn_confidence_score">{{::content.security.vpn_confidence_score}}%</span></td>
+                    <td>{{::content.security.vpn_last_seen}}</td>
+                </tr>
+                <tr>
+                    <td>Proxy</td>
+                    <td><span class="label" ng-class="::content.security.is_proxy ? 'label-warning' : 'label-default'">{{::content.security.is_proxy ? "Yes" : "No"}}</span></td>
+                    <td>{{::content.security.proxy_provider_names.join(", ")}}</td>
+                    <td><span ng-if="::content.security.proxy_confidence_score">{{::content.security.proxy_confidence_score}}%</span></td>
+                    <td>
+                        {{::content.security.proxy_last_seen}}
+                        <div ng-if="::content.security.proxy_days_seen_30d"><small class="text-muted">on {{::content.security.proxy_days_seen_30d}} of the last 30 days</small></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Residential proxy</td>
+                    <td><span class="label" ng-class="::content.security.is_residential_proxy ? 'label-warning' : 'label-default'">{{::content.security.is_residential_proxy ? "Yes" : "No"}}</span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Relay</td>
+                    <td><span class="label" ng-class="::content.security.is_relay ? 'label-warning' : 'label-default'">{{::content.security.is_relay ? "Yes" : "No"}}</span></td>
+                    <td>{{::content.security.relay_provider_name}}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Known attacker</td>
+                    <td><span class="label" ng-class="::content.security.is_known_attacker ? 'label-danger' : 'label-default'">{{::content.security.is_known_attacker ? "Yes" : "No"}}</span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Bot</td>
+                    <td><span class="label" ng-class="::content.security.is_bot ? 'label-warning' : 'label-default'">{{::content.security.is_bot ? "Yes" : "No"}}</span></td>
+                    <td>
+                        {{::content.security.bot_type}}
+                        <span ng-if="::content.security.bot_operator_name">({{::content.security.bot_operator_name}})</span>
+                        <div ng-if="::content.security.is_known_good_bot"><small class="text-muted">known good bot</small></div>
+                    </td>
+                    <td><span ng-if="::content.security.bot_confidence_score">{{::content.security.bot_confidence_score}}%</span></td>
+                    <td>{{::content.security.bot_last_seen}}</td>
+                </tr>
+                <tr>
+                    <td>Spam</td>
+                    <td><span class="label" ng-class="::content.security.is_spam ? 'label-warning' : 'label-default'">{{::content.security.is_spam ? "Yes" : "No"}}</span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Anonymous</td>
+                    <td><span class="label" ng-class="::content.security.is_anonymous ? 'label-warning' : 'label-default'">{{::content.security.is_anonymous ? "Yes" : "No"}}</span></td>
+                    <td><small class="text-muted">set for Tor exit nodes, VPNs, proxies and relays</small></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Cloud provider</td>
+                    <td><span class="label" ng-class="::content.security.is_cloud_provider ? 'label-info' : 'label-default'">{{::content.security.is_cloud_provider ? "Yes" : "No"}}</span></td>
+                    <td>{{::content.security.cloud_provider_name}}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Corporate gateway</td>
+                    <td><span class="label" ng-class="::content.security.is_corporate_gateway ? 'label-info' : 'label-default'">{{::content.security.is_corporate_gateway ? "Yes" : "No"}}</span></td>
+                    <td>
+                        {{::content.security.corporate_gateway_provider_name}}
+                        <span ng-if="::content.security.corporate_gateway_type">({{::content.security.corporate_gateway_type}})</span>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

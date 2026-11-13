@@ -1,0 +1,47 @@
+<!-- Error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> IPGeolocation.io</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
+
+<!-- ASN -->
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        IPGeolocation.io autonomous system <strong>{{::content.asn.as_number}}</strong>
+        <span ng-if="::content.ip">for {{::content.ip}}</span>
+    </div>
+    <div class="panel-body">
+        <p ng-if="::!content.asn">No autonomous system data was returned.</p>
+        <dl class="dl-horizontal" ng-if="::content.asn">
+            <dt>ASN</dt>
+            <dd>{{::content.asn.as_number || "-"}}</dd>
+            <dt ng-if-start="::content.asn.asn_name">Name</dt>
+            <dd ng-if-end>{{::content.asn.asn_name}}</dd>
+            <dt>Organization</dt>
+            <dd>{{::content.asn.organization || "-"}}</dd>
+            <dt ng-if-start="::content.asn.type">Type</dt>
+            <dd ng-if-end>{{::content.asn.type}}</dd>
+            <dt ng-if-start="::content.asn.country">Country</dt>
+            <dd ng-if-end>{{::content.asn.country}}</dd>
+            <dt ng-if-start="::content.asn.domain">Domain</dt>
+            <dd ng-if-end>{{::content.asn.domain | fang}}</dd>
+            <dt ng-if-start="::content.asn.rir">Registry</dt>
+            <dd ng-if-end>{{::content.asn.rir}}</dd>
+            <dt ng-if-start="::content.asn.date_allocated">Allocated</dt>
+            <dd ng-if-end>{{::content.asn.date_allocated}}</dd>
+            <dt ng-if-start="::content.asn.allocation_status">Status</dt>
+            <dd ng-if-end>{{::content.asn.allocation_status}}</dd>
+            <dt ng-if-start="::content.asn.num_of_ipv4_routes">IPv4 routes</dt>
+            <dd ng-if-end>{{::content.asn.num_of_ipv4_routes}}</dd>
+            <dt ng-if-start="::content.asn.num_of_ipv6_routes">IPv6 routes</dt>
+            <dd ng-if-end>{{::content.asn.num_of_ipv6_routes}}</dd>
+        </dl>
+    </div>
+</div>
