@@ -1,0 +1,102 @@
+<!-- Error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> IPGeolocation.io</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
+
+<!-- Location -->
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        IPGeolocation.io location of <strong>{{::(content.domain || content.ip) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt ng-if-start="::content.domain">Resolved IP</dt>
+            <dd ng-if-end>{{::content.ip}}</dd>
+            <dt ng-if-start="::content.hostname">Hostname</dt>
+            <dd class="wrap" ng-if-end>{{::content.hostname}}</dd>
+            <dt>Country</dt>
+            <dd>
+                {{::content.location.country_emoji}} {{::content.location.country_name || "-"}}
+                <span ng-if="::content.location.country_code2">({{::content.location.country_code2}})</span>
+                <span class="label label-default" ng-if="::content.location.is_eu">EU</span>
+            </dd>
+            <dt ng-if-start="::content.location.state_prov">Region</dt>
+            <dd ng-if-end>{{::content.location.state_prov}}</dd>
+            <dt ng-if-start="::content.location.district">District</dt>
+            <dd ng-if-end>{{::content.location.district}}</dd>
+            <dt ng-if-start="::content.location.city">City</dt>
+            <dd ng-if-end>
+                {{::content.location.city}}
+                <span ng-if="::content.location.zipcode">{{::content.location.zipcode}}</span>
+            </dd>
+            <dt ng-if-start="::content.location.latitude">Coordinates</dt>
+            <dd ng-if-end>
+                <a ng-href="https://www.openstreetmap.org/?mlat={{::content.location.latitude}}&mlon={{::content.location.longitude}}#map=10/{{::content.location.latitude}}/{{::content.location.longitude}}" target="_blank" rel="noopener noreferrer">
+                    {{::content.location.latitude}}, {{::content.location.longitude}}
+                </a>
+            </dd>
+            <dt>Continent</dt>
+            <dd>{{::content.location.continent_name || "-"}}</dd>
+        </dl>
+
+        <h4 ng-if="::content.asn">Autonomous system</h4>
+        <dl class="dl-horizontal" ng-if="::content.asn">
+            <dt>ASN</dt>
+            <dd>{{::content.asn.as_number || "-"}}</dd>
+            <dt>Organization</dt>
+            <dd>{{::content.asn.organization || "-"}}</dd>
+            <dt ng-if-start="::content.asn.type">Type</dt>
+            <dd ng-if-end>{{::content.asn.type}}</dd>
+            <dt ng-if-start="::content.asn.domain">Domain</dt>
+            <dd ng-if-end>{{::content.asn.domain | fang}}</dd>
+            <dt ng-if-start="::content.asn.rir">Registry</dt>
+            <dd ng-if-end>{{::content.asn.rir}}</dd>
+            <dt ng-if-start="::content.asn.date_allocated">Allocated</dt>
+            <dd ng-if-end>{{::content.asn.date_allocated}}</dd>
+        </dl>
+
+        <h4 ng-if="::content.company.name">Company</h4>
+        <dl class="dl-horizontal" ng-if="::content.company.name">
+            <dt>Name</dt>
+            <dd>{{::content.company.name}}</dd>
+            <dt ng-if-start="::content.company.type">Type</dt>
+            <dd ng-if-end>{{::content.company.type}}</dd>
+            <dt ng-if-start="::content.company.domain">Domain</dt>
+            <dd ng-if-end>{{::content.company.domain | fang}}</dd>
+        </dl>
+
+        <h4 ng-if="::content.network">Network</h4>
+        <dl class="dl-horizontal" ng-if="::content.network">
+            <dt>Route</dt>
+            <dd>{{::content.network.route || "-"}}</dd>
+            <dt ng-if-start="::content.network.connection_type">Connection</dt>
+            <dd ng-if-end>{{::content.network.connection_type}}</dd>
+            <dt>Anycast</dt>
+            <dd>{{::content.network.is_anycast ? "Yes" : "No"}}</dd>
+            <dt>CDN</dt>
+            <dd>{{::content.network.is_cdn ? (content.network.cdn_provider_name || "Yes") : "No"}}</dd>
+        </dl>
+
+        <h4 ng-if="::content.time_zone || content.currency">Time zone and currency</h4>
+        <dl class="dl-horizontal" ng-if="::content.time_zone || content.currency">
+            <dt ng-if-start="::content.time_zone.name">Time zone</dt>
+            <dd ng-if-end>{{::content.time_zone.name}} (UTC{{::content.time_zone.offset_with_dst >= 0 ? "+" : ""}}{{::content.time_zone.offset_with_dst}})</dd>
+            <dt ng-if-start="::content.time_zone.current_time">Local time</dt>
+            <dd ng-if-end>{{::content.time_zone.current_time}}</dd>
+            <dt ng-if-start="::content.currency.code">Currency</dt>
+            <dd ng-if-end>{{::content.currency.name}} ({{::content.currency.code}})</dd>
+            <dt ng-if-start="::content.country_metadata.calling_code">Calling code</dt>
+            <dd ng-if-end>{{::content.country_metadata.calling_code}}</dd>
+            <dt ng-if-start="::content.country_metadata.languages.length">Languages</dt>
+            <dd ng-if-end>{{::content.country_metadata.languages.join(", ")}}</dd>
+        </dl>
+    </div>
+</div>

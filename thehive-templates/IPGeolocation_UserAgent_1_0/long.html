@@ -1,0 +1,72 @@
+<!-- Error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> IPGeolocation.io</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
+
+<!-- User agent. The API uses "Unknown" and "??" for unknown values, and repeats the type
+     (for example "Hacker") in every field of attack tools: those values are not shown. -->
+<div class="panel" ng-if="success" ng-class="(content.type || '').toLowerCase() === 'hacker' ? 'panel-warning' : 'panel-info'">
+    <div class="panel-heading">
+        IPGeolocation.io user agent: <strong>{{::content.type || "unknown type"}}</strong>
+    </div>
+    <div class="panel-body" ng-init="ipgeoSkip = ['', '??', 'unknown', (content.type || '').toLowerCase()]">
+        <p ng-if="::(content.type || '').toLowerCase() === 'hacker'">
+            This user agent belongs to a known attack or scanning tool.
+        </p>
+        <dl class="dl-horizontal">
+            <dt>User agent</dt>
+            <dd class="wrap"><code>{{::content.user_agent_string}}</code></dd>
+            <dt>Type</dt>
+            <dd>{{::content.type || "-"}}</dd>
+            <dt ng-if-start="::ipgeoSkip.indexOf(('' + (content.name || '')).toLowerCase()) < 0">Client</dt>
+            <dd ng-if-end>
+                {{::content.name}}
+                <span ng-if="::ipgeoSkip.indexOf(('' + (content.version || '')).toLowerCase()) < 0 && content.version !== content.name">{{::content.version}}</span>
+            </dd>
+        </dl>
+
+        <div ng-if="::content.device && (ipgeoSkip.indexOf(('' + (content.device.name || '')).toLowerCase()) < 0 || ipgeoSkip.indexOf(('' + (content.device.type || '')).toLowerCase()) < 0 || ipgeoSkip.indexOf(('' + (content.device.brand || '')).toLowerCase()) < 0 || ipgeoSkip.indexOf(('' + (content.device.cpu || '')).toLowerCase()) < 0)">
+            <h4>Device</h4>
+            <dl class="dl-horizontal">
+                <dt ng-if-start="::ipgeoSkip.indexOf(('' + (content.device.name || '')).toLowerCase()) < 0">Name</dt>
+                <dd ng-if-end>{{::content.device.name}}</dd>
+                <dt ng-if-start="::ipgeoSkip.indexOf(('' + (content.device.type || '')).toLowerCase()) < 0">Type</dt>
+                <dd ng-if-end>{{::content.device.type}}</dd>
+                <dt ng-if-start="::ipgeoSkip.indexOf(('' + (content.device.brand || '')).toLowerCase()) < 0">Brand</dt>
+                <dd ng-if-end>{{::content.device.brand}}</dd>
+                <dt ng-if-start="::ipgeoSkip.indexOf(('' + (content.device.cpu || '')).toLowerCase()) < 0">CPU</dt>
+                <dd ng-if-end>{{::content.device.cpu}}</dd>
+            </dl>
+        </div>
+
+        <div ng-if="::content.operating_system && (ipgeoSkip.indexOf(('' + (content.operating_system.name || '')).toLowerCase()) < 0 || ipgeoSkip.indexOf(('' + (content.operating_system.version || '')).toLowerCase()) < 0 || ipgeoSkip.indexOf(('' + (content.operating_system.type || '')).toLowerCase()) < 0)">
+            <h4>Operating system</h4>
+            <dl class="dl-horizontal">
+                <dt ng-if-start="::ipgeoSkip.indexOf(('' + (content.operating_system.name || '')).toLowerCase()) < 0">Name</dt>
+                <dd ng-if-end>{{::content.operating_system.name}}</dd>
+                <dt ng-if-start="::ipgeoSkip.indexOf(('' + (content.operating_system.version || '')).toLowerCase()) < 0">Version</dt>
+                <dd ng-if-end>{{::content.operating_system.version}}</dd>
+                <dt ng-if-start="::ipgeoSkip.indexOf(('' + (content.operating_system.type || '')).toLowerCase()) < 0">Type</dt>
+                <dd ng-if-end>{{::content.operating_system.type}}</dd>
+            </dl>
+        </div>
+
+        <div ng-if="::content.engine && (ipgeoSkip.indexOf(('' + (content.engine.name || '')).toLowerCase()) < 0 || ipgeoSkip.indexOf(('' + (content.engine.version || '')).toLowerCase()) < 0)">
+            <h4>Engine</h4>
+            <dl class="dl-horizontal">
+                <dt ng-if-start="::ipgeoSkip.indexOf(('' + (content.engine.name || '')).toLowerCase()) < 0">Name</dt>
+                <dd ng-if-end>{{::content.engine.name}}</dd>
+                <dt ng-if-start="::ipgeoSkip.indexOf(('' + (content.engine.version || '')).toLowerCase()) < 0">Version</dt>
+                <dd ng-if-end>{{::content.engine.version}}</dd>
+            </dl>
+        </div>
+    </div>
+</div>
