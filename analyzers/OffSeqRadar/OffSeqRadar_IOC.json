@@ -1,0 +1,51 @@
+{
+  "name": "OffSeqRadar_IOC",
+  "version": "1.0",
+  "author": "OffSeq",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Look up an IP, domain, URL, hash, email or filename in the indicators OffSeq Radar extracted from threat reports.",
+  "dataTypeList": [
+    "ip",
+    "domain",
+    "fqdn",
+    "url",
+    "hash",
+    "mail",
+    "filename"
+  ],
+  "command": "OffSeqRadar/offseq_radar.py",
+  "baseConfig": "OffSeqRadar",
+  "config": {
+    "service": "ioc",
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 2
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "OffSeq Radar API key (tr_ followed by 64 hex characters), from Console > Settings at https://radar.offseq.com/console. The free plan includes API access.",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "base_url",
+      "description": "OffSeq Radar API base URL.",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "https://radar.offseq.com/api/v1"
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://radar.offseq.com",
+  "service_logo": {
+    "path": "assets/offseq-radar.png",
+    "caption": "logo"
+  }
+}
