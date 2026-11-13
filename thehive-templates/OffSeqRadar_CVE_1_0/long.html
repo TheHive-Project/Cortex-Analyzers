@@ -1,0 +1,51 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt><i class="fa fa-warning"></i> Error: </dt>
+            <dd>{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="panel panel-warning" ng-if="success && !content.found">
+    <div class="panel-heading">OffSeq Radar: <strong>{{content.cve}}</strong></div>
+    <div class="panel-body">No record for <strong>{{content.cve}}</strong> was found in OffSeq Radar.</div>
+</div>
+
+<div class="panel panel-info" ng-if="success && content.found" ng-init="t = content.threat">
+    <div class="panel-heading">
+        OffSeq Radar: <a href="{{content.url}}" target="_blank" rel="noopener noreferrer">{{content.cve}}</a>
+    </div>
+    <div class="panel-body">
+        <p><strong>{{t.title}}</strong></p>
+        <dl class="dl-horizontal">
+            <dt>Priority: </dt><dd>{{t.priority.score}} ({{t.priority.band}})</dd>
+            <dt ng-if="t.cvssScore != null">CVSS: </dt><dd ng-if="t.cvssScore != null">{{t.cvssScore}} <small>{{t.cvssVector}}</small></dd>
+            <dt ng-if="t.epss">EPSS: </dt><dd ng-if="t.epss">{{t.epss.score}} (percentile {{t.epss.percentile}})</dd>
+            <dt ng-if="t.kev">CISA KEV: </dt><dd ng-if="t.kev" class="text-danger">Added {{t.kev.addedDate | limitTo : 10}}, due {{t.kev.dueDate | limitTo : 10}}, ransomware use: {{t.kev.ransomwareUse}}</dd>
+            <dt ng-if="t.exploit">Exploit: </dt><dd ng-if="t.exploit">{{t.exploit.maturity}}</dd>
+            <dt ng-if="t.euvd">ENISA EUVD: </dt><dd ng-if="t.euvd">{{t.euvd.id}}<span ng-if="t.euvd.exploited" class="text-danger"> (exploited)</span></dd>
+            <dt ng-if="t.vendorProject">Product: </dt><dd ng-if="t.vendorProject">{{t.vendorProject}} {{t.product}}</dd>
+            <dt ng-if="t.cwes.length">CWE: </dt><dd ng-if="t.cwes.length"><span class="label label-default" ng-repeat="c in t.cwes">{{c}}</span></dd>
+            <dt>Published: </dt><dd>{{t.publishedDate | limitTo : 10}}</dd>
+        </dl>
+        <div ng-if="t.priority.factors.length">
+            <hr>
+            <h4>Priority factors</h4>
+            <table class="table table-condensed">
+                <thead><tr><th>Factor</th><th>Points</th><th>Detail</th></tr></thead>
+                <tbody><tr ng-repeat="f in t.priority.factors"><td>{{f.factor}}</td><td>{{f.points}}</td><td>{{f.detail}}</td></tr></tbody>
+            </table>
+        </div>
+        <div ng-if="t.exploit.sources.length">
+            <hr>
+            <h4>Exploit sources</h4>
+            <ul><li ng-repeat="s in t.exploit.sources">{{s.type}}: <a href="{{s.url}}" target="_blank" rel="noopener noreferrer">{{s.ref || s.url}}</a></li></ul>
+        </div>
+        <hr>
+        <p>{{t.description}}</p>
+    </div>
+</div>

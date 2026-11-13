@@ -1,0 +1,32 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt><i class="fa fa-warning"></i> Error: </dt>
+            <dd>{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">OffSeq Radar: <strong>{{content.indicator | fang}}</strong></div>
+    <div class="panel-body">
+        <p ng-if="!content.matches.length">No threat report in OffSeq Radar mentions this indicator.</p>
+        <p ng-if="content.matches.length && !content.exact">Partial matches only: Radar matches indicators by substring.</p>
+        <table class="table table-striped" ng-if="content.matches.length">
+            <thead><tr><th>Threat</th><th>Type</th><th>Severity</th><th>CVE</th><th>Published</th><th>Matching indicators</th></tr></thead>
+            <tbody>
+                <tr ng-repeat="m in content.matches">
+                    <td>{{m.title}}</td>
+                    <td>{{m.type}}</td>
+                    <td>{{m.severity}}</td>
+                    <td>{{m.cveId}}</td>
+                    <td>{{m.publishedDate | limitTo : 10}}</td>
+                    <td><div ng-repeat="i in m.matchingIndicators">{{i.value | fang}} <small>{{i.description}}</small></div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
