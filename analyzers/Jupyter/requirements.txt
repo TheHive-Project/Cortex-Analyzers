@@ -2,7 +2,7 @@ papermill==2.7.0
 jupyter==1.1.1
 nbconvert==7.17.2
 nbformat==5.11.1
-tornado==6.5.10
+tornado==6.6
 ipython==9.17.1
 ipykernel==7.3.0
 cortexutils==2.2.1

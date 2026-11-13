@@ -1,2 +1,2 @@
 cortexutils==2.2.1
-dnspython==2.8.0
+dnspython==2.9.0
