@@ -1,0 +1,55 @@
+{
+  "name": "OffSeqBreach_Domain",
+  "version": "1.0",
+  "author": "OffSeq",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Count leaked credentials of a domain's employees, customers and third parties in OffSeq Breach, with password-strength breakdowns.",
+  "dataTypeList": [
+    "domain",
+    "fqdn"
+  ],
+  "command": "OffSeqBreach/offseq_breach.py",
+  "baseConfig": "OffSeqBreach",
+  "config": {
+    "service": "domain",
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 2,
+    "auto_extract": false
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "OffSeq Breach API key, from Dashboard > API at https://breach.offseq.com. API access needs the Basic plan or higher.",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "base_url",
+      "description": "OffSeq Breach API base URL.",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "https://breach.offseq.com/api/v1"
+    },
+    {
+      "name": "confirm_credit",
+      "description": "Spend a pay-per-search credit when the plan's daily lookup allowance is used up.",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://breach.offseq.com",
+  "service_logo": {
+    "path": "assets/offseq-breach.png",
+    "caption": "logo"
+  }
+}

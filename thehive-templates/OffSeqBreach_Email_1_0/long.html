@@ -1,0 +1,30 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt><i class="fa fa-warning"></i> Error: </dt>
+            <dd>{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">OffSeq Breach: <strong>{{content.email | fang}}</strong></div>
+    <div class="panel-body">
+        <p ng-if="!content.found">This address was not found in any leak.</p>
+        <p ng-if="content.found">Found in <strong>{{content.total}}</strong> leak records<span ng-if="content.total > content.leaks.length"> (first {{content.leaks.length}} shown)</span>. Passwords stay masked until unlocked in OffSeq Breach.</p>
+        <table class="table table-striped" ng-if="content.leaks.length">
+            <thead><tr><th>Source</th><th>Added</th><th>Password exposed</th><th>Unlocked</th></tr></thead>
+            <tbody>
+                <tr ng-repeat="l in content.leaks">
+                    <td>{{l.url | fang}}</td>
+                    <td>{{l.added_at | limitTo : 10}}</td>
+                    <td>{{l.has_password ? 'yes' : 'no'}}</td>
+                    <td>{{l.unlocked ? 'yes' : 'no'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
