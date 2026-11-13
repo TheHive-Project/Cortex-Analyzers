@@ -1,0 +1,57 @@
+<!-- Error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">DarkEye Error</div>
+    <div class="panel-body">{{content.errorMessage}}</div>
+</div>
+
+<!-- One product failed, the other answered -->
+<div class="panel panel-warning" ng-if="success && content.errors.length">
+    <div class="panel-heading">Some results are missing</div>
+    <div class="panel-body">
+        <ul>
+            <li ng-repeat="e in content.errors"><strong>{{::e.product}}</strong>: {{::e.error}}</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Summary -->
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">DarkEye records for {{::content.observable}}</div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Records</dt>
+            <dd>{{::content.count}}<span ng-if="::content.truncated"> (list cut short by the page or record limit)</span></dd>
+            <dt>Products queried</dt><dd>{{::content.products.join(', ')}}</dd>
+            <dt ng-repeat-start="(product, n) in content.counts_by_product">{{::product}}</dt>
+            <dd ng-repeat-end>{{::n}}</dd>
+            <dt ng-repeat-start="(category, n) in content.counts_by_category">{{::category}}</dt>
+            <dd ng-repeat-end>{{::n}}</dd>
+        </dl>
+        <p ng-if="!content.found">No record found. This does not mean the domain is clean.</p>
+    </div>
+</div>
+
+<!-- Records -->
+<div class="panel panel-info" ng-if="success && content.records.length" ng-init="record_limit = 10">
+    <div class="panel-heading">
+        Records
+        <span class="pull-right" ng-show="::content.records.length > 10">
+            <a href ng-show="record_limit===10" ng-click="record_limit = undefined">Show all ({{::content.records.length}})</a>
+            <a href ng-show="!record_limit" ng-click="record_limit = 10">Show less</a>
+        </span>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <tr><th>Product</th><th>Category</th><th>Title</th><th>Website</th><th>Group</th><th>Country</th><th>Discovered</th></tr>
+            <tr ng-repeat="r in content.records | limitTo:record_limit">
+                <td>{{r.product}}</td>
+                <td>{{r.category}}</td>
+                <td>{{r.title | ellipsis:44}}</td>
+                <td>{{r.website}}</td>
+                <td>{{r.group}}</td>
+                <td>{{r.country}}</td>
+                <td>{{r.discovered}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
