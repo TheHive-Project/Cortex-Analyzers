@@ -1,0 +1,98 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        SoChain: <strong class="wrap">{{content.address}}</strong>
+        <span class="label label-primary" style="margin-left:5px;">{{content.network}}</span>
+        <a class="btn btn-xs btn-primary pull-right" href="{{content.explorer}}" target="_blank" rel="noopener noreferrer">
+            <i class="fa fa-external-link"></i> View on SoChain
+        </a>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Balance</dt>
+            <dd>{{content.balance}} {{content.network}}
+                <span ng-if="content.unconfirmed_balance != '0.00000000'" class="text-muted">
+                    ({{content.unconfirmed_balance}} unconfirmed)
+                </span>
+            </dd>
+            <dt>Total received</dt>
+            <dd>{{content.total_received}} {{content.network}}</dd>
+            <dt>Total sent</dt>
+            <dd>{{content.total_sent}} {{content.network}}</dd>
+            <dt>Transactions</dt>
+            <dd>{{content.txs_total}} ({{content.txs_received}} received, {{content.txs_sent}} sent)</dd>
+            <dt>First active</dt>
+            <dd ng-if="content.first_active">{{content.first_active.time}} (block {{content.first_active.height}})</dd>
+            <dd ng-if="!content.first_active">-</dd>
+            <dt>Last active</dt>
+            <dd ng-if="content.last_active">{{content.last_active.time}} (block {{content.last_active.height}})</dd>
+            <dd ng-if="!content.last_active">-</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="panel panel-warning" ng-if="success && content.poisoning.targeted">
+    <div class="panel-heading">
+        <i class="fa fa-warning"></i> Address poisoning: {{content.poisoning.lookalikes.length}} look-alike address(es) sent dust
+    </div>
+    <div class="panel-body">
+        <p>Look-alike addresses imitate an address this one paid or was paid by, so that copying an address from its history pays the look-alike.</p>
+        <table class="table table-condensed">
+            <thead>
+                <tr><th>Look-alike</th><th>Imitates</th><th>Dust</th><th>Dust transaction</th></tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="f in content.poisoning.findings">
+                    <td class="wrap">{{f.sender}}</td>
+                    <td class="wrap">{{f.imitates}}</td>
+                    <td>{{f.amount}}</td>
+                    <td class="wrap">{{f.dust_txid}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-default" ng-if="success">
+    <div class="panel-heading">
+        Recent counterparties
+        <span class="badge" style="margin-left:10px;">{{content.counterparties.rows.length}}</span>
+    </div>
+    <div class="panel-body">
+        <div class="alert alert-info" ng-if="!content.counterparties.rows.length">
+            <i class="fa fa-info-circle"></i> No recent payments of a significant amount.
+        </div>
+        <table class="table table-condensed" ng-if="content.counterparties.rows.length">
+            <thead>
+                <tr><th>Direction</th><th>Address</th><th>Amount</th><th>Block</th><th>Transaction</th></tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="c in content.counterparties.rows">
+                    <td>
+                        <span ng-if="c.direction == 'sent'" class="label label-danger">paid</span>
+                        <span ng-if="c.direction == 'received'" class="label label-success">paid by</span>
+                    </td>
+                    <td class="wrap">{{c.address}}</td>
+                    <td>{{c.amount}}</td>
+                    <td>{{c.height}}</td>
+                    <td class="wrap">{{c.txid}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="text-muted" ng-if="content.counterparties.building || content.poisoning.building">
+            SoChain is still catching up on this network's history; the lists may be incomplete.
+        </p>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> SoChain: </dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
