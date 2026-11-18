@@ -2,4 +2,4 @@ cortexutils==2.2.1
 requests==2.34.2
 anyrun-sdk==1.14.19
 urllib3==2.8.0
-msgpack==1.2.3
+msgpack==1.2.4
