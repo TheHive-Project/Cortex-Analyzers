@@ -20,6 +20,7 @@
 
 import json
 import os
+import re
 import sys
 import glob
 import traceback
@@ -72,6 +73,52 @@ class Attachment:
             # f.write((self.data))
             # f.close()
             # return filename
+
+
+RTF_PREBUF = (b'{\\rtf1\\ansi\\mac\\deff0\\deftab720{\\fonttbl;}{\\f0\\fnil \\froman \\fswiss '
+              b'\\fmodern \\fscript \\fdecor MS Sans SerifSymbolArialTimes New RomanCourier'
+              b'{\\colortbl\\red0\\green0\\blue0\r\n\\par \\pard\\plain\\f0\\fs20\\b\\i\\u\\tab\\tx')
+
+
+def decompressRtf(data):
+    """Decompresses a PR_RTF_COMPRESSED stream (LZFu, see MS-OXRTFCP)."""
+    if data is None or len(data) < 16:
+        return None
+    magic = data[8:12]
+    if magic == b'MELA':  # stored uncompressed
+        return data[16:]
+    if magic != b'LZFu':
+        return None
+    window = bytearray(RTF_PREBUF + b'\x00' * (4096 - len(RTF_PREBUF)))
+    writePos = len(RTF_PREBUF)
+    out = bytearray()
+    pos = 16
+    while pos < len(data):
+        control = data[pos]
+        pos += 1
+        for bit in range(8):
+            if control & (1 << bit):
+                if pos + 2 > len(data):
+                    return bytes(out)
+                ref = (data[pos] << 8) | data[pos + 1]
+                pos += 2
+                offset = ref >> 4
+                if offset == writePos:  # end marker
+                    return bytes(out)
+                for i in range((ref & 0xF) + 2):
+                    c = window[(offset + i) % 4096]
+                    out.append(c)
+                    window[writePos] = c
+                    writePos = (writePos + 1) % 4096
+            else:
+                if pos >= len(data):
+                    return bytes(out)
+                c = data[pos]
+                pos += 1
+                out.append(c)
+                window[writePos] = c
+                writePos = (writePos + 1) % 4096
+    return bytes(out)
 
 
 def windowsUnicode(string):
@@ -235,6 +282,43 @@ class Message(OleFile.OleFileIO):
         return self._getStringStream('__substg1.0_1000')
 
     @property
+    def htmlBody(self):
+        # PR_HTML is usually stored as binary, sometimes as a string
+        raw = self._getStream('__substg1.0_10130102')
+        if raw is None:
+            return self._getStringStream('__substg1.0_1013')
+        try:
+            return raw.decode('utf-8')
+        except UnicodeDecodeError:
+            return raw.decode('latin-1')
+
+    @property
+    def rtfBody(self):
+        # Outlook often keeps the HTML only inside the compressed RTF body
+        rtf = decompressRtf(self._getStream('__substg1.0_10090102'))
+        if rtf is None:
+            return None
+        return rtf.decode('latin-1').replace('{', ' ').replace('}', ' ')
+
+    @property
+    def urls(self):
+        # URLs found in the plain text, HTML and RTF bodies, in order of appearance
+        urls = []
+        seen = set()
+        for text in (self.body, self.htmlBody, self.rtfBody):
+            if not text:
+                continue
+            for url in re.findall(r'https?://[^\s<>"\'\\]+', text.replace('&amp;', '&'), re.I):
+                url = url.rstrip('.,;:!?)]}')
+                # XML namespaces of Office generated HTML, not links
+                if re.match(r'https?://(schemas\.microsoft\.com|schemas\.openxmlformats\.org|www\.w3\.org)/', url, re.I):
+                    continue
+                if url not in seen:
+                    seen.add(url)
+                    urls.append(url)
+        return urls
+
+    @property
     def sujet(self):
         return self._getStringStream('__substg1.0_0037')
 
@@ -288,7 +372,7 @@ class Message(OleFile.OleFileIO):
     def getReport(self):
         result = {"subject": self.subject, "date": self.date, "receivers": self.recupar, "displayFrom": self.nomaffichefrom,
                   "sender": self.Lesender, "topic": self.lobjet, "bcc": self.bcc, "displayTo": self.displayto,
-                  "headers": self.lentete, "body": self.body}
+                  "headers": self.lentete, "body": self.body, "urls": self.urls}
 
         attachments = []
         for attachment in self.attachments:

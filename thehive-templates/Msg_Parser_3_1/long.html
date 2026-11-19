@@ -1,0 +1,171 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        Email message details
+    </div>
+    <div class="panel-body">
+        <uib-tabset active="active">
+            <uib-tab index="0" heading="Overview">
+                <br>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Plain text preview
+                    </div>
+                    <div class="panel-body">
+                        <dl class="dl-horizontal">
+                            <dt>From:</dt>
+                            <dd>{{content.displayFrom || '-'}} <span ng-if="content.sender">({{content.sender}})</span></dd>
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>To:</dt>
+                            <dd>{{content.displayTo || '-'}} <span ng-if="content.receivers">({{content.receivers}})</span></dd>
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>Bcc:</dt>
+                            <dd>{{content.bcc || '-'}}</dd>
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>Subject:</dt>
+                            <dd>{{content.subject || '-'}}</dd>
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>Topic:</dt>
+                            <dd>{{content.topic || '-'}}</dd>
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>Date:</dt>
+                            <dd>{{content.date || '-'}}</dd>
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>Attachments:</dt>
+                            <dd>
+                                <div ng-repeat="a in content.attachments">
+                                    <i class="fa fa-paperclip" aria-hidden="true"></i> {{a.filename}}
+                                </div>
+                                <div ng-if="!content.attachments || content.attachments.length == 0">
+                                    no attachment found
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>URLs:</dt>
+                            <dd>
+                                <ng-pluralize count="content.urls.length || 0"
+                                    when="{'0': 'no URL found', '1': '1 URL found', 'other': '{} URLs found'}"></ng-pluralize>
+                                <div ng-if="content.urls.length > 0" style="max-height: 300px; overflow-y: auto; margin-top: 5px;">
+                                    <div class="wrap" style="word-break: break-all; margin-bottom: 6px;"
+                                        ng-repeat="u in content.urls track by $index">{{u | fang}}</div>
+                                </div>
+                            </dd>
+                        </dl>
+                        <hr>
+                        <pre ng-if="content.body"
+                            style="color:black;background-color: inherit; white-space: pre-wrap; overflow-wrap: break-word;">{{content.body}}</pre>
+                        <pre ng-if="!content.body"
+                            style="color:black;background-color: inherit;">NO text/plain CONTENT</pre>
+                    </div>
+                </div>
+            </uib-tab>
+
+            <uib-tab index="1" heading="URLs ({{content.urls.length || 0}})">
+                <br>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        URLs found in the plain text, HTML and RTF bodies
+                    </div>
+                    <div class="panel-body">
+                        <div ng-if="!content.urls || content.urls.length == 0">
+                            No URL found.
+                        </div>
+                        <div ng-if="content.urls.length > 0">
+                            <input type="text" class="form-control" ng-model="search.url"
+                                placeholder="Filter URLs">
+                            <br>
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">#</th>
+                                        <th>URL</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="u in content.urls | filter:search.url track by $index">
+                                        <td>{{$index + 1}}</td>
+                                        <td class="wrap" style="word-break: break-all;">{{u | fang}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </uib-tab>
+
+            <uib-tab index="2" heading="Detailed information">
+                <br>
+                <!-- Details about attachments -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Attachments
+                    </div>
+                    <div class="panel-body">
+                        <div ng-if="!content.attachments || content.attachments.length == 0">
+                            No attachment found
+                        </div>
+                        <table ng-if="content.attachments.length > 0" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Filename</th>
+                                    <th>Mime Type</th>
+                                    <th>Extension</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="a in content.attachments">
+                                    <td class="wrap">{{a.filename}}</td>
+                                    <td class="wrap">{{a.mime}}</td>
+                                    <td>{{a.extension}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Transport headers -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Headers
+                    </div>
+                    <div class="panel-body">
+                        <div ng-if="!content.headers">
+                            No transport headers.
+                        </div>
+                        <pre ng-if="content.headers"
+                            style="white-space:pre-wrap;overflow-y:scroll;max-height: 500px;">{{content.headers}}</pre>
+                    </div>
+                </div>
+
+                <!-- Plain text body -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Body (text/plain)
+                    </div>
+                    <div class="panel-body">
+                        <div ng-if="!content.body">
+                            No text/plain part.
+                        </div>
+                        <pre ng-if="content.body"
+                            style="white-space:pre-wrap;overflow-y:scroll;max-height: 500px;">{{content.body}}</pre>
+                    </div>
+                </div>
+            </uib-tab>
+        </uib-tabset>
+    </div>
+</div>
