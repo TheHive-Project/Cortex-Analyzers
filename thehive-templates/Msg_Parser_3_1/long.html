@@ -60,10 +60,6 @@
                             <dd>
                                 <ng-pluralize count="content.urls.length || 0"
                                     when="{'0': 'no URL found', '1': '1 URL found', 'other': '{} URLs found'}"></ng-pluralize>
-                                <div ng-if="content.urls.length > 0" style="max-height: 300px; overflow-y: auto; margin-top: 5px;">
-                                    <div class="wrap" style="word-break: break-all; margin-bottom: 6px;"
-                                        ng-repeat="u in content.urls track by $index">{{u | fang}}</div>
-                                </div>
                             </dd>
                         </dl>
                         <hr>
