@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.10.5](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.10.5) (2026-11-19)
+
+[Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.10.4...3.10.5)
+
+**Merged pull requests:**
+
+- MsgParser 3.1 - Extract URLs from MSG files [\#1555](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1555) ([nusantara-self](https://github.com/nusantara-self))
+- Dependency bumps [\#1554](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1554) ([nusantara-self](https://github.com/nusantara-self))
+- Bump setuptools from 84.0.0 to 84.1.0 in /analyzers/DomainTools [\#1542](https://github.com/TheHive-Project/Cortex-Analyzers/pull/1542) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [3.10.4](https://github.com/TheHive-Project/Cortex-Analyzers/tree/3.10.4) (2026-11-12)
 
 [Full Changelog](https://github.com/TheHive-Project/Cortex-Analyzers/compare/3.10.3...3.10.4)
