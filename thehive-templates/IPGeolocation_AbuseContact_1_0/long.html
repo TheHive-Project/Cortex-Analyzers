@@ -1,0 +1,49 @@
+<!-- Error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> IPGeolocation.io</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
+
+<!-- Abuse contact -->
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        IPGeolocation.io abuse contact for <strong>{{::content.ip}}</strong>
+    </div>
+    <div class="panel-body">
+        <p ng-if="::!content.abuse.emails.length && !content.abuse.phone_numbers.length && !content.abuse.organization">
+            No abuse contact was found for this address.
+        </p>
+        <dl class="dl-horizontal" ng-if="::content.abuse">
+            <dt>Email</dt>
+            <dd>
+                <span ng-if="::!content.abuse.emails.length">-</span>
+                <div ng-repeat="email in ::content.abuse.emails"><a ng-href="mailto:{{::email}}">{{::email}}</a></div>
+            </dd>
+            <dt>Phone</dt>
+            <dd>
+                <span ng-if="::!content.abuse.phone_numbers.length">-</span>
+                <div ng-repeat="phone in ::content.abuse.phone_numbers">{{::phone}}</div>
+            </dd>
+            <dt ng-if-start="::content.abuse.organization">Organization</dt>
+            <dd ng-if-end>{{::content.abuse.organization}}</dd>
+            <dt ng-if-start="::content.abuse.name">Contact</dt>
+            <dd ng-if-end>
+                {{::content.abuse.name}}
+                <span ng-if="::content.abuse.kind">({{::content.abuse.kind}})</span>
+            </dd>
+            <dt ng-if-start="::content.abuse.address">Address</dt>
+            <dd class="wrap" ng-if-end>{{::content.abuse.address}}</dd>
+            <dt ng-if-start="::content.abuse.country">Country</dt>
+            <dd ng-if-end>{{::content.abuse.country}}</dd>
+            <dt ng-if-start="::content.abuse.route">Network</dt>
+            <dd ng-if-end>{{::content.abuse.route}}</dd>
+        </dl>
+    </div>
+</div>
