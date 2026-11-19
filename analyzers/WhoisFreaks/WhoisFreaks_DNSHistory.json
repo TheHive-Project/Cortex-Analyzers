@@ -1,0 +1,54 @@
+{
+  "name": "WhoisFreaks_DNSHistory",
+  "version": "1.0",
+  "author": "WhoisFreaks",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get the DNS records seen for a domain over time. 2 credits per page.",
+  "dataTypeList": [
+    "domain",
+    "fqdn"
+  ],
+  "command": "WhoisFreaks/whoisfreaks.py",
+  "baseConfig": "WhoisFreaks",
+  "config": {
+    "service": "dns_history",
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 2
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "WhoisFreaks API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "max_pages",
+      "description": "Result pages to fetch per run (each page is billed); 1 to 20",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 1
+    },
+    {
+      "name": "dns_record_types",
+      "description": "Record types to return: all, or a comma-separated list of A, AAAA, CNAME, MX, NS, SOA, SPF, TXT (IP lookups always return PTR)",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "all"
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://whoisfreaks.com",
+  "service_logo": {
+    "path": "assets/whoisfreaks.png",
+    "caption": "logo"
+  }
+}

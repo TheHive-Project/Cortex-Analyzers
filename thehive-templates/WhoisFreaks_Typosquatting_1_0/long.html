@@ -1,0 +1,42 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        WhoisFreaks Typosquatting for <strong>{{content.observable}}</strong>
+    </div>
+    <div class="panel-body" ng-init="r = content.result">
+        <p ng-if="!content.found">No record found{{content.message ? ': ' + content.message : ''}}.</p>
+        <div class="alert alert-info" ng-if="content.partial">WhoisFreaks returned a partial record: some fields could not be collected.</div>
+        <div class="alert alert-info" ng-if="content.cached">WhoisFreaks returned a cached record because the live WHOIS server did not answer.</div>
+        <div class="alert alert-warning" ng-if="content.artifacts_truncated">Only the first 1000 of {{content.artifacts_truncated}} suggested observables are offered for import.</div>
+        <div ng-if="content.found">
+            <p>{{r.totalRecords}} registered look-alikes of <span ng-if="content.query.keyword">keyword <strong>{{content.query.keyword}}</strong></span><span ng-if="content.query.pattern">pattern <strong>{{content.query.pattern}}</strong></span>, on {{r.totalPages}} page(s).</p>
+            <div class="alert alert-warning" ng-if="r.error">{{r.error}}</div>
+            <p class="text-muted" ng-if="r.hasNextPage">Pages fetched: {{r.pages_fetched}}. Raise <code>max_pages</code> in the analyzer configuration to fetch more.</p>
+            <table class="table table-condensed table-hover" ng-if="r.domains.length">
+                <thead>
+                    <tr><th>Domain</th><th>Created</th><th>Expires</th><th>Last seen</th><th>Dropped</th></tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="d in r.domains">
+                        <td>{{d.domainName}}</td>
+                        <td>{{d.createDate}}</td>
+                        <td>{{d.expiryDate}}</td>
+                        <td>{{d.lastSeen}}</td>
+                        <td>{{d.isDropped === true ? 'yes' : (d.isDropped === false ? 'no' : 'unknown')}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        WhoisFreaks Typosquatting <strong>Error</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> WhoisFreaks:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

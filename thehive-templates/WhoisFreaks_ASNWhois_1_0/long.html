@@ -1,0 +1,58 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        WhoisFreaks ASN WHOIS for <strong>{{content.observable}}</strong>
+    </div>
+    <div class="panel-body" ng-init="r = content.result">
+        <p ng-if="!content.found">No record found{{content.message ? ': ' + content.message : ''}}.</p>
+        <div class="alert alert-info" ng-if="content.partial">WhoisFreaks returned a partial record: some fields could not be collected.</div>
+        <div class="alert alert-info" ng-if="content.cached">WhoisFreaks returned a cached record because the live WHOIS server did not answer.</div>
+        <div class="alert alert-warning" ng-if="content.artifacts_truncated">Only the first 1000 of {{content.artifacts_truncated}} suggested observables are offered for import.</div>
+        <div ng-if="content.found">
+            <dl class="dl-horizontal">
+                <dt>AS number</dt><dd>AS{{r.asNumber}} {{r.asName}}</dd>
+                <dt>Organisation</dt><dd>{{r.orgName || '-'}}<span ng-if="r.orgHandle"> ({{r.orgHandle}})</span></dd>
+                <dt>Country</dt><dd>{{r.country || '-'}}</dd>
+                <dt>Type</dt><dd>{{r.type || '-'}}</dd>
+                <dt>Domain</dt><dd>{{r.domain || '-'}}</dd>
+                <dt>Registry</dt><dd>{{r.whoisHost || '-'}}</dd>
+                <dt>Allocated</dt><dd>{{r.dateAllocated || '-'}}</dd>
+                <dt>Routes</dt><dd>{{r.numOfIPv4Routes}} IPv4, {{r.numOfIPv6Routes}} IPv6</dd>
+                <dt>Abuse contacts</dt><dd>{{r.contacts.abuseContacts.join(', ') || '-'}}</dd>
+                <dt>Upstreams</dt><dd>{{r.upstreams.length || 0}}</dd>
+                <dt>Downstreams</dt><dd>{{r.downstreams.length || 0}}</dd>
+                <dt>Peers</dt><dd>{{r.peers.length || 0}}</dd>
+            </dl>
+            <h4 ng-if="r.routeObjects.length">Routes<small ng-if="r.routeObjects.length > 100"> (first 100 of {{r.routeObjects.length}})</small></h4>
+            <table class="table table-condensed" ng-if="r.routeObjects.length">
+                <thead>
+                    <tr><th>Route</th><th>Origin</th><th>ISP</th><th>IPs</th></tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="ro in r.routeObjects | limitTo:100">
+                        <td>{{ro.route}}</td><td>{{ro.origin}} {{ro.originName}}</td><td>{{ro.isp}}</td><td>{{ro.numberOfIps}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h4 ng-if="r.upstreams.length">Upstreams<small ng-if="r.upstreams.length > 50"> (first 50 of {{r.upstreams.length}})</small></h4>
+            <table class="table table-condensed" ng-if="r.upstreams.length">
+                <tbody>
+                    <tr ng-repeat="u in r.upstreams | limitTo:50"><td>{{u.asNumber}}</td><td>{{u.description}}</td><td>{{u.country}}</td></tr>
+                </tbody>
+            </table>
+            <h4 ng-if="r.whoisResponse">Raw WHOIS</h4>
+            <pre ng-if="r.whoisResponse" style="max-height: 400px; overflow: auto">{{r.whoisResponse}}</pre>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        WhoisFreaks ASN WHOIS <strong>Error</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> WhoisFreaks:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

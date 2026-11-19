@@ -1,0 +1,45 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        WhoisFreaks IP Reputation for <strong>{{content.observable}}</strong>
+    </div>
+    <div class="panel-body" ng-init="r = content.result">
+        <p ng-if="!content.found">No record found{{content.message ? ': ' + content.message : ''}}.</p>
+        <div class="alert alert-info" ng-if="content.partial">WhoisFreaks returned a partial record: some fields could not be collected.</div>
+        <div class="alert alert-info" ng-if="content.cached">WhoisFreaks returned a cached record because the live WHOIS server did not answer.</div>
+        <div class="alert alert-warning" ng-if="content.artifacts_truncated">Only the first 1000 of {{content.artifacts_truncated}} suggested observables are offered for import.</div>
+        <div ng-if="content.found" ng-init="t = content.thresholds || {malicious: 75, suspicious: 40}">
+            <dl class="dl-horizontal">
+                <dt>Threat score</dt>
+                <dd><span class="label" ng-class="r.security.threat_score == null ? 'label-default' : (r.security.threat_score >= t.malicious ? 'label-danger' : (r.security.threat_score >= t.suspicious ? 'label-warning' : 'label-success'))">{{r.security.threat_score != null ? r.security.threat_score : 'unknown'}}</span> / 100 <small class="text-muted">(malicious from {{t.malicious}}, suspicious from {{t.suspicious}})</small></dd>
+                <dt>Proxy providers</dt><dd>{{r.security.proxy_provider_names.join(', ') || '-'}}</dd>
+                <dt>VPN providers</dt><dd>{{r.security.vpn_provider_names.join(', ') || '-'}}</dd>
+                <dt>Bot operator</dt><dd>{{r.security.bot_operator_name || '-'}}</dd>
+                <dt>Cloud provider</dt><dd>{{r.security.cloud_provider_name || '-'}}</dd>
+                <dt>ASN</dt><dd>{{r.asn.as_number}} {{r.asn.organization}}<span ng-if="r.asn.type"> ({{r.asn.type}})</span></dd>
+                <dt>Route</dt><dd>{{r.network.route || '-'}}<span ng-if="r.network.is_anycast"> (anycast)</span></dd>
+                <dt>Location</dt><dd>{{r.location.city}}<span ng-if="r.location.city">, </span>{{r.location.country_name}}</dd>
+            </dl>
+            <h4>Signals</h4>
+            <table class="table table-condensed" style="width: auto">
+                <tbody>
+                    <tr ng-repeat="s in [{k: 'is_known_attacker', l: 'Known attacker', c: 'label-danger'}, {k: 'is_tor', l: 'Tor exit node', c: 'label-warning'}, {k: 'is_vpn', l: 'VPN', c: 'label-warning'}, {k: 'is_proxy', l: 'Proxy', c: 'label-warning'}, {k: 'is_residential_proxy', l: 'Residential proxy', c: 'label-warning'}, {k: 'is_bot', l: 'Bot', c: 'label-warning'}, {k: 'is_spam', l: 'Spam', c: 'label-warning'}, {k: 'is_known_good_bot', l: 'Known good bot (crawler, monitor)', c: 'label-info'}, {k: 'is_relay', l: 'Privacy relay', c: 'label-info'}, {k: 'is_anonymous', l: 'Anonymous (VPN, proxy, Tor or relay)', c: 'label-info'}, {k: 'is_cloud_provider', l: 'Cloud provider', c: 'label-info'}, {k: 'is_corporate_gateway', l: 'Corporate gateway', c: 'label-info'}]">
+                        <td>{{s.l}}</td>
+                        <td><span class="label" ng-class="r.security[s.k] === true ? s.c : 'label-default'">{{r.security[s.k] === true ? 'yes' : (r.security[s.k] === false ? 'no' : 'unknown')}}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        WhoisFreaks IP Reputation <strong>Error</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> WhoisFreaks:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

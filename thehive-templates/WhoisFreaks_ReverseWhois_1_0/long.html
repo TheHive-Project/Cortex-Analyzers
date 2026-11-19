@@ -1,0 +1,44 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        WhoisFreaks Reverse WHOIS for <strong>{{content.observable}}</strong>
+    </div>
+    <div class="panel-body" ng-init="r = content.result">
+        <p ng-if="!content.found">No record found{{content.message ? ': ' + content.message : ''}}.</p>
+        <div class="alert alert-info" ng-if="content.partial">WhoisFreaks returned a partial record: some fields could not be collected.</div>
+        <div class="alert alert-info" ng-if="content.cached">WhoisFreaks returned a cached record because the live WHOIS server did not answer.</div>
+        <div class="alert alert-warning" ng-if="content.artifacts_truncated">Only the first 1000 of {{content.artifacts_truncated}} suggested observables are offered for import.</div>
+        <div ng-if="content.found">
+            <p>{{r.total_Result}} domains match {{content.query.search_type}} <strong>{{content.observable}}</strong><span ng-if="content.query.exact"> (exact match)</span>, on {{r.total_Pages}} page(s)<span ng-if="content.query.mode == 'mini'">, compact records</span>.</p>
+            <div class="alert alert-warning" ng-if="r.error">{{r.error}}</div>
+            <p class="text-muted" ng-if="r.pages_fetched < r.total_Pages">Pages fetched: {{r.pages_fetched}}. Raise <code>max_pages</code> in the analyzer configuration to fetch more.</p>
+            <table class="table table-condensed table-hover">
+                <thead>
+                    <tr><th>Domain</th><th>Created</th><th>Updated</th><th>Expires</th><th>Registrant</th><th>Email</th><th>Organisation</th></tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="d in r.whois_domains_historical">
+                        <td>{{d.domain_name}}</td>
+                        <td>{{d.create_date}}</td>
+                        <td>{{d.update_date}}</td>
+                        <td>{{d.expiry_date}}</td>
+                        <td>{{d.name || d.registrant_contact.name}}</td>
+                        <td>{{d.email || d.registrant_contact.email_address}}</td>
+                        <td>{{d.company_name || d.registrant_contact.company}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        WhoisFreaks Reverse WHOIS <strong>Error</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> WhoisFreaks:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

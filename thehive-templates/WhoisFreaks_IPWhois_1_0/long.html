@@ -1,0 +1,65 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        WhoisFreaks IP WHOIS for <strong>{{content.observable}}</strong>
+    </div>
+    <div class="panel-body" ng-init="r = content.result">
+        <p ng-if="!content.found">No record found{{content.message ? ': ' + content.message : ''}}.</p>
+        <div class="alert alert-info" ng-if="content.partial">WhoisFreaks returned a partial record: some fields could not be collected.</div>
+        <div class="alert alert-info" ng-if="content.cached">WhoisFreaks returned a cached record because the live WHOIS server did not answer.</div>
+        <div class="alert alert-warning" ng-if="content.artifacts_truncated">Only the first 1000 of {{content.artifacts_truncated}} suggested observables are offered for import.</div>
+        <div ng-if="content.found">
+            <dl class="dl-horizontal">
+                <dt>IP address</dt><dd>{{r.ip_address}}</dd>
+                <dt>WHOIS server</dt><dd>{{r.whois_server}}</dd>
+                <dt>Organisation</dt><dd>{{r.organization.name || '-'}}<span ng-if="r.organization.handle"> ({{r.organization.handle}})</span></dd>
+                <dt>Address</dt><dd>{{r.organization.address.join(', ') || '-'}}</dd>
+            </dl>
+            <h4>Networks</h4>
+            <table class="table table-condensed">
+                <thead>
+                    <tr><th>Range</th><th>CIDR</th><th>Name</th><th>Handle</th><th>Status</th><th>Organisation</th><th>Created</th><th>Updated</th></tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="n in r.inet_nums">
+                        <td>{{n.start_ip}} - {{n.end_ip}}</td>
+                        <td><div ng-repeat="c in n.cidr">{{c}}</div></td>
+                        <td>{{n.net_name}}</td>
+                        <td>{{n.net_handle}}</td>
+                        <td>{{n.status}}</td>
+                        <td>{{n.organization}}</td>
+                        <td>{{n.date_created}}</td>
+                        <td>{{n.date_updated}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h4>Contacts</h4>
+            <table class="table table-condensed">
+                <thead>
+                    <tr><th>Role</th><th>Handle</th><th>Name</th><th>Email</th><th>Phone</th></tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="c in r.abuse_contacts">
+                        <td><span class="label label-danger">abuse</span></td><td>{{c.handle}}</td><td>{{c.name}}</td><td>{{c.email.join(', ')}}</td><td>{{c.phone.join(', ')}}</td>
+                    </tr>
+                    <tr ng-repeat="c in r.technical_contacts">
+                        <td><span class="label label-default">technical</span></td><td>{{c.handle}}</td><td>{{c.name}}</td><td>{{c.email.join(', ')}}</td><td>{{c.phone.join(', ')}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h4 ng-if="r.whois_raw_response">Raw WHOIS</h4>
+            <pre ng-if="r.whois_raw_response" style="max-height: 400px; overflow: auto">{{r.whois_raw_response}}</pre>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        WhoisFreaks IP WHOIS <strong>Error</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> WhoisFreaks:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

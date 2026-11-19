@@ -1,0 +1,70 @@
+{
+  "name": "WhoisFreaks_ReverseWhois",
+  "version": "1.0",
+  "author": "WhoisFreaks",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Find domains whose WHOIS matches an email address, or a keyword, owner or company name. 5 credits per page.",
+  "dataTypeList": [
+    "mail",
+    "other"
+  ],
+  "command": "WhoisFreaks/whoisfreaks.py",
+  "baseConfig": "WhoisFreaks",
+  "config": {
+    "service": "reverse_whois",
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 2
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "WhoisFreaks API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "max_pages",
+      "description": "Result pages to fetch per run (each page is billed); 1 to 20",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 1
+    },
+    {
+      "name": "reverse_whois_search_type",
+      "description": "WHOIS field to search for 'other' observables: keyword, owner, company or email ('mail' observables always search the email)",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "keyword"
+    },
+    {
+      "name": "reverse_whois_exact",
+      "description": "Require an exact match instead of a partial one",
+      "type": "boolean",
+      "multi": false,
+      "required": false,
+      "defaultValue": false
+    },
+    {
+      "name": "reverse_whois_mode",
+      "description": "default: 50 full WHOIS records per page; mini: 100 compact records per page (domain, dates, name, email, company)",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "default"
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://whoisfreaks.com",
+  "service_logo": {
+    "path": "assets/whoisfreaks.png",
+    "caption": "logo"
+  }
+}

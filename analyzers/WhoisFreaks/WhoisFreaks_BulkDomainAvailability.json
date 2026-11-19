@@ -1,0 +1,45 @@
+{
+  "name": "WhoisFreaks_BulkDomainAvailability",
+  "version": "1.0",
+  "author": "WhoisFreaks",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Check whether each domain listed in a text file is available for registration. 1 credit per domain.",
+  "dataTypeList": [
+    "file"
+  ],
+  "command": "WhoisFreaks/whoisfreaks.py",
+  "baseConfig": "WhoisFreaks",
+  "config": {
+    "service": "bulk_domain_availability",
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 2
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "WhoisFreaks API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "max_items",
+      "description": "Entries of the file to look up per run (each entry is billed 1 credit; sent in batches of 100); 1 to 1000",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 100
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://whoisfreaks.com",
+  "service_logo": {
+    "path": "assets/whoisfreaks.png",
+    "caption": "logo"
+  }
+}

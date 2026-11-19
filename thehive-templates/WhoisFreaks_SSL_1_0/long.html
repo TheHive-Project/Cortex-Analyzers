@@ -1,0 +1,40 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        WhoisFreaks SSL Certificate for <strong>{{content.observable}}</strong>
+    </div>
+    <div class="panel-body" ng-init="r = content.result">
+        <p ng-if="!content.found">No record found{{content.message ? ': ' + content.message : ''}}.</p>
+        <div class="alert alert-info" ng-if="content.partial">WhoisFreaks returned a partial record: some fields could not be collected.</div>
+        <div class="alert alert-info" ng-if="content.cached">WhoisFreaks returned a cached record because the live WHOIS server did not answer.</div>
+        <div class="alert alert-warning" ng-if="content.artifacts_truncated">Only the first 1000 of {{content.artifacts_truncated}} suggested observables are offered for import.</div>
+        <div ng-if="content.found">
+            <p>Queried at {{r.queryTime}}: {{r.sslCertificates.length || 0}} certificate(s).</p>
+            <p class="text-muted" ng-if="!r.sslCertificates.length">WhoisFreaks returned no certificate for this host.</p>
+            <div ng-repeat="c in r.sslCertificates">
+                <h4>{{c.subject.commonName}} <small>{{c.chainOrder}}</small></h4>
+                <dl class="dl-horizontal">
+                    <dt>Issuer</dt><dd>{{c.issuer.commonName}}<span ng-if="c.issuer.organization">, {{c.issuer.organization}}</span><span ng-if="c.issuer.country"> ({{c.issuer.country}})</span></dd>
+                    <dt>Valid from</dt><dd>{{c.validityStartDate}}</dd>
+                    <dt>Valid until</dt><dd>{{c.validityEndDate}}</dd>
+                    <dt>Validation</dt><dd>{{c.authenticationType}}</dd>
+                    <dt>Serial number</dt><dd>{{c.serialNumber}}</dd>
+                    <dt>Signature</dt><dd>{{c.signatureAlgorithm}}</dd>
+                    <dt>Public key</dt><dd>{{c.publicKey.keyAlgorithm}} {{c.publicKey.keySize}}</dd>
+                    <dt>Alternative names</dt><dd><div ng-repeat="n in c.extensions.subjectAlternativeNames.dnsNames">{{n}}</div></dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        WhoisFreaks SSL Certificate <strong>Error</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> WhoisFreaks:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

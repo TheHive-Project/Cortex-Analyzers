@@ -1,0 +1,53 @@
+{
+  "name": "WhoisFreaks_ReverseNS",
+  "version": "1.0",
+  "author": "WhoisFreaks",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Find the domains whose NS record names this name server. 5 credits per page.",
+  "dataTypeList": [
+    "fqdn"
+  ],
+  "command": "WhoisFreaks/whoisfreaks.py",
+  "baseConfig": "WhoisFreaks",
+  "config": {
+    "service": "reverse_ns",
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 2
+  },
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "WhoisFreaks API key",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "max_pages",
+      "description": "Result pages to fetch per run (each page is billed); 1 to 20",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 1
+    },
+    {
+      "name": "reverse_dns_sort",
+      "description": "Order results by the date the record was last seen: asc, desc, or none",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "none"
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": true,
+  "service_homepage": "https://whoisfreaks.com",
+  "service_logo": {
+    "path": "assets/whoisfreaks.png",
+    "caption": "logo"
+  }
+}

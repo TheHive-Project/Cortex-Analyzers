@@ -1,0 +1,64 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        WhoisFreaks Bulk IP Reputation for <strong>{{content.observable}}</strong>
+    </div>
+    <div class="panel-body" ng-init="r = content.result">
+        <p ng-if="!content.found">No record found{{content.message ? ': ' + content.message : ''}}.</p>
+        <div class="alert alert-info" ng-if="content.partial">WhoisFreaks returned a partial record: some fields could not be collected.</div>
+        <div class="alert alert-info" ng-if="content.cached">WhoisFreaks returned a cached record because the live WHOIS server did not answer.</div>
+        <div class="alert alert-warning" ng-if="content.artifacts_truncated">Only the first 1000 of {{content.artifacts_truncated}} suggested observables are offered for import.</div>
+        <div ng-if="content.found" ng-init="t = content.thresholds || {malicious: 75, suspicious: 40}">
+            <p>{{r.results.length}} result(s) for {{r.submitted}} entries sent in {{r.requests}} request(s)<span ng-if="r.missing">; {{r.missing}} entries got no answer</span>.</p>
+            <div class="alert alert-warning" ng-if="r.error">{{r.error}}</div>
+            <table class="table table-condensed table-hover" ng-if="r.results.length">
+                <thead>
+                    <tr><th>IP</th><th>Threat score</th><th>Signals</th><th>Cloud provider</th><th>Country</th><th>ASN</th></tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="d in r.results" ng-init="sec = d.security">
+                        <td>{{d.ip}}</td>
+                        <td colspan="5" class="text-danger" ng-if="!sec">{{d.message || 'Lookup failed'}}</td>
+                        <td ng-if="sec"><span class="label" ng-class="sec.threat_score == null ? 'label-default' : (sec.threat_score >= t.malicious ? 'label-danger' : (sec.threat_score >= t.suspicious ? 'label-warning' : 'label-success'))">{{sec.threat_score != null ? sec.threat_score : 'unknown'}}</span></td>
+                        <td ng-if="sec">
+                            <span class="label label-danger" ng-if="sec.is_known_attacker" style="margin-right: 4px">Known attacker</span>
+                            <span class="label label-warning" ng-if="sec.is_tor" style="margin-right: 4px">Tor</span>
+                            <span class="label label-warning" ng-if="sec.is_proxy" style="margin-right: 4px">Proxy{{sec.proxy_type ? ' (' + sec.proxy_type + ')' : ''}}</span>
+                            <span class="label label-warning" ng-if="sec.is_anonymous" style="margin-right: 4px">Anonymous</span>
+                            <span class="label label-warning" ng-if="sec.is_bot" style="margin-right: 4px">Bot</span>
+                            <span class="label label-warning" ng-if="sec.is_spam" style="margin-right: 4px">Spam</span>
+                            <span class="text-muted" ng-if="!(sec.is_known_attacker || sec.is_tor || sec.is_proxy || sec.is_anonymous || sec.is_bot || sec.is_spam) && sec.is_known_attacker === false && sec.is_tor === false && sec.is_proxy === false && sec.is_bot === false && sec.is_spam === false">none</span>
+                            <span class="text-muted" ng-if="!(sec.is_known_attacker || sec.is_tor || sec.is_proxy || sec.is_anonymous || sec.is_bot || sec.is_spam) && !(sec.is_known_attacker === false && sec.is_tor === false && sec.is_proxy === false && sec.is_bot === false && sec.is_spam === false)">unknown</span>
+                        </td>
+                        <td ng-if="sec">{{sec.is_cloud_provider ? (sec.cloud_provider || 'yes') : '-'}}</td>
+                        <td ng-if="sec">{{d.location.country_name || '-'}}</td>
+                        <td ng-if="sec">{{d.network.asn.as_number || '-'}} {{d.network.company.name || d.network.asn.organization}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div ng-if="r.skipped_count">
+                <h4>Skipped entries ({{r.skipped_count}})</h4>
+                <table class="table table-condensed" style="width: auto">
+                    <thead>
+                        <tr><th>Entry</th><th>Reason</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="s in r.skipped"><td class="wrap">{{s.value}}</td><td>{{s.reason}}</td></tr>
+                    </tbody>
+                </table>
+                <p class="text-muted" ng-if="r.skipped_count > r.skipped.length">Showing the first {{r.skipped.length}}.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        WhoisFreaks Bulk IP Reputation <strong>Error</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> WhoisFreaks:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

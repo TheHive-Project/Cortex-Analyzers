@@ -1,0 +1,44 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        WhoisFreaks Domain Availability for <strong>{{content.observable}}</strong>
+    </div>
+    <div class="panel-body" ng-init="r = content.result">
+        <p ng-if="!content.found">No record found{{content.message ? ': ' + content.message : ''}}.</p>
+        <div class="alert alert-info" ng-if="content.partial">WhoisFreaks returned a partial record: some fields could not be collected.</div>
+        <div class="alert alert-info" ng-if="content.cached">WhoisFreaks returned a cached record because the live WHOIS server did not answer.</div>
+        <div class="alert alert-warning" ng-if="content.artifacts_truncated">Only the first 1000 of {{content.artifacts_truncated}} suggested observables are offered for import.</div>
+        <div ng-if="content.found">
+            <dl class="dl-horizontal">
+                <dt>Domain</dt><dd>{{r.domain}}</dd>
+                <dt>Available</dt>
+                <dd><span class="label" ng-class="{'AVAILABLE': 'label-success', 'UNAVAILABLE': 'label-default'}[r.availability] || 'label-warning'">{{r.availability == 'AVAILABLE' ? 'Available' : (r.availability == 'UNAVAILABLE' ? 'Registered' : (r.availability || 'Unknown'))}}</span></dd>
+            </dl>
+            <div ng-if="r.domain_available_response.length > 1">
+                <h4>Suggested alternatives</h4>
+                <table class="table table-condensed table-hover" style="width: auto">
+                    <thead>
+                        <tr><th>Domain</th><th>Availability</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="d in r.domain_available_response" ng-if="d.domain != r.domain">
+                            <td>{{d.domain}}</td>
+                            <td><span class="label" ng-class="{'AVAILABLE': 'label-success', 'UNAVAILABLE': 'label-default'}[d.availability] || 'label-warning'">{{d.availability == 'AVAILABLE' ? 'Available' : (d.availability == 'UNAVAILABLE' ? 'Registered' : (d.availability || 'Unknown'))}}</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        WhoisFreaks Domain Availability <strong>Error</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> WhoisFreaks:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

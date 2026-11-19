@@ -1,0 +1,36 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        WhoisFreaks IP Geolocation for <strong>{{content.observable}}</strong>
+    </div>
+    <div class="panel-body" ng-init="r = content.result">
+        <p ng-if="!content.found">No record found{{content.message ? ': ' + content.message : ''}}.</p>
+        <div class="alert alert-info" ng-if="content.partial">WhoisFreaks returned a partial record: some fields could not be collected.</div>
+        <div class="alert alert-info" ng-if="content.cached">WhoisFreaks returned a cached record because the live WHOIS server did not answer.</div>
+        <div class="alert alert-warning" ng-if="content.artifacts_truncated">Only the first 1000 of {{content.artifacts_truncated}} suggested observables are offered for import.</div>
+        <div ng-if="content.found">
+            <dl class="dl-horizontal">
+                <dt>Country</dt><dd>{{r.location.country_emoji}} {{r.location.country_name}} ({{r.location.country_code2}})</dd>
+                <dt>Region</dt><dd>{{r.location.state_prov || '-'}}</dd>
+                <dt>City</dt><dd>{{r.location.city || '-'}}</dd>
+                <dt>Postal code</dt><dd>{{r.location.zipcode || '-'}}</dd>
+                <dt>Coordinates</dt><dd>{{r.location.latitude}}, {{r.location.longitude}} (radius {{r.location.accuracy_radius}} km, {{r.location.confidence}} confidence)</dd>
+                <dt>ASN</dt><dd>{{r.network.asn.as_number}} {{r.network.asn.organization}}<span ng-if="r.network.asn.type"> ({{r.network.asn.type}})</span></dd>
+                <dt>Company</dt><dd>{{r.network.company.name || '-'}}<span ng-if="r.network.company.domain"> ({{r.network.company.domain}})</span></dd>
+                <dt>Connection</dt><dd>{{r.network.connection_type || '-'}}</dd>
+                <dt>Currency</dt><dd>{{r.currency.code}} {{r.currency.name}}</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        WhoisFreaks IP Geolocation <strong>Error</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> WhoisFreaks:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>

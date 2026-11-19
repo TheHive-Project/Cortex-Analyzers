@@ -1,0 +1,41 @@
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        WhoisFreaks Subdomains for <strong>{{content.observable}}</strong>
+    </div>
+    <div class="panel-body" ng-init="r = content.result">
+        <p ng-if="!content.found">No record found{{content.message ? ': ' + content.message : ''}}.</p>
+        <div class="alert alert-info" ng-if="content.partial">WhoisFreaks returned a partial record: some fields could not be collected.</div>
+        <div class="alert alert-info" ng-if="content.cached">WhoisFreaks returned a cached record because the live WHOIS server did not answer.</div>
+        <div class="alert alert-warning" ng-if="content.artifacts_truncated">Only the first 1000 of {{content.artifacts_truncated}} suggested observables are offered for import.</div>
+        <div ng-if="content.found">
+            <p>{{r.total_records}} known subdomains on {{r.total_pages}} page(s).</p>
+            <p class="text-muted" ng-if="content.query">Filters: <span ng-if="content.query.status">{{content.query.status}} only; </span><span ng-if="content.query.after">seen on or after {{content.query.after}}; </span><span ng-if="content.query.before">seen before {{content.query.before}}</span></p>
+            <div class="alert alert-warning" ng-if="r.error">{{r.error}}</div>
+            <p class="text-muted" ng-if="r.pages_fetched < r.total_pages">Pages fetched: {{r.pages_fetched}}. Raise <code>max_pages</code> in the analyzer configuration to fetch more.</p>
+            <table class="table table-condensed table-hover" ng-if="r.subdomains.length">
+                <thead>
+                    <tr><th>Subdomain</th><th>First seen</th><th>Last seen</th></tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="s in r.subdomains">
+                        <td>{{s.subdomain}}</td>
+                        <td>{{s.first_seen}}</td>
+                        <td>{{s.last_seen}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        WhoisFreaks Subdomains <strong>Error</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> WhoisFreaks:</dt>
+            <dd class="wrap">{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
