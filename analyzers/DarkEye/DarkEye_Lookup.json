@@ -1,0 +1,69 @@
+{
+    "name": "DarkEye_Lookup",
+    "version": "1.0",
+    "author": "DarkEye",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "license": "AGPL-V3",
+    "description": "Look up a domain in DarkEye: ransomware leaks, data breaches, leads and stealer logs listed for it by HaveIBeenRansom and Breach House. Needs an API key for at least one of the two products.",
+    "dataTypeList": [
+        "domain",
+        "fqdn"
+    ],
+    "command": "DarkEye/darkeye.py",
+    "baseConfig": "DarkEye",
+    "config": {
+        "service": "lookup"
+    },
+    "configurationItems": [
+        {
+            "name": "haveibeenransom_api_key",
+            "description": "HaveIBeenRansom API key (haveibeenransom.com). Optional, but at least one of the two keys is needed.",
+            "type": "string",
+            "multi": false,
+            "required": false
+        },
+        {
+            "name": "breachhouse_api_key",
+            "description": "Breach House API key (breach.house). Optional, but at least one of the two keys is needed.",
+            "type": "string",
+            "multi": false,
+            "required": false
+        },
+        {
+            "name": "max_pages",
+            "description": "Maximum number of HaveIBeenRansom result pages to read (about 20 records per page, one API call each)",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 5
+        },
+        {
+            "name": "limit",
+            "description": "Maximum number of Breach House records per source (ransomware, breaches, leads, stealers), 200 at most",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 25
+        },
+        {
+            "name": "max_records",
+            "description": "Maximum number of records kept per product, which bounds the size of the report",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 100
+        },
+        {
+            "name": "timeout",
+            "description": "HTTP timeout in seconds",
+            "type": "number",
+            "multi": false,
+            "required": false,
+            "defaultValue": 30
+        }
+    ],
+    "registration_required": true,
+    "subscription_required": true,
+    "free_subscription": false,
+    "service_homepage": "https://darkeye.io/"
+}
