@@ -23,7 +23,7 @@ DETECTIONS = (
 )
 # Without a key, once a free key's daily trial is spent, or past the organization's overage cap, these flags are
 # absent or null, which must not read as a clean address.
-KEYED_FLAGS = ("hosting", "cdn", "resproxy", "dcproxy", "mobproxy", "pubproxy")
+KEYED_FLAGS = ("hosting", "cdn", "resproxy", "dcproxy", "mobproxy", "pubproxy", "bot")
 
 
 class VPNDetectionAnalyzer(Analyzer):
