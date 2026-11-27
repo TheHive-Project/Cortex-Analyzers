@@ -1,0 +1,162 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+<div ng-switch="content.response_code" ng-if="success">
+    <div ng-repeat="element in ::content.value | limitTo:10">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <strong>Alert: {{element.id}}</strong>
+            </div>
+            <div class="panel-group">
+                <div class="panel-body">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <strong>Summary</strong>
+                        </div>
+                        <div class="panel-body">
+                            <dl class="dl-horizontal" ng-if="element.status">
+                                <dt>Status</dt>
+                                <dd class="wrap">{{element.status}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal" ng-if="element.severity">
+                                <dt>Severity</dt>
+                                <dd class="wrap">{{element.severity}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal" ng-if="element.eventDateTime">
+                                <dt>Detection date</dt>
+                                <dd class="wrap">{{element.eventDateTime}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal" ng-if="element.userStates.length >= 1">
+                                <dt>Account Name</dt>
+                                <div ng-repeat="userState in ::element.userStates | limitTo:20">
+                                    <dl class="dl-horizontal">
+                                        <dd class="wrap" ng-if="userState.userPrincipalName">{{userState.userPrincipalName}}</dd>
+                                        <dd class="wrap" ng-if="!userState.userPrincipalName && userState.accountName">{{userState.accountName}}</dd>
+                                        <dd class="wrap" ng-if="!userState.userPrincipalName && !userState.accountName">Unknown</dd>
+                                    </dl>
+                                </div>
+                            </dl>
+                            <dl class="dl-horizontal" ng-if="element.category">
+                                <dt>Category</dt>
+                                <dd class="wrap">{{element.category}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal" ng-if="element.description">
+                                <dt>Alert Description</dt>
+                                <dd class="wrap">{{element.description}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal" ng-if="element.vendorInformation">
+                                <dt>Source</dt>
+                                <dd class="wrap">{{element.vendorInformation.provider}}</dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-info" ng-if="element.userStates.length >= 1">
+                        <div class="panel-heading">
+                            <strong>Account Details</strong>
+                        </div>
+                        <div class="panel-body">
+                            <dl class="dl-horizontal" ng-if="element.userStates.length >= 1">
+                                <div ng-repeat="userState in ::element.userStates | limitTo:20">
+                                    <dl class="dl-horizontal">
+                                        <dt>Logon IP</dt>
+                                        <dd class="wrap" ng-if="userState.logonIp">{{userState.logonIp}}</dd>
+                                        <dd class="wrap" ng-if="!userState.logonIp">Unknown</dd>
+                                    </dl>
+                                    <dl class="dl-horizontal">
+                                        <dt>Logon Location</dt>
+                                        <dd class="wrap" ng-if="userState.logonLocation">{{userState.logonLocation}}</dd>
+                                        <dd class="wrap" ng-if="!userState.logonLocation">Unknown</dd>
+                                    </dl>
+                                    <dl class="dl-horizontal">
+                                        <dt>Domain Name</dt>
+                                        <dd class="wrap" ng-if="userState.domainName">{{userState.domainName}}</dd>
+                                        <dd class="wrap" ng-if="!userState.domainName">Unknown</dd>
+                                    </dl>
+                                    <dl class="dl-horizontal">
+                                        <dt>Risk Score</dt>
+                                        <dd class="wrap" ng-if="userState.riskScore">{{userState.riskScore}}</dd>
+                                        <dd class="wrap" ng-if="!userState.riskScore">Null</dd>
+                                    </dl>
+                                </div>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-info" ng-if="element.sourceMaterials.length >= 1 || element.comments.length >= 1">
+                        <div class="panel-heading">
+                            <strong>Alert additional details</strong>
+                        </div>
+                        <div class="panel-body">
+                            <dl class="dl-horizontal" ng-if="element.sourceMaterials.length >= 1">
+                                <dt>Source Link(s):</dt>
+                                <div ng-repeat="sourceMaterial in ::element.sourceMaterials | limitTo:20">
+                                    <dl class="dl-horizontal" ng-if="sourceMaterial">
+                                        <dd class="wrap">{{sourceMaterial}}</dd>
+                                    </dl>
+                                </div>
+                            </dl>
+                            <dl class="dl-horizontal" ng-if="element.comments.length >= 1">
+                                <dt>Comment(s):</dt>
+                                <div ng-repeat="comment in ::element.comments | limitTo:20">
+                                    <dl class="dl-horizontal" ng-if="comment">
+                                        <dd class="wrap">{{comment}}</dd>
+                                    </dl>
+                                </div>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-info" ng-if="element.malwareStates.length >= 1">
+                        <div class="panel-heading">
+                            <strong>Malware Details</strong>
+                        </div>
+                        <div classs="panel-body">
+                            <div ng-repeat="malwareState in ::element.malwareStates | limitTo:20">
+                                <dl class="dl-horizontal" ng-if="malwareState.category">
+                                    <dt>Category</dd>
+                                    <dd>{{malwareState.category}}</dd>
+                                </dl>
+                                <dl class="dl-horizontal" ng-if="malwareState.family">
+                                    <dt>Family</dd>
+                                    <dd>{{malwareState.family}}</dd>
+                                </dl>
+                                <dl class="dl-horizontal" ng-if="malwareState.name">
+                                    <dt>Name</dd>
+                                    <dd>{{malwareState.name}}</dd>
+                                </dl>
+                                <dl class="dl-horizontal" ng-if="malwareState.severity">
+                                    <dt>Severity</dd>
+                                    <dd>{{malwareState.Severity}}</dd>
+                                </dl>
+                                <dl class="dl-horizontal" ng-if="malwareState.wasRunning">
+                                    <dt>Running</dd>
+                                    <dd>{{malwareState.wasRunning}}</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-info" ng-if="element.recommendedActions.length >= 1">
+                        <div class="panel-heading">
+                            <strong>Recommended Actions</strong>
+                        </div>
+                        <div classs="panel-body">
+                            <div ng-repeat="recommendedAction in ::element.recommendedActions | limitTo:20">
+                                <dl class="dl-horizontal">
+                                    <dt>{{recommendedAction}}</dt>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
