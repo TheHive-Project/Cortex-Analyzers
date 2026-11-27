@@ -1,0 +1,37 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{artifact.data | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt><i class="fa fa-warning"></i> Error: </dt>
+            <dd>{{content.errorMessage}}</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">OffSeq Breach: <strong>{{content.domain | fang}}</strong></div>
+    <div class="panel-body">
+        <p ng-if="!content.found">No leaked credentials found for this domain.</p>
+        <dl class="dl-horizontal" ng-if="content.found">
+            <dt>Employees: </dt><dd>{{content.counts.employees}}</dd>
+            <dt>Customers: </dt><dd>{{content.counts.customers}}</dd>
+            <dt>Third parties: </dt><dd>{{content.counts.third_parties}}</dd>
+        </dl>
+        <div ng-repeat="p in [{label: 'Employee', d: content.employee_passwords}, {label: 'Customer', d: content.customer_passwords}]" ng-if="p.d.total_pass">
+            <hr>
+            <h4>{{p.label}} password strength ({{p.d.total_pass}} passwords)</h4>
+            <table class="table table-condensed">
+                <thead><tr><th>Too weak</th><th>Weak</th><th>Medium</th><th>Strong</th></tr></thead>
+                <tbody><tr>
+                    <td>{{p.d.too_weak.qty}} ({{p.d.too_weak.perc}}%)</td>
+                    <td>{{p.d.weak.qty}} ({{p.d.weak.perc}}%)</td>
+                    <td>{{p.d.medium.qty}} ({{p.d.medium.perc}}%)</td>
+                    <td>{{p.d.strong.qty}} ({{p.d.strong.perc}}%)</td>
+                </tr></tbody>
+            </table>
+        </div>
+        <p><a href="https://breach.offseq.com" target="_blank" rel="noopener noreferrer">Open OffSeq Breach</a> to review and unlock individual records.</p>
+    </div>
+</div>
