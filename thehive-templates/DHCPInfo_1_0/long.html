@@ -1,0 +1,26 @@
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>
+
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        DHCP scope information
+    </div>
+    <div class="panel-body" ng-show="content.dhcp_scope_name">
+      <dl class="dl-horizontal">
+        <dt>Scope name</dt>
+        <dd>{{content.dhcp_scope_name}}</dd>
+      </dl>
+    </div>
+    <div class="panel-body panel-warning" ng-show="content.not_found">
+      <dl class="dl-horizontal">
+        <dt>Not found</dt>
+        <dd>{{content.not_found}}</dd>
+      </dl>
+    </div>
+</div>

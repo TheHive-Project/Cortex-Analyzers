@@ -1,0 +1,2 @@
+"ScopeId","SubnetMask","StartRange","EndRange","Name"
+"192.0.2.0","255.255.255.0","192.0.2.51","192.0.2.254","Office1"

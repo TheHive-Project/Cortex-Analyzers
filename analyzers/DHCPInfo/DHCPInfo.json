@@ -1,0 +1,22 @@
+{
+    "name": "DHCPInfo",
+    "author": "Jared Jennings <jjennings@fastmail.fm>",
+    "license": "AGPL-V3",
+    "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+    "version": "1.0",
+    "description": "Find DHCP scope name corresponding to an internal IP address",
+    "dataTypeList": ["ip"],
+    "command": "DHCPInfo/dhcp_info_analyzer.py",
+    "baseConfig": "DHCPInfo",
+    "max_tlp": 3,
+    "configurationItems": [
+        {
+            "name": "dhcp_info_directory",
+            "description": "Directory on the Cortex server where the DHCP scope info is to be found",
+            "type": "string",
+            "multi": false,
+            "required": true,
+            "defaultValue": "/path/to/csv-sources"
+        }
+    ]
+}
