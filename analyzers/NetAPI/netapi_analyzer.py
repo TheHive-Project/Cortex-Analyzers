@@ -15,10 +15,9 @@ class NetAPIAnalyzer(Analyzer):
 
     Two free JSON methods, no account needed:
     - compromised-check: is the value, or the registered domain it belongs to, in the feed of
-      domains that public threat feeds report for malware or phishing (now = seen in the last
-      24 h) or of IPv4 addresses that attacked NetAPI's own honeypot network (now = last 48 h),
-      now or in the past, with first / last seen, the reporting feed or attack type and the
-      registrar;
+      domains found by NetAPI's own detection or listed by CERT Polska, or of IPv4 addresses
+      that attacked NetAPI's own honeypot network (now = listed within the last 48 h), now or
+      in the past, with first / last seen, the source or attack type and the registrar;
     - domain-rank: the domain's position in the NetAPI Top 1M, rebuilt daily.
 
     An optional NetAPI API token only raises the rate limits.
