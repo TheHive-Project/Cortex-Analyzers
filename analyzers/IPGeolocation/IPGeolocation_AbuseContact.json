@@ -1,0 +1,63 @@
+{
+  "name": "IPGeolocation_AbuseContact",
+  "version": "1.0",
+  "author": "IPGeolocation.io",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Get the abuse contact of the network an IP address belongs to from IPGeolocation.io: emails, phone numbers, organization and address. Paid plans.",
+  "dataTypeList": [
+    "ip"
+  ],
+  "command": "IPGeolocation/ipgeolocation_analyzer.py",
+  "baseConfig": "IPGeolocation",
+  "config": {
+    "service": "abuse",
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 2
+  },
+  "configurationItems": [
+    {
+      "name": "api_key",
+      "description": "IPGeolocation.io API key. Free plans cover IP location and user agent parsing; domain location, security, ASN and abuse contact lookups need a paid plan.",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "base_url",
+      "description": "Base URL of the IPGeolocation.io API",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "https://api.ipgeolocation.io"
+    },
+    {
+      "name": "timeout",
+      "description": "HTTP timeout in seconds",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 30
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://ipgeolocation.io",
+  "service_logo": {
+    "path": "assets/ipgeolocation_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/IPGeolocation_AbuseContact_long.png",
+      "caption": "IPGeolocation_AbuseContact long report sample"
+    },
+    {
+      "path": "assets/IPGeolocation_AbuseContact_short.png",
+      "caption": "IPGeolocation_AbuseContact mini report sample"
+    }
+  ]
+}

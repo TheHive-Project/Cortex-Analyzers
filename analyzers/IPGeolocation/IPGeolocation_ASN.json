@@ -1,0 +1,64 @@
+{
+  "name": "IPGeolocation_ASN",
+  "version": "1.0",
+  "author": "IPGeolocation.io",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Look up an autonomous system with IPGeolocation.io by AS number or IP address: organization, type, registry, allocation date and route counts. Paid plans.",
+  "dataTypeList": [
+    "ip",
+    "autonomous-system"
+  ],
+  "command": "IPGeolocation/ipgeolocation_analyzer.py",
+  "baseConfig": "IPGeolocation",
+  "config": {
+    "service": "asn",
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 2
+  },
+  "configurationItems": [
+    {
+      "name": "api_key",
+      "description": "IPGeolocation.io API key. Free plans cover IP location and user agent parsing; domain location, security, ASN and abuse contact lookups need a paid plan.",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "base_url",
+      "description": "Base URL of the IPGeolocation.io API",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "https://api.ipgeolocation.io"
+    },
+    {
+      "name": "timeout",
+      "description": "HTTP timeout in seconds",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 30
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://ipgeolocation.io",
+  "service_logo": {
+    "path": "assets/ipgeolocation_logo.png",
+    "caption": "logo"
+  },
+  "screenshots": [
+    {
+      "path": "assets/IPGeolocation_ASN_long.png",
+      "caption": "IPGeolocation_ASN long report sample"
+    },
+    {
+      "path": "assets/IPGeolocation_ASN_short.png",
+      "caption": "IPGeolocation_ASN mini report sample"
+    }
+  ]
+}
