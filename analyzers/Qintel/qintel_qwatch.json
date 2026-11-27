@@ -1,0 +1,34 @@
+{
+  "name": "Qintel_QWatch",
+  "version": "1.0",
+  "url": "None",
+  "author": "Qintel, LLC",
+  "license": "Apache 2.0",
+  "description": "Search Domains and Emails for exposed credentials",
+  "dataTypeList": ["mail","domain"],
+  "command": "Qintel/qintel_qwatch.py",
+  "baseConfig": "Qintel",
+  "configurationItems": [
+    {
+      "name": "access_id",
+      "description": "Crosslink Access ID",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "access_secret",
+      "description": "Crosslink Access Secret",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "remote",
+      "description": "API URL (optional)",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ]
+}
