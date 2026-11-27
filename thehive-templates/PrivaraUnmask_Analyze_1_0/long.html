@@ -1,0 +1,64 @@
+<!-- Success -->
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        <strong>Privara Unmask</strong>
+        <span ng-if="content.outcome"> &mdash; {{content.outcome}}: {{content.outcome_text}}</span>
+        <span ng-if="!content.outcome"> &mdash; {{content.status}}: {{content.outcome_text}}</span>
+    </div>
+    <div class="panel-body">
+        <div class="alert alert-warning" ng-if="content.message">{{content.message}}</div>
+        <dl class="dl-horizontal">
+            <dt>Job</dt>
+            <dd class="wrap">{{content.job_id}}</dd>
+            <dt>Charge</dt>
+            <dd>{{content.charge}}<span ng-if="content.reused" class="text-muted"> (existing result reused: no new charge)</span></dd>
+            <dt ng-if="content.family">Malware family</dt>
+            <dd ng-if="content.family">{{content.family.name}}<span ng-if="content.family.confidence !== null"> (confidence {{content.family.confidence}}%)</span></dd>
+            <dt>File</dt>
+            <dd class="wrap">{{content.sample.filename || "-"}}</dd>
+            <dt>Package</dt>
+            <dd class="wrap">{{content.sample.package || "-"}}</dd>
+            <dt>SHA-256</dt>
+            <dd class="wrap">{{content.sample.sha256 || "-"}}</dd>
+            <dt ng-if="content.android.ran_on">Android</dt>
+            <dd ng-if="content.android.ran_on">tried {{content.android.tried.join(", ")}}; ran on {{content.android.ran_on}}</dd>
+            <dt ng-if="content.web_url">Report</dt>
+            <dd ng-if="content.web_url" class="wrap"><a href="{{content.web_url}}" target="_blank" rel="noopener noreferrer">Open on tajapps.com</a> <small class="text-muted">(after sign-in)</small></dd>
+        </dl>
+    </div>
+</div>
+
+<div class="panel panel-danger" ng-if="success && content.c2.length > 0">
+    <div class="panel-heading">C2 servers ({{content.c2.length}}, defanged)</div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>
+                <tr><th>C2</th><th>Kind</th><th>Live</th><th>Liveness check</th><th>Confidence</th><th>Source</th><th>Known to abuse.ch</th></tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="c in content.c2">
+                    <td class="wrap"><code>{{c.defanged}}</code></td>
+                    <td>{{c.kind || "-"}}<span ng-if="c.port"> (port {{c.port}})</span></td>
+                    <td><span class="label" ng-class="c.live ? 'label-danger' : 'label-default'">{{c.live ? "yes" : "no"}}</span></td>
+                    <td class="wrap">{{c.liveness || "-"}}</td>
+                    <td>{{c.confidence !== null ? c.confidence + "%" : "-"}}</td>
+                    <td>{{c.source || "-"}}</td>
+                    <td>{{c.intel || "no"}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="text-muted" ng-if="content.rejected_count > 0">
+            {{content.rejected_count}} candidate(s) were rejected by the Privara verifier and are not listed.
+        </p>
+    </div>
+</div>
+
+<!-- Failure -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        {{content.errorMessage}}
+    </div>
+</div>

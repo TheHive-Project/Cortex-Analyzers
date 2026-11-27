@@ -1,0 +1,68 @@
+{
+  "name": "PrivaraUnmask_Analyze",
+  "version": "1.0",
+  "author": "TAJ APPS LLC (Privara)",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Privara Unmask, the Android malware sandbox that recovers the C2: extract the command-and-control (C2) servers of an Android malware sample (APK, XAPK, APKM, .apks). Pay only for results, from a prepaid Privara wallet.",
+  "dataTypeList": [
+    "file"
+  ],
+  "command": "PrivaraUnmask/privaraunmask_analyzer.py",
+  "baseConfig": "PrivaraUnmask",
+  "config": {
+    "service": "analyze",
+    "check_tlp": true,
+    "max_tlp": 2,
+    "check_pap": true,
+    "max_pap": 2
+  },
+  "configurationItems": [
+    {
+      "name": "api_key",
+      "description": "Unmask API key (pvu_...) with the submit and read scopes, from https://app.tajapps.com/dashboard/unmask/api",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "api_url",
+      "description": "Unmask API base URL",
+      "type": "string",
+      "multi": false,
+      "required": false,
+      "defaultValue": "https://app.tajapps.com/api/unmask/v1"
+    },
+    {
+      "name": "max_wait",
+      "description": "Seconds to wait for the analysis before reporting it as still running (keep it below the Cortex job timeout)",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 1500
+    },
+    {
+      "name": "poll_interval",
+      "description": "First delay in seconds between two status checks when the API gives no Retry-After (grows up to 120 s, never below 15 s)",
+      "type": "number",
+      "multi": false,
+      "required": false,
+      "defaultValue": 30
+    },
+    {
+      "name": "max_file_size_mb",
+      "description": "Optional lower size cap in MB (by default the Unmask API's own limit is used)",
+      "type": "number",
+      "multi": false,
+      "required": false
+    }
+  ],
+  "registration_required": true,
+  "subscription_required": true,
+  "free_subscription": false,
+  "service_homepage": "https://tajapps.com/unmask/",
+  "service_logo": {"path": "assets/privara-unmask-logo.png", "caption": "logo"},
+  "screenshots": [
+    {"path": "assets/privara-unmask-long-report.png", "caption": "Privara Unmask: long report"}
+  ]
+}
