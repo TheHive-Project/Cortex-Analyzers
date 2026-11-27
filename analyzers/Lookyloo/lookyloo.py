@@ -18,8 +18,9 @@ class Lookyloo(Analyzer):
         self.timeout = self.get_param("config.Capture_timeout", 120) # Default timeout set at 120s
         self.listing = self.get_param("config.Capture_listing", False) # If True, capture will appear on Lookyloo's public index page
         self.api_key = self.get_param("config.api_key", None)
-        self.categories = self.get_param("config.categories", None)
-
+        # Cortex sends an unset multi-value option as [null]; drop empty entries
+        self.categories = [c for c in (self.get_param("config.categories", None) or []) if c]
+        
         # The proxy will be automatically setup by Cortex
         self.lookyloo = LK(self.lookyloo_instance)
 
