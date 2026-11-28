@@ -21,8 +21,8 @@ DETECTIONS = (
     ("cdn", "CDN", "info"),
     ("bot", "Bot", "info"),
 )
-# Without a key, once a free key's daily trial is spent, or past the organization's overage cap, these flags are
-# absent or null, which must not read as a clean address.
+# Without a key, once a free key's full answers for the day are spent, or past the organization's
+# overage cap, these flags are absent or null, which must not read as a clean address.
 KEYED_FLAGS = ("hosting", "cdn", "resproxy", "dcproxy", "mobproxy", "pubproxy", "bot")
 
 
