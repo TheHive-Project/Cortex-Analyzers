@@ -1,0 +1,28 @@
+{
+  "name": "VPNDetection",
+  "version": "1.0",
+  "author": "VPNDetection",
+  "url": "https://github.com/TheHive-Project/Cortex-Analyzers",
+  "license": "AGPL-V3",
+  "description": "Check an IP address for VPN, privacy relay, Tor, proxy, hosting and CDN use with VPNDetection. No API key needed.",
+  "dataTypeList": ["ip"],
+  "baseConfig": "VPNDetection",
+  "command": "VPNDetection/vpndetection.py",
+  "configurationItems": [
+    {
+      "name": "key",
+      "description": "Optional VPNDetection API key: adds the proxy, hosting and CDN flags, the providers, the city, the organization and the abuse contact",
+      "type": "string",
+      "multi": false,
+      "required": false
+    }
+  ],
+  "registration_required": false,
+  "subscription_required": false,
+  "free_subscription": true,
+  "service_homepage": "https://vpndetection.io",
+  "service_logo": {
+    "path": "assets/vpndetection-logo.png",
+    "caption": "logo"
+  }
+}

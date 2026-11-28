@@ -1,0 +1,149 @@
+<!-- Success -->
+<div class="panel panel-info" ng-if="success">
+    <div class="panel-heading">
+        VPNDetection report for <strong>{{(artifact.data || artifact.attachment.name) | fang}}</strong>
+    </div>
+    <div class="panel-body">
+        <p ng-if="content.partial" class="text-muted">
+            Partial answer: no API key, a free key's full answers for the day are spent, or the organization's overage cap is
+            reached. The proxy, hosting and CDN flags, the city, the organization and the abuse contact are not
+            included.
+        </p>
+        <table class="table table-hover">
+            <tr>
+                <th>Detections</th>
+                <td>
+                    <span class="label label-warning" ng-if="content.is_vpn">VPN</span>
+                    <span class="label label-warning" ng-if="content.is_relay">Relay</span>
+                    <span class="label label-warning" ng-if="content.is_tor">Tor</span>
+                    <span class="label label-warning" ng-if="content.is_resproxy">Residential proxy</span>
+                    <span class="label label-warning" ng-if="content.is_dcproxy">Datacenter proxy</span>
+                    <span class="label label-warning" ng-if="content.is_mobproxy">Mobile proxy</span>
+                    <span class="label label-warning" ng-if="content.is_pubproxy">Public proxy</span>
+                    <span class="label label-info" ng-if="content.is_hosting">Hosting</span>
+                    <span class="label label-info" ng-if="content.is_cdn">CDN</span>
+                    <span class="label label-info" ng-if="content.is_bot">Bot</span>
+                    <span class="label label-info" ng-if="content.is_anycast">Anycast</span>
+                    <span ng-if="!(content.is_vpn || content.is_relay || content.is_tor || content.is_resproxy || content.is_dcproxy || content.is_mobproxy || content.is_pubproxy || content.is_hosting || content.is_cdn || content.is_bot || content.is_anycast)">None</span>
+                </td>
+            </tr>
+            <tr ng-if="content.is_vpn">
+                <th>VPN</th>
+                <td>
+                    <span ng-if="content.vpn.provider_name || content.vpn.provider">{{content.vpn.provider_name || content.vpn.provider}}</span>
+                    <span ng-if="content.vpn.confidence">({{content.vpn.confidence}} confidence)</span>
+                    <span ng-if="content.vpn.last_seen">last seen {{content.vpn.last_seen}}</span>
+                </td>
+            </tr>
+            <tr ng-if="content.is_relay">
+                <th>Relay</th>
+                <td>
+                    <span ng-if="content.relay.provider_name || content.relay.provider">{{content.relay.provider_name || content.relay.provider}}</span>
+                    <span ng-if="content.relay.confidence">({{content.relay.confidence}} confidence)</span>
+                    <span ng-if="content.relay.last_seen">last seen {{content.relay.last_seen}}</span>
+                </td>
+            </tr>
+            <tr ng-if="content.is_tor">
+                <th>Tor</th>
+                <td>
+                    <span ng-if="content.tor.provider_name || content.tor.provider">{{content.tor.provider_name || content.tor.provider}}</span>
+                    <span ng-if="content.tor.confidence">({{content.tor.confidence}} confidence)</span>
+                    <span ng-if="content.tor.last_seen">last seen {{content.tor.last_seen}}</span>
+                </td>
+            </tr>
+            <tr ng-if="content.is_resproxy">
+                <th>Residential proxy</th>
+                <td>
+                    <span ng-if="content.resproxy.provider_name || content.resproxy.provider">{{content.resproxy.provider_name || content.resproxy.provider}}</span>
+                    <span ng-if="content.resproxy.confidence">({{content.resproxy.confidence}} confidence)</span>
+                    <span ng-if="content.resproxy.last_seen">last seen {{content.resproxy.last_seen}}</span>
+                </td>
+            </tr>
+            <tr ng-if="content.is_dcproxy">
+                <th>Datacenter proxy</th>
+                <td>
+                    <span ng-if="content.dcproxy.provider_name || content.dcproxy.provider">{{content.dcproxy.provider_name || content.dcproxy.provider}}</span>
+                    <span ng-if="content.dcproxy.confidence">({{content.dcproxy.confidence}} confidence)</span>
+                    <span ng-if="content.dcproxy.last_seen">last seen {{content.dcproxy.last_seen}}</span>
+                </td>
+            </tr>
+            <tr ng-if="content.is_mobproxy">
+                <th>Mobile proxy</th>
+                <td>
+                    <span ng-if="content.mobproxy.provider_name || content.mobproxy.provider">{{content.mobproxy.provider_name || content.mobproxy.provider}}</span>
+                    <span ng-if="content.mobproxy.confidence">({{content.mobproxy.confidence}} confidence)</span>
+                    <span ng-if="content.mobproxy.last_seen">last seen {{content.mobproxy.last_seen}}</span>
+                </td>
+            </tr>
+            <tr ng-if="content.is_pubproxy">
+                <th>Public proxy</th>
+                <td>
+                    <span ng-if="content.pubproxy.provider_name || content.pubproxy.provider">{{content.pubproxy.provider_name || content.pubproxy.provider}}</span>
+                    <span ng-if="content.pubproxy.confidence">({{content.pubproxy.confidence}} confidence)</span>
+                    <span ng-if="content.pubproxy.last_seen">last seen {{content.pubproxy.last_seen}}</span>
+                </td>
+            </tr>
+            <tr ng-if="content.is_hosting">
+                <th>Hosting</th>
+                <td>
+                    <span ng-if="content.hosting.provider_name || content.hosting.provider">{{content.hosting.provider_name || content.hosting.provider}}</span>
+                    <span ng-if="content.hosting.confidence">({{content.hosting.confidence}} confidence)</span>
+                    <span ng-if="content.hosting.last_seen">last seen {{content.hosting.last_seen}}</span>
+                </td>
+            </tr>
+            <tr ng-if="content.is_cdn">
+                <th>CDN</th>
+                <td>
+                    <span ng-if="content.cdn.provider_name || content.cdn.provider">{{content.cdn.provider_name || content.cdn.provider}}</span>
+                    <span ng-if="content.cdn.confidence">({{content.cdn.confidence}} confidence)</span>
+                    <span ng-if="content.cdn.last_seen">last seen {{content.cdn.last_seen}}</span>
+                </td>
+            </tr>
+            <tr ng-if="content.is_bot">
+                <th>Bot</th>
+                <td>
+                    <span ng-if="content.bot.provider_name || content.bot.provider">{{content.bot.provider_name || content.bot.provider}}</span>
+                    <span ng-if="content.bot.confidence">({{content.bot.confidence}} confidence)</span>
+                    <span ng-if="content.bot.last_seen">last seen {{content.bot.last_seen}}</span>
+                </td>
+            </tr>
+            <tr ng-if="content.location.country">
+                <th>Location</th>
+                <td>
+                    <span ng-if="content.location.city">{{content.location.city}}, </span>
+                    <span ng-if="content.location.region">{{content.location.region}}, </span>
+                    {{content.location.country_name}} ({{content.location.country}})
+                </td>
+            </tr>
+            <tr ng-if="content.asn.asn">
+                <th>ASN</th>
+                <td>AS{{content.asn.asn}} {{content.asn.name}} <span ng-if="content.asn.prefix">({{content.asn.prefix}})</span></td>
+            </tr>
+            <tr ng-if="content.hostname">
+                <th>Hostname</th>
+                <td>{{content.hostname}}</td>
+            </tr>
+            <tr ng-if="content.company.name">
+                <th>Organization</th>
+                <td>{{content.company.name}} <span ng-if="content.company.domain">({{content.company.domain}})</span></td>
+            </tr>
+            <tr ng-if="content.abuse.email">
+                <th>Abuse contact</th>
+                <td>{{content.abuse.email}} <span ng-if="content.abuse.name">({{content.abuse.name}})</span></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- General error -->
+<div class="panel panel-danger" ng-if="!success">
+    <div class="panel-heading">
+        <strong>{{ (artifact.data || artifact.attachment.name) | fang }}</strong>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal" ng-if="content.errorMessage">
+            <dt><i class="fa fa-warning"></i> VPNDetection:</dt>
+            <dd class="wrap">{{ content.errorMessage }}</dd>
+        </dl>
+    </div>
+</div>
